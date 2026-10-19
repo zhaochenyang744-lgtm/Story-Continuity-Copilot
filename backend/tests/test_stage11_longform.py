@@ -177,7 +177,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         self.assertFalse(is_controlled_candidate("open_thread", "status", allow_legacy_alias=False))
         self.assertFalse(is_controlled_candidate("static_canon", "knows", allow_legacy_alias=False))
         self.assertTrue(is_controlled_candidate("static_canon", "knows"))
-        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v10-whole-chapter-rules")
+        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v11-epithet-subjects")
 
     def test_memory_v5_validation_rejects_unbounded_candidate_count_and_fields(self):
         source_item = source(1, 20)
@@ -226,7 +226,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         request=delta._request({"source_revision":2,"sources":[source(99,100)],"memory":memory})
         self.assertEqual(len(request["memory"]),20)
         self.assertLessEqual(request_prompt_and_budget(request)[1],6000)
-        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v5-whole-chapter")
+        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v6-epithet-subjects")
 
     def test_provider_uses_2000_output_cap_and_invalid_json_keeps_only_metadata(self):
         posted = []

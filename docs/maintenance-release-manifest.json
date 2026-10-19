@@ -184,10 +184,6 @@
       "target": "deployment/verify-frontend-image.sh"
     },
     {
-      "source": "docs/current-model-acceptance.md",
-      "target": "docs/current-model-acceptance.md"
-    },
-    {
       "source": "docs/README.md",
       "target": "docs/README.md"
     },
@@ -212,22 +208,6 @@
       "target": "docs/maintenance-deployment.md"
     },
     {
-      "source": "docs/deployment-2026-09-30.md",
-      "target": "docs/deployment-2026-09-30.md"
-    },
-    {
-      "source": "docs/deployment-2026-10-02.md",
-      "target": "docs/deployment-2026-10-02.md"
-    },
-    {
-      "source": "docs/deployment-2026-10-03.md",
-      "target": "docs/deployment-2026-10-03.md"
-    },
-    {
-      "source": "docs/deployment-2026-10-04.md",
-      "target": "docs/deployment-2026-10-04.md"
-    },
-    {
       "source": "docs/maintenance-release-manifest.json",
       "target": "docs/maintenance-release-manifest.json"
     },
@@ -242,10 +222,6 @@
     {
       "source": "docs/product-decisions-and-validation.md",
       "target": "docs/product-decisions-and-validation.md"
-    },
-    {
-      "source": "docs/v1.4.0-deployment.md",
-      "target": "docs/v1.4.0-deployment.md"
     },
     {
       "source": "docs/verification-and-limitations.md",
@@ -510,6 +486,110 @@
     {
       "source": "frontend/tsconfig.json",
       "target": "frontend-source/tsconfig.json"
+    },
+    {
+      "source": "backend/app/assistant.py",
+      "target": "backend/app/assistant.py"
+    },
+    {
+      "source": "backend/app/assistant_coverage.py",
+      "target": "backend/app/assistant_coverage.py"
+    },
+    {
+      "source": "backend/app/assistant_edits.py",
+      "target": "backend/app/assistant_edits.py"
+    },
+    {
+      "source": "backend/app/assistant_proposals.py",
+      "target": "backend/app/assistant_proposals.py"
+    },
+    {
+      "source": "backend/app/assistant_recap.py",
+      "target": "backend/app/assistant_recap.py"
+    },
+    {
+      "source": "backend/app/assistant_store.py",
+      "target": "backend/app/assistant_store.py"
+    },
+    {
+      "source": "backend/app/assistant_tools.py",
+      "target": "backend/app/assistant_tools.py"
+    },
+    {
+      "source": "backend/app/author_home.py",
+      "target": "backend/app/author_home.py"
+    },
+    {
+      "source": "frontend/app/client/day.ts",
+      "target": "frontend-source/app/client/day.ts"
+    },
+    {
+      "source": "frontend/app/client/pages/privacy.tsx",
+      "target": "frontend-source/app/client/pages/privacy.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/settings.tsx",
+      "target": "frontend-source/app/client/pages/settings.tsx"
+    },
+    {
+      "source": "frontend/app/client/prefs.ts",
+      "target": "frontend-source/app/client/prefs.ts"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-answer.tsx",
+      "target": "frontend-source/app/client/project/assistant-answer.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-compose.tsx",
+      "target": "frontend-source/app/client/project/assistant-compose.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-diff.ts",
+      "target": "frontend-source/app/client/project/assistant-diff.ts"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-fix.tsx",
+      "target": "frontend-source/app/client/project/assistant-fix.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-locate.ts",
+      "target": "frontend-source/app/client/project/assistant-locate.ts"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-parts.tsx",
+      "target": "frontend-source/app/client/project/assistant-parts.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-process.tsx",
+      "target": "frontend-source/app/client/project/assistant-process.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-recap.tsx",
+      "target": "frontend-source/app/client/project/assistant-recap.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-start.tsx",
+      "target": "frontend-source/app/client/project/assistant-start.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-task.tsx",
+      "target": "frontend-source/app/client/project/assistant-task.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant.tsx",
+      "target": "frontend-source/app/client/project/assistant.tsx"
+    },
+    {
+      "source": "frontend/app/styles/pages/assistant.css",
+      "target": "frontend-source/app/styles/pages/assistant.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/author.css",
+      "target": "frontend-source/app/styles/pages/author.css"
+    },
+    {
+      "source": "frontend/app/styles/radius.css",
+      "target": "frontend-source/app/styles/radius.css"
     }
   ],
   "complete_trees": [
@@ -565,10 +645,8 @@
     "backend/tests/test_stage11_longform.py",
     "backend/tests/test_stage11j_source_changes.py",
     "backend/tests/test_stage11k_incremental_delta.py",
-    "backend/tests/test_stage11l_failure_observability.py",
     "backend/tests/test_stage11l_two_rounds.py",
     "backend/tests/test_stage11m_capacity_repair.py",
-    "backend/tests/test_stage11m_runner.py",
     "backend/tests/test_stage12_run_lifecycle.py",
     "backend/tests/test_stage13_public_app.py",
     "backend/tests/test_stage14_deployment.py",
@@ -602,18 +680,7 @@
     "backend/tests/test_workflow_deployment.py",
     "deployment/ops-build-package.py",
     "deployment/ops-local-acceptance.py",
-    "docs/stage11m-implementation.md",
     "docs/stage14-deployment.md",
-    "docs/v1.3.0-character-alias-impact.md",
-    "docs/v1.3.0-memory-delta.md",
-    "docs/v1.3.0-product.md",
-    "docs/v1.3.0-release-notes.md",
-    "docs/v1.3.0-revision-plan.md",
-    "docs/v1.3.0-story-qa-foreshadow.md",
-    "docs/v1.3.0-writing-analysis.md",
-    "docs/v1.3.1-backlog.md",
-    "docs/v1.4.0-backend-sync.md",
-    "docs/v1.4.0-phase0-contract.md",
     "frontend/e2e/account.spec.ts",
     "frontend/e2e/auth.spec.ts",
     "frontend/e2e/chapters.spec.ts",
@@ -640,22 +707,12 @@
     "frontend/e2e/writing-tools.spec.ts",
     "frontend/eslint.config.mjs",
     "frontend/playwright.config.ts",
-    "frontend/playwright.stage13.config.ts",
     "frontend/playwright.v170.config.ts",
     "frontend/scripts/assert-api-rewrite.mjs",
     "frontend/scripts/run-e2e-all.mjs",
-    "frontend/scripts/serve-stage13.mjs",
-    "frontend/scripts/stage13-v4-build.ps1",
-    "frontend/scripts/stage13-v4-compare.mjs",
     "frontend/scripts/stage13-v4-policy.mjs",
-    "frontend/scripts/stage13-v4-runtime-scan.mjs",
-    "frontend/scripts/stage14-build.ps1",
     "frontend/scripts/stage14-bundle-scan.mjs",
     "frontend/scripts/stage14-bundle.ps1",
-    "frontend/scripts/stage14-local-v4-gate.ps1",
-    "frontend/scripts/start-stage13-v4-artifact.mjs",
-    "frontend/scripts/v130-allowlist-consistency.mjs",
-    "frontend/scripts/v130-release-scan.mjs",
     "frontend/stage13-harness.mjs",
     "frontend/tests/build-id.test.mjs",
     "frontend/tests/build-origin.test.mjs",
@@ -663,13 +720,7 @@
     "frontend/tests/public-config.test.mjs",
     "frontend/tests/stage13-harness.test.mjs",
     "frontend/tests/stage13-v4-policy.test.mjs",
-    "frontend/tests/stage13-v4-runtime.test.mjs",
-    "frontend/tests/stage14-deployment.test.mjs",
-    "frontend/tests/v130-allowlist-consistency.test.mjs",
-    "frontend/tests/v130-harness.test.mjs",
-    "frontend/tests/v130-release-scan.test.mjs",
-    "frontend/v130-harness.d.mts",
-    "frontend/v130-harness.mjs"
+    "frontend/tests/stage14-deployment.test.mjs"
   ],
   "forbidden_package_roots": [
     ".env*",

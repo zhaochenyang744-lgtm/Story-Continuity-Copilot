@@ -10,9 +10,9 @@ export const avatarPresets: { id: User["avatar_preset"]; label: string; src: str
   { id: "folio_rose", label: "书页玫", src: "/assets/avatars/folio-rose.webp" },
   { id: "signal_amber", label: "信号琥珀", src: "/assets/avatars/signal-amber.webp" },
 ];
-export function Avatar({ user, className = "" }: { user: Pick<User, "avatar_preset">; className?: string }) {
+export function Avatar({ user, className = "", sizes = "96px" }: { user: Pick<User, "avatar_preset">; className?: string; sizes?: string }) {
   const src = avatarPresets.find((item) => item.id === user.avatar_preset)?.src ?? avatarPresets[0].src;
-  return <span className={`avatar${className ? ` ${className}` : ""}`} aria-hidden="true"><Image src={src} alt="" width={512} height={512} sizes="96px" /></span>;
+  return <span className={`avatar${className ? ` ${className}` : ""}`} aria-hidden="true"><Image src={src} alt="" width={512} height={512} sizes={sizes} /></span>;
 }
 
 export function Wordmark() {

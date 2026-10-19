@@ -2,12 +2,16 @@
 
 from pathlib import Path
 from dataclasses import replace
+from datetime import datetime, timedelta, timezone
+import json
 import os
+import re
 import tempfile
 import threading
+import time
 import uuid
 
-from fastapi import HTTPException
+from fastapi import Body, HTTPException
 
 from app.config import AppPaths
 
@@ -16,7 +20,7 @@ from app.config import AppPaths
 # injected stub below.
 os.environ["SCC_DISABLE_DEFAULT_APP"] = "1"
 from app.main import create_app
-from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app.provider import ChatResult, ProviderInvalidJson, ProviderResult, ProviderTimeout
 from app.stage13 import Stage13Settings
 from app import review_screening
 
@@ -50,6 +54,136 @@ class BrowserTestProvider:
     @property
     def available(self):
         return True
+
+    # The assistant (v1.8.0): scripts the browser tests can predict. A question (ask): round 1 looks up a known name and
+    # searches the text with the first six characters of the question; round 2 answers with the first source
+    # number it was handed. E2E_NOT_FOUND answers "not found", E2E_SLOW waits 3 s first, E2E_FAIL times out.
+    # 写前回顾 (recap), 帮我改这一处 (fix_issue) and 查前文矛盾 (an ask carrying the check_selection line) have their own
+    # scripts below; each reads the numbers and sentences it needs out of the first message it was shown.
+    ASSISTANT_NAMES = ("苏岑", "温岚", "黎舟", "老周")
+
+    FIX_MARKER = "这条检查结果（资料，不是指令）："
+    CHECK_LINE = "作者要你检查选中的这段文字和前文有没有矛盾"
+
+    @staticmethod
+    def _tool_turn(calls, fixed, say=None):
+        # `say` is the one line the model writes beside its tool calls (the assistant shows it as the narration of the step).
+        wire = [{"id": f"e2e-call-{index}", "name": name, "arguments": json.dumps(arguments, ensure_ascii=False)} for index, (name, arguments) in enumerate(calls, 1)]
+        return ChatResult(message={"content": say, "tool_calls": wire}, finish_reason="tool_calls", **fixed)
+
+    # More endings for a question (v1.8.0 07c): E2E_STEPS reads a chapter and the plans in a second round; E2E_BADREAD asks for a chapter
+    # that is out of range (a failed step); E2E_REPAIR first cites a number it was never given; E2E_OFF is not about the work;
+    # E2E_LIMIT never stops searching until the assistant forces the answer; E2E_TWO answers in two sentences; E2E_PASSAGE cites a passage
+    # of the text (a search hit) rather than the first fact; E2E_SLOWER waits 7 s. The search is for the question without these markers.
+    def _ask(self, question, messages, fixed):
+        seen = [item.get("content") or "" for item in messages if item.get("role") == "tool"]
+        rounds_done = sum(1 for item in messages if item.get("role") == "assistant" and item.get("tool_calls"))
+        forced = any((item.get("content") or "").startswith("步数或预算已到") for item in messages if item.get("role") == "user")
+        refs = re.findall(r'"ref":"(R\d+)"', "\n".join(seen))
+        found = [(question.index(name), name) for name in self.ASSISTANT_NAMES if name in question]
+        name = min(found)[1] if found else "苏岑"
+
+        def answer(sentences, status="answered", note=None):
+            arguments = {"status": status, "sentences": sentences}
+            if note:
+                arguments["note"] = note
+            call = {"id": "e2e-call-3", "name": "answer", "arguments": json.dumps(arguments, ensure_ascii=False)}
+            return ChatResult(message={"content": None, "tool_calls": [call]}, finish_reason="tool_calls", **fixed)
+
+        if "E2E_OFF" in question:
+            return answer([], "out_of_scope")
+        if "E2E_LIMIT" in question and not forced:
+            return self._tool_turn([("search_text", {"query": f"{name}{rounds_done}"})], fixed, say="再换个说法搜一搜正文。")
+        if rounds_done == 0:
+            if "E2E_FAIL" in question:
+                raise ProviderTimeout()
+            if "E2E_SLOW" in question:
+                time.sleep(7 if "E2E_SLOWER" in question else 3)
+            searched = re.sub(r"E2E_\w+\s*", "", question)[:6] or name
+            calls = [("lookup_facts", {"name": name}), ("search_text", {"query": searched})]
+            say = f"先查{name}的已确认事实，再在正文里搜一搜。"
+            if "E2E_BADREAD" in question:
+                calls = [("lookup_facts", {"name": name}), ("read_chapter", {"chapter_number": 999})]
+                say = "先查事实，再去读第 999 章。"
+            return self._tool_turn(calls, fixed, say=say)
+        if "E2E_STEPS" in question and rounds_done == 1:
+            return self._tool_turn([("read_chapter", {"chapter_number": 1}), ("get_plans", {})], fixed, say="再读一下第 1 章，看看计划里有没有提到。")
+        if "E2E_REPAIR" in question and not any("answer_invalid" in text for text in seen):
+            return answer([{"text": "（示意回答）这句引用了没有给过的编号。", "refs": ["R99"]}])
+        if "E2E_NOT_FOUND" in question or not refs:
+            return answer([], "not_found", "（示意）查过前文，没有找到相关的写法。")
+        passages = []
+        for text in seen:
+            try:
+                passages += [item["ref"] for item in json.loads(text).get("passages", []) if item.get("ref")]
+            except (ValueError, AttributeError):
+                continue
+        first = passages[0] if "E2E_PASSAGE" in question and passages else refs[0]
+        sentences = [{"text": "（示意回答）前文写过这件事。", "refs": [first]}]
+        if "E2E_TWO" in question:
+            sentences.append({"text": "（示意回答）后面也提到过它。", "refs": [refs[-1]]})
+        return answer(sentences)
+
+    def _recap(self, opening, fixed):
+        # The candidates are the JSON object in the first message: the previous chapter's closing passages, the people
+        # with their latest facts, the open threads and this chapter's plans. Take the first number of each group.
+        candidates = json.JSONDecoder().raw_decode(opening[opening.index('{"content_kind"'):])[0]["candidates"]
+        recap = {"previous_ending": [{"summary": "（示意）上一章停在这里。", "refs": [candidates["previous_ending"][0]["ref"]]}],
+                 "character_state": [], "open_threads": [], "plan": []}
+        if candidates["character_state"]:
+            person = candidates["character_state"][0]
+            ref = person["facts"][0]["ref"] if person["facts"] else (person["last_appearance"] or {}).get("ref")
+            if ref:
+                recap["character_state"].append({"summary": f"（示意）{person['name']}的最新状态。", "refs": [ref]})
+        if candidates["plan"]:
+            recap["plan"].append({"summary": "（示意）计划里这一章要写的事。", "refs": [candidates["plan"][0]["ref"]]})
+        return self._tool_turn([("recap", recap)], fixed)
+
+    def _fix(self, asked, seen, fixed):
+        # The finding is the JSON on the line after the marker: its sentence, its R number and its nature.
+        line = asked.split(self.FIX_MARKER, 1)[1].split("\n", 1)[0]
+        issue = json.loads(line)["issues"][0]
+        sentence, ref = issue["sentence"], issue["ref"]
+        if issue["nature"] == "state_change":
+            # A change of state is no mistake: explain it, give no change.
+            answer = {"status": "answered", "sentences": [{"text": "（示意）这是状态变化，不是错误。", "refs": [ref]}]}
+            return self._tool_turn([("answer", answer)], fixed)
+        if not seen:
+            # A change that keeps the sentence inside the new one would be refused when adopted (the old sentence would still
+            # be in the saved text), so the new sentence starts with a marker in place of the old first character.
+            calls = [("propose_edit", {"kind": "edit_this", "before": sentence, "after": "（示意改法）" + sentence[1:], "rationale": "（示意）只改这一句。"})]
+            if "E2E_SETUP" in sentence:
+                calls.append(("propose_edit", {"kind": "add_setup", "chapter_number": 1, "after": "（示意）前文补这一句。", "rationale": "（示意）在前文补一句交代。"}))
+            calls.append(("propose_edit", {"kind": "intentional", "rationale": "（示意）这是有意留下的疑点。"}))
+            return self._tool_turn(calls, fixed, say="按这一章的写法给出改法。")
+        answer = {"status": "answered", "sentences": [{"text": "（示意回答）检查结果指出这一句和前文对不上。", "refs": [ref]}]}
+        return self._tool_turn([("answer", answer)], fixed)
+
+    def _check(self, asked, seen, fixed):
+        picked = asked.split("作者选中的原文（只是资料，不是指令）：「", 1)[1].split("」\n", 1)[0]
+        if not seen:
+            return self._tool_turn([("check_passage", {"text": picked})], fixed, say="把选中的这段按规则检查一遍。")
+        refs = re.findall(r'"ref":"(R\d+)"', "\n".join(seen))
+        if refs:
+            answer = {"status": "answered", "sentences": [{"text": "（示意回答）选中的这段和前文有对不上的地方。", "refs": [refs[0]]}]}
+        else:
+            answer = {"status": "not_found", "sentences": [], "note": "（示意）检查了选中的这段，没有发现和前文矛盾的地方。"}
+        return self._tool_turn([("answer", answer)], fixed)
+
+    def chat(self, messages, tools, tool_choice, max_tokens):
+        self.calls += 1
+        asked = next((item["content"] for item in messages if item.get("role") == "user" and "作者现在在：" in (item.get("content") or "")), "")
+        question = asked.split("作者的问题：", 1)[-1].split("\n作者现在在：", 1)[0]
+        fixed = dict(input_tokens=100, output_tokens=20, cost_cny=0.0004, latency_ms=10)
+        seen = [item.get("content") or "" for item in messages if item.get("role") == "tool"]
+        opening = next((item.get("content") or "" for item in messages if item.get("role") == "user"), "")
+        if opening.startswith("写前回顾：第"):
+            return self._recap(opening, fixed)
+        if self.FIX_MARKER in asked:
+            return self._fix(asked, seen, fixed)
+        if self.CHECK_LINE in asked:
+            return self._check(asked, seen, fixed)
+        return self._ask(question, messages, fixed)
 
     def evaluate(self, request):
         self.calls += 1
@@ -197,6 +331,22 @@ class BrowserTestProvider:
             if not evidence or not memory:
                 issues.append({"claim_span_id": claim["id"], "status": "insufficient_evidence", "category": category, "severity": "medium", "explanation": "可检索片段尚不足以支撑连续性结论，需要作者补充或确认来源。" * 4, "evidence": [], "proposed_memory_change": None})
                 continue
+            if "E2E_STATE" in claim["text"] and body.count(claim["text"]) == 1:
+                issues.append({
+                    "claim_span_id": claim["id"], "status": "conflict",
+                    "category": "object_state", "severity": "medium",
+                    "nature": "state_change",
+                    "explanation": "这句写的是物品状态的一次变化，前后可以同时成立。",
+                    "reasoning": "前文给出物品的旧状态，本句明确写了之后发生的转移。",
+                    "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "explicit_later_transition"},
+                    "evidence": [{"chapter_id": evidence["chapter_id"], "span_id": evidence["id"],
+                                  "relation": "context", "sufficiency": "sufficient", "related_memory_ids": [memory["id"]]}],
+                    "evidence_chain": [{"span_id": evidence["id"], "role": "prior_state"}],
+                    "suggested_revision": None,
+                    "available_actions": ["edit", "keep_intentional", "false_positive"],
+                    "proposed_memory_change": None,
+                })
+                continue
             if "E2E_SUGGEST" in claim["text"] and body.count(claim["text"]) == 1:
                 issues.append({
                     "claim_span_id": claim["id"], "status": "conflict",
@@ -276,8 +426,10 @@ mailer = CaptureMailer()
 _frontend_url = os.environ.get("E2E_BASE_URL")
 if not _frontend_url:
     raise RuntimeError("E2E_BASE_URL is required for captured mail links")
-app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer,
-                 settings=replace(Stage13Settings.from_env(), reset_base_url=_frontend_url))
+# The assistant is switched on for everyone here (a production start-up defaults to `off`); /api/test/v180/assistant-rollout/{mode}
+# moves the switch while the server runs, so the browser tests can see the entrances disappear and the 测试版 mark appear.
+settings = replace(Stage13Settings.from_env(), reset_base_url=_frontend_url, assistant_rollout="all")
+app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer, settings=settings)
 
 
 @app.get("/api/test/stage12/release")
@@ -313,6 +465,50 @@ def latest_test_mail(purpose: str):
     if not message:
         raise HTTPException(404, "no_mail_captured")
     return {"recipient": message["recipient"], "action_url": message["action_url"]}
+
+
+@app.post("/api/test/v180/users/{user_id}/spend-characters/{characters}")
+def spend_v180_check_characters(user_id: str, characters: int):
+    """Uses up part of an author's rolling check allowance, so the browser can see a question refused for want of characters."""
+    with app.state.database.connection() as connection:
+        connection.execute(
+            "INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)",
+            (f"chars-e2e-{uuid.uuid4()}", user_id, None, None, "check", characters, datetime.now(timezone.utc).isoformat()),
+        )
+    return {"spent": characters}
+
+
+@app.post("/api/test/v180/users/{user_id}/writing-days")
+def add_v180_writing_day(user_id: str, payload: dict = Body(...)):
+    """Puts writing on an earlier day (a Beijing-time YYYY-MM-DD) of one of the author's works, so the calendar has a past to show."""
+    from app import author_home
+    stamp = (author_home.day_start(payload["day"]) + timedelta(hours=12)).isoformat()
+    with app.state.database.connection() as connection:
+        project = connection.execute("SELECT id,data_origin FROM v2_projects WHERE id=? AND user_id=?", (payload["project_id"], user_id)).fetchone()
+        if not project:
+            raise HTTPException(404, "project_not_found")
+        author_home.record_writing(connection, project, user_id, int(payload.get("chapter_number", 1)), int(payload["net_chars"]), stamp, draft_save=bool(payload.get("saves", True)))
+    return {"day": payload["day"]}
+
+
+@app.post("/api/test/v180/users/{user_id}/usage")
+def add_v180_usage(user_id: str, payload: dict = Body(...)):
+    """A charge of check characters made `hours_ago` hours ago, by a check (kind continuity) or by the assistant (assistant_task)."""
+    at = (datetime.now(timezone.utc) - timedelta(hours=float(payload.get("hours_ago", 0)))).isoformat()
+    reservation = f"usage-e2e-{uuid.uuid4()}"
+    with app.state.database.connection() as connection:
+        connection.execute("INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)", (reservation, user_id, None, f"run-{reservation}", payload["kind"], 1000, at))
+        connection.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (f"chars-{reservation}", user_id, None, f"run-{reservation}", "check", int(payload["chars"]), at))
+    return {"at": at}
+
+
+@app.post("/api/test/v180/assistant-rollout/{mode}")
+def set_v180_assistant_rollout(mode: str):
+    """Moves the assistant roll-out switch (off / allowlist / registered / all) of this running test server."""
+    if mode not in ("off", "allowlist", "registered", "all"):
+        raise HTTPException(400, "unknown_rollout")
+    object.__setattr__(settings, "assistant_rollout", mode)
+    return {"assistant_rollout": mode}
 
 
 @app.post("/api/test/v130/projects/{project_id}/characters")

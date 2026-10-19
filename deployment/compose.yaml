@@ -1,5 +1,12 @@
 name: story-continuity-public
 
+# Container output goes to the host journal, which keeps 30 days (the privacy page promises 30-day logs).
+# The host side is /etc/systemd/journald.conf.d/30-story-continuity.conf, see docs/operations.md.
+x-logging: &journald
+  driver: journald
+  options:
+    tag: "story-continuity/{{.Name}}"
+
 services:
   backend:
     image: localhost/story-continuity-backend:${RELEASE_ID:?release id required}
@@ -7,6 +14,7 @@ services:
       context: ..
       dockerfile: deployment/Dockerfile.backend
     restart: unless-stopped
+    logging: *journald
     init: true
     environment:
       PUBLIC_APP_MODE: "1"
@@ -22,6 +30,10 @@ services:
       CONTINUITY_BASE_URL: ${CONTINUITY_BASE_URL:?provider base url required}
       CONTINUITY_INPUT_CNY_PER_MILLION: ${CONTINUITY_INPUT_CNY_PER_MILLION:?input rate required}
       CONTINUITY_OUTPUT_CNY_PER_MILLION: ${CONTINUITY_OUTPUT_CNY_PER_MILLION:?output rate required}
+      CONTINUITY_ASSISTANT_ROLLOUT: ${CONTINUITY_ASSISTANT_ROLLOUT:-off}
+      CONTINUITY_ASSISTANT_ALLOWLIST: ${CONTINUITY_ASSISTANT_ALLOWLIST:-}
+      VISITOR_ASSISTANT_TASKS_24H: ${VISITOR_ASSISTANT_TASKS_24H:-3}
+      ASSISTANT_TASK_MAX_CNY: ${ASSISTANT_TASK_MAX_CNY:-0.30}
       SMTP_HOST: ${SMTP_HOST:?smtp host required}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_TLS: "1"
@@ -49,6 +61,7 @@ services:
       args:
         PUBLIC_BASE_URL: https://${PUBLIC_HOST:?public host required}
     restart: unless-stopped
+    logging: *journald
     init: true
     depends_on:
       backend:
@@ -65,6 +78,7 @@ services:
   caddy:
     image: caddy:2.10.2-alpine
     restart: unless-stopped
+    logging: *journald
     environment:
       PUBLIC_HOST: ${PUBLIC_HOST:?public host required}
     ports:

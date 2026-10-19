@@ -1,0 +1,480 @@
+{
+  "reviewer_not_author": true,
+  "status": "completed",
+  "reviewed_chapter_counts": {
+    "w01": 30,
+    "w02": 30
+  },
+  "reviewed_task_count": 30,
+  "findings": [],
+  "chapter_checks": [
+    {
+      "work": "w01",
+      "chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "multiple scenes dialogue and transitions present",
+      "state": "Maintenance suspended in chapter 2 due procurement review; physical time continues normally. Chapter 3 glove retrieval completed and physical cabinet key gifted. Prior sister sealing was signed by sister, application by protagonist. Broken stool tied and inverted. Chapter 4 written testimony withdrawal distinct from notice assistance. Chapter 5 first intentional age 24 preserved; hearing venue viewed only, door temporarily managed, no booked date. Chapter 6 receipt notch reprint only, circle queue only, authorization separate; letters now itemized."
+    },
+    {
+      "work": "w01",
+      "chapters": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "distinct work-school-repair-home scenes with dialogue; thematic repetition monitored but no individual length padding defect established",
+      "state": "Chapter 7 third alias introduced, letter received not hearing scheduled; night scheduling still belongs to employee. Chapter 8 unsigned undated wristbook inscription, booklet retained by courier, loose blank slip gifted only. Chapter 9 repairer born without left hand, no prosthesis; father past aid no current status asserted. Chapter 10 second beep maintenance battery, resolved; no business authorization exposed. Chapter 11 rent paid, room not surrendered; no sister relation to protagonist. Chapter 12 historical four entrances intentional; escalator handled by responsible staff, only observation by protagonist; procurement review next day, individual interviews not hearing date."
+    },
+    {
+      "work": "w01",
+      "chapters": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "procurement hearing-preparation interrupted rehearsal refusal custody delivery-income conflict and resignation scenes progress with consequences",
+      "state": "Procurement rectification then restoration and independent signing chapter 14. Fixed evening work causes late rehearsal arrival, opening relinquished; permission only small seated rehearsal, early transit clearance anticipated. Chapter 15 unsigned statements sealed inside staffed nonpublic bench zone, consent and withdrawals preserved; next-day confirmation happens chapter 16. Undated private blank voucher no motive or conjectured source. Courier lost fixed route chapter 17, complaint unresolved. Whole wristbook including inscribed cover gifted to recorder only chapter 17, personal pages permission handled. Scheduler chapter 18 finishes resignation and account/permission return at evening, no job secured; requests for unauthorized access denied."
+    },
+    {
+      "work": "w01",
+      "chapters": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "family privacy conflict, receipt application narrowing, disputed video evidence, limited authorization correction and compensation tradeoffs have separate actions and consequences",
+      "state": "Chapter 19 mother-son relationship explicitly stated; sister affirms own signature and dislikes pressured old application, no forced reversal. Chapter 20 second intentional age 29 preserved, hearing only enters review not scheduled. Chapter 21 public index identifiers only vs authorized internal signatures; sister wants own procedural query before retrieval. Chapter 22 handwriting shift-check resolved, actual one-person period-vs-day mismatch not expanded to all residents. Chapter 23 limited public testimony consent, no automatic memory restoration; daughter details excluded. Chapter 24 delivery lateness complaint corrected but old fixed route not regained; compensation negotiation independent of common procedure; date still awaiting final confirmation."
+    },
+    {
+      "work": "w01",
+      "chapters": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "custodian household objection, formal hearing, moving and sibling cost conflict, work-shift swap and individual execution create changed outcomes; repeated consent theme supported by distinct stakes",
+      "state": "Chapter 25 next-afternoon hearing finally scheduled, venue door repaired by responsible personnel. Personal receipt box handed audit clerk to driver with no institutional custody powers, daughter excluded. Chapter 26 formal hearing next day; courier attends only latter portion while earning. Chapter 27 courier surrenders old tenancy key and moves to own unnamed sister, household duties renegotiated; fixed route still absent. Chapter 28 protagonist authorized shift swap includes future early shift, sister declines accompaniment. Chapter 29 seven historical entrances intentional second version, separate processing not mass defaults; scheduler trial appointment no re-employment or backend access. Chapter 30 day34 subjectively recalls old day without reversing physical time; sister keeps own deferral; protagonist tomorrow early shift; last new numbered work receipt distinct from private blank voucher, next-day private meeting. Anonymous inscription writer and blank-voucher private motive remain absent."
+    },
+    {
+      "work": "w02",
+      "chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "closure payroll safety and household scenes contain dialogue and transitions; protagonist authority challenged with consequences",
+      "state": "Closure decision final, no rescue target. Temp worker holds temporary scheduling strip only, no formal number. All three aliases introduced by chapter3; tool-finder origin specific. Night statistician remains night post despite white-shift records. Protagonist public backup key returned chapter4, pad ownership verified and item taken by owner, wrench recovered and foodhall hook repaired. Route clamp gifted mechanic to temp worker in chapter4; only route sheets exchanged thereafter. Anonymous handdrawn flower on old seal, bag bound to original return parcel with incomplete address, no author candidate. Chapter2 extra sound unresolved. Protagonist work intention still considering, sibling dynamic not yet fully narrated."
+    },
+    {
+      "work": "w02",
+      "chapters": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "packing accident, resource release, diagnostic false lead, contractor boundary, shopping and questioned records vary scene purpose; occasional instruction-like narration remains embedded in scenes",
+      "state": "Chapter7 physical gap in old seal factory feature, real cut comparison separate, clear narration and protagonist name; original transparent bag unopened and returned. Chapter8 sound resolved empty cart wheel at floor seam; barrier removed, seam persists; outside job invitation neither accepted nor visited. Chapter9 initial canteen contract six years first intentional version; kitchen supply continues. Chapter10 right below-knee prosthesis explicit, mealbox personally bought, night transport ordinary remaining run not final run. Chapter11 equal route numbers in two original bags unresolved, protagonist accusation not withdrawn yet; original records formally left at archive and only query receipt retained; brother no longer fills her procedures. Chapter12 broadcast removed without improvised replacement, notices physical; night canteen still supplies normally."
+    },
+    {
+      "work": "w02",
+      "chapters": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "offsite delivery, retrieved sweater, sibling offered loan refusal, inconclusive settlement meeting, independent job conditions and rejected cohabitation change concrete plans",
+      "state": "Chapter13 ordinary urban delivery not job visit; two historical bridge lanes first intentional version. Chapter14 same-parent older sister younger brother explicit, separate surnames preserved; sweater back with sister, no loan transferred, brother housing only viewed. Chapter15 no common compensation number, temp destination form under lunchbox for next-day self-fill. Chapter16 morning old shift completed then new-center long contract and new-center formal ID effective; later visits only to collect belongings, clamp remains hers. Chapter17 mediator cannot set compensation, blank note in workbag motive absent; old protagonist receipt-signature meaning disputed, two overtime segments one recorded one still pending. Chapter18 personal bag gifted statistician to protagonist and carried to own rental; rental renewed not merged with brother, no relocation promise."
+    },
+    {
+      "work": "w02",
+      "chapters": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "actual shift reallocation, family video call, supermarket disagreement, public correction costing witness support, failed claimant visit, lost work prospect and moving household conflict advance plot",
+      "state": "Chapter19 day handover transfer effective only through shutdown, night statistics handed off not privately retained; mother call and cooking complete. Chapter20 sister rental retained, brother rejects viewed room and stays prior place, no cohabitation/loan. Chapter21 duplicate numbers resolved two batches each numbering from start with no lost parcels; public apology heard by originally exposed colleagues, overtime/signature dispute explicitly separate and still pending. Chapter22 final returns verify sender only no private-content opening, failed claimant path and designated future custodian documented, old flower seal stays original location/bag. Chapter23 driver last outbound regular run, only completion possible afterward; no new work promise after refusing personal publicity. Chapter24 mechanic bed/key surrendered, moved mother home with noise/space terms, can return work only; protagonist still no job invitation accepted."
+    },
+    {
+      "work": "w02",
+      "chapters": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "complete_untruncated_reads": true,
+      "continuity": "no unintentional conflict found",
+      "scene_review": "separate own claims, unsuccessful job prospect, contractor household storage and workers futures, closed kitchen conflict, personal custody return, ordinary final-work error and unresolved-worker confrontation support serial chapters without a rescue climax",
+      "state": "Chapter25 old signature only receipt, overtime original records divide waiting/operation not all paid; protagonist first actual commercial backroom job inquiry but no hire. Chapter26 intentional nine-year initial contract, no new canteen/positions promised, wife only agrees small shelf. Chapter27 canteen closed and contractor settled, public keys returned but personal token retained for next chapter. Chapter28 token gifted contractor to younger brother, private cabinet excludes formal return parcels, temp worker visitor not shift worker. Chapter29 last regular sorting completed; formal old seal parcel moves original bag/records to designated custodian unopened/no address invented; remaining private goods returned, token stays brother. Chapter30 planned shutdown, personal settlements remain followups; broadcast absent, driver no new run, temp absent as scheduled, future interview no hire; five historical bridge lanes intentional. Final dinner is next-week appointment not already happened. Flower author and original private blank-note reason remain absent."
+    }
+  ],
+  "reviewed_source_sha256": {
+    "w01": "f40520ca0a9185a2b04e208df2fa26a16fecac03800a61fc132239f7c3701f13",
+    "w02": "8aa856872ed45a4b7877a05e73b8764aaa923ad5e46c4f2a0eb12c5c1f74c92a"
+  },
+  "unresolved_unintentional_conflicts": 0,
+  "reviewed_tasks_sha256": "8adc0cbdc5839f419de15340fe09726ee79252b4637e0f679582cacda6b940d9",
+  "review_method": {
+    "full_chapter_reading": true,
+    "untruncated_chapter_batches": 30,
+    "authors_stopped_before_reading": true,
+    "prose_or_gold_written_by_reviewer": false,
+    "source_edits": 0,
+    "task_edits": 0,
+    "model_api_calls": 0,
+    "product_runs": 0,
+    "evaluation_runs": 0
+  },
+  "semantic_check_counts": {
+    "chapters_read": 60,
+    "shared_drafts_read": 2,
+    "tasks_reviewed": 30,
+    "answerable_single": 4,
+    "answerable_multi": 6,
+    "not_in_text": 4,
+    "conflicting": 4,
+    "recap": 4,
+    "fix": 4,
+    "follow_up": 4,
+    "follow_up_first_questions": 4,
+    "intentional_conflict_pairs_preserved": 4,
+    "multi_single_chapter_shortcuts_found": 0,
+    "unknown_answers_or_candidate_hints_found": 0,
+    "unsupported_gold_points_found": 0,
+    "fix_additional_conflicts_found": 0,
+    "recap_cutoff_errors_found": 0,
+    "selection_referent_errors_found": 0,
+    "serial_chapter_scene_failures_found": 0
+  },
+  "task_checks": [
+    {
+      "id": "a1c3f-w01-q01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false
+    },
+    {
+      "id": "a1c3f-w01-q02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false
+    },
+    {
+      "id": "a1c3f-w01-q03",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true,
+      "selection_needed_to_resolve_referent": true,
+      "selection_contains_no_answer": true
+    },
+    {
+      "id": "a1c3f-w01-q04",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true,
+      "selection_needed_to_resolve_referent": true,
+      "selection_contains_no_answer": true
+    },
+    {
+      "id": "a1c3f-w01-q05",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true
+    },
+    {
+      "id": "a1c3f-w01-q06",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "full_work_answer_absent": true,
+      "answer_candidate_hints": false,
+      "question_referent_exists": true
+    },
+    {
+      "id": "a1c3f-w01-q07",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "full_work_answer_absent": true,
+      "answer_candidate_hints": false,
+      "question_referent_exists": true
+    },
+    {
+      "id": "a1c3f-w01-q08",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "both_intentional_versions_preserved": true,
+      "same_historical_event": true
+    },
+    {
+      "id": "a1c3f-w01-q09",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "both_intentional_versions_preserved": true,
+      "same_historical_event": true
+    },
+    {
+      "id": "a1c3f-w01-r15",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "cutoff_correct": true,
+      "previous_ending_deep": true,
+      "plan_not_presented_as_completed": true,
+      "draft_only_excluded": true
+    },
+    {
+      "id": "a1c3f-w01-r30",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "cutoff_correct": true,
+      "previous_ending_deep": true,
+      "plan_not_presented_as_completed": true,
+      "draft_only_excluded": true
+    },
+    {
+      "id": "a1c3f-w01-x01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "narrator_asserts_named_direct_fact": true,
+      "determinate_conflict": true,
+      "intentional_conflict_entities_excluded": true,
+      "additional_conflicts": false
+    },
+    {
+      "id": "a1c3f-w01-x02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "narrator_asserts_named_direct_fact": true,
+      "determinate_conflict": true,
+      "intentional_conflict_entities_excluded": true,
+      "additional_conflicts": false
+    },
+    {
+      "id": "a1c3f-w01-f01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "first_answer_supported": true,
+      "pronoun_referent_unique": true,
+      "followup_evidence_supported": true
+    },
+    {
+      "id": "a1c3f-w01-f02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "first_answer_supported": true,
+      "pronoun_referent_unique": true,
+      "followup_evidence_supported": true
+    },
+    {
+      "id": "a1c3f-w02-q01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false
+    },
+    {
+      "id": "a1c3f-w02-q02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false
+    },
+    {
+      "id": "a1c3f-w02-q03",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true,
+      "selection_needed_to_resolve_referent": true,
+      "selection_contains_no_answer": true
+    },
+    {
+      "id": "a1c3f-w02-q04",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true,
+      "selection_needed_to_resolve_referent": true,
+      "selection_contains_no_answer": true
+    },
+    {
+      "id": "a1c3f-w02-q05",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "single_chapter_completion": false,
+      "later_restatement_shortcut": false,
+      "evidence_split_necessary": true
+    },
+    {
+      "id": "a1c3f-w02-q06",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "full_work_answer_absent": true,
+      "answer_candidate_hints": false,
+      "question_referent_exists": true
+    },
+    {
+      "id": "a1c3f-w02-q07",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "full_work_answer_absent": true,
+      "answer_candidate_hints": false,
+      "question_referent_exists": true
+    },
+    {
+      "id": "a1c3f-w02-q08",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "both_intentional_versions_preserved": true,
+      "same_historical_event": true
+    },
+    {
+      "id": "a1c3f-w02-q09",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "both_intentional_versions_preserved": true,
+      "same_historical_event": true
+    },
+    {
+      "id": "a1c3f-w02-r15",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "cutoff_correct": true,
+      "previous_ending_deep": true,
+      "plan_not_presented_as_completed": true,
+      "draft_only_excluded": true
+    },
+    {
+      "id": "a1c3f-w02-r30",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "cutoff_correct": true,
+      "previous_ending_deep": true,
+      "plan_not_presented_as_completed": true,
+      "draft_only_excluded": true
+    },
+    {
+      "id": "a1c3f-w02-x01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "narrator_asserts_named_direct_fact": true,
+      "determinate_conflict": true,
+      "intentional_conflict_entities_excluded": true,
+      "additional_conflicts": false
+    },
+    {
+      "id": "a1c3f-w02-x02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "narrator_asserts_named_direct_fact": true,
+      "determinate_conflict": true,
+      "intentional_conflict_entities_excluded": true,
+      "additional_conflicts": false
+    },
+    {
+      "id": "a1c3f-w02-f01",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "first_answer_supported": true,
+      "pronoun_referent_unique": true,
+      "followup_evidence_supported": true
+    },
+    {
+      "id": "a1c3f-w02-f02",
+      "status": "reviewed",
+      "gold_supported": true,
+      "extra_ambiguity_found": false,
+      "first_answer_supported": true,
+      "pronoun_referent_unique": true,
+      "followup_evidence_supported": true
+    }
+  ],
+  "prose_review": {
+    "multiple_natural_scenes_dialogue_transitions_per_chapter": true,
+    "unintentional_continuity_conflicts_found": 0,
+    "intentional_pairs_excluded_from_defect_count": 4,
+    "assessed_full_prose_not_only_ledgers": true,
+    "thematic_recurrence_reviewed_in_context": true,
+    "programmatic_pass_not_used_as_semantic_proof": true
+  }
+}

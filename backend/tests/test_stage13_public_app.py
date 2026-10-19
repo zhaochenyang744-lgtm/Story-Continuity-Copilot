@@ -384,6 +384,18 @@ class Stage13PublicAppTests(unittest.TestCase):
             worker.join()
         self.assertEqual((len(successes), failures), (3, ["workflow_quota_exceeded"]))
 
+    def test_import_limit_counts_written_characters_not_whitespace(self):
+        # v1.8.0: the 350,000 limit is the "35 万字" shown on the page; blank lines between paragraphs do not count.
+        self.assertEqual(self.register("stage13importwidth", "width@example.test").status_code, 201)
+        paragraph = "文" * 1000 + "\n" * 30
+        spaced = ("# 第一章 空行\n" + paragraph * 349).encode("utf-8")  # 349,005 written characters, about 359,500 in all
+        self.assertGreater(len(spaced.decode("utf-8")), 350_000)
+        accepted = self.client.post("/api/imports/preview", headers=idem(), files={"file": ("spaced.md", spaced, "text/markdown")})
+        self.assertEqual(accepted.status_code, 201, accepted.text[:300])
+        over = ("# 第一章 满\n" + "文" * 350_001).encode("utf-8")
+        rejected = self.client.post("/api/imports/preview", headers=idem(), files={"file": ("over.md", over, "text/markdown")})
+        self.assertEqual((rejected.status_code, rejected.json()["error"]["code"]), (413, "import_too_large"))
+
     def test_provider_attempt_budget_registered_text_and_draft_limits_fail_before_partial_writes(self):
         attempt_root = pathlib.Path(tempfile.mkdtemp(prefix="story-stage13-impl-attempt-"))
         attempt_provider = CountingProvider()

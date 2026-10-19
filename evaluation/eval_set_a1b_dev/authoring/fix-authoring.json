@@ -1,0 +1,12 @@
+{
+  "tasks": [
+    {"id":"a1bd-fix-01","work":"l1","suite":"fix","note":"第101章草稿；先天手部属性确定相反，距依据85章，不借人物看法构造矛盾。","draft":"费泊的左手自出生起便有五根完整的手指。他摊开掌心，让木屑顺着指缝落下。","conflict_sentence":"费泊的左手自出生起便有五根完整的手指。","category":"attribute","evidence_chapters":["第十六章 掌心旁的间隙"],"fix_idea":"将左手先天指头数量改为四根，同时保留清理木屑的动作。"},
+    {"id":"a1bd-fix-02","work":"l1","suite":"fix","note":"第101章草稿；明确使用原有装置，排除设备改造后规则改变的解释，距依据62章。","draft":"费泊启动原有装置，电力沿缆路由顶端顺畅回送到山脚。他站在旁边等候检查。","conflict_sentence":"费泊启动原有装置，电力沿缆路由顶端顺畅回送到山脚。","category":"world_rule","evidence_chapters":["第三十九章 不能倒过来的方向"],"fix_idea":"让原有装置按山脚向山顶的允许方向供电，或把回送改为尚未执行的改造提议。"},
+    {"id":"a1bd-fix-03","work":"l1","suite":"fix","note":"第101章草稿；同一对人物的亲生母亲关系直接反转，距依据46章。","draft":"岑望与穆槐的亲生母亲不是同一个人。两人把面前的空凳摆齐。","conflict_sentence":"岑望与穆槐的亲生母亲不是同一个人。","category":"relationship","evidence_chapters":["第五十五章 一张课桌两端"],"fix_idea":"保持两人同母异父的关系，删改亲生母亲不同的断言，保留摆凳动作。"}
+  ],
+  "reviews": [
+    {"id":"a1bd-fix-01","evidence_quotes":[{"chapter":"第十六章 掌心旁的间隙","text":"费泊的左手天生只有四根手指。"}],"rationale":"两处都限定左手和先天数量，四根与五根不可同时成立，非后来受伤或人物误认。其余动作与先天四指不冲突。","copy_check":"pass","chapter_gap":85},
+    {"id":"a1bd-fix-02","evidence_quotes":[{"chapter":"第三十九章 不能倒过来的方向","text":"这套缆路的供电只能从山脚传向山顶，设备结构不允许逆向送电。"}],"rationale":"草稿由叙述者确认原有设备已经正常完成反向供电，和明确的结构限制相反，不是计划、尝试或更换装置。","copy_check":"pass","chapter_gap":62},
+    {"id":"a1bd-fix-03","evidence_quotes":[{"chapter":"第五十五章 一张课桌两端","text":"岑望与穆槐同母异父，岑望是哥哥，穆槐是妹妹。"}],"rationale":"正文同母而草稿说亲生母亲不同，主体相同且均为叙述事实；摆凳没有额外冲突。专用于QA有意矛盾的角色和物件均未出现在此草稿。","copy_check":"pass","chapter_gap":46}
+  ]
+}

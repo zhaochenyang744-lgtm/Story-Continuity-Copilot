@@ -1,0 +1,18 @@
+{
+  "new_works": 3,
+  "new_names_and_titles": 47,
+  "cross_new_work_overlapping_names": 0,
+  "cross_new_work_name_matches": 0,
+  "duplicate_paragraphs_40han_all_new_works": 0,
+  "encoding_errors": 0,
+  "protected_files": 14,
+  "protected_hash_changes": 0,
+  "first_set_unchanged_since_commit": true,
+  "bound_sha256": {
+    "eval_set_a1c2_formal/tasks.json": "4007c65b0d47be48f729e75b0a3a2a98022721ae85264b82f146fa2f3c599cc9",
+    "eval_set_a1c2_formal/works/w01.md": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+    "eval_set_a1c2_formal/works/w02.md": "30bb94c8b2062e6d28e3000513d362a85d10ddbfaaecaabc6f7e4e98d41d7cf7",
+    "eval_set_a1cs2_formal/tasks.json": "3c1d87f713e204b5523bd3887ef48b96199ad04a85cbc6869a454a6f644062a8",
+    "eval_set_a1cs2_formal/works/safe.md": "7d0997884dd109a4e1babfc996ca922dfc908bd7c1e26c4a1a4977eae9025e8b"
+  }
+}

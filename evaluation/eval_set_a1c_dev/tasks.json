@@ -1,0 +1,48 @@
+{
+  "version": "a1c-1",
+  "set_id": "a1c-dev",
+  "author": "A1c authoring",
+  "works": [
+    {
+      "key": "race",
+      "title": "回声之外的赛道",
+      "language": "zh",
+      "purpose": "general",
+      "kind": "long",
+      "source_file": "works/race.md",
+      "names": ["岑砺弦", "折线", "郁照汀", "小汀", "裴知隼", "隼子", "唐栩珂", "闻人霁", "辛砚白", "嵇遥澈", "蒋牧澜", "瑛环市", "折跃馆", "弧顶赛场", "潮纹腕环", "折角沙盘", "鸣隙耳扣", "霜脊徽章", "棱砂奖牌"],
+      "plans": [
+        {"chapter": 16, "text": "队员等待裁判的复核结论，并讨论接下来怎样分工。"},
+        {"chapter": 31, "text": "公开下一轮场地测试的报名方式，让不同队伍共同参与。"}
+      ],
+      "foreshadows": [
+        {"title": "投影里的迟到光斑", "planted_chapter": 3, "status": "resolved", "resolved_chapter": 13},
+        {"title": "侧墙双重踏声", "planted_chapter": 6, "status": "resolved", "resolved_chapter": 21},
+        {"title": "空签名音轨", "planted_chapter": 17, "status": "open"},
+        {"title": "北廊无编号白点", "planted_chapter": 28, "status": "open"}
+      ],
+      "shared_draft": {
+        "chapter_title": "第31章 别人的起点",
+        "draft_only_fact": "南侧看台临时搭起了一座橙色充气拱门。",
+        "body": "南侧看台临时搭起了一座橙色充气拱门。唐栩珂走近栏杆，发现来参加说明会的人比预想的多。有人穿着跑鞋，也有人抱着折叠坐垫，几名只在直播画面里见过他们的观众正商量该在哪个入口排队。她想挥手招呼，又觉得自己没有理由替工作人员安排这些事情，便退开两步，把挡住通道的背包拎起来。\n\n郁照汀俯身整理鞋带，指尖沾了一点地上的灰。她起身时看见有人举着手机，却没急着摆出笑脸。比赛结束之后，好像连一个很平常的动作都可能被剪进别人的故事里。她向镜头点了点头，转身去找饮水的位置。今天没有倒计时催着大家，她仍然不自觉地走得很快，走到一半才发现同伴没有跟上。\n\n台阶边摆着潮纹腕环，灯影落在它的曲面上。旁边的人想把这件东西挪进阴凉处，手伸到一半，又等着看有没有人回应。岑砺弦从人群另一头过来，没有接过它，只把台阶上的水渍擦掉。那人道了谢，问今天能不能试戴设备。他回答要等说明会开始，具体安排由负责体验的人讲。他愿意帮忙，却不愿意因为别人叫了一声熟悉的称呼，就替一个尚未公布的流程作保证。\n\n唐栩珂把卷起的外套夹在臂弯里，望着仍未亮起的屏幕。她原以为离开赛道之后，就不会再为等待感到紧张，现在才知道有些紧张和输赢没有关系。新来的人把问题交到他们手上，问得十分认真，也十分具体：如果看不清画面怎么办，如果走到中途不想继续了怎么办。她拿出一张纸，先把问题记下来，准备一会儿交给讲解的人。\n\n裴知隼在栏杆外停了一会儿，朝还没有找到座位的人指了指空处。对方并不认识他，只是点头，然后继续和身边的人说话。他忽然笑起来，觉得这比被要求重演某一瞬间的动作轻松。等他坐下，辛砚白已经把自己那张椅子往里面挪了一点，给通道让出了空隙。两人聊起昨晚没有吃完的饭，话题绕了很远，谁也没有马上把它拉回比赛。\n\n一阵风从入口吹过，桌上的空白登记纸翻起半页。闻人霁伸手压住纸角，问有没有人带夹子。嵇遥澈递来一个普通的长尾夹，夹好以后又抽回手，像完成了一次不值得记分的小配合。蒋牧澜站在入口与工作人员交谈，声音被人群隔得断断续续。等待的人渐渐安静下来，却并没有谁发出要求安静的口令。\n\n郁照汀回到座位旁，把一杯水递向同伴。有人问她新来的体验者会不会害怕，她想了一下，说还不知道，得让他们自己说。唐栩珂听见这句话，把纸上原来写好的介绍划掉了一行。她没有换成更响亮的句子，而是在那块空白处留出位置，等会儿记下第一个不在准备之中的问题。"
+      }
+    }
+  ],
+  "tasks": [
+    {"id":"a1cd-qa-01","work":"race","suite":"qa","qa_type":"answerable_single","note":"触觉信号与前半章边界信号干扰区分。","selection":"郁照汀俯身整理鞋带，指尖沾了一点地上的灰。","question":"她是怎么给接缝做触觉标记的？","paraphrased":true,"answer_points":["接缝的标记是三次短振之后接一次长振。"],"forbidden_claims":["把边界提示当成接缝标记。"],"evidence_chapters":["第6章 脚下的长短音"],"evidence_quotes":["郁照汀用三次短振后的一次长振标记地板接缝，避免选手误认成边界。"],"deep":true},
+    {"id":"a1cd-qa-02","work":"race","suite":"qa","qa_type":"answerable_single","note":"赛道方向决策，不问初始试跑路线。","selection":"唐栩珂把卷起的外套夹在臂弯里，望着仍未亮起的屏幕。","question":"她试跑受挫之后把交棒方向怎么调整，想躲开哪个麻烦？","paraphrased":true,"answer_points":["改成逆时针接力。","目的是让最后一棒避开强光区域。"],"forbidden_claims":["最终采用顺时针接力。","调整是为了缩短赛道。"],"evidence_chapters":["第12章 逆着亮光"],"evidence_quotes":["唐栩珂在试跑失败后改用逆时针接力，让最后一棒避开强光区。"],"deep":true},
+    {"id":"a1cd-qa-03","work":"race","suite":"qa","qa_type":"answerable_multi","note":"合并入队初始归属与复核后交接，单章不足回答两端。","selection":"台阶边摆着潮纹腕环，灯影落在它的曲面上。","question":"这件装备最早由谁收着，最后换到谁手上？","paraphrased":true,"answer_points":["最早的保管人是岑砺弦。","最终转由郁照汀保管。"],"forbidden_claims":["最终仍归岑砺弦保管。","最早由郁照汀保管。"],"evidence_chapters":["第1章 遮住的起跑线","第18章 接过的不止是重量"],"evidence_quotes":["潮纹腕环在入队登记当天交给岑砺弦，此后由他单独保管。","潮纹腕环在复核后的交接中转由郁照汀保管，由她带离器材间。"],"deep":true},
+    {"id":"a1cd-qa-04","work":"race","suite":"qa","qa_type":"answerable_multi","note":"沙盘最初与最终归属分散在十九章跨度。","question":"那件带折角、能展开的桌面赛道模型起初是谁收存，最终交给谁负责？","paraphrased":true,"answer_points":["折角沙盘起初由唐栩珂收存。","最后交给辛砚白保管维护。"],"forbidden_claims":["最后仍由唐栩珂收存。","辛砚白从一开始就是保管人。"],"evidence_chapters":["第3章 桌面之外","第22章 不替别人落笔"],"evidence_quotes":["折角沙盘由唐栩珂收存，她把箱锁钥匙留在自己的腰包里。","折角沙盘在方案会结束后转交辛砚白，由他负责收存和维护。"],"deep":true},
+    {"id":"a1cd-qa-05","work":"race","suite":"qa","qa_type":"answerable_multi","note":"声音装备的保管链，未把初始状态回写到交接章。","question":"用来接收声音的耳部器件在首次测试后是谁拿着，到最后又由谁保管？","paraphrased":true,"answer_points":["鸣隙耳扣首次测试后由裴知隼保管。","最终交到唐栩珂手里。"],"forbidden_claims":["最终仍归裴知隼。","唐栩珂从首次测试起一直保管。"],"evidence_chapters":["第2章 候补席的声音","第26章 封袋上的名字"],"evidence_quotes":["鸣隙耳扣在首轮测试结束后归裴知隼保管，交接簿上只签了他的名字。","鸣隙耳扣在决赛检查之后交由唐栩珂保管，她在封袋上签字。"],"deep":true},
+    {"id":"a1cd-qa-06","work":"race","suite":"qa","qa_type":"not_in_text","note":"有对手参赛行动，无首次参赛的确切年龄。","question":"嵇遥澈头一回参加这种赛事时究竟几岁？","paraphrased":true,"answer_points":[],"forbidden_claims":["给出任何具体年龄。","根据经验或表现推算首次参赛年龄。"],"evidence_chapters":[]},
+    {"id":"a1cd-qa-07","work":"race","suite":"qa","qa_type":"not_in_text","note":"有裁判履职行动，无职业选择的私人动机。","question":"闻人霁当年为什么决定靠做裁判谋生？","paraphrased":true,"answer_points":[],"forbidden_claims":["把履职时坚持公平当成选择职业的已知动机。","编造家人、收入或个人往事方面的原因。"],"evidence_chapters":[]},
+    {"id":"a1cd-qa-08","work":"race","suite":"qa","qa_type":"conflicting","note":"同一件纪念物的出厂属性被有意写为两种；不是状态变化。","question":"霜脊徽章背后那些斜沟原来究竟有几条？","paraphrased":true,"answer_points":["正文前后不一致。","一处写出厂六道斜槽，另一处写出厂四道。"],"forbidden_claims":["确定只有四道或只有六道而不提示矛盾。","解释成后来重新加工。"],"evidence_chapters":["第7章 人群的窄口","第20章 展台背面"],"evidence_quotes":["霜脊徽章出厂时背面就刻着六道斜槽，后来从未重新加工。","霜脊徽章出厂时背面只有四道斜槽，后来从未重新加工。"],"deep":true},
+    {"id":"a1cd-qa-09","work":"race","suite":"qa","qa_type":"conflicting","note":"原始铸造材质的有意矛盾，禁止用镀层或后来更换化解。","question":"棱砂奖牌最初用什么金属做的，书里能确定吗？","paraphrased":true,"answer_points":["正文前后不一致，无法给出唯一确定材质。","一处说纯银，另一处说黄铜。"],"forbidden_claims":["认定纯银或黄铜是唯一一致答案。","说银色来自镀层。"],"evidence_chapters":["第9章 奖牌不替人回答","第25章 被擦亮的旧物"],"evidence_quotes":["棱砂奖牌铸成时用的是纯银，从来没有镀过其他金属。","棱砂奖牌铸成时用的是黄铜，从来没有镀过其他金属。"],"deep":true},
+    {"id":"a1cd-recap-01","work":"race","suite":"recap","note":"截止十五章，关注暂停现场、既有伤病、未收声音线索和下一章计划。","upto_chapter":15,"draft_opening":"平台边缘新贴上了一张荧绿色纸条。唐栩珂试着向裁判席望过去，又放下了抬起的手。","must_mention":[{"id":"end","kind":"previous_ending","text":"资格赛在两队到达无光平台时被暂停，大家等待裁判复核。","evidence_chapters":["第15章 留在平台上"]},{"id":"state","kind":"character_state","text":"裴知隼右踝受伤，尚不能做高速训练。","evidence_chapters":["第5章 慢下来的那一棒"]},{"id":"thread","kind":"open_thread","text":"侧墙出现的双重踏声仍待解释。","evidence_chapters":["第6章 脚下的长短音"]},{"id":"plan","kind":"plan","text":"下一章要等待复核结论并商量队内分工。","evidence_chapters":[]}],"must_not":[{"kind":"draft_only","text":"平台边缘新添荧绿色纸条。"},{"kind":"resolved_thread","text":"仍将迟到光斑作为原因未知的悬念。"},{"kind":"later_chapter","text":"岑砺弦已经转为战术教练。"}]},
+    {"id":"a1cd-recap-02","work":"race","suite":"recap","note":"终章回顾区分已收共振与仍未解决的北廊线索，不引用新草稿。","upto_chapter":30,"draft_opening":"南侧看台临时搭起了一座橙色充气拱门。唐栩珂把问题写在一张空白纸上，准备等说明开始后再举手。","must_mention":[{"id":"end","kind":"previous_ending","text":"公开赛已经结束，队员在未开放的北廊入口等下一轮测试安排。","evidence_chapters":["第30章 入口之前"]},{"id":"state","kind":"character_state","text":"裴知隼已通过恢复测试，可以高速训练和正式参赛。","evidence_chapters":["第23章 可以跑但不必抢"]},{"id":"thread","kind":"open_thread","text":"北廊无编号白点的成因尚未揭晓。","evidence_chapters":["第28章 没有编号的亮点"]},{"id":"plan","kind":"plan","text":"接下来要公布新一轮测试的报名办法，邀请各队参加。","evidence_chapters":[]}],"must_not":[{"kind":"draft_only","text":"南侧看台新增橙色充气拱门。"},{"kind":"stale_state","text":"裴知隼仍因右踝伤势被禁止高速训练。"},{"kind":"resolved_thread","text":"把侧墙双重踏声当成仍未查清的事。"}]},
+    {"id":"a1cd-fix-01","work":"race","suite":"fix","note":"规则由旁白直陈，草稿违反暂停也不例外的规定。","draft":"唐栩珂在弧顶赛场的正式回合暂停期间摘掉护目镜，按照这里的规则这一做法完全合规。她抬起袖口擦汗。","conflict_sentence":"唐栩珂在弧顶赛场的正式回合暂停期间摘掉护目镜，按照这里的规则这一做法完全合规。","category":"world_rule","evidence_chapters":["第4章 暂停也有效"],"fix_idea":"保留暂停时擦汗的动作，让她保持佩戴护目镜，或明确摘镜属于违规。"},
+    {"id":"a1cd-fix-02","work":"race","suite":"fix","note":"固定登记号码明确冲突，与有意矛盾纪念物无关。","draft":"郁照汀在本届比赛的固定参赛号码是六十二号，她用指尖点了点胸前的号码牌。","conflict_sentence":"郁照汀在本届比赛的固定参赛号码是六十二号，她用指尖点了点胸前的号码牌。","category":"attribute","evidence_chapters":["第14章 能听懂的证据"],"fix_idea":"将号码改回四十七号，保留她指向号码牌的动作。"},
+    {"id":"a1cd-follow-01","work":"race","suite":"follow_up","note":"第一问确定别名所指，追问只靠指代承接。","first_question":"队里被叫作隼子的人本名是什么？","first_answer_points":["本名裴知隼。"],"question":"他把发现的异常声音写在哪里，为什么选那个地方？","paraphrased":true,"answer_points":["写在鞋盒的内侧。","当时队伍还没有统一的记录表。"],"forbidden_claims":["写在统一记录表中。","因为保密而故意藏起记录。"],"evidence_chapters":["第10章 盒子里面的声音"],"evidence_quotes":["裴知隼把异常回声记在鞋盒内侧，因为队伍还没有统一的记录表。"],"deep":true},
+    {"id":"a1cd-follow-02","work":"race","suite":"follow_up","note":"第一问锁定临时代管员，追问问观众调度行动。","first_question":"折跃馆原先的临时代管员叫什么名字？","first_answer_points":["蒋牧澜。"],"question":"这位负责人把迟到观众先安置在哪里，等到什么时候才带他们进场？","paraphrased":true,"answer_points":["先安置在东侧缓冲区。","等一个回合结束再带入座。"],"forbidden_claims":["在正在进行的回合中立即带人入座。","安置在西侧区域。"],"evidence_chapters":["第24章 留出来的通道"],"evidence_quotes":["蒋牧澜将迟到观众安排在东侧缓冲区，等一个回合结束后再带他们入座。"],"deep":true}
+  ]
+}

@@ -1,0 +1,343 @@
+{
+  "tasks": [
+    {
+      "id": "a1bf-follow-01",
+      "work": "l2",
+      "suite": "follow_up",
+      "note": "训练场景先定位教师，第二问只用她回查别名。",
+      "first_question": "尹禾的观测练习由谁来教？",
+      "first_answer_points": [
+        "桑翎。"
+      ],
+      "first_evidence_chapters": [
+        16
+      ],
+      "question": "她在同伴口中还有什么称呼？",
+      "answer_points": [
+        "眠灯。"
+      ],
+      "forbidden_claims": [
+        "石针",
+        "白瓣",
+        "把别名当成另一人"
+      ],
+      "evidence_chapters": [
+        1
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-02",
+      "work": "l2",
+      "suite": "follow_up",
+      "note": "先确认特定工具保管者，再问另一章的信号行动。",
+      "first_question": "节环滴管最初交由谁看管？",
+      "first_answer_points": [
+        "宁绡。"
+      ],
+      "first_evidence_chapters": [
+        5
+      ],
+      "question": "她怎样示意别人暂时停止授粉？",
+      "answer_points": [
+        "发出两次短促灯闪。"
+      ],
+      "forbidden_claims": [
+        "一次长闪",
+        "喊叫或敲击作为约定信号"
+      ],
+      "evidence_chapters": [
+        25
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-03",
+      "work": "l2",
+      "suite": "follow_up",
+      "note": "第一问定位解释分析结果者，追问其容器，必须跨场景。",
+      "first_question": "是谁向众人解释介质分析的结果？",
+      "first_answer_points": [
+        "邵璇。"
+      ],
+      "first_evidence_chapters": [
+        57
+      ],
+      "question": "她把提取胶放在哪种容器里？",
+      "answer_points": [
+        "黑陶小囊。"
+      ],
+      "forbidden_claims": [
+        "节环滴管",
+        "白涡孵匣"
+      ],
+      "evidence_chapters": [
+        69
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-04",
+      "work": "l2",
+      "suite": "follow_up",
+      "note": "主持身份只用于第一问，第二问查询后来的感官状态。",
+      "first_question": "孵化区更换当值人手时，负责带着大家完成交班的是哪一位？",
+      "first_answer_points": [
+        "贝嵘。"
+      ],
+      "first_evidence_chapters": [
+        37
+      ],
+      "question": "他的嗅觉后来恢复得怎么样？",
+      "answer_points": [
+        "完全恢复，能辨认气味。"
+      ],
+      "forbidden_claims": [
+        "仍然没有嗅觉",
+        "只恢复了一部分",
+        "将听觉炎症混为他的状态"
+      ],
+      "evidence_chapters": [
+        63
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-05",
+      "work": "l2",
+      "suite": "follow_up",
+      "note": "教学身份定位之后，以他追问先前获得的物件。",
+      "first_question": "廉舟学习区分短脉冲与噪声时，教他的是谁？",
+      "first_answer_points": [
+        "索迦。"
+      ],
+      "first_evidence_chapters": [
+        68
+      ],
+      "question": "他此前从储备员手中接过了哪件梳具？",
+      "answer_points": [
+        "灰绒滤梳。"
+      ],
+      "forbidden_claims": [
+        "苍蓝孢镜",
+        "节环滴管",
+        "说他没有接手物件"
+      ],
+      "evidence_chapters": [
+        59
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-06",
+      "work": "n",
+      "suite": "follow_up",
+      "note": "先定位提示发出者，追问她在后段候场的位置。",
+      "first_question": "谁给演员发出开场的提示？",
+      "first_answer_points": [
+        "唐绢。"
+      ],
+      "first_evidence_chapters": [
+        1
+      ],
+      "question": "她后来在埠头哪一侧的候场台等人？",
+      "answer_points": [
+        "苇弧埠西侧候场台。"
+      ],
+      "forbidden_claims": [
+        "东侧候场台",
+        "船舱内",
+        "编造其他地点"
+      ],
+      "evidence_chapters": [
+        10
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-07",
+      "work": "n",
+      "suite": "follow_up",
+      "note": "整理服装的动作定位人物，追问其早期保管物。",
+      "first_question": "是谁替演员把袖口整理好？",
+      "first_answer_points": [
+        "潘恪。"
+      ],
+      "first_evidence_chapters": [
+        5
+      ],
+      "question": "他起初看管的那件肩衣叫什么？",
+      "answer_points": [
+        "翠缎肩衣。"
+      ],
+      "forbidden_claims": [
+        "折月响板",
+        "假果实",
+        "把唐绢认作原保管者"
+      ],
+      "evidence_chapters": [
+        3
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-08",
+      "work": "n",
+      "suite": "follow_up",
+      "note": "用终章收谱动作定位人物，再回查早章别名。",
+      "first_question": "演出结束后收好乐谱的人是谁？",
+      "first_answer_points": [
+        "孟稠。"
+      ],
+      "first_evidence_chapters": [
+        12
+      ],
+      "question": "同伴平常还怎么称呼他？",
+      "answer_points": [
+        "慢弦。"
+      ],
+      "forbidden_claims": [
+        "灯尾",
+        "把别名当成独立角色"
+      ],
+      "evidence_chapters": [
+        2
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-09",
+      "work": "n",
+      "suite": "follow_up",
+      "note": "初始角色状态定位人物，追问具体的新登台安排。",
+      "first_question": "开头谁只是替补，还没有正式角色？",
+      "first_answer_points": [
+        "陆荞。"
+      ],
+      "first_evidence_chapters": [
+        1
+      ],
+      "question": "她后来得到的正式角色要完成哪一段表演？",
+      "answer_points": [
+        "负责开场独白。"
+      ],
+      "forbidden_claims": [
+        "仍只能当替补",
+        "负责伴奏",
+        "只负责谢幕"
+      ],
+      "evidence_chapters": [
+        8
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bf-follow-10",
+      "work": "n",
+      "suite": "follow_up",
+      "note": "先问物件保管者，追问其后期发声能力。",
+      "first_question": "折月响板开始由谁保管？",
+      "first_answer_points": [
+        "孟稠。"
+      ],
+      "first_evidence_chapters": [
+        2
+      ],
+      "question": "他的嗓音后来恢复到什么程度？",
+      "answer_points": [
+        "嗓音恢复，能唱完整长句。"
+      ],
+      "forbidden_claims": [
+        "仍然不能唱长句",
+        "永久不能唱歌",
+        "仅能敲拍不能唱"
+      ],
+      "evidence_chapters": [
+        9
+      ],
+      "paraphrased": true
+    }
+  ],
+  "review_notes": [
+    {
+      "id": "a1bf-follow-01",
+      "rationale": "第一问的教师只指桑翎，第二问不含姓名，需承接她再回查1章别名。",
+      "paraphrase": {
+        "source": "别名／观测训练由…负责",
+        "question": "同伴口中称呼／练习由谁教"
+      }
+    },
+    {
+      "id": "a1bf-follow-02",
+      "rationale": "第一问确认宁绡，第二问仅用她，信号内容来自25章。",
+      "paraphrase": {
+        "source": "两次短促的灯闪表示停止",
+        "question": "怎样示意别人暂时停止"
+      }
+    },
+    {
+      "id": "a1bf-follow-03",
+      "rationale": "先从解释分析结果的场景定位邵璇，再查容器；追问不重复人物或物件名。",
+      "paraphrase": {
+        "source": "把提取胶收在",
+        "question": "放在哪种容器里"
+      }
+    },
+    {
+      "id": "a1bf-follow-04",
+      "rationale": "37章主持人为贝嵘，63章嗅觉恢复；第二问离开前问不知主体。",
+      "paraphrase": {
+        "source": "嗅觉完全恢复／辨认气味",
+        "question": "更换当值人手、带着大家完成交班；后来能否辨出气味"
+      }
+    },
+    {
+      "id": "a1bf-follow-05",
+      "rationale": "教学关系定位索迦，转交梳具在59章且只有该件，不用追问中新名替代指代。",
+      "paraphrase": {
+        "source": "祝珉交给／灰绒滤梳",
+        "question": "储备员手中接过／哪件梳具"
+      }
+    },
+    {
+      "id": "a1bf-follow-06",
+      "rationale": "第一问的唐绢通过她承接，第二问只能在10章查候场方向。",
+      "paraphrase": {
+        "source": "西侧候场台等其他人",
+        "question": "埠头哪一侧／等人"
+      }
+    },
+    {
+      "id": "a1bf-follow-07",
+      "rationale": "第一问潘恪为服装保管人，3章有他看管的具名肩衣，10章转交不改变早期事实。",
+      "paraphrase": {
+        "source": "翠缎肩衣由潘恪保管",
+        "question": "起初看管／肩衣叫什么"
+      }
+    },
+    {
+      "id": "a1bf-follow-08",
+      "rationale": "12章动作定位孟稠，2章别人称呼与本人回应共同确立慢弦映射。",
+      "paraphrase": {
+        "source": "慢弦／大家给这位伴奏取的称呼",
+        "question": "同伴平常还怎么称呼"
+      }
+    },
+    {
+      "id": "a1bf-follow-09",
+      "rationale": "1章确认陆荞是替补，8章新角色具体负责独白；追问只用她。",
+      "paraphrase": {
+        "source": "获正式登台角色／负责开场独白",
+        "question": "正式角色要完成哪一段表演"
+      }
+    },
+    {
+      "id": "a1bf-follow-10",
+      "rationale": "物件原保管人定位孟稠，9章恢复发声的确切能力支持答案。",
+      "paraphrase": {
+        "source": "嗓音恢复／能唱完整长句",
+        "question": "恢复到什么程度"
+      }
+    }
+  ]
+}

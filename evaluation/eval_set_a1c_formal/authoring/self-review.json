@@ -1,0 +1,874 @@
+{
+  "set_id": "a1c-formal",
+  "position_convention": "正文去标题，Unicode汉字，一基首字位置；所有位置由最终正文逐条实算。",
+  "tasks": [
+    {
+      "id": "a1cf-f1-qa-01",
+      "rationale": "选句唯一指向聂；沙色、先前失败动作是干扰，需给出最终长杆探底与等待回落两个步骤。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "判断脚下能否承重",
+        "question": "踩上去是否撑得住人"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第4章 沙色会骗人",
+          "text": "聂檀殊先用长杆探到底，再等沙面回落，以此判断脚下能否承重。",
+          "han_position": 2680
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-02",
+      "rationale": "选句指向欧；问题要求空篮先行与试回风，不以原先失败方案为最终答案。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "先送空篮试出对岸回风",
+        "question": "让什么先过峡，确认什么之后才送人"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第14章 空篮先过去",
+          "text": "欧荻衡先送空篮试出对岸回风，再让乘客依次过峡。",
+          "han_position": 2674
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-03",
+      "rationale": "选句锁定罗针，要求保管链两个端点。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "银岫罗针",
+        "question": "这件东西"
+      },
+      "multi_chapter_necessity": "起点仅在2章、终点仅在19章；交接章不回述最初保管人，跨度17章。停笔后全书独立通读确认没有单章意外汇总。",
+      "evidence_quotes": [
+        {
+          "chapter": "第2章 倒着走的沙",
+          "text": "银岫罗针在出发后的清点中交给聂檀殊，从此由她独自保管。",
+          "han_position": 2675
+        },
+        {
+          "chapter": "第19章 针尖指向谁",
+          "text": "银岫罗针在新的行路分工中转由祁曜砂保管，他将它收进内袋。",
+          "han_position": 2665
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-04",
+      "rationale": "一直未打开不等于一直同人保管，两个问题端点分开取证。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "收存和携带",
+        "question": "托给了谁"
+      },
+      "multi_chapter_necessity": "5章提供费的初始保管，24章只给祝的新保管；跨度19章，不凭单章推断历史。",
+      "evidence_quotes": [
+        {
+          "chapter": "第5章 不肯打开的匣子",
+          "text": "缄风匣在路粮分配之后留给费珀宁，由他负责贴身收存。",
+          "han_position": 2727
+        },
+        {
+          "chapter": "第24章 不替别人守着",
+          "text": "缄风匣在抵达前的整装时交给祝嵊禾，由她负责收存和携带。",
+          "han_position": 2705
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-05",
+      "rationale": "区分照明借用与保管责任，最终仍须合并初始记录。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "保管并携行",
+        "question": "携带照看"
+      },
+      "multi_chapter_necessity": "8章与26章相隔18章，各给一个端点，后章没有同时复述容的最初保管。",
+      "evidence_quotes": [
+        {
+          "chapter": "第8章 灯下有空位",
+          "text": "玄砾灯在这次夜营后交由容澹川保管，灯绳系在他的背囊旁。",
+          "han_position": 2608
+        },
+        {
+          "chapter": "第26章 把光带到前面",
+          "text": "玄砾灯在最后一段夜行前交给晏栖翎，之后由她保管并携行。",
+          "han_position": 2737
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-06",
+      "rationale": "欧的渡峡经验为相关干扰，不给首次渡峡年龄或可推算出生时间；全书独立复核缺失性。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "过峡",
+        "question": "头一回穿过峡谷时究竟几岁"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cf-f1-qa-07",
+      "rationale": "陆的宿营贡献不构成当初同行的私人动机；不允许从助人行为反推唯一缘由。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "同行者",
+        "question": "私人缘由才决定跟这支队伍远行"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cf-f1-qa-08",
+      "rationale": "同一石头天然面数七与九，均未切磨，属有意固定属性矛盾而非时间变化。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "天生具有",
+        "question": "生来到底有"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 石头没有嘴",
+          "text": "曜痕石天生具有七个平整的面，自捡到以来从未切磨。",
+          "han_position": 2671
+        },
+        {
+          "chapter": "第21章 石面上的余温",
+          "text": "曜痕石天生具有九个平整的面，自捡到以来从未切磨。",
+          "han_position": 2713
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-qa-09",
+      "rationale": "钟体黑曜石与白瓷互斥，两处均明确未替换，不用更换说法化解。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "钟体",
+        "question": "钟身"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第12章 听见钟而不走",
+          "text": "息砂钟由一整块黑曜石制成，钟体从未被替换。",
+          "han_position": 2701
+        },
+        {
+          "chapter": "第27章 钟声落得很低",
+          "text": "息砂钟由一整块白瓷制成，钟体从未被替换。",
+          "han_position": 2757
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-recap-01",
+      "rationale": "15章末夜宿石台，左腕仍伤，冰片未收；红沙13章已经回收，草稿干花袋未发生。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 没有岸的晚上",
+          "text": "一行人夜里停在峡底石台上，等风势减弱后才能寻找上岸的坡道。",
+          "han_position": 2692
+        },
+        {
+          "chapter": "第3章 一只手的重量",
+          "text": "晏栖翎扭伤左腕后不能双手负重，只能用右手完成轻便动作。",
+          "han_position": 2659
+        },
+        {
+          "chapter": "第6章 罐底的冷",
+          "text": "岩缝里的薄冰整夜没有消融，众人还不知道它为何留在这里。",
+          "han_position": 2798
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-recap-02",
+      "rationale": "已抵外缘但仍等引路者，恢复后的手腕不能写成伤停，月影未解而冰片已解；大伞只属新草稿。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 岛在脚下",
+          "text": "众人已抵悬汀洲外缘，却仍停在石阶下等待岛内的引路者。",
+          "han_position": 2738
+        },
+        {
+          "chapter": "第22章 左手重新握紧",
+          "text": "晏栖翎的左腕已经恢复，可以重新用双手负重拉绳。",
+          "han_position": 2696
+        },
+        {
+          "chapter": "第28章 没有云的影子",
+          "text": "没有云经过时月形暗影仍在地面移动，众人尚不知它从何而来。",
+          "han_position": 2682
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-fix-01",
+      "rationale": "明确旁白说双人同时承重不沉，与只能单人承托且双人必沉的规则相反；同一桥名共享。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第10章 桥上只容一个",
+          "text": "赤弦渡的浮石桥只能同时承托一人，两个人并行便会下沉。",
+          "han_position": 2677
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-fix-02",
+      "rationale": "时间已在抵达后，旁白仍否认任何风字识读能力，与25章已能独立读短句冲突；不是她主观自谦。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第25章 一行字走完",
+          "text": "祝嵊禾已经能够独立读懂短句风字，不必再等别人替她念出。",
+          "han_position": 3081
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-follow-01",
+      "rationale": "第一问以别名确定晏，第二问只用她；里衬与避免雨冲炭痕为显式地点和原因。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "斗篷里衬",
+        "question": "在哪一面"
+      },
+      "first_evidence_chapters": [
+        "第3章 一只手的重量"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第3章 一只手的重量",
+          "text": "晏栖翎的别名是灰雀，同行者都这样叫她",
+          "han_position": 30
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 没有落款的羽",
+          "text": "晏栖翎把岔路画在斗篷里衬，免得雨水冲掉外侧留下的炭痕。",
+          "han_position": 2670
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-follow-02",
+      "rationale": "第一问通过宿营职责确定陆，追问只用他，布包鞋底与不惊散栖群需原文支持。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "减少脚步声",
+        "question": "让脚下安静些"
+      },
+      "first_evidence_chapters": [
+        "第1章 没有人跟上"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第1章 没有人跟上",
+          "text": "陆旻岫负责为众人挑选落脚的营地，大家把露宿安排交给他。",
+          "han_position": 386
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第23章 鞋底留给夜色",
+          "text": "陆旻岫用布包住鞋底再靠近崖鸟，减少脚步声以免惊散栖群。",
+          "han_position": 2765
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-01",
+      "rationale": "选句锁定许；选择原因是排除遮棚阴影，并非藻多或近岸方便。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "选作对照点",
+        "question": "作比较的基准"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第8章 空着的浅水",
+          "text": "许渟禾把北湾浅水区选作对照点，因为那里没有遮棚造成的阴影。",
+          "han_position": 2687
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-02",
+      "rationale": "选句锁定乔；调整到落潮前而非之后，目的为看到完整露出过程。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "夜巡提前",
+        "question": "夜里出发观察的时刻调到"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第13章 落潮之前",
+          "text": "乔闻笙将夜巡提前到落潮前一小时，为了连续看清藻根露出的过程。",
+          "han_position": 2739
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-03",
+      "rationale": "选句指采样盒，问两个保管端点而非一次使用者。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "珊窗采样盒",
+        "question": "这件器材"
+      },
+      "multi_chapter_necessity": "1章仅给黎的初始责任，16章仅给许的新责任，跨度15章；全书复核后确认单章不能合并两端。",
+      "evidence_quotes": [
+        {
+          "chapter": "第1章 潮水没有等人",
+          "text": "珊窗采样盒在首次出航前交给黎沐弢，由他负责清点和保管。",
+          "han_position": 2661
+        },
+        {
+          "chapter": "第16章 不把等待填满",
+          "text": "珊窗采样盒在补测准备中交由许渟禾保管，由她清点各个分格。",
+          "han_position": 2728
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-04",
+      "rationale": "相机送修属于状态变化，不是最终保管归属；需跨章两端。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "负责归箱和领取",
+        "question": "由谁管理"
+      },
+      "multi_chapter_necessity": "4章初始邵、22章最终孟，跨度18章；后章不回述最初分配者，维修情节也不能补齐两端。",
+      "evidence_quotes": [
+        {
+          "chapter": "第4章 沉下去的镜头",
+          "text": "折鳍水下相机在设备分配时交给邵弈棠，此后由他负责收存。",
+          "han_position": 2727
+        },
+        {
+          "chapter": "第22章 镜头交给旁边的人",
+          "text": "折鳍水下相机在影像整理阶段交由孟稚潞保管，她负责归箱和领取。",
+          "han_position": 2730
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-05",
+      "rationale": "最初收存和末航转交相隔较远，定位操作本身不等于保管权。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "末次航行",
+        "question": "末次出船"
+      },
+      "multi_chapter_necessity": "9章给程的起点，27章给何的终点，跨度18章；不得由27章推断谁最先收存。",
+      "evidence_quotes": [
+        {
+          "chapter": "第9章 找不回的圆点",
+          "text": "双扣定位盘在定位工作开始时由程雁衡收存，她亲自装进防水袋。",
+          "han_position": 2703
+        },
+        {
+          "chapter": "第27章 船头留下位置",
+          "text": "双扣定位盘在末次航行前转由何泽珩保管，此后放在他的装备袋中。",
+          "han_position": 2759
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-06",
+      "rationale": "何的船上职责是干扰，不提供私人离岸生活原因；全书核查不以职业行为替代动机。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "船上协调",
+        "question": "选择离岸生活的私人原因"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cf-f2-qa-07",
+      "rationale": "程的带队经验不等于首次主持时年龄；不得由熟练程度推算。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "带队调查",
+        "question": "第一次带头主持海上调查时具体几岁"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cf-f2-qa-08",
+      "rationale": "同一定位牌出厂三角与六角冲突，两处明确边缘未切削，不能作为后改状态解释。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "三角形或六角形",
+        "question": "原来有几个角"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 镜头不再亮",
+          "text": "礁纹定位牌出厂时就是三角形，边缘从未被切削。",
+          "han_position": 2860
+        },
+        {
+          "chapter": "第19章 岸边的形状",
+          "text": "礁纹定位牌出厂时就是六角形，边缘从未被切削。",
+          "han_position": 2707
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-qa-09",
+      "rationale": "模型连体支脚三与四，且底座未改造；有意固定属性矛盾单独保留。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "连体支脚",
+        "question": "一体成形的脚"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第10章 模型之外",
+          "text": "宿礁模型从制成起就有三条连体支脚，底座从未改造。",
+          "han_position": 2738
+        },
+        {
+          "chapter": "第28章 模型还站着",
+          "text": "宿礁模型从制成起就有四条连体支脚，底座从未改造。",
+          "han_position": 2744
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-recap-01",
+      "rationale": "15章只是当天外湾中止，黎仍是临时协作员，旧灯仍未回收；白点14章已解释；新雨靴只在草稿。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 风把船推回去",
+          "text": "当天外湾调查因突风中止，船已回到泊位，众人等下一次可出航的天气。",
+          "han_position": 2731
+        },
+        {
+          "chapter": "第2章 不在名单中",
+          "text": "黎沐弢仍是临时调查协作员，尚未成为站内研究组的正式成员。",
+          "han_position": 2730
+        },
+        {
+          "chapter": "第9章 找不回的圆点",
+          "text": "旧码头的灯会在无人靠近时忽明忽暗，原因还没有查清。",
+          "han_position": 2856
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-recap-02",
+      "rationale": "30章本季总结尚未发布，黎已成为正式成员，幼芽仍未辨种；灯的原因已解，风铃只在草稿。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 把空椅子留下",
+          "text": "本季调查已经结束，众人在洄星站摆好座椅，等居民来听尚未发布的总结。",
+          "han_position": 2730
+        },
+        {
+          "chapter": "第23章 名字落进名单",
+          "text": "黎沐弢获准成为站内研究组的正式成员，不再以临时协作员身份工作。",
+          "han_position": 2694
+        },
+        {
+          "chapter": "第29章 还没有命名的幼芽",
+          "text": "外缘新出现的一片幼芽尚未辨明种类，暂不能据此认定藻床已经恢复。",
+          "han_position": 2758
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-fix-01",
+      "rationale": "惯用左手的固定事实与始终右手且左手不熟练的旁白断言相反，不是临时动作或个人猜想。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 左边的空椅",
+          "text": "孟稚潞惯用左手，写字和使用单手工具一向都靠左手完成。",
+          "han_position": 2722
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-fix-02",
+      "rationale": "20章已正式封闭至调查结束，草稿调查最后一天仍称从未封闭并通行，属于确定事件状态矛盾。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第20章 路终于封上",
+          "text": "雁尾栈道已经正式封闭，调查结束前不再开放通行。",
+          "han_position": 2728
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-follow-01",
+      "rationale": "第一问用别名锁定邵，第二问只有代词；投白墙是为了众人同时指认误读，不是受潮相机产生新图。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "旧照片",
+        "question": "旧影像"
+      },
+      "first_evidence_chapters": [
+        "第2章 不在名单中"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第2章 不在名单中",
+          "text": "邵弈棠的别名是海豆，大家在船上都这样喊他",
+          "han_position": 1071
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 墙上的浪纹",
+          "text": "邵弈棠把旧照片投在白墙上，让围坐的人能同时指出看错的位置。",
+          "han_position": 2801
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-follow-02",
+      "rationale": "先由对照地点职责指向许，追问拒签与补看记录；不能把未带笔当原因。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "拒签汇总表",
+        "question": "不肯签那张汇总表"
+      },
+      "first_evidence_chapters": [
+        "第8章 空着的浅水"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第8章 空着的浅水",
+          "text": "许渟禾负责挑选藻床的对照地点，组员把这项判断交给她。",
+          "han_position": 2791
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第24章 少了一个夜晚",
+          "text": "许渟禾因缺少夜间退水观察而拒签汇总表，补看当夜现场记录后才签字。",
+          "han_position": 2825
+        }
+      ]
+    }
+  ],
+  "works": [
+    {
+      "key": "f1",
+      "characters": [
+        {
+          "name": "祁曜砂",
+          "aliases": [
+            "拾岚"
+          ]
+        },
+        {
+          "name": "晏栖翎",
+          "aliases": [
+            "灰雀"
+          ]
+        },
+        {
+          "name": "容澹川",
+          "aliases": [
+            "阿澹"
+          ]
+        },
+        {
+          "name": "聂檀殊",
+          "aliases": []
+        },
+        {
+          "name": "费珀宁",
+          "aliases": []
+        },
+        {
+          "name": "欧荻衡",
+          "aliases": []
+        },
+        {
+          "name": "祝嵊禾",
+          "aliases": []
+        },
+        {
+          "name": "陆旻岫",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "银岫罗针",
+          "chapter": 19,
+          "quote": "银岫罗针在新的行路分工中转由祁曜砂保管，他将它收进内袋。"
+        },
+        {
+          "object": "缄风匣",
+          "chapter": 24,
+          "quote": "缄风匣在抵达前的整装时交给祝嵊禾，由她负责收存和携带。"
+        },
+        {
+          "object": "玄砾灯",
+          "chapter": 26,
+          "quote": "玄砾灯在最后一段夜行前交给晏栖翎，之后由她保管并携行。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "领路认可",
+          "before_chapter": 1,
+          "after_chapter": 17,
+          "before_quote": "祁曜砂尚未得到同伴的领路认可，只能跟在聂檀殊身后探查。",
+          "after_quote": "同伴正式推举祁曜砂领路，往后的行进方向由他提出再共同确认。"
+        },
+        {
+          "subject": "左腕能力",
+          "before_chapter": 3,
+          "after_chapter": 22,
+          "before_quote": "晏栖翎扭伤左腕后不能双手负重，只能用右手完成轻便动作。",
+          "after_quote": "晏栖翎的左腕已经恢复，可以重新用双手负重拉绳。"
+        },
+        {
+          "subject": "信任关系",
+          "before_chapter": 6,
+          "after_chapter": 20,
+          "before_quote": "容澹川认定聂檀殊私藏了饮水，此时不再信任她的分配。",
+          "after_quote": "容澹川查清饮水漏失后向聂檀殊道歉，重新信任她的分配。"
+        },
+        {
+          "subject": "识字能力",
+          "before_chapter": 9,
+          "after_chapter": 25,
+          "before_quote": "祝嵊禾当时还不能辨认风字，连最短的路标也要请别人念出。",
+          "after_quote": "祝嵊禾已经能够独立读懂短句风字，不必再等别人替她念出。"
+        }
+      ],
+      "threads": [
+        {
+          "title": "逆行红沙",
+          "planted_chapter": 2,
+          "resolved_chapter": 13,
+          "status": "resolved"
+        },
+        {
+          "title": "不融冰片",
+          "planted_chapter": 6,
+          "resolved_chapter": 18,
+          "status": "resolved"
+        },
+        {
+          "title": "空白羽签",
+          "planted_chapter": 11,
+          "status": "open"
+        },
+        {
+          "title": "无云月影",
+          "planted_chapter": 28,
+          "status": "open"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            7,
+            21
+          ],
+          "quotes": [
+            "曜痕石天生具有七个平整的面，自捡到以来从未切磨。",
+            "曜痕石天生具有九个平整的面，自捡到以来从未切磨。"
+          ]
+        },
+        {
+          "chapters": [
+            12,
+            27
+          ],
+          "quotes": [
+            "息砂钟由一整块黑曜石制成，钟体从未被替换。",
+            "息砂钟由一整块白瓷制成，钟体从未被替换。"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "f2",
+      "characters": [
+        {
+          "name": "黎沐弢",
+          "aliases": [
+            "沙鸥"
+          ]
+        },
+        {
+          "name": "许渟禾",
+          "aliases": [
+            "阿渟"
+          ]
+        },
+        {
+          "name": "邵弈棠",
+          "aliases": [
+            "海豆"
+          ]
+        },
+        {
+          "name": "程雁衡",
+          "aliases": []
+        },
+        {
+          "name": "孟稚潞",
+          "aliases": []
+        },
+        {
+          "name": "何泽珩",
+          "aliases": []
+        },
+        {
+          "name": "乔闻笙",
+          "aliases": []
+        },
+        {
+          "name": "杜沛蘅",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "珊窗采样盒",
+          "chapter": 16,
+          "quote": "珊窗采样盒在补测准备中交由许渟禾保管，由她清点各个分格。"
+        },
+        {
+          "object": "折鳍水下相机",
+          "chapter": 22,
+          "quote": "折鳍水下相机在影像整理阶段交由孟稚潞保管，她负责归箱和领取。"
+        },
+        {
+          "object": "双扣定位盘",
+          "chapter": 27,
+          "quote": "双扣定位盘在末次航行前转由何泽珩保管，此后放在他的装备袋中。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "成员身份",
+          "before_chapter": 2,
+          "after_chapter": 23,
+          "before_quote": "黎沐弢仍是临时调查协作员，尚未成为站内研究组的正式成员。",
+          "after_quote": "黎沐弢获准成为站内研究组的正式成员，不再以临时协作员身份工作。"
+        },
+        {
+          "subject": "资料开放",
+          "before_chapter": 3,
+          "after_chapter": 26,
+          "before_quote": "孟稚潞只同意研究组内部查看原始资料，尚未允许参与者自由查阅。",
+          "after_quote": "孟稚潞已取得相关人的同意，开始让参与者查阅完整的原始资料。"
+        },
+        {
+          "subject": "相机故障",
+          "before_chapter": 6,
+          "after_chapter": 18,
+          "before_quote": "折鳍水下相机受潮后无法开机，在修复之前不能继续拍摄。",
+          "after_quote": "折鳍水下相机已经修复并通过检查，可以重新用于拍摄。"
+        },
+        {
+          "subject": "巡查职责",
+          "before_chapter": 12,
+          "after_chapter": 24,
+          "before_quote": "杜沛蘅此时只负责站内伙食，还没有参加固定的夜间巡查。",
+          "after_quote": "杜沛蘅完成同行观察后加入固定夜间巡查，不再只做站内伙食。"
+        }
+      ],
+      "threads": [
+        {
+          "title": "藻片规则白点",
+          "planted_chapter": 3,
+          "resolved_chapter": 14,
+          "status": "resolved"
+        },
+        {
+          "title": "旧灯异常闪烁",
+          "planted_chapter": 9,
+          "resolved_chapter": 17,
+          "status": "resolved"
+        },
+        {
+          "title": "路边碎壳来源",
+          "planted_chapter": 12,
+          "resolved_chapter": 21,
+          "status": "resolved"
+        },
+        {
+          "title": "无拍摄者影像",
+          "planted_chapter": 19,
+          "status": "open"
+        },
+        {
+          "title": "未知幼芽",
+          "planted_chapter": 29,
+          "status": "open"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            6,
+            19
+          ],
+          "quotes": [
+            "礁纹定位牌出厂时就是三角形，边缘从未被切削。",
+            "礁纹定位牌出厂时就是六角形，边缘从未被切削。"
+          ]
+        },
+        {
+          "chapters": [
+            10,
+            28
+          ],
+          "quotes": [
+            "宿礁模型从制成起就有三条连体支脚，底座从未改造。",
+            "宿礁模型从制成起就有四条连体支脚，底座从未改造。"
+          ]
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer_not_author": true,
+    "status": "completed",
+    "unresolved_unintentional_conflicts": 0,
+    "reviewed_chapter_counts": {
+      "f1": 30,
+      "f2": 30
+    },
+    "reviewed_task_count": 30,
+    "records": [
+      "authoring/independent-review-f1.json",
+      "authoring/independent-review-f2.json"
+    ],
+    "findings": [
+      {
+        "work": "f1",
+        "status": "all_resolved",
+        "record": "authoring/independent-review-f1.json",
+        "unresolved": 0
+      },
+      {
+        "work": "f2",
+        "status": "all_resolved",
+        "record": "authoring/independent-review-f2.json",
+        "unresolved": 0
+      }
+    ]
+  }
+}

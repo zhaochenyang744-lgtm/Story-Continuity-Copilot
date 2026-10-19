@@ -1,0 +1,381 @@
+{
+  "chapter_range": [
+    21,
+    40
+  ],
+  "chapters": [
+    {
+      "chapter": 21,
+      "title": "第二十一章 先到的人白走一趟",
+      "han_count": 444,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 22,
+      "title": "第二十二章 箱底剩下半句话",
+      "han_count": 437,
+      "paragraph_count": 3
+    },
+    {
+      "chapter": 23,
+      "title": "第二十三章 多盛的一勺",
+      "han_count": 428,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 24,
+      "title": "第二十四章 雨水留下的记号",
+      "han_count": 447,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 25,
+      "title": "第二十五章 桥口那只空扣",
+      "han_count": 445,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 26,
+      "title": "第二十六章 从入口退回地面",
+      "han_count": 455,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 27,
+      "title": "第二十七章 谁的脚步被落下",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 28,
+      "title": "第二十八章 擦掉的合计",
+      "han_count": 459,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 29,
+      "title": "第二十九章 箱子过窄门",
+      "han_count": 456,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 30,
+      "title": "第三十章 湿鞋踩过两块板",
+      "han_count": 447,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 31,
+      "title": "第三十一章 壶在布上转了半圈",
+      "han_count": 454,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 32,
+      "title": "第三十二章 不肯藏起来的错线",
+      "han_count": 451,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 33,
+      "title": "第三十三章 桌脚陷进软土",
+      "han_count": 459,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 34,
+      "title": "第三十四章 门内空下去一块",
+      "han_count": 478,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 35,
+      "title": "第三十五章 泥往哪边走",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 36,
+      "title": "第三十六章 停步以后还在响",
+      "han_count": 471,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 37,
+      "title": "第三十七章 沾灰的夹口",
+      "han_count": 453,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 38,
+      "title": "第三十八章 两个压下去的位置",
+      "han_count": 462,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 39,
+      "title": "第三十九章 不能倒过来的方向",
+      "han_count": 497,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 40,
+      "title": "第四十章 留下之前先腾地方",
+      "han_count": 475,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [
+    {
+      "name": "鲍新",
+      "aliases": [],
+      "first_chapter": 25,
+      "role": "成年志愿者，既定设定人物"
+    },
+    {
+      "name": "连稷",
+      "aliases": [],
+      "first_chapter": 29,
+      "role": "旧架房看守，既定设定人物"
+    }
+  ],
+  "new_places": [
+    {
+      "name": "南坳架房",
+      "first_chapter": 34,
+      "note": "既定地点，维修间于本章封闭"
+    }
+  ],
+  "new_objects": {
+    "named_exam_objects": [],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "赭釉水壶",
+        "chapter": 31,
+        "from": "杜葵",
+        "to": "童沛",
+        "note": "未回顾第4章最初所属；此章只写本次转交"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "半张领料签",
+        "first_chapter": 22,
+        "status": "只发现半张，不写缺失部分去处"
+      },
+      {
+        "name": "安全扣",
+        "first_chapter": 25,
+        "status": "既定26章停桥事由的动作铺垫"
+      },
+      {
+        "name": "检修桥",
+        "first_chapter": 25
+      },
+      {
+        "name": "南坳架房维修间地板",
+        "first_chapter": 34
+      },
+      {
+        "name": "旧木工夹具",
+        "first_chapter": 37,
+        "status": "37章只发现清理，38章才明确与梯背凹点的对应"
+      },
+      {
+        "name": "缆路供电设备",
+        "first_chapter": 39,
+        "status": "仅陈述既定不可逆规则，不新增技术规则"
+      }
+    ],
+    "ordinary_props": [
+      "空筐",
+      "盖布",
+      "小凳",
+      "临时提示",
+      "旧箱及箱盖箱角",
+      "薄木片",
+      "碎纸与纸屑",
+      "普通材料",
+      "干布",
+      "饭菜与热汤",
+      "碗与勺子",
+      "石阶",
+      "湿叶",
+      "空白纸与记录纸及凭条",
+      "衣袖与衣角",
+      "椅子",
+      "木片及长木片",
+      "扫帚与簸箕",
+      "木箱内未具名小物",
+      "两种临时防滑铺面",
+      "普通木垫片",
+      "篓及篓中未具名硬物",
+      "练习纸",
+      "废木",
+      "橡皮",
+      "临时修理桌",
+      "普通修理小件",
+      "桌脚木垫",
+      "门外阻拦物",
+      "空桶",
+      "泥水与木片临时挡沟",
+      "木边料",
+      "木工夹具旁试验废木",
+      "普通工具",
+      "旧零件与盘子"
+    ],
+    "ordinary_prop_scope": "普通道具及临时行动，未新增具名物件、固定所有权、永久属性或需要后文收回的新线索。"
+  },
+  "new_time_points": {
+    "absolute_dates": [],
+    "fixed_durations": [],
+    "relative_markers": [
+      "21观测顺序重排过程",
+      "22清箱及一次额外搬运",
+      "23分饭至收碗",
+      "24雨后积水检查",
+      "25桥口准备及拦下",
+      "26停桥处理及地面收工",
+      "27通行争执当天",
+      "28核账至讨论结束",
+      "29搬箱第一趟第二趟",
+      "30同次铺面试验的两轮",
+      "31交接后补给出发",
+      "32识图练习结束",
+      "33桌面重新找平及日头偏移",
+      "34塌陷至天暗",
+      "35雨后清扫",
+      "36入夜听响",
+      "37屋外清理",
+      "38对照夹具与旧梯",
+      "39设备检查",
+      "40旧件临时归拢"
+    ],
+    "note": "均为章序推进中的场景时序，无绝对日期、倒叙、跨年或固定时长。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 22,
+      "quote": "那是被裁去半边的领料签，留下的一半贴在箱底，缺失的半边不知在哪里。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 3,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 24,
+      "quote": "江穗绘图时用细小的三角形标出雨天会积水的石阶。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 26,
+      "quote": "鲍新因漏戴安全扣，被暂停了上检修桥的资格。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 29,
+      "quote": "连稷唯一的手足是一个姐姐。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 31,
+      "quote": "随后，杜葵把赭釉水壶交给童沛，明确由童沛接手保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 34,
+      "quote": "为了阻止旁人误入，南坳架房的维修间因地板塌陷而封闭。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 36,
+      "quote": "南坳架房夜里传来细密的轻响，来源一时不明。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 38,
+      "quote": "旧梯背面的两枚凹点，是旧木工夹具留下的定位痕。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 39,
+      "quote": "这套缆路的供电只能从山脚传向山顶，设备结构不允许逆向送电。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "连稷",
+      "chapter": 29,
+      "quote": "连稷唯一的手足是一个姐姐。",
+      "paired_future_chapter": 76,
+      "action": "保留，不新增其他手足或解释差异"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "鲍新25章在桥口被拦，未实际上桥；26章处理后仅在地面整理、扫泥、腾物。",
+    "郁澄本段仅左手记录、指认与协调，未提重物；右腕恢复留到45章。",
+    "34章封闭后没有人进入维修间；36查声只在室外可通行地面，40修理也在屋外桌边。",
+    "37章尚未揭示夹具与凹点关联，38章才明说定位痕来源。",
+    "36章不提前透露铁网墙钉声源，无超自然或人为阴谋暗示。",
+    "31章只写本次赭釉水壶交接，不总结最初持有人。",
+    "本段未复述测距轮目前所有权、岑望会议权限或杜葵厨房身份；32章仍为局部读图练习，未写黎弦通过独立考核。",
+    "后续58章不可回顾7章旁听限制，72章不可回顾14章流动棚位，67章不可回顾2章测距轮初主。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 428,
+    "han_count_max": 497,
+    "all40_titles_unique": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous20_normalized_terminal_newline_sha256": "2723a7f2482992b07bd84a2e86186be5aa6749b7d2e12866a3490e8af634b5fd",
+    "previous20_unchanged": true,
+    "prose_generation": "逐章原创；脚本仅检查字数、编码、原句、前段哈希并整理交接记录",
+    "model_or_product_api_calls": 0
+  }
+}

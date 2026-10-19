@@ -54,7 +54,7 @@ button { font: inherit; color: inherit; }
   min-height: var(--control-h);
   padding: 0 18px;
   border: 2px solid var(--c-rule);
-  border-radius: 0;
+  border-radius: var(--r-sm);
   background: transparent;
   color: var(--c-ink);
   font-size: var(--fs-15);
@@ -104,31 +104,33 @@ button { font: inherit; color: inherit; }
 .link.blue { color: var(--c-blue-text); border-bottom-width: 2px; font-weight: 700; }
 .arrow, .chevron { flex: none; }
 
-/* ── Form controls ──────────────────────────────────── */
+/* ── Form controls ────────────────────────────────────
+   A field is a soft fill a step darker than the page, with no rule. Hovering shows a hairline; focus turns
+   the fill to the surface colour with a thin blue edge and a faint blue halo. The state rules sit in :where()
+   so a field that styles itself (the draft's title and body, the focus-mode title) still wins over them. */
 input,
 select,
 textarea {
   width: 100%;
   min-height: var(--control-h);
   padding: 9px 12px;
-  border: 2px solid var(--c-rule);
-  border-radius: 0;
-  background: var(--c-surface);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: var(--c-sunken);
   color: var(--c-ink);
   font: inherit;
   font-size: var(--fs-15);
   line-height: var(--lh-ui);
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 textarea { min-height: 88px; resize: vertical; }
 input::placeholder,
-textarea::placeholder { color: var(--c-faint); }
-input:focus,
-select:focus,
-textarea:focus { border-color: var(--c-blue); outline: none; box-shadow: 0 0 0 2px var(--c-blue-mid); }
-input:disabled,
-select:disabled,
-textarea:disabled { border-color: var(--c-line); background: var(--c-sunken); color: var(--c-muted); cursor: not-allowed; }
-input[aria-invalid="true"] { border-color: var(--c-red); }
+textarea::placeholder { color: var(--c-muted); opacity: 1; }
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):hover:not(:disabled):not(:focus) { border-color: var(--c-line); }
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus { border-color: var(--c-blue); outline: none; background-color: var(--c-surface); box-shadow: 0 0 0 3px var(--c-blue-tint); }
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):disabled { border-color: var(--c-line); background-color: transparent; color: var(--c-muted); cursor: not-allowed; }
+:where(input, select, textarea)[aria-invalid="true"] { border-color: var(--c-red); }
+:where(input, select, textarea)[aria-invalid="true"]:focus { border-color: var(--c-red); box-shadow: 0 0 0 3px var(--c-red-tint); }
 select {
   appearance: none;
   padding-right: 34px;
@@ -138,7 +140,7 @@ select {
   background-repeat: no-repeat;
 }
 input[type="checkbox"],
-input[type="radio"] { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; accent-color: var(--c-blue); box-shadow: none; }
+input[type="radio"] { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; border: 0; background: none; accent-color: var(--c-blue); box-shadow: none; }
 input[type="file"] { padding: 8px; }
 input[type="number"] { font-family: var(--font-mono); }
 

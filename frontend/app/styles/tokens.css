@@ -2,7 +2,8 @@
    other stylesheet uses these names. Swiss typographic layout: off-white paper, black ink, one
    electric blue for actions, the draft and what comes next. Red and yellow are reserved for
    findings (confirmed / possible conflict); dashed outlines mean "not certain yet". Corners are
-   square. Day is the default; <html data-theme="night"> switches palettes. */
+   graded by size (--r-xs … --r-lg); rules, tables and the page's structure stay straight.
+   Day is the default; <html data-theme="night"> switches palettes. */
 :root {
   color-scheme: light;
   --writing-focus-width: 3px;
@@ -47,6 +48,8 @@
   --c-yellow: #ffc400;        /* possible conflict (fill, black text) */
   --c-yellow-tint: #ffe89a;
   --c-on-finding: #111111;
+  --c-ins: #dfe9d6;           /* added words in a before/after: a pale green wash, ink on top */
+  --c-ins-text: #2f5a12;
 
   --c-veil: rgba(17, 17, 17, .48);
 
@@ -118,11 +121,13 @@
   --s-18: 72px;
   --s-24: 96px;
 
-  /* Shape: square by design. */
-  --r-xs: 0;
-  --r-sm: 0;
-  --r-md: 0;
-  --r-lg: 0;
+  /* Shape: objects get corners by size; rules, dividers, tables and the page structure stay straight.
+     xs tags, badges and citation marks · sm buttons, fields, segmented controls and tips ·
+     md the assistant box, menus, cards that float, the author's question · lg large cards, dialogs, the drawer. */
+  --r-xs: 3px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
   --r-xl: 0;
   --r-pill: 999px;
   --control-h: 44px;
@@ -134,9 +139,9 @@
   --form-max: 800px;
   --prose-max: 680px;
   --elev-1: none;
-  --elev-2: 8px 8px 0 rgba(17, 17, 17, .14);
-  /* Floating layers (menus, messages): a soft lift instead of a frame. */
+  /* Floating layers (menus, messages, dialogs, cards): a soft lift instead of a frame. One shadow for all of them. */
   --elev-pop: 0 14px 36px rgba(17, 17, 17, .12), 0 2px 6px rgba(17, 17, 17, .08);
+  --elev-2: var(--elev-pop);
 
   /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
      slow for drawing charts and the after-glow of a change. */
@@ -183,9 +188,10 @@
   --c-red-text: #ff8a6e;
   --c-yellow: #ffc400;
   --c-yellow-tint: #403310;
+  --c-ins: #22331a;
+  --c-ins-text: #b5dc96;
   --c-amber: #ffd45c;
   --c-veil: rgba(0, 0, 0, .62);
-  --elev-2: 8px 8px 0 rgba(0, 0, 0, .5);
   --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
 }
 

@@ -1,0 +1,1228 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf5-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "GPT-6",
+    "date": "2026-10-18",
+    "notes": "逐章原创；仅使用离线字数、引文、重复与结构核对。"
+  },
+  "works": [
+    {
+      "key": "taijie_rain",
+      "title": "苔阶量雨簿",
+      "file": "works/taijie_rain.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "rongji_stage",
+      "title": "绒棘戏箱",
+      "file": "works/rongji_stage.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "xiuzi_school",
+      "title": "岫瓷夜校",
+      "file": "works/xiuzi_school.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "huli_mail",
+      "title": "琥砾邮圃",
+      "file": "works/huli_mail.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf5-t01",
+      "work": "taijie_rain",
+      "chapter": "第三章 该写谁的名字",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-a-c03-p1",
+          "kind": "state_change",
+          "quotes": [
+            "她从腰间的布包里抽出菱孔铜签，横放到桌面的软垫上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 绳头过沟",
+              "quote": "回程时祝弥要绕道送信，段砚澄把菱孔铜签交给了祝弥，托她顺路带去岭下修补收存盒。"
+            }
+          ],
+          "explanation": "铜签已在前章交到祝弥手中，此章由她取出合理。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t02",
+      "work": "taijie_rain",
+      "chapter": "第四章 不会站直的筒",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-a-c04-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "那只筒是铜制的，外壁如今又多了一枚她用细绳系上的纸标，上面只画了一个圆，表示脚座已经试稳，别再随意换垫。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 绳头过沟",
+              "quote": "棚里有一只雀齿雨筒，内外各有一圈刻度，夏秋交接时要换着读。"
+            }
+          ],
+          "explanation": "铜质与系纸标是兼容的新细节，不否定内外双圈刻度；纸标系上过程也在当前句明确。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t03",
+      "work": "taijie_rain",
+      "chapter": "第五章 手背上的光",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-a-c05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "冉绥禾进鹿箧所第一天便已熟练译出菱孔铜签的全部旧码，逐格换成了雨量。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 屋檐低处",
+              "quote": "进所第一天，少女始终认不出菱孔铜签上的旧刻码。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "依据相邻句明确少女为冉绥禾；同为进所第一天，不能认码与已能译出互斥，后来仅学盒扣修理，不涉及旧码。"
+        },
+        {
+          "id": "lf5-a-c05-i2",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "段砚澄用右手中指按住回纹铂尺的端头，左手缓缓拖过墨线，给冉绥禾看尺边留下的细痕。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 屋檐低处",
+              "quote": "段砚澄的右手中指在幼年事故中已经齐根缺失，手掌收拢时留下一个窄窄的空当。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "右手中指自幼缺失，无法以这根手指压尺；无修复或替代装置。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t04",
+      "work": "taijie_rain",
+      "chapter": "第六章 让空筐说话",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-a-c06-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "试筒当夜那份分季读数，是冉绥禾独自照着雀齿雨筒内环译定的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 绳头过沟",
+              "quote": "试筒当夜，冉绥禾始终看不懂雀齿雨筒内圈的季节刻度。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一试筒当夜尚不能辨读内圈，却被写成独自译定分季读数；后来安装脚座的知识是另一件事。"
+        },
+        {
+          "id": "lf5-a-c06-i2",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "苔历六月初五申时，祝弥正坐在鹿箧所内誊抄沟图，一个时辰都没有踏出所门。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 不会站直的筒",
+              "quote": "在苔历六月初五申时，祝弥一直留在栗砧岭西坡测沟，直到酉初才收尺离开。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "苔历六月初五申时"
+          },
+          "explanation": "同一明确时辰内，祝弥全时段在西坡测沟，与全时段在所内互斥，类别明确为地点行为。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t05",
+      "work": "taijie_rain",
+      "chapter": "第七章 雨从背后追来",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-a-c07-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "冉绥禾跟大家修西坡路时，阶标先埋牢在岸边，随后才把扶桥绳拴稳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 绳头过沟",
+              "quote": "西坡阶标立起之前，沟上的扶桥绳已经全部结牢。段砚澄等祝弥用力扯过绳结，才让冉绥禾把刻了横线的木标埋到岸边。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "已确立先完成扶桥绳再立阶标，此处顺序相反。"
+        },
+        {
+          "id": "lf5-a-c07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "凭第三日那次托带安排，拍泥木夹当晚已经由祝弥收妥。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 该写谁的名字",
+              "quote": "他将拍泥木夹包进油纸，放在窗台，托顺路下岭的人带给祝弥。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "托带安排只说明拟转交，不能据此确立第三日晚祝弥已经收妥，缺实际交接。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-a-c07-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "那位背筐人依旧以为西坡已经封路，今后挑菜都得绕行。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 该写谁的名字",
+              "quote": "那只是听岔了的传言，过沟的路并没有封。"
+            }
+          ],
+          "explanation": "此句归属于背筐人的误信，叙述未确认封路；此前已说明为传言。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t06",
+      "work": "taijie_rain",
+      "chapter": "第八章 留在纸边的地方",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-a-c08-i1",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "段砚澄把棱灰册上一行原始雨量用橡皮擦净，重新写进了另一个数。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 屋檐低处",
+              "quote": "靠墙的棱灰册很厚，纸边不齐，是几代记雨人陆续订起来的。段砚澄在一页旁添了个小字，没有碰原来的数字。鹿箧所的原始雨量记录一律不得擦除，任何人都只能在旁边追加更正。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "永久记录规程禁止抹除原数，仅可旁注；擦净原始数据违反规则。"
+        },
+        {
+          "id": "lf5-a-c08-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "第四日布置西坡土样时，申筠岑已经测得该样的渗水系数为零点六。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 不会站直的筒",
+              "quote": "申筠岑把西坡那份土抹成缓斜面，盘下垫着一只接水碗。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅布置土样和器具，未有实测过程、计算或读数，不能确定系数。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t07",
+      "work": "taijie_rain",
+      "chapter": "第九章 弯钩转向哪里",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-a-c09-i1",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "凭纸角那道弯钩，窄纸上的引水槽图已能确认为《枫隙手札》的原图摘抄。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 手背上的光",
+              "quote": "棚里的桌上压着一张无署名的窄纸条。纸条写了几种引水槽的截面，下边有一道不太像字的弯钩。"
+            },
+            {
+              "chapter": "第五章 手背上的光",
+              "quote": "他那本《枫隙手札》封皮松了，出门总用麻线绕一圈，今天拆书找空袋时顺手留了一截。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "匿名槽图的弯钩不能证明出自特定手札，未建立摘抄来源链。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t08",
+      "work": "taijie_rain",
+      "chapter": "第十章 路牌朝着来人",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-a-c10-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "冉绥禾掌心的红痕经过这几日歇养已经退淡，握住细木楔时也不再有涩痛。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第七章 雨从背后追来",
+              "quote": "冉绥禾的右手掌磨得发红，握勺时有一点涩痛。她用清水洗净，先晾了一阵，再薄薄敷上常用的护手膏，没把皮肤包得太紧。"
+            }
+          ],
+          "explanation": "轻微磨红经清洗护养及数日歇养退淡，合理时间变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t09",
+      "work": "rongji_stage",
+      "chapter": "第三章 谁来替鸟走路",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-b-c03-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "掌箱人闭上眼，用铃瓣骨哨吹完了一段短调，手指依次沿孔边的凹点移动。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱脚落在河声里",
+              "quote": "在筠历八月十二午时这一整个时辰，掌箱人始终不会凭触摸吹奏铃瓣骨哨。"
+            }
+          ],
+          "explanation": "第1章称呼明确指唯一掌箱人芩昼汀；当前紧邻句明确眼前掌箱人是来访的郁弦珀，另一个人会吹奏不冲突。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t10",
+      "work": "rongji_stage",
+      "chapter": "第四章 名字留在空格旁",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-b-c04-i1",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "邵苇弦的亲生女儿芩昼汀负责掌箱，并不负责替所有人决定演出该是什么样。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱脚落在河声里",
+              "quote": "邵苇弦是芩昼汀的姨母，两人的亲缘并不替代台上的分工。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文亲缘为姨母和外甥女，当前叙述却认作亲生母女。"
+        },
+        {
+          "id": "lf5-b-c04-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "绒棘戏箱的旧黄铜隔板原样保留着，一直平放在箱底。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆掉一格旧规矩",
+              "quote": "绒棘戏箱原有的黄铜隔板在那里被熔成铜液，随后浇进做配重块的砂模。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "那块旧隔板已熔毁，不能还以原样完整板件存在箱底；后文未设复原。"
+        },
+        {
+          "id": "lf5-b-c04-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "邵苇弦前日的修箱嘱托已经包含许可，芩昼汀有权把绒棘戏箱借给来访戏班。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆掉一格旧规矩",
+              "quote": "绒棘戏箱的主人邵苇弦请芩昼汀更换箱内的衬布，修平裂开的箱脚。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "仅有修理委托，被追认为外借决定权，缺少外借授权；没有实际借出，也未补授此权。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t11",
+      "work": "rongji_stage",
+      "chapter": "第五章 幕布走过半扇窗",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-b-c05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "芩昼汀在筠历八月十二午时便能蒙眼吹响铃瓣骨哨，并且准确走完那段迎场调。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱脚落在河声里",
+              "quote": "在筠历八月十二午时这一整个时辰，掌箱人始终不会凭触摸吹奏铃瓣骨哨。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "筠历八月十二午时"
+          },
+          "explanation": "前文唯一掌箱人明确指芩昼汀，在共同固定时刻不会凭触摸吹奏，当前却称该时刻已具备蒙眼演奏能力；第3章新学的是收存法，不是吹奏。"
+        },
+        {
+          "id": "lf5-b-c05-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "面向河埠来客的幕景滑轮公开测试启动后，芩昼汀始终站在舞台正中，双手按着鸟偶的肩背。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆掉一格旧规矩",
+              "quote": "清理凳子时，芩昼汀在墙边找到了幕景滑轮的检修牌。邵苇弦让她读完，再把它挂到一伸手就能碰到的位置。后台的规程规定，每次公开进行幕景滑轮测试，都必须先清空舞台，台上不得留人。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "公开幕景滑轮测试必须清台，当前公开测试启动后却仍有人站在台中；观众摸偶例外与此无关。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t12",
+      "work": "rongji_stage",
+      "chapter": "第六章 摸到一片不肯飞的翅",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-b-c06-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "芩昼汀在抵达次日晚间的折蓣埠露天预演中拿过优胜，这份经历使她写起短介绍来略有底气。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆掉一格旧规矩",
+              "quote": "折蓣埠的这场露天预演就此取消，当晚没有举行演出。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "抵达次日晚间原定露天预演已经取消且未演出，不能在该场获得优胜；当前触摸试演是另一次活动。"
+        },
+        {
+          "id": "lf5-b-c06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "芩昼汀第三天用可洗幕景染料所做的那次试洗，已经足以认定布料反复洗揉也不会掉色。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 谁来替鸟走路",
+              "quote": "芩昼汀把一片试色布浸入清水，轻轻揉过，随后和另一片并排夹在窗绳上，准备晾干再比。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只启动了入水轻揉与晾晒比较，未确立反复洗揉后的耐色结果，当前从当次试洗追认最终耐洗结论。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-b-c06-p1",
+          "kind": "rule_exception",
+          "quotes": [
+            "在邵苇弦陪同的触摸试演里，几个孩子依次把手伸进鸟偶翅下，摸清了那道软缝。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆掉一格旧规矩",
+              "quote": "平常收存的戏偶不让观众自行拿取，但由台上人员陪同的触摸试演允许观众摸偶。"
+            }
+          ],
+          "explanation": "原规则明确允许台上人员陪同的触摸试演摸偶，当前邵苇弦陪同，属于该项例外；不是滑轮测试的例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t13",
+      "work": "rongji_stage",
+      "chapter": "第七章 谁把那张凳子留下",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-b-c07-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "芩昼汀那只左眼带着天生的湛蓝虹膜，此时映上了半扇低窗的光。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱脚落在河声里",
+              "quote": "芩昼汀左眼的虹膜生来就是琥珀色，光从河面反上来时，瞳孔外的一圈颜色显得很浅。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一人物左眼的先天虹膜颜色，前文为琥珀色，当前改成天生湛蓝；并非光线造成的一时映色。"
+        },
+        {
+          "id": "lf5-b-c07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "芩昼汀亲眼看过第三天清早邵苇弦独自把旧幕搬进后台，连她垫在幕杆下的低凳也记得清楚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 谁来替鸟走路",
+              "quote": "谭稚阑说，邵苇弦早上独自把那卷旧幕从前台搬过后台窄门，途中用了低凳垫住幕杆。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧幕独搬的经历只由谭稚阑转述给芩昼汀，未建立芩本人亲见；后来二人试抬的是另一卷短布。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-b-c07-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "郁弦珀回述幼时的笃信，说木偶入夜会跑到河边饮水，没备水碗便会渴坏嗓子。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 谁来替鸟走路",
+              "quote": "那只是她幼时把戏当真的误会，邵苇弦听过便拿来提醒大家，演出中的邀约要说清楚，不能让孩子以为不照做就会惹怒一件木头。"
+            }
+          ],
+          "explanation": "当前明确归属于郁弦珀回述的幼时错误信念；叙述没有认定木偶真的饮水。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t14",
+      "work": "rongji_stage",
+      "chapter": "第八章 河声也坐了一张凳",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-b-c08-p1",
+          "kind": "state_change",
+          "quotes": [
+            "谭稚阑用谱夹绳上的霜纹幕扣提示换段，左手拨过凸纹，右手才落下下一声短音。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 谁来替鸟走路",
+              "quote": "邵苇弦同意改作乐手的提示物，芩昼汀于是把霜纹幕扣交到谭稚阑手里，让她带回乐凳旁使用。"
+            }
+          ],
+          "explanation": "幕扣已在第3章经主人同意实际转交给谭稚阑，且系到谱夹绳上；她继续使用是已叙述转移的结果。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t15",
+      "work": "xiuzi_school",
+      "chapter": "第三章 门帘与小壶",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-c-c03-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "今夜来了个新客人，敖杼在村子另一头开陶器铺，听说夜校试做带把的器物，便同妹妹一起拎着两团旧麻绳来坐一坐。掌柜和妹妹是亲兄妹，妹妹替他看着铺子的另一扇柜台，收铺后才有工夫一起来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 长凳的空位",
+              "quote": "掌柜和罗苒珂是表姐弟，两人从小便习惯在做事时互相拆台。"
+            }
+          ],
+          "explanation": "第一章掌柜明确为伏榛汐，当前两句先具名敖杼，掌柜指另一位店主，其亲妹妹也不是罗苒珂，同称呼不同人。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t16",
+      "work": "xiuzi_school",
+      "chapter": "第四章 叶纹上桌",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-c-c04-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "乌穗量杯的校准早于夜校长凳的竣工，缪槐序把两项开课筹备都列进了支出。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 长凳的空位",
+              "quote": "夜校的长凳在梨晷节第三日下午全部做成，乌穗量杯的刻度则到梨晷节第四日傍晚才校准。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "先长凳完成后校准量杯，问题把两个独立筹备事件先后颠倒。"
+        },
+        {
+          "id": "lf5-c-c04-i2",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "伏榛汐是罗苒珂的亲姐姐，她伸手替他解开挂住案角的围裙结，免得他转身带翻水盆。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 长凳的空位",
+              "quote": "掌柜和罗苒珂是表姐弟，两人从小便习惯在做事时互相拆台。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第一章掌柜明确指相邻句的伏榛汐，表姐弟与亲姐弟不相容，问题直接点出双方姓名。"
+        },
+        {
+          "id": "lf5-c-c04-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "罗苒珂捡来的叶纹残片，正是夜校失散的双耳壶旧样掉下的一角。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "那只旧样在豆仓整理杂物时失散了，原先被放在一堆待挪的竹筐旁。"
+            },
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "罗苒珂从衣袋里取出一片叶纹残瓷，是他白天扫仓外的土沟时拾到的，片上留有半枚展开的叶纹，边缘磨得发白。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧样失散和拾得普通叶纹残片尚不能确认两物同一；没有拼合、唯一标记核对或目击断裂，第四章直接确认为旧样一角。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-c-c04-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "乌穗量杯也被拿来试位置。它的耳把外侧刻着一圈细细的水草纹，伏榛汐用拇指沿纹路抹去干泥，杯口仍好好地朝上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 泥印归泥",
+              "quote": "乌穗量杯放在水盆旁，杯身下部圆鼓，口沿向外微张，侧面有一只可供两指扣住的耳把。"
+            }
+          ],
+          "explanation": "原文描述杯身、口沿和耳把形制，新添耳把装饰不改变也不否定这些属性。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t17",
+      "work": "xiuzi_school",
+      "chapter": "第五章 勺柄与指印",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-c-c05-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "罗苒珂在夜校初办那场开窑抽签中抽中一等奖，奖品是三把小木勺。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 长凳的空位",
+              "quote": "罗苒珂原想参加的夜校开窑抽签已经取消，那一回没有抽出任何签，也没有产生得主。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一初办抽签已取消且没有得主，后文却断言罗苒珂参加并获奖，属于事件是否发生及结果的矛盾。"
+        },
+        {
+          "id": "lf5-c-c05-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "伏榛汐从盒底取出那枚原来的榫叶泥印，完好的硬泥印面贴着掌心，一道叶脉也没缺。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 泥印归泥",
+              "quote": "她索性把榫叶泥印捣碎揉入湿泥，原有的印面和轮廓都已毁掉，无法复原。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原泥印已被捣碎混入湿泥，不能仍以原物完好印面被取出；没有重制同名替代物。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-c-c05-p1",
+          "kind": "state_change",
+          "quotes": [
+            "罗苒珂把竹背椅拖到桌侧，坐稳后向后靠了靠，椅脚贴着砖地，没有再朝一边歪。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "罗苒珂提早来修竹背椅，先把那只用来挡人的篮子放到地上。他将松腿卸下，刮净榫口里软掉的木屑，削好新楔，重新将椅腿嵌紧。"
+            },
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "罗苒珂用力晃过四边，又亲自坐下，椅子稳稳落在地上，伏榛汐这才收走空篮，让它继续去装真正的东西。"
+            }
+          ],
+          "explanation": "第二章椅腿松脱，第三章已有明确修复和试坐过程，当前稳定坐靠是已解释的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t18",
+      "work": "xiuzi_school",
+      "chapter": "第六章 窑门外的圈",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-c-c06-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "梨晷节次日的戌时，缪槐序守在夜校窑院里，整整一个时辰都在盯着试窑的火口。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 泥印归泥",
+              "quote": "在梨晷节第二日戌时，缪槐序始终待在榉瓢村东头的食摊内，替摊主把整本菜单重写了一遍。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "梨晷节次日戌时与第二日戌时是同一明确时段，两处都写全时段，村东食摊室内与夜校窑院中的行为地点冲突。本题不占指定回归。"
+        },
+        {
+          "id": "lf5-c-c06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "第三回课上门边增添的暖意，全是罗苒珂挂的芦苇帘单独带来的，屋内灯火和聚集的人都没有起作用。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "罗苒珂从后屋拿出卷好的旧芦苇帘，爬上矮凳挂到门梁，帘脚离地留了几寸，方便人看清门槛。芦苇帘挂上以后，门边候课的几个人觉得比先前暖和，便把外衣领口松开了一点。"
+            },
+            {
+              "chapter": "第三章 门帘与小壶",
+              "quote": "屋里几盏灯已经陆续点齐，泥桌旁也越坐越满，伏榛汐端着水盆绕过人群时，不得不一遍遍请大家收脚。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同期挂帘、增灯与人群聚集，只确立前后感受；没有隔离其他因素的因果验证，后文独归帘子并排除其他因素。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t19",
+      "work": "xiuzi_school",
+      "chapter": "第七章 点火以后",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-c-c07-i1",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "第四回课上架的那块芦屑试片，从次日清晨直至今天，天天都保持着干燥的状态。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 叶纹上桌",
+              "quote": "罗苒珂切出一块芦屑试片，表面还泛着水光，便托在木片上，送到窗侧板架的第二层。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只给放置当天湿态及位置，没有次日起连续各日的状态跟踪；问题断言每一天干燥。断言不包含放置当日，避免与当天湿态形成直接冲突。"
+        },
+        {
+          "id": "lf5-c-c07-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "窑室前端的细柴已经着火，缪槐序仍整个人蹲在窑室里面，扶正靠门的一个垫圈才从门洞退出来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 泥印归泥",
+              "quote": "夜校借用的窑虽小，门洞也容得人弯腰进去装坯，缪槐序便把装窑和烧窑的时段分开写在册里。夜校烧窑时，从点火直到火尽，所有人一律要留在窑室外，任何情形都不得让人待在燃烧的窑室内。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何情形都不得让人待在燃烧的窑室内"
+          },
+          "explanation": "规则从点火到火尽无条件禁止人员在窑室内。细柴已在窑室前端燃烧，缪槐序全身仍在内部，随后退出也不消除这段违规。问题只持续点火初起的短时段，不要求人在成熟高温窑内存活。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t20",
+      "work": "xiuzi_school",
+      "chapter": "第八章 手掌大的地方",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-c-c08-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "罗苒珂到高窗边找一片垫板，摸到那块拳形泥块，表面的水亮已褪尽，指窝干得发白，边沿落下一点细土粉。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 勺柄与指印",
+              "quote": "罗苒珂吃完回来，把切剩的余泥拢在一起，捏成一块带指窝的拳形泥块。他往泥块上浇了一勺水，表面湿得发亮，托在一片废木板上，搁到门侧高窗边的通风处，想留住今天这种握法。"
+            },
+            {
+              "chapter": "第六章 窑门外的圈",
+              "quote": "停了六天课，豆仓门前的草又长高了一截。"
+            }
+          ],
+          "explanation": "独立余泥块在通风处放置，经过六天停课、次日烧窑和两日冷却等时间，水分渐干自然，不涉及芦屑试片逐日状态的断言。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t21",
+      "work": "huli_mail",
+      "chapter": "第三章 风里练习的一封信",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-d-c03-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "羽脊温匣的提柄内侧压着一道细小的三叶纹，指腹沿凹线走过去，能分清哪面朝向开盖的一边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 筛盘里的半片影子",
+              "quote": "羽脊温匣是只浅黄色的长匣，外壁裹着可拆的软木护层，里面分成几个能放育苗杯的小格。"
+            }
+          ],
+          "explanation": "提柄内侧的压纹与外壳颜色、软木护层和内部格局兼容，是补充的新细节。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t22",
+      "work": "huli_mail",
+      "chapter": "第四章 园里的一小片阴地",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-d-c04-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "风带来水汽时，嵇墨穗闻出了新翻湿土那股清苦的气味。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 筛盘里的半片影子",
+              "quote": "嵇墨穗先天没有嗅觉，这种状况终身不会改变。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "永久先天无嗅觉与直接嗅出土味冲突。"
+        },
+        {
+          "id": "lf5-d-c04-i2",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "褚荞珩与嵇墨穗同父同母，是一对亲兄妹。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 筛盘里的半片影子",
+              "quote": "褚荞珩是嵇墨穗的表哥，两人的母亲是姐妹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "表亲关系与同父同母的亲兄妹关系冲突。"
+        },
+        {
+          "id": "lf5-d-c04-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "那包浅褐色颗粒由砾杏实验室配制，昨天经沿线收货人转送到了赭砑站。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 风里练习的一封信",
+              "quote": "对方送来修补用的垫片，又留下一包浅褐色的颗粒，说是沿路换来的营养料，或许能给园里的育苗试用。包纸上只有一串批号和一片印歪的叶形标志。"
+            },
+            {
+              "chapter": "第三章 风里练习的一封信",
+              "quote": "收货人走后，褚荞珩说起路上有人提过砾杏实验室，那里也做育苗材料。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有未注明来源的颗粒包与关于实验室的一般转述，未建立这包颗粒属于该实验室的出处链，后文却追溯性确定归源。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t23",
+      "work": "huli_mail",
+      "chapter": "第五章 灯下重新折好的边",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-d-c05-i1",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "羽脊温匣原来的内层玻璃隔板完好地隔在两排育苗杯之间。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆棚以后的路线",
+              "quote": "羽脊温匣的那块内层玻璃隔板当场碎裂，碎片清理后全部丢进废玻璃回收桶。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原隔板已碎裂废弃，未修复或更换，不能仍完好地留在匣内。"
+        },
+        {
+          "id": "lf5-d-c05-i2",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "嵇墨穗是在旧遮阴棚拆掉前两天递交种子交换提议的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆棚以后的路线",
+              "quote": "嵇墨穗的种子交换提议是在遮阴棚拆除之后才递交的，中间隔着两个工作日。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "递交在拆棚之后的既定次序被写成拆棚之前。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-d-c05-p1",
+          "kind": "state_change",
+          "quotes": [
+            "蔺螺舟把砂脉轮车拉到门外，握住裹着蓝节衬带的推柄，沿墙边走了一小段。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 风里练习的一封信",
+              "quote": "她把蓝节衬带送给蔺螺舟，叫他留着给轮车推柄做包衬。蔺螺舟先用手量好长度，把余下的一段折进内层，再慢慢扎紧。"
+            }
+          ],
+          "explanation": "第三章已有赠送与缠绕过程，原属嵇墨穗的蓝节衬带现在由蔺螺舟握着使用有完整状态变化依据。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t24",
+      "work": "huli_mail",
+      "chapter": "第六章 先把脚下的路走清",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-d-c06-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "嵇墨穗在风铎历九月初六的辰时一直守着缬砂园的露天苗架，替初来的苗遮挡风沙。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 筛盘里的半片影子",
+              "quote": "风铎历九月初六辰时，嵇墨穗一直留在赭砑站内制作标签，整整一个时辰都没有出门。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一个明确辰时，她在站内整段未出门与一直在园外露天苗架行动冲突；此题不指定回归。"
+        },
+        {
+          "id": "lf5-d-c06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "站柜前读便条的那天下午，宓葭衡已经许可嵇墨穗把岩纹挂片转借给蔺螺舟带到修车棚使用。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 风里练习的一封信",
+              "quote": "休息时，他们在柜台前读宓葭衡带来的便条。便条说，她愿意把自己的岩纹挂片借给嵇墨穗，让嵇墨穗在缬砂园试挂一个晚上，看看小卡被风吹动时是否方便阅读。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只出现主人向嵇墨穗提供园内试挂借用，缺少许可转借给蔺螺舟用于修车棚的环节，目标句对当时已获许可作追溯定论。后文并未实际新增转借行为来补环。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf5-t25",
+      "work": "huli_mail",
+      "chapter": "第七章 留给轮印的一点时间",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf5-d-c07-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "嵇墨穗当初备水的那支旧试行车队完成了全线试运，按出车单上的顺序走过了每一个补水点。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 拆棚以后的路线",
+              "quote": "嵇墨穗参与筹备的那次旧试行车队已经取消，车辆并未离站，也没有走完任何一段试运路线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "此前已取消且未出站的旧试行车队被写为已经完成全线试运。"
+        },
+        {
+          "id": "lf5-d-c07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "嵇墨穗为厨房窗台做的种纸礼物，在那场门前练习结束前就已经交到了褚荞珩手里。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 风里练习的一封信",
+              "quote": "嵇墨穗将送给褚荞珩的种纸压在站柜的木镇下，打算等他忙完厨房再让他自己取走。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只将礼物放在柜台准备由褚荞珩自行取走，未记录实际交接，目标句却断定它在那场练习结束前已经收妥，属于追溯性确定收件。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf5-d-c07-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "园里先前叶缘卷缩的那排幼苗，如今已有多片叶子恢复舒展，较硬的叶缘也不再紧紧蜷着。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 园里的一小片阴地",
+              "quote": "她让嵇墨穗摸摸离表面稍深处的土，又把最拥挤的一盆转开，给叶片留出通风的位置。嵇墨穗拿着记录板，写下移入阴处的时刻，宓葭衡则按盆土情况少量补水，准备隔一会儿再看。"
+            }
+          ],
+          "explanation": "第四章已遮阴、通风、按需补水并开始恢复，后续经过两天照料叶片舒展属于合理时间变化，未据此推出唯一因果。"
+        }
+      ]
+    },
+    {
+      "id": "lf5-t26",
+      "work": "huli_mail",
+      "chapter": "第八章 收件人的空白处",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf5-d-c08-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "喝水时，蔺螺舟又声称赭砑站厨房下面藏着甜水井，那是他拿已经澄清的传言逗人，并不是在讲一件真事。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 灯下重新折好的边",
+              "quote": "褚荞珩没有与他争，叫他搬开脚下的矮凳，亲手掀起一块活动木板。下面只是一只接漏水的铁盘，旁边露着检修用的空隙。"
+            }
+          ],
+          "explanation": "第五章已亲眼揭明木板下只有接水盘，第八章明确是角色拿假传言逗人，叙述并未将甜水井当真。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf5-s01",
+      "work": "taijie_rain",
+      "chapters": [
+        "第三章 该写谁的名字",
+        "第四章 不会站直的筒",
+        "第五章 手背上的光",
+        "第六章 让空筐说话",
+        "第七章 雨从背后追来",
+        "第八章 留在纸边的地方",
+        "第九章 弯钩转向哪里",
+        "第十章 路牌朝着来人"
+      ]
+    },
+    {
+      "id": "lf5-s02",
+      "work": "rongji_stage",
+      "chapters": [
+        "第三章 谁来替鸟走路",
+        "第四章 名字留在空格旁",
+        "第五章 幕布走过半扇窗",
+        "第六章 摸到一片不肯飞的翅",
+        "第七章 谁把那张凳子留下"
+      ]
+    },
+    {
+      "id": "lf5-s03",
+      "work": "xiuzi_school",
+      "chapters": [
+        "第三章 门帘与小壶",
+        "第四章 叶纹上桌",
+        "第五章 勺柄与指印",
+        "第六章 窑门外的圈",
+        "第七章 点火以后"
+      ]
+    }
+  ],
+  "subsets": {}
+}

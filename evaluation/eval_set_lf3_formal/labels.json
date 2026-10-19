@@ -1,0 +1,1217 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf3-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "GPT-6",
+    "date": "2026-10-18",
+    "notes": "原创逐章写作；脚本仅核对与整理标注。"
+  },
+  "works": [
+    {
+      "key": "sand_sail",
+      "title": "弦砂盆地的滑帆",
+      "file": "works/sand_sail.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "submerged_room",
+      "title": "嵌潮潜室",
+      "file": "works/submerged_room.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "spore_circuit",
+      "title": "菌灯巡圃",
+      "file": "works/spore_circuit.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "felt_ferry",
+      "title": "毡偶换场日",
+      "file": "works/felt_ferry.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf3-a-t03",
+      "work": "sand_sail",
+      "chapter": "第三章 脚下的一寸",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "姚纫葵将右手无名指弯成小钩，拢住那段滑动的细绳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "姚纫葵用右手压着布边，叫他们先把闲话留到饭后。她右手的无名指在多年前已经整个截除，掌缘只留着平整的旧疤。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "此前右手无名指已经整个截除，不能弯起该手指勾住绳子。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-a-p01",
+          "kind": "state_change",
+          "quotes": [
+            "羽格帆车的赭红前轮在门光里缓缓转动，轮缘带起的细沙落进一只浅盘。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "姚纫葵把羽格帆车前轮上的旧黑漆磨净，重新涂成赭红色，等漆面干透才装回轮轴。"
+            }
+          ],
+          "explanation": "前轮已磨去旧黑漆并改为赭红，后文只是延续已知变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-a-t04",
+      "work": "sand_sail",
+      "chapter": "第四章 展台的边沿",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i02",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "午前整理样品时，岑栖砾将那只从羽格帆车拆下的原装菱齿摇柄整个摆在样品布上，齿圈与柄身仍然相连。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "姚纫葵把原装菱齿摇柄夹在台钳里锯碎，将所有碎片投入熔炉，铜液冷却后成了一块铜饼。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "唯一原装摇柄已全部熔成铜饼，后文出现柄身齿圈仍相连的完整原件。"
+        },
+        {
+          "id": "lf3-a-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "姚纫葵已经授意岑栖砾，展后可将赤纹赛牌赠予测场。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "她把赤纹赛牌交给岑栖砾，托他在下旬的工坊展上陈列。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "只有展示委托，没有展后赠予测场的处置授权。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-a-t05",
+      "work": "sand_sail",
+      "chapter": "第五章 沙脊背面",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i04",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "孟扉榆伸手理了理岑栖砾的护颈，他们是同父同母的姐弟，亲近起来从不需要多说什么。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "孟扉榆是岑栖砾的姨表姐，两人的母亲是姐妹，父亲则来自不同的家庭。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两人本为姨表亲，父母并非同一对，问题却写成同父同母姐弟。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-a-p02",
+          "kind": "similar_name",
+          "quotes": [
+            "少年一眼识出暂缓前行的滑帆旗令，把等候的手势比给坡下的人。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "霍尺荻带着年轻帮手罗慎芦来搬地锚。"
+            },
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "他会识读滑帆旗语，过去一个冬天都在测场替看守传递信号。"
+            }
+          ],
+          "explanation": "少年在该段明确指罗慎芦，前文确认其会旗语，不是不会旗语的岑栖砾。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-a-t06",
+      "work": "sand_sail",
+      "chapter": "第六章 索环里的轻重",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i05",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "岑栖砾把霍尺荻的滑帆旗语读得分明，认出那是让车向外侧缓坡靠近的意思。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "少年从未学会识读滑帆旗语。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "证据段以岑栖砾作唯一先行词，少年不会旗语，前文无学习却能直接读懂指令。"
+        },
+        {
+          "id": "lf3-a-i06",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "岑栖砾已经从孟扉榆手中收妥六棱样尺，便把领用页上那一格涂实。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "她把合用的短轴用绳子捆在一起，又将六棱样尺裹进一块蓝布，收进自己的背囊，准备带去外间核对旧账里的尺寸。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "样尺由孟扉榆装进背囊携离，此后没有交接过程，不能据此前收妥领用。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-a-t07",
+      "work": "sand_sail",
+      "chapter": "第七章 檐水经过的地方",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-a-p03",
+          "kind": "rule_exception",
+          "quotes": [
+            "日落已过，岑栖砾和罗慎芦把羽格帆车推过东门，停上门外石坪。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "霍尺荻提到补风坞的出门规矩：日落后帆车不得推出东门，遇到坞内排水，可以凭看守签发的短票转移到门外石坪。"
+            }
+          ],
+          "explanation": "当前坞内排水，持看守亲签短票将车临时移至门外石坪，符合规则已经列明的例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-a-t08",
+      "work": "sand_sail",
+      "chapter": "第八章 留在图上的弯",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i07",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "羽格帆车的首度试航在前，青麻帆布那唯一一回收货随后才办完。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 收货的窄门",
+              "quote": "这批青麻帆布是羽格帆车唯一一次收货的材料，孟扉榆在账页上写下霜月初三，压了收货手印。"
+            },
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "霜月初五的首次试航没有观众席，测场边只有两排拿石块压住的坐垫。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "唯一收货发生于初三，首次试航发生于初五，问题把两件已定事件的先后颠倒。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-a-t09",
+      "work": "sand_sail",
+      "chapter": "第九章 绳结以外",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-a-i08",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "霜月初六午时，霍尺荻在补风坞外的试航台上收拢标线绳，让它避开向坡下跑的细沙。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "霜月初六午时，霍尺荻一直待在补风坞内修理地锚。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "霜月初六午时"
+          },
+          "explanation": "相同的霜月初六午时，霍尺荻始终在补风坞内修锚，不能同时在坞外试航台上整理标线绳。"
+        },
+        {
+          "id": "lf3-a-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "坡脚回环考核已经通过，岑栖砾把这一项成绩填进自己的工时页。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "霍尺荻歇手喝水时，岑栖砾递上了坡脚回环考核的申请。他想试着独自操纵帆车绕过两排矮桩，再回到出发的沙线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有申请独立回环考核，普通陪同短程试帆不等于该考核，未有进行或通过结果，不能填为成绩。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-a-t10",
+      "work": "sand_sail",
+      "chapter": "第十章 沿风留下的路",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-a-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "缝帆的小布包内侧有个浅隔袋，袋口用叠起的软布压边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 风口的收束",
+              "quote": "姚纫葵将缝帆的小布包挂在羽格帆车座后，里面收着针线和补边用的软毡。"
+            }
+          ],
+          "explanation": "布包原有针线软毡与内部浅隔袋相容，软布包边未增加硬角，当前重新挂回也有过程。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-b-t03",
+      "work": "submerged_room",
+      "chapter": "第三章 可以摸到的说明",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-b-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "回纹气囊的囊身用整片铝合金压成薄壳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "回纹气囊的主体由不含金属纤维的软织物制成。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "气囊主体明确是不含金属纤维的软织物，此处却是整体铝合金薄壳，指同一主体而非外部束带。"
+        },
+        {
+          "id": "lf3-b-i02",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "贺葭铎一眼读懂了鸥尾探针颈部的旧式符号。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "操作员不认识鸥尾探针上的旧制标记。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "操作员在依据段明确为贺葭铎，她不识旧制标记，未获教学却一眼读懂。"
+        },
+        {
+          "id": "lf3-b-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "她由此确认这包绀线封片出自旧浮仓。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "收蜡笔时，舒衍楝把架上的一包绀线封片挪到检视桌，挑出几枚形状平整的放进浅盘。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有从架上取封片和外观，无法由细蓝线确认封片来自旧浮仓。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-b-p01",
+          "kind": "state_change",
+          "quotes": [
+            "雨停后，回纹气囊的橙色短带垂在检视架侧边，带尾离地面还有一截。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "他将气囊原来的灰色束带取下，换成了昨日量好的橙色短带。"
+            }
+          ],
+          "explanation": "灰带已在更早章节换成橙色短带，这里沿用新状态。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-b-t04",
+      "work": "submerged_room",
+      "chapter": "第四章 窗外的小桌",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-b-i04",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "舒衍楝从抽屉里取出了完好的弧瓣阀原件。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "午前，弧瓣阀的唯一原件被回收压机彻底压碎，碎料随即送进熔槽化成了一块扁锭。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "弧瓣阀唯一原件已彻底压碎并熔回收，不会完整保存在抽屉里。"
+        },
+        {
+          "id": "lf3-b-i05",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "环湾放流演示已经办过，她把它列进本月完成的活动。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "嵌潮湾原计划在月底举办的“环湾放流演示”，因唯一的演示场地永久关闭而取消，这场活动从未举行，今后也不再举办。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一演示明确取消且从未举行，不能列为已经完成的活动。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-b-t05",
+      "work": "submerged_room",
+      "chapter": "第五章 斜板接岸的地方",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-b-p02",
+          "kind": "rule_exception",
+          "quotes": [
+            "鞋底试验开始后，贺葭铎将那双带泥的胶鞋放上了层贝工作台。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "层贝工作台平时不得放沾泥的鞋，只有在完整铺好隔泥垫的鞋底测试中才允许例外。"
+            }
+          ],
+          "explanation": "当前为鞋底测试，完整铺好隔泥垫，符合明示的鞋上台例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-b-t06",
+      "work": "submerged_room",
+      "chapter": "第六章 沿着水影找位置",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-b-i06",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "从层贝工作台到舱顶，净空的实测值为两米一。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "叶衡荻在通信器里听见两人的商量，把折尺夹到下午带去的工具袋外，打算等潜室回岸检修时量一遍层贝工作台上方的净空。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有携尺准备测净空，没有测量操作或结果，此处直接给出实测值。"
+        },
+        {
+          "id": "lf3-b-i07",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "贺葭铎在仍保有工作压力的带压舱里点起了蜡烛。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "潜室的带压舱内在任何情况下都禁止燃烧明火。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "在任何情况下都禁止燃烧明火"
+          },
+          "explanation": "永久规则在一切情况下禁止带压舱明火，此处明确有工作压力并点蜡烛，直接违反禁令。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-b-t07",
+      "work": "submerged_room",
+      "chapter": "第七章 雨从篷沿下来",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-b-i08",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "潜室初次下潜以后，大家才完成弧形护栏的安装。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 靠岸的工作间",
+              "quote": "芦季初三申时，弧形护栏装配完成，三个人一起把检验绳从栏杆上解了下来。"
+            },
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "芦季初四未时，新潜室首次下潜，在嵌潮湾的浅水泊位停稳。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "护栏在初三装配完成，首次下潜在初四，问题将同一两件事先后倒置。"
+        },
+        {
+          "id": "lf3-b-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "她看见照片里的黄绳，便确认画面中那只旧浮仓囊袋就是回纹气囊。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "照片上，一只灰蓝色软囊搭在旧浮仓的木架上，囊口系着一根黄绳，后面是半扇开着的窗。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "照片只有灰蓝外观和黄绳，未提供唯一标识或认定过程，不能据黄绳确认照片囊袋就是当前回纹气囊。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-b-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "她指着外侧挡片说：“我猜这道深纹是潮水昨夜浸出来的。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 斜板接岸的地方",
+              "quote": "舒衍楝把还能用的木料分到一边，从余料里挑了一块带深色年轮的短板，准备作外侧挡片。"
+            }
+          ],
+          "explanation": "深纹原本来自短板年轮，人物只说我猜潮水造成，叙述未把这句猜想当事实。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-b-t08",
+      "work": "submerged_room",
+      "chapter": "第八章 留给下一班的人",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-b-p04",
+          "kind": "similar_name",
+          "quotes": [
+            "操作员能辨明鸥尾探针颈边的旧码。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 水面下面的午后",
+              "quote": "叶衡荻领来另一位操作员祁苇珵。祁苇珵以前在水下观测站整理过旧器具，今天负责岸上交接。她认识鸥尾探针上的旧制标记，知道那些符号分别对应哪些旧型号。"
+            }
+          ],
+          "explanation": "此段操作员明确是祁苇珵，前文确认她识旧标记，不是前文不识标记的贺葭铎。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-c-t03",
+      "work": "spore_circuit",
+      "chapter": "第三章 页边留下的空位",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-c-i01",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑疏笈与许篱珂有同一位父亲。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "郑疏笈和许篱珂是同母异父的姐弟，两人从小共用过一张吃饭的小桌，各自父亲的姓写在不同的户籍纸上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两人是同母异父姐弟，同一位父亲与既有亲缘直接相反。"
+        },
+        {
+          "id": "lf3-c-i02",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑疏笈看懂了菌灯谱上那串凹点，明白它表示西侧第四格。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "郑疏笈完全不会辨认菌灯谱的凹点编码，他负责的只是按明字抄录日期和棚号。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "郑疏笈完全不会辨认凹点编码，此后没有教学却直接读出具体含义。"
+        },
+        {
+          "id": "lf3-c-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "前日西廊那三声提示铃，是唐抒槿东移遮雨布引起的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "唐抒槿把绳扣松开，将遮雨布向东挪了一格。约半刻以后，西廊的提示铃响了三下，郑疏笈在册子上记下声音，抬头时唐抒槿正俯身拣掉进泥里的木扣。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "先前只记录挪布早于铃响，未确立二者的触发关系，不能将先后当作因果。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-c-p01",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "册子内封压着一片干叶，叶尖窄长，薄得能透出封皮的颜色。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "郑疏笈在旁边记下凳子挪动的位置，他的记录册是赭色封皮，里页用粗线装订，页边宽得足够后来添画。"
+            }
+          ],
+          "explanation": "夹在记录册内封的干叶与此前封皮、装订等属性兼容。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-c-t04",
+      "work": "spore_circuit",
+      "chapter": "第四章 长凳另一端",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-c-i04",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "簇绒坡换土会在青芽节如期举行。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "簇绒坡换土会已经取消，不再举行；这场原拟首次开办的活动从未实际开场。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "唯一一次计划中的换土会已取消且从未开场，此处却写节日如期举行。"
+        },
+        {
+          "id": "lf3-c-i05",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "邵蘅芃在青芽节那天的傍晚站在簇绒坡顶，给访客指路。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 棚里的节日",
+              "quote": "到青芽节傍晚，邵蘅芃始终待在北育棚里整理培养架，整个傍晚都没有去过簇绒坡坡顶。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一节日傍晚邵蘅芃始终在北育棚，未去簇绒坡顶，不能在坡顶指路。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-c-t05",
+      "work": "spore_circuit",
+      "chapter": "第五章 风钻进竹缝",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-c-p02",
+          "kind": "time_passed",
+          "quotes": [
+            "郑疏笈去找包绳的布，看见青芽节晾到檐里的那块粗布已经干透，边角在风里轻轻拂动。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 棚里的节日",
+              "quote": "太阳已经偏西，湿布还很沉，风吹起来只摇下几滴水。"
+            }
+          ],
+          "explanation": "自节日傍晚湿重已过三天，晾着的粗布自然干透，属于合理经过时间。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-c-t06",
+      "work": "spore_circuit",
+      "chapter": "第六章 雨水各走各的路",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-c-i06",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑疏笈将纹穗培养盒搬出了苔脊园的边界。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "园里有一条写入交接册的禁令：纹穗培养盒在任何情形下都不得带出苔脊园边界。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何情形下都不得带出"
+          },
+          "explanation": "禁令在任何情形都禁止该培养盒越过园界，问题写郑把盒搬出边界，正面违反永久规则。"
+        },
+        {
+          "id": "lf3-c-i07",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "青芽节前夜北育棚窗边那只翅带白线的蛾，郑疏笈曾亲眼看见。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 棚里的节日",
+              "quote": "唐抒槿告诉郑疏笈，青芽节前夜，他在北育棚窗沿看见一只翅面带白线的蛾，那蛾停了很久才飞走。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "此前是唐抒槿向郑讲述自己所见，没有郑当夜到场亲见的证据，听闻不能变成目击。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-c-t07",
+      "work": "spore_circuit",
+      "chapter": "第七章 叶子把雨留下",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-c-i08",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "露纹轮盘的本体从铸成那天起便是圆的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "露纹轮盘本体铸成六角形，六条直边和六个顶角都是成形时就留下的结构，不能靠转动变成别的轮廓。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "本体成形时就是六角结构，问题却把同一永久轮廓改成自铸成起为圆形；并非中央钮的状态。"
+        },
+        {
+          "id": "lf3-c-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "南廊小木门在青芽节午后便闩好了，因此到现在仍是关着的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 棚里的节日",
+              "quote": "青芽节午后，南廊小木门关着，门闩搭在内侧的槽里；他从窗下的小抽屉中拿到了纸，就折回人多的地方。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "只有节日午后该刻闩门的状态，之后没有持续观察或复查，不能据过去状态断定五日后仍然关闭。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-c-p03",
+          "kind": "state_change",
+          "quotes": [
+            "唐抒槿从北育棚取来那辆窄推车，蓝布盖住车身，四角的绳结都系得妥当。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 棚里的节日",
+              "quote": "邵蘅芃午后把红布收进壁柜，给推车换上了一块短些的蓝布，四角都用小绳系住。"
+            }
+          ],
+          "explanation": "红布已经明确换成蓝布并系好四角，后文蓝布推车延续已发生的变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-c-t08",
+      "work": "spore_circuit",
+      "chapter": "第八章 巡视还会继续",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-c-p04",
+          "kind": "reported_belief",
+          "quotes": [
+            "唐抒槿拿露纹轮盘开玩笑：“夜里没人盯着，它会自己转上好几圈。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把坡路记在纸上",
+              "quote": "这是唐抒槿惯讲的玩笑，他明白小钮得用手拨，六角本体也不会自行走动。"
+            }
+          ],
+          "explanation": "人物明确在开玩笑，前文也说明是他惯讲的玩笑，叙述没有确认轮盘能自己转动。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-d-t03",
+      "work": "felt_ferry",
+      "chapter": "第三章 低处的舞台",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-d-i01",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "陶缦荑把棱背毡偶的原装眼珠凑到窗光下，那粒琥珀在她指间映出一小点暖色。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 拆下的眼珠",
+              "quote": "棱背毡偶原装的琥珀眼珠被她碾成细末，全部拌进了补底座的胶泥。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原装眼珠已全部碾碎混入胶泥，不能仍为手中完整的原件。"
+        },
+        {
+          "id": "lf3-d-i02",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "娄缄苒和亲叔叔奚杼岚一同把折叶幕架搬到屋子中央，试着让帘子离门口远一些。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 拆下的眼珠",
+              "quote": "娄缄苒与奚杼岚只有师门关系，两人没有血缘。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两人已确立没有血缘，亲叔叔表示父亲的亲兄弟，改变了已定亲缘。"
+        },
+        {
+          "id": "lf3-d-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "榫花提箱昨夜已经由陶缦荑交到娄缄苒手上，他便按收妥的物件把它列进随队清单。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "她请娄缄苒明天替戏班把提箱送到榧桥埠，随后抱着箱子去了院后的小库房。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "只有次日送箱的请求和陶携箱入库，尚不能认定昨夜已经完成向娄的交接。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-d-p01",
+          "kind": "similar_name",
+          "quotes": [
+            "青年读着麦纹节拍板的盲文，把停顿的位置告诉帘后的陶缦荑。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "这个青年熟悉板面的盲文，手指移到哪里，就能把相应的提示读出来。"
+            }
+          ],
+          "explanation": "该段先点名坐下的是程苇岫，青年指会盲文的程，而非不会的娄缄苒；依据段也明示青年为程。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-d-t04",
+      "work": "felt_ferry",
+      "chapter": "第四章 留给一只手的时间",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-d-i04",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "娄缄苒凭盲文念出了麦纹节拍板上刻着的换景时刻，陶缦荑听完，把手里的毡片按次序移好。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 拆下的眼珠",
+              "quote": "青年不会读麦纹节拍板上的盲文刻点。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同段点名青年是娄缄苒，已明确他不会读该盲文；此后没有学习过程，却能按刻点念出内容。"
+        },
+        {
+          "id": "lf3-d-i05",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "梧月十一上午，他们已在榧桥埠完成那次摸景排练，观众行走的顺序当时就试过一遍。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "原定今天上午举行的榧桥埠摸景排练取消了，这场排练没有进行。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一次排练在梧月十一明确取消且没有进行，后文却断言已完成。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-d-t05",
+      "work": "felt_ferry",
+      "chapter": "第五章 门槛旁的空位",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-d-p02",
+          "kind": "rule_exception",
+          "quotes": [
+            "他先和房东一起卸下榧桥埠借屋的活动门槛，把木条靠在选好的墙角，再将两只木销收进布包。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "榧桥埠借屋平日不许拆门槛，但轮椅观众入场时，可以由场务卸下活动门槛，散场后装回。"
+            }
+          ],
+          "explanation": "本章轮椅观众入场，场务卸下门槛且离场后装回，恰好符合前文例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-d-t06",
+      "work": "felt_ferry",
+      "chapter": "第六章 草图挂高一些",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-d-i06",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "折叶幕架先验收完毕，他们才第一次向榧桥埠借到这间屋子，因此他把架子的尺寸写在借场记录之前。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "折叶幕架的首次验收在梧月十一午后完成，晚于梧月初九的首次借场。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "唯一的首次借场先于首次验收，问题把两件事的先后颠倒。"
+        },
+        {
+          "id": "lf3-d-i07",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "奚杼岚早已准许娄缄苒裁改这些布景草图，他据此把纸边剪成适合小板的尺寸。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "奚杼岚下午带来几张巡演用的布景草图，让娄缄苒挑其中一幅摆到接待桌上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "展示草图的委托不足以证明事先授予裁改原稿的权限，缺少授权。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf3-d-t07",
+      "work": "felt_ferry",
+      "chapter": "第七章 不抢头一声",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf3-d-i08",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "梧月十一辰时那次查看场地，付笙榉是在榧桥埠屋内逐一量过窗沿高度的，册里便留了靠窗的几处标记。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "梧月十一辰时，付笙榉一直在绒线院清点幕布，没有去榧桥埠。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一辰时付始终留在绒线院，无法在另一处榧桥埠量窗沿。"
+        },
+        {
+          "id": "lf3-d-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "付笙榉已经在榧桥埠夜场的次序抽签中抽得头一位，娄缄苒于是把开场动作放到当天练习的最前面。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 空出来的上午",
+              "quote": "付笙榉填好榧桥埠夜场次序的抽签报名，将封口的纸袋托给往埠头去的人送走。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有抽签报名送出，尚无抽签进行或结果，不能认定抽得首位。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf3-d-p03",
+          "kind": "state_change",
+          "quotes": [
+            "娄缄苒将包着蓝毡边的浅盘推近观众，盘沿贴到手腕时柔软地停住。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 门槛旁的空位",
+              "quote": "她拆掉那一圈旧布，换上蓝色的厚毡条，一针一针缝紧，不让针脚露到容易刮手的正面。"
+            }
+          ],
+          "explanation": "浅盘原素布包边已在第五章明确改成蓝色厚毡，此处变化可追溯。"
+        }
+      ]
+    },
+    {
+      "id": "lf3-d-t08",
+      "work": "felt_ferry",
+      "chapter": "第八章 把最后一块布留下",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf3-d-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "长毡的背面还缝着一排藏在包边里的小布扣，手沿背面走时，能够摸到几个柔软的间隔。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 留给一只手的时间",
+              "quote": "陶缦荑准备把下一段戏换成两个人分别摸到同一条长毡。"
+            }
+          ],
+          "explanation": "补充长毡背面包边内的细节，不影响既有的长度、柔软与两人同时触摸方式。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf3-s08",
+      "work": "sand_sail",
+      "chapters": [
+        "第三章 脚下的一寸",
+        "第四章 展台的边沿",
+        "第五章 沙脊背面",
+        "第六章 索环里的轻重",
+        "第七章 檐水经过的地方",
+        "第八章 留在图上的弯",
+        "第九章 绳结以外",
+        "第十章 沿风留下的路"
+      ]
+    },
+    {
+      "id": "lf3-s05-b",
+      "work": "submerged_room",
+      "chapters": [
+        "第三章 可以摸到的说明",
+        "第四章 窗外的小桌",
+        "第五章 斜板接岸的地方",
+        "第六章 沿着水影找位置",
+        "第七章 雨从篷沿下来"
+      ]
+    },
+    {
+      "id": "lf3-s05-c",
+      "work": "spore_circuit",
+      "chapters": [
+        "第三章 页边留下的空位",
+        "第四章 长凳另一端",
+        "第五章 风钻进竹缝",
+        "第六章 雨水各走各的路",
+        "第七章 叶子把雨留下"
+      ]
+    }
+  ],
+  "subsets": {}
+}

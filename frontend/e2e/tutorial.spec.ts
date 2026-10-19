@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { advanceTour, api, expect, openAccountMenu, openTab, registerAccount, sampleCheck, sampleWorkId, shot, test } from "./support/app";
+import { advanceTour, api, expect, openTab, registerAccount, sampleCheck, sampleWorkId, shot, test } from "./support/app";
 
 const bar = (page: Page) => page.getByRole("region", { name: "导览", exact: true });
 const findings = (page: Page) => page.getByRole("complementary", { name: "检查与回顾", exact: true });
@@ -187,8 +187,7 @@ test("重新看一遍导览：回到第一步，之前的决定和草稿都不�
   expect(runBefore.issues[0].decision).toMatchObject({ decision: "keep_intentional" });
 
   await page.goto("/");
-  await openAccountMenu(page);
-  await page.getByRole("menuitem", { name: "重新看一遍导览", exact: true }).click();
+  await page.getByRole("button", { name: "重新看一遍导览", exact: true }).click();
   await expect(notice(page, "导览回到了第一步；正文、资料和处理记录都没有变。")).toBeVisible();
   await expect(page).toHaveURL(new RegExp(`/projects/${workId}/overview$`));
   await expect(bar(page)).toContainText("导览 1 / 5");

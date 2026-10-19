@@ -20,8 +20,7 @@ from app.provider import (CONTINUITY_PROMPT_VERSION, MAX_ISSUE_REASONING_CODEPOI
                           continuity_prompt)
 
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-V8_CASE_04 = ROOT / "evaluation/model_compare_v8/runs/model-compare-v8-20260927-01/cases/04/flash-high"
+V8_CASE_04 = pathlib.Path(__file__).resolve().parent / "fixtures/model_compare_v8_case04"
 
 
 class OfflineProvider:

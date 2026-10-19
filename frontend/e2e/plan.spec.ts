@@ -131,8 +131,8 @@ test("08 新作品对照正文：跳转和分析结果", async ({ page }) => {
   expect(result.status, JSON.stringify(result)).toBe("completed");
   expect(result.analysis_type).toBe("plan_alignment");
   await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace$`));
-  // The writing page's right column opens on 对照计划 and shows the result there.
-  await expect(page.getByRole("tab", { name: "对照计划", exact: true })).toHaveAttribute("aria-selected", "true");
+  // The writing page's right column opens on the assistant, and the result is the block at its top.
+  await expect(page.getByRole("tab", { name: "助手", exact: true })).toHaveAttribute("aria-selected", "true");
   const region = page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("region", { name: "对照计划", exact: true });
   await expect(region).toBeVisible();
   await expect(region).toContainText(result.analysis.summary);

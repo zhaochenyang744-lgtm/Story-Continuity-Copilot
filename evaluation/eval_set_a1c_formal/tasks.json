@@ -1,0 +1,939 @@
+{
+  "version": "a1c-1",
+  "set_id": "a1c-formal",
+  "author": "A1c authoring",
+  "works": [
+    {
+      "key": "f1",
+      "title": "风的背面有路",
+      "language": "zh",
+      "purpose": "general",
+      "kind": "long",
+      "source_file": "works/f1.md",
+      "names": [
+        "祁曜砂",
+        "拾岚",
+        "晏栖翎",
+        "灰雀",
+        "容澹川",
+        "阿澹",
+        "聂檀殊",
+        "费珀宁",
+        "欧荻衡",
+        "祝嵊禾",
+        "陆旻岫",
+        "霁砾原",
+        "赤弦渡",
+        "悬汀洲",
+        "银岫罗针",
+        "缄风匣",
+        "玄砾灯",
+        "曜痕石",
+        "息砂钟"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "寻找离开峡底的坡道，并重新分配剩余路粮。"
+        },
+        {
+          "chapter": 31,
+          "text": "跟随岛内引路者探看石阶后的道路，商议如何让后来人安全抵达。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "逆行红沙",
+          "planted_chapter": 2,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "不融冰片",
+          "planted_chapter": 6,
+          "status": "resolved",
+          "resolved_chapter": 18
+        },
+        {
+          "title": "空白羽签",
+          "planted_chapter": 11,
+          "status": "open"
+        },
+        {
+          "title": "无云月影",
+          "planted_chapter": 28,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第31章 伞下的问路人",
+        "draft_only_fact": "石阶旁新竖起了一把靛蓝色大伞。",
+        "body": "石阶旁新竖起了一把靛蓝色大伞。祁曜砂看见伞下站着的人，把原本准备好的招呼咽了回去。那人穿着一双鞋头发白的布鞋，裤脚湿到膝边，和他想象中从岛内来的人很不一样。他不知道先问路还是先让座，最后只是把自己身边那块平坦的石头擦了擦。对方坐下，长长地吐出一口气，好像也走过了一段不愿立即讲起的路。\n\n聂檀殊俯身抖去裤脚上的细屑，随后把外衣搭在膝上。她看着新来的人，没有马上替所有同伴开口。背后有人碰响了碗，声音清脆得使她肩头一动。她回头，发现祝嵊禾正试着把缺口转到不容易碰嘴的那边，便递去自己用得顺手的另一只。祝嵊禾接过，却将原来的碗也收好，没有随手丢在石阶下。\n\n银岫罗针搁在扁石的凹处，针尖旁粘着一点细绒。晏栖翎坐得离它很近，先吹了吹手心，才把那团细绒轻轻拈开。她没有拨动针尖，也没有因为新来的人看向这里就替大家解释它的用处。那人的目光很快移开，落到他们磨坏的鞋底上。他问是否有人需要一条干布，得到的回答比他预想的多。\n\n欧荻衡端着空碗站在风口，反复用拇指擦过碗沿。他想说自己不渴，却被容澹川用眼神拦住。水送到面前，他喝了一口，喉间忽然发出一声近乎呛住的响动。旁边的人都停下来，他摆手让他们继续，过了一会儿才笑，说已经很久没有在喝水时听见这么多闲话。他说完觉得这话矫情，便低头假装研究碗底。\n\n费珀宁把自己的背包移到腿旁，给新来的人留出伸脚的位置。对方没有立刻问他们带了什么，只说坡上有几处低矮的树，人走进去时常会撞到额头。费珀宁听着，下意识摸了摸自己的额角。晏栖翎在旁边笑了一下，声音很轻，他竟也没有像往常那样急着辩解。\n\n陆旻岫去捡被风推远的一片布，回来时没有坐回原处。他站到石阶侧边，看见几个人用小石子在地上摆出各自记得的路线。那些线条互相穿过，谁也没有完全说服谁。他本想替他们排得整齐一些，手伸出去又停住，转而拿起一枚挡在脚边的尖石，放到无人经过的地方。\n\n祁曜砂终于问伞下的人，大家应该先往哪里走。对方没马上回答，先向他要了一口吃的。祁曜砂怔住，回身去找剩下的食物，才发现自己一路想着怎样得到一句方向，竟忘了指路的人也会饿。聂檀殊分出一小块放在碗里，其他人默默挪开一些。伞影随着风晃了一下，把两只并在一起的空碗罩住了。"
+      }
+    },
+    {
+      "key": "f2",
+      "title": "海面下的春天",
+      "language": "zh",
+      "purpose": "general",
+      "kind": "long",
+      "source_file": "works/f2.md",
+      "names": [
+        "黎沐弢",
+        "沙鸥",
+        "许渟禾",
+        "阿渟",
+        "邵弈棠",
+        "海豆",
+        "程雁衡",
+        "孟稚潞",
+        "何泽珩",
+        "乔闻笙",
+        "杜沛蘅",
+        "岚潼湾",
+        "洄星站",
+        "泊砚岛",
+        "珊窗采样盒",
+        "折鳍水下相机",
+        "双扣定位盘",
+        "礁纹定位牌",
+        "宿礁模型",
+        "雁尾栈道"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "重新检查可用器材，并拟定天气好转后的补测顺序。"
+        },
+        {
+          "chapter": 31,
+          "text": "向居民说明本季观察结论和局限，收集下一季希望追踪的问题。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "藻片规则白点",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 14
+        },
+        {
+          "title": "旧灯异常闪烁",
+          "planted_chapter": 9,
+          "status": "resolved",
+          "resolved_chapter": 17
+        },
+        {
+          "title": "路边碎壳来源",
+          "planted_chapter": 12,
+          "status": "resolved",
+          "resolved_chapter": 21
+        },
+        {
+          "title": "无拍摄者影像",
+          "planted_chapter": 19,
+          "status": "open"
+        },
+        {
+          "title": "未知幼芽",
+          "planted_chapter": 29,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第31章 椅子转过来",
+        "draft_only_fact": "食堂窗下新挂了一串紫色纸风铃。",
+        "body": "食堂窗下新挂了一串紫色纸风铃。黎沐弢从门外进来时，头发上还带着细小的水珠。他看见桌面擦得太干净，忍不住把手里的纸又换了一次位置，随后笑自己今天连坐在哪里都拿不定主意。第一位来访者提着一个普通塑料袋，袋里装着刚买的水果，没有带他们事先设想的任何问题。\n\n许渟禾将外套挂在椅背上，又把滑下来的衣袖绕好。她给来访者倒水，对方却先问有没有地方洗手。她指了方向，等人走远才发现自己忘了问水是否太烫。孟稚潞在旁边说还有时间，她点点头，没有再给空着的椅子逐一摆出同样的角度。外面的人带着各自的步子进来，房间很快便不可能像刚才那样整齐。\n\n珊窗采样盒平放在靠门的长凳上，透明盖面映出半扇窗。一个孩子蹲下去看，手指停在离盒面很近的地方，没有碰上。程雁衡搬过一把矮凳，请他坐着慢慢看。孩子问里面是不是藏了海，她想了一下，说没有，只是装过他们从海边带回来的东西。这个回答使孩子有些失望，他很快又去看长凳下面。\n\n乔闻笙站到窗边，将挡住把手的窗帘推向一侧。她原以为今天只需要听别人说话，见到房间里的面孔越来越多，才开始担心自己讲过的某个细节会不会被记错。何泽珩从她身后经过，问这里的窗能不能开一条缝。她试了试，窗框只轻轻动了一下，便叫他来搭把手，两人终于在一个不必争论的事情上配合起来。\n\n杜沛蘅端来一盘切得大小不一的水果，有人先挑走最大的一块，又不好意思地放回去。她笑着让对方拿着，说后面还有。邵弈棠帮忙递纸，伸手时碰倒一个空杯，杯子在桌面转了两圈才停。众人都看过来，他夸张地按住杯底，像终于制住一条跳上岸的小鱼，屋里的陌生感因此松了一点。\n\n有人问结束之后能否顺路去海边。程雁衡没有替大家答应，只说等会儿看天气和各自安排。对方点头，开始向旁边的人讲起自己今天在路上遇到的狗。黎沐弢听见笑声，发现一场自己紧张了很久的会，开头竟然可以和调查完全无关。他把攥皱的纸展平，不急着抢回话题。\n\n许渟禾找到一支写得出字的笔，递给想记事的人。对方说只想画个大概，不准备写长篇。她便将桌上较小的一页换成空白更多的纸。孟稚潞移开装水的壶，免得湿痕慢慢渗过去，接着把自己的椅子也转向来访者。几个人原本朝着同一个方向坐，如今开始看见彼此的表情。\n\n窗缝里的风碰到纸片，发出轻轻的窸窣声。乔闻笙回头看了一眼，又转回来。门口还有人没有坐下，杜沛蘅去取另一把椅子，黎沐弢接过椅背往里面挪。等所有人找到位置，程雁衡才把手里的东西放下，先问大家愿意从哪一件事听起。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a1cf-f1-qa-01",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "answerable_single",
+      "note": "选句确定人物，区分沙色与实际判断步骤。",
+      "selection": "聂檀殊俯身抖去裤脚上的细屑，随后把外衣搭在膝上。",
+      "question": "她怎么判断那片沙地踩上去是否撑得住人？",
+      "paraphrased": true,
+      "answer_points": [
+        "先用长杆探到下方底部。",
+        "再等待沙面回落，据此判断承重。"
+      ],
+      "forbidden_claims": [
+        "仅凭沙的颜色判断。"
+      ],
+      "evidence_chapters": [
+        "第4章 沙色会骗人"
+      ],
+      "evidence_quotes": [
+        "聂檀殊先用长杆探到底，再等沙面回落，以此判断脚下能否承重。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-02",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "answerable_single",
+      "note": "区分最终过峡步骤和此前失败尝试。",
+      "selection": "欧荻衡端着空碗站在风口，反复用拇指擦过碗沿。",
+      "question": "他最后让什么先过峡，确认什么之后才送人？",
+      "paraphrased": true,
+      "answer_points": [
+        "先送空篮过去。",
+        "试出对岸回风后才让乘客依次过峡。"
+      ],
+      "forbidden_claims": [
+        "先把乘客送过去试风。"
+      ],
+      "evidence_chapters": [
+        "第14章 空篮先过去"
+      ],
+      "evidence_quotes": [
+        "欧荻衡先送空篮试出对岸回风，再让乘客依次过峡。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-03",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "初始与最终保管分别在2和19章。",
+      "selection": "银岫罗针搁在扁石的凹处，针尖旁粘着一点细绒。",
+      "question": "这件东西起初交谁看管，到后来由谁带着？",
+      "paraphrased": true,
+      "answer_points": [
+        "起初由聂檀殊保管。",
+        "后来转由祁曜砂保管。"
+      ],
+      "forbidden_claims": [
+        "祁曜砂从一开始就保管。"
+      ],
+      "evidence_chapters": [
+        "第2章 倒着走的沙",
+        "第19章 针尖指向谁"
+      ],
+      "evidence_quotes": [
+        "银岫罗针在出发后的清点中交给聂檀殊，从此由她独自保管。",
+        "银岫罗针在新的行路分工中转由祁曜砂保管，他将它收进内袋。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-04",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "匣的起点和最终责任不能由单章凑齐。",
+      "question": "那只随队远行的缄风匣，最先由谁收着，临近抵达时又托给了谁？",
+      "paraphrased": true,
+      "answer_points": [
+        "最先由费珀宁收存。",
+        "临近抵达时交给祝嵊禾。"
+      ],
+      "forbidden_claims": [
+        "最后仍由费珀宁保管。"
+      ],
+      "evidence_chapters": [
+        "第5章 不肯打开的匣子",
+        "第24章 不替别人守着"
+      ],
+      "evidence_quotes": [
+        "缄风匣在路粮分配之后留给费珀宁，由他负责贴身收存。",
+        "缄风匣在抵达前的整装时交给祝嵊禾，由她负责收存和携带。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-05",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "灯的夜营保管与最终夜行交接相隔18章。",
+      "question": "玄砾灯最早确定由谁收着，最后一程又归谁携带照看？",
+      "paraphrased": true,
+      "answer_points": [
+        "夜营后最初由容澹川保管。",
+        "最后转交晏栖翎保管携行。"
+      ],
+      "forbidden_claims": [
+        "晏栖翎一直是保管人。"
+      ],
+      "evidence_chapters": [
+        "第8章 灯下有空位",
+        "第26章 把光带到前面"
+      ],
+      "evidence_quotes": [
+        "玄砾灯在这次夜营后交由容澹川保管，灯绳系在他的背囊旁。",
+        "玄砾灯在最后一段夜行前交给晏栖翎，之后由她保管并携行。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-06",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "not_in_text",
+      "note": "相关熟悉程度不等于年龄。",
+      "question": "欧荻衡头一回穿过峡谷时究竟几岁？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "给出或推算任何确切年龄。"
+      ],
+      "evidence_chapters": []
+    },
+    {
+      "id": "a1cf-f1-qa-07",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "not_in_text",
+      "note": "同行行为不推出私人加入原因。",
+      "question": "陆旻岫是出于什么私人缘由才决定跟这支队伍远行的？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "把照料营地的行为当成加入动机。",
+        "虚构亲人、旧事或报酬原因。"
+      ],
+      "evidence_chapters": []
+    },
+    {
+      "id": "a1cf-f1-qa-08",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "conflicting",
+      "note": "未经加工的天然面数互斥。",
+      "question": "曜痕石生来到底有几个平面，能从书里得出唯一数目吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "不能，正文前后不一致。",
+        "一处七面，另一处九面，均说从未切磨。"
+      ],
+      "forbidden_claims": [
+        "只确定为七或九而忽略矛盾。",
+        "解释为后来加工。"
+      ],
+      "evidence_chapters": [
+        "第7章 石头没有嘴",
+        "第21章 石面上的余温"
+      ],
+      "evidence_quotes": [
+        "曜痕石天生具有七个平整的面，自捡到以来从未切磨。",
+        "曜痕石天生具有九个平整的面，自捡到以来从未切磨。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-qa-09",
+      "work": "f1",
+      "suite": "qa",
+      "qa_type": "conflicting",
+      "note": "同一钟体固定材料两种。",
+      "question": "息砂钟的钟身究竟是什么材料，前后写法一致吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "前后不一致。",
+        "一处黑曜石，一处白瓷，且都说钟体未替换。"
+      ],
+      "forbidden_claims": [
+        "自行认定其中一种正确。",
+        "用换了钟体来化解。"
+      ],
+      "evidence_chapters": [
+        "第12章 听见钟而不走",
+        "第27章 钟声落得很低"
+      ],
+      "evidence_quotes": [
+        "息砂钟由一整块黑曜石制成，钟体从未被替换。",
+        "息砂钟由一整块白瓷制成，钟体从未被替换。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-recap-01",
+      "work": "f1",
+      "suite": "recap",
+      "note": "十五章截止及下一章计划，冰未收、红沙已收。",
+      "upto_chapter": 15,
+      "draft_opening": "石台边多了一只装满干花的布袋。祁曜砂摸了摸外衣，准备叫同伴起身。",
+      "must_mention": [
+        {
+          "id": "end",
+          "kind": "previous_ending",
+          "text": "一行人夜宿峡底石台，等待风变弱才能找上岸路线。",
+          "evidence_chapters": [
+            "第15章 没有岸的晚上"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "晏栖翎左腕扭伤，还不能双手负重。",
+          "evidence_chapters": [
+            "第3章 一只手的重量"
+          ]
+        },
+        {
+          "id": "thread",
+          "kind": "open_thread",
+          "text": "岩缝薄冰不消融的原因仍未查清。",
+          "evidence_chapters": [
+            "第6章 罐底的冷"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "接下来要找离开峡底的坡路，并重新分配所剩路粮。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "石台边已有装干花的布袋。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "红沙为什么逆行仍然未知。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "晏栖翎已经恢复双手负重。"
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-recap-02",
+      "work": "f1",
+      "suite": "recap",
+      "note": "终章抵达但未跟引路者入岛。",
+      "upto_chapter": 30,
+      "draft_opening": "石阶旁新竖起了一把靛蓝色大伞。祁曜砂给伞下的人让出一处坐的位置。",
+      "must_mention": [
+        {
+          "id": "end",
+          "kind": "previous_ending",
+          "text": "已经抵达悬汀洲外缘，仍在石阶下等岛内引路者。",
+          "evidence_chapters": [
+            "第30章 岛在脚下"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "晏栖翎左腕已恢复，能够双手负重拉绳。",
+          "evidence_chapters": [
+            "第22章 左手重新握紧"
+          ]
+        },
+        {
+          "id": "thread",
+          "kind": "open_thread",
+          "text": "没有云却会移动的月形暗影仍未解释。",
+          "evidence_chapters": [
+            "第28章 没有云的影子"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "随后要跟引路者探看石阶后面的路，并商量后来人怎样安全抵达。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "石阶边已经新放靛蓝大伞。"
+        },
+        {
+          "kind": "stale_state",
+          "text": "晏栖翎还无法双手负重。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "不融冰片仍是原因未知的悬念。"
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f1-fix-01",
+      "work": "f1",
+      "suite": "fix",
+      "note": "浮石桥承重规则的确定违例。",
+      "draft": "聂檀殊和祁曜砂同时并肩站在赤弦渡的浮石桥上，桥面依照原本规则稳稳承住他们，完全没有下沉。",
+      "conflict_sentence": "聂檀殊和祁曜砂同时并肩站在赤弦渡的浮石桥上，桥面依照原本规则稳稳承住他们，完全没有下沉。",
+      "category": "world_rule",
+      "evidence_chapters": [
+        "第10章 桥上只容一个"
+      ],
+      "fix_idea": "改为两人先后通过，每次只留一人在桥上，或承认两人同时上桥就会下沉。"
+    },
+    {
+      "id": "a1cf-f1-fix-02",
+      "work": "f1",
+      "suite": "fix",
+      "note": "抵达后的识字能力不能沿用早期状态。",
+      "draft": "抵达悬汀洲后，祝嵊禾依然一个风字也不认识，任何短句都必须等旁人逐字读给她听。",
+      "conflict_sentence": "抵达悬汀洲后，祝嵊禾依然一个风字也不认识，任何短句都必须等旁人逐字读给她听。",
+      "category": "character_knowledge",
+      "evidence_chapters": [
+        "第25章 一行字走完"
+      ],
+      "fix_idea": "让她自行读懂短句；若还需要帮助，应限定为未学过的长句或陌生字，而非一个也不认识。"
+    },
+    {
+      "id": "a1cf-f1-follow-01",
+      "work": "f1",
+      "suite": "follow_up",
+      "note": "别名识人后只用代词追问。",
+      "first_question": "同行人里被叫作灰雀的是谁？",
+      "first_answer_points": [
+        "晏栖翎。"
+      ],
+      "question": "她把分岔路线画在哪一面，为什么不画在外头？",
+      "paraphrased": true,
+      "answer_points": [
+        "画在斗篷里衬。",
+        "避免外侧的炭痕被雨水冲掉。"
+      ],
+      "forbidden_claims": [
+        "画在斗篷外侧。",
+        "因保密而藏起路线。"
+      ],
+      "evidence_chapters": [
+        "第11章 没有落款的羽"
+      ],
+      "evidence_quotes": [
+        "晏栖翎把岔路画在斗篷里衬，免得雨水冲掉外侧留下的炭痕。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f1-follow-02",
+      "work": "f1",
+      "suite": "follow_up",
+      "note": "先由职责锁定人物，追问不带专名。",
+      "first_question": "一路上由谁负责挑地方让大伙宿营？",
+      "first_answer_points": [
+        "陆旻岫。"
+      ],
+      "question": "他靠近栖群时怎样让脚下安静些，想避免什么结果？",
+      "paraphrased": true,
+      "answer_points": [
+        "用布包住鞋底。",
+        "减少脚步声，防止惊散崖鸟栖群。"
+      ],
+      "forbidden_claims": [
+        "靠大声喊叫驱开鸟群。"
+      ],
+      "evidence_chapters": [
+        "第23章 鞋底留给夜色"
+      ],
+      "evidence_quotes": [
+        "陆旻岫用布包住鞋底再靠近崖鸟，减少脚步声以免惊散栖群。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-01",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "answerable_single",
+      "note": "选句锁定对照点负责人，区分丰茂程度与阴影因素。",
+      "selection": "许渟禾将外套挂在椅背上，又把滑下来的衣袖绕好。",
+      "question": "她挑了哪片水域作比较的基准，为什么选那里？",
+      "paraphrased": true,
+      "answer_points": [
+        "北湾浅水区。",
+        "那里不受遮棚阴影影响。"
+      ],
+      "forbidden_claims": [
+        "因为那里藻最多。",
+        "选择有遮棚的地方。"
+      ],
+      "evidence_chapters": [
+        "第8章 空着的浅水"
+      ],
+      "evidence_quotes": [
+        "许渟禾把北湾浅水区选作对照点，因为那里没有遮棚造成的阴影。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-02",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "answerable_single",
+      "note": "时间调整与观察目的要一并回答。",
+      "selection": "乔闻笙站到窗边，将挡住把手的窗帘推向一侧。",
+      "question": "她后来把夜里出发观察的时刻调到什么时候，想完整看见什么？",
+      "paraphrased": true,
+      "answer_points": [
+        "落潮前一小时。",
+        "要连续看清藻根逐渐露出的过程。"
+      ],
+      "forbidden_claims": [
+        "落潮结束后才开始。"
+      ],
+      "evidence_chapters": [
+        "第13章 落潮之前"
+      ],
+      "evidence_quotes": [
+        "乔闻笙将夜巡提前到落潮前一小时，为了连续看清藻根露出的过程。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-03",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "采样器的两端保管相隔15章。",
+      "selection": "珊窗采样盒平放在靠门的长凳上，透明盖面映出半扇窗。",
+      "question": "这件器材最初由谁负责，后来转给了谁？",
+      "paraphrased": true,
+      "answer_points": [
+        "最初由黎沐弢清点保管。",
+        "补测准备时转给许渟禾。"
+      ],
+      "forbidden_claims": [
+        "许渟禾从首次出航前就一直保管。"
+      ],
+      "evidence_chapters": [
+        "第1章 潮水没有等人",
+        "第16章 不把等待填满"
+      ],
+      "evidence_quotes": [
+        "珊窗采样盒在首次出航前交给黎沐弢，由他负责清点和保管。",
+        "珊窗采样盒在补测准备中交由许渟禾保管，由她清点各个分格。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-04",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "维修和借用不等于保管权变更。",
+      "question": "那台名叫折鳍的水下相机刚分配时归谁收着，进入影像整理阶段后又由谁管理？",
+      "paraphrased": true,
+      "answer_points": [
+        "开始由邵弈棠收存。",
+        "影像整理阶段交孟稚潞保管。"
+      ],
+      "forbidden_claims": [
+        "把维修人员当成最终保管人。",
+        "认为始终由邵弈棠保管。"
+      ],
+      "evidence_chapters": [
+        "第4章 沉下去的镜头",
+        "第22章 镜头交给旁边的人"
+      ],
+      "evidence_quotes": [
+        "折鳍水下相机在设备分配时交给邵弈棠，此后由他负责收存。",
+        "折鳍水下相机在影像整理阶段交由孟稚潞保管，她负责归箱和领取。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-05",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "answerable_multi",
+      "note": "定位工具的起始收存和末航接管。",
+      "question": "双扣定位盘最开始由谁存放，末次出船前换给谁看管了？",
+      "paraphrased": true,
+      "answer_points": [
+        "最开始由程雁衡收存。",
+        "末次航行前转交何泽珩。"
+      ],
+      "forbidden_claims": [
+        "何泽珩从头到尾都是保管人。"
+      ],
+      "evidence_chapters": [
+        "第9章 找不回的圆点",
+        "第27章 船头留下位置"
+      ],
+      "evidence_quotes": [
+        "双扣定位盘在定位工作开始时由程雁衡收存，她亲自装进防水袋。",
+        "双扣定位盘在末次航行前转由何泽珩保管，此后放在他的装备袋中。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-06",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "not_in_text",
+      "note": "职业行动不能代替私人缘由。",
+      "question": "何泽珩当初选择离岸生活，究竟有什么私人原因？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "编造家庭、收入或过去经历。",
+        "把当下负责船上协调等同于私人原因。"
+      ],
+      "evidence_chapters": []
+    },
+    {
+      "id": "a1cf-f2-qa-07",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "not_in_text",
+      "note": "经验不能反推首次主持时的年龄。",
+      "question": "程雁衡第一次带头主持海上调查时具体几岁？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "给出或推算任何确切年龄。"
+      ],
+      "evidence_chapters": []
+    },
+    {
+      "id": "a1cf-f2-qa-08",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "conflicting",
+      "note": "未切削的出厂几何外形矛盾。",
+      "question": "礁纹定位牌原来有几个角，书里的描述能对得上吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "对不上，前后不一致。",
+        "一处说三角形，另一处说六角形，均说从未切削。"
+      ],
+      "forbidden_claims": [
+        "唯一确定为三角或六角。",
+        "说后来削掉或添了角。"
+      ],
+      "evidence_chapters": [
+        "第6章 镜头不再亮",
+        "第19章 岸边的形状"
+      ],
+      "evidence_quotes": [
+        "礁纹定位牌出厂时就是三角形，边缘从未被切削。",
+        "礁纹定位牌出厂时就是六角形，边缘从未被切削。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-qa-09",
+      "work": "f2",
+      "suite": "qa",
+      "qa_type": "conflicting",
+      "note": "制成后未改造的支脚数矛盾。",
+      "question": "宿礁模型底下原本有几条一体成形的脚，前后有没有冲突？",
+      "paraphrased": true,
+      "answer_points": [
+        "有冲突。",
+        "一处三条，另一处四条，都说底座未改造。"
+      ],
+      "forbidden_claims": [
+        "自行选择一个数量当唯一答案。",
+        "说后来加装了支脚。"
+      ],
+      "evidence_chapters": [
+        "第10章 模型之外",
+        "第28章 模型还站着"
+      ],
+      "evidence_quotes": [
+        "宿礁模型从制成起就有三条连体支脚，底座从未改造。",
+        "宿礁模型从制成起就有四条连体支脚，底座从未改造。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-recap-01",
+      "work": "f2",
+      "suite": "recap",
+      "note": "天气中止仅是当日外湾调查，未结束整季。",
+      "upto_chapter": 15,
+      "draft_opening": "泊位旁新放了一排黄色雨靴。黎沐弢从其中一双上挪开了空袋，回头看向同伴。",
+      "must_mention": [
+        {
+          "id": "end",
+          "kind": "previous_ending",
+          "text": "外湾当天调查被突风打断，船已回泊，大家等待下次适航天气。",
+          "evidence_chapters": [
+            "第15章 风把船推回去"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "黎沐弢仍是临时调查协作员，还不是研究组正式成员。",
+          "evidence_chapters": [
+            "第2章 不在名单中"
+          ]
+        },
+        {
+          "id": "thread",
+          "kind": "open_thread",
+          "text": "旧码头灯忽明忽暗的原因还没有查清。",
+          "evidence_chapters": [
+            "第9章 找不回的圆点"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "下一步要检查器材，并安排天气好转后的补测次序。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "泊位新摆了一排黄雨靴。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "藻片白点仍被视作未明病斑。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "相机已经修复并通过检查。"
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-recap-02",
+      "work": "f2",
+      "suite": "recap",
+      "note": "终章尚未发布总结，不把资料开放当总结会已完成。",
+      "upto_chapter": 30,
+      "draft_opening": "食堂窗下新挂了一串紫色纸风铃。孟稚潞把靠近门口的椅子转向来客。",
+      "must_mention": [
+        {
+          "id": "end",
+          "kind": "previous_ending",
+          "text": "本季调查结束，洄星站已摆好座椅，等居民来听尚未发布的总结。",
+          "evidence_chapters": [
+            "第30章 把空椅子留下"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "黎沐弢已经成为研究组正式成员，不再是临时协作员。",
+          "evidence_chapters": [
+            "第23章 名字落进名单"
+          ]
+        },
+        {
+          "id": "thread",
+          "kind": "open_thread",
+          "text": "外缘新幼芽的种类还不清楚，不能据此宣布藻床恢复。",
+          "evidence_chapters": [
+            "第29章 还没有命名的幼芽"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "接下来向居民说明本季发现与限制，再收集下一季要追踪的问题。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "窗下已经新增紫色纸风铃。"
+        },
+        {
+          "kind": "stale_state",
+          "text": "黎沐弢仍只以临时协作员身份工作。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "旧码头灯闪烁仍是没有查清的异常。"
+        }
+      ]
+    },
+    {
+      "id": "a1cf-f2-fix-01",
+      "work": "f2",
+      "suite": "fix",
+      "note": "固定惯用手的确定属性违例。",
+      "draft": "孟稚潞天生惯用右手，她平日写字与拿单手工具始终只用右手，左手从来不熟练。",
+      "conflict_sentence": "孟稚潞天生惯用右手，她平日写字与拿单手工具始终只用右手，左手从来不熟练。",
+      "category": "attribute",
+      "evidence_chapters": [
+        "第7章 左边的空椅"
+      ],
+      "fix_idea": "把惯用手改回左手，或只写一次临时换右手的动作，不否定原有习惯。"
+    },
+    {
+      "id": "a1cf-f2-fix-02",
+      "work": "f2",
+      "suite": "fix",
+      "note": "调查结束前的封闭事件被旁白否认。",
+      "draft": "本季调查最后一天，雁尾栈道从未关闭，何泽珩照常带人从那里前往外湾。",
+      "conflict_sentence": "本季调查最后一天，雁尾栈道从未关闭，何泽珩照常带人从那里前往外湾。",
+      "category": "event_status",
+      "evidence_chapters": [
+        "第20章 路终于封上"
+      ],
+      "fix_idea": "承认栈道已封闭，让一行人走已获允许的沿岸绕行路线。"
+    },
+    {
+      "id": "a1cf-f2-follow-01",
+      "work": "f2",
+      "suite": "follow_up",
+      "note": "先别名锁定，追问旧照片展示方式。",
+      "first_question": "大家说的海豆是哪位同伴？",
+      "first_answer_points": [
+        "邵弈棠。"
+      ],
+      "question": "他把那些旧影像展示在什么地方，这样做想让围坐的人方便做什么？",
+      "paraphrased": true,
+      "answer_points": [
+        "投到白墙上。",
+        "让围坐的人能同时指出误读的位置。"
+      ],
+      "forbidden_claims": [
+        "只给一人看个人屏幕。",
+        "说这是修复前用受潮相机新拍的影像。"
+      ],
+      "evidence_chapters": [
+        "第11章 墙上的浪纹"
+      ],
+      "evidence_quotes": [
+        "邵弈棠把旧照片投在白墙上，让围坐的人能同时指出看错的位置。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1cf-f2-follow-02",
+      "work": "f2",
+      "suite": "follow_up",
+      "note": "职责确定人物，追问拒签及补足信息。",
+      "first_question": "选定藻床观察参照地的是谁？",
+      "first_answer_points": [
+        "许渟禾。"
+      ],
+      "question": "她起先为什么不肯签那张汇总表，后来补看了什么才落笔？",
+      "paraphrased": true,
+      "answer_points": [
+        "缺少夜间退水观察。",
+        "补看当夜现场记录后才签字。"
+      ],
+      "forbidden_claims": [
+        "认为只是忘带笔。",
+        "说没有补任何观察就签了。"
+      ],
+      "evidence_chapters": [
+        "第24章 少了一个夜晚"
+      ],
+      "evidence_quotes": [
+        "许渟禾因缺少夜间退水观察而拒签汇总表，补看当夜现场记录后才签字。"
+      ],
+      "deep": true
+    }
+  ]
+}

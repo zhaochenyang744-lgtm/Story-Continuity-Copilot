@@ -1,0 +1,1566 @@
+{
+  "set_id": "a1c4-formal",
+  "position_convention": "1-based first Han, headings excluded",
+  "works": [
+    {
+      "characters": [
+        {
+          "name": "谈霁禾",
+          "aliases": [
+            "禾弦"
+          ]
+        },
+        {
+          "name": "祁照眠",
+          "aliases": [
+            "眠尺"
+          ]
+        },
+        {
+          "name": "谢允铎",
+          "aliases": [
+            "铎尾"
+          ]
+        },
+        {
+          "name": "温宥真",
+          "aliases": []
+        },
+        {
+          "name": "樊澄序",
+          "aliases": []
+        },
+        {
+          "name": "陆栖砚",
+          "aliases": []
+        },
+        {
+          "name": "霍予笺",
+          "aliases": []
+        },
+        {
+          "name": "苏望弥",
+          "aliases": []
+        },
+        {
+          "name": "欧竞迟",
+          "aliases": []
+        },
+        {
+          "name": "佟绾慈",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "嵌雾钥片",
+          "chapter": 5,
+          "quote": "谈霁禾把嵌雾钥片交给了祁照眠。"
+        },
+        {
+          "object": "折辉量环",
+          "chapter": 10,
+          "quote": "谢允铎把折辉量环交给了温宥真。"
+        },
+        {
+          "object": "赤缝护套",
+          "chapter": 16,
+          "quote": "陆栖砚把赤缝护套交给了樊澄序。"
+        },
+        {
+          "object": "折辉量环",
+          "chapter": 18,
+          "quote": "温宥真把折辉量环交给了苏望弥。"
+        },
+        {
+          "object": "嵌雾钥片",
+          "chapter": 21,
+          "quote": "祁照眠把嵌雾钥片交给了陆栖砚。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "谈霁禾",
+          "before_chapter": 2,
+          "after_chapter": 17,
+          "before_quote": "谈霁禾是无投票权的见习员。",
+          "after_quote": "谈霁禾获得居民授权，成为有投票权的临时席位代表。"
+        },
+        {
+          "subject": "祁照眠",
+          "before_chapter": 3,
+          "after_chapter": 14,
+          "before_quote": "祁照眠的右腕因扭伤固定，无法握紧扳手。",
+          "after_quote": "祁照眠已拆掉右腕固定，并恢复了握力。"
+        },
+        {
+          "subject": "温宥真",
+          "before_chapter": 8,
+          "after_chapter": 19,
+          "before_quote": "温宥真没有进入配光隔间的权限。",
+          "after_quote": "温宥真获得了进入配光隔间的权限，并亲自签下现场参与的风险确认。"
+        },
+        {
+          "subject": "霍予笺",
+          "before_chapter": 9,
+          "after_chapter": 23,
+          "before_quote": "霍予笺暂时停接申诉。",
+          "after_quote": "霍予笺恢复了申诉接线，开始受理新的申诉。"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            6,
+            24
+          ],
+          "quotes": [
+            "欧竞迟出生在砾穹舱。",
+            "欧竞迟出生在箭河舱。"
+          ]
+        },
+        {
+          "chapters": [
+            9,
+            27
+          ],
+          "quotes": [
+            "佟绾慈初次制成鸢纹佩时，佩上装了五枚骨珠。",
+            "佟绾慈初次制成鸢纹佩时，佩上装了七枚骨珠。"
+          ]
+        }
+      ],
+      "key": "w01",
+      "threads": [
+        {
+          "title": "光幕边缘半格空白的来由",
+          "planted_chapter": 4,
+          "status": "resolved",
+          "resolved_chapter": 12
+        },
+        {
+          "title": "凌晨两次应答由谁发出",
+          "planted_chapter": 6,
+          "status": "open"
+        },
+        {
+          "title": "悼念时段从排班上消失的原因",
+          "planted_chapter": 10,
+          "status": "resolved",
+          "resolved_chapter": 26
+        },
+        {
+          "title": "支持书最后一人撤签的动机",
+          "planted_chapter": 13,
+          "status": "open"
+        }
+      ]
+    },
+    {
+      "characters": [
+        {
+          "name": "闻予珂",
+          "aliases": [
+            "珂页"
+          ]
+        },
+        {
+          "name": "岑砚岚",
+          "aliases": [
+            "岚扣"
+          ]
+        },
+        {
+          "name": "罗见浔",
+          "aliases": [
+            "浔桥"
+          ]
+        },
+        {
+          "name": "夏允棠",
+          "aliases": []
+        },
+        {
+          "name": "白知穆",
+          "aliases": []
+        },
+        {
+          "name": "邵庭葵",
+          "aliases": []
+        },
+        {
+          "name": "梁霁岑",
+          "aliases": []
+        },
+        {
+          "name": "莫衍初",
+          "aliases": []
+        },
+        {
+          "name": "庄棣遥",
+          "aliases": []
+        },
+        {
+          "name": "尹择梨",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "笛纹夹签",
+          "chapter": 5,
+          "quote": "闻予珂把笛纹夹签从清单上取下，交给邵庭葵。"
+        },
+        {
+          "object": "蓝棱纸镇",
+          "chapter": 9,
+          "quote": "梁霁岑从自己桌上取起蓝棱纸镇，交给夏允棠。"
+        },
+        {
+          "object": "双孔片尺",
+          "chapter": 12,
+          "quote": "罗见浔把断成两截的双孔片尺交给闻予珂，闻予珂接下两截，放进自己腾好的文件盒里保存。"
+        },
+        {
+          "object": "蓝棱纸镇",
+          "chapter": 19,
+          "quote": "夏允棠将蓝棱纸镇交给莫衍初。"
+        },
+        {
+          "object": "笛纹夹签",
+          "chapter": 21,
+          "quote": "邵庭葵从自己的随身包里取出笛纹夹签，扣在掌心试了试，交给岑砚岚。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "岑砚岚",
+          "before_chapter": 1,
+          "after_chapter": 16,
+          "before_quote": "岑砚岚此时只是无学分的旁听生，参加夜课不能获得课程学分。",
+          "after_quote": "岑砚岚现在是正式注册学生，可以获得所选课程的学分，这项资格从本次登记确认后生效。"
+        },
+        {
+          "subject": "罗见浔",
+          "before_chapter": 4,
+          "after_chapter": 18,
+          "before_quote": "罗见浔自昨夜起已经失声，不能正常说话，只能用纸笔沟通；那张就诊单上记录的也是他眼下的状况。",
+          "after_quote": "罗见浔的嗓音已经恢复，能够正常交谈。"
+        },
+        {
+          "subject": "夏允棠",
+          "before_chapter": 8,
+          "after_chapter": 22,
+          "before_quote": "此时夏允棠没有独自借用讨论室的权限，不能以自己的身份单独完成那项预约。",
+          "after_quote": "夏允棠已经取得讨论室的独立预约资格，可以用自己的身份单独预约和负责借还，不需借用他人的账号或以他人名义提交。"
+        },
+        {
+          "subject": "白知穆",
+          "before_chapter": 10,
+          "after_chapter": 25,
+          "before_quote": "白知穆因需要回避这场争议，暂时离开了课题召集席，不再主持目前的课题讨论。",
+          "after_quote": "在参与者同意后，白知穆恢复了课题召集资格，可以负责接下来课题讨论的召集与组织"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            6,
+            26
+          ],
+          "quotes": [
+            "庄棣遥第一次领取助学补贴的地点是承序院。",
+            "庄棣遥第一次领取助学补贴的地点是漫槐院。"
+          ]
+        },
+        {
+          "chapters": [
+            10,
+            28
+          ],
+          "quotes": [
+            "尹择梨第一次提交退修申请时，年龄是二十二岁。",
+            "尹择梨第一次提交退修申请时，年龄是二十四岁。"
+          ]
+        }
+      ],
+      "key": "w02",
+      "threads": [
+        {
+          "title": "讲义脚注被删的缘由",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "双订孔便笺是谁放下的",
+          "planted_chapter": 6,
+          "status": "open"
+        },
+        {
+          "title": "课表多出一周空档的来由",
+          "planted_chapter": 8,
+          "status": "resolved",
+          "resolved_chapter": 24
+        },
+        {
+          "title": "尚未拆开的退修回函要求重写什么",
+          "planted_chapter": 12,
+          "status": "open"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a1c4f-w01-qa-01",
+      "rationale": "选中人物，问稳定的惯用手，干扰来自同章其他人的动作。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 另一边的把手",
+          "text": "谈霁禾惯用左手。她在水台旁将这个事实直截了当地写进下午的配合记录",
+          "han_position": 2699
+        }
+      ],
+      "paraphrase": {
+        "source": "谈霁禾惯用左手。她在水台旁将这个事实直截了当地写进下午的配合记录",
+        "question": "她平常用哪一边的手更顺？"
+      }
+    },
+    {
+      "id": "a1c4f-w01-qa-02",
+      "rationale": "问换向的稳定限制，不把当前一次停照误当永久规则。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 换向以前",
+          "text": "樊澄序负责的人工光幕受能耗阈值约束，同一段光幕换向前必须熄灭九分钟，不能同时照两层。",
+          "han_position": 2523
+        }
+      ],
+      "paraphrase": {
+        "source": "樊澄序负责的人工光幕受能耗阈值约束，同一段光幕换向前必须熄灭九分钟，不能同时照两层。",
+        "question": "人工照明换到另一面之前，中间必须留出多长的全暗时段？"
+      }
+    },
+    {
+      "id": "a1c4f-w01-qa-03",
+      "rationale": "两个资格截面相隔十五章，任何一章不能给出整个前后对照。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第2章 门外一席",
+          "text": "谈霁禾是无投票权的见习员。",
+          "han_position": 2748
+        },
+        {
+          "chapter": "第17章 把不同意留下",
+          "text": "谈霁禾获得居民授权，成为有投票权的临时席位代表。",
+          "han_position": 2643
+        }
+      ],
+      "paraphrase": {
+        "source": "谈霁禾是无投票权的见习员。；谈霁禾获得居民授权，成为有投票权的临时席位代表。",
+        "question": "禾弦最初参加公共决策时有没有表决资格，后半段取得的席位又是什么身份？"
+      },
+      "multi_chapter_necessity": "第2章给出见习员无投票权，第17章给出临时席位代表有投票权；后章没有将早期身份与新身份并列复述。"
+    },
+    {
+      "id": "a1c4f-w01-qa-04",
+      "rationale": "手腕两个截面相隔十一章，需分别核实。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第3章 留在表上的空位",
+          "text": "祁照眠的右腕因扭伤固定，无法握紧扳手。",
+          "han_position": 2831
+        },
+        {
+          "chapter": "第14章 回来以后",
+          "text": "祁照眠已拆掉右腕固定，并恢复了握力。",
+          "han_position": 2679
+        }
+      ],
+      "paraphrase": {
+        "source": "祁照眠的右腕因扭伤固定，无法握紧扳手。；祁照眠已拆掉右腕固定，并恢复了握力。",
+        "question": "眠尺伤后拿工具遇到什么限制，拆除固定物以后又能不能握稳了？"
+      },
+      "multi_chapter_necessity": "第3章提供右腕扭伤固定及握不紧扳手，第14章提供拆除固定后握力恢复；恢复章不重述最初的具体工具限制。"
+    },
+    {
+      "id": "a1c4f-w01-qa-05",
+      "rationale": "选中物件，两次交接的双方须分别查远隔章节，后章未汇总首次来源。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第5章 柜门以内",
+          "text": "谈霁禾把嵌雾钥片交给了祁照眠。",
+          "han_position": 2648
+        },
+        {
+          "chapter": "第21章 等过的时刻不能退回",
+          "text": "祁照眠把嵌雾钥片交给了陆栖砚。",
+          "han_position": 2730
+        }
+      ],
+      "paraphrase": {
+        "source": "谈霁禾把嵌雾钥片交给了祁照眠。；祁照眠把嵌雾钥片交给了陆栖砚。",
+        "question": "这件东西前后两次转交，分别是谁交给谁的？"
+      },
+      "multi_chapter_necessity": "第5章只写谈霁禾交给祁照眠，第21章只写祁照眠交给陆栖砚，后次交接不追述第一次来源。"
+    },
+    {
+      "id": "a1c4f-w01-qa-06",
+      "rationale": "相关现象存在，但全书没有确认发声者。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 谁在回答",
+          "text": "凌晨连续两次无主应答声仍没有找到发声者，谈霁禾也不知道发声的缘由。",
+          "han_position": 2852
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-qa-07",
+      "rationale": "撤签动机截至完结仍无解释，不把支持书的内容误当原因。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第13章 不必替我说完",
+          "text": "支持书最后一名签字者已经撤回原签名与授权，末栏因此留白；那人为什么撤签，谈霁禾和在场的人都不知道。",
+          "han_position": 2603
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-qa-08",
+      "rationale": "同一人物不可随时间改变的出生地点，有意保留互斥叙述。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 谁在回答",
+          "text": "欧竞迟出生在砾穹舱。",
+          "han_position": 2714
+        },
+        {
+          "chapter": "第24章 不把椅子留空",
+          "text": "欧竞迟出生在箭河舱。",
+          "han_position": 2683
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-qa-09",
+      "rationale": "比较初次制成时的同一物件，不能解释成后来添珠。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第9章 响过以后",
+          "text": "佟绾慈初次制成鸢纹佩时，佩上装了五枚骨珠。",
+          "han_position": 2712
+        },
+        {
+          "chapter": "第27章 吃到最后的人",
+          "text": "佟绾慈初次制成鸢纹佩时，佩上装了七枚骨珠。",
+          "han_position": 2653
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-fix-01",
+      "rationale": "新草稿由叙述者直白写出相反的惯用手，人物不属于有意矛盾组。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 另一边的把手",
+          "text": "谈霁禾惯用左手。她在水台旁将这个事实直截了当地写进下午的配合记录",
+          "han_position": 2699
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-fix-02",
+      "rationale": "直白违反同一设备换向的硬约束，不涉及时序推理。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 换向以前",
+          "text": "樊澄序负责的人工光幕受能耗阈值约束，同一段光幕换向前必须熄灭九分钟，不能同时照两层。",
+          "han_position": 2523
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-follow-01",
+      "rationale": "第一问识别隔间被拦者，追问只问后来的权限。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第19章 自己的名字",
+          "text": "温宥真获得了进入配光隔间的权限，并亲自签下现场参与的风险确认。",
+          "han_position": 2695
+        }
+      ],
+      "paraphrase": {
+        "source": "温宥真获得了进入配光隔间的权限，并亲自签下现场参与的风险确认。",
+        "question": "她后来能进入那个隔间了吗？"
+      },
+      "first_evidence_chapters": [
+        "第8章 不能盛出的数目"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第8章 不能盛出的数目",
+          "text": "温宥真没有进入配光隔间的权限。",
+          "han_position": 2746
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-follow-02",
+      "rationale": "第一问识别停接申诉的人，追问靠对话指代查后续。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第23章 不替你说满意",
+          "text": "霍予笺恢复了申诉接线，开始受理新的申诉。",
+          "han_position": 2626
+        }
+      ],
+      "paraphrase": {
+        "source": "霍予笺恢复了申诉接线，开始受理新的申诉。",
+        "question": "他后面恢复接听了没有？"
+      },
+      "first_evidence_chapters": [
+        "第9章 响过以后"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第9章 响过以后",
+          "text": "霍予笺暂时停接申诉。",
+          "han_position": 2583
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-01",
+      "rationale": "selection确定两个人，问题不再写任何姓名，关系有明确叙述。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 一张能吃饭的桌子",
+          "text": "闻予珂与夏允棠是同届入校的同学，不是姐妹，两人之间也没有亲属关系。",
+          "han_position": 2549
+        }
+      ],
+      "paraphrase": {
+        "source": "闻予珂与夏允棠是同届入校的同学，不是姐妹，两人之间也没有亲属关系。",
+        "question": "这两个人在校期间是什么关系？"
+      }
+    },
+    {
+      "id": "a1c4f-w02-qa-02",
+      "rationale": "selection指物件，问破损状态，不被同章其他尺具干扰。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 留一道边",
+          "text": "罗见浔带来的双孔片尺已经断成两截，断口分开，不能作为一根完整尺子使用。",
+          "han_position": 2568
+        }
+      ],
+      "paraphrase": {
+        "source": "罗见浔带来的双孔片尺已经断成两截，断口分开，不能作为一根完整尺子使用。",
+        "question": "它现在还可以当一整根尺子画线吗？"
+      }
+    },
+    {
+      "id": "a1c4f-w02-qa-03",
+      "rationale": "旁听与正式注册两个截面相隔十五章，后章不回述原资格。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第1章 留在桌上的一页",
+          "text": "岑砚岚此时只是无学分的旁听生，参加夜课不能获得课程学分。",
+          "han_position": 2614
+        },
+        {
+          "chapter": "第16章 她自己的格子",
+          "text": "岑砚岚现在是正式注册学生，可以获得所选课程的学分，这项资格从本次登记确认后生效。",
+          "han_position": 2567
+        }
+      ],
+      "paraphrase": {
+        "source": "岑砚岚此时只是无学分的旁听生，参加夜课不能获得课程学分。；岑砚岚现在是正式注册学生，可以获得所选课程的学分，这项资格从本次登记确认后生效。",
+        "question": "岚扣刚来夜课时能否获得学分，后来注册完成后又怎样？"
+      },
+      "multi_chapter_necessity": "第1章提供无学分旁听身份，第16章提供正式注册后可得学分资格；后章不补述最初资格。"
+    },
+    {
+      "id": "a1c4f-w02-qa-04",
+      "rationale": "失声及恢复两个截面分散，不能靠一个恢复场景回答原来如何沟通。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第4章 点头以后",
+          "text": "罗见浔自昨夜起已经失声，不能正常说话，只能用纸笔沟通；那张就诊单上记录的也是他眼下的状况。",
+          "han_position": 2559
+        },
+        {
+          "chapter": "第18章 想说完的一句话",
+          "text": "罗见浔的嗓音已经恢复，能够正常交谈。",
+          "han_position": 2666
+        }
+      ],
+      "paraphrase": {
+        "source": "罗见浔自昨夜起已经失声，不能正常说话，只能用纸笔沟通；那张就诊单上记录的也是他眼下的状况。；罗见浔的嗓音已经恢复，能够正常交谈。",
+        "question": "浔桥说不出话的那段时间靠什么表达，嗓音恢复以后能否正常交谈？"
+      },
+      "multi_chapter_necessity": "第4章提供失声时使用纸笔的具体表达方式，第18章提供嗓音恢复；恢复章不重述先前的表达方法。"
+    },
+    {
+      "id": "a1c4f-w02-qa-05",
+      "rationale": "两次交接分属远隔章节，必须分别回答每次的交出者与接收者。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第5章 末班车之前",
+          "text": "闻予珂把笛纹夹签从清单上取下，交给邵庭葵。",
+          "han_position": 2643
+        },
+        {
+          "chapter": "第21章 不用等机器停",
+          "text": "邵庭葵从自己的随身包里取出笛纹夹签，扣在掌心试了试，交给岑砚岚。",
+          "han_position": 2646
+        }
+      ],
+      "paraphrase": {
+        "source": "闻予珂把笛纹夹签从清单上取下，交给邵庭葵。；邵庭葵从自己的随身包里取出笛纹夹签，扣在掌心试了试，交给岑砚岚。",
+        "question": "笛纹夹签的两次移交，每次分别是谁交给谁的？"
+      },
+      "multi_chapter_necessity": "第5章只写闻予珂交给邵庭葵，第21章只写邵庭葵交给岑砚岚；后章不重述最早交出者。"
+    },
+    {
+      "id": "a1c4f-w02-qa-06",
+      "rationale": "匿名便笺存在，作者身份没有被正文确认。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 没有落款",
+          "text": "便笺是谁放下的，闻予珂仍然不知道。",
+          "han_position": 2794
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-07",
+      "rationale": "回函始终未拆，没有可供回答的具体退修要求。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第12章 封口完整",
+          "text": "退修回函里面究竟要求哪一部分重写，闻予珂还不知道；她没有隔着信封猜",
+          "han_position": 2743
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-08",
+      "rationale": "同一个第一次领补贴的地点，两处确定叙述互斥。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 没有落款",
+          "text": "庄棣遥第一次领取助学补贴的地点是承序院。",
+          "han_position": 2598
+        },
+        {
+          "chapter": "第26章 把名字读一遍",
+          "text": "庄棣遥第一次领取助学补贴的地点是漫槐院。",
+          "han_position": 2560
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-09",
+      "rationale": "比较第一次提交同一申请时的年龄，时间推移不能解释差值。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第10章 主持人的空位",
+          "text": "尹择梨第一次提交退修申请时，年龄是二十二岁。",
+          "han_position": 2737
+        },
+        {
+          "chapter": "第28章 那封信还在",
+          "text": "尹择梨第一次提交退修申请时，年龄是二十四岁。",
+          "han_position": 2537
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-fix-01",
+      "rationale": "新草稿直白写成亲姐妹，稳定依据具名且无亲属关系。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 一张能吃饭的桌子",
+          "text": "闻予珂与夏允棠是同届入校的同学，不是姐妹，两人之间也没有亲属关系。",
+          "han_position": 2549
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-fix-02",
+      "rationale": "新草稿把已折断且未修复的唯一物件写成完好。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 留一道边",
+          "text": "罗见浔带来的双孔片尺已经断成两截，断口分开，不能作为一根完整尺子使用。",
+          "han_position": 2568
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-follow-01",
+      "rationale": "第一问识别借房受限者，追问只用指代问后来资格。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第22章 一把没有坐人的椅子",
+          "text": "夏允棠已经取得讨论室的独立预约资格，可以用自己的身份单独预约和负责借还，不需借用他人的账号或以他人名义提交。",
+          "han_position": 2614
+        }
+      ],
+      "paraphrase": {
+        "source": "夏允棠已经取得讨论室的独立预约资格，可以用自己的身份单独预约和负责借还，不需借用他人的账号或以他人名义提交。",
+        "question": "她后来能独立预约那个房间了吗？"
+      },
+      "first_evidence_chapters": [
+        "第8章 空出来的一周"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第8章 空出来的一周",
+          "text": "此时夏允棠没有独自借用讨论室的权限，不能以自己的身份单独完成那项预约。",
+          "han_position": 2763
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-follow-02",
+      "rationale": "第一问识别回避离席者，追问依据后段恢复事件。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第25章 由谁来叫下一声",
+          "text": "在参与者同意后，白知穆恢复了课题召集资格，可以负责接下来课题讨论的召集与组织",
+          "han_position": 2655
+        }
+      ],
+      "paraphrase": {
+        "source": "在参与者同意后，白知穆恢复了课题召集资格，可以负责接下来课题讨论的召集与组织",
+        "question": "他之后有没有重新担任召集人？"
+      },
+      "first_evidence_chapters": [
+        "第10章 主持人的空位"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第10章 主持人的空位",
+          "text": "白知穆因需要回避这场争议，暂时离开了课题召集席，不再主持目前的课题讨论。",
+          "han_position": 2559
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-recap-01",
+      "rationale": "截止十五章，仅提供下一章计划；两条未知线索须具体说清未知的是什么。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 留在桌边",
+          "text": "陆栖砚把附着新方案、尚未获清洁班签字的支持书留在议事桌上，要求次日先听清洁班的意见。",
+          "han_position": 2579
+        },
+        {
+          "chapter": "第14章 回来以后",
+          "text": "祁照眠已拆掉右腕固定，并恢复了握力。",
+          "han_position": 2679
+        },
+        {
+          "chapter": "第6章 谁在回答",
+          "text": "凌晨连续两次无主应答声仍没有找到发声者，谈霁禾也不知道发声的缘由。",
+          "han_position": 2852
+        },
+        {
+          "chapter": "第13章 不必替我说完",
+          "text": "支持书最后一名签字者已经撤回原签名与授权，末栏因此留白；那人为什么撤签，谈霁禾和在场的人都不知道。",
+          "han_position": 2603
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-recap-02",
+      "rationale": "截止三十章，保持代表资格的当前状态，明确两个未解问题；不从共享草稿采事实。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 等下一班",
+          "text": "谈霁禾在换向前熄灭的黑暗中等候。陆栖砚扶住新时刻表，笔仍夹在纸边，让下一班自己决定是否签收。",
+          "han_position": 2647
+        },
+        {
+          "chapter": "第17章 把不同意留下",
+          "text": "谈霁禾获得居民授权，成为有投票权的临时席位代表。",
+          "han_position": 2643
+        },
+        {
+          "chapter": "第6章 谁在回答",
+          "text": "凌晨连续两次无主应答声仍没有找到发声者，谈霁禾也不知道发声的缘由。",
+          "han_position": 2852
+        },
+        {
+          "chapter": "第13章 不必替我说完",
+          "text": "支持书最后一名签字者已经撤回原签名与授权，末栏因此留白；那人为什么撤签，谈霁禾和在场的人都不知道。",
+          "han_position": 2603
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-recap-01",
+      "rationale": "截止十五章，当前失声状态与两个具体未解点，下一章尚未进行。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 讲台边的位置",
+          "text": "岑砚岚把自己的修改意见扣在讲台边，众人约定下一次先让夜课参与者逐条发言。",
+          "han_position": 2597
+        },
+        {
+          "chapter": "第4章 点头以后",
+          "text": "罗见浔自昨夜起已经失声，不能正常说话，只能用纸笔沟通；那张就诊单上记录的也是他眼下的状况。",
+          "han_position": 2559
+        },
+        {
+          "chapter": "第6章 没有落款",
+          "text": "便笺是谁放下的，闻予珂仍然不知道。",
+          "han_position": 2794
+        },
+        {
+          "chapter": "第12章 封口完整",
+          "text": "退修回函里面究竟要求哪一部分重写，闻予珂还不知道；她没有隔着信封猜",
+          "han_position": 2743
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-recap-02",
+      "rationale": "截止三十章，注册资格当前有效，两个未解点须具体表达。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 空栏",
+          "text": "闻予珂把待签的公开说明翻到空栏，岑砚岚坐回讲台对面，等缺席者自己的答复。",
+          "han_position": 2921
+        },
+        {
+          "chapter": "第16章 她自己的格子",
+          "text": "岑砚岚现在是正式注册学生，可以获得所选课程的学分，这项资格从本次登记确认后生效。",
+          "han_position": 2567
+        },
+        {
+          "chapter": "第6章 没有落款",
+          "text": "便笺是谁放下的，闻予珂仍然不知道。",
+          "han_position": 2794
+        },
+        {
+          "chapter": "第12章 封口完整",
+          "text": "退修回函里面究竟要求哪一部分重写，闻予珂还不知道；她没有隔着信封猜",
+          "han_position": 2743
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer_not_author": true,
+    "status": "completed",
+    "reviewed_chapter_counts": {
+      "w01": 30,
+      "w02": 30
+    },
+    "reviewed_task_counts": {
+      "w01": 15,
+      "w02": 15
+    },
+    "unresolved_unintentional_conflicts": 0,
+    "reviewed_source_sha256": {
+      "w01": "57b0ea162cf1da01736e31c461ad66ea9ba19f6541df5ee90a00eaeaba8104e1",
+      "w02": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a"
+    },
+    "reviewed_tasks_sha256": "b5a0d5bbc8eb4578d2920521b429fd808e6846eb2c9e81e90eaed485dbf43314",
+    "findings": [
+      {
+        "id": "W01-R1",
+        "scope": "new_name_inventory",
+        "severity": "required_audit_fix",
+        "status": "closed",
+        "evidence": "formal-metadata.json shared_draft.draft_only_fact and recap-tasks-plan.json recap-02 contain the new plant name 斜星期; w01.names omits it.",
+        "reason": "The user requires all newly introduced proper names, including draft-only names, in the cross-set name-overlap audit. Adding this draft-only name to names would fail existing names_in_source, so maintain a separate complete audit inventory.",
+        "source_conflict": false,
+        "resolution": "assemble_formal.py now emits separate proper_name_inventory with source_names, title and draft_only_names including 斜星期; audit.py consumes this inventory. Final serialized inventory will be checked with actual tasks.",
+        "final_serialized_verification": true
+      },
+      {
+        "id": "W01-R2",
+        "scope": "draft_task:a1c4f-w01-qa-05",
+        "severity": "semantic_risk",
+        "status": "closed",
+        "evidence": "Question asks only the receiver of each transfer; chapter 21 shows prior holder 祁照眠 transferring to 陆栖砚, but does not say the first transfer came from 谈霁禾.",
+        "reason": "The two full gold transfer chains require chapter 5 and chapter 21. The narrower question may let a respondent infer the two receiver names from chapter 21 alone; author should decide whether to align the question with both complete chains.",
+        "source_conflict": false,
+        "resolution": "The revised question explicitly asks who handed the object to whom in each of the two transfers. Chapter 21 does not give the first source person 谈霁禾; chapters 5 and 21 are both necessary for the full requested chains.",
+        "final_serialized_verification": true
+      },
+      {
+        "id": "W02-I001",
+        "chapter": 16,
+        "category": "within_chapter_action_continuity",
+        "status": "closed",
+        "author_revision_received": true,
+        "complete_revised_chapter_reread": true,
+        "closure_source_sha256": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a"
+      }
+    ],
+    "per_work": [
+      {
+        "set_id": "a1c4-formal",
+        "work": "w01",
+        "reviewer_not_author": true,
+        "status": "completed",
+        "reviewed_source_sha256": "57b0ea162cf1da01736e31c461ad66ea9ba19f6541df5ee90a00eaeaba8104e1",
+        "reviewed_tasks_sha256": "b5a0d5bbc8eb4578d2920521b429fd808e6846eb2c9e81e90eaed485dbf43314",
+        "reviewed_w01_tasks_canonical_sha256": "cdee1a6260229f830efb01bbfb80720b091345ff157753c11f75b0069f2fcf82",
+        "reviewed_w01_metadata_canonical_sha256": "15f9ec3bd152b48b3894eda97023bf695098db4b61eeaf6abc9990549948be68",
+        "reviewed_chapter_count": 30,
+        "reviewed_chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "reviewed_task_count": 15,
+        "reviewed_task_ids": [
+          "a1c4f-w01-qa-01",
+          "a1c4f-w01-qa-02",
+          "a1c4f-w01-qa-03",
+          "a1c4f-w01-qa-04",
+          "a1c4f-w01-qa-05",
+          "a1c4f-w01-qa-06",
+          "a1c4f-w01-qa-07",
+          "a1c4f-w01-qa-08",
+          "a1c4f-w01-qa-09",
+          "a1c4f-w01-fix-01",
+          "a1c4f-w01-fix-02",
+          "a1c4f-w01-follow-01",
+          "a1c4f-w01-follow-02",
+          "a1c4f-w01-recap-01",
+          "a1c4f-w01-recap-02"
+        ],
+        "unresolved_unintentional_conflicts": 0,
+        "findings": [
+          {
+            "id": "W01-R1",
+            "scope": "new_name_inventory",
+            "severity": "required_audit_fix",
+            "status": "closed",
+            "evidence": "formal-metadata.json shared_draft.draft_only_fact and recap-tasks-plan.json recap-02 contain the new plant name 斜星期; w01.names omits it.",
+            "reason": "The user requires all newly introduced proper names, including draft-only names, in the cross-set name-overlap audit. Adding this draft-only name to names would fail existing names_in_source, so maintain a separate complete audit inventory.",
+            "source_conflict": false,
+            "resolution": "assemble_formal.py now emits separate proper_name_inventory with source_names, title and draft_only_names including 斜星期; audit.py consumes this inventory. Final serialized inventory will be checked with actual tasks.",
+            "final_serialized_verification": true
+          },
+          {
+            "id": "W01-R2",
+            "scope": "draft_task:a1c4f-w01-qa-05",
+            "severity": "semantic_risk",
+            "status": "closed",
+            "evidence": "Question asks only the receiver of each transfer; chapter 21 shows prior holder 祁照眠 transferring to 陆栖砚, but does not say the first transfer came from 谈霁禾.",
+            "reason": "The two full gold transfer chains require chapter 5 and chapter 21. The narrower question may let a respondent infer the two receiver names from chapter 21 alone; author should decide whether to align the question with both complete chains.",
+            "source_conflict": false,
+            "resolution": "The revised question explicitly asks who handed the object to whom in each of the two transfers. Chapter 21 does not give the first source person 谈霁禾; chapters 5 and 21 are both necessary for the full requested chains.",
+            "final_serialized_verification": true
+          }
+        ],
+        "open_findings": 0,
+        "intentional_conflict_pairs_preserved": [
+          [
+            6,
+            24
+          ],
+          [
+            9,
+            27
+          ]
+        ],
+        "stats": {
+          "chapters": 30,
+          "chapter_han_min": 2670,
+          "chapter_han_max": 3077,
+          "total_han": 86343,
+          "shared_draft_han": 823,
+          "task_suites": {
+            "qa": 9,
+            "fix": 2,
+            "follow_up": 2,
+            "recap": 2
+          },
+          "qa_types": {
+            "answerable_single": 2,
+            "answerable_multi": 3,
+            "not_in_text": 2,
+            "conflicting": 2
+          },
+          "deep_eligible": 7,
+          "selection_tasks": 2,
+          "paraphrased_qa": 5,
+          "evidence_quotes_unique": 20,
+          "evidence_after_1500": 20,
+          "evidence_after_2500": 20,
+          "source_names": 20,
+          "draft_only_names": 1
+        },
+        "conclusion": "Full prose and actual W01 tasks reviewed. Gold facts, absent answers, contradictory pairs, follow-up references, recap cutoff states and unknown threads, narrator-named FIX evidence, selections, positions and shared-draft-only fact are supported. No unintentional source conflict or single-chapter full-answer collapse remains. Prior two findings are closed in the serialized artifacts.",
+        "late_evidence_review": "Rechecked semantic context against the full read. The tested left-hand fact, nine-minute rule, initial voting status, fixed right-wrist restriction, transfer chains, new voting status, access grant, hotline resumption, and protected inconsistency assertions are not explicitly and completely stated in the first 1500 Han of their selected chapters. Earlier surrounding actions/plans are incomplete or refer to other people. Access denial is also clear around Han 2611 before the selected 2746 quote; both remain after 2500. The previous-ending events are genuinely late and not an early full recap.",
+        "model_calls": 0,
+        "product_or_evaluation_runs": 0,
+        "review_scope": "W01 prose, actual W01 15 tasks and W01 self-review/inventory only; W02 not reviewed by this reviewer.",
+        "binding_note": "Parent reports post-read full tasks change limited to W02 recap ending precision; W01 subtree remains identical, and W01 actual fields were rechecked."
+      },
+      {
+        "work": "w02",
+        "reviewer_not_author": true,
+        "reviewer_role": "independent_full_text_and_task_reader",
+        "status": "completed",
+        "reviewed_chapter_count": 30,
+        "reviewed_chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "full_text_read_batches": [
+          [
+            1,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            13,
+            15
+          ],
+          [
+            16,
+            18
+          ],
+          [
+            19,
+            21
+          ],
+          [
+            22,
+            24
+          ],
+          [
+            25,
+            27
+          ],
+          [
+            28,
+            30
+          ]
+        ],
+        "complete_chapter_rereads": [
+          16
+        ],
+        "reviewed_task_count": 15,
+        "reviewed_source_sha256": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a",
+        "reviewed_tasks_sha256": "b5a0d5bbc8eb4578d2920521b429fd808e6846eb2c9e81e90eaed485dbf43314",
+        "original_read_source_sha256": "45de23b0dfcb09b418d2bae84ac1281687e5a5a21daf6a2125425fecc5d2c728",
+        "findings_count": 1,
+        "closed_findings_count": 1,
+        "unresolved_findings_count": 0,
+        "unresolved_unintentional_conflicts": 0,
+        "findings": [
+          {
+            "id": "W02-I001",
+            "chapter": 16,
+            "category": "within_chapter_action_continuity",
+            "status": "closed",
+            "author_revision_received": true,
+            "complete_revised_chapter_reread": true,
+            "closure_source_sha256": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a"
+          }
+        ],
+        "early_equivalent_observation_count": 1,
+        "early_equivalent_observations": [
+          {
+            "id": "W02-E001",
+            "task_id": "a1c4f-w02-qa-04",
+            "chapter": 4,
+            "applies_to": "partial_answer_component",
+            "earlier_equivalent_information_present": true,
+            "gold_violation": false,
+            "multi_chapter_necessity_violation": false,
+            "registered_deep_label_correct": true,
+            "complete_answer_requires_chapters": [
+              4,
+              18
+            ],
+            "registered_quote_positions": [
+              2559,
+              2666
+            ],
+            "disposition": "retained_as_nonviolating_observation",
+            "root_decision_received": true
+          }
+        ],
+        "checks": {
+          "reading": {
+            "all_chapters_read_in_order": true,
+            "tool_output_truncations": 0,
+            "summary_substitutions": 0
+          },
+          "source_inventory": {
+            "complete_after_full_text_review": true,
+            "registered_names": 19,
+            "named_characters": 10,
+            "principal_characters": 8,
+            "dedicated_conflict_characters": 2,
+            "aliases": 3,
+            "named_locations": 3,
+            "named_objects": 3,
+            "unregistered_source_proper_names": 0
+          },
+          "narrative": {
+            "multiple_scenes_per_chapter_reviewed": 30,
+            "natural_dialogue_and_transitions_reviewed": 30,
+            "character_object_permission_time_relationship_clue_ledger_reviewed": true,
+            "unintentional_unresolved_conflicts": 0,
+            "authorship_process_not_independently_audited": true
+          },
+          "states": {
+            "count": 4,
+            "verified_count": 4,
+            "distant_state_pairs": 4,
+            "pairs": [
+              {
+                "id": "S1",
+                "before": 1,
+                "after": 16,
+                "gap": 15
+              },
+              {
+                "id": "S2",
+                "before": 4,
+                "after": 18,
+                "gap": 14
+              },
+              {
+                "id": "S3",
+                "before": 8,
+                "after": 22,
+                "gap": 14
+              },
+              {
+                "id": "S4",
+                "before": 10,
+                "after": 25,
+                "gap": 15
+              }
+            ],
+            "no_unregistered_reversions": true
+          },
+          "transfers": {
+            "count": 5,
+            "verified_count": 5,
+            "objects": 3,
+            "after_chapter_15": 2,
+            "chronological_chapters": [
+              5,
+              9,
+              12,
+              19,
+              21
+            ],
+            "chains": [
+              {
+                "id": "O1",
+                "chapters": [
+                  5,
+                  21
+                ]
+              },
+              {
+                "id": "O2",
+                "chapters": [
+                  9,
+                  19
+                ]
+              },
+              {
+                "id": "O3",
+                "chapters": [
+                  12
+                ]
+              }
+            ],
+            "final_custody_consistent": true
+          },
+          "threads": {
+            "count": 4,
+            "verified_count": 4,
+            "resolved": 2,
+            "open_at_end": 2,
+            "records": [
+              {
+                "id": "F1",
+                "planted": 3,
+                "resolved": 13
+              },
+              {
+                "id": "F2",
+                "planted": 6,
+                "status": "open",
+                "checked_through": 30
+              },
+              {
+                "id": "F3",
+                "planted": 8,
+                "resolved": 24
+              },
+              {
+                "id": "F4",
+                "planted": 12,
+                "status": "open",
+                "checked_through": 30
+              }
+            ],
+            "open_threads_state_specific_unknowns": true
+          },
+          "intentional_conflicts": {
+            "count": 2,
+            "preserved_count": 2,
+            "chapter_pairs": [
+              [
+                6,
+                26
+              ],
+              [
+                10,
+                28
+              ]
+            ],
+            "explicit_narrator_statements": true,
+            "same_historical_event_compared": true,
+            "dedicated_entities_excluded_from_fix": true
+          },
+          "task_distribution": {
+            "qa": 9,
+            "answerable_single": 2,
+            "answerable_multi": 3,
+            "not_in_text": 2,
+            "conflicting": 2,
+            "fix": 2,
+            "follow_up": 2,
+            "recap": 2
+          },
+          "gold": {
+            "reviewed": 15,
+            "supported": 15,
+            "unsupported": 0,
+            "forbidden_claims_reviewed": 15
+          },
+          "multi": {
+            "reviewed": 3,
+            "necessary": 3,
+            "chapter_gaps": [
+              15,
+              14,
+              16
+            ],
+            "any_single_chapter_complete_answer_violations": 0,
+            "later_chapter_complete_restatement_violations": 0
+          },
+          "not_in_text": {
+            "reviewed": 2,
+            "genuinely_unanswered_through_chapter_30": 2,
+            "related_source_material_present": 2,
+            "answer_points_empty": 2
+          },
+          "selections": {
+            "reviewed": 2,
+            "complete_shared_draft_sentences": 2,
+            "question_reference_related": 2,
+            "names_repeated_between_selection_and_question": 0
+          },
+          "follow_up": {
+            "reviewed": 2,
+            "first_answer_supported": 2,
+            "pronoun_dependencies_valid": 2,
+            "follow_up_answer_supported": 2
+          },
+          "fix": {
+            "reviewed": 2,
+            "determinate_contradictions": 2,
+            "narrator_fact_conflict_sentences": 2,
+            "named_person_present_in_source_and_conflict": 2,
+            "explicit_source_support": 2,
+            "extra_draft_contradictions": 0,
+            "corrective_ideas_supported": 2
+          },
+          "recap": {
+            "reviewed": 2,
+            "cutoffs": [
+              15,
+              30
+            ],
+            "must_mention_counts": [
+              5,
+              5
+            ],
+            "current_state_at_cutoff_verified": 2,
+            "concrete_unknowns_per_cutoff": [
+              2,
+              2
+            ],
+            "previous_ending_supported": 2,
+            "next_chapter_plan_matches_metadata": 2,
+            "draft_only_content_excluded": 2,
+            "resolved_and_later_content_boundaries_verified": 2
+          },
+          "evidence": {
+            "unique_registered_quotes": 20,
+            "unique_registered_quotes_after_1500": 20,
+            "unique_registered_quotes_after_2500": 20,
+            "unique_source_match_errors": 0,
+            "quote_length_errors": 0,
+            "recorded_han_position_errors": 0,
+            "deep_label_errors": 0,
+            "eligible_answerable_and_follow_up_deep": 7,
+            "same_chapter_related_actions_or_distractors_reviewed": true,
+            "conservative_quote_count_after_excluding_early_equivalent_observation": 19,
+            "conservative_quotes_after_2500_after_exclusion": 19,
+            "registered_quote_position_is_information_first_appearance_claimed": false
+          },
+          "copy": {
+            "eight_han_overlap_violations_after_name_exemption": 0
+          },
+          "separation": {
+            "submitted_manuscript_and_pending_public_statement_distinct": true,
+            "course_exercise_and_research_material_distinct": true
+          }
+        },
+        "reviewed_tasks": [
+          {
+            "id": "a1c4f-w02-qa-01",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-02",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-03",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-04",
+            "status": "pass_with_nonviolating_observation"
+          },
+          {
+            "id": "a1c4f-w02-qa-05",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-06",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-07",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-08",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-qa-09",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-fix-01",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-fix-02",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-follow-01",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-follow-02",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-recap-01",
+            "status": "pass"
+          },
+          {
+            "id": "a1c4f-w02-recap-02",
+            "status": "pass"
+          }
+        ],
+        "boundaries": {
+          "repo_writes": 0,
+          "source_or_task_or_gold_edits": 0,
+          "prohibited_directory_reads": 0,
+          "other_worktree_accesses": 0,
+          "model_api_calls": 0,
+          "product_runs": 0,
+          "evaluation_runs": 0,
+          "commits": 0,
+          "pushes": 0
+        },
+        "report_contains_story_names_questions_answers_or_source_quotes": false
+      }
+    ]
+  },
+  "proper_name_inventory": [
+    {
+      "work": "w01",
+      "source_names": [
+        "谈霁禾",
+        "禾弦",
+        "祁照眠",
+        "眠尺",
+        "谢允铎",
+        "铎尾",
+        "温宥真",
+        "樊澄序",
+        "陆栖砚",
+        "霍予笺",
+        "苏望弥",
+        "欧竞迟",
+        "佟绾慈",
+        "弧昼城",
+        "砾穹舱",
+        "箭河舱",
+        "嵌雾钥片",
+        "折辉量环",
+        "赤缝护套",
+        "鸢纹佩"
+      ],
+      "title": "昼权无声",
+      "draft_only_names": [
+        "斜星期"
+      ]
+    },
+    {
+      "work": "w02",
+      "source_names": [
+        "闻予珂",
+        "珂页",
+        "岑砚岚",
+        "岚扣",
+        "罗见浔",
+        "浔桥",
+        "夏允棠",
+        "白知穆",
+        "邵庭葵",
+        "梁霁岑",
+        "莫衍初",
+        "庄棣遥",
+        "尹择梨",
+        "霁衡大学",
+        "承序院",
+        "漫槐院",
+        "笛纹夹签",
+        "蓝棱纸镇",
+        "双孔片尺"
+      ],
+      "title": "没有印上的名字",
+      "draft_only_names": [
+        "末页鲸"
+      ]
+    }
+  ]
+}

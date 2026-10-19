@@ -71,8 +71,4 @@ Agent Reliability, recorded under Stage 12, passed the six-state Agent Run lifec
 
 ## Evidence references
 
-- V4 report: `evaluation/results/eval-v4-first-formal-report.md`
-- V4 results and stability: `evaluation/results/eval-v4-first-formal-results.json`, `evaluation/results/eval-v4-first-formal-stability.json`
-- V4 integrity: `evaluation/results/v4-first-formal-post-run-integrity.json`
-- Formal case set and freeze manifests: `evaluation/case_sets/eval-set-v4.json`, `evaluation/manifests/eval-set-v4-manifest.json`, `evaluation/manifests/eval-set-v4-freeze-integrity.json`
-- Curated browser workflow screenshots: [artifacts/README.md](../artifacts/README.md)
+The V4 evaluation report, results, stability and integrity records, the formal case set and freeze manifests, and the curated browser workflow screenshots cited here were removed from the working tree in v1.8.0. They remain in Git history, and their conclusions are unchanged.

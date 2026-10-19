@@ -200,7 +200,8 @@ test("验证恢复邮箱：从邮件里的链接验证，账号安全页显示�
   expect((await api(page).get("/auth/session")).user.recovery_email.verified).toBe(true);
   await page.getByRole("button", { name: "回到首页", exact: true }).click();
   await openAccountMenu(page);
-  await page.getByRole("menuitem", { name: "账号安全", exact: true }).click();
+  await page.getByRole("menuitem", { name: "设置", exact: true }).click();
+  await page.getByRole("navigation", { name: "设置", exact: true }).getByRole("button", { name: "账号与安全", exact: true }).click();
   await expect(page.getByText("已验证", { exact: true })).toBeVisible();
 });
 

@@ -2,7 +2,7 @@
 
 ## Scope and prerequisites
 
-This guide runs v1.7.0 source locally on Windows PowerShell with Python 3.11+ and Node.js 20.9.0 or later (the installed Next.js requirement). Local execution is not a public deployment. The API uses the repository's `runtime/data/demo.sqlite3`; test runners create isolated temporary data.
+This guide runs v1.8.0 source locally on Windows PowerShell with Python 3.11+ and Node.js 20.9.0 or later (the installed Next.js requirement). Local execution is not a public deployment. The API uses the repository's `runtime/data/demo.sqlite3`; test runners create isolated temporary data.
 
 ## Install
 
@@ -58,7 +58,7 @@ Invoke-RestMethod http://127.0.0.1:8000/readiness
 
 ## Provider configuration
 
-The supported provider reads `CONTINUITY_PROVIDER` (`deepseek`), `CONTINUITY_MODEL`, `CONTINUITY_BASE_URL` and `CONTINUITY_API_KEY` from the API process environment. `CONTINUITY_REVIEW_THINKING` accepts `disabled` or `high`. Configure real credentials only through your local secret mechanism; never commit them. Model or prompt changes require separate quality verification.
+The supported provider reads `CONTINUITY_PROVIDER` (`deepseek`), `CONTINUITY_MODEL`, `CONTINUITY_BASE_URL` and `CONTINUITY_API_KEY` from the API process environment. `CONTINUITY_REVIEW_THINKING` accepts `disabled` or `high`. Configure real credentials only through your local secret mechanism; never commit them. Model or prompt changes require separate quality verification. The assistant is off unless `CONTINUITY_ASSISTANT_ROLLOUT` is `allowlist` (with `CONTINUITY_ASSISTANT_ALLOWLIST`, comma-separated account names), `registered` or `all`; `VISITOR_ASSISTANT_TASKS_24H` (default 3) and `ASSISTANT_TASK_MAX_CNY` (default 0.30) set the visitor allowance and the per-task cost cap.
 
 Without a configured provider, `POST /api/projects/{project_id}/checks` returns `503 provider_unavailable` instead of a synthetic finding. The internal URL still uses `projects`; the author-facing term is work.
 
@@ -77,11 +77,10 @@ $env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000,http://testserver'
 & ..\.venv\Scripts\python.exe -m pytest tests/test_maintenance_package.py
 ```
 
-Evaluation, from the repository root in the same PowerShell session, keeping the application environment above; these validate frozen assets without making model requests:
+Evaluation, from the repository root in the same PowerShell session, keeping the application environment above; the offline tests make no model requests:
 
 ```powershell
 $env:PYTHONPATH = '.;backend'
-& .venv\Scripts\python.exe -m evaluation.validate_release_bundle
 & .venv\Scripts\python.exe -m unittest discover -s evaluation\tests
 ```
 
@@ -111,4 +110,4 @@ Read the printed `E2E_REPORT_ROOT` and `E2E_SUMMARY` paths for logs, attachments
 
 ## Local and frozen evidence
 
-Runtime databases, environment files, build output and local reports remain outside the published evidence. Frozen evaluation assets and their published validators can verify bundle consistency. Strict post-run integrity audits requiring retained SQLite databases are not clean-clone requirements. Historical and frozen evidence is indexed in [the documentation directory](README.md).
+Runtime databases, environment files, build output and local reports remain outside the published evidence. Earlier evaluation bundles and their validators were removed in v1.8.0 and remain in Git history. The documents that are kept are indexed in [the documentation directory](README.md).

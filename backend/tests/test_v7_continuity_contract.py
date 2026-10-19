@@ -16,8 +16,7 @@ from app.engine import ContinuityContractValidationError, ContinuityEngine
 from app.provider import MAX_INPUT_BUDGET_UNITS, ProviderResult, continuity_prompt, request_prompt_and_budget
 
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-LIVE = ROOT / "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases"
+LIVE = pathlib.Path(__file__).resolve().parent / "fixtures/flash_v6_cases"
 
 
 class OfflineProvider:
@@ -368,15 +367,21 @@ class V7ContinuityContractTests(unittest.TestCase):
         issue["evidence"][0]["relation"] = "supports"
         self.assertEqual(engine.validate(raw, data)[0]["nature"], "state_change")
 
-    def test_citation_identity_and_chapter_guards_are_not_relaxed(self):
+    def test_citation_identity_guard_holds_and_chapter_and_memory_ids_are_tolerated(self):
         data, original = temporal_case("At 10:00 today Mira holds the badge.", "At 10:00 today Mira does not hold the badge.", "10:00", "10:00")
-        for field, value in (("span_id", "unselected-span"), ("chapter_id", "wrong-chapter"),
-                             ("related_memory_ids", ["unknown-memory"])):
-            with self.subTest(field=field):
-                raw = copy.deepcopy(original)
-                raw["issues"][0]["evidence"][0][field] = value
-                with self.assertRaisesRegex(ValueError, "evidence_unresolvable"):
-                    ContinuityEngine(OfflineProvider()).validate(raw, data)
+        raw = copy.deepcopy(original)
+        raw["issues"][0]["evidence"][0]["span_id"] = "unselected-span"
+        with self.assertRaisesRegex(ValueError, "evidence_unresolvable"):
+            ContinuityEngine(OfflineProvider()).validate(raw, data)
+        # 07t: the cited span fixes the chapter, and a Memory id that resolves to nothing is dropped.
+        raw = copy.deepcopy(original)
+        raw["issues"][0]["evidence"][0]["chapter_id"] = "wrong-chapter"
+        raw["issues"][0]["evidence"][0]["related_memory_ids"] = ["unknown-memory"]
+        sink = []
+        issue = ContinuityEngine(OfflineProvider()).validate(raw, data, normalization_sink=sink)[0]
+        span = data["claims"][0]["allowed_evidence"][0]
+        self.assertEqual((issue["evidence"][0]["chapter_id"], issue["evidence"][0]["related_memory_ids"]), (span["chapter_id"], []))
+        self.assertEqual([row["reason_code"] for row in sink], ["chapter_id_replaced", "id_dropped"])
 
 
 if __name__ == "__main__":

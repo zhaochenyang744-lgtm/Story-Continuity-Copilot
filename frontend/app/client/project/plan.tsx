@@ -5,6 +5,7 @@ import { json, labelError, request, type ApiFailure } from "../../api";
 import type { AuthorCharacterPlan, AuthorStoryPlan, AuthorWorldPlan } from "../../model";
 import { roleTypeLabel, storyPlanStatusLabel, worldTypeLabel } from "../labels";
 import { Button, Dialog, Num, PageHead, pad2, Tabs, Tag } from "../ui";
+import { useAssistantAnchor } from "./assistant";
 import type { PageProps } from "./frame";
 import type { ProjectState } from "./use-project";
 
@@ -24,6 +25,7 @@ const conflictMessage = (cause: unknown) => labelError(cause);
 
 /** 计划: what is not written yet, grouped by the chapter it is meant for. Used as reference by checks, never as fact. */
 export function PlanPage({ p, go, notices }: PageProps) {
+  useAssistantAnchor("plan");
   const project = p.project!;
   const context = p.authorContext;
   const [filter, setFilter] = useState<"all" | Kind>(() => {

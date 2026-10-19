@@ -1,6 +1,6 @@
-# Story Continuity Copilot v1.7.0 — 3–5 minute demo guide
+# Story Continuity Copilot v1.8.0 — 3–5 minute demo guide
 
-Use a running v1.7.0 instance at a window width of at least 768 px. This route uses labelled sample findings; it needs no real model request. A public instance may still run an earlier version until deployment.
+Use a running v1.8.0 instance at a window width of at least 768 px. Steps 1–7 use labelled sample findings and need no real model request; the optional assistant step uses one real request. A public instance may still run an earlier version until deployment.
 
 ## 1. Enter as a visitor
 
@@ -20,15 +20,19 @@ On a finding offering the action, choose **采用改法** (apply the suggestion)
 
 Explain that decisions and fact confirmation are separate: when eligible fact changes are ready, **审阅事实变化** lets the author decide what enters the fact base.
 
-## 5. Trace a fact to a chapter
+## 5. Ask the assistant (optional)
+
+On **写作**, open the **助手** tab in the right column and ask one question about the work, for example who holds the brass compass now. Point out the steps shown while it works, and the source after each sentence of the answer: choose a source to open the passage it came from. Visitors have three assistant tasks per 24 hours on the sample work; **写前回顾** and, on a finding, **帮我改这一处** are the other two uses. A proposed change only takes effect when the author adopts it.
+
+## 6. Trace a fact to a chapter
 
 Open **资料 → 事实**, choose the chapter-number button beside a fact to open its source passage. Briefly show the other views: 人物、设定、伏笔、问一问. Facts describe confirmed written content; change impact only analyses a proposed change.
 
-## 6. Compare decided and considering plans
+## 7. Compare decided and considering plans
 
 Open **计划**. Show plot, character and setting plans, their target chapters and **已定 / 考虑中** states. Only decided, unarchived plans enter the pre-writing recap and plan comparison. A plan is not a confirmed fact. No analysis request is needed for this step.
 
-## 7. Restore the sample work
+## 8. Restore the sample work
 
 Return to **概览 → 更多 → 重置作品**. Read the dialog and choose **确认重置** if restoring the sample is intended. This restores its chapters, confirmed facts, draft and sample findings, and clears the selected work's checks, decisions and unsubmitted changes. Reset cannot be undone. Other works are unaffected.
 
@@ -38,4 +42,4 @@ Each account's works and sample copy are isolated. There are no longer three pre
 
 ## Suggested narration
 
-“This is a writing workspace for long-form fiction. The author checks a draft against the earlier text, reads the source passage behind each finding, and decides what to change or keep. Records hold confirmed facts; plans hold what is not written yet. The story route ties chapters, foreshadowing and plans together. These are sample findings, and the author stays in control of both the prose and the fact base.”
+“This is a writing workspace for long-form fiction. The author checks a draft against the earlier text, reads the source passage behind each finding, and decides what to change or keep. The assistant answers questions about the work with the passages it read, and proposes fixes the author can adopt or ignore. Records hold confirmed facts; plans hold what is not written yet. The story route ties chapters, foreshadowing and plans together. These are sample findings, and the author stays in control of both the prose and the fact base.”

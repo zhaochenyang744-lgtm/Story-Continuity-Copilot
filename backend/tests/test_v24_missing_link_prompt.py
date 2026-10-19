@@ -28,7 +28,7 @@ def prompt() -> dict:
 
 class MissingLinkPromptV24Tests(unittest.TestCase):
     def test_version_names_the_change(self):
-        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24c-explicit-missing-link")
+        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24d-epithet-referents")
 
     def test_rules_separate_narrated_events_from_settled_open_points(self):
         rules = "\n".join(prompt()["rules"])

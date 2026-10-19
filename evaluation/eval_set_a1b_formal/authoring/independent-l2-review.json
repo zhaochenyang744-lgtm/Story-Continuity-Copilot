@@ -1,0 +1,482 @@
+{
+  "reviewer_not_author": true,
+  "reviewer_role": "independent_review",
+  "status": "completed",
+  "reviewed_chapter_counts": {
+    "l2": 100
+  },
+  "source_sha256": "fefe59487d6b5752b4632a2bcead5b6e3d5113374d51af75abc25f6e40214413",
+  "tasks_sha256": "e72ec7a687748e9d5fd280952627ba59212e9503abffeac27d9d71691997f99a",
+  "read_ranges": [
+    {
+      "first": 1,
+      "last": 10,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 11,
+      "last": 20,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 21,
+      "last": 30,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 31,
+      "last": 40,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 41,
+      "last": 50,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 51,
+      "last": 60,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 61,
+      "last": 70,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 71,
+      "last": 80,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 81,
+      "last": 90,
+      "complete": true,
+      "output_truncated": false
+    },
+    {
+      "first": 91,
+      "last": 100,
+      "complete": true,
+      "output_truncated": false
+    }
+  ],
+  "reading_method": "最初一次分隔符使用错误导致输出截断，该次不计通读证据；随后按真实单井号标题拆成十批，每批十章，全部重新完整阅读且无截断。五段handoff全文分三批读完；L2设定、30题与对应自查理由和原句、101章共享草稿全文读完。",
+  "materials_read": [
+    "works/l2.md",
+    "authoring/story-bible.json 的l2及交接修订",
+    "authoring/l2-001-020-handoff.json",
+    "authoring/l2-021-040-handoff.json",
+    "authoring/l2-041-060-handoff.json",
+    "authoring/l2-061-080-handoff.json",
+    "authoring/l2-081-100-handoff.json",
+    "tasks.json 的30道l2题及l2作品元数据",
+    "authoring/self-review.json 的30道l2逐题理由与原句",
+    "authoring/shared-drafts.json 的l2"
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "chapter": 100,
+      "scope": "handoff_metadata_only",
+      "issue": "末段交接把确认板标为first_chapter:100，但第3章已有确认板；非正文矛盾，也非题目金标错误。",
+      "recommendation": "将该字段改为appearance_chapter:100，或另明确全书首次为3章。",
+      "status": "resolved",
+      "resolution": "主代理将末段交接及设定accepted_handoffs复制项统一改为first_chapter:3、appearance_chapter:100，并添加修订记录；独立复核逐项确认，正文和tasks哈希不变。"
+    }
+  ],
+  "unresolved_unintentional_conflicts": 0,
+  "unresolved_gold_ambiguities": 0,
+  "intentional_conflicts": [
+    {
+      "subject": "温炬",
+      "chapters": [
+        12,
+        48
+      ],
+      "quotes": [
+        "温炬出生的公历月份是二月。",
+        "温炬出生的公历月份是八月。"
+      ],
+      "preserve": true,
+      "review_note": "同一人出生的公历月，均为叙述者断言；卡片整理动作没有将该句限定成误记、传言或错行。"
+    },
+    {
+      "subject": "陨纹纪念币",
+      "chapters": [
+        30,
+        71
+      ],
+      "quotes": [
+        "陨纹纪念币刚铸成时的重量是七克。",
+        "陨纹纪念币刚铸成时的重量是九克。"
+      ],
+      "preserve": true,
+      "review_note": "明确唯一同一枚的初铸历史重量，不能由当前磨损、称量或复制消解。"
+    },
+    {
+      "subject": "袁碣",
+      "chapters": [
+        40,
+        78
+      ],
+      "quotes": [
+        "袁碣出生时唯一的同胞手足是妹妹。",
+        "袁碣出生时唯一的同胞手足是哥哥。"
+      ],
+      "preserve": true,
+      "review_note": "同一出生时点、唯一手足的明确相反叙述，没有新增家人或人物误记解释。"
+    },
+    {
+      "subject": "脉石碑",
+      "chapters": [
+        44,
+        94
+      ],
+      "quotes": [
+        "脉石碑初刻时正面有五条横纹。",
+        "脉石碑初刻时正面有七条横纹。"
+      ],
+      "preserve": true,
+      "review_note": "明确唯一同一碑的首次雕刻；调整灯光和说明卡未磨改、加刻或换碑。"
+    }
+  ],
+  "continuity_review": {
+    "characters_aliases": "12名人物及4组别名均依设定出现，无额外具名人物或新增可考亲属、属性。角色的错误判断、临时动作和普通道具没有当作永久设定。",
+    "objects": "孢镜2章霍准、10章桑翎、66章尹禾；滴管5章宁绡到56章邵璇；孵匣11章贝嵘到87章廉舟；滤梳23章祝珉到59章索迦。准备与实际交付分开，没有后续错误持有人或追加易手。",
+    "states": "确认资格3/55、耳内炎症与回声8/74、授粉时段15/81、嗅觉18/63、古谱能力27/90、舱封存35/96六组连续。54考查未授资格，61未确认嗅觉恢复，73只等待复查，72及80未批准白昼，77及89古谱未译成，95全员在外。普通交谈不等于听辨回声，68普通脉冲教学不等于古谱解读。",
+    "threads": "尘痕4/36、冷闪19/52、电流33/83分别收回；描图47至99作者用途均未知，银点79至99成因未知。没有以类比把其他未知线索一并解释。",
+    "endings": "50结尾只有两侧分列与离开，51才比较；100完成首批交付及确认板动作，在未启动模拟舱外停步，未开展101飞行模拟。",
+    "scope": "其他培养物、纸页、杯、桌椅、遮片、衣物、普通容具与临时观察是场景信息，不赋予新的固定科技规则或额外考试事实。"
+  },
+  "task_review": [
+    {
+      "id": "a1bf-qa-01",
+      "result": "通过；25章直接支持两次短闪。"
+    },
+    {
+      "id": "a1bf-qa-02",
+      "result": "通过；46章特定等待场景精确位置，不扩大成永久住所。"
+    },
+    {
+      "id": "a1bf-qa-03",
+      "result": "通过；选区给出她的主体，69章直接给容器。"
+    },
+    {
+      "id": "a1bf-qa-04",
+      "result": "通过；选区主体明确，92章散装孢子容具不同于孵匣。"
+    },
+    {
+      "id": "a1bf-qa-05",
+      "result": "通过；选区主体明确，98章返还后盖印。"
+    },
+    {
+      "id": "a1bf-qa-06",
+      "result": "通过；2与66章缺一不可，末次交付者桑翎并非初主霍准，任何单章未汇总两端。",
+      "evidence_numbers": [
+        2,
+        66
+      ]
+    },
+    {
+      "id": "a1bf-qa-07",
+      "result": "通过；3给只能旁观的精确旧范围，55只授新资格，不能从获资格推回全部初始职责。",
+      "evidence_numbers": [
+        3,
+        55
+      ]
+    },
+    {
+      "id": "a1bf-qa-08",
+      "result": "通过；8明确旧炎症与只能静音的因果限制，74给新状态；新章的炎症消退不单独证实此前静音工作限制。",
+      "evidence_numbers": [
+        8,
+        74
+      ]
+    },
+    {
+      "id": "a1bf-qa-09",
+      "result": "通过；15给早期具体许可时段，81给全天新范围，申请及批准严格分开。",
+      "evidence_numbers": [
+        15,
+        81
+      ]
+    },
+    {
+      "id": "a1bf-qa-10",
+      "result": "通过；11明确最初保管，87仅本次交付，当前递交者身份不能单独证明其为全书最初保管人。",
+      "evidence_numbers": [
+        11,
+        87
+      ]
+    },
+    {
+      "id": "a1bf-qa-11",
+      "result": "通过；23明确原本属于祝珉，59只转交索迦；交付动作不单独证明初始所有权。",
+      "evidence_numbers": [
+        23,
+        59
+      ]
+    },
+    {
+      "id": "a1bf-qa-12",
+      "result": "通过；27给不能读懂状态，90给首次独立完整译成及核验，首次独立成果不单独证明早期理解能力为零。",
+      "evidence_numbers": [
+        27,
+        90
+      ]
+    },
+    {
+      "id": "a1bf-qa-13",
+      "result": "通过；全书只见21章留存透明花瓣，未述动机，职业背景不足以补因。"
+    },
+    {
+      "id": "a1bf-qa-14",
+      "result": "通过；32章穿披衣但全书无购买来源或价钱。"
+    },
+    {
+      "id": "a1bf-qa-15",
+      "result": "通过；53章当前持有干莓，全书无取得日期、时间或保存时长。"
+    },
+    {
+      "id": "a1bf-qa-16",
+      "result": "通过；85章轻哼无词曲，全书未给创作者、曲名或来源，哼者不能当作作曲者。"
+    },
+    {
+      "id": "a1bf-qa-17",
+      "result": "通过；12/48两说直接相反，金标同时承认冲突。"
+    },
+    {
+      "id": "a1bf-qa-18",
+      "result": "通过；30/71同一初铸重量冲突，金标不择一。"
+    },
+    {
+      "id": "a1bf-qa-19",
+      "result": "通过；40/78固定时点唯一手足两说冲突，未作共存解释。"
+    },
+    {
+      "id": "a1bf-qa-20",
+      "result": "通过；44/94同一首次雕刻状态冲突，展示调整不能消解。"
+    },
+    {
+      "id": "a1bf-recap-01",
+      "result": "通过；50停点、15许可、47未解线索及51计划一致，36已解、55未来状态和草稿新物均须排除。"
+    },
+    {
+      "id": "a1bf-recap-02",
+      "result": "通过；100停点、55当前资格、79仍未解及101计划一致，83已解与旧资格、草稿新物均须排除。"
+    },
+    {
+      "id": "a1bf-fix-01",
+      "result": "通过；17根本未举行与完整参加过确定相反。草稿为叙述者断言，仪式近义称呼可确认为同一事件。"
+    },
+    {
+      "id": "a1bf-fix-02",
+      "result": "通过；42唯一不可复原原件已毁，与草稿未经破坏的原物仍完整相反；没有复制或后续新样本逃逸解释。"
+    },
+    {
+      "id": "a1bf-fix-03",
+      "result": "通过；60先天四指与草稿出生时五指为同一人同侧先天属性确定矛盾。"
+    },
+    {
+      "id": "a1bf-follow-01",
+      "result": "通过；16定位教师，1给别名，第二问她依赖上一轮。",
+      "first_evidence_numbers": [
+        16
+      ],
+      "evidence_numbers": [
+        1
+      ]
+    },
+    {
+      "id": "a1bf-follow-02",
+      "result": "通过；5定位初持有人，25给信号，追问只用她。",
+      "first_evidence_numbers": [
+        5
+      ],
+      "evidence_numbers": [
+        25
+      ]
+    },
+    {
+      "id": "a1bf-follow-03",
+      "result": "通过；57定位说明者，69给容器，追问只用她；提取胶是查询对象而非重复主体姓名。",
+      "first_evidence_numbers": [
+        57
+      ],
+      "evidence_numbers": [
+        69
+      ]
+    },
+    {
+      "id": "a1bf-follow-04",
+      "result": "通过；37当次交班主持为贝嵘，63给嗅觉恢复，追问他承接主体；不把其他普通交接等同这次主持。",
+      "first_evidence_numbers": [
+        37
+      ],
+      "evidence_numbers": [
+        63
+      ]
+    },
+    {
+      "id": "a1bf-follow-05",
+      "result": "通过；68定位教师，59给接手梳具，追问他承接；无需另一个别名映射。",
+      "first_evidence_numbers": [
+        68
+      ],
+      "evidence_numbers": [
+        59
+      ]
+    }
+  ],
+  "shared_draft_review": {
+    "chapter": 101,
+    "han_count": 326,
+    "draft_only_fact_present": true,
+    "draft_only_fact_absent_from_source": true,
+    "selection_names_present": true,
+    "semantic_note": "草稿仅当前准备交流，未冒称已启动模拟。独有光球事实在草稿可定位、正文不存在。所有选区人物可直接找到。"
+  },
+  "checks_scope": "语义判断来自独立完整通读；脚本仅审计哈希、计数、原句匹配、章名映射及连续八字重合。没有调用模型接口、产品或产品评测。",
+  "changes_made": "只写独立复核记录；未改正文、题目或金标，未提交推送。",
+  "delivery_boundary": "包含正式集内部材料，仅供内部复核；用户进度与交付报告只能使用数字、结构及检查结论。",
+  "unresolved_metadata_findings": 0,
+  "material_sha256": {
+    "story-bible.json": "467fdced7e7dcacbf85e0d98e1591174986cee33172ffe5c1af60279b2d2f968",
+    "shared-drafts.json": "109d095837e9ec1c1d359e6538939c6f8e738ab577aa45c3e383a71d31465cca",
+    "follow-questions.json": "7d2ccbd02f82591be3ffe647f0a48951731a8a28f357cb9de3b0dedf7eb5dd29",
+    "safety-authoring.json": "07281484705c466a1af1b4bbec96bc6f218d2801830d5cc6e73fb9fe5b616669",
+    "long-questions.json": "3f8b981848b28ace766c379ac95df6163680e7fbd4a24ff77a12dd68e4ff8850",
+    "fix-recap-questions.json": "f1b9f517ea42f6dc5d70fa43794aca3e3c4c88d0cfa294a38ce1b480786d15cc",
+    "quote-selections.json": "dd090d5e30c3f3a4cda296e5d9063e5136f07af6b392f172e46d78db61d635f3",
+    "l2-001-020-handoff.json": "64384e52982a5190e48fa53f6d8de350ed28041be17a0f01edb31d71659a072b",
+    "l2-021-040-handoff.json": "97ee0b6259eacd799a5a157513877c5263b864e92ff797c795b47f43ffa7c719",
+    "l2-041-060-handoff.json": "12ed626c6f5c9d9421aa2923dfe8713e82223020625247c2230ab15bb9dda5d9",
+    "l2-061-080-handoff.json": "f17cfe30531e75e74aad3068aa2ac23d96c9b0a514300a9543ffe0296f0e89dd",
+    "l2-081-100-handoff.json": "54674a1fcb5450919c517f4e8f687039ceb5c9ed73692876485b454909872e37"
+  },
+  "mechanical_audit": {
+    "chapter_han_counts": [
+      488,
+      468,
+      497,
+      472,
+      466,
+      471,
+      475,
+      478,
+      486,
+      489,
+      472,
+      468,
+      492,
+      470,
+      458,
+      466,
+      475,
+      475,
+      474,
+      500,
+      469,
+      479,
+      453,
+      485,
+      480,
+      458,
+      474,
+      457,
+      484,
+      484,
+      510,
+      475,
+      499,
+      496,
+      494,
+      501,
+      476,
+      488,
+      495,
+      482,
+      483,
+      505,
+      496,
+      473,
+      482,
+      493,
+      490,
+      480,
+      485,
+      450,
+      494,
+      500,
+      486,
+      478,
+      491,
+      466,
+      488,
+      496,
+      479,
+      495,
+      429,
+      451,
+      445,
+      453,
+      441,
+      454,
+      463,
+      481,
+      437,
+      464,
+      434,
+      442,
+      441,
+      450,
+      463,
+      462,
+      458,
+      446,
+      453,
+      454,
+      455,
+      431,
+      459,
+      444,
+      430,
+      439,
+      443,
+      439,
+      464,
+      454,
+      459,
+      444,
+      436,
+      446,
+      447,
+      459,
+      464,
+      458,
+      472,
+      482
+    ],
+    "han_min": 429,
+    "han_max": 510,
+    "han_total": 46935,
+    "shared_draft_han_count": 326,
+    "draft_fact_absent_source": true,
+    "all_direct_dialogue": true,
+    "copy_errors": 0,
+    "evidence_quote_errors": 0,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "model_calls": 0,
+    "product_runs": 0
+  }
+}

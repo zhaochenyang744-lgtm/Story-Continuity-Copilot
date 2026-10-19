@@ -1,0 +1,419 @@
+{
+  "chapter_range": [
+    21,
+    40
+  ],
+  "chapters": [
+    {
+      "chapter": 21,
+      "title": "第二十一章 指尖透过去的光",
+      "han_count": 469,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 22,
+      "title": "第二十二章 光退去以后",
+      "han_count": 479,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 23,
+      "title": "第二十三章 梳齿间的轻灰",
+      "han_count": 453,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 24,
+      "title": "第二十四章 等不到的舒展",
+      "han_count": 485,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 25,
+      "title": "第二十五章 两次短促的光",
+      "han_count": 480,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 26,
+      "title": "第二十六章 一句好看却无处可指的话",
+      "han_count": 458,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 27,
+      "title": "第二十七章 没有拼成话的脉冲",
+      "han_count": 474,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 28,
+      "title": "第二十八章 被提前收走的椅子",
+      "han_count": 457,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 29,
+      "title": "第二十九章 白昼里的争执",
+      "han_count": 484,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 30,
+      "title": "第三十章 币面上的指印",
+      "han_count": 484,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 31,
+      "title": "第三十一章 照度换到另一侧",
+      "han_count": 510,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 32,
+      "title": "第三十二章 厚布压住袖口",
+      "han_count": 475,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 33,
+      "title": "第三十三章 两道细微的起伏",
+      "han_count": 499,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 34,
+      "title": "第三十四章 空盘还没有分完",
+      "han_count": 496,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 35,
+      "title": "第三十五章 留在舱门外",
+      "han_count": 494,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 36,
+      "title": "第三十六章 尘落下来的形状",
+      "han_count": 501,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 37,
+      "title": "第三十七章 说给接手者的半句话",
+      "han_count": 476,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 38,
+      "title": "第三十八章 量测纸上的空格",
+      "han_count": 488,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 39,
+      "title": "第三十九章 没有划掉的不合格",
+      "han_count": 495,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 40,
+      "title": "第四十章 陈列旁的家常",
+      "han_count": 482,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [
+    {
+      "name": "袁碣",
+      "aliases": [],
+      "first_chapter": 40,
+      "note": "按既定章节出场，不引入其他具名人物"
+    }
+  ],
+  "new_places": [
+    {
+      "name": "蘅环舱",
+      "first_chapter": 35,
+      "note": "既定地点；本章封存，全部人员在门外"
+    }
+  ],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "灰绒滤梳",
+        "first_chapter": 23,
+        "original_owner": "祝珉",
+        "initial_custodian": "祝珉",
+        "note": "正文明确原本属于且保管，两义均直接写明"
+      },
+      {
+        "name": "陨纹纪念币",
+        "first_chapter": 30,
+        "note": "唯一的那枚；同一初铸历史重量第一说，非当前称量"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "透明花瓣",
+        "first_chapter": 21,
+        "status": "仅留存，没有写动机"
+      },
+      {
+        "name": "古式脉冲记谱",
+        "first_chapter": 27,
+        "status": "未译成，无内容猜测或额外编码规则"
+      },
+      {
+        "name": "厚披衣",
+        "first_chapter": 32,
+        "status": "只穿着，没有购买、价格或来源"
+      },
+      {
+        "name": "成对微弱电流",
+        "first_chapter": 33,
+        "status": "只观测成对现象，成因未揭示"
+      },
+      {
+        "name": "根隙菌丝与喷落孢子",
+        "first_chapter": 36,
+        "status": "只作为既定三角尘痕谜底，不拓展其他种群规律"
+      }
+    ],
+    "ordinary_props": [
+      "衬纸及普通浅影中的花瓣",
+      "普通观察纸与薄片",
+      "遮片与培养盘",
+      "细灰与普通纤维",
+      "接灰布",
+      "空容器",
+      "夜间授粉准备灯及普通容具",
+      "训练纸",
+      "古式记谱对照尝试纸",
+      "轮值椅子与交接纸",
+      "纪念陈列软衬与卡片及空盒",
+      "静音画面",
+      "分组准备空盘",
+      "递送普通物件",
+      "外部观测记录",
+      "留存连续观察画面",
+      "空杯与量测纸",
+      "介质记录",
+      "不合格样本记录",
+      "普通陈列说明卡与布片"
+    ],
+    "ordinary_prop_scope": "普通动作、暂态和场景用品；除主代理明确更新37章限定外，不新增专名、永久能力、物件易手、家庭关系或科技规则。"
+  },
+  "new_time_points": {
+    "absolute_calendar_dates": [],
+    "fixed_durations": [],
+    "authorized_historical_reference": [
+      {
+        "chapter": 30,
+        "reference": "同一纪念币刚铸成时",
+        "fact": "重量七克，无具体日期或当前称量替代"
+      },
+      {
+        "chapter": 40,
+        "reference": "袁碣出生时",
+        "fact": "唯一同胞手足妹妹，不补双胞胎、出生先后或其他家人"
+      }
+    ],
+    "relative_markers": [
+      "21清理结束留存花瓣",
+      "22一轮常规遮光观察",
+      "23储备台清理",
+      "24观察等待与换人",
+      "25夜间授粉准备及停止信号演示",
+      "26描述训练",
+      "27古式记谱解读失败",
+      "28临时离开造成交接误会",
+      "29白昼观察中的申请争议",
+      "30纪念陈列卡整理",
+      "31单盘另一照度观察",
+      "32穿披衣与查看静音记录",
+      "33成对电流观察",
+      "34分组准备尚未执行比较",
+      "35封舱后门外交接",
+      "36以连续观察记录复查尘痕",
+      "37此次孵化区交接",
+      "38以量测及他人观察维持工作",
+      "39整理本轮不合格记录",
+      "40纪念陈列旁清理"
+    ],
+    "note": "只用先后轮次、明确夜间与白昼观察及设定指定历史时点，不增年份、固定航程或新重大事件日期。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 21,
+      "quote": "清理结束时，桑翎把那枚透明花瓣留存下来，没有丢弃。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 23,
+      "quote": "灰绒滤梳原本属于祝珉，也由祝珉保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 25,
+      "quote": "宁绡用两次短促的灯闪表示停止授粉。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 27,
+      "quote": "索迦此时不能读懂古式脉冲记谱，尚未译出其中的内容。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 30,
+      "quote": "陨纹纪念币刚铸成时的重量是七克。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 32,
+      "quote": "霍准穿上了一件厚披衣，衣料在手臂弯处叠出几道褶。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 33,
+      "quote": "观测中出现了成对的微弱电流，它们所代表的原因还没有确定。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 35,
+      "quote": "蘅环舱因游离孢子超标而封存，禁止人员进入。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 36,
+      "quote": "根隙的三角尘痕是某簇菌丝释放孢子留下的固定喷落形状，不是足迹。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 37,
+      "quote": "这次孵化区轮值交接由贝嵘主持。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 40,
+      "quote": "袁碣出生时唯一的同胞手足是妹妹。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "陨纹纪念币",
+      "chapter": 30,
+      "quote": "陨纹纪念币刚铸成时的重量是七克。",
+      "paired_future_chapter": 71,
+      "action": "唯一同一纪念币的历史初铸重量，不改铸、不复制、不以今日磨损消解"
+    },
+    {
+      "subject": "袁碣",
+      "chapter": 40,
+      "quote": "袁碣出生时唯一的同胞手足是妹妹。",
+      "paired_future_chapter": 78,
+      "action": "叙述者直接陈述同一出生时点唯一手足，不补其他家庭事实"
+    }
+  ],
+  "primary_authorized_bible_revision": {
+    "chapter": 37,
+    "before": "孵化区第一次轮值交接由贝嵘主持。",
+    "after": "这次孵化区轮值交接由贝嵘主持。",
+    "reason": "6和11章已有普通换班接班动作；主代理接受提醒，删除全局第一次限定以避免无意矛盾，保留本次主持人考点。",
+    "authority": "主代理协作消息明确批准，更新后的story-bible已读取断言确认。",
+    "prior20_changes": false
+  },
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前20章逐字不变，归一末尾分隔空行后的哈希一致。",
+    "21未透露透明花瓣留存动机，32不写披衣是否购入、价格或来源。",
+    "23明确归属与保管；59续段只允许写交付，不概括原归属。",
+    "25仅既定两次短促灯闪为停止信号，没有新增其他灯语约定。",
+    "27未读懂古式脉冲记谱，与19普通信号观察不同；未提前译文。",
+    "29讨论未批准新授粉范围，25在夜间准备，未发生白昼授粉。",
+    "31单盘照度观察不是51两组正式比较；34空盘准备未分置50章遮光帘两侧，也未开始比较。",
+    "35全员留门外；36通过留存连续画面核查，无人进封存舱；37–40未进入封存舱。",
+    "36只收回三角尘痕；冷闪与成对电流仍无谜底。",
+    "37去掉第一次是主代理授权修订，已单列；本次交接主持明确。",
+    "38贝嵘依靠量测和他人辨味，不以自己的嗅觉确认；霍准全段未听辨回声。",
+    "桑翎仍仅交记录供具资格者确认，尹禾仅训练；未提前授予55及后段的能力权限。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 453,
+    "han_count_max": 510,
+    "han_count_total": 9639,
+    "all40_titles_unique": true,
+    "all_segment_direct_dialogue": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous_chapter_range": [
+      1,
+      20
+    ],
+    "previous_prefix_sha256": "018dd412a439aa694956429e2eeef93148ad921048718855fc29b982dbaa37e1",
+    "previous20_unchanged": true,
+    "current_work_sha256": "7a29d274060ad03904ebb432b97a84f2b87d6b87a627bce545bfd2f5a1f13e3e",
+    "prose_generation": "逐章人工原创；脚本仅计字、对话格式、原句和哈希审计并整理交接记录",
+    "model_or_product_api_calls": 0
+  }
+}

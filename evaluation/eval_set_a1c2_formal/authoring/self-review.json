@@ -1,0 +1,922 @@
+{
+  "set_id": "a1c2-formal",
+  "tasks": [
+    {
+      "id": "a1c2f-w01-01",
+      "rationale": "选中草稿不包含储存位置；正文地点细节与同章临时放置位置有别。",
+      "evidence_quotes": [
+        {
+          "chapter": "第2章 另一条泳道",
+          "text": "郁苔岑把离线日志存进更衣室第三排最右侧的柜子。",
+          "han_position": 2692
+        }
+      ],
+      "paraphrase": {
+        "source": "郁苔岑把离线日志存进更衣室第三排最右侧的柜子。",
+        "question": "在第二章那次收存中，她把离线记录放到了什么具体位置？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-02",
+      "rationale": "草稿没有电路功能；题干把接触片及推进器换成通俗表达，不给答案。",
+      "evidence_quotes": [
+        {
+          "chapter": "第20章 还没有变绿",
+          "text": "栈羽板上的短接触片只用于读取备用电压，不负责启动推进器。",
+          "han_position": 2568
+        }
+      ],
+      "paraphrase": {
+        "source": "栈羽板上的短接触片只用于读取备用电压，不负责启动推进器。",
+        "question": "它上面较短的接点承担什么功能，能不能据此直接开动推进装置？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-03",
+      "rationale": "要求分别给出两件物品在指定交接时的双方，不能用当前同处一桌推定交接来源。",
+      "evidence_quotes": [
+        {
+          "chapter": "第5章 交到另一双手里",
+          "text": "祁砚笙把弧桨盒交给靳予葵，从此由靳予葵保管。",
+          "han_position": 2796
+        },
+        {
+          "chapter": "第21章 两张工作台之间",
+          "text": "郁苔岑将栈羽板交给翟栖墨保管，约定赛季结束后再谈归还。",
+          "han_position": 2671
+        }
+      ],
+      "paraphrase": {
+        "source": "祁砚笙把弧桨盒交给靳予葵，从此由靳予葵保管。 / 郁苔岑将栈羽板交给翟栖墨保管，约定赛季结束后再谈归还。",
+        "question": "整理器材的保管记录时，第五章的弧桨盒与第二十一章的栈羽板，分别由谁交给了谁？"
+      },
+      "multi_chapter_necessity": "第5章只有弧桨盒的移交，第21章只提供栈羽板的移交；任一章都不能独立回答两次交接。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-04",
+      "rationale": "文件夹持有和场地许可是两个独立事项，旧房间腾空不意味着文件夹转手。",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 纸页翻过去",
+          "text": "邬槐序把烬纹夹交给郁苔岑，之后由郁苔岑收存。",
+          "han_position": 2728
+        },
+        {
+          "chapter": "第24章 门关上以后",
+          "text": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+          "han_position": 2668
+        }
+      ],
+      "paraphrase": {
+        "source": "邬槐序把烬纹夹交给郁苔岑，之后由郁苔岑收存。 / 全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+        "question": "若回顾文件保管和场地使用的变动，第十一章谁把烬纹夹交到谁手里；到了第二十四章，队伍还能凭原有权限在那间训练房工作吗？"
+      },
+      "multi_chapter_necessity": "第11章的文件交接不能判断第24章的许可；第24章交回场地许可也不能还原文件夹的指定交接事实。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-05",
+      "rationale": "问题明确问第3章的旧限制和第22章的恢复，避免把后来腕部康复倒灌到早期。",
+      "evidence_quotes": [
+        {
+          "chapter": "第3章 午饭的空位",
+          "text": "郁苔岑的右腕戴着固定夹板，暂时不能操作双手控制台。",
+          "han_position": 2717
+        },
+        {
+          "chapter": "第22章 可以开始的时候",
+          "text": "岑弥照恢复了邵霁棠独自测试的资格，从当晚起不再要求陪同。",
+          "han_position": 2679
+        }
+      ],
+      "paraphrase": {
+        "source": "郁苔岑的右腕戴着固定夹板，暂时不能操作双手控制台。 / 岑弥照恢复了邵霁棠独自测试的资格，从当晚起不再要求陪同。",
+        "question": "队内限制记录中，第三章郁苔岑哪只手腕受限，因而不能做哪项操作；第二十二章邵霁棠又获准恢复哪种测试方式？"
+      },
+      "multi_chapter_necessity": "早期腕部限制与后期独自测试资格分属不同人物、不同章节；只读任一章会缺失另一节点的答案。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-06",
+      "rationale": "正文只记录收到和保留音频，不确认寄件人；不是把开放线索当成待模型猜测的谜底。",
+      "evidence_quotes": [],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-07",
+      "rationale": "物件的可见存在不能推出持有者的心理原因。",
+      "evidence_quotes": [],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-08",
+      "rationale": "两句均是叙述者陈述同一人物出生地，不以日后迁居消解矛盾。",
+      "evidence_quotes": [
+        {
+          "chapter": "第8章 投影里的空池",
+          "text": "裴朔宁出生在栎虹城，童年从未离开那座城市。",
+          "han_position": 2703
+        },
+        {
+          "chapter": "第26章 没用上的掌声",
+          "text": "裴朔宁出生在缄岚大学所在的城市，出生地并不是栎虹城。",
+          "han_position": 2601
+        }
+      ],
+      "paraphrase": {
+        "source": "裴朔宁出生在栎虹城，童年从未离开那座城市。 / 裴朔宁出生在缄岚大学所在的城市，出生地并不是栎虹城。",
+        "question": "裴朔宁是否出生在栎虹城？请把正文中不能同时成立的说法都指出来。"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-09",
+      "rationale": "时间和事件限定一致，不能借后来水位变化调和两个原始数字。",
+      "evidence_quotes": [
+        {
+          "chapter": "第14章 旧照片里的边界",
+          "text": "衡汐馆建馆当天首次注入试验池的水量是八百升。",
+          "han_position": 2553
+        },
+        {
+          "chapter": "第28章 纸上的池岸",
+          "text": "衡汐馆建馆当天首次注入试验池的水量是一千二百升。",
+          "han_position": 2679
+        }
+      ],
+      "paraphrase": {
+        "source": "衡汐馆建馆当天首次注入试验池的水量是八百升。 / 衡汐馆建馆当天首次注入试验池的水量是一千二百升。",
+        "question": "衡汐馆刚建成时，试验池第一次灌入的水究竟是多少？文本是否给出了相容的数字？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-10",
+      "rationale": "结尾行动、有效限制、开放线索与下一章计划分开列出；不得读取后续结果。",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 排名空着的一晚",
+          "text": "祁砚笙把申诉材料放在裁判室门口，队员们等着次晨公开复核。",
+          "han_position": 2842
+        },
+        {
+          "chapter": "第6章 少了一个人",
+          "text": "邵霁棠被暂停独自下水测试的资格，只能有人陪同训练。",
+          "han_position": 2693
+        },
+        {
+          "chapter": "第7章 被截去的声音",
+          "text": "匿名音频的寄件人和发送动机仍未查明，队员也无法确认其中说话者的身份。",
+          "han_position": 2778
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-11",
+      "rationale": "用最后动作和现行状态承接新一轮活动，已解决线索不重开，开放线索不填答案。",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 门外的纸",
+          "text": "祁砚笙关掉展示屏，把下一轮开放训练的报名纸留在门外。",
+          "han_position": 2855
+        },
+        {
+          "chapter": "第19章 空出来的位置",
+          "text": "郁苔岑的腕部限制已被正式解除，可以重新使用双手控制台。",
+          "han_position": 2606
+        },
+        {
+          "chapter": "第7章 被截去的声音",
+          "text": "匿名音频的寄件人和发送动机仍未查明，队员也无法确认其中说话者的身份。",
+          "han_position": 2778
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-12",
+      "rationale": "草稿断言用右眼看清文字，直接违反永久失明；不是人物错觉、台词或暂时状态。",
+      "evidence_quotes": [
+        {
+          "chapter": "第12章 不同的零点",
+          "text": "岑弥照的右眼自幼永久失明，只有左眼能够看见。",
+          "han_position": 2684
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-13",
+      "rationale": "无亲属关系与亲兄妹不能同时成立，且双方姓名齐备。",
+      "evidence_quotes": [
+        {
+          "chapter": "第18章 不是顺手的事",
+          "text": "靳予葵与邬槐序没有任何亲属关系，两人只是在入队后相识。",
+          "han_position": 2635
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-14",
+      "rationale": "首答只确认保留者，追问的原因需要原文进一步支持。",
+      "evidence_quotes": [
+        {
+          "chapter": "第16章 仍然扣下的分",
+          "text": "郁苔岑保留原始采样间隔，是为了让复核人员重现延迟。",
+          "han_position": 2711
+        }
+      ],
+      "paraphrase": {
+        "source": "郁苔岑保留原始采样间隔，是为了让复核人员重现延迟。",
+        "question": "她为什么要保留这种不均匀，而不把展示记录修得流畅一些？"
+      },
+      "first_evidence_chapters": [
+        "第16章 仍然扣下的分"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第16章 仍然扣下的分",
+          "text": "郁苔岑保留原始采样间隔，是为了让复核人员重现延迟。",
+          "han_position": 2711
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w01-15",
+      "rationale": "从明确交回许可推得原许可不能继续使用，不扩张到建筑的永久法律权属。",
+      "evidence_quotes": [
+        {
+          "chapter": "第24章 门关上以后",
+          "text": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+          "han_position": 2668
+        }
+      ],
+      "paraphrase": {
+        "source": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+        "question": "那以后他们还能依照原来的许可进去训练吗？"
+      },
+      "first_evidence_chapters": [
+        "第24章 门关上以后"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第24章 门关上以后",
+          "text": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+          "han_position": 2668
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-01",
+      "rationale": "备用苗签的收存位置与同章寻找残损种袋字条是相邻干扰。",
+      "evidence_quotes": [
+        {
+          "chapter": "第3章 从纸上掉下来的字",
+          "text": "聂沅絮把备用苗签放在公共厨房冰箱上方的铁盒里。",
+          "han_position": 2721
+        }
+      ],
+      "paraphrase": {
+        "source": "聂沅絮把备用苗签放在公共厨房冰箱上方的铁盒里。",
+        "question": "第三章收存备用标签时，她选定的是厨房里的哪个位置？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-02",
+      "rationale": "分辨外形、携带方式与实际用途；草稿中的遮光动作不构成用途依据。",
+      "evidence_quotes": [
+        {
+          "chapter": "第19章 午后没有阴影的地方",
+          "text": "瓷脊匣内的软衬用于护住嫩枝，不能拿来储存灌溉用水。",
+          "han_position": 2598
+        }
+      ],
+      "paraphrase": {
+        "source": "瓷脊匣内的软衬用于护住嫩枝，不能拿来储存灌溉用水。",
+        "question": "它里面那层柔软材料是做什么用的，能把整个东西当成浇水容器吗？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-03",
+      "rationale": "并列核对起点与后期的所有权转移，不从角色常用物件推断来源。",
+      "evidence_quotes": [
+        {
+          "chapter": "第4章 筒盖并不替人点头",
+          "text": "聂沅絮把穗纹筒送给蔺稚禾，由蔺稚禾自行保管。",
+          "han_position": 2715
+        },
+        {
+          "chapter": "第25章 篮底仍然看得见",
+          "text": "罗颂弦将瓷脊匣赠给秦榆铮，今后由秦榆铮保管。",
+          "han_position": 2671
+        }
+      ],
+      "paraphrase": {
+        "source": "聂沅絮把穗纹筒送给蔺稚禾，由蔺稚禾自行保管。 / 罗颂弦将瓷脊匣赠给秦榆铮，今后由秦榆铮保管。",
+        "question": "第四章与第二十五章的两次赠送之后，穗纹筒和瓷脊匣分别由谁保管？请把赠送者也对应列出。"
+      },
+      "multi_chapter_necessity": "第4章提供筒的赠送双方，第25章提供匣的赠送双方；没有一章完整提供两次赠送。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-04",
+      "rationale": "早期排班与后来具体委托属于不同人物和时期；时间限定消除状态变化歧义。",
+      "evidence_quotes": [
+        {
+          "chapter": "第5章 灯灭以后才有的空当",
+          "text": "贺汀白此时只接夜间配送，白天不参加站点排班。",
+          "han_position": 2787
+        },
+        {
+          "chapter": "第18章 没有人替她答应",
+          "text": "黎斐筠接受了秦榆铮的道歉，并同意让他代办物资领取。",
+          "han_position": 2587
+        }
+      ],
+      "paraphrase": {
+        "source": "贺汀白此时只接夜间配送，白天不参加站点排班。 / 黎斐筠接受了秦榆铮的道歉，并同意让他代办物资领取。",
+        "question": "从早期分工到姐弟关系缓和，哪些帮助实际可安排：第五章时贺汀白是否参加白天的配送排班；第十八章时黎斐筠同意让秦榆铮代办什么？"
+      },
+      "multi_chapter_necessity": "第5章尚无姐弟委托，第18章也不能补出早期配送排班，必须合并两章。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-05",
+      "rationale": "一项是明确承担的频率，一项是后期工作时段；不得用热心程度代替约定。",
+      "evidence_quotes": [
+        {
+          "chapter": "第13章 雨水进过的房间",
+          "text": "黎斐筠正式加入屋顶共用计划，承担每周一次的物资核对。",
+          "han_position": 2577
+        },
+        {
+          "chapter": "第23章 黄昏空出一块",
+          "text": "贺汀白转为白天配送，夜间班次已经全部取消。",
+          "han_position": 2675
+        }
+      ],
+      "paraphrase": {
+        "source": "黎斐筠正式加入屋顶共用计划，承担每周一次的物资核对。 / 贺汀白转为白天配送，夜间班次已经全部取消。",
+        "question": "要按各人自己答应的范围排下一轮事务，黎斐筠在第十三章加入时固定承担哪件事、多频繁；贺汀白到第二十三章还有夜班吗？"
+      },
+      "multi_chapter_necessity": "第13章只有加入时承诺，第23章才确定新的配送时段；任何一章不足以完整排出这两人的约束。",
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-06",
+      "rationale": "残缺署名未补全，正文的职业和图画活动不构成作者证明。",
+      "evidence_quotes": [],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-07",
+      "rationale": "叙述只写外观与动作，不能由物件颜色或人物职业推定动机。",
+      "evidence_quotes": [],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-08",
+      "rationale": "两段都明确限定第一次签约，不能用自然变老消解。",
+      "evidence_quotes": [
+        {
+          "chapter": "第8章 箱底压着的方形",
+          "text": "罗颂弦第一次签下荇序大厦租约时刚满二十三岁。",
+          "han_position": 2676
+        },
+        {
+          "chapter": "第26章 镜子退后一步",
+          "text": "罗颂弦第一次签下荇序大厦租约时刚满二十七岁。",
+          "han_position": 2758
+        }
+      ],
+      "paraphrase": {
+        "source": "罗颂弦第一次签下荇序大厦租约时刚满二十三岁。 / 罗颂弦第一次签下荇序大厦租约时刚满二十七岁。",
+        "question": "罗颂弦初次租住荇序大厦时究竟多大？请指出文本中的年龄说法是否一致。"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-09",
+      "rationale": "原始构造与未改装限定共同排除合理变化的解释。",
+      "evidence_quotes": [
+        {
+          "chapter": "第10章 面粉落在画纸之前",
+          "text": "穗纹筒制成时只有三个独立隔层，此后从未改装。",
+          "han_position": 2750
+        },
+        {
+          "chapter": "第28章 留出来的一段空白",
+          "text": "穗纹筒制成时有五个独立隔层，此后从未改装。",
+          "han_position": 2667
+        }
+      ],
+      "paraphrase": {
+        "source": "穗纹筒制成时只有三个独立隔层，此后从未改装。 / 穗纹筒制成时有五个独立隔层，此后从未改装。",
+        "question": "穗纹筒在最初做成时内部一共分了几格？前后叙述能否得到一个没有争议的答案？"
+      },
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-10",
+      "rationale": "接续明确结尾动作，区分已解决的声音线索与仍开放的署名线索。",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 声音停住的那一刻",
+          "text": "黎斐筠将停用的水管盘在门边，众人约好次晨重新分配浇灌时段。",
+          "han_position": 2763
+        },
+        {
+          "chapter": "第13章 雨水进过的房间",
+          "text": "黎斐筠正式加入屋顶共用计划，承担每周一次的物资核对。",
+          "han_position": 2577
+        },
+        {
+          "chapter": "第11章 纸背少了一角",
+          "text": "韦昕岫翻过纸，背面一角缺失，原本写在那里的署名只剩几道无法辨认的笔画。",
+          "han_position": 183
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-11",
+      "rationale": "季末决定尚待商议，不能替人物决定续用结果；开放画作线索不被猜补。",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 种植表合上以前",
+          "text": "黎斐筠收起当季种植表，大家把下季是否续用屋顶留给周末商议。",
+          "han_position": 2750
+        },
+        {
+          "chapter": "第20章 空出来的墙印",
+          "text": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。",
+          "han_position": 2570
+        },
+        {
+          "chapter": "第11章 纸背少了一角",
+          "text": "韦昕岫翻过纸，背面一角缺失，原本写在那里的署名只剩几道无法辨认的笔画。",
+          "han_position": 183
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-12",
+      "rationale": "父母相同并无冲突，冲突精确在姐姐被写成妹妹；修订应同步指代。",
+      "evidence_quotes": [
+        {
+          "chapter": "第11章 纸背少了一角",
+          "text": "卓闻岚和韦昕岫是同父同母的亲姐妹，卓闻岚是姐姐。",
+          "han_position": 2599
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-13",
+      "rationale": "普通门卡可以开其他门不意味着可以开顶层门；不接受借助未写出的临时权限消解。",
+      "evidence_quotes": [
+        {
+          "chapter": "第17章 不画眼睛的人",
+          "text": "黎斐筠必须用葵齿环才能打开荇序大厦顶层门，普通住户门卡无法开启这道门。",
+          "han_position": 2658
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-14",
+      "rationale": "第一答不带目的，第二问必须从明确原因取证，不能将画图职业当作身份答案。",
+      "evidence_quotes": [
+        {
+          "chapter": "第12章 被擦花的箭头",
+          "text": "贺汀白把浇水清单改成图形标记，是为了让不戴眼镜的住户也能看清。",
+          "han_position": 2638
+        }
+      ],
+      "paraphrase": {
+        "source": "贺汀白把浇水清单改成图形标记，是为了让不戴眼镜的住户也能看清。",
+        "question": "他这样改，主要是为了方便哪一类现场使用的人？"
+      },
+      "first_evidence_chapters": [
+        "第12章 被擦花的箭头"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第12章 被擦花的箭头",
+          "text": "贺汀白把浇水清单改成图形标记，是为了让不戴眼镜的住户也能看清。",
+          "han_position": 2638
+        }
+      ],
+      "copy_check": "pass"
+    },
+    {
+      "id": "a1c2f-w02-15",
+      "rationale": "换层与旧约终止是不同信息，不能从搬家常识推断，需引用明确终止事实。",
+      "evidence_quotes": [
+        {
+          "chapter": "第20章 空出来的墙印",
+          "text": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。",
+          "han_position": 2570
+        }
+      ],
+      "paraphrase": {
+        "source": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。",
+        "question": "那她原先那套房的租约还在继续吗？"
+      },
+      "first_evidence_chapters": [
+        "第20章 空出来的墙印"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第20章 空出来的墙印",
+          "text": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。",
+          "han_position": 2570
+        }
+      ],
+      "copy_check": "pass"
+    }
+  ],
+  "works": [
+    {
+      "key": "w01",
+      "characters": [
+        {
+          "name": "祁砚笙",
+          "aliases": [
+            "细尺"
+          ]
+        },
+        {
+          "name": "郁苔岑",
+          "aliases": [
+            "苔点"
+          ]
+        },
+        {
+          "name": "靳予葵",
+          "aliases": [
+            "小葵灯"
+          ]
+        },
+        {
+          "name": "邬槐序",
+          "aliases": []
+        },
+        {
+          "name": "岑弥照",
+          "aliases": []
+        },
+        {
+          "name": "邵霁棠",
+          "aliases": []
+        },
+        {
+          "name": "翟栖墨",
+          "aliases": []
+        },
+        {
+          "name": "裴朔宁",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "弧桨盒",
+          "chapter": 5,
+          "quote": "祁砚笙把弧桨盒交给靳予葵，从此由靳予葵保管。"
+        },
+        {
+          "object": "烬纹夹",
+          "chapter": 11,
+          "quote": "邬槐序把烬纹夹交给郁苔岑，之后由郁苔岑收存。"
+        },
+        {
+          "object": "栈羽板",
+          "chapter": 21,
+          "quote": "郁苔岑将栈羽板交给翟栖墨保管，约定赛季结束后再谈归还。"
+        }
+      ],
+      "states": [
+        {
+          "before_chapter": 1,
+          "after_chapter": 17,
+          "before_quote": "祁砚笙此时只是临时协调员，任期到队内选举为止。",
+          "after_quote": "祁砚笙经全体队员投票成为正式协调员，不再担任临时职务。"
+        },
+        {
+          "before_chapter": 3,
+          "after_chapter": 19,
+          "before_quote": "郁苔岑的右腕戴着固定夹板，暂时不能操作双手控制台。",
+          "after_quote": "郁苔岑的腕部限制已被正式解除，可以重新使用双手控制台。"
+        },
+        {
+          "before_chapter": 6,
+          "after_chapter": 22,
+          "before_quote": "邵霁棠被暂停独自下水测试的资格，只能有人陪同训练。",
+          "after_quote": "岑弥照恢复了邵霁棠独自测试的资格，从当晚起不再要求陪同。"
+        },
+        {
+          "before_chapter": 9,
+          "after_chapter": 24,
+          "before_quote": "本周全队仍在衡汐馆的旧训练室工作，使用许可尚未交回。",
+          "after_quote": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。"
+        }
+      ],
+      "threads": [
+        {
+          "planted_chapter": 2,
+          "resolved_chapter": 10,
+          "status": "resolved",
+          "basis": "现场对照证明受风松脱帘布拖入水中造成额外阻力；赛事申诉只处理旧修正依据，不重开物理原因。"
+        },
+        {
+          "planted_chapter": 4,
+          "resolved_chapter": 13,
+          "status": "resolved",
+          "basis": "独立电子签收表及仓库流水核实手续，纸质复印件空栏不是缺失签收。"
+        },
+        {
+          "planted_chapter": 7,
+          "status": "open",
+          "basis": "匿名音频寄件人与动机没有确认；后续不揭示身份。"
+        },
+        {
+          "planted_chapter": 12,
+          "resolved_chapter": 25,
+          "status": "resolved",
+          "basis": "两枚校准章使用不同参照高度；不解释为破坏或伪造。"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            8,
+            26
+          ],
+          "quotes": [
+            "裴朔宁出生在栎虹城，童年从未离开那座城市。",
+            "裴朔宁出生在缄岚大学所在的城市，出生地并不是栎虹城。"
+          ],
+          "rationale": "同一人物的出生地不可能同时属于与不属于同一城市；均为确定叙述。"
+        },
+        {
+          "chapters": [
+            14,
+            28
+          ],
+          "quotes": [
+            "衡汐馆建馆当天首次注入试验池的水量是八百升。",
+            "衡汐馆建馆当天首次注入试验池的水量是一千二百升。"
+          ],
+          "rationale": "同一历史注水事件的数量冲突，不按后续补水处理。"
+        }
+      ]
+    },
+    {
+      "key": "w02",
+      "characters": [
+        {
+          "name": "黎斐筠",
+          "aliases": [
+            "筠姐"
+          ]
+        },
+        {
+          "name": "蔺稚禾",
+          "aliases": [
+            "小禾页"
+          ]
+        },
+        {
+          "name": "贺汀白",
+          "aliases": [
+            "白扣"
+          ]
+        },
+        {
+          "name": "秦榆铮",
+          "aliases": []
+        },
+        {
+          "name": "韦昕岫",
+          "aliases": []
+        },
+        {
+          "name": "聂沅絮",
+          "aliases": []
+        },
+        {
+          "name": "罗颂弦",
+          "aliases": []
+        },
+        {
+          "name": "卓闻岚",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "穗纹筒",
+          "chapter": 4,
+          "quote": "聂沅絮把穗纹筒送给蔺稚禾，由蔺稚禾自行保管。"
+        },
+        {
+          "object": "葵齿环",
+          "chapter": 16,
+          "quote": "韦昕岫将葵齿环交给黎斐筠，此后由黎斐筠长期保管。"
+        },
+        {
+          "object": "瓷脊匣",
+          "chapter": 25,
+          "quote": "罗颂弦将瓷脊匣赠给秦榆铮，今后由秦榆铮保管。"
+        }
+      ],
+      "states": [
+        {
+          "before_chapter": 1,
+          "after_chapter": 13,
+          "before_quote": "黎斐筠没有加入屋顶共用计划，也没有承担排班义务。",
+          "after_quote": "黎斐筠正式加入屋顶共用计划，承担每周一次的物资核对。"
+        },
+        {
+          "before_chapter": 2,
+          "after_chapter": 20,
+          "before_quote": "蔺稚禾租住在荇序大厦二层，尚未提出换房申请。",
+          "after_quote": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。"
+        },
+        {
+          "before_chapter": 5,
+          "after_chapter": 23,
+          "before_quote": "贺汀白此时只接夜间配送，白天不参加站点排班。",
+          "after_quote": "贺汀白转为白天配送，夜间班次已经全部取消。"
+        },
+        {
+          "before_chapter": 6,
+          "after_chapter": 18,
+          "before_quote": "黎斐筠还没有接受秦榆铮的道歉，也拒绝由他代办任何事务。",
+          "after_quote": "黎斐筠接受了秦榆铮的道歉，并同意让他代办物资领取。"
+        }
+      ],
+      "threads": [
+        {
+          "planted_chapter": 3,
+          "resolved_chapter": 9,
+          "status": "resolved",
+          "basis": "原始图像、残片和卖家核验说明种袋残字来自误放的种植深度记录。"
+        },
+        {
+          "planted_chapter": 7,
+          "resolved_chapter": 15,
+          "status": "resolved",
+          "basis": "松动通风罩固定前后的声响对照确认原因；风铃不是原因。"
+        },
+        {
+          "planted_chapter": 11,
+          "status": "open",
+          "basis": "残缺署名没有得到作者确认；与现有人物画作、旧房照片分离。"
+        },
+        {
+          "planted_chapter": 14,
+          "resolved_chapter": 27,
+          "status": "resolved",
+          "basis": "容器残留解释盐白结层；不能把裁剪照片或邻居抱怨认定为投放者。"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            8,
+            26
+          ],
+          "quotes": [
+            "罗颂弦第一次签下荇序大厦租约时刚满二十三岁。",
+            "罗颂弦第一次签下荇序大厦租约时刚满二十七岁。"
+          ],
+          "rationale": "同一首次签约时点的年龄相差四岁，均不是现在年龄。"
+        },
+        {
+          "chapters": [
+            10,
+            28
+          ],
+          "quotes": [
+            "穗纹筒制成时只有三个独立隔层，此后从未改装。",
+            "穗纹筒制成时有五个独立隔层，此后从未改装。"
+          ],
+          "rationale": "同一未改装物件的原始隔层数量冲突。"
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer_not_author": true,
+    "reviewer_role": "Independent reader; no original prose, questions or gold answers authored or edited. Only review JSON files edited.",
+    "status": "completed",
+    "reviewed_source_sha256": {
+      "w01": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+      "w02": "30bb94c8b2062e6d28e3000513d362a85d10ddbfaaecaabc6f7e4e98d41d7cf7"
+    },
+    "reviewed_tasks_sha256": "4007c65b0d47be48f729e75b0a3a2a98022721ae85264b82f146fa2f3c599cc9",
+    "reviewed_chapter_counts": {
+      "w01": 30,
+      "w02": 30
+    },
+    "reviewed_task_counts": {
+      "w01": 15,
+      "w02": 15
+    },
+    "unresolved_unintentional_conflicts": 0,
+    "unresolved_findings_count": 0,
+    "findings": [
+      {
+        "id": "w01-review-01",
+        "status": "resolved",
+        "category": "intra_chapter_time",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w01-review-02",
+        "status": "resolved",
+        "category": "intra_chapter_time",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w01-review-03",
+        "status": "resolved",
+        "category": "object_scene_sequence",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w01-review-04",
+        "status": "resolved",
+        "category": "object_scene_sequence",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w01-review-05",
+        "status": "resolved",
+        "category": "recap_draft_only_mismatch",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w01-review-06",
+        "status": "resolved",
+        "category": "gold_scope_exceeds_question",
+        "detail_file": "authoring/review-w01.json"
+      },
+      {
+        "id": "w02-review-01",
+        "status": "resolved",
+        "category": "relative_day_sequence",
+        "detail_file": "authoring/review-w02.json"
+      },
+      {
+        "id": "w02-review-02",
+        "status": "resolved",
+        "category": "object_condition_scope",
+        "detail_file": "authoring/review-w02.json"
+      }
+    ],
+    "reported_findings_count": 8,
+    "resolved_findings_count": 8,
+    "full_read_method": "Sequential complete, non-truncated source reading of all 60 chapters. Entire affected chapters reread after corrections: w01 2,5,18,24; w02 12,30. All 30 task designs read semantically; formal task bindings independently compared without editing content. Shared drafts/plans and work-design evidence ledgers read in full.",
+    "semantic_coverage": [
+      "time and event order",
+      "object custody and condition",
+      "relationships and physical attributes",
+      "state transition continuity",
+      "four planted threads per work and open/resolved status",
+      "preservation of two intentional contradiction pairs per work",
+      "unknown answers absent across entire work",
+      "multi-chapter necessity checked against all chapters, not just selected citations",
+      "FIX named direct narration and isolation from intentional conflicts",
+      "RECAP cutoff, ending, state, open thread, plan and actual opening draft-only facts",
+      "follow-up pronoun context and separate second information need",
+      "shared draft continuity and selection not leaking answer",
+      "question/gold scope and quotation support",
+      "novel scenes versus observable mechanical substitution"
+    ],
+    "binding_checks": {
+      "task_design_mismatches": 0,
+      "unique_quote_locations": 39,
+      "unique_quotes_after_1500": 38,
+      "unique_quotes_after_2500": 38,
+      "final_quote_text_or_chapter_errors": 0
+    },
+    "limitations": [
+      "No product/model/provider/evaluation execution; no claim about runtime model quality or actual FIX detection.",
+      "Prior used-work bodies and reserve sets not accessed; no direct originality comparison against those bodies.",
+      "Self-review quotation positions and manifest must be rebound by lead to final source; independent source/task hashes above are final."
+    ]
+  }
+}

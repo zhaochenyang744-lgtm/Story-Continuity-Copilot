@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
-import { api, createWorkByApi, expect, openAccountMenu, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
+import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
 import { button, finding, run, setup } from "./support/writing";
 import { evidence, project, sample, theme, workMenu } from "./support/pages";
 
@@ -46,8 +46,7 @@ test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；�
   await createWorkByApi(page, { title: "夜间试验之书" });
   // Creating a real work completes onboarding, so explicitly restart the tour to inspect its band.
   await page.goto("/");
-  await openAccountMenu(page);
-  await page.getByRole("menuitem", { name: "重新看一遍导览", exact: true }).click();
+  await page.getByRole("button", { name: "重新看一遍导览", exact: true }).click();
   await expect(page.getByRole("region", { name: "导览", exact: true })).toContainText("导览 1 / 5");
   const look = (target: Locator) => target.evaluate(e => ({ shadow: getComputedStyle(e).boxShadow }));
   const colours = { day: { background: "rgb(17, 17, 17)", color: "rgb(244, 244, 241)" }, night: { background: "rgb(29, 33, 85)", color: "rgb(244, 244, 241)" } };
@@ -122,7 +121,7 @@ test("08 减少动态效果：直接最终值与正常计数采样", async ({ pa
   await evidence(info, "motion-samples", { expected, reduced, route, normal: await samples() });
 });
 
-test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) => {
+test("08 axe 扫描：十一个页面的日间和夜间", async ({ page }, info) => {
   const results: { page: string; theme: string; violations: any[] }[] = [];
   const scan = async (name: string) => {
     await expect(page.getByText(/^正在(读取|载入)/)).toHaveCount(0);
@@ -133,7 +132,7 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
       await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity).length), { message: "the theme's colour transition has finished" }).toBe(0);
       const result = await new AxeBuilder({ page }).analyze();
       results.push({ page: name, theme: value, violations: result.violations.map(v => ({ id: v.id, impact: v.impact, description: v.description, help: v.help, helpUrl: v.helpUrl, nodes: v.nodes.map(n => ({ target: n.target, html: n.html, failureSummary: n.failureSummary })) })) });
-      const capture: Record<string, string> = { "登录": "login", "首页新用户": "home", "作品管理": "works", "写作": "writing", "个人信息": "profile" };
+      const capture: Record<string, string> = { "登录": "login", "首页新用户": "home", "作品管理": "works", "写作": "writing", "作者主页": "profile" };
       if (capture[name]) await shot(page, `${capture[name]}-${value}`, false);
     }
   };
@@ -155,14 +154,48 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
   await page.goto(`/projects/${id}/memory?view=people`);
   await expect(page.getByRole("article").first()).toBeVisible();
   await scan("资料人物");
-  await page.goto("/account/profile");
+  await page.goto("/account");
   await expect(page.getByRole("heading", { level: 1, name: "E2E 作者", exact: true })).toBeVisible();
-  await scan("个人信息");
+  await scan("作者主页");
+  await page.goto("/settings/usage");
+  await expect(page.getByRole("heading", { level: 2, name: "用量", exact: true })).toBeVisible();
+  await expect(page.getByRole("list", { name: "近 7 天每天用掉的字数" })).toBeVisible();
+  await scan("设置");
   await evidence(info, "axe-results", results);
   // The writing page has its one h1 (unseen), so axe no longer asks for one.
   expect(results.flatMap(r => r.violations.map(v => `${r.page}/${r.theme}: ${v.id}`)).filter(item => item.endsWith("page-has-heading-one"))).toEqual([]);
   const severe = results.flatMap(r => r.violations.filter(v => ["critical", "serious"].includes(v.impact)).map(v => ({ page: r.page, theme: r.theme, ...v })));
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
+});
+
+test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜间都没有严重违规", async ({ page }, info) => {
+  await registerAccount(page, "axe180");
+  const id = await sampleWorkId(page);
+  // One answered question, so the scan meets the steps, the answer, its sources and the coverage line.
+  await api(page).post(`/projects/${id}/assistant/tasks`, { kind: "ask", question: "苏岑知道罗盘被调包了吗？", context: { page: "writing" } });
+  await expect.poll(async () => (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks[0].status).toBe("completed");
+  const results: { page: string; theme: string; violations: unknown[] }[] = [];
+  const scan = async (name: string, value: string) => {
+    await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity).length), { message: "the theme's colour transition has finished" }).toBe(0);
+    const found = await new AxeBuilder({ page }).analyze();
+    results.push({ page: name, theme: value, violations: found.violations.filter(v => ["critical", "serious"].includes(v.impact ?? "")).map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
+  };
+  const completed = () => page.getByTestId("assistant-thread").locator('[data-task][data-status="completed"]');
+  for (const value of ["day", "night"] as const) {
+    await openTab(page, id, "workspace");
+    await theme(page, value);
+    await page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("tab", { name: "助手", exact: true }).click();
+    await expect(completed()).toHaveCount(1);
+    await page.getByTestId("assistant-thread").getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await scan("写作页助手标签", value);
+    await openTab(page, id, "sources");
+    await page.locator("#assistant-open").click();
+    await expect(page.getByRole("dialog", { name: "助手", exact: true })).toBeVisible();
+    await expect(completed()).toHaveCount(1);
+    await scan("抽屉", value);
+  }
+  await evidence(info, "assistant-axe-results", results);
+  expect(results.filter(r => r.violations.length), JSON.stringify(results, null, 2)).toEqual([]);
 });
 
 function hasVisibleFocus(s: { outline: string; width: string; color: string; shadow: string; bar?: string }) {

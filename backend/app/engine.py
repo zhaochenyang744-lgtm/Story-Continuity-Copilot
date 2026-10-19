@@ -9,7 +9,7 @@ from typing import Any
 
 from . import brief_citations
 from .internal_ids import strip_internal_ids
-from .memory_contract import CONTROLLED_PREDICATES, predicate_label
+from .memory_contract import CONTROLLED_PREDICATES, normalized_predicate, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, WRITING_ANALYSIS_INPUT_BUDGET_UNITS, request_prompt_and_budget, review_effort_scope
@@ -24,6 +24,9 @@ ALLOWED_MEMORY_TYPE={"static_canon","dynamic_state","event_timeline","character_
 REVIEW_NATURES={"confirmed_conflict","possible_conflict","state_change","insufficient_evidence"}
 REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
 EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
+# Citation faults that, once the one repair is spent, still leave a decided conflict as a possible one
+# (ContinuityEngine._keep_as_possible) instead of an undecided claim.
+KEEPABLE_CONTRACT_ERRORS=frozenset({"conflict_evidence_not_direct","temporal_anchor_unresolvable","evidence_unresolvable"})
 MAX_RUN_TOKENS=8000
 MAX_WRITING_ANALYSIS_RUN_TOKENS=16000
 PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
@@ -31,7 +34,7 @@ PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
 # temporary rollback to per-sentence review; a run keeps the pipeline recorded when it was created.
 REVIEW_PIPELINE_ENV="CONTINUITY_REVIEW_PIPELINE"
 SCREENED_PROMPT_VERSION=f"{CONTINUITY_SCREENED_PROMPT_VERSION}+{CONTINUITY_SCREEN_PROMPT_VERSION}+{CONTINUITY_TRIAGE_PROMPT_VERSION}"
-MEMORY_PROMPT_VERSION="memory-initialization-v10-whole-chapter-rules"
+MEMORY_PROMPT_VERSION="memory-initialization-v11-epithet-subjects"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
@@ -48,12 +51,15 @@ CONTINUITY_MAX_CLAIMS_PER_BATCH=4
 # The per-account dispatch quota refusal (stage13.reserve_provider_attempt). Mid-chapter it leaves the
 # rest of the chapter undecided instead of failing the run.
 PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
+NON_CONTRACT_UNDECIDED=frozenset({PROVIDER_ATTEMPT_QUOTA_EXCEEDED,"input_budget_exceeded","invalid_json","output_truncated"})
 # A single claim whose full evidence and Memory do not fit the input budget (the v21 rules left the
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
 # The screened equivalent: fewer passages, then fewer Memory rows.
 # A screened review sees passages of the source text itself, so it carries fewer Memory rows.
 SCREENED_RELATED_MEMORY_LIMIT=10
+# Passages added to one claim beyond its own: the sources of its reserved state facts.
+SOURCE_PASSAGES_PER_CLAIM=2
 SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS=((screening.VERIFY_MAX_PASSAGES,SCREENED_RELATED_MEMORY_LIMIT),(4,8),(2,6),(1,5))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
 # A batch may return MAX_MEMORY_CANDIDATES_PER_BATCH facts, so batches are also capped by source text
@@ -83,6 +89,10 @@ CONTEXT_BRIEF_SECTIONS={"related_plan","confirmed_fact","character_state","world
 STORY_QA_STATUSES={"answered","partial","insufficient","conflicting"}
 STORY_QA_LAYERS={"confirmed","written","planned"}
 REVISION_TASK_PRIORITIES={"high","medium","low"}
+# Predicates (and Memory types) that record where a person stands at a point in the story. The review
+# keeps the latest of each for every person a sentence names (ContinuityEngine._latest_states).
+STATE_PREDICATES=frozenset({"knowledge","status","possession","location","relationship","affiliation"})
+STATE_MEMORY_TYPES=frozenset({"dynamic_state","character_knowledge"})
 
 
 class MemoryCandidateValidationError(ValueError):
@@ -166,11 +176,38 @@ def _english_calendar(value: str) -> dict[str, set[str]]:
     return parsed
 
 
+# 初六 stands alone; 十二, 廿三 and 卅 count as days only right after a month word (霜月十二), so 十二个 or 十二点 do not.
+_TRADITIONAL_DAY = r"(?:(?<![一二三四五六七八九十廿卅])(初[一二三四五六七八九十])|(?<=[月季])(十[一二三四五六七八九]|廿[一二三四五六七八九]?|卅))(?![一二三四五六七八九十]|[年月日号章天点时分秒个岁人次])"
+_TRADITIONAL_HOUR = r"([子丑寅卯辰巳午未申酉戌亥])(?:时|正|初(?![一二三四五六七八九十]))"
+_TRADITIONAL_WATCH = r"([一二三四五])更(?!加|多|是|新|改|换)"
+# One character before 月 or 季 (霜月, 芦季, 腊月), never the word before it: "在四月初九" is 四月 (lf4-formal a-i07, where
+# "在四月" against "四月" made the same day look different). Numbered months (四月, 十一月) are left to the 年月日 parse.
+_NAMED_MONTH = r"(?<![一二三四五六七八九十])([^\W\d一二三四五六七八九十][月季])(?=初[一二三四五六七八九十]|十[一二三四五六七八九]|廿|卅)"
+
+
+def _traditional_calendar(value: str) -> dict[str, set[str]]:
+    """Day and hour words of an invented or traditional calendar: 霜月初六, 廿三, 午时, 三更 (lf3-formal a-i08)."""
+    days = {"初" + "一二三四五六七八九十"[i]: str(i + 1) for i in range(10)}
+    days.update({"十" + "一二三四五六七八九"[i]: str(i + 11) for i in range(9)})
+    days.update({"廿": "20", "卅": "30"})
+    days.update({"廿" + "一二三四五六七八九"[i]: str(i + 21) for i in range(9)})
+    parsed: dict[str, set[str]] = {}
+    for match in re.finditer(_TRADITIONAL_DAY, value):
+        parsed.setdefault("日", set()).add(days[match.group(1) or match.group(2)])
+    for match in re.finditer(_TRADITIONAL_HOUR, value):
+        parsed.setdefault("shichen", set()).add(match.group(1))
+    for match in re.finditer(_TRADITIONAL_WATCH, value):
+        parsed.setdefault("watch", set()).add(match.group(1))
+    for match in re.finditer(_NAMED_MONTH, value):
+        parsed.setdefault("month_name", set()).add(match.group(1))
+    return parsed
+
+
 def _temporal_anchor_is_explicit(value: str) -> bool:
     clocks = _clock_values(value)
     if clocks is None:
         return False
-    if clocks or _english_calendar(value):
+    if clocks or _english_calendar(value) or _traditional_calendar(value):
         return True
     return bool(re.search(
         r"(?:\d{1,4}\s*(?:年|月|日|号|点|时|分|秒|章)|[一二三四五六七八九十百零两]+\s*(?:年|月|日|号|点|时|分|秒|章)|"
@@ -210,6 +247,8 @@ def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
         for raw,unit in re.findall(component_pattern,value,re.IGNORECASE):
             parsed.setdefault(unit_group.get(unit,unit),set()).add(normalized_number(raw.casefold()))
         for unit,values in _english_calendar(value).items():
+            parsed.setdefault(unit,set()).update(values)
+        for unit,values in _traditional_calendar(value).items():
             parsed.setdefault(unit,set()).update(values)
         if clocks := _clock_values(value):
             parsed["clock"] = {str(clock) for clock in clocks}
@@ -363,6 +402,22 @@ def _memory_sort_key(item:dict[str,Any])->tuple[str,...]:
     return tuple(str(item.get(key,"")) for key in ("subject","predicate","value","source_span_id","id"))
 
 
+def _resolve_id(value:Any,known:Any)->tuple[str|None,bool]:
+    """(the known id `value` stands for, whether it had to be corrected).
+
+    An id the model copied wrongly by exactly one character still names the one known id of the same
+    length that differs from it in that single place. Zero or several such ids correct nothing.
+    """
+    if not isinstance(value,str):return None,False
+    if value in known:return value,False
+    near=[item for item in known if isinstance(item,str) and len(item)==len(value) and sum(a!=b for a,b in zip(item,value))==1]
+    return (near[0],True) if len(near)==1 else (None,False)
+
+
+def _normalization(raw:dict[str,Any],reason_code:str,outcome:str,attempt:int)->dict[str,Any]:
+    return {"claim_span_id":raw["claim_span_id"],"reason_code":reason_code,"outcome":outcome,"provider_attempt":attempt}
+
+
 def _bounded_excerpt(body:str,hints:list[str],limit:int=CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS)->str:
     if len(body)<=limit:return body
     phrases=[]
@@ -431,7 +486,20 @@ class ContinuityEngine:
             selected.append({**span,"prompt_excerpt":_bounded_excerpt(str(span.get("body","")),hints,excerpt_limit)})
         return selected
 
-    def _related_memory(self, claim: dict[str, Any], memory: list[dict[str, Any]], limit: int = RELATED_MEMORY_LIMIT) -> list[dict[str, Any]]:
+    def _related_memory(self, claim: dict[str, Any], memory: list[dict[str, Any]], limit: int = RELATED_MEMORY_LIMIT,
+                        chapters: dict[str, int] | None = None, aliases: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+        reserved,rest=self._related_parts(claim,memory,limit,chapters,aliases)
+        return reserved+rest
+
+    def _related_parts(self, claim: dict[str, Any], memory: list[dict[str, Any]], limit: int,
+                       chapters: dict[str, int] | None, aliases: list[dict[str, Any]] | None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        """The facts a claim is reviewed against: scored by relevance, plus (screened review) each named person's latest states.
+
+        Scoring prefers facts whose source is among the claim's passages, and a person's older states
+        can fill every slot with them, so the newest one never arrives (a sentence saying someone still
+        cannot read, against the later fact that they now can). With `chapters` (a Memory id -> chapter
+        number map) up to half the slots go first to the named people's state facts (see `_reserved_states`).
+        """
         terms=_claim_terms(claim["text"]); evidence_ids={span.get("source_span_id",span["id"]) for span in claim["allowed_evidence"]}; ranked=[]
         cited=claim.get("screen_facts") or []
         for item in memory:
@@ -439,7 +507,73 @@ class ContinuityEngine:
             # Facts the screen tied to this claim come first.
             score=100*int(item["id"] in cited)+10*int(item.get("source_span_id") in evidence_ids)+_relevance_score(terms,text)
             if score:ranked.append((score,item))
-        return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:limit]]
+        scores={item["id"]:score for score,item in ranked}
+        latest=self._latest_states(claim,memory,chapters,aliases) if chapters is not None else []
+        # Ranked by the words shared with the claim only: the passage-source bonus in `scores` favours the older states.
+        # Names do not count: a person's name is in every fact about them, and a place the claim names made a
+        # later fact about an unrelated route mark tie with the fact that she can now read (first A1c fix-02).
+        names={str(item.get("subject","")).strip() for item in memory}|set(self._person_of(aliases))
+        plain={term for term in terms if not any(term in name for name in names if len(name)>=2)}
+        reserved=self._reserved_states(latest,plain,chapters,aliases,limit//2) if latest else []
+        taken={item["id"] for item in reserved}
+        rest=[item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1]))) if item["id"] not in taken]
+        return reserved,rest[:limit-len(reserved)]
+
+    @staticmethod
+    def _person_of(aliases:list[dict[str,Any]]|None)->dict[str,str]:
+        person_of:dict[str,str]={}
+        for row in aliases or []:
+            primary=str(row.get("primary_name","")).strip()
+            for name in (primary,str(row.get("alias","")).strip()):
+                if name and primary:person_of.setdefault(name,primary)
+        return person_of
+
+    @staticmethod
+    def _latest_states(claim:dict[str,Any],memory:list[dict[str,Any]],chapters:dict[str,int],aliases:list[dict[str,Any]]|None)->list[dict[str,Any]]:
+        """Every state fact, before the claim's chapter, about a person the claim names (by name or a known alias).
+
+        All of them, not only the latest of each predicate: a person has many knowledge facts, and the
+        latest one is often about something else (a1cf-f1-fix-02: the fact that she now reads the script
+        lies chapters before an unrelated later knowledge fact). `_reserved_states` chooses among them."""
+        before=screening.before_chapter(claim); text=claim["text"]
+        person_of=ContinuityEngine._person_of(aliases)
+        named={person_of[name] for name in person_of if len(name)>=2 and name in text}
+        found:list[dict[str,Any]]=[]
+        for item in memory:
+            subject=str(item.get("subject","")).strip(); person=person_of.get(subject,subject)
+            predicate=normalized_predicate(str(item.get("predicate","")))
+            chapter=chapters.get(item["id"])
+            if chapter is None or chapter>=before or not subject or (predicate not in STATE_PREDICATES and item.get("memory_type") not in STATE_MEMORY_TYPES):continue
+            if person not in named and not (len(subject)>=2 and subject in text):continue
+            found.append(item)
+        return found
+
+    @staticmethod
+    def _reserved_states(states:list[dict[str,Any]],terms:Any,chapters:dict[str,int],aliases:list[dict[str,Any]]|None,slots:int)->list[dict[str,Any]]:
+        """The state facts that take the reserved slots, in this order: each person's two facts sharing the most words with the
+        claim, then the latest fact of each person and predicate, then the rest by shared words. Later chapter first among equals."""
+        person_of=ContinuityEngine._person_of(aliases)
+        def text(item):return " ".join(str(item.get(key,"")) for key in ("subject","predicate","value"))
+        rank=lambda item:(-_relevance_score(terms,text(item)),-chapters.get(item["id"],0),_memory_sort_key(item))
+        by_relevance=sorted(states,key=rank)
+        def person(item):
+            subject=str(item.get("subject","")).strip();return person_of.get(subject,subject)
+        # Each person's two closest facts: one predicate (knowledge) holds facts about unrelated things.
+        best:dict[str,list[dict[str,Any]]]={}
+        for item in by_relevance:
+            picked=best.setdefault(person(item),[])
+            if len(picked)<2 and _relevance_score(terms,text(item))>0:picked.append(item)
+        latest:dict[tuple[str,str],dict[str,Any]]={}
+        for item in states:
+            key=(person(item),normalized_predicate(str(item.get("predicate",""))))
+            if key not in latest or (chapters.get(item["id"],0),str(item["id"]))>(chapters.get(latest[key]["id"],0),str(latest[key]["id"])):latest[key]=item
+        ordered=sorted((item for picked in best.values() for item in picked),key=rank)+sorted(latest.values(),key=rank)+by_relevance
+        chosen:list[dict[str,Any]]=[];seen=set()
+        for item in ordered:
+            if item["id"] in seen:continue
+            seen.add(item["id"]);chosen.append(item)
+            if len(chosen)==slots:break
+        return chosen
 
     def _request(self, claims: list[dict[str, Any]], data: dict[str, Any],
                  bounds: tuple[int, int] | None = None) -> dict[str, Any]:
@@ -458,11 +592,43 @@ class ContinuityEngine:
         # Facts from the checked chapter or later never reach the review.
         memory=[item for item in data["memory"] if chapters.get(item["id"],0)<before]
         selected=[{**claim,"allowed_evidence":claim["allowed_evidence"][:passage_limit]} for claim in claims]
-        used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
+        used:dict[str,dict[str,Any]]={}; extras:list[tuple[int,dict[str,Any]]]=[]
+        for position,claim in enumerate(selected):
+            reserved,rest=self._related_parts(claim,memory,memory_limit,chapters,data.get("aliases"))
+            used.update({item["id"]:item for item in reserved+rest})
+            extras.extend((position,passage) for passage in self._source_passages(claim,reserved,data.get("passage_index")))
         full=data["contexts"][claims[0]["context"]]
         body=screening.context_window(full,[claim["text"] for claim in claims])
-        return {"pipeline":"screened",**({"second_review":True} if data.get("second_review") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
-                "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
+        def build(added:list[tuple[int,dict[str,Any]]])->dict[str,Any]:
+            shown=[{**claim,"allowed_evidence":claim["allowed_evidence"]+[passage for place,passage in added if place==position]} for position,claim in enumerate(selected)]
+            return {"pipeline":"screened",**({"second_review":True} if data.get("second_review") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":shown,
+                    "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
+        request=build([])
+        # The sources of the reserved facts are added only while the request stays within its input budget: the last one added goes first.
+        if extras and self._fits(request):
+            for count in range(len(extras),0,-1):
+                fuller=build(extras[:count])
+                if self._fits(fuller):return fuller
+        return request
+
+    @staticmethod
+    def _source_passages(claim:dict[str,Any],reserved:list[dict[str,Any]],index:Any)->list[dict[str,Any]]:
+        """The passage each reserved state fact comes from, when the claim's passages lack it (at most SOURCE_PASSAGES_PER_CLAIM).
+
+        A fact the review can only cite as a fact cannot make a confirmed conflict: that needs the text it
+        stands on. Passages of the checked chapter or later are never added, as the facts themselves are not.
+        The slots go to the reserved facts that share the most words with the claim, in reserved order among equals:
+        the reserved order is about covering each person and predicate, and could leave the fact that matters last."""
+        if index is None:return []
+        have={span["id"] for span in claim["allowed_evidence"]}; before=screening.before_chapter(claim); added:list[dict[str,Any]]=[]
+        terms=_claim_terms(claim["text"])
+        def score(item:dict[str,Any])->int:return _relevance_score(terms," ".join(str(item.get(key,"")) for key in ("subject","predicate","value")))
+        for item in sorted(reserved,key=lambda item:-score(item)):
+            passage=screening.fact_evidence(index,item["id"])
+            if passage is None or passage["id"] in have or passage["chapter_number"]>=before:continue
+            if len(added)>=SOURCE_PASSAGES_PER_CLAIM:break
+            have.add(passage["id"]); added.append(passage)
+        return added
 
     def _fits(self,request:dict[str,Any])->bool:
         return request_prompt_and_budget(request)[1] <= input_budget_units_for(request)
@@ -512,10 +678,12 @@ class ContinuityEngine:
                 if any(not isinstance(text,str) or not _contains_cjk(text) for text in author_texts):codes.append("author_language_mismatch")
             bound_evidence=[]
             for item in raw_evidence:
-                if isinstance(item,dict) and isinstance(item.get("span_id"),str) and item["span_id"] in allowed:
-                    span=allowed[item["span_id"]]
-                    bound_evidence.append({**item,"excerpt":span.get("prompt_excerpt",span["body"]),"source_span_id":span.get("source_span_id",span["id"]),
-                                           "related_memory_ids":item.get("related_memory_ids") if isinstance(item.get("related_memory_ids"),list) else []})
+                # Ids are read as validate reads them: one mistyped character still names the cited span or fact.
+                span_id=_resolve_id(item.get("span_id"),allowed)[0] if isinstance(item,dict) else None
+                if span_id is not None:
+                    span=allowed[span_id]; cited=item.get("related_memory_ids") if isinstance(item.get("related_memory_ids"),list) else []
+                    bound_evidence.append({**item,"span_id":span_id,"excerpt":span.get("prompt_excerpt",span["body"]),"source_span_id":span.get("source_span_id",span["id"]),
+                                           "related_memory_ids":[found for found in (_resolve_id(memory_id,mem)[0] for memory_id in cited) if found is not None]})
             temporal_failure=_confirmed_temporal_failure(raw,claim["text"],bound_evidence,mem)
             # Missing/unresolvable evidence is a binding failure, not a proved time mismatch. The screened
             # pipeline settles an unproved time or rule locally (see validate), never by a repair.
@@ -523,8 +691,9 @@ class ContinuityEngine:
             if codes:
                 evidence_excerpts=[]
                 for evidence in raw_evidence:
-                    if isinstance(evidence,dict) and isinstance(evidence.get("span_id"),str) and evidence["span_id"] in allowed:
-                        span=allowed[evidence["span_id"]]
+                    span_id=_resolve_id(evidence.get("span_id"),allowed)[0] if isinstance(evidence,dict) else None
+                    if span_id is not None:
+                        span=allowed[span_id]
                         evidence_excerpts.append({"span_id":span["id"],"excerpt":span.get("prompt_excerpt",span["body"])})
                 diagnostics.append({"claim_span_id":claim["id"],"claim_text":claim["text"],"problem_codes":list(dict.fromkeys(codes)),"cited_evidence":evidence_excerpts})
         return diagnostics
@@ -558,7 +727,7 @@ class ContinuityEngine:
         # A flagged sentence with no earlier passage at all has nothing to be reviewed against.
         reviewed=[{**claim,"allowed_evidence":evidence[claim["id"]],"screen_facts":flags[claim["id"]]["facts"]} for claim in claims if evidence.get(claim["id"])]
         summary["reviewed"]=len(reviewed)
-        base={**data,"memory_chapters":chapters}
+        base={**data,"memory_chapters":chapters,"passage_index":index}
         triaged=[claim for claim in reviewed if flags[claim["id"]]["kind"]=="check"]
         results=list(screen_results); escalated:set[str]=set()
         summary.update(triaged=len(triaged),triage_fallback_batches=0,escalated=0,deep_reviewed=0)
@@ -619,19 +788,26 @@ class ContinuityEngine:
             worker=threading.Thread(target=contextvars.copy_context().run,args=(key_stage,),name="continuity-key-stage")
             worker.start()
             try:
+                sweep_ids:list[str]=[]
                 if triaged:
-                    found=self._triage(triaged,base["contexts"],results,summary,pool=pool)
+                    found=self._triage(triaged,base["contexts"],results,summary,pool=pool,sweep_ids=sweep_ids)
                     if isinstance(found,dict):triage_error=found["error"]
                     else:escalated=found; summary["escalated"]=len(escalated)
                 if triage_error is None and escalated:
                     stage["escalated"]=self._execute({**base,"claims":[claim for claim in triaged if claim["id"] in escalated],"max_claims_per_batch":screening.DEEP_MAX_CLAIMS,"settled_by_screen":True},keep_results=True,pool=pool)
+                if triage_error is None and sweep_ids:
+                    summary["sweep"]=len(sweep_ids)
+                    # The gap sweep: what the triage scored 2 or 3 but could not escalate, a few to a request.
+                    stage["sweep"]=self._execute({**base,"claims":[claim for claim in triaged if claim["id"] in sweep_ids],"max_claims_per_batch":screening.TRIAGE_SWEEP_BATCH,
+                                                  "settled_by_screen":True,"second_review":True},keep_results=True,pool=pool)
             finally:
                 worker.join()
         finally:
             if pool is not None:pool.shutdown(wait=True)
         summary.update(deep_reviewed=len(key)+len(escalated),double_reviewed=0)
         outcomes=[stage[name] for name in ("key","escalated") if name in stage]
-        spent=results+[item for outcome in outcomes for item in outcome.get("_results",[])]
+        sweep=stage.get("sweep")
+        spent=results+[item for outcome in outcomes+([sweep] if sweep else []) for item in outcome.get("_results",[])]
         if triage_error is not None:return self._failure(triage_error,spent),escalated
         failed=next((outcome for outcome in outcomes if outcome["status"]!="completed"),None)
         if failed is not None:
@@ -645,7 +821,17 @@ class ContinuityEngine:
         if any(outcome.get("_results") and outcome.get(field) is None for outcome in outcomes for field in ("input_tokens","output_tokens")):
             totals={field:None for field in totals}
         undecided=merged("undecided_claims")
-        return {"status":"completed","issues":merged("issues"),"contract_normalization_count":len(normalizations),"contract_normalizations":normalizations,
+        issues=merged("issues")
+        if sweep is not None and sweep["status"]=="completed":
+            # Only what the sweep finds counts; a sentence it could not decide keeps the triage's verdict.
+            found=[issue for issue in sweep["issues"] if issue.get("nature") in {"confirmed_conflict","possible_conflict","insufficient_evidence"}]
+            ids={issue["claim_span_id"] for issue in found}
+            issues=sorted(issues+found,key=lambda row:order[row["claim_span_id"]])
+            normalizations+=[row for row in sweep["contract_normalizations"] if row["claim_span_id"] in ids]
+            summary["sweep_found"]=len(found)
+            if any(sweep.get("_results") and sweep.get(field) is None for field in ("input_tokens","output_tokens")):
+                totals={field:None for field in totals}
+        return {"status":"completed","issues":issues,"contract_normalization_count":len(normalizations),"contract_normalizations":normalizations,
                 "undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals},escalated
 
     def _merge_passes(self,result:dict[str,Any],doubled:set[str],order:dict[str,int],summary:dict[str,Any])->dict[str,Any]:
@@ -700,15 +886,17 @@ class ContinuityEngine:
         return {**result,**totals,"_results":second["_results"],"issues":sorted(result["issues"]+found,key=lambda item:order[item["claim_span_id"]]),
                 "contract_normalizations":result["contract_normalizations"]+normalizations,"contract_normalization_count":result["contract_normalization_count"]+len(normalizations)}
 
-    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None)->set[str]|dict[str,Any]:
+    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None,
+                sweep_ids:list[str]|None=None)->set[str]|dict[str,Any]:
         """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.
 
         Batches run in parallel like review batches. An answer the validator rejects is retried once as
         a repair; a batch that still fails scores all its claims 2, so they compete for escalation.
         """
-        batches=screening.triage_batches(claims,contexts)
+        batches=screening.triage_batches(claims,contexts); batch_kinds:dict[int,dict[str,str]]={}
+        sweep_ids=sweep_ids if sweep_ids is not None else []
         def one(batch:tuple[dict[str,Any],dict[str,str]])->tuple[dict[str,int]|None,list[Any],Exception|None]:
-            request,sentence_ids=batch; spent=[]; code="triage_invalid"
+            request,sentence_ids=batch; spent=[]; code="triage_invalid"; kinds=batch_kinds.setdefault(id(batch),{})
             try:
                 for attempt in range(2):
                     sent=request if attempt==0 else {**request,"triage_repair":{"reason_code":code}}
@@ -716,7 +904,7 @@ class ContinuityEngine:
                     except ProviderInvalidJson as error:
                         spent.append(error); code="triage_invalid_json"; continue
                     spent.append(result)
-                    try:return screening.parse_triage(result.payload,sentence_ids),spent,None
+                    try:return screening.parse_triage(result.payload,sentence_ids,kinds),spent,None
                     except screening.ScreenContractError as error:code=str(error)
             except (ProviderDispatchDenied,InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure) as error:
                 return None,spent,error
@@ -744,7 +932,11 @@ class ContinuityEngine:
             scores.update(found)
         if failure is not None:return {"error":failure}
         summary["triage_scores"]={str(score):sum(1 for value in scores.values() if value==score) for score in range(4)}
-        return screening.triage_escalations(claims,scores)
+        kinds={claim_id:kind for found in batch_kinds.values() for claim_id,kind in found.items()}
+        escalated=screening.triage_escalations(claims,scores,kinds)
+        summary["triage_gap_escalated"]=len(escalated-screening.triage_escalations(claims,scores))
+        sweep_ids[:]=[claim["id"] for claim in screening.triage_sweep(claims,scores,escalated)]
+        return escalated
 
     def _screen(self,claims:list[dict[str,Any]],index:Any,memory:list[dict[str,Any]],chapters:dict[str,int],
                 results:list[Any],summary:dict[str,Any])->dict[str,Any]:
@@ -853,7 +1045,10 @@ class ContinuityEngine:
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**totals}
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
         # After a screen most sentences are already settled, so undecided ones are reported, never the run's failure.
-        if undecided and len(undecided)==len(data["claims"]) and not data.get("settled_by_screen"): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
+        # In the screened pipeline a claim's own contract fault is never the run's failure: a short draft whose every
+        # claim is undecided for that reason completes with them reported. Provider-side stops (quota, budget, a cut or malformed answer) still fail.
+        contract_only=data.get("pipeline")=="screened" and all(row["error_code"] not in NON_CONTRACT_UNDECIDED for row in undecided)
+        if undecided and len(undecided)==len(data["claims"]) and not data.get("settled_by_screen") and not contract_only: return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
         return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals,**({"_results":results} if keep_results else {})}
 
     def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
@@ -866,7 +1061,7 @@ class ContinuityEngine:
         failure is returned, not raised, so the usage already spent on this batch still reaches the
         run's totals.
         """
-        results=[]; normalizations=[]
+        results=[]; normalizations=[]; first_payload=None
         outcome={"first_claim_id":batch["claims"][0]["id"],"results":results,"normalizations":normalizations}
         try:
             for contract_attempt in range(2):
@@ -881,9 +1076,13 @@ class ContinuityEngine:
                     # so each half's own repair is smaller; a lone claim that still cannot fit is undecided.
                     claims=batch["claims"]
                     if len(claims)>1:return {**outcome,"split":[claims[:len(claims)//2],claims[len(claims)//2:]]}
+                    kept=self._keep_first_answer(first_payload,batch)
+                    if kept is not None:
+                        normalizations.extend(kept[1]); return {**outcome,"issues":screening.bind_passage_evidence(kept[0],batch["claims"])}
                     return {**outcome,"undecided":[{"claim_span_id":claims[0]["id"],"error_code":"input_budget_exceeded"}]}
                 result=self.provider.evaluate(request)
                 results.append(result)
+                if contract_attempt==0:first_payload=result.payload
                 if (result.input_tokens or 0)+(result.output_tokens or 0)>run_budget:return {**outcome,"budget_paused":True}
                 rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
                 rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
@@ -903,6 +1102,10 @@ class ContinuityEngine:
                         repair_diagnostics=getattr(error,"diagnostics",None) or [_contract_diagnostic(batch,repair_code,claim_id)]
                         continue
                     if len(batch["claims"])>1:return {**outcome,"split":[[claim] for claim in batch["claims"]]}
+                    # The repair did not help: a conflict the first answer reached and cited well enough is kept, not lost with the repair.
+                    kept=self._keep_first_answer(first_payload,batch)
+                    if kept is not None:
+                        normalizations.extend(kept[1]); return {**outcome,"issues":screening.bind_passage_evidence(kept[0],batch["claims"])}
                     return {**outcome,"undecided":[{"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)}]}
                 if batch.get("pipeline")=="screened":validated=screening.bind_passage_evidence(validated,batch["claims"])
                 return {**outcome,"issues":validated}
@@ -931,6 +1134,29 @@ class ContinuityEngine:
         except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure,ValueError) as error:
             return {**outcome,"error":error}
         raise AssertionError("unreachable: the second contract attempt always returns")
+
+    def _keep_first_answer(self,payload:Any,data:dict[str,Any])->tuple[list[dict[str,Any]],list[dict[str,Any]]]|None:
+        """The first answer of a one-claim batch kept as a possible conflict once its repair has failed, or None.
+
+        A repair answer that is itself unusable (its verdict contradicts its issues, say) must not cost
+        a conflict the first answer already reached. The first answer qualifies exactly as in
+        `_keep_as_possible`: its ledger is consistent, the claim's issue is a reviewed conflict, it failed
+        only a citation rule in KEEPABLE_CONTRACT_ERRORS and at least one citation resolves.
+        """
+        if data.get("pipeline")!="screened" or len(data["claims"])!=1 or not isinstance(payload,dict) or not isinstance(payload.get("issues"),list):return None
+        verdicts:dict[str,Any]={}
+        if getattr(self.provider,"continuity_contract_version",None)=="v6":
+            try:self._v6_issues(payload,data)
+            except ValueError:return None
+            verdicts={item["claim_span_id"]:item.get("verdict") for item in payload["claim_verdicts"] if isinstance(item,dict)}
+        claims={item["id"]:item for item in data["claims"]}; mem={item["id"]:item for item in data["memory"]}
+        if len(payload["issues"])!=1:return None
+        raw=payload["issues"][0]; scratch:list[dict[str,Any]]=[]
+        try:self._validate_issue(raw,data,claims,mem,False,1,scratch)
+        except ValueError as error:
+            kept=self._keep_as_possible(raw,error,data,claims,mem,verdicts,1)
+            return ([kept[0]],kept[1]) if kept is not None else None
+        return None
 
     def _v6_issues(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
         """Validate the compatible V6 ledger shape, retaining every detectable fault."""
@@ -987,106 +1213,203 @@ class ContinuityEngine:
         return {"issues":payload["issues"]}
 
     def validate(self,payload:Any,data:dict[str,Any],allow_conservative_temporal_normalization:bool=False,normalization_sink:list[dict[str,Any]]|None=None):
+        verdicts:dict[str,Any]={}
         if getattr(self.provider,"continuity_contract_version",None)=="v6":
-            payload=self._v6_issues(payload,data)
+            original=payload; payload=self._v6_issues(payload,data)
+            verdicts={item["claim_span_id"]:item.get("verdict") for item in original["claim_verdicts"] if isinstance(item,dict)}
         if not isinstance(payload,dict) or set(payload)!={"issues"} or not isinstance(payload.get("issues"),list):raise ValueError("schema_invalid")
-        claims={x["id"]:x for x in data["claims"]}; mem={x["id"]:x for x in data["memory"]}; output=[]
+        claims={x["id"]:x for x in data["claims"]}; mem={x["id"]:x for x in data["memory"]}; output=[]; notes=[]
+        # Two issues for one claim: in the screened pipeline that is this claim's repairable fault, not the run's (see _execute).
+        if data.get("pipeline")=="screened":
+            ids=[row.get("claim_span_id") for row in payload["issues"] if isinstance(row,dict)]
+            if len(ids)!=len(set(ids)):raise ValueError("schema_invalid")
+        attempt=2 if allow_conservative_temporal_normalization else 1
         for raw in payload["issues"]:
-            if not isinstance(raw,dict):raise ValueError("schema_invalid")
-            if raw.get("status")=="no_conflict":raise ValueError("no_conflict_issue_forbidden")
-            explanation=raw.get("explanation") if isinstance(raw,dict) else None
-            if not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims or raw.get("status") not in ALLOWED_STATUS or raw.get("category") not in ALLOWED_CATEGORY or raw.get("severity") not in ALLOWED_SEVERITY or not isinstance(explanation,str) or not explanation.strip():raise ValueError("schema_invalid")
-            review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
-            present=review_keys & set(raw)
-            if not present and not getattr(self.provider,"allows_legacy_continuity_contract",False):raise ContinuityContractValidationError("trustworthy_review_required")
-            if present==review_keys-{"temporal_basis"}:raise ContinuityContractValidationError("temporal_basis_missing")
-            if present and present!=review_keys:raise ValueError("schema_invalid")
-            trustworthy=present==review_keys
-            evs=raw.get("evidence",[]); allowed={x["id"]:x for x in claims[raw["claim_span_id"]]["allowed_evidence"]}
-            if raw["status"]=="conflict" and not evs:raise ValueError("conflict_without_evidence")
-            if raw["status"]=="insufficient_evidence" and evs and not trustworthy:raise ValueError("insufficient_evidence_upgraded")
-            if raw["status"]=="insufficient_evidence" and raw.get("proposed_memory_change") is not None:raise ValueError("insufficient_evidence_memory_change")
-            cleaned=[]
-            for ev in evs:
-                if not isinstance(ev,dict) or not isinstance(ev.get("span_id"),str) or ev["span_id"] not in allowed:raise ValueError("evidence_unresolvable")
-                s=allowed[ev["span_id"]]
-                related_ids=ev.get("related_memory_ids")
-                if (ev.get("chapter_id")!=s["chapter_id"] or ev.get("relation") not in {"supports","contradicts","context"} or
-                    ev.get("sufficiency") not in {"sufficient","insufficient"} or not isinstance(related_ids,list) or
-                    any(not isinstance(memory_id,str) or memory_id not in mem for memory_id in related_ids)):
-                    raise ValueError("evidence_unresolvable")
-                if raw["status"]=="conflict" and not trustworthy and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
-                if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":
-                    # A reviewed insufficient_evidence issue that marks a citation sufficient is a
-                    # self-contradicting answer (V10 diagnostic rerun, 1 in 5): allow the bounded repair.
-                    code="insufficient_evidence_upgraded"
-                    if not trustworthy:raise ValueError(code)
-                    raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
-                        requirement="An insufficient_evidence issue cites only context marked sufficiency insufficient; otherwise reclassify the issue.")])
-                cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[]),
-                                **({"source_span_id":s["source_span_id"]} if "source_span_id" in s else {})})
-            change=raw.get("proposed_memory_change")
-            if change is not None:
-                required={"memory_type","subject","predicate","value","operation"}
-                if (not isinstance(change,dict) or not required<=set(change) or change["memory_type"] not in ALLOWED_MEMORY_TYPE or change["operation"] not in {"add","replace"} or any(not isinstance(change[key],str) or not change[key].strip() for key in ("subject","predicate","value")) or (change["operation"]=="add" and change.get("affected_memory_id") is not None) or (change["operation"]=="replace" and change.get("affected_memory_id") not in mem) or raw["status"]!="conflict"):raise ValueError("schema_invalid")
-            review={"review_contract_version":"legacy_v3","nature":None,"reasoning":None,"evidence_chain":None,"suggested_revision":None,"available_actions":None}
-            if trustworthy:
-                nature=raw.get("nature");reasoning=raw.get("reasoning");temporal=raw.get("temporal_basis");chain=raw.get("evidence_chain");suggestion=raw.get("suggested_revision");actions=raw.get("available_actions")
-                if nature not in REVIEW_NATURES or not isinstance(reasoning,str) or not reasoning.strip():raise ValueError("schema_invalid")
-                if len(reasoning.strip())>MAX_ISSUE_REASONING_CODEPOINTS:
-                    raise ContinuityContractValidationError("reasoning_too_long",diagnostics=[_reasoning_length_diagnostic(data,raw["claim_span_id"],reasoning)])
-                if not isinstance(temporal,dict) or set(temporal)!={"claim_anchor","evidence_anchor","relation"} or temporal.get("relation") not in {"explicit_overlap","timeless_rule","explicit_later_transition","unknown"}:raise ValueError("schema_invalid")
-                claim_text=claims[raw["claim_span_id"]]["text"]
-                claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor")
-                if claim_anchor is not None and (not isinstance(claim_anchor,str) or not claim_anchor.strip() or claim_anchor not in claim_text):raise ContinuityContractValidationError("temporal_anchor_unresolvable")
-                if evidence_anchor is not None and (not isinstance(evidence_anchor,str) or not evidence_anchor.strip() or not any(evidence_anchor in item["excerpt"] for item in cleaned)):raise ContinuityContractValidationError("temporal_anchor_unresolvable")
-                if _requires_cjk(data["draft"]["body"]):
-                    author_texts=[explanation,reasoning]
-                    if any(not _contains_cjk(text) for text in author_texts):raise ContinuityContractValidationError("author_language_mismatch")
-                if raw["status"]=="insufficient_evidence" and nature!="insufficient_evidence":raise ValueError("schema_invalid")
-                if raw["status"]=="conflict" and nature=="insufficient_evidence":raise ValueError("schema_invalid")
-                if nature=="confirmed_conflict" and (not any(ev["relation"]=="contradicts" and ev["sufficiency"]=="sufficient" for ev in cleaned) or any(ev["relation"]=="supports" or ev["sufficiency"]!="sufficient" for ev in cleaned)):
-                    raise ContinuityContractValidationError("conflict_evidence_not_direct")
-                temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
-                if temporal_failure and data.get("pipeline")=="screened":
-                    # A contradiction whose shared time or governing rule is not proved is, by the review
-                    # rules themselves, a possible_conflict. Settled here instead of by a repair that thinks
-                    # the whole batch through again (lf1 dev set: 12k-29k reasoning tokens per such repair).
-                    if normalization_sink is not None:normalization_sink.append({"claim_span_id":raw["claim_span_id"],"reason_code":temporal_failure,"outcome":"possible_conflict","provider_attempt":2 if allow_conservative_temporal_normalization else 1})
-                    nature="possible_conflict"; temporal_failure=None
-                if temporal_failure and not allow_conservative_temporal_normalization:
-                    raise ContinuityContractValidationError(temporal_failure)
-                if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):
-                    # v22 tells the model to settle an undecidable tension as possible_conflict, and an unsure
-                    # model then marks its own citation insufficient. That self-contradiction is repairable
-                    # (imported-project diagnostic, 3 of 4 runs failed the whole check on it).
-                    code="conflict_evidence_insufficient"
-                    raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
-                        requirement="A possible_conflict or state_change issue cites only spans sufficient for their stated role; mark them sufficient, or reclassify the issue as insufficient_evidence.")])
-                if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
-                if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")
-                chain_spans=[item["span_id"] for item in chain]
-                if len(chain_spans)!=len(set(chain_spans)) or set(chain_spans)!={item["span_id"] for item in cleaned}:raise ValueError("evidence_unresolvable")
-                if nature=="insufficient_evidence" and any(item["role"]!="missing_link" for item in chain):raise ValueError("evidence_unresolvable")
-                if not isinstance(actions,list) or len(actions)!=len(set(actions)) or not set(actions)<=REVIEW_ACTIONS:raise ValueError("schema_invalid")
-                if nature=="insufficient_evidence" and actions:raise ValueError("schema_invalid")
-                if suggestion is not None:
-                    if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or any(not isinstance(suggestion.get(field),str) or not suggestion[field].strip() for field in ("before","after")) or suggestion["before"]==suggestion["after"]:raise ValueError("schema_invalid")
-                    if data.get("full_draft_body",data["draft"]["body"]).count(suggestion["before"])!=1 or "apply_suggestion" not in actions:raise ValueError("suggested_revision_unresolvable")
-                elif "apply_suggestion" in actions:raise ValueError("suggested_revision_unresolvable")
-                if temporal_failure and allow_conservative_temporal_normalization:
-                    chinese=_requires_cjk(data["draft"]["body"])
-                    safe_explanation=("现有材料不足以证明当前主张与引用事实在同一故事时间和范围内相互矛盾，暂不能判定为确定冲突。" if chinese else "The supplied material does not establish that the current claim and cited fact conflict in the same story time and scope, so a confirmed conflict cannot be established.")
-                    safe_reasoning=("需要补充明确的时间锚点、适用范围或连接事件，才能判断两项陈述是否不能同时成立。" if chinese else "An explicit time anchor, applicable scope, or connecting event is required before deciding that the two statements cannot coexist.")
-                    insufficient=[{**item,"relation":"context","sufficiency":"insufficient"} for item in cleaned]
-                    if normalization_sink is not None:normalization_sink.append({"claim_span_id":raw["claim_span_id"],"reason_code":temporal_failure,"outcome":"insufficient_evidence","provider_attempt":2})
-                    output.append({"claim_span_id":raw["claim_span_id"],"status":"insufficient_evidence","category":raw["category"],"severity":"medium","evidence_status":"insufficient","explanation":safe_explanation,"evidence":insufficient,"proposed_memory_change":None,"review_contract_version":"trustworthy_review_v1","nature":"insufficient_evidence","reasoning":safe_reasoning,"evidence_chain":[{"span_id":item["span_id"],"role":"missing_link"} for item in insufficient],"suggested_revision":None,"available_actions":[]})
-                    continue
-                if nature=="confirmed_conflict" and temporal["relation"]=="timeless_rule" and suggestion is not None:
-                    suggestion=None;actions=[action for action in actions if action!="apply_suggestion"]
-                review={"review_contract_version":"trustworthy_review_v1","nature":nature,"reasoning":reasoning.strip(),"evidence_chain":chain,"suggested_revision":suggestion,"available_actions":actions}
-            output.append({"claim_span_id":raw["claim_span_id"],"status":raw["status"],"category":raw["category"],"severity":raw["severity"],"evidence_status":"sufficient" if cleaned and all(item["sufficiency"]=="sufficient" for item in cleaned) else "insufficient","explanation":explanation.strip()[:500],"evidence":cleaned,"proposed_memory_change":change,**review})
+            mark=len(notes)
+            try:output.append(self._validate_issue(raw,data,claims,mem,allow_conservative_temporal_normalization,attempt,notes))
+            except ValueError as error:
+                del notes[mark:]
+                # Only once the one repair is spent (the second attempt) may a conflict that is still not compliant be kept as a possible one.
+                kept=self._keep_as_possible(raw,error,data,claims,mem,verdicts,attempt) if allow_conservative_temporal_normalization else None
+                if kept is None:raise
+                output.append(kept[0]); notes.extend(kept[1])
+        if normalization_sink is not None:normalization_sink.extend(notes)
         return output
+
+    def _validate_issue(self,raw:Any,data:dict[str,Any],claims:dict[str,Any],mem:dict[str,Any],allow_conservative_temporal_normalization:bool,attempt:int,notes:list[dict[str,Any]])->dict[str,Any]:
+        """One issue through the review contract; its contract normalizations are appended to `notes`."""
+        if not isinstance(raw,dict):raise ValueError("schema_invalid")
+        if raw.get("status")=="no_conflict":raise ValueError("no_conflict_issue_forbidden")
+        explanation=raw.get("explanation") if isinstance(raw,dict) else None
+        if not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims or raw.get("status") not in ALLOWED_STATUS or raw.get("category") not in ALLOWED_CATEGORY or raw.get("severity") not in ALLOWED_SEVERITY or not isinstance(explanation,str) or not explanation.strip():raise ValueError("schema_invalid")
+        review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
+        present=review_keys & set(raw)
+        if not present and not getattr(self.provider,"allows_legacy_continuity_contract",False):raise ContinuityContractValidationError("trustworthy_review_required")
+        if present==review_keys-{"temporal_basis"}:raise ContinuityContractValidationError("temporal_basis_missing")
+        if present and present!=review_keys:raise ValueError("schema_invalid")
+        trustworthy=present==review_keys
+        evs=raw.get("evidence",[]); allowed={x["id"]:x for x in claims[raw["claim_span_id"]]["allowed_evidence"]}
+        if raw["status"]=="conflict" and not evs:raise ValueError("conflict_without_evidence")
+        if raw["status"]=="insufficient_evidence" and evs and not trustworthy:raise ValueError("insufficient_evidence_upgraded")
+        if raw["status"]=="insufficient_evidence" and raw.get("proposed_memory_change") is not None:raise ValueError("insufficient_evidence_memory_change")
+        cleaned=[]
+        for ev in evs:
+            if not isinstance(ev,dict):raise ValueError("evidence_unresolvable")
+            # One mistyped character of an id is not a different citation: take the single allowed id it
+            # can only mean. The span fixes the chapter, so the model's own chapter_id is not checked.
+            span_id,fixed=_resolve_id(ev.get("span_id"),allowed)
+            if span_id is None:raise ValueError("evidence_unresolvable")
+            if fixed:notes.append(_normalization(raw,"id_corrected","corrected",attempt))
+            s=allowed[span_id]
+            if ev.get("chapter_id")!=s["chapter_id"]:notes.append(_normalization(raw,"chapter_id_replaced","corrected",attempt))
+            related_ids=ev.get("related_memory_ids")
+            if (ev.get("relation") not in {"supports","contradicts","context"} or ev.get("sufficiency") not in {"sufficient","insufficient"} or
+                not isinstance(related_ids,list) or any(not isinstance(memory_id,str) for memory_id in related_ids)):
+                raise ValueError("evidence_unresolvable")
+            # Memory ids only accompany a citation: one that resolves to nothing is dropped, not fatal.
+            kept_ids=[]
+            for memory_id in related_ids:
+                found,fixed=_resolve_id(memory_id,mem)
+                if found is None:
+                    notes.append(_normalization(raw,"id_dropped","dropped",attempt));continue
+                if fixed:notes.append(_normalization(raw,"id_corrected","corrected",attempt))
+                if found not in kept_ids:kept_ids.append(found)
+            if raw["status"]=="conflict" and not trustworthy and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
+            if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":
+                # A reviewed insufficient_evidence issue that marks a citation sufficient is a
+                # self-contradicting answer (V10 diagnostic rerun, 1 in 5): allow the bounded repair.
+                code="insufficient_evidence_upgraded"
+                if not trustworthy:raise ValueError(code)
+                raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
+                    requirement="An insufficient_evidence issue cites only context marked sufficiency insufficient; otherwise reclassify the issue.")])
+            cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":kept_ids,
+                            **({"source_span_id":s["source_span_id"]} if "source_span_id" in s else {})})
+        change=raw.get("proposed_memory_change")
+        if change is not None:
+            required={"memory_type","subject","predicate","value","operation"}
+            if (not isinstance(change,dict) or not required<=set(change) or change["memory_type"] not in ALLOWED_MEMORY_TYPE or change["operation"] not in {"add","replace"} or any(not isinstance(change[key],str) or not change[key].strip() for key in ("subject","predicate","value")) or (change["operation"]=="add" and change.get("affected_memory_id") is not None) or (change["operation"]=="replace" and change.get("affected_memory_id") not in mem) or raw["status"]!="conflict"):raise ValueError("schema_invalid")
+        review={"review_contract_version":"legacy_v3","nature":None,"reasoning":None,"evidence_chain":None,"suggested_revision":None,"available_actions":None}
+        if trustworthy:
+            nature=raw.get("nature");reasoning=raw.get("reasoning");temporal=raw.get("temporal_basis");chain=raw.get("evidence_chain");suggestion=raw.get("suggested_revision");actions=raw.get("available_actions")
+            if nature not in REVIEW_NATURES or not isinstance(reasoning,str) or not reasoning.strip():raise ValueError("schema_invalid")
+            if len(reasoning.strip())>MAX_ISSUE_REASONING_CODEPOINTS:
+                raise ContinuityContractValidationError("reasoning_too_long",diagnostics=[_reasoning_length_diagnostic(data,raw["claim_span_id"],reasoning)])
+            if not isinstance(temporal,dict) or set(temporal)!={"claim_anchor","evidence_anchor","relation"} or temporal.get("relation") not in {"explicit_overlap","timeless_rule","explicit_later_transition","unknown"}:raise ValueError("schema_invalid")
+            claim_text=claims[raw["claim_span_id"]]["text"]
+            claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor")
+            if claim_anchor is not None and (not isinstance(claim_anchor,str) or not claim_anchor.strip() or claim_anchor not in claim_text):raise ContinuityContractValidationError("temporal_anchor_unresolvable")
+            if evidence_anchor is not None and (not isinstance(evidence_anchor,str) or not evidence_anchor.strip() or not any(evidence_anchor in item["excerpt"] for item in cleaned)):raise ContinuityContractValidationError("temporal_anchor_unresolvable")
+            if _requires_cjk(data["draft"]["body"]):
+                author_texts=[explanation,reasoning]
+                if any(not _contains_cjk(text) for text in author_texts):raise ContinuityContractValidationError("author_language_mismatch")
+            if raw["status"]=="insufficient_evidence" and nature!="insufficient_evidence":raise ValueError("schema_invalid")
+            if raw["status"]=="conflict" and nature=="insufficient_evidence":raise ValueError("schema_invalid")
+            if nature=="confirmed_conflict" and (not any(ev["relation"]=="contradicts" and ev["sufficiency"]=="sufficient" for ev in cleaned) or any(ev["relation"]=="supports" or ev["sufficiency"]!="sufficient" for ev in cleaned)):
+                raise ContinuityContractValidationError("conflict_evidence_not_direct")
+            temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
+            if temporal_failure and data.get("pipeline")=="screened":
+                # A contradiction whose shared time or governing rule is not proved is, by the review
+                # rules themselves, a possible_conflict. Settled here instead of by a repair that thinks
+                # the whole batch through again (lf1 dev set: 12k-29k reasoning tokens per such repair).
+                notes.append(_normalization(raw,temporal_failure,"possible_conflict",attempt))
+                nature="possible_conflict"; temporal_failure=None
+            if temporal_failure and not allow_conservative_temporal_normalization:
+                raise ContinuityContractValidationError(temporal_failure)
+            if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):
+                # v22 tells the model to settle an undecidable tension as possible_conflict, and an unsure
+                # model then marks its own citation insufficient. That self-contradiction is repairable
+                # (imported-project diagnostic, 3 of 4 runs failed the whole check on it).
+                code="conflict_evidence_insufficient"
+                raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
+                    requirement="A possible_conflict or state_change issue cites only spans sufficient for their stated role; mark them sufficient, or reclassify the issue as insufficient_evidence.")])
+            if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
+            if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")
+            fixed_chain=[]
+            for item in chain:
+                chain_id,fixed=_resolve_id(item["span_id"],allowed)
+                if chain_id is None:raise ValueError("evidence_unresolvable")
+                if fixed:notes.append(_normalization(raw,"id_corrected","corrected",attempt))
+                fixed_chain.append({**item,"span_id":chain_id})
+            chain=fixed_chain
+            chain_spans=[item["span_id"] for item in chain]
+            if len(chain_spans)!=len(set(chain_spans)) or set(chain_spans)!={item["span_id"] for item in cleaned}:raise ValueError("evidence_unresolvable")
+            if nature=="insufficient_evidence" and any(item["role"]!="missing_link" for item in chain):raise ValueError("evidence_unresolvable")
+            if not isinstance(actions,list) or len(actions)!=len(set(actions)) or not set(actions)<=REVIEW_ACTIONS:raise ValueError("schema_invalid")
+            if nature=="insufficient_evidence" and actions:raise ValueError("schema_invalid")
+            if suggestion is not None:
+                if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or any(not isinstance(suggestion.get(field),str) or not suggestion[field].strip() for field in ("before","after")) or suggestion["before"]==suggestion["after"]:raise ValueError("schema_invalid")
+                if data.get("full_draft_body",data["draft"]["body"]).count(suggestion["before"])!=1 or "apply_suggestion" not in actions:raise ValueError("suggested_revision_unresolvable")
+            elif "apply_suggestion" in actions:raise ValueError("suggested_revision_unresolvable")
+            if temporal_failure and allow_conservative_temporal_normalization:
+                chinese=_requires_cjk(data["draft"]["body"])
+                safe_explanation=("现有材料不足以证明当前主张与引用事实在同一故事时间和范围内相互矛盾，暂不能判定为确定冲突。" if chinese else "The supplied material does not establish that the current claim and cited fact conflict in the same story time and scope, so a confirmed conflict cannot be established.")
+                safe_reasoning=("需要补充明确的时间锚点、适用范围或连接事件，才能判断两项陈述是否不能同时成立。" if chinese else "An explicit time anchor, applicable scope, or connecting event is required before deciding that the two statements cannot coexist.")
+                insufficient=[{**item,"relation":"context","sufficiency":"insufficient"} for item in cleaned]
+                notes.append(_normalization(raw,temporal_failure,"insufficient_evidence",attempt))
+                return {"claim_span_id":raw["claim_span_id"],"status":"insufficient_evidence","category":raw["category"],"severity":"medium","evidence_status":"insufficient","explanation":safe_explanation,"evidence":insufficient,"proposed_memory_change":None,"review_contract_version":"trustworthy_review_v1","nature":"insufficient_evidence","reasoning":safe_reasoning,"evidence_chain":[{"span_id":item["span_id"],"role":"missing_link"} for item in insufficient],"suggested_revision":None,"available_actions":[]}
+            if nature=="confirmed_conflict" and temporal["relation"]=="timeless_rule" and suggestion is not None:
+                suggestion=None;actions=[action for action in actions if action!="apply_suggestion"]
+            review={"review_contract_version":"trustworthy_review_v1","nature":nature,"reasoning":reasoning.strip(),"evidence_chain":chain,"suggested_revision":suggestion,"available_actions":actions}
+        return {"claim_span_id":raw["claim_span_id"],"status":raw["status"],"category":raw["category"],"severity":raw["severity"],"evidence_status":"sufficient" if cleaned and all(item["sufficiency"]=="sufficient" for item in cleaned) else "insufficient","explanation":explanation.strip()[:500],"evidence":cleaned,"proposed_memory_change":change,**review}
+
+    def _keep_as_possible(self,raw:Any,error:ValueError,data:dict[str,Any],claims:dict[str,Any],mem:dict[str,Any],verdicts:dict[str,Any],attempt:int)->tuple[dict[str,Any],list[dict[str,Any]]]|None:
+        """A conflict the model decided on but could not cite compliantly even after its repair, kept as a possible conflict.
+
+        Only the citation faults in KEEPABLE_CONTRACT_ERRORS qualify, only for an issue the model reached
+        as reviewed_issue / conflict, and only when at least one citation resolves (an allowed passage, or
+        an existing Memory fact that comes from one). The kept issue cites just the resolvable part, has
+        no time basis (unknown) and keeps its suggested revision only when that is compliant. None means
+        something else is wrong: the caller raises the original error.
+        """
+        review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
+        if str(error) not in KEEPABLE_CONTRACT_ERRORS or not isinstance(raw,dict) or not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims:return None
+        claim=claims[raw["claim_span_id"]]
+        if raw.get("status")!="conflict" or verdicts.get(claim["id"])!="reviewed_issue" or raw.get("nature") not in {"confirmed_conflict","possible_conflict"} or not review_keys<=set(raw):return None
+        allowed={item["id"]:item for item in claim["allowed_evidence"]}
+        kept=[]; seen=set(); notes:list[dict[str,Any]]=[]
+        for ev in raw.get("evidence") if isinstance(raw.get("evidence"),list) else []:
+            if not isinstance(ev,dict):continue
+            span_id,fixed=_resolve_id(ev.get("span_id"),allowed)
+            if fixed:notes.append(_normalization(raw,"id_corrected","corrected",attempt))
+            if span_id is not None and ev.get("chapter_id")!=allowed[span_id]["chapter_id"]:notes.append(_normalization(raw,"chapter_id_replaced","corrected",attempt))
+            cited=ev.get("related_memory_ids") if isinstance(ev.get("related_memory_ids"),list) else []
+            memory_ids=[]
+            for memory_id in cited:
+                found,fixed=_resolve_id(memory_id,mem)
+                if found is None:notes.append(_normalization(raw,"id_dropped","dropped",attempt))
+                elif found not in memory_ids:
+                    memory_ids.append(found)
+                    if fixed:notes.append(_normalization(raw,"id_corrected","corrected",attempt))
+            if span_id is None:
+                # An existing Memory fact still locates the passage it came from.
+                span_id=next((item["id"] for memory_id in memory_ids for item in allowed.values() if mem[memory_id].get("source_span_id")==item.get("source_span_id",item["id"])),None)
+            if span_id is None or span_id in seen:continue
+            seen.add(span_id)
+            kept.append({"chapter_id":allowed[span_id]["chapter_id"],"span_id":span_id,"relation":ev["relation"] if ev.get("relation") in {"supports","contradicts","context"} else "context","sufficiency":"sufficient","related_memory_ids":memory_ids})
+        if not kept:return None
+        excerpts=[allowed[item["span_id"]].get("prompt_excerpt",allowed[item["span_id"]]["body"]) for item in kept]
+        temporal=raw["temporal_basis"] if isinstance(raw["temporal_basis"],dict) else {}
+        claim_anchor,evidence_anchor=temporal.get("claim_anchor"),temporal.get("evidence_anchor")
+        claim_anchor=claim_anchor if isinstance(claim_anchor,str) and claim_anchor.strip() and claim_anchor in claim["text"] else None
+        evidence_anchor=evidence_anchor if isinstance(evidence_anchor,str) and evidence_anchor.strip() and any(evidence_anchor in text for text in excerpts) else None
+        roles={}
+        for item in raw["evidence_chain"] if isinstance(raw["evidence_chain"],list) else []:
+            if isinstance(item,dict):
+                chain_id=_resolve_id(item.get("span_id"),allowed)[0]
+                if chain_id is not None and item.get("role") in EVIDENCE_CHAIN_ROLES and item["role"]!="missing_link":roles.setdefault(chain_id,item["role"])
+        actions=raw["available_actions"]
+        if not isinstance(actions,list) or any(not isinstance(action,str) for action in actions):return None
+        actions=[action for action in dict.fromkeys(actions) if action in REVIEW_ACTIONS]
+        suggestion=raw["suggested_revision"]
+        if not (isinstance(suggestion,dict) and set(suggestion)=={"before","after"} and all(isinstance(suggestion[field],str) and suggestion[field].strip() for field in ("before","after")) and
+                suggestion["before"]!=suggestion["after"] and data.get("full_draft_body",data["draft"]["body"]).count(suggestion["before"])==1 and "apply_suggestion" in actions):
+            suggestion=None; actions=[action for action in actions if action!="apply_suggestion"]
+        repaired={**raw,"nature":"possible_conflict","evidence":kept,"evidence_chain":[{"span_id":item["span_id"],"role":roles.get(item["span_id"],"prior_state")} for item in kept],
+                  "temporal_basis":{"claim_anchor":claim_anchor,"evidence_anchor":evidence_anchor,"relation":"unknown"},"suggested_revision":suggestion,"available_actions":actions,"proposed_memory_change":None}
+        try:issue=self._validate_issue(repaired,data,claims,mem,True,attempt,notes)
+        except ValueError:return None
+        notes.append(_normalization(raw,"kept_as_possible_after_repair","possible_conflict",attempt))
+        return issue,notes
 
 
 class WritingAnalysisEngine:
@@ -1140,8 +1463,10 @@ class WritingAnalysisEngine:
     @classmethod
     def _clean_source(cls,raw:Any,maps:dict[str,dict[str,dict[str,Any]]],allowed:set[str],project_id:str)->dict[str,Any]:
         if not isinstance(raw,dict) or set(raw)!={"source_type","source_id"} or raw.get("source_type") not in allowed:raise ValueError("evidence_unresolvable")
-        source_type=raw["source_type"];source_id=raw.get("source_id")
-        if not isinstance(source_id,str) or source_id not in maps[source_type]:raise ValueError("evidence_unresolvable")
+        source_type=raw["source_type"]
+        # An id copied wrongly by one character still names the one supplied id it differs from.
+        source_id=_resolve_id(raw.get("source_id"),maps[source_type])[0]
+        if source_id is None:raise ValueError("evidence_unresolvable")
         item=maps[source_type][source_id]
         if source_type=="author_context":label=item.get("title") or item.get("name") or "作者规划";excerpt=item.get("content") or item.get("summary") or item.get("goal") or item.get("planned_state") or item.get("description") or ""
         elif source_type=="memory_record":label=f"{item['subject']} · {predicate_label(item['predicate'])}";excerpt=item["value"]
@@ -1300,7 +1625,7 @@ class WritingAnalysisEngine:
                     cleaned=self._clean_source({"source_type":source.get("source_type"),"source_id":source.get("source_id")},maps,{"source_span","draft_claim"},project_id);cleaned["relation"]=source["relation"]
                     if evidence_kind is not None:cleaned["evidence_kind"]=evidence_kind
                     evidence.append(cleaned)
-                    span=span_map.get(source.get("source_id"))
+                    span=span_map.get(cleaned["source_id"])
                     locatable=evidence_kind not in {"background_only","current_clue"}
                     if span and locatable and source["relation"] in {"planted","developing"} and planted is None:planted={"chapter_id":span["chapter_id"],"source_span_id":span["id"]}
                     if span and locatable and source["relation"]=="resolved" and resolved is None:resolved={"chapter_id":span["chapter_id"],"source_span_id":span["id"]}
@@ -1331,8 +1656,10 @@ class WritingAnalysisEngine:
                 issue=selected[raw["issue_id"]];allowed_ids={item["id"] for item in issue["evidence"]}
                 evidence=[]
                 for source in raw["evidence"]:
-                    if not isinstance(source,dict) or set(source)!={"source_type","source_id"} or source.get("source_type")!="issue_evidence" or source.get("source_id") not in allowed_ids:raise ValueError("evidence_unresolvable")
-                    evidence.append(self._clean_source(source,maps,{"issue_evidence"},project_id))
+                    if not isinstance(source,dict) or set(source)!={"source_type","source_id"} or source.get("source_type")!="issue_evidence":raise ValueError("evidence_unresolvable")
+                    source_id=_resolve_id(source.get("source_id"),allowed_ids)[0]
+                    if source_id is None:raise ValueError("evidence_unresolvable")
+                    evidence.append(self._clean_source({**source,"source_id":source_id},maps,{"issue_evidence"},project_id))
                 seen_issues.add(raw["issue_id"]);seen_titles.add(normalized);candidates.append({"issue_id":raw["issue_id"],"title":title,"instruction":self._text(raw["instruction"],1200),"priority":raw["priority"],"evidence":evidence})
             if seen_issues!=set(selected):raise ValueError("revision_plan_candidate_count_invalid")
             return {"summary":self._text(payload["summary"],400),"items":[],"evidence_status":"supported","candidates":candidates,"source_run_id":data["source_run_id"],"selected_issue_ids":list(selected)}
@@ -1470,9 +1797,23 @@ class MemoryInitializationEngine:
                         repair_events.append(active_repair_event)
                         request={**batch,"schema_repair":{"reason_code":error_code,"attempt":batch_repair_attempts,"global_attempt":repair_attempts,**({"field":error.field} if error.field else {}),**({"candidate_ordinal":error.candidate_ordinal} if error.candidate_ordinal else {})}}
                         continue
-                    return failure(error_code,"post_response_validation",batch_ordinal,total_batches,_aggregate(results),**error.safe_context())
+                    # The repairs are spent. Faults of single candidates cost those candidates, not the import (third A1c
+                    # formal, 2026-10-18: one invalid memory_type in batch 16 of 30 failed the whole initialization).
+                    kept=None
+                    if error.candidate_ordinal:
+                        try:kept=self._validate_with_normalization(result.payload,batch,drop_invalid=True)
+                        except MemoryCandidateValidationError:kept=None
+                    if not kept or not kept[0]:
+                        return failure(error_code,"post_response_validation",batch_ordinal,total_batches,_aggregate(results),**error.safe_context())
+                    validated,normalizations=kept
+                    repair_events.append({"batch_ordinal":batch_ordinal,"attempt":repair_attempts,"batch_attempt":batch_repair_attempts,"reason_code":error_code,"result":"invalid_candidates_dropped",
+                                          "dropped":normalizations.get("invalid_candidates_dropped",0)})
+                    for kind,count in normalizations.items():normalization_counts[kind]=normalization_counts.get(kind,0)+count
+                    candidates.extend(validated)
+                    validated_batches+=1
+                    break
                 if active_repair_event is not None:active_repair_event["result"]="succeeded"
-                for kind,count in normalizations.items():normalization_counts[kind]+=count
+                for kind,count in normalizations.items():normalization_counts[kind]=normalization_counts.get(kind,0)+count
                 candidates.extend(validated)
                 validated_batches+=1
                 break
@@ -1484,7 +1825,25 @@ class MemoryInitializationEngine:
         return {"status":"completed","candidates":deduped,"total_batches":total_batches,"schema_repair_attempts":repair_attempts,"repair_events":repair_events,"validated_batches":validated_batches,"staged_candidate_count":len(candidates),"normalization_count":sum(normalization_counts.values()),"normalization_kinds":{key:value for key,value in normalization_counts.items() if value},**_aggregate(results)}
     def validate(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
         return self._validate_with_normalization(payload,data)[0]
-    def _validate_with_normalization(self,payload:Any,data:dict[str,Any])->tuple[list[dict[str,Any]],dict[str,int]]:
+    def _validate_with_normalization(self,payload:Any,data:dict[str,Any],drop_invalid:bool=False)->tuple[list[dict[str,Any]],dict[str,int]]:
+        """Validated candidates and the normalizations made. With `drop_invalid`, a candidate with a fault of its own is
+        left out (counted as invalid_candidates_dropped) instead of failing the batch; faults of the whole answer still raise."""
+        if not drop_invalid:
+            return self._validate_strict(payload,data)
+        if not isinstance(payload,dict) or not isinstance(payload.get("candidates"),list):
+            return self._validate_strict(payload,data)
+        kept:list[dict[str,Any]]=[]; normalizations:dict[str,int]={"trimmed_string":0,"memory_type_format":0,"extra_fields_removed":0}; dropped=0
+        for item in payload["candidates"][:MAX_MEMORY_CANDIDATES_PER_BATCH]:
+            try:
+                found,counts=self._validate_strict({"candidates":[item]},data)
+            except MemoryCandidateValidationError:
+                dropped+=1; continue
+            for kind,count in counts.items():normalizations[kind]=normalizations.get(kind,0)+count
+            identities={(row["memory_type"],row["subject"],row["predicate"],row["value"],row["source_span_id"]) for row in kept}
+            kept.extend(row for row in found if (row["memory_type"],row["subject"],row["predicate"],row["value"],row["source_span_id"]) not in identities)
+        normalizations["invalid_candidates_dropped"]=dropped+max(0,len(payload["candidates"])-MAX_MEMORY_CANDIDATES_PER_BATCH)
+        return kept,normalizations
+    def _validate_strict(self,payload:Any,data:dict[str,Any])->tuple[list[dict[str,Any]],dict[str,int]]:
         if not isinstance(payload,dict) or set(payload)!={"candidates"}:raise MemoryCandidateValidationError("top_level_shape_invalid")
         if not isinstance(payload["candidates"],list):raise MemoryCandidateValidationError("candidate_collection_invalid")
         if len(payload["candidates"])>MAX_MEMORY_CANDIDATES_PER_BATCH:raise MemoryCandidateValidationError("candidate_count_invalid")
@@ -1512,8 +1871,14 @@ class MemoryInitializationEngine:
             if len(values["subject"])>80:raise MemoryCandidateValidationError("candidate_length_invalid",field="subject",candidate_ordinal=candidate_ordinal)
             if len(values["predicate"])>80:raise MemoryCandidateValidationError("candidate_length_invalid",field="predicate",candidate_ordinal=candidate_ordinal)
             if len(values["value"])>240:raise MemoryCandidateValidationError("candidate_length_invalid",field="value",candidate_ordinal=candidate_ordinal)
-            source=sources.get(values["source_span_id"])
-            if not source or source["chapter_id"]!=values["chapter_id"]:raise MemoryCandidateValidationError("evidence_unresolvable",field="source_span_id",candidate_ordinal=candidate_ordinal)
+            # An id copied wrongly by one character still names the one supplied span and its chapter; anything further off does not.
+            source_span_id,fixed_span=_resolve_id(values["source_span_id"],sources)
+            if source_span_id is None:raise MemoryCandidateValidationError("evidence_unresolvable",field="source_span_id",candidate_ordinal=candidate_ordinal)
+            source=sources[source_span_id]
+            chapter_id,fixed_chapter=_resolve_id(values["chapter_id"],{source["chapter_id"]})
+            if chapter_id is None:raise MemoryCandidateValidationError("evidence_unresolvable",field="chapter_id",candidate_ordinal=candidate_ordinal)
+            if fixed_span or fixed_chapter:normalizations["id_corrected"]=normalizations.get("id_corrected",0)+int(fixed_span)+int(fixed_chapter)
+            values["source_span_id"]=source_span_id; values["chapter_id"]=chapter_id
             identity=(values["memory_type"],values["subject"],values["predicate"],values["value"],values["source_span_id"])
             if identity in seen:continue
             seen.add(identity); candidates.append(values)
@@ -1523,7 +1888,7 @@ class MemoryInitializationEngine:
 class MemoryDeltaEngine(MemoryInitializationEngine):
     """A separate provider contract for one append-only source revision."""
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v5-whole-chapter","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v6-epithet-subjects","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _related_memory(self,data:dict[str,Any])->list[dict[str,Any]]:
         terms=_claim_terms("\n".join(str(source.get("body","")) for source in data["sources"])); ranked=[]
@@ -1596,8 +1961,10 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
             if values["memory_type"] not in ALLOWED_MEMORY_TYPE:raise ValueError("memory_type_invalid")
             if values["predicate"] not in CONTROLLED_PREDICATES:raise ValueError("predicate_invalid")
             if len(values["subject"])>80 or len(values["predicate"])>80 or len(values["value"])>240:raise ValueError("candidate_length_invalid")
-            source=sources.get(values["source_span_id"])
-            if not source or source["chapter_id"]!=values["chapter_id"]:raise ValueError("evidence_unresolvable")
+            source_span_id=_resolve_id(values["source_span_id"],sources)[0]
+            chapter_id=_resolve_id(values["chapter_id"],{sources[source_span_id]["chapter_id"]})[0] if source_span_id is not None else None
+            if chapter_id is None:raise ValueError("evidence_unresolvable")
+            values["source_span_id"]=source_span_id; values["chapter_id"]=chapter_id
             affected=item["affected_memory_id"]
             reason=item["invalidation_reason"]
             if change_kind=="new_fact":
@@ -1605,8 +1972,8 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
                 if reason is not None:raise ValueError("invalidation_reason_invalid")
                 if (values["memory_type"],values["subject"],values["predicate"]) in active_keys:raise ValueError("candidate_conflict")
             else:
-                if not isinstance(affected,str) or not affected.strip() or affected.strip() not in memory:raise ValueError("affected_memory_unresolvable")
-                affected=affected.strip()
+                affected=_resolve_id(affected.strip(),memory)[0] if isinstance(affected,str) else None
+                if affected is None:raise ValueError("affected_memory_unresolvable")
                 if affected in affected_seen:raise ValueError("duplicate_candidate")
                 affected_seen.add(affected); before=memory[affected]
                 before_fact={field:str(before[field]).strip() for field in ("memory_type","subject","predicate","value")}

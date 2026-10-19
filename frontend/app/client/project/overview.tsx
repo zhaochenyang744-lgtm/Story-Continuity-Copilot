@@ -7,6 +7,7 @@ import { experienceSimulation } from "../env";
 import { findingTone } from "../labels";
 import { ContinueBand } from "../pages/home";
 import { bareChapterTitle, Button, clip, formatCount, Menu, Num, pad2, SectionHead, Tag, writtenChars } from "../ui";
+import { useAssistantAnchor } from "./assistant";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline, openIssues } from "./findings";
 import { RouteLegend, StoryRoute, type RouteChapter } from "./story-route";
@@ -18,6 +19,7 @@ type CheckRun = { status: string; sample?: boolean; report: { chapters: { chapte
 /** 概览: the title set very large with the work's figures, the continue band, the story route, then
     what is open in the draft and what comes next. */
 export function OverviewPage({ p, open, go, notices }: PageProps) {
+  useAssistantAnchor("overview");
   const project = p.project!;
   const [timeline, setTimeline] = useState<TimelineRow[] | null>(null);
   const [threads, setThreads] = useState<ForeshadowSnapshot["records"]>([]);

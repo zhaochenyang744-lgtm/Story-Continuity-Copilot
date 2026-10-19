@@ -1,0 +1,524 @@
+{
+  "chapter_range": [
+    1,
+    20
+  ],
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "第一章 帘后的呼吸",
+      "han_count": 488,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 2,
+      "title": "第二章 镜面留着一块暗处",
+      "han_count": 468,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 3,
+      "title": "第三章 没有按下的确认",
+      "han_count": 497,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 4,
+      "title": "第四章 根与根之间",
+      "han_count": 472,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 5,
+      "title": "第五章 花粉没落到想去的地方",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 6,
+      "title": "第六章 还不肯裂开的薄壳",
+      "han_count": 471,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 7,
+      "title": "第七章 两张轮值纸之间",
+      "han_count": 475,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 8,
+      "title": "第八章 静音画面里的起伏",
+      "han_count": 478,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 9,
+      "title": "第九章 储备格里空了一角",
+      "han_count": 486,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 10,
+      "title": "第十章 把目光交给另一人",
+      "han_count": 489,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 11,
+      "title": "第十一章 匣盖外的一只手",
+      "han_count": 472,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 12,
+      "title": "第十二章 卡片上窄窄的格",
+      "han_count": 468,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 13,
+      "title": "第十三章 胶面下的气泡",
+      "han_count": 492,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 14,
+      "title": "第十四章 空载也能失去次序",
+      "han_count": 470,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 15,
+      "title": "第十五章 白昼前的停手",
+      "han_count": 458,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 16,
+      "title": "第十六章 先说出眼睛看见的",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 17,
+      "title": "第十七章 还没垂下的遮光布",
+      "han_count": 475,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 18,
+      "title": "第十八章 没有回应的气味",
+      "han_count": 475,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 19,
+      "title": "第十九章 暗处又亮了一次",
+      "han_count": 474,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 20,
+      "title": "第二十章 把说话留到外面",
+      "han_count": 500,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [
+    {
+      "name": "桑翎",
+      "aliases": [
+        "眠灯"
+      ],
+      "first_chapter": 1
+    },
+    {
+      "name": "霍准",
+      "aliases": [
+        "石针"
+      ],
+      "first_chapter": 2
+    },
+    {
+      "name": "宁绡",
+      "aliases": [
+        "白瓣"
+      ],
+      "first_chapter": 5
+    },
+    {
+      "name": "贝嵘",
+      "aliases": [
+        "浅潮"
+      ],
+      "first_chapter": 6
+    },
+    {
+      "name": "匡霁",
+      "aliases": [],
+      "first_chapter": 7
+    },
+    {
+      "name": "祝珉",
+      "aliases": [],
+      "first_chapter": 9
+    },
+    {
+      "name": "温炬",
+      "aliases": [],
+      "first_chapter": 12
+    },
+    {
+      "name": "邵璇",
+      "aliases": [],
+      "first_chapter": 13
+    },
+    {
+      "name": "廉舟",
+      "aliases": [],
+      "first_chapter": 14
+    },
+    {
+      "name": "尹禾",
+      "aliases": [],
+      "first_chapter": 16
+    },
+    {
+      "name": "索迦",
+      "aliases": [],
+      "first_chapter": 19
+    }
+  ],
+  "new_places": [
+    {
+      "name": "弧眠站",
+      "first_chapter": 1
+    },
+    {
+      "name": "镜砂温室",
+      "first_chapter": 5
+    }
+  ],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "苍蓝孢镜",
+        "first_chapter": 2,
+        "initial_owner": "霍准",
+        "transfer_chapter": 10,
+        "new_holder": "桑翎"
+      },
+      {
+        "name": "节环滴管",
+        "first_chapter": 5,
+        "initial_owner": "宁绡"
+      },
+      {
+        "name": "白涡孵匣",
+        "first_chapter": 11,
+        "initial_owner": "贝嵘"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "根隙三角形尘痕",
+        "first_chapter": 4,
+        "status": "来源未定；不确认为足迹或其他原因"
+      },
+      {
+        "name": "静音记录",
+        "first_chapter": 8,
+        "status": "既定听觉状态的可执行观察材料"
+      },
+      {
+        "name": "温炬个人卡片",
+        "first_chapter": 12,
+        "status": "出生月矛盾专用场景，未增家世或日期"
+      },
+      {
+        "name": "首次遮光授粉仪式准备物",
+        "first_chapter": 17,
+        "status": "遮光布未垂下、准备物未用，仪式完全没有举行"
+      },
+      {
+        "name": "重复冷光闪烁",
+        "first_chapter": 19,
+        "status": "只记位置与重复亮起，未提前透露相机来源"
+      }
+    ],
+    "ordinary_props": [
+      "休息帘与披肩布",
+      "轮值纸与小纸片",
+      "空记录板",
+      "观察窗",
+      "薄叶与叶群",
+      "普通观察纸与笔灰",
+      "确认板",
+      "培养盘",
+      "普通遮片",
+      "干净布与沾粉布",
+      "花簇与花瓣",
+      "松散花粉",
+      "空容器",
+      "孵化区薄壳",
+      "水与小杯",
+      "轮值桌及椅子",
+      "静音画面与波形",
+      "普通储备小包",
+      "清单及包装纸",
+      "个人纸卡与空盒",
+      "普通浅皿",
+      "培养介质与气泡",
+      "空载试样外壳",
+      "交接记录",
+      "普通准备物",
+      "遮光布与写祝愿的小纸",
+      "观察区门边普通物品"
+    ],
+    "ordinary_prop_scope": "普通道具、环境暂态与动作；没有新增具名角色地名、固定生理属性、物件易手或科技规则。薄壳与气泡只用于当下观察，不建立持久种群机制。"
+  },
+  "new_time_points": {
+    "absolute_calendar_dates": [],
+    "fixed_durations": [],
+    "authorized_historical_time_fact": [
+      {
+        "chapter": 12,
+        "fact": "温炬出生的公历月份是二月。",
+        "note": "设定指定有意矛盾的第一说；不增加年份、日期或历法转换。"
+      }
+    ],
+    "relative_markers": [
+      "1入站交班和休息轮次错位",
+      "2一轮窗前观察",
+      "3同步观测结束及等待确认",
+      "4根隙初见尘痕",
+      "5授粉准备过程",
+      "6孵化观察及换班",
+      "7重新核对当轮班次",
+      "8静音记录查看结束",
+      "9储备盘点",
+      "10孢镜首次交接",
+      "11孵匣查看及接班",
+      "12个人卡片整理",
+      "13介质观察",
+      "14空载递送练习与回程",
+      "15白昼一轮停手，许可仍仅夜间",
+      "16学徒初次本段训练",
+      "17首次仪式开始前取消",
+      "18失敏时的日常核查",
+      "19同轮反复冷闪观察",
+      "20下一轮静默观察安排"
+    ],
+    "note": "均为先后相接观察和轮值，没有固定航程、绝对年份或新增重大事件日期。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 1,
+      "quote": "眠灯是桑翎的别名，大家看她抬头便将声音放轻了。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 2,
+      "quote": "石针是霍准的别名，他应声调整位置，却没有把物件递走。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 2,
+      "quote": "苍蓝孢镜最初由霍准保管，检查过表面后，他将它放在自己伸手可及的稳处。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 3,
+      "quote": "桑翎目前仅准旁观同步观测，不能独立确认观测结果。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 4,
+      "quote": "根隙间出现了三角形的尘痕，它的来由还不清楚。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 5,
+      "quote": "白瓣是宁绡的别名，她听见后抬头看了一眼等待的同伴，示意先将手上的空容器放稳。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 5,
+      "quote": "节环滴管由宁绡保管，她检查后把它留在自己的工作位置，没有让旁人为了腾桌随手拿走。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 6,
+      "quote": "浅潮是贝嵘的别名，他将记录纸推近一点，说自己不是只在等结果，也在看过程中是否出现需要说明的变化。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 8,
+      "quote": "霍准的耳内炎症尚未消退，只能查看静音记录，不能听辨回声。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 10,
+      "quote": "核对完毕，霍准把苍蓝孢镜交给桑翎，之后由桑翎保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 11,
+      "quote": "白涡孵匣最初由贝嵘保管，他将匣体放稳，按眼前的观察安排逐项查看，没有急着让盖子敞开。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 12,
+      "quote": "温炬出生的公历月份是二月。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 15,
+      "quote": "宁绡只获夜间授粉许可，没有白昼授粉许可。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 16,
+      "quote": "尹禾的观测训练由桑翎负责。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 17,
+      "quote": "首次遮光授粉仪式在开始前正式取消，根本没有举行。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 18,
+      "quote": "贝嵘暂时失去了嗅觉，无法辨认气味。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 19,
+      "quote": "重复的冷光闪烁来源不明，尚不能确定是否与种群有关。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "温炬",
+      "chapter": 12,
+      "quote": "温炬出生的公历月份是二月。",
+      "paired_future_chapter": 48,
+      "action": "叙述者直接陈述，未解释为误记或历法转换。"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "全部11名本段出场人物及4个别名均在指定首次章出现；第40章人物未提前出现。",
+    "3章确认权限有限，10章物件交接不改变权限，16章训练仅教描述，20章结果仍交有资格者确认；未提前授予独立资格。",
+    "8章前不写霍准辨认声音；8章后只写静音画面和视觉观察，没有让他听回声。",
+    "5章为授粉准备，15章白昼明确停手；未出现白昼实施授粉或授粉许可提前扩展。",
+    "6、11章未描写贝嵘辨味；18章嗅觉失敏明确，未出现恢复。",
+    "17仪式开始前整体取消，之前只有准备，未用演示或象征性流程使事件部分发生。",
+    "4章尘痕来源与19冷闪来源均未收回；未新增种群永久规则或附加谜底。",
+    "本段未出现四项缺环的对应物件事件，也未透露其动机价格年月或曲调来源。",
+    "未写任何题目金标，不提交，未读取调试集或仓库其他题集。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 458,
+    "han_count_max": 500,
+    "han_count_total": 9540,
+    "unique_titles": true,
+    "all_chapters_direct_dialogue": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous_chapter_range": [],
+    "previous_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "written_segment_sha256": "018dd412a439aa694956429e2eeef93148ad921048718855fc29b982dbaa37e1",
+    "prose_generation": "逐章人工原创；脚本仅统计字数、验证引号与原句、审计哈希、整理交接JSON",
+    "model_or_product_api_calls": 0
+  }
+}

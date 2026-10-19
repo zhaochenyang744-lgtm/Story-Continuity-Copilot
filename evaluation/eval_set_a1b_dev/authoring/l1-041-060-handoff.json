@@ -1,0 +1,368 @@
+{
+  "chapter_range": [
+    41,
+    60
+  ],
+  "chapters": [
+    {
+      "chapter": 41,
+      "title": "第四十一章 窗框卡住了",
+      "han_count": 467,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 42,
+      "title": "第四十二章 灰釉上的湿布",
+      "han_count": 467,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 43,
+      "title": "第四十三章 谁把影子当成边",
+      "han_count": 443,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 44,
+      "title": "第四十四章 抬到一半的手",
+      "han_count": 474,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 45,
+      "title": "第四十五章 放下空出的布带",
+      "han_count": 446,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 46,
+      "title": "第四十六章 雨停后的扶手高度",
+      "han_count": 464,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 47,
+      "title": "第四十七章 袋里多出的折页",
+      "han_count": 476,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 48,
+      "title": "第四十八章 两拨人等同一张桌",
+      "han_count": 477,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 49,
+      "title": "第四十九章 纸页翻到风口",
+      "han_count": 462,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 50,
+      "title": "第五十章 短平台前的停工",
+      "han_count": 466,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 51,
+      "title": "第五十一章 两组脚步往回走",
+      "han_count": 470,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 52,
+      "title": "第五十二章 纸上不肯挤成一项",
+      "han_count": 475,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 53,
+      "title": "第五十三章 砧板底下的旧纸",
+      "han_count": 440,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 54,
+      "title": "第五十四章 裁口接上了",
+      "han_count": 468,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 55,
+      "title": "第五十五章 一张课桌两端",
+      "han_count": 450,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 56,
+      "title": "第五十六章 绕错的那一圈",
+      "han_count": 454,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 57,
+      "title": "第五十七章 接住轴的那双手",
+      "han_count": 457,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 58,
+      "title": "第五十八章 名字落到职责下面",
+      "han_count": 481,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 59,
+      "title": "第五十九章 让路过的人看懂",
+      "han_count": 472,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 60,
+      "title": "第六十章 遮布破口朝着风",
+      "han_count": 454,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [],
+  "new_places": [],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "灰瓷纪念牌",
+        "first_chapter": 42,
+        "note": "既定有意矛盾的第一说；只写原刻四字，不写具体字、不添刻或换牌"
+      }
+    ],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "白角线轴",
+        "chapter": 57,
+        "from": "费泊",
+        "to": "鲍新",
+        "note": "只写本次交接，不回顾第6章初主"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "无署名的路线折页",
+        "first_chapter": 47,
+        "status": "设定内待解线索；没有署名，没有揭示作者"
+      },
+      {
+        "name": "地图袋",
+        "first_chapter": 47,
+        "status": "既定折页发现位置"
+      },
+      {
+        "name": "短平台",
+        "first_chapter": 50,
+        "status": "第50章尚未架好，原定结尾状态准确停住"
+      },
+      {
+        "name": "食堂旧砧板及保护纸层",
+        "first_chapter": 53,
+        "status": "53只发现未看清的字角；54才明确缺半签及其位置"
+      }
+    ],
+    "ordinary_props": [
+      "通风窗及窗框",
+      "木丝与木屑",
+      "桌边材料及小件",
+      "软布与湿布",
+      "刻痕处水迹",
+      "课桌与练习纸及木料",
+      "布带与袖口",
+      "装日常物的小筐",
+      "护栏旁示意木条",
+      "普通草图及记录纸",
+      "屋外修理桌",
+      "空白承托纸",
+      "门边遮布",
+      "短平台待用材料及工具",
+      "临时阻拦",
+      "空篓",
+      "废纸",
+      "空包装",
+      "普通线材与散线",
+      "安全职责记录",
+      "验收进度试写纸及简图",
+      "临时遮布及修补线屑"
+    ],
+    "ordinary_prop_scope": "按既定章纲行动中出现；未新增具名角色、永久属性、考点所有权或需要后文回答的新线索。"
+  },
+  "new_time_points": {
+    "absolute_dates": [],
+    "fixed_durations": [],
+    "relative_markers": [
+      "41窗框安装至日头偏移",
+      "42清牌过程",
+      "43一轮识图练习与日光移位",
+      "44轻缓活动及整理纸页",
+      "45拆夹板及搬日常物",
+      "46雨停后的地面扶手示意",
+      "47发现折页及比图",
+      "48同一桌的两组排班交接",
+      "49整纸至光转暗",
+      "50天色渐低停工并等待次日",
+      "51第50章的次日，两组轮换试走",
+      "52收集试走反馈",
+      "53拆旧砧板保护纸等待陶汀",
+      "54紧接纸片对接确认",
+      "55搬课桌",
+      "56线材解缠及重绕",
+      "57白角线轴交接后工作至日头偏低",
+      "58推选及确认职责",
+      "59试写验收进度",
+      "60急风至修补收尾"
+    ],
+    "note": "50到51明确相邻日，来自既定章纲和计划；没有绝对日期、固定日数或倒叙。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 42,
+      "quote": "灰瓷纪念牌正面原刻的字是四个。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 45,
+      "quote": "郁澄的右腕已经痊愈，她亲手拆下夹板，右腕已能承重。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 47,
+      "quote": "地图袋里出现的这张替代路线折页没有署名，作者是谁无人知道。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 49,
+      "quote": "祁砚出生在折岭的南坳架房。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 50,
+      "quote": "众人在未架好的短平台前停下，等次日讨论扶手开口。",
+      "paragraph_position": {
+        "paragraph": 5,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    },
+    {
+      "chapter": 51,
+      "quote": "江穗请他等试过再说，将大家分成两组，一组先走，另一组在旁观察，然后交换。",
+      "paragraph_position": {
+        "paragraph": 1,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    },
+    {
+      "chapter": 54,
+      "quote": "领料签缺失的半边，原来夹在食堂旧砧板的保护纸层里。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 55,
+      "quote": "岑望与穆槐同母异父，岑望是哥哥，穆槐是妹妹。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 57,
+      "quote": "费泊把白角线轴交给鲍新，从此由鲍新保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 58,
+      "quote": "岑望正式被选为安全负责人，并获得验收签字权。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "灰瓷纪念牌",
+      "chapter": 42,
+      "quote": "灰瓷纪念牌正面原刻的字是四个。",
+      "paired_future_chapter": 91,
+      "action": "保留；不得重刻、更换或解释"
+    },
+    {
+      "subject": "祁砚",
+      "chapter": 49,
+      "quote": "祁砚出生在折岭的南坳架房。",
+      "paired_prior_chapter": 18,
+      "action": "保留；未解释为迁居、谣言、误记或另一人物"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前40章正文哈希与接手时相同。",
+    "41安装架房外墙通风窗，全文动作在室外及地面；无进入已封闭维修间。",
+    "44只是轻缓恢复动作和主观不耐；45才直白痊愈拆夹板并承重；45之后用日常行动推进，不再总结新旧状态。",
+    "42和49有意矛盾直接由叙述者陈述，不包装为人物回忆或说法。",
+    "47未揭示作者；居民可能性猜测被明确制止写成事实，不制造作者身份线索。",
+    "50最后一句严格使用指定停工结尾；51从次日开始并实际讨论及两组试走。",
+    "53只露字角，54确定缺失半签的位置并完成收回。",
+    "55关系第一次写明；与前章无先前暗示或附加亲属。",
+    "57只写白角线轴本次转交，不总结初主历史；58只写新任命及新权限，不回顾旁听无权。",
+    "鲍新56、57、60均在地面工作，未恢复上检修桥资格；黎弦43练习错误、未提前独立考核合格。",
+    "58签的是职责记录，明确没有将尚未验收部分认定合格，未提前开放路线。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 440,
+    "han_count_max": 481,
+    "all60_titles_unique": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "chapter50_exact_expected_ending": true,
+    "previous40_normalized_terminal_newline_sha256": "25427312349fc2db7f42fe5e54973b6e7c9eb5d5e900739dc45d996bb97e514c",
+    "previous40_unchanged": true,
+    "prose_generation": "逐章原创；脚本仅核验字数、格式、原句和前段哈希，整理交接记录",
+    "model_or_product_api_calls": 0
+  }
+}

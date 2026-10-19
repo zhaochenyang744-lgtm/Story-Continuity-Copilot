@@ -26,7 +26,7 @@
 .chapter-passages { margin: 0 0 16px 132px; padding-left: 20px; border-left: 2px solid var(--c-rule); }
 .chapter-passages li { display: grid; padding: 8px 0; }
 .chapter-passages li strong { font-size: 13px; }
-.chapter-passages li span { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 15px; line-height: 1.8; }
+.chapter-passages li span { color: var(--c-ink-2); font-family: var(--font-serif); font-size: calc(15px * var(--reading-scale)); line-height: 1.8; }
 .chapter-passages li.old { opacity: .55; }
 .chapter-passages .btn { margin-top: 8px; }
 
@@ -65,7 +65,7 @@
 .revise-impact .num { font-size: 28px; }
 .revise-preview { display: grid; gap: 14px; }
 .prose-input { font-family: var(--font-serif); font-size: 16px; line-height: 1.9; }
-.prose-pre { max-height: 360px; overflow: auto; padding: 12px; border: 1px solid var(--c-line); background: var(--c-surface); font-family: var(--font-serif); font-size: 14px; line-height: 1.8; }
+.prose-pre { max-height: 360px; overflow: auto; padding: 12px; border: 1px solid var(--c-line); background: var(--c-surface); font-family: var(--font-serif); font-size: calc(14px * var(--reading-scale)); line-height: 1.8; }
 .fact-check { display: grid; gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--c-line); }
 .fact-check details > summary { display: inline-block; border-bottom: 1px solid currentColor; font-size: 13px; }
 .fact-check details[open] > summary { margin-bottom: 8px; }

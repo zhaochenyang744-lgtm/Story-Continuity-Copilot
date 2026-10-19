@@ -1,0 +1,1223 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf4-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "GPT-6",
+    "date": "2026-10-18",
+    "notes": "逐章原创；作者逐句自查，另由未参与写作的复核者全文审读。"
+  },
+  "works": [
+    {
+      "key": "weiwan",
+      "title": "苇声过窄湾",
+      "file": "works/weiwan.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "chiji",
+      "title": "迟霁站的回信",
+      "file": "works/chiji.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "chaomu",
+      "title": "撤幕以前的潮声",
+      "file": "works/chaomu.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "zhuxiang",
+      "title": "秫巷的折痕",
+      "file": "works/zhuxiang.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf4-a-t03",
+      "work": "weiwan",
+      "chapter": "第三章 门边的座位",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-a-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "罗芥岑自幼便以右手最为灵巧，写字落刀都先使这一边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "罗芥岑生来惯用左手，削薄苇片这类细活也一直由左手完成。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一人物自幼的惯用手被改为另一侧，并非眼下暂用另一只手。"
+        },
+        {
+          "id": "lf4-a-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "杜弥舟把罗芥岑昨晚亲手交给他的样谱铺在桌边，用手指沿着纸上的曲线比画。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "罗芥岑答应把这张样谱借给杜弥舟，还在纸背画了一个小小的转向记号。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只确立借用的约定，未确立样谱已经转交；问题将交到手中的环节说成已发生。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-a-p01",
+          "kind": "state_change",
+          "quotes": [
+            "杜弥舟握着换过的新提梁，把满筐的竹管稳稳提过石阶。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "罗芥岑替箩筐换上了结实的新提梁，又用细绳把接头裹住。"
+            }
+          ],
+          "explanation": "旧提梁开口后已在前章修换，现在提起满筐有已叙述的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-a-t04",
+      "work": "weiwan",
+      "chapter": "第四章 盘里的浅黄",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-a-i03",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "四月初九上午借到作坊时，栖禾笙就已经是罗芥岑自己的藏品了。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "四月初九上午，栖禾笙仍归祁笛荏个人所有，罗芥岑只是借来替它整理簧片。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处均指初九上午借入的同一时刻，归属相反；不是后续转赠。"
+        },
+        {
+          "id": "lf4-a-i04",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "祁笛荏带来的那盘试簧全是从悬苇亭脚下的苇丛采出的，杜弥舟据此把它们归进本地原料的一栏。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "祁笛荏把一盘试簧摆在桌边。苇片斜斜靠着盘沿，颜色从浅黄到褐黄都有，她只挑出卷边的几片，放进另一只小碗。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅有送来和外观，未建立采集地点；产地被直接确认为定论。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-a-p02",
+          "kind": "similar_name",
+          "quotes": [
+            "掌柜把一片苇子削得透光，递给来学的小孩看薄处的纹路。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "掌柜从未学会削簧，薄片一拿到她手里便容易折，她宁可请罗芥岑处理。"
+            },
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "这张工具摊由罗芥岑照看，买东西的人都叫她掌柜；她天生惯用左手，收铜钱时也常把左掌摊开。"
+            }
+          ],
+          "explanation": "第一章掌柜为祁笛荏；本段先命名罗芥岑的小摊，掌柜指罗芥岑，不是不会削簧的祁笛荏。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-a-t05",
+      "work": "weiwan",
+      "chapter": "第五章 斜雨落在亭外",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-a-i05",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "他们先将试音桌运到悬苇亭，隔了一夜罗芥岑才把那条长凳修妥。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "罗芥岑先修好了悬苇亭的长凳，随后才把作坊的试音桌搬进亭子。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一搬迁和修凳两事件的先后颠倒。"
+        },
+        {
+          "id": "lf4-a-i06",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "杜弥舟把褶纹匣夹在胳膊下，匣底悬空便掀起盖子取出细锉。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "作坊的规矩是：任何时候打开褶纹匣，都必须将匣底平放在桌面上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "绝对要求开匣时匣底平放桌上，夹在胳膊下悬空开盖直接违反该规则。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-a-t06",
+      "work": "weiwan",
+      "chapter": "第六章 留给风的空格",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-a-i07",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "四月初九辰时，杜弥舟初次拿起梭尾签便独自读出了每道刻口的意思。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "那个少年在四月初九辰时始终不认识梭尾签的缺口记号。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "四月初九辰时"
+          },
+          "explanation": "同一历史辰时始终不识记号，与初次拿起便独自解读相反。少年姓名在紧邻前句。较晚学到的只是存放位置，不能解释早先读懂记号。"
+        },
+        {
+          "id": "lf4-a-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "四月初九开始的那轮试浸已经成功，祁笛荏带来的试簧泡后全都恢复了原先的弹性。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "罗芥岑用指甲试过厚薄，选了其中三片投入水盆，打算看这批试簧浸泡后的表现。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文开始浸泡但未叙述试验成功或回弹的结果；目标将尚未建立的结果当作依据。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-a-t07",
+      "work": "weiwan",
+      "chapter": "第七章 船上留半张席",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-a-i09",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "在四月初八的午时，罗芥岑坐在作坊后屋陪家人吃饭，直到这个时辰结束都没有离席。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "四月初八午时，罗芥岑一直在悬苇亭检看屋顶，没有离开亭子。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一午时全程位于亭内，与全程在作坊后屋用饭不相容。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-a-p03",
+          "kind": "rule_exception",
+          "quotes": [
+            "颜沭栖用透气苇席包住湿苇，扎紧后便请船家将这一捆装船运走。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 搬凳的人",
+              "quote": "湿苇平常不能送上过埠的小船，裹进透气苇席并扎牢的湿苇则可以照常运走。"
+            }
+          ],
+          "explanation": "湿苇的包裹和扎牢满足运送规则已写出的例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-a-t08",
+      "work": "weiwan",
+      "chapter": "第八章 吹不响的午后",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf4-a-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "栖禾笙一根短管的背面刻着两道弯月形浅纹，光斜照过来时才看得分明。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水边的试音",
+              "quote": "她们没有敲门，先把米放到灶边，再把包布里的栖禾笙安在软垫上。"
+            }
+          ],
+          "explanation": "前文存在这件乐器但未限定管背纹样；新纹样与既有事实兼容。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-a-t09",
+      "work": "weiwan",
+      "chapter": "第九章 小钱的去处",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf4-a-t10",
+      "work": "weiwan",
+      "chapter": "第十章 留一盏不太亮的灯",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf4-b-t03",
+      "work": "chiji",
+      "chapter": "第三章 可以按住的纸角",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-b-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "邹砺安用鼻子嗅出了纸袋里的陈皮香，将这一袋单独留在热水壶边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "邹砺安生来便完全没有嗅觉，所有气味对他都是空白，他判断潮湿靠的是眼睛和仪表。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "生来完全没有嗅觉与靠鼻子嗅出具体香气相反。"
+        },
+        {
+          "id": "lf4-b-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "外来的摄影者已获薛穗棱准许，可以拍摄迟霁站处理居民来信的工作情景。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "桌边还有一张便条，是站外一位摄影者提出的请求。他想在参观日拍些工作照片，尤其想拍工作人员阅读居民来信的样子。"
+            },
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "薛穗棱将这件事列入午间商量的事项，让她把便条夹到活动表后。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有摄影请求和列入商量事项，未建立站长的准许。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-b-p01",
+          "kind": "time_passed",
+          "quotes": [
+            "经过几日湿布上的等待，盘里的种子在六月十三长出了新芽。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "那是六月初九晚间播下的小粒种子，到这时还没有冒芽，供来参观的人比较屋内外温度时顺便观察。"
+            }
+          ],
+          "explanation": "十二日尚未出芽，十三日经过生长出现新芽，属于合理的时间经过。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-b-t04",
+      "work": "chiji",
+      "chapter": "第四章 被风掀起的图页",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-b-i03",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "唐榆弦是薛穗棱的亲生女儿，替她收纸时连桌面上哪块木纹最容易挂住纸角都熟悉。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "薛穗棱是唐榆弦母亲的亲妹妹，唐榆弦平常叫她姨母，值班时仍和别人一样称站长。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "姨母与外甥女的血缘关系被改为亲生母女。"
+        },
+        {
+          "id": "lf4-b-i04",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "这个纸包就是阮澄迩月初送去缝边的绒针套原物，如今已经回到迟霁站。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "包裹比一本薄册略长，外面缠着素色纸带，边角露出一小截灰白织物，织物上有两道斜纹。"
+            },
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "阮澄迩看见纹路，想起自己月初送出去缝边的绒针套，那只套子的边缘也织着斜线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "相似纹路与联想不能确认纸包就是原物，缺少同一性确认。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-b-p02",
+          "kind": "similar_name",
+          "quotes": [
+            "少女读懂了一组相连的符号，按刻线次序讲出它们各自表示的内容。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "唐榆弦已掌握鹧纹盘的符号读法，能把一组刻记连起来解释给人听。"
+            }
+          ],
+          "explanation": "此段紧邻姓名是唐榆弦，少女指她；前文不会读符号的少女指阮澄迩，是不同人物。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-b-t05",
+      "work": "chiji",
+      "chapter": "第五章 不必画直的线",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-b-i05",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "迟霁站六月十二首次向来站参观的居民开放，是在邹砺安修复那条线缆之前。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "下午两点，断开的线缆全部修好；过了约一刻钟，迟霁站才迎进当天第一批参观者。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一天首次参观开放与修好线缆的先后被颠倒，送物居民不属于这批参观者。"
+        },
+        {
+          "id": "lf4-b-i06",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "唐榆弦将两页未由观测员签字的纸质读数收入迟霁站档案，正式办完了归档。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "迟霁站有一条归档规矩：凡进入档案的纸质读数都须有观测员签名，任何时候都不例外。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "纸质读数"
+          },
+          "explanation": "永久规则要求入档纸质读数有观测员签名，未签字却正式入档直接违反规则。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-b-t06",
+      "work": "chiji",
+      "chapter": "第六章 留给手指的空白",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-b-i07",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "六月十二午前初次清理鹧纹盘的当刻，阮澄迩还未听过讲解，已能独自译出整圈刻记的含义。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "六月十二午前的全部时间里，少女始终不懂鹧纹盘的符号体系，不能从盘上的刻记读出意思。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文整个午前不会读符号；目标在首次清理且未听讲时独立解读，与同刻明确不懂相反。较晚收存知识不等于符号读法。"
+        },
+        {
+          "id": "lf4-b-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "六月十二下午迟霁站的那回电压波动，是第二阵雨直接造成的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "大家沿着墙根走回屋时，第二阵雨落下来了。雨点敲过半扇窗，不久走廊灯闪了一下，电压表的指针也短促地摆动。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有阵雨与波动的先后，没有因果机制或原因确认，不能直接归因为降雨。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-b-t07",
+      "work": "chiji",
+      "chapter": "第七章 回程留下的栏位",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-b-i09",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "六月十二为来访居民安排的夜间放球已成功实施，迟霁站那只气球在当晚升到了预定高度。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 山路上的信袋",
+              "quote": "原定六月十二夜里供居民观看的放球活动已经取消，通知将在下午参观时一并发给来客。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一居民夜间放球活动已取消，目标却断言成功实施，不是其他常规放球。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-b-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "老人说，薛穗棱在桌上敲三下，就能让山里的雨停住，预报不过是她藏着的法术。那是老人自己深信的猜想，他还替那三下敲击编了许多讲究，唐榆弦几次解释实测记录，他都笑着摆手。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "她又翻出几天的记录，说明迟霁站判断天气要逐项比较实测数据，单看一片云并不能作准。"
+            }
+          ],
+          "explanation": "目标明确归于老人自己的猜想，叙述未认可法术，前文实测机制未被推翻。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-b-t08",
+      "work": "chiji",
+      "chapter": "第八章 桌面以外的回信",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf4-b-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "杏弧尺柄端嵌着一粒浅褐色木钉，摸上去与周围的木面齐平。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 斜纹露出的下午",
+              "quote": "邹砺安拿起杏弧尺，沿纸上歪斜的边比了一下，把尺让给旁边的孩子。"
+            }
+          ],
+          "explanation": "尺子已出现但未限定柄部材料或木钉，新增细节兼容。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-c-t03",
+      "work": "chaomu",
+      "chapter": "第三章 让出一条过道",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-c-i01",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "八月初五首次盘点时，禾钩偶的左胳膊完整地连在肩上，那一整条臂膀当时还伸到了清点布的外沿。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "第一次清点开始前，禾钩偶的左臂已经卸下，单独搁在软垫上。"
+            },
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "石砚苓先点木偶躯干，再点脚边的零件，报到这条仍与躯干分开的手臂时，闻织荞将小木签翻了个面。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "清点之前和实际清点中左臂都与躯干分开，目标却称首次清点时完整相连。"
+        },
+        {
+          "id": "lf4-c-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "八月初五早上有人来报信的那次，闻织荞亲眼看到了后幅幕布下端的裂口，连开线边缘的小绒毛也瞧得清楚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "闻织荞正把散落的木签收回，听见走廊上的一位住户告诉她，后幅幕布在下沿裂了个口子，挂起来时才发现。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只写听见住户报信，没有建立该次亲眼看到裂口，目标把听说升级为亲见。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-c-p01",
+          "kind": "state_change",
+          "quotes": [
+            "两只换过的车轮贴着石地稳稳转动，满车的布也没有朝一边歪。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "段隽蒲把车倒扣过来，拆下两只旧轮，将两只新轮装好，来回推过门槛，车板都稳稳的。"
+            }
+          ],
+          "explanation": "两只旧轮已被换成新轮，当前顺畅滚动有明确变化过程。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-c-t04",
+      "work": "chaomu",
+      "chapter": "第四章 钩上的号码",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-c-i03",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "郝蕤庭是石砚苓同父同母的弟弟，兄弟俩抬筐时不用出声，便知道对方会给自己让哪一侧。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "郝蕤庭与石砚苓没有亲属关系，是凭着几次合作结成的生意伙伴。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "明确没有亲属关系的合作伙伴被改成亲兄弟。"
+        },
+        {
+          "id": "lf4-c-i04",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "八月初五下午实地量得，滩镜戏棚台口的净宽恰好是六米四，闻织荞据此给图上那道横线标了数值。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "闻织荞坐在前排试听，在缀星册上画了几道轻重不同的横线。台上短暂安静时，她把一卷软皮尺搁在台口侧边的木凳上，免得一直压着手头的记录。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只是试听和放下皮尺，没有实际测量与读数，目标把精确净宽当成测量结论。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-c-p02",
+          "kind": "rule_exception",
+          "quotes": [
+            "闻织荞忙出一身汗，脱下自己缝好号码的围裙，伸手挂上入口的专用钩。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "棚内不许悬挂私人物品，唯一的例外是带有编号的工作人员围裙，可以挂在入口那排专用钩上。"
+            }
+          ],
+          "explanation": "带号码的工作围裙挂在专用钩，正符合已叙述的例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-c-t05",
+      "work": "chaomu",
+      "chapter": "第五章 纸上的远近",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-c-i05",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "八月初五晚上，照原计划举行的那场演出顺利收场，台下最后一排的住户也听清了收尾的独白。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "八月初五原定的晚场已经取消，当晚不再安排任何演出。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原定初五晚场被取消，目标却称同一原定晚场正常举行并收场。"
+        },
+        {
+          "id": "lf4-c-i06",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "八月初五那遍最终排练尚未收尾，纹鳍箱便已送到台旁，闻织荞还曾绕过它去听最后几句。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "那天下午的排练先结束，送纹鳍箱的人随后才把箱子抬进滩镜戏棚。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一初五排练与首次送箱的先后次序被倒置。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-c-t06",
+      "work": "chaomu",
+      "chapter": "第六章 线头在掌心",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-c-i07",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "八月初五辰时，闻织荞头一回打开禾钩偶后背时，凭自己就把里面的牵引暗结扎得分毫不差，连各根线的先后也已全然明白。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 幕里的一线晨光",
+              "quote": "八月初五辰时这一整个时辰，少女都没能学会禾钩偶体内的绳结打法。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "整个辰时都没有掌握绳结，与首次打开时便独立熟练操作相反。少女姓名在紧邻前句，粗线示范没有令她学会。"
+        },
+        {
+          "id": "lf4-c-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "自八月初五收存起，直到今天重新取出，那批鸢尾券的墨面始终湿润，中间的几日也没有干过。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "闻织荞拿起最上面一张时，指腹沾了一点蓝色，那时鸢尾券上的墨迹还是潮的。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只确立初五当时墨迹潮湿，没有确立其后几日状态持续，目标断言整个收存期间不曾干过。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-c-t07",
+      "work": "chaomu",
+      "chapter": "第七章 座位上放着空篮",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-c-i09",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "八月初六午时，段隽蒲始终守在滩镜戏棚的台口，逐张扶住座椅让闻织荞画标记。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 让出一条过道",
+              "quote": "八月初六午时，段隽蒲在水芒埠的渡口棚修小车栏板，整个午时都在那里给松动的接头补钉。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "八月初六午时"
+          },
+          "explanation": "同一完整午时，前文人物在渡口棚修车，目标却全程在戏棚扶椅，位置和行动不相容。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-c-p03",
+          "kind": "similar_name",
+          "quotes": [
+            "她抱出去晒的水纹小箱，是那只露着原木角、只有纹鳍箱一半大的备用箱，纹鳍箱仍留在台后的垫板上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 轮子换过以后",
+              "quote": "闻织荞带来的小备用箱也画着相近的波浪，却是另一件东西，箱角露着未上色的木头，尺寸只有纹鳍箱的一半。"
+            }
+          ],
+          "explanation": "水纹小箱与纹鳍箱是两件明确区分的物品，抱出备用箱不等于移动大箱。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-c-t08",
+      "work": "chaomu",
+      "chapter": "第八章 撤幕以前",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf4-c-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "闻织荞的发带是淡赭色的，在后脑扎成一个很小的结，没有垂出长长的尾。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 钩上的号码",
+              "quote": "闻织荞提着装布的小篮等在旁边，见没有布条落下来，便把篮子放回原处。她额前碎发被汗粘住，伸手拨时又碰了一脸粉笔灰。"
+            }
+          ],
+          "explanation": "前文提到头发但没有限定发带颜色，当前颜色和结法为相容的新细节。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-d-t03",
+      "work": "zhuxiang",
+      "chapter": "第三章 用手指走过的路",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-d-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "梅椿叙只凭卡纸呈现的绿色，就从一叠深浅相近的纸中准确拣出了另一张绿纸。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "梅椿叙生来全色盲，眼中的颜色只有深浅之分，无法凭色相辨认物品。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "生来无法分辨色相，却被写成仅靠绿色在明暗相近的纸中准确选色；问题附近排除了其他标记。"
+        },
+        {
+          "id": "lf4-d-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "梅椿叙昨天已经把蕉格夹交到邵荔洵手里，如今她用这个借来的夹子压住居民刚写好的路线卡。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "梅椿叙走近一点，闻到桌上新裁垫纸的气味，说自己家中有个蕉格夹，硬纸板边上织着粗麻绳，夹湿拓片比寻常的纸夹稳。他向邵荔洵提议，把蕉格夹借给她，等展览结束再收回。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只提议借用，未建立实际交接，目标却断言昨天已交到手中。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-d-p01",
+          "kind": "time_passed",
+          "quotes": [
+            "萝卜的幼芽已经顶开湿土，细细的两片叶子贴在一起，土屑还挂在叶缘。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "她一周前将种子埋进湿土，今天表面仍旧平整，便觉得自己把水浇得太少。"
+            }
+          ],
+          "explanation": "种子已经播下一周，隔日发芽是合理时间经过，不与尚无芽矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-d-t04",
+      "work": "zhuxiang",
+      "chapter": "第四章 函边的白纸",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-d-i03",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "松籽函初次被陶絮衡接进砾桑馆的那一刻，蜡封就已经破成两瓣，缺口露着下面的细线。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "松籽函第一次送到砾桑馆、由陶絮衡当面接收时，外面的蜡封完整地粘着，封缘没有一道裂痕。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处都指首次接收一刻的同一蜡封，一处完整，一处已破裂。"
+        },
+        {
+          "id": "lf4-d-i04",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "有关松籽函的图文摹写已经得到馆方许可，邵荔洵能将外形与全文一并列入志愿者的陈列。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 桌面之间的距离",
+              "quote": "她向顾茴笙申请，在志愿者展板上复制松籽函的外观与函内文字，用来说明居民寄存旧物的办法。顾茴笙听她说完，将这项申请写进工作簿，随后应门外招呼去处理一张地址卡。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文是提出申请并登记，没有批准决定，不能将复制全文的许可说成已获准。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-d-p02",
+          "kind": "state_change",
+          "quotes": [
+            "窗边的展架如今不再晃动，邵荔洵将新底板挂上去，两只脚牢牢贴着地面。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 桌面之间的距离",
+              "quote": "木楔塞进左侧底脚后，他又拉了两下上沿，架子稳稳立住了，邵荔洵这才把两张空展板挂上去。"
+            }
+          ],
+          "explanation": "展架已用木楔修稳，后来的稳定是已叙述的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-d-t05",
+      "work": "zhuxiang",
+      "chapter": "第五章 不必一直往前",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-d-i05",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "邵荔洵是顾茴笙的外甥女，两人虽隔着一辈，在纸上商量事情时却很少争长幼。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 桌面之间的距离",
+              "quote": "邵荔洵和顾茴笙是姨表姐妹，两人的母亲是亲姐妹，并不是相差一辈的长幼亲属。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同辈姨表姐妹被改成相差一辈的姨甥关系，且由叙述者明确陈述。"
+        },
+        {
+          "id": "lf4-d-i06",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "九月初二夜里，邵荔洵与陶絮衡依照当天的约定登上屋顶，将整片巷道的俯视照片拍摄完毕。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "顾茴笙当场取消了九月初二晚间的屋顶拍照，三个人将这项安排从当天的表格中划去。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一初二晚间原定拍照已取消，目标却称依当日约定完成拍摄。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-d-t06",
+      "work": "zhuxiang",
+      "chapter": "第六章 仍然留下的折线",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-d-i07",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "九月初二巳时，陶絮衡初次凑近鹭背图下角看那组旧尺度符号，尚未得到任何讲解，便已把它们逐一准确读出并完成距离折算。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "陶絮衡在九月初二巳时还完全读不懂鹭背图上表示旧计量单位的记号，不能据此换算图中的距离。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一历史巳时明确读不懂和不能换算，目标却称初次接触未听讲便准确读出并换算。"
+        },
+        {
+          "id": "lf4-d-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "那份从小抽屉取出的无名街巷稿，确实是梅椿叙亲笔写下的旧稿。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 桌面之间的距离",
+              "quote": "顾茴笙整理外桌旁的小抽屉，翻出一页没有署名的纸。纸上几列街巷写得很细，末尾画着三个像台阶的方格，她把它铺在干净衬纸上，让邵荔洵照着原先的折法看了一眼。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "发现位置和图样不构成作者鉴定，前文没有确立该页出自梅椿叙。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf4-d-t07",
+      "work": "zhuxiang",
+      "chapter": "第七章 拐角让出的一步",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf4-d-i09",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "九月初三申时那趟实地踏查，顾茴笙始终陪邵荔洵在秫巷外段步行，逐个指给她看沿路的门洞。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 用手指走过的路",
+              "quote": "九月初三申时，顾茴笙一直留在砾桑馆的书架前整理旧档案，没有离馆。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一完整申时应在馆内整理档案，目标却称始终在馆外踏查。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf4-d-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "听说裂口已经托住，他很高兴，说旧图保着这一片住户，只要它平整起来，秫巷那些绊脚的台阶自然也就顺了。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 用手指走过的路",
+              "quote": "陶絮衡将试样放回托板，说补纸能托住断口，真正的台阶还得靠走路的人留意。"
+            }
+          ],
+          "explanation": "这只是邻居个人的吉利信奉，后文明确不把它当作事实；叙述并未推翻修纸不能修路的事实。"
+        }
+      ]
+    },
+    {
+      "id": "lf4-d-t08",
+      "work": "zhuxiang",
+      "chapter": "第八章 门开着的时候",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf4-d-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "他把工具暂时收回袋内，蹲下时袋口翻开一角，露出浅褐色的棉布内衬，里面缝着一个很窄的小口袋。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 压在纸上的巷口",
+              "quote": "陶絮衡放下工具袋，抽出两张垫纸，教她把卷纸反向松松地绕一圈。"
+            }
+          ],
+          "explanation": "前文工具袋已出现但未限定内衬和内袋，新增外观细节相容。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf4-s01",
+      "work": "weiwan",
+      "chapters": [
+        "第三章 门边的座位",
+        "第四章 盘里的浅黄",
+        "第五章 斜雨落在亭外",
+        "第六章 留给风的空格",
+        "第七章 船上留半张席",
+        "第八章 吹不响的午后",
+        "第九章 小钱的去处",
+        "第十章 留一盏不太亮的灯"
+      ]
+    },
+    {
+      "id": "lf4-s02",
+      "work": "chiji",
+      "chapters": [
+        "第三章 可以按住的纸角",
+        "第四章 被风掀起的图页",
+        "第五章 不必画直的线",
+        "第六章 留给手指的空白",
+        "第七章 回程留下的栏位"
+      ]
+    },
+    {
+      "id": "lf4-s03",
+      "work": "chaomu",
+      "chapters": [
+        "第三章 让出一条过道",
+        "第四章 钩上的号码",
+        "第五章 纸上的远近",
+        "第六章 线头在掌心",
+        "第七章 座位上放着空篮"
+      ]
+    }
+  ],
+  "subsets": {}
+}

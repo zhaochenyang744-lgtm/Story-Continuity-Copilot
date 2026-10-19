@@ -4,9 +4,50 @@ export type User = {
   display_name: string;
   avatar_preset: "continuity_violet" | "archive_blue" | "folio_rose" | "signal_amber";
   profile_revision: number;
+  /** One line about the author, up to 60 characters; empty until they write it. */
+  bio?: string;
+  created_at?: string;
+  /** When the password was last changed here or by a reset; null if it never was. */
+  password_changed_at?: string | null;
   account_type?: "registered" | "visitor";
   visitor_expires_at?: string | null;
   recovery_email?: { configured: boolean; verified: boolean; masked: string | null };
+  /** The assistant's roll-out for this account: whether it is offered at all, and whether it is still marked 测试版. */
+  assistant?: { available: boolean; beta: boolean };
+};
+/** What the author's home page draws (GET /api/account/home). Days are Beijing-time days, already cut by the server. */
+export type HomeEvent = {
+  kind: "draft_saved" | "chapter_finished" | "checked" | "assistant_adopted" | "project_created";
+  at: string;
+  day: string;
+  project_id: string;
+  project_title: string;
+  chapter_number: number | null;
+  chapter_numbers: number[];
+  chapter_title: string;
+  /** draft_saved: the characters added (or cut) that day. */
+  net_chars?: number;
+  /** checked: how many findings the check made. */
+  issue_count?: number;
+  /** project_created: how the work came to be. */
+  origin?: string;
+};
+export type AuthorHome = {
+  today: string;
+  day_utc_offset_hours: number;
+  profile: { account_name: string; display_name: string; avatar_preset: User["avatar_preset"]; bio: string; created_at: string; account_type: "registered" | "visitor"; visitor_expires_at: string | null };
+  totals: { works: number; chapters: number; chars: number; streak_days: number; streak_includes_today: boolean };
+  calendar: { start: string; end: string; chars: number[]; levels: number[] };
+  year: { chars: number; writing_days: number; best_day: { day: string; chars: number } | null; longest_streak: number; checked_chapters: number };
+  current: { project_id: string; project_title: string; chapter_number: number; chapter_title: string; chars: number; saved_at: string; check_state: "unchecked" | "checked" | "edited" } | null;
+  works: Pick<ProjectSummary, "id" | "title" | "genre" | "summary" | "status" | "data_origin" | "chapter_count" | "word_count" | "open_issue_count" | "continuity_status" | "updated_at">[];
+  activity: HomeEvent[];
+};
+export type DailyUsage = {
+  today: string;
+  days: { day: string; check_chars: number; assistant_chars: number }[];
+  /** The oldest charge still counting against the last 24 hours, and when it comes back. */
+  oldest_charge: { recovers_at: string; chars: number } | null;
 };
 export type ProjectSummary = {
   id: string;
@@ -480,3 +521,103 @@ export type ChangeSet = {
   }[];
 };
 export type SourceChangeSet = { id:string; project_id:string; base_source_revision:number; target_source_revision:number; mode:"append"; input_method:"draft_complete"|"paste"|"file"; content_sha256:string; status:"previewed"|"committed"|"failed"; chapter_count:number; source_span_count:number; chapters:{preview_id:string;title:string;order:number;character_count:number}[]; previewed_at:string; committed_at:string|null; failed_at:string|null; failure_code:string|null; expires_at:string; audit:{created_by_user_id:string;idempotency_key_fingerprint:string;request_fingerprint:string;file_basename:string|null} };
+
+// The built-in assistant (v1.8.0): what GET/POST /projects/{id}/assistant/tasks answer with.
+export type AssistantPage = "writing" | "chapters" | "materials" | "plan" | "overview";
+export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection" };
+/** `say` is the model's one line before it works; `tool` an action (grouped with the others of its round in `group`); `repair` a re-written
+    answer; `protocol_error` a reminder nobody needs to read. `refs` are the passages a step turned up, cited or not; a failed step has `error_*`. */
+export type AssistantStep = {
+  round: number;
+  kind: "say" | "tool" | "repair" | "protocol_error" | string;
+  tool: string | null;
+  summary: string;
+  result_count: number | null;
+  group: string | null;
+  refs: string[];
+  error_code: string | null;
+  error_text: string | null;
+};
+/** Every passage the task registered; `cited` says the answer rests on it. */
+export type AssistantSource = {
+  kind: string;
+  chapter_number: number | null;
+  chapter_title: string | null;
+  start: number | null;
+  end: number | null;
+  text: string;
+  cited: boolean;
+  /** Facts only: the passage the fact was taken from (its first 120 characters) and that passage's chapter; null when it has none. */
+  anchor?: { text: string; chapter_number: number } | null;
+};
+export type AssistantAnswer = { status: "answered" | "not_found" | "inconsistent" | "out_of_scope"; sentences: { text: string; refs: string[] }[]; note?: string | null };
+export type AssistantFeedbackReason = "wrong" | "verbose" | "not_found" | "bad_source";
+/** The signed-in author's own verdict on a task. */
+export type AssistantFeedback = { verdict: "up" | "down"; reasons: AssistantFeedbackReason[] } | null;
+/** 写前回顾: four columns, each item one sentence and the numbers of the passages it rests on. */
+export type RecapSection = "previous_ending" | "character_state" | "open_threads" | "plan";
+export type RecapAnswer = { kind: "recap"; chapter_number: number; sections: Record<RecapSection, { summary: string; refs: string[] }[]> };
+/** 帮我改这一处: one way to deal with a finding. before/after are empty for `intentional`; add_setup names an earlier chapter. */
+export type AssistantProposalKind = "edit_this" | "add_setup" | "intentional";
+export type RecheckIssue = {
+  sentence: string;
+  category: string;
+  nature: string;
+  severity: "high" | "medium" | "low";
+  explanation: string;
+  evidence: { ref: string; chapter: number | null; chapter_title: string | null; text: string }[];
+};
+export type ProposalRecheck =
+  | { status: "running"; started_at?: string }
+  | { status: "clean"; issues: RecheckIssue[] }
+  | { status: "issues"; issues: RecheckIssue[] }
+  | { status: "failed"; error_code: string };
+export type AssistantProposal = {
+  id: string;
+  proposal: string;
+  kind: AssistantProposalKind;
+  chapter_number: number | null;
+  before: string;
+  after: string;
+  rationale: string;
+  status: "proposed" | "adopted" | "dismissed";
+  /** The author's own wording when they changed `after` before adopting (the effective sentence is `after_edited ?? after`). */
+  after_edited?: string | null;
+  edited_by_author?: boolean;
+  draft_id: string;
+  draft_revision: number;
+  adopted_draft_revision: number | null;
+  decided_at: string | null;
+  recheck: ProposalRecheck | null;
+};
+export type AssistantTask = {
+  id: string;
+  kind: "ask" | "recap" | "fix_issue";
+  status: "queued" | "running" | "completed" | "failed" | "cancelled";
+  /** Null for a 写前回顾, and for a 帮我改这一处 asked without a request. */
+  question: string | null;
+  context: Partial<AssistantContextInput>;
+  follow_up_of: string | null;
+  /** The task this one answers again, and the question this one is an edit of. */
+  regenerated_from?: string | null;
+  edited_from?: string | null;
+  steps: AssistantStep[];
+  answer: AssistantAnswer | RecapAnswer | null;
+  sources: Record<string, AssistantSource>;
+  /** The fixed reply of an `out_of_scope` answer. */
+  out_of_scope_text?: string | null;
+  coverage: { checked: string[]; not_checked: string[] } | null;
+  usage: { steps: number; chars_charged: number };
+  /** While running: `thinking` (waiting for the model) or `tool` (running `phase_tool`, on `phase_chapter` for a chapter), since `phase_started_at`. */
+  phase?: "thinking" | "tool" | null;
+  phase_tool?: string | null;
+  phase_chapter?: number | null;
+  phase_started_at?: string | null;
+  feedback?: AssistantFeedback;
+  error_code: string | null;
+  created_at: string;
+  started_at?: string | null;
+  completed_at: string | null;
+  /** Only on a fix_issue task. */
+  proposals?: AssistantProposal[];
+};

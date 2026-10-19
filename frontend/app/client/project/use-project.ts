@@ -115,9 +115,8 @@ export function useProject({
   const [initializationError, setInitializationError] = useState("");
   const [memoryDelta, setMemoryDelta] = useState<MemoryDelta | null>(null);
   const [coverage, setCoverage] = useState<MemoryCoverage | null>(null);
-  const [contextBrief, setContextBrief] = useState<WritingAnalysisRun | null>(null);
   const [planAlignment, setPlanAlignment] = useState<WritingAnalysisRun | null>(null);
-  const [analysisBusy, setAnalysisBusy] = useState<"context_brief" | "plan_alignment" | "">("");
+  const [analysisBusy, setAnalysisBusy] = useState<"plan_alignment" | "">("");
   const [busy, setBusy] = useState("");
   const [selected, setSelected] = useState<Issue | null>(null);
   const [controlled, setControlled] = useState<Issue | null>(null);
@@ -175,7 +174,7 @@ export function useProject({
     setCharacters([]); setWorld([]); setSelected(null); setSourceRecord(null); setControlled(null); setPendingControlledDecision(null);
     setLocallyResolvedIssueIds([]); setChangeSet(null); setSaveFailed(false); setDraftRecoveryPrompt(null); setDraftRecoveryConflict(null);
     setDraftRecoveryUnavailable(""); setPendingDecisionStorageUnavailable(""); setPendingDecisionConflict(""); setPendingDecisionPersisted(false);
-    setTutorialRestored(false); setContextBrief(null); setPlanAlignment(null); setMissingProjectId("");
+    setTutorialRestored(false); setPlanAlignment(null); setMissingProjectId("");
   }, []);
 
   const loadProject = useCallback(async (id: string) => {
@@ -189,7 +188,7 @@ export function useProject({
       // Restore the run record before fanning out: on a cold refresh it must not queue behind the larger payloads.
       const latest = p.latest_run ? await request<Run>(checkPath(id, p.latest_run.run_id), { signal }) : null;
       const imported = p.data_origin === "user_import";
-      const [c, m, d, chars, w, author, initialized, memoryCoverage, delta, projectOnboarding, briefLatest, alignmentLatest] = await Promise.all([
+      const [c, m, d, chars, w, author, initialized, memoryCoverage, delta, projectOnboarding, alignmentLatest] = await Promise.all([
         request<{ chapters: Chapter[] }>(`/projects/${id}/chapters?include=excerpt`, { signal }),
         request<{ records: Memory[] }>(`/projects/${id}/memory`, { signal }),
         request<Draft>(`/projects/${id}/drafts/${p.current_draft.id}`, { signal }),
@@ -200,7 +199,6 @@ export function useProject({
         imported ? request<MemoryCoverage>(`/projects/${id}/memory/coverage`, { signal }) : Promise.resolve(null),
         imported ? request<MemoryDelta>(`/projects/${id}/memory/delta`, { signal }) : Promise.resolve(null),
         p.is_tutorial ? request<Onboarding>("/onboarding", { signal }) : Promise.resolve(null),
-        request<{ run: WritingAnalysisRun | null }>(`/projects/${id}/analyses?analysis_type=context_brief`, { signal }),
         request<{ run: WritingAnalysisRun | null }>(`/projects/${id}/analyses?analysis_type=plan_alignment`, { signal }),
       ]);
       if (n !== epoch.current) return;
@@ -231,7 +229,6 @@ export function useProject({
       setInitialization(initialized);
       setMemoryDelta(delta);
       setCoverage(memoryCoverage);
-      setContextBrief(briefLatest.run);
       setPlanAlignment(alignmentLatest.run);
       let primaryRun = latest;
       let siblingRun: Run | null = null;
@@ -331,7 +328,7 @@ export function useProject({
   const adoptNextDraft = (next: Draft | null | undefined) => {
     if (next) { setDraft(next); setSaved(next); }
     setRun(null); setPairedRun(null); setSelected(null); setControlled(null); setChangeSet(null);
-    setLocallyResolvedIssueIds([]); setContextBrief(null); setPlanAlignment(null);
+    setLocallyResolvedIssueIds([]); setPlanAlignment(null);
   };
 
   // Poll an active check (and its paired fact run). One request at a time; a hidden tab polls when shown again.
@@ -367,14 +364,13 @@ export function useProject({
   }, [run, pairedRun, projectId, fail, notify, refreshSummary]);
 
   useEffect(() => {
-    if (!projectId || (!activeAnalysis(contextBrief) && !activeAnalysis(planAlignment))) return;
+    if (!projectId || !activeAnalysis(planAlignment)) return;
     let inFlight = false, stopped = false;
     const poll = () => {
       if (inFlight || stopped) return;
       inFlight = true;
-      const rows = [contextBrief, planAlignment].filter((item): item is WritingAnalysisRun => Boolean(item && activeAnalysis(item)));
-      Promise.all(rows.map((item) => request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${item.run_id}`)))
-        .then((next) => { if (!stopped) next.forEach((item) => (item.analysis_type === "context_brief" ? setContextBrief(item) : setPlanAlignment(item))); })
+      request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${planAlignment!.run_id}`)
+        .then((next) => { if (!stopped) setPlanAlignment(next); })
         .catch((cause) => { if (!stopped) fail(cause); })
         .finally(() => { inFlight = false; });
     };
@@ -382,10 +378,9 @@ export function useProject({
     const onVisible = () => { if (document.visibilityState === "visible") poll(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => { stopped = true; window.clearInterval(timer); document.removeEventListener("visibilitychange", onVisible); };
-  }, [contextBrief, planAlignment, projectId, fail]);
+  }, [planAlignment, projectId, fail]);
 
   const markSavedRevision = (revision: number) => {
-    setContextBrief((current) => (current && current.draft_revision !== revision ? { ...current, is_stale: true, lineage_status: "bound_state_changed" } : current));
     setPlanAlignment((current) => (current && current.draft_revision !== revision ? { ...current, is_stale: true, lineage_status: "bound_state_changed" } : current));
     setRun((current) => (current && current.source_revision !== revision ? { ...current, current_revision: revision, is_stale: true, lineage_status: "stale" } : current));
     setPairedRun((current) => (current && current.source_revision !== revision ? { ...current, current_revision: revision, is_stale: true, lineage_status: "stale" } : current));
@@ -590,6 +585,9 @@ export function useProject({
   };
   const autosaveRef = useRef(autosave);
   useEffect(() => { autosaveRef.current = autosave; });
+  // Save now instead of waiting for the idle timer: for an explicit action (adopting an assistant change) whose
+  // result can only be recorded once the text is on the server. Deferred a tick so the ref holds the edited draft.
+  const autosaveNow = () => { window.setTimeout(() => void autosaveRef.current(), 0); };
   useEffect(() => {
     if (autosaveBlocked || !dirty) return;
     const wait = Math.max(AUTOSAVE_IDLE_MS, AUTOSAVE_MIN_INTERVAL_MS - (Date.now() - lastAutosaveAt.current));
@@ -679,27 +677,26 @@ export function useProject({
     } finally { setBusy(""); }
   };
 
-  const startAnalysis = async (analysisType: "context_brief" | "plan_alignment") => {
+  const startAnalysis = async (analysisType: "plan_alignment") => {
     if (!projectId || !draft || dirty || readOnly) return;
     setAnalysisBusy(analysisType);
     try {
       const created = await json<WritingAnalysisRun>(`/projects/${projectId}/analyses`, "POST", { analysis_type: analysisType, draft_id: draft.id, draft_revision: draft.revision, client_request_id: crypto.randomUUID() });
       const next = { ...created, is_stale: false, lineage_status: "current", error_code: null } as WritingAnalysisRun;
-      if (analysisType === "context_brief") setContextBrief(next); else setPlanAlignment(next);
-      notify(analysisType === "context_brief" ? "写前回顾开始了，完成后显示在右栏的「写前回顾」里。" : "对照计划开始了，完成后在右栏的「对照计划」里按计划逐条显示。");
+      setPlanAlignment(next);
+      notify("对照计划开始了，完成后显示在助手标签顶部的「对照计划」里，按计划逐条列出。");
     } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
   };
   const analysisAction = async (target: WritingAnalysisRun, action: "cancel" | "retry") => {
-    if (!projectId || readOnly || !["context_brief", "plan_alignment"].includes(target.analysis_type)) return;
+    if (!projectId || readOnly || target.analysis_type !== "plan_alignment") return;
     if (action === "cancel" ? !activeAnalysis(target) : !retryableAnalysis(target)) return;
-    const analysisType = target.analysis_type as "context_brief" | "plan_alignment";
-    setAnalysisBusy(analysisType);
+    setAnalysisBusy("plan_alignment");
     try {
       let runId = target.run_id;
       if (action === "cancel") await json(`/projects/${projectId}/analyses/${target.run_id}/cancel`, "POST", { client_request_id: crypto.randomUUID() });
       else runId = (await json<{ run: WritingAnalysisRun }>(`/projects/${projectId}/analyses/${target.run_id}/retry`, "POST", { client_request_id: crypto.randomUUID() })).run.run_id;
       const next = await request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${runId}`);
-      if (analysisType === "context_brief") setContextBrief(next); else setPlanAlignment(next);
+      setPlanAlignment(next);
     } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
   };
 
@@ -1016,12 +1013,12 @@ export function useProject({
   return {
     // state
     project, missingProjectId, chapters, memories, characters, world, authorContext, authorBusy, draft, saved, run, pairedRun,
-    initialization, initializationError, memoryDelta, coverage, contextBrief, planAlignment, analysisBusy, busy, selected, controlled,
+    initialization, initializationError, memoryDelta, coverage, planAlignment, analysisBusy, busy, selected, controlled,
     pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
     pendingDecisionPersisted, sourceRecord, tutorialRestored, tutorialActive, readOnly, dirty, narrow,
     // actions
-    notify, clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
+    notify, clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, autosaveNow, check, cancelRun, retryRun, startAnalysis, analysisAction,
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
     review, commit, startMemoryInitialization, reopenMemoryCandidate, submitMemoryInitialization, startIncrementalReview,
     submitMemoryDelta, reset, updateProject, mutateAuthorContext, openMemorySource, openEvidenceSource, closeSource,

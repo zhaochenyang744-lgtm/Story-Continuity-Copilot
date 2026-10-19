@@ -1,7 +1,0 @@
-{
-  "request": "GET /models",
-  "status": 200,
-  "latency_ms": 397,
-  "model_present": true,
-  "error_type": null
-}

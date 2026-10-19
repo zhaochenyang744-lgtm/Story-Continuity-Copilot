@@ -297,6 +297,91 @@ def materials_markdown(snapshot: dict) -> bytes:
     return ("\n\n".join(parts) + "\n").encode("utf-8")
 
 
+def bundle_files(snapshot: dict) -> dict[str, bytes]:
+    """The files of one work's 完整资料包, with their checksums file last."""
+    files = {
+        "manuscript.txt": manuscript(snapshot, False),
+        "manuscript.md": manuscript(snapshot, True),
+        "materials.md": materials_markdown(snapshot),
+        "snapshot.json": _json_bytes(snapshot),
+        "README.txt": (
+            "Story Continuity Copilot 作品导出\n\n"
+            "manuscript.txt：当前已保存章节内容，按章节号排列；Markdown 格式转换为可读文字。\n"
+            "manuscript.md：当前已保存章节内容，保留富文本草稿的 Markdown 表达。\n"
+            "未保存完整正文的章节仅附当前来源片段或缺失标记，并明确标注非完整章节。\n"
+            "若勾选草稿，文件末尾附当前已保存、未入库的非空草稿，并单独标明。\n"
+            "materials.md：计划（情节、人物、设定）、人物卡、设定条目和已确认事实的阅读版。\n"
+            "snapshot.json：正文原始字符串、内容格式、章节版本及全部创作资料的精确快照。\n"
+            "snapshot_sha256：删除 exported_at 与 snapshot_sha256 后，以 UTF-8、ensure_ascii=False、"
+            "indent=2、sort_keys=True JSON 加末尾换行计算 SHA-256。\n"
+            "checksums.json：除该文件本身以外，每个压缩包文件的 SHA-256。\n"
+            "本次导出范围保存在 snapshot.json 的 scope；浏览器未保存输入不在快照中。\n"
+            "completeness 说明已入库章节正文的完整程度；chapter.body_origin 区分正文、来源片段与缺失。\n"
+            "chapter.body 保留数据库原值；来源片段保存在 source_fragments，不能当作完整原稿。\n"
+            "正文采用当前章节版本；历史修订保留在应用内。已归档资料在资料包中有明确标记。\n"
+            + (INCOMPLETE_MANUSCRIPT_NOTICE + "\n" if snapshot["completeness"]["status"] == "partial_stored_chapters" else "")
+        ).encode("utf-8"),
+    }
+    if sum(map(len, files.values())) > MAX_EXPORT_BYTES:
+        raise DomainError("export_too_large", 413)
+    files["checksums.json"] = _json_bytes({name: hashlib.sha256(body).hexdigest() for name, body in files.items()})
+    return files
+
+
+def _zip_bytes(files: dict[str, bytes]) -> bytes:
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for name, body in files.items():
+            entry = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_DEFLATED
+            entry.external_attr = 0o100600 << 16
+            archive.writestr(entry, body)
+    return buffer.getvalue()
+
+
+def export_all_works(db: V2Database, user_id: str, day: str) -> Response:
+    """Every work of the account (sample works excluded, archived ones included) as one ZIP: a folder per work holding its
+    完整资料包 files, the saved draft included. A draft that shares a chapter number with a stored chapter cannot be exported
+    with it; that work is exported without its draft and the README says so."""
+    with db.connection() as c:
+        works = [dict(row) for row in c.execute(
+            "SELECT id,title,status FROM v2_projects WHERE user_id=? AND data_origin NOT IN ('demo_seed','tutorial_seed') ORDER BY created_at,id", (user_id,))]
+    files: dict[str, bytes] = {}
+    index, notes, total = [], [], 0
+    for position, work in enumerate(works, 1):
+        try:
+            snapshot = project_snapshot(db, user_id, work["id"], True)
+        except DomainError as error:
+            if error.code != "export_draft_overlaps_chapter":
+                raise
+            snapshot = project_snapshot(db, user_id, work["id"], False)
+            notes.append(f"《{work['title']}》的草稿与已入库章节的章节号重复，这部作品没有附草稿。")
+        folder = f"{position:02d}-{export_filename(snapshot['project']['title'], 'zip')[:-len('-export.zip')]}"
+        for name, body in bundle_files(snapshot).items():
+            total += len(body)
+            if total > MAX_EXPORT_BYTES:
+                raise DomainError("export_too_large", 413)
+            files[f"{folder}/{name}"] = body
+        index.append({"folder": folder, "title": work["title"], "status": work["status"], "chapters": len(snapshot["chapters"]),
+                      "has_draft": bool(snapshot["drafts"]), "snapshot_sha256": snapshot["snapshot_sha256"]})
+    files["index.json"] = _json_bytes({"exported_for_day": day, "works": index})
+    files["README.txt"] = (
+        "Story Continuity Copilot 全部作品导出\n\n"
+        f"导出日期（北京时间）：{day}。共 {len(works)} 部作品，不含示例作品；每部作品一个文件夹，里面是和单部导出相同的完整资料包（含已保存的草稿）。\n"
+        "index.json 列出每个文件夹对应的作品。每个文件夹里的 README.txt 说明各文件的内容。\n"
+        + "".join(note + "\n" for note in notes)
+    ).encode("utf-8")
+    content = _zip_bytes(files)
+    if len(content) > MAX_EXPORT_BYTES:
+        raise DomainError("export_too_large", 413)
+    filename = f"story-continuity-全部作品-{day.replace('-', '')}.zip"
+    return Response(content, media_type="application/zip", headers={
+        "Content-Disposition": f"attachment; filename=\"story-export.zip\"; filename*=UTF-8''{quote(filename, safe='')}",
+        "Cache-Control": "no-store, private",
+        "X-Content-Type-Options": "nosniff",
+    })
+
+
 def export_content(snapshot: dict, format: ExportFormat) -> tuple[bytes, str, str]:
     """Render only detached values; ZIP members have fixed, safe names."""
     if format == "txt":
@@ -304,40 +389,8 @@ def export_content(snapshot: dict, format: ExportFormat) -> tuple[bytes, str, st
     elif format == "markdown":
         content, mime, extension = manuscript(snapshot, True), "text/markdown", "md"
     elif format == "bundle":
-        files = {
-            "manuscript.txt": manuscript(snapshot, False),
-            "manuscript.md": manuscript(snapshot, True),
-            "materials.md": materials_markdown(snapshot),
-            "snapshot.json": _json_bytes(snapshot),
-            "README.txt": (
-                "Story Continuity Copilot 作品导出\n\n"
-                "manuscript.txt：当前已保存章节内容，按章节号排列；Markdown 格式转换为可读文字。\n"
-                "manuscript.md：当前已保存章节内容，保留富文本草稿的 Markdown 表达。\n"
-                "未保存完整正文的章节仅附当前来源片段或缺失标记，并明确标注非完整章节。\n"
-                "若勾选草稿，文件末尾附当前已保存、未入库的非空草稿，并单独标明。\n"
-                "materials.md：计划（情节、人物、设定）、人物卡、设定条目和已确认事实的阅读版。\n"
-                "snapshot.json：正文原始字符串、内容格式、章节版本及全部创作资料的精确快照。\n"
-                "snapshot_sha256：删除 exported_at 与 snapshot_sha256 后，以 UTF-8、ensure_ascii=False、"
-                "indent=2、sort_keys=True JSON 加末尾换行计算 SHA-256。\n"
-                "checksums.json：除该文件本身以外，每个压缩包文件的 SHA-256。\n"
-                "本次导出范围保存在 snapshot.json 的 scope；浏览器未保存输入不在快照中。\n"
-                "completeness 说明已入库章节正文的完整程度；chapter.body_origin 区分正文、来源片段与缺失。\n"
-                "chapter.body 保留数据库原值；来源片段保存在 source_fragments，不能当作完整原稿。\n"
-                "正文采用当前章节版本；历史修订保留在应用内。已归档资料在资料包中有明确标记。\n"
-                + (INCOMPLETE_MANUSCRIPT_NOTICE + "\n" if snapshot["completeness"]["status"] == "partial_stored_chapters" else "")
-            ).encode("utf-8"),
-        }
-        if sum(map(len, files.values())) > MAX_EXPORT_BYTES:
-            raise DomainError("export_too_large", 413)
-        files["checksums.json"] = _json_bytes({name: hashlib.sha256(body).hexdigest() for name, body in files.items()})
-        buffer = io.BytesIO()
-        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-            for name, body in files.items():
-                entry = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
-                entry.compress_type = zipfile.ZIP_DEFLATED
-                entry.external_attr = 0o100600 << 16
-                archive.writestr(entry, body)
-        content, mime, extension = buffer.getvalue(), "application/zip", "zip"
+        files = bundle_files(snapshot)
+        content, mime, extension = _zip_bytes(files), "application/zip", "zip"
     else:
         raise DomainError("export_format_invalid", 422)
     if len(content) > MAX_EXPORT_BYTES:

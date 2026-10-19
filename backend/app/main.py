@@ -37,13 +37,15 @@ from . import chapter_checks
 from .docx_import import docx_to_markdown
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
-from . import author_organization
+from . import author_home, author_organization
+from .assistant import AssistantEngine, register_routes as register_assistant_routes
+from .assistant_store import AssistantStore
 
 COOKIE = "scc_local_session"
 MEMORY_INITIALIZATION_FAILURE_PHASES = {"provider_preflight","batch_planning","provider_request","post_response_decode","post_response_budget","post_response_validation","post_aggregation"}
 MEMORY_INITIALIZATION_FIELDS = {"memory_type","subject","predicate","value","chapter_id","source_span_id"}
 MEMORY_REPAIR_CODES = {"top_level_shape_invalid","candidate_collection_invalid","candidate_count_invalid","empty_candidates","candidate_fields_invalid","memory_type_invalid","required_field_type_invalid","required_field_blank","candidate_length_invalid","evidence_unresolvable"}
-MEMORY_NORMALIZATION_KINDS = {"trimmed_string","memory_type_format","extra_fields_removed"}
+MEMORY_NORMALIZATION_KINDS = {"trimmed_string","memory_type_format","extra_fields_removed","id_corrected"}
 
 def safe_repair_events(value:object)->list[dict]:
     if not isinstance(value,list):return []
@@ -90,6 +92,7 @@ class ProfilePatch(Strict):
     base_profile_revision:int=Field(ge=1)
     display_name:str=Field(min_length=1,max_length=60)
     avatar_preset:Literal['continuity_violet','archive_blue','folio_rose','signal_amber']
+    bio:str|None=Field(default=None,max_length=400)
 class RecoveryEmail(Strict): recovery_email:str
 class RecoveryToken(Strict): token:str=Field(min_length=32,max_length=512)
 class PasswordResetRequest(Strict): recovery_email:str
@@ -245,6 +248,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     # Initialize eagerly too: ASGI unit clients do not necessarily enter the
     # lifespan context, while normal servers retain the same idempotent check.
     db.initialize()
+    assistant_store=AssistantStore(db); assistant_store.initialize()
     if mailer is None:
         mailer=SmtpMailer(settings) if settings.public_app_mode else UnavailableMailer()
     stage13=Stage13Service(db,settings,mailer)
@@ -383,6 +387,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     register_project_export_routes(app, db, user)
     register_long_term_routes(app, db, user, csrf, key, ok, operation)
     author_organization.register_routes(app, db, user, csrf, key, ok, operation)
+    author_home.register_routes(app, db, user, csrf, ok, operation, COOKIE)
+    assistant_engine=AssistantEngine(assistant_store,db,guarded_provider,stage13)
+    app.state.assistant=assistant_engine
+    register_assistant_routes(app, db, user, csrf, key, ok, operation, assistant_engine, executor)
     def session_response(request:Request,data:dict,status:int):
         token=data.get('session',{}).pop('_token',None); response=ok(request,data,status)
         if token:
@@ -813,7 +821,8 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         else:
             try: decoded=content.decode('utf-8')
             except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
-        if len(decoded)>limits['import_chars']: raise HTTPException(413,'import_too_large')
+        # "最多 35 万字" is counted as the author counts it: whitespace and blank lines between paragraphs are free.
+        if written_chars(decoded)>limits['import_chars']: raise HTTPException(413,'import_too_large')
         data,status=db.preview_import(actor['id'],file.filename or '',content,key(idempotency_key));return ok(request,data,status)
     @app.post('/api/imports/{import_id}/commit',status_code=201)
     def import_commit(import_id:str,payload:ImportCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):

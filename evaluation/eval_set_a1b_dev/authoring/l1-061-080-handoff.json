@@ -1,0 +1,323 @@
+{
+  "chapter_range": [
+    61,
+    80
+  ],
+  "chapters": [
+    {
+      "chapter": 61,
+      "title": "第六十一章 雨点追到篓边",
+      "han_count": 463,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 62,
+      "title": "第六十二章 先练最不想看的",
+      "han_count": 477,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 63,
+      "title": "第六十三章 不递过去的答案",
+      "han_count": 455,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 64,
+      "title": "第六十四章 纸转过来以后",
+      "han_count": 480,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 65,
+      "title": "第六十五章 指给门边的人看",
+      "han_count": 491,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 66,
+      "title": "第六十六章 还没交出的测量任务",
+      "han_count": 488,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 67,
+      "title": "第六十七章 轮子从两人中间经过",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 68,
+      "title": "第六十八章 路边的那块松石",
+      "han_count": 470,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 69,
+      "title": "第六十九章 烟往端碗的人脸上去",
+      "han_count": 459,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 70,
+      "title": "第七十章 门一开就是灰",
+      "han_count": 464,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 71,
+      "title": "第七十一章 排在名字旁的空白",
+      "han_count": 470,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 72,
+      "title": "第七十二章 确认过的门内空间",
+      "han_count": 481,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 73,
+      "title": "第七十三章 第一锅饭差点凉透",
+      "han_count": 480,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 74,
+      "title": "第七十四章 湿手贴上的木面",
+      "han_count": 458,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 75,
+      "title": "第七十五章 晾着的箱盖收回来",
+      "han_count": 458,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 76,
+      "title": "第七十六章 搬箱人歇下的片刻",
+      "han_count": 452,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 77,
+      "title": "第七十七章 弯路分成几次走",
+      "han_count": 467,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 78,
+      "title": "第七十八章 标签贴到了隔壁",
+      "han_count": 471,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 79,
+      "title": "第七十九章 柜脚下的碎屑",
+      "han_count": 457,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 80,
+      "title": "第八十章 蓝色落在柜底",
+      "han_count": 480,
+      "paragraph_count": 5
+    }
+  ],
+  "new_names": [],
+  "new_places": [],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "蓝封筒",
+        "first_chapter": 80,
+        "note": "既定未解线索，封面仅问号，未拆封，未猜内容来历"
+      }
+    ],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "棱纹测距轮",
+        "chapter": 67,
+        "from": "江穗",
+        "to": "黎弦",
+        "note": "仅本次交接，整章未出现岑望，不回顾第2章初主"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "不能淋雨的纸包",
+        "first_chapter": 61,
+        "status": "61章放背篓夹层，不展开、不写内容"
+      },
+      {
+        "name": "背篓夹层",
+        "first_chapter": 61
+      },
+      {
+        "name": "岔灯坪固定厨房",
+        "first_chapter": 70,
+        "status": "70清理待用，71商议，72正式使用权落定，73首次集体饭"
+      },
+      {
+        "name": "弃置料柜",
+        "first_chapter": 79,
+        "status": "79清理靠外部分未发现线索，80才发现蓝封筒"
+      }
+    ],
+    "ordinary_props": [
+      "补给普通硬物",
+      "盖布",
+      "干布",
+      "练习纸与草纸及考核图",
+      "空白纸",
+      "木料",
+      "通行草图",
+      "椅子",
+      "测量交接纸",
+      "普通木片",
+      "松石",
+      "篓带",
+      "临时遮挡",
+      "饭菜器具",
+      "空桶与污水",
+      "轮值讨论草稿",
+      "空盆",
+      "盛饭容器",
+      "围布",
+      "湿扶手木面",
+      "打磨碎屑",
+      "晾晒旧箱与箱盖及垫布",
+      "费用标签与凭条",
+      "空袋",
+      "料柜门",
+      "清柜碎屑",
+      "普通承托布"
+    ],
+    "ordinary_prop_scope": "既定章纲场景中的日常用品与短时动作；没有新增具名物件、稳定所有权、永久人物属性或待收回的新线索。"
+  },
+  "new_time_points": {
+    "absolute_dates": [],
+    "fixed_durations": [],
+    "relative_markers": [
+      "61雨点至补给送达",
+      "62临考练习到光线变暗",
+      "63局部纠错练习结束",
+      "64考核当天",
+      "65居民图解讨论",
+      "66测量交接准备",
+      "67约定交付及试行",
+      "68一小段丈量至晚些时候",
+      "69饭前烟气调整及饭后收拾",
+      "70待用厨房清扫",
+      "71轮值商议",
+      "72正式使用权确认并安排明日准备",
+      "73第一顿集体饭",
+      "74雨后触感试走",
+      "75收回晾晒旧箱",
+      "76继续搬箱至结束",
+      "77分批试走曲折段",
+      "78费用标签核对",
+      "79清柜至光线不宜深查",
+      "80后续清柜发现封筒"
+    ],
+    "note": "顺序前进，72的明日仅指即将准备的日常工作，无公历日期、跨年或新增固定周期。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 61,
+      "quote": "童沛把不能淋雨的纸包放进背篓夹层，确认没有被旁边的硬边顶住，才继续调整剩下的补给。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 64,
+      "quote": "黎弦通过独立识图考核，已经可以单独解释剖面图。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 67,
+      "quote": "江穗把棱纹测距轮交给黎弦，之后由黎弦保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 72,
+      "quote": "讨论完成后，杜葵取得了岔灯坪固定厨房的正式使用权。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 76,
+      "quote": "连稷唯一的手足是一个哥哥。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 80,
+      "quote": "空料柜里留下一个蓝封筒，封面只有一个问号，封筒没有拆开。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "连稷",
+      "chapter": 76,
+      "quote": "连稷唯一的手足是一个哥哥。",
+      "paired_prior_chapter": 29,
+      "action": "直接叙述，未解释为误记、不同人、其他手足或关系变化"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前60章正文哈希一致。",
+    "61纸包未展开，除指定防雨收纳外没有新增可考内容。",
+    "62和63只为临考局部练习，64才明确通过独立考核；64不总结20章不能独立读图的旧状态。",
+    "67整章不出现初主岑望，只写江穗交付黎弦；68通过丈量行动推进，不重复完整持有链。",
+    "70厨房为待用场地，明确尚待使用安排；72正式权利落定，不回顾14章流动棚位。",
+    "76有意矛盾第二说保留，不增补或解释。",
+    "蓝封筒80首次出现并未拆，不透露内容、作者或来历；79未提前引出封筒。",
+    "本段未写录音动机、炭笔价格或路线折页作者。",
+    "鲍新清扫厨房及清柜均在地面，未上检修桥；南坳架房维修间未解除封闭。",
+    "68说明丈量后仍需后续检查；74和77仅按允许范围试走，未提前开放未验收段。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 452,
+    "han_count_max": 491,
+    "all80_titles_unique": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous60_normalized_terminal_newline_sha256": "8b24826c6342b183e856d33ae348875ee394348dc81fe41b94ac51f96719321b",
+    "previous60_unchanged": true,
+    "prose_generation": "逐章原创；脚本仅核验字数、格式、原句及前段哈希并整理交接记录",
+    "model_or_product_api_calls": 0
+  }
+}

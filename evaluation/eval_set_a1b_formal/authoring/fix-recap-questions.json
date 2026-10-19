@@ -1,0 +1,173 @@
+{
+  "tasks": [
+    {
+      "id": "a1bf-fix-01",
+      "work": "l2",
+      "suite": "fix",
+      "note": "历史首次仪式是否举行的明确反转，距离101章84章。",
+      "draft": "桑翎完整参加过头一回遮光传粉的仪式。桑翎放下手里的笔。",
+      "conflict_sentence": "桑翎完整参加过头一回遮光传粉的仪式。",
+      "category": "event_status",
+      "evidence_chapters": [
+        17
+      ],
+      "fix_idea": "把历史仪式状态改为开始前已取消且未举行，保留其余当前动作。"
+    },
+    {
+      "id": "a1bf-fix-02",
+      "work": "l2",
+      "suite": "fix",
+      "note": "唯一原件不可复原且无复制品，排除把新样本当原件的解释。",
+      "draft": "红脉标本仍是未经破坏的那件原物，完整地摆在桑翎面前。她把旁边的记录移开。",
+      "conflict_sentence": "红脉标本仍是未经破坏的那件原物，完整地摆在桑翎面前。",
+      "category": "object_state",
+      "evidence_chapters": [
+        42
+      ],
+      "fix_idea": "改为记录或残留影像等与已销毁原件相容的对象，或围绕同一物件冲突调整前文而不虚构复制品。"
+    },
+    {
+      "id": "a1bf-fix-03",
+      "work": "l2",
+      "suite": "fix",
+      "note": "固定先天属性，不能解释为后来伤残或恢复。",
+      "draft": "邵璇出生时右手就有五根手指。她示意众人把声音放低。",
+      "conflict_sentence": "邵璇出生时右手就有五根手指。",
+      "category": "attribute",
+      "evidence_chapters": [
+        60
+      ],
+      "fix_idea": "将先天右手指数量改回四根，或对同一先天设定提供一致的前文修改方向。"
+    },
+    {
+      "id": "a1bf-recap-01",
+      "work": "l2",
+      "suite": "recap",
+      "note": "只导入1–50章，记住停点、授粉许可、未解描图及51计划。",
+      "upto_chapter": 50,
+      "draft_opening": "帘前新添了一面椭圆软屏。桑翎走近培养盘，准备听大家提出各自想比较的变化。",
+      "must_mention": [
+        {
+          "id": "r50-end",
+          "kind": "previous_ending",
+          "text": "两组培养盘已分列遮光帘两侧，众人离开，下一轮光照比较尚未开始。",
+          "evidence_chapters": [
+            50
+          ]
+        },
+        {
+          "id": "r50-state",
+          "kind": "character_state",
+          "text": "宁绡目前只有夜间授粉许可，白昼尚未获准。",
+          "evidence_chapters": [
+            15
+          ]
+        },
+        {
+          "id": "r50-open",
+          "kind": "open_thread",
+          "text": "无署名星空描图的作者和用途尚不明。",
+          "evidence_chapters": [
+            47
+          ]
+        },
+        {
+          "id": "r50-plan",
+          "kind": "plan",
+          "text": "下一章要分开两组菌群，比较光照反应。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "resolved_thread",
+          "text": "把根隙三角尘痕仍当作来源未明。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "把桑翎已获得独立确认资格当成截止50章事实。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "帘前新添了一面椭圆软屏。"
+        }
+      ]
+    },
+    {
+      "id": "a1bf-recap-02",
+      "work": "l2",
+      "suite": "recap",
+      "note": "100章停点只到交接完成，下一轮模拟尚未启动。",
+      "upto_chapter": 100,
+      "draft_opening": "舱旁悬着一枚绿色风铃。桑翎等众人站好，打算先谈下一轮观察的分工。",
+      "must_mention": [
+        {
+          "id": "r100-end",
+          "kind": "previous_ending",
+          "text": "首批存活样本完成交接，桑翎按住确认板，众人在未启动的模拟舱外停下。",
+          "evidence_chapters": [
+            100
+          ]
+        },
+        {
+          "id": "r100-state",
+          "kind": "character_state",
+          "text": "桑翎已获独立确认同步观测结果的资格。",
+          "evidence_chapters": [
+            55
+          ]
+        },
+        {
+          "id": "r100-open",
+          "kind": "open_thread",
+          "text": "种子上银点的成因仍未确定。",
+          "evidence_chapters": [
+            79
+          ]
+        },
+        {
+          "id": "r100-plan",
+          "kind": "plan",
+          "text": "下一章计划安排飞行模拟并绘制新气流路径。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "stale_state",
+          "text": "把桑翎只能旁观、不能独立确认当成当前权限。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "把成对电流当作仍未查明来源的线索。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "舱旁悬着一枚绿色风铃。"
+        }
+      ]
+    }
+  ],
+  "review_notes": [
+    {
+      "id": "a1bf-fix-01",
+      "rationale": "17章历史首次仪式根本未举行，草稿由叙述者断言桑翎完整参加过，两者确定相反；冲突句和依据章共享明确人物桑翎，仪式称呼用近义表达避免照抄。"
+    },
+    {
+      "id": "a1bf-fix-02",
+      "rationale": "42章明确原件销毁、不可复原且无复制，草稿锁定未被破坏的原物。红脉标本是明确同一具名物件。"
+    },
+    {
+      "id": "a1bf-fix-03",
+      "rationale": "60章右手天生四指，草稿出生时五指是同一时点同一人物的属性反转。"
+    },
+    {
+      "id": "a1bf-recap-01",
+      "rationale": "50章停点结合15章夜间授粉许可、47章未解描图和51章计划；36章尘痕已收回，55章权限变化不可提前，新增软屏不能当作旧事实。"
+    },
+    {
+      "id": "a1bf-recap-02",
+      "rationale": "100章实际停在未启动模拟舱外，结合55章独立确认资格、79章银点未解与101章计划；83章电流已解释，旧旁观限制与草稿风铃均排除。"
+    }
+  ]
+}

@@ -89,28 +89,6 @@
 .thread-form { display: grid; gap: 14px; margin-bottom: 24px; padding: 20px; border: 2px solid var(--c-rule); background: var(--c-surface); }
 .candidates { display: grid; gap: 8px; margin-bottom: 32px; padding: 20px; border: 2px dashed var(--c-rule); }
 
-/* 问一问 */
-.ask-form { display: flex; border: 2px solid var(--c-rule); background: var(--c-surface); }
-.ask-form input { flex: 1; min-width: 0; min-height: 60px; padding: 0 20px; border: 0; background: transparent; font-size: 18px; }
-.ask-form input:focus { box-shadow: none; }
-.ask-form button { padding: 0 28px; border: 0; background: var(--c-blue); color: var(--c-on-blue); font-size: 16px; font-weight: 700; cursor: pointer; }
-.ask-form button:hover:not(:disabled) { background: var(--c-blue-hover); }
-.ask-form button:disabled { background: var(--c-sunken); color: var(--c-faint); cursor: not-allowed; }
-.ask-form:focus-within { box-shadow: 0 0 0 3px var(--c-blue-mid); }
-.ask-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
-.ask-scope { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-left: auto; font-size: 13px; }
-.answer { max-width: 760px; margin-top: 32px; padding-top: 20px; border-top: 2px solid var(--c-rule); }
-.answer.stale { opacity: .7; }
-.answer-q { font-weight: 700; }
-.answer-text { margin-top: 10px; font-family: var(--font-serif); font-size: 20px; line-height: 1.9; }
-.answer-finding { margin-top: 16px; }
-.answer-finding > p { margin-top: 4px; }
-.answer-source { display: grid; padding: 8px 0; border-top: 1px solid var(--c-line); }
-.answer-source strong { font-size: 12px; }
-.answer-source span { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 14px; }
-.answer-source:hover strong { color: var(--c-blue-text); }
-.answer .small-note { margin-top: 12px; }
-
 @media (max-width: 720px) {
   .fact-list li { grid-template-columns: 52px minmax(0, 1fr); }
   .fact-list li .tag { grid-column: 2; }

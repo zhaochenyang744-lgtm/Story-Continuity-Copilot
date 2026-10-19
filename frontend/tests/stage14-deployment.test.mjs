@@ -55,7 +55,7 @@ test("canonical HTTPS proxy exposes public health while keeping the API same-ori
   const caddy = await deploymentFile("Caddyfile");
   assert.match(compose, /PUBLIC_BASE_URL: https:\/\/\$\{PUBLIC_HOST/);
   assert.match(compose, /BACKEND_ORIGIN: http:\/\/backend:8000/);
-  assert.match(compose, /CONTINUITY_MODEL: deepseek-v4-pro/);
+  assert.match(compose, /CONTINUITY_MODEL: deepseek-flash/);
   assert.match(caddy, /handle \/health/);
   assert.match(caddy, /handle \/readiness/);
   assert.match(caddy, /reverse_proxy frontend:3000/);

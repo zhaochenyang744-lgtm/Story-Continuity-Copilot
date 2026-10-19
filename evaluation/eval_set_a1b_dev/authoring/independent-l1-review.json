@@ -1,0 +1,106 @@
+{
+  "reviewer_not_author": true,
+  "reviewer_role": "independent_review",
+  "status": "completed",
+  "reviewed_chapter_counts": {"l1": 100},
+  "source_sha256": "24681f2160a622110a2401443afffd0cab5d61b4ea0a692378f23c32ef0f8c1b",
+  "tasks_sha256_at_review": "afd10900349e9fad7a6c59ece9a21148f307f98c5f7802708ebafa6a91f458b5",
+  "read_ranges": [
+    {"first": 1, "last": 20, "complete": true, "output_truncated": false},
+    {"first": 21, "last": 40, "complete": true, "output_truncated": false},
+    {"first": 41, "last": 60, "complete": true, "output_truncated": false},
+    {"first": 61, "last": 80, "complete": true, "output_truncated": false},
+    {"first": 81, "last": 100, "complete": true, "output_truncated": false}
+  ],
+  "handoffs_read": ["l1-001-020-handoff.json", "l1-021-040-handoff.json", "l1-041-060-handoff.json", "l1-061-080-handoff.json", "l1-081-100-handoff.json"],
+  "findings": [
+    {
+      "id": "l1-review-01",
+      "severity": "medium",
+      "chapters": [2, 11, 55, 67, 68],
+      "task_id": "a1bd-follow-03",
+      "status": "resolved",
+      "problem": "追问以负责测绘的人定位岑望，但江穗、黎弦也在正文从事绘图或丈量，职能描述不足以唯一定位第二实体；55章金标本身正确。",
+      "recommendation": "由主代理调整追问为她的哥哥与她是怎样的血缘关系，以她承接前问且只需55章；或使用58章验收签字身份定位岑望，同时补足该章依据。",
+      "resolution": "最终 tasks.json 已改为她的哥哥与她是怎样的血缘关系，直接问由前问定位人物的血缘关系，55章提供同母异父及兄妹身份，无第二实体职业描述歧义。"
+    },
+    {
+      "id": "l1-review-02",
+      "severity": "medium",
+      "chapters": [18, 49],
+      "task_id": "a1bd-qa-09",
+      "status": "resolved",
+      "problem": "设定意图是出生地互相冲突，但正文只分别给岔灯坪与南坳架房，没有明确两地点互斥。若读者把架房理解为坪内建筑，两句可能是粗细不同的同一地址。",
+      "recommendation": "保留故意矛盾，不统一两种出生地；由主代理补一个明确排除另一地点的叙述限定并同步设定和自查，确保该对事实不能以地址嵌套消解。",
+      "resolution": "18章经主代理补充授权加入两个既定地点彼此分开、互不包含的明示限定；18/49两条出生地原句逐字保留，现在不能用地址嵌套消解。"
+    }
+  ],
+  "unresolved_unintentional_conflicts": 0,
+  "unresolved_gold_ambiguities": 0,
+  "intentional_conflicts": [
+    {
+      "subject": "祁砚",
+      "chapters": [18, 49],
+      "chapter_gap": 31,
+      "quotes": ["祁砚出生在折岭的岔灯坪。", "祁砚出生在折岭的南坳架房。"],
+      "preserve": true,
+      "review_note": "两句均为叙述者断言，未被误记或迁居解释；18章新增互不包含限定后地址嵌套歧义已闭合，原始两种出生地及矛盾均保留。"
+    },
+    {
+      "subject": "连稷",
+      "chapters": [29, 76],
+      "chapter_gap": 47,
+      "quotes": ["连稷唯一的手足是一个姐姐。", "连稷唯一的手足是一个哥哥。"],
+      "preserve": true,
+      "review_note": "唯一手足两说直接冲突，无新增手足、人物看法或时间变化消解。"
+    },
+    {
+      "subject": "灰瓷纪念牌",
+      "chapters": [42, 91],
+      "chapter_gap": 49,
+      "quotes": ["灰瓷纪念牌正面原刻的字是四个。", "灰瓷纪念牌正面原刻的字是六个。"],
+      "preserve": true,
+      "review_note": "同一块牌和原始刻字数，91章明确没有更换或重刻，必须保留。"
+    }
+  ],
+  "continuity_checks": {
+    "characters_and_aliases": "12名具名人物与4个别名均按设定出现，无新增具名角色或可考亲属关系。55章才明确指定兄妹关系。",
+    "objects": "四件易手物按2/11/67、4/31、6/57、9/82的章序交接；未见交接后的错误持有叙述。一般工具、布、筐、纸、椅等未被误判为新考点。",
+    "states": "六组变化按3/45、7/58、14/72、20/64、26/89、34/96推进。伤腕恢复前未提重物；资格暂停者直到复训结论才上桥；房间解封前的作业在外侧，不构成违规进入。",
+    "threads": "5/38及22/54在60章前收回，36/84稍后收回；47折页作者与80封筒内容至100章均未揭示。",
+    "time_and_plot": "章节顺序推进，50至51次日接续、83至84夜听后明处核查自然。试走、演示与正式开放区分清楚，100章只开放已验收段。",
+    "nonissues": ["人物猜测、误认及随后纠正不是叙述者矛盾。", "53章的厨房活泛指炊事，不等于已取得固定厨房。", "39章居民提出逆向方案立即被结构规则否定，没有真实逆送。", "94至96章从安全外侧修理和限定进入检查，没有提前恢复日常开放。", "凡场景所需的未具名道具、一般动作、天气与无名居民，不作为越界可考设定。"]
+  },
+  "multi_chapter_review": [
+    {"id": "a1bd-qa-04", "chapters": [2, 67], "gap": 65, "single_chapter_full_answer_found": false, "reason": "2章给初主，67章只有中间持有人向末主交付，11章也不知道最后结果；全文未在单章总结首尾持有人。"},
+    {"id": "a1bd-qa-05", "chapters": [7, 58], "gap": 51, "single_chapter_full_answer_found": false, "reason": "早期会议无签字权与新职务及验收权分别写明；58章不回顾早期旁听权限，后章无完整汇总。"},
+    {"id": "a1bd-qa-06", "chapters": [14, 72], "gap": 58, "single_chapter_full_answer_found": false, "reason": "14章给流动棚位，72章给岔灯坪固定厨房权利，后者没有总结早期形态；其他章节也未单章同时给两端。"}
+  ],
+  "not_in_text_review": [
+    {"subject": "第一次试音录音留存动机", "related_chapter": 17, "answer_found": false, "reason": "描写了试音、比较声音和未删除的动作，没有说明专门保留第一次录音的理由；不能将一般试音目的代作留存动机。"},
+    {"subject": "炭笔购价", "related_chapter": 19, "answer_found": false, "reason": "只有使用炭笔，费用讨论未提该笔购买金额或交易。"},
+    {"subject": "路线折页作者", "related_chapter": 47, "answer_found": false, "reason": "始终无署名，居民可能性被明确与事实区分，后文未揭示。"},
+    {"subject": "蓝封筒内容", "related_chapter": 80, "answer_found": false, "reason": "只写可见封面与未开封，后文没有补出内容。"}
+  ],
+  "fix_review": [
+    {"id": "a1bd-fix-01", "evidence_chapter": 16, "gap_from_101": 85, "result": "确定的先天左手数量相反；其余草稿动作无额外矛盾。"},
+    {"id": "a1bd-fix-02", "evidence_chapter": 39, "gap_from_101": 62, "result": "原有装置实际逆送与结构不允许直接相反；不是猜测或提案。"},
+    {"id": "a1bd-fix-03", "evidence_chapter": 55, "gap_from_101": 46, "result": "同母与亲生母亲不同直接相反；摆凳动作无附加矛盾。"}
+  ],
+  "recap_review": "50及100截止章的停点、状态、未收线索和下一章计划均有相应正文或计划支持；禁止旧状态、已解线索、后章和草稿新增事实的金标符合截止范围。",
+  "selection_review": "三处 selection 都是共享草稿中的人物名，问题用指代且不复述姓名；选择仅提供主体，没有包含答案。",
+  "follow_up_review": "六题第一问均有正文出处，追问均不含前问人名或物名，回答需承接前问定位；follow-03 改问她的哥哥与她的血缘关系，原歧义已闭合，六题金标与指定依据相符。",
+  "mechanical_audit": {"chapter_count": 100, "han_count_min": 428, "han_count_max": 523, "han_count_total": 46654, "copy_errors": 0, "all_chapters_have_direct_quoted_dialogue": true, "model_calls": 0, "product_runs": 0},
+  "final_revision_review": {
+    "source": "authoring/dialogue-revision.json",
+    "reviewed_changed_chapters": [7, 9, 11, 12, 14, 18, 20, 26, 31, 39, 45, 47, 49, 55, 57, 67, 76, 82, 89, 93],
+    "reviewed_change_count": 21,
+    "method": "逐处阅读全部before/after原段，再在内存中将最终全文的21处after逆向替换为before；恢复后的全文哈希与此前独立通读100章时保存的哈希完全相同，因此确认除此之外无变化且其余80章逐字不变。没有向正文写入反向替换。",
+    "reconstructed_previous_sha256": "661ffcc38254556de6326dd42789a23a7bb88bf5461322fe9a7e154c70b5ffcc",
+    "all_other_text_identical": true,
+    "semantic_result": "20章的交流只从转述改为直接对话，考点仍是原叙述断言；额外1处为经主代理授权的既有地点互不包含限定。未新增其他永久事实、物件链、人物或时间。全部3对故意矛盾、三远距题分散性、未知项缺环与FIX确定性仍成立。",
+    "copy_reaudit_result": "对最终21道长篇及追问题、第一问、选择片段、共享草稿、回顾草稿按全部指定依据重新审计，连续八字重合错误为0。"
+  },
+  "s1_review_reference": "authoring/independent-s1-review.json；先前已独立通读S1六章并审其六题，本次未重复读取未改的S1正文。",
+  "changes_made": "只新增独立复核记录；正文、金标、任务字段及设定均未修改。"
+}

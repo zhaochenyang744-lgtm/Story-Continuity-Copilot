@@ -1,0 +1,439 @@
+{
+  "set_id": "a1c-dev",
+  "position_convention": "正文去标题，Unicode汉字，一基首字位置；引句在对应章内唯一。",
+  "tasks": [
+    {
+      "id": "a1cd-qa-01",
+      "rationale": "问题依赖选段确定郁照汀；只问接缝触觉编码，前部边界提示不能代替答案。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "标记地板接缝",
+        "question": "给接缝做触觉标记"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第6章 脚下的长短音",
+          "text": "郁照汀用三次短振后的一次长振标记地板接缝，避免选手误认成边界。",
+          "han_position": 2832
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-02",
+      "rationale": "选段确定队长，问试跑失败后的方向及目的，早先尝试不等于最终决定。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "改用逆时针接力",
+        "question": "交棒方向怎么调整"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第12章 逆着亮光",
+          "text": "唐栩珂在试跑失败后改用逆时针接力，让最后一棒避开强光区。",
+          "han_position": 2641
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-03",
+      "rationale": "选段确定腕环；必须同时回答最初与最终保管人。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "潮纹腕环",
+        "question": "这件装备"
+      },
+      "multi_chapter_necessity": "第1章只提供入队保管人，第18章只陈述新交接；全书复核没有发现单章汇总最初和最终两端，须结合相隔17章的两处依据。",
+      "evidence_quotes": [
+        {
+          "chapter": "第1章 遮住的起跑线",
+          "text": "潮纹腕环在入队登记当天交给岑砺弦，此后由他单独保管。",
+          "han_position": 2746
+        },
+        {
+          "chapter": "第18章 接过的不止是重量",
+          "text": "潮纹腕环在复核后的交接中转由郁照汀保管，由她带离器材间。",
+          "han_position": 2763
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-04",
+      "rationale": "描述性称呼指向沙盘，需区分使用器材和负责收存。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "折角沙盘",
+        "question": "带折角、能展开的桌面赛道模型"
+      },
+      "multi_chapter_necessity": "第3章提供最初保管人，第22章提供最终责任人；后者不能同时复述起点。两依据相隔19章。",
+      "evidence_quotes": [
+        {
+          "chapter": "第3章 桌面之外",
+          "text": "折角沙盘由唐栩珂收存，她把箱锁钥匙留在自己的腰包里。",
+          "han_position": 2793
+        },
+        {
+          "chapter": "第22章 不替别人落笔",
+          "text": "折角沙盘在方案会结束后转交辛砚白，由他负责收存和维护。",
+          "han_position": 2746
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-05",
+      "rationale": "问耳部声音器件的保管链，不能把借用或声音测试当成换手。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "鸣隙耳扣",
+        "question": "用来接收声音的耳部器件"
+      },
+      "multi_chapter_necessity": "第2章说明首次测试后的保管人，第26章说明最终保管人；后一章不得再写前一人的初始保管事实。相隔24章。",
+      "evidence_quotes": [
+        {
+          "chapter": "第2章 候补席的声音",
+          "text": "鸣隙耳扣在首轮测试结束后归裴知隼保管，交接簿上只签了他的名字。",
+          "han_position": 2848
+        },
+        {
+          "chapter": "第26章 封袋上的名字",
+          "text": "鸣隙耳扣在决赛检查之后交由唐栩珂保管，她在封袋上签字。",
+          "han_position": 2755
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-06",
+      "rationale": "嵇遥澈在正文中参赛，但首次参加此类比赛的确切年龄在全书均未提供；经验和表现不能推导年龄。独立全书复核确认缺失。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "参赛",
+        "question": "头一回参加这种赛事时究竟几岁"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cd-qa-07",
+      "rationale": "闻人霁的履职行为是相关干扰，不能把当下坚持程序等同于当初选择职业的私人原因。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "裁判工作",
+        "question": "为什么决定靠做裁判谋生"
+      },
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1cd-qa-08",
+      "rationale": "同一徽章固定出厂槽数为六与四，且均排除后加工。两句直述，不能用时间推移解释。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "斜槽",
+        "question": "斜沟"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第7章 人群的窄口",
+          "text": "霜脊徽章出厂时背面就刻着六道斜槽，后来从未重新加工。",
+          "han_position": 2716
+        },
+        {
+          "chapter": "第20章 展台背面",
+          "text": "霜脊徽章出厂时背面只有四道斜槽，后来从未重新加工。",
+          "han_position": 2720
+        }
+      ]
+    },
+    {
+      "id": "a1cd-qa-09",
+      "rationale": "同一奖牌铸造金属为纯银与黄铜，且都排除镀层。问题不指定哪一章优先，正确应报告不一致。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "铸成时",
+        "question": "最初用什么金属做"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第9章 奖牌不替人回答",
+          "text": "棱砂奖牌铸成时用的是纯银，从来没有镀过其他金属。",
+          "han_position": 2733
+        },
+        {
+          "chapter": "第25章 被擦亮的旧物",
+          "text": "棱砂奖牌铸成时用的是黄铜，从来没有镀过其他金属。",
+          "han_position": 2709
+        }
+      ]
+    },
+    {
+      "id": "a1cd-recap-01",
+      "rationale": "截止15章，场内暂停须保留；伤病尚未恢复，声音线索尚未回收，光斑已经解释；16章身份变化属于未来，草稿纸条不属于正文。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第15章 留在平台上",
+          "text": "资格赛在双队同时抵达无光平台时暂停，裁判要求原地等候复核。",
+          "han_position": 2743
+        },
+        {
+          "chapter": "第5章 慢下来的那一棒",
+          "text": "裴知隼右踝受伤后被取消高速训练资格，只能参加低负荷练习。",
+          "han_position": 2713
+        },
+        {
+          "chapter": "第6章 脚下的长短音",
+          "text": "侧墙附近一次落脚会伴随两道踏声，目前还没有查明多出的声音来自哪里。",
+          "han_position": 2639
+        }
+      ]
+    },
+    {
+      "id": "a1cd-recap-02",
+      "rationale": "截止30章，公开赛完成但测试安排未公布；右踝已恢复，不把已解双重踏声列为未解，不引用拱门草稿。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第30章 入口之前",
+          "text": "公开赛结束后队员停在尚未开放的北廊入口，等场馆宣布下一轮测试安排。",
+          "han_position": 2738
+        },
+        {
+          "chapter": "第23章 可以跑但不必抢",
+          "text": "裴知隼通过右踝恢复测试，重新取得高速训练及正式参赛资格。",
+          "han_position": 2749
+        },
+        {
+          "chapter": "第28章 没有编号的亮点",
+          "text": "北廊出现的无编号白点尚未查明来源，队员只能绕开它继续比赛。",
+          "han_position": 2797
+        }
+      ]
+    },
+    {
+      "id": "a1cd-fix-01",
+      "rationale": "草稿由旁白明确认定暂停中摘镜合规；规则恰好说明暂停也不例外。两处共享场馆名，不依赖读者推理。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第4章 暂停也有效",
+          "text": "弧顶赛场禁止选手在正式回合中摘下护目镜，暂停时也不例外。",
+          "han_position": 2753
+        }
+      ]
+    },
+    {
+      "id": "a1cd-fix-02",
+      "rationale": "固定号码四十七与六十二互斥，草稿非对话或记忆。修改号码即可保留人物动作，不涉及两件有意矛盾展物。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第14章 能听懂的证据",
+          "text": "郁照汀的参赛登记号码固定为四十七号，本届比赛不再变更。",
+          "han_position": 2733
+        }
+      ]
+    },
+    {
+      "id": "a1cd-follow-01",
+      "rationale": "先用别名锁定人物，追问省略所有专名；鞋盒与统一记录表之间为显式原因关系，不推断隐瞒意图。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "异常回声",
+        "question": "异常声音"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第10章 盒子里面的声音",
+          "text": "裴知隼把异常回声记在鞋盒内侧，因为队伍还没有统一的记录表。",
+          "han_position": 2732
+        }
+      ],
+      "first_evidence_chapters": [
+        "第2章 候补席的声音"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第2章 候补席的声音",
+          "text": "裴知隼的别名是隼子，大家平时叫惯了",
+          "han_position": 67
+        }
+      ]
+    },
+    {
+      "id": "a1cd-follow-02",
+      "rationale": "第一问确定临时代管员；追问用这位负责人承接，两个答案点是安置区域及放行时点。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "安排在东侧缓冲区",
+        "question": "先安置在哪里"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第24章 留出来的通道",
+          "text": "蒋牧澜将迟到观众安排在东侧缓冲区，等一个回合结束后再带他们入座。",
+          "han_position": 2735
+        }
+      ],
+      "first_evidence_chapters": [
+        "第11章 借出半天"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第11章 借出半天",
+          "text": "蒋牧澜目前只是折跃馆的临时代管员，正式任命尚未公布。",
+          "han_position": 2639
+        }
+      ]
+    }
+  ],
+  "works": [
+    {
+      "key": "race",
+      "characters": [
+        {
+          "name": "岑砺弦",
+          "aliases": [
+            "折线"
+          ]
+        },
+        {
+          "name": "郁照汀",
+          "aliases": [
+            "小汀"
+          ]
+        },
+        {
+          "name": "裴知隼",
+          "aliases": [
+            "隼子"
+          ]
+        },
+        {
+          "name": "唐栩珂",
+          "aliases": []
+        },
+        {
+          "name": "闻人霁",
+          "aliases": []
+        },
+        {
+          "name": "辛砚白",
+          "aliases": []
+        },
+        {
+          "name": "嵇遥澈",
+          "aliases": []
+        },
+        {
+          "name": "蒋牧澜",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "潮纹腕环",
+          "chapter": 18,
+          "quote": "潮纹腕环在复核后的交接中转由郁照汀保管，由她带离器材间。"
+        },
+        {
+          "object": "折角沙盘",
+          "chapter": 22,
+          "quote": "折角沙盘在方案会结束后转交辛砚白，由他负责收存和维护。"
+        },
+        {
+          "object": "鸣隙耳扣",
+          "chapter": 26,
+          "quote": "鸣隙耳扣在决赛检查之后交由唐栩珂保管，她在封袋上签字。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "岑砺弦身份",
+          "before_chapter": 2,
+          "after_chapter": 16,
+          "before_quote": "岑砺弦此时的登记身份是候补选手，还没有教练资格。",
+          "after_quote": "岑砺弦正式退出候补名单转任战术教练，往后的比赛只在场外指导。"
+        },
+        {
+          "subject": "裴知隼训练资格",
+          "before_chapter": 5,
+          "after_chapter": 23,
+          "before_quote": "裴知隼右踝受伤后被取消高速训练资格，只能参加低负荷练习。",
+          "after_quote": "裴知隼通过右踝恢复测试，重新取得高速训练及正式参赛资格。"
+        },
+        {
+          "subject": "辛砚白日志权限",
+          "before_chapter": 8,
+          "after_chapter": 19,
+          "before_quote": "辛砚白当前的日志权限仅限阅览，不能提交申诉附件。",
+          "after_quote": "辛砚白获得申诉附件提交权限，可以亲自上传经过核验的记录。"
+        },
+        {
+          "subject": "蒋牧澜任职",
+          "before_chapter": 11,
+          "after_chapter": 27,
+          "before_quote": "蒋牧澜目前只是折跃馆的临时代管员，正式任命尚未公布。",
+          "after_quote": "蒋牧澜收到正式任命书，从这天起担任折跃馆的场馆负责人。"
+        }
+      ],
+      "threads": [
+        {
+          "title": "投影里的迟到光斑",
+          "planted_chapter": 3,
+          "resolved_chapter": 13,
+          "status": "resolved"
+        },
+        {
+          "title": "侧墙双重踏声",
+          "planted_chapter": 6,
+          "resolved_chapter": 21,
+          "status": "resolved"
+        },
+        {
+          "title": "空签名音轨",
+          "planted_chapter": 17,
+          "status": "open"
+        },
+        {
+          "title": "北廊无编号白点",
+          "planted_chapter": 28,
+          "status": "open"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            7,
+            20
+          ],
+          "quotes": [
+            "霜脊徽章出厂时背面就刻着六道斜槽，后来从未重新加工。",
+            "霜脊徽章出厂时背面只有四道斜槽，后来从未重新加工。"
+          ]
+        },
+        {
+          "chapters": [
+            9,
+            25
+          ],
+          "quotes": [
+            "棱砂奖牌铸成时用的是纯银，从来没有镀过其他金属。",
+            "棱砂奖牌铸成时用的是黄铜，从来没有镀过其他金属。"
+          ]
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer_not_author": true,
+    "status": "completed",
+    "unresolved_unintentional_conflicts": 0,
+    "reviewed_chapter_counts": {
+      "race": 30
+    },
+    "record": "authoring/independent-review.json",
+    "findings": [
+      "独立复核者在正文停笔后重新完整通读30章，截断部分补读。",
+      "两处有意固定属性矛盾单独保留；未发现未解决的无意矛盾。",
+      "已解决复核发现：第15章叙事外章号、第21章重复首次递交、RECAP01计划措辞过强。",
+      "三道multi全书无单章汇总两端；两道not-in-text全书未提供所问事实。"
+    ]
+  }
+}

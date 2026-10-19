@@ -49,25 +49,12 @@
 .pager { display: flex; align-items: center; gap: 16px; }
 .import-confirm { font-size: 17px; }
 
-/* ── 个人中心 / 账号安全 ── */
-.profile-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 32px; padding: 48px 0 28px; border-bottom: 1px solid var(--c-rule); }
-.avatar-xl { width: 112px; height: 112px; border: 2px solid var(--c-rule); }
+/* ── 头像 (the author's page and settings are in author.css) ── */
 .avatar-lg { width: 64px; height: 64px; }
-.profile-head-main { flex: 999 1 320px; }
-.profile-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 56px; margin-top: 48px; }
-.profile-columns .small-note { margin-top: 12px; }
-.profile-form { margin: 20px 0 0; width: 100%; }
 .avatar-picker { display: flex; flex-wrap: wrap; gap: 16px; }
 .avatar-option { display: grid; justify-items: center; gap: 6px; padding: 8px; border: 2px solid transparent; font-size: 13px; cursor: pointer; }
 .avatar-option:has(input:checked) { border-color: var(--c-rule); background: var(--c-surface); }
 .avatar-option:has(input:focus-visible) { outline: 3px solid var(--c-blue); }
-.facts-list { display: grid; margin-top: 8px; }
-.facts-list > div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
-.facts-list dt { color: var(--c-muted); font-family: var(--font-mono); font-size: 12px; letter-spacing: var(--tracking-label); padding-top: 3px; }
-.profile-security { margin-top: 20px; }
-.security-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-bottom: 20px; border-bottom: 1px solid var(--c-rule); }
-.security-status .label { flex-basis: 100%; }
-.security-email { font-size: 28px; font-weight: 900; }
 
 /* ── 登录 ── */
 .auth { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(360px, 520px); min-height: 100vh; }
@@ -113,3 +100,24 @@
   .auth-points { display: none; }
   .auth-main { padding: 32px 24px 48px; }
 }
+
+/* ── 隐私说明: an article, set the way long text is set (one narrow column, rules over the headings) ── */
+.article { width: min(100%, var(--prose-max)); margin: 0 auto; padding: 40px 0 72px; }
+.article-back { margin-bottom: 8px; }
+.article h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.05; letter-spacing: -.03em; }
+.article-date { margin-top: 14px; }
+.article h2 { margin-top: 44px; padding-top: 12px; border-top: 1px solid var(--c-rule); font-size: var(--fs-22); }
+.article p,
+.article li { font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
+.article p { margin-top: 14px; }
+.article ul { display: grid; gap: 10px; margin-top: 14px; }
+.article li { padding-left: 18px; position: relative; }
+.article li::before { content: ""; position: absolute; left: 2px; top: .85em; width: 6px; height: 6px; background: var(--c-ink); }
+.article a { border-bottom: 1px solid currentColor; color: var(--c-blue-text); }
+.article a:hover { color: var(--c-blue-hover); }
+a.link-inline { border-bottom: 1px solid currentColor; color: var(--c-blue-text); }
+
+/* The foot of every page: where the privacy note lives. */
+.site-foot { width: min(calc(100% - 2 * var(--page-gutter)), calc(var(--page-max) - 2 * var(--page-gutter))); margin: 0 auto; padding: var(--s-4) 0 var(--s-6); border-top: 1px solid var(--c-line); color: var(--c-muted); font-size: var(--fs-12); }
+.site-foot a { border-bottom: 1px solid currentColor; }
+.site-foot a:hover { color: var(--c-blue-text); }

@@ -1,0 +1,412 @@
+{
+  "status": "completed",
+  "reviewer_not_author": true,
+  "reviewer_role": "independent_review",
+  "tasks_sha256": "e72ec7a687748e9d5fd280952627ba59212e9503abffeac27d9d71691997f99a",
+  "source_sha256": {
+    "l2": "fefe59487d6b5752b4632a2bcead5b6e3d5113374d51af75abc25f6e40214413",
+    "n": "9bdf60b7317b5b4969f78d78238b2e416d09ab5ea61e1f2a43d5fa3d97f358aa",
+    "s2": "0ac3b938c4e1139af6b2b670630789081a3c9c0e44ba1a47598817d9b42d0eb0"
+  },
+  "reviewed_task_count": 47,
+  "reviewed_chapter_counts": {
+    "l2": 100,
+    "n": 12,
+    "s2": 8
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "chapter": 100,
+      "scope": "handoff_metadata_only",
+      "issue": "末段交接把确认板标为first_chapter:100，但第3章已有确认板；非正文矛盾，也非题目金标错误。",
+      "recommendation": "将该字段改为appearance_chapter:100，或另明确全书首次为3章。",
+      "status": "resolved",
+      "resolution": "主代理将末段交接及设定accepted_handoffs复制项统一改为first_chapter:3、appearance_chapter:100，并添加修订记录；独立复核逐项确认，正文和tasks哈希不变。"
+    }
+  ],
+  "unresolved_findings": 0,
+  "assembly_checks": {
+    "all_47_original_tasks_equal_after_authorized_mapping": true,
+    "all_numeric_references_mapped_to_exact_actual_headings": true,
+    "follow_first_evidence_moved_to_self_review": true,
+    "self_review_quote_count": 64,
+    "self_review_quote_errors": 0,
+    "n_five_tasks_unchanged_from_previously_reviewed_fragment": true,
+    "n_source_unchanged": true,
+    "n_shared_draft_unchanged": true,
+    "s2_twelve_tasks_exactly_equal_safety_authoring": true,
+    "s2_source_unchanged": true,
+    "safety_authoring_hash_unchanged": true,
+    "shared_drafts_equal_final_work_metadata": true,
+    "copy_errors": 0,
+    "source_hashes_rechecked_after_metadata_fix": true,
+    "tasks_hash_rechecked_after_metadata_fix": true,
+    "set_manifest_entries": 4,
+    "set_manifest_all_hashes_match": true
+  },
+  "task_mapping_checks": [
+    {
+      "id": "a1bf-qa-01",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-02",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-03",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-04",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-05",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-06",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-07",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-08",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-09",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-10",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-11",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-12",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-13",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-14",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-15",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-16",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-17",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-18",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-19",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-qa-20",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-recap-01",
+      "work": "l2",
+      "reference_count": 3,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-recap-02",
+      "work": "l2",
+      "reference_count": 3,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-fix-01",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-fix-02",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-fix-03",
+      "work": "l2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-01",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-02",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-03",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-04",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-05",
+      "work": "l2",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-06",
+      "work": "n",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-07",
+      "work": "n",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-08",
+      "work": "n",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-09",
+      "work": "n",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-follow-10",
+      "work": "n",
+      "reference_count": 2,
+      "quote_count": 2,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-01",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-02",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-03",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-04",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-05",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-06",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-07",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-08",
+      "work": "s2",
+      "reference_count": 0,
+      "quote_count": 0,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-09",
+      "work": "s2",
+      "reference_count": 1,
+      "quote_count": 1,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-10",
+      "work": "s2",
+      "reference_count": 0,
+      "quote_count": 0,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-11",
+      "work": "s2",
+      "reference_count": 0,
+      "quote_count": 0,
+      "mapping_and_quotes": "pass"
+    },
+    {
+      "id": "a1bf-safe-12",
+      "work": "s2",
+      "reference_count": 0,
+      "quote_count": 0,
+      "mapping_and_quotes": "pass"
+    }
+  ],
+  "material_sha256": {
+    "story-bible.json": "467fdced7e7dcacbf85e0d98e1591174986cee33172ffe5c1af60279b2d2f968",
+    "shared-drafts.json": "109d095837e9ec1c1d359e6538939c6f8e738ab577aa45c3e383a71d31465cca",
+    "follow-questions.json": "7d2ccbd02f82591be3ffe647f0a48951731a8a28f357cb9de3b0dedf7eb5dd29",
+    "safety-authoring.json": "07281484705c466a1af1b4bbec96bc6f218d2801830d5cc6e73fb9fe5b616669",
+    "long-questions.json": "3f8b981848b28ace766c379ac95df6163680e7fbd4a24ff77a12dd68e4ff8850",
+    "fix-recap-questions.json": "f1b9f517ea42f6dc5d70fa43794aca3e3c4c88d0cfa294a38ce1b480786d15cc",
+    "quote-selections.json": "dd090d5e30c3f3a4cda296e5d9063e5136f07af6b392f172e46d78db61d635f3",
+    "l2-001-020-handoff.json": "64384e52982a5190e48fa53f6d8de350ed28041be17a0f01edb31d71659a072b",
+    "l2-021-040-handoff.json": "97ee0b6259eacd799a5a157513877c5263b864e92ff797c795b47f43ffa7c719",
+    "l2-041-060-handoff.json": "12ed626c6f5c9d9421aa2923dfe8713e82223020625247c2230ab15bb9dda5d9",
+    "l2-061-080-handoff.json": "f17cfe30531e75e74aad3068aa2ac23d96c9b0a514300a9543ffe0296f0e89dd",
+    "l2-081-100-handoff.json": "54674a1fcb5450919c517f4e8f687039ceb5c9ed73692876485b454909872e37"
+  },
+  "semantic_review_records": [
+    "authoring/independent-l2-review.json",
+    "authoring/independent-n-review.json",
+    "authoring/independent-s2-review.json"
+  ],
+  "independent_review_method": "L2本轮100章逐批完整通读，N与S2此前已完整通读，源文件及原始出题片段哈希验证未变。逐题将本轮原始题片段数字引用按其作品真实标题转换后比较完整对象，同时检验第一问出处迁移。47题最终对象一致，64条自查原句逐条在对应章节出现；重新独立审计八字重合。",
+  "checker_scope_review": {
+    "path": "check.py",
+    "local_only": true,
+    "reads_only_this_set": true,
+    "product_imports": false,
+    "network_or_model_calls": false,
+    "diagnostics_content_safe": true,
+    "staged_dev_rejects_formal_directory_before_reading_tasks": true,
+    "full_cli_status": "not_run_pending_primary_merge_of_independent_review",
+    "note": "检查器支持同集离线执行；self-review当前独立块尚pending，主代理合入本轮独立结论后运行最终CLI。本文件不将独立映射核对等同完整检查器PASS或模型质量验收。"
+  },
+  "changes_made": "只写独立复核记录，未修改正文题目金标，未提交推送。",
+  "delivery_boundary": "正式集具体内容仅保存于内部记录；交付仅数字结构检查结论。"
+}

@@ -25,6 +25,8 @@ from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
 from .docx_import import CHINESE_CHAPTER_HEADING, ENGLISH_CHAPTER_HEADING, docx_to_markdown
 from . import long_term_workflow as workflow
 from . import author_organization as organization
+from . import author_home
+from . import assistant_store
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
 
@@ -250,6 +252,7 @@ class V2Database:
             c.executescript(SCHEMA)
             workflow.migrate(c)
             organization.migrate(c)
+            author_home.migrate(c)
             c.execute("CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)")
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(5,?)", (utcnow(),))
             self._migrate_run_provenance(c)
@@ -293,8 +296,9 @@ class V2Database:
     def purge_project(c: sqlite3.Connection, project_id: str) -> None:
         """Remove a project and everything in it, children first (visitor cleanup and the sample-work migration)."""
         existing = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        assistant_store.purge(c, project_id)
         for table in (
-            *organization.TABLES, "v2_issue_marks", "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
+            *organization.TABLES, "v2_writing_days", "v2_issue_marks", "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
             "v2_source_revision_reviews", "v2_chapter_revision_history",
             "v2_foreshadow_candidate_decisions", "v2_foreshadow_candidates", "v2_foreshadow_versions", "v2_foreshadows",
             "v2_character_aliases", "v2_character_alias_state", "v2_memory_candidate_review_events", "v2_tutorial_progress_restarts",
@@ -1934,6 +1938,10 @@ class V2Database:
     def update_character_alias(self,user_id:str,project_id:str,character_id:str,alias_id:str,payload:dict[str,Any],key:str):return self._write_character_alias(user_id,project_id,character_id,payload,key,"update",alias_id)
     def archive_character_alias(self,user_id:str,project_id:str,character_id:str,alias_id:str,payload:dict[str,Any],key:str):return self._write_character_alias(user_id,project_id,character_id,payload,key,"archive",alias_id)
 
+    def _review_aliases(self,c:sqlite3.Connection,project_id:str)->list[dict[str,str]]:
+        """The author's active character aliases as (primary name, alias) pairs, for the review's fact selection."""
+        return [{"primary_name":row["primary_name"],"alias":row["alias"]} for row in self._current_alias_binding(c,project_id)[2]]
+
     def _current_alias_binding(self,c:sqlite3.Connection,project_id:str)->tuple[int,str,list[dict[str,Any]]]:
         project=c.execute("SELECT alias_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
         rows=[dict(row) for row in c.execute("SELECT a.id,a.character_id,ch.name primary_name,a.alias,s.version character_alias_version FROM v2_character_aliases a JOIN v2_characters ch ON ch.id=a.character_id AND ch.project_id=a.project_id LEFT JOIN v2_character_alias_state s ON s.project_id=a.project_id AND s.character_id=a.character_id WHERE a.project_id=? AND a.status='active' ORDER BY a.character_id,a.normalized_alias,a.id",(project_id,)).fetchall()]
@@ -2602,7 +2610,7 @@ class V2Database:
             revision_change=c.execute("SELECT mode FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed'",(project_id,batch["source_revision"])).fetchone()
             if not claims or (not memory and (not revision_change or revision_change["mode"]!="revise")): raise DomainError("insufficient_project_context",422)
             continuity={"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}}
-            if screened:continuity.update(pipeline="screened",sources=self._current_spans(c,project_id),contexts={source["id"]:source["body"] for source in sources})
+            if screened:continuity.update(pipeline="screened",sources=self._current_spans(c,project_id),contexts={source["id"]:source["body"] for source in sources},aliases=self._review_aliases(c,project_id))
             return continuity,{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
 
     def advance_incremental_runs(self,project_id,batch_id,stage):
@@ -2873,7 +2881,7 @@ class V2Database:
     def patch_draft(self, user_id: str, project_id: str, draft_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
             def patch():
-                self._project(c,user_id,project_id,True)
+                project=self._project(c,user_id,project_id,True)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(draft_id,project_id)).fetchone()
                 if not draft: raise DomainError("resource_not_found",404)
                 body=payload["body"]
@@ -2890,10 +2898,12 @@ class V2Database:
                     edit_json=json.dumps(edit,ensure_ascii=False,sort_keys=True)
                 revision,stamp,checksum=draft["revision"]+1,utcnow(),digest(body)
                 title=payload.get("title") or draft["title"]
+                words_before=self._project_word_count(c,project_id)
                 c.execute("UPDATE v2_drafts SET title=?,body=?,revision=?,status='saved',saved_at=?,parent_revision=?,edit_context_json=?,checksum=? WHERE id=?",(title,body,revision,stamp,draft["revision"],edit_json,checksum,draft_id))
                 c.execute("INSERT INTO v2_draft_revisions VALUES(?,?,?,?,?,?,?,?)",(draft_id,revision,title,body,checksum,draft["revision"],edit_json,stamp))
                 c.execute("INSERT INTO v2_draft_content_formats VALUES(?,?,?,?)",(draft_id,revision,body_format,stamp))
                 c.execute("UPDATE v2_projects SET updated_at=? WHERE id=?",(stamp,project_id))
+                author_home.record_writing(c,project,user_id,draft["chapter_number"],self._project_word_count(c,project_id)-words_before,stamp,draft_save=True)
                 output={"id":draft_id,"project_id":project_id,"revision":revision,"saved_at":stamp,"body_checksum":checksum,"body_format":body_format,"status":"saved"}
                 if edit: output.update({"parent_revision":draft["revision"],"edit_context":edit,"lineage_status":"pending_decision_validation"})
                 return output
@@ -3112,7 +3122,7 @@ class V2Database:
                 status,terminal,error=self._normalized_terminal(result);retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven","id_corrected","id_dropped","chapter_id_replaced","kept_as_possible_after_repair"} and item.get("outcome") in {"insufficient_evidence","possible_conflict","corrected","dropped"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3342,7 +3352,7 @@ class V2Database:
                 # with the result. The draft comes after every chapter, so all of them are earlier text.
                 for claim in claims: claim["context"]="draft"
                 return {"run":dict(run),"pipeline":"screened","draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":draft_text,"body_format":body_format},
-                        "claims":claims,"memory":memory,"sources":self._current_spans(c,project_id),"contexts":{"draft":draft_text}}
+                        "claims":claims,"memory":memory,"sources":self._current_spans(c,project_id),"contexts":{"draft":draft_text},"aliases":self._review_aliases(c,project_id)}
             spans=[dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=?",(project_id,)).fetchall()]
             for claim in claims:
                 characters="".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]",claim["text"])); terms={characters[index:index+2] for index in range(max(0,len(characters)-1))}; scored=[]
@@ -3370,7 +3380,7 @@ class V2Database:
                 retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or (run["created_at"] if run["status"]=="queued" else None),stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven","id_corrected","id_dropped","chapter_id_replaced","kept_as_possible_after_repair"} and item.get("outcome") in {"insufficient_evidence","possible_conflict","corrected","dropped"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3770,6 +3780,8 @@ class V2Database:
     def _reset_project_contents(self, c: sqlite3.Connection, project: sqlite3.Row, stamp: str) -> tuple[int, dict[str, Any]]:
         """Delete a project's working state and re-create its starting state; returns (memory version, empty author context)."""
         project_id=project["id"]
+        # The assistant's conversation points at the old drafts and spans; a reset starts it afresh.
+        assistant_store.purge(c, project_id)
         # dependent children first. The set is deliberately project-scoped.
         for table in (*organization.TABLES,"v2_issue_marks","v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
             c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
@@ -4118,6 +4130,7 @@ class V2Database:
                         draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(change["draft_id"],project_id)).fetchone()
                         if not draft or draft["revision"]!=change["draft_revision"] or draft["checksum"]!=change["draft_checksum"]: raise DomainError("source_draft_stale",409)
                     chapters=json.loads(change["chapters_json"]); start=c.execute("SELECT COALESCE(MAX(chapter_number),0) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0]
+                    words_before=self._project_word_count(c,project_id)
                     for ordinal,item in enumerate(chapters,1):
                         chapter_id,span_id=new_id("chapter"),new_id("span"); number=start+ordinal
                         c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)",(chapter_id,project_id,number,item["title"],"",item["body"],change["target_source_revision"]))
@@ -4125,6 +4138,8 @@ class V2Database:
                     c.execute("UPDATE v2_drafts SET status='completed' WHERE project_id=? AND status IN ('draft','saved')",(project_id,))
                     next_draft_id=self._draft(c,project_id,start+len(chapters)+1); stamp=utcnow()
                     c.execute("UPDATE v2_projects SET source_revision=?,updated_at=? WHERE id=?",(change["target_source_revision"],stamp,project_id))
+                    # Completing a draft into chapters is writing; pasted or uploaded chapters are not, so only the former is recorded.
+                    if change["input_method"]=="draft_complete": author_home.record_writing(c,project,user_id,start+1,self._project_word_count(c,project_id)-words_before,stamp,draft_save=False)
                     commit_audit={"target_source_revision":change["target_source_revision"],"next_draft_id":next_draft_id,"idempotency_key_fingerprint":digest(key),"request_fingerprint":digest(payload)}
                     content["audit"]["commit_idempotency_key_fingerprint"]=commit_audit["idempotency_key_fingerprint"]
                     content["audit"]["commit_request_fingerprint"]=commit_audit["request_fingerprint"]

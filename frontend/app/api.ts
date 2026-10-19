@@ -229,6 +229,11 @@ const labels: Record<string, string> = {
   chapter_revision_unchanged: "正文和标题都没变，不用提交。",
   setting_category_name_invalid: "分类名称不能为空，最多 20 个字。",
   export_too_large: "资料包太大，请先单独导出 TXT 或 Markdown 正文。",
+  current_password_incorrect: "旧密码不对，密码没有改。",
+  password_change_rate_limited: "旧密码试得太频繁了，请过 15 分钟再试。",
+  password_change_not_allowed: "访客空间没有密码，注册个人账号后才能设置。",
+  export_not_allowed: "访客空间不能导出全部作品，注册个人账号后可以使用。",
+  export_rate_limited: "导出得太频繁了，请过 10 分钟再试。",
 };
 
 /** The words for a failure of the backend, in the author's terms. */

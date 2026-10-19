@@ -1,76 +1,26 @@
 # Evaluation assets
 
-## Current gates (v1.6.1)
+This directory holds the evaluation programs and sets that are still in use. The evaluation rounds, scripts and result bundles of v1.0–v1.6 (V1–V10 case sets, `current_flash_*`, `model_compare_*`, their validators and runners) were removed in v1.8.0; they remain in Git history.
 
-- **Long-text formal gate** — `evaluation/longform/` (format, validator, scorer, metered runner, pre-registered thresholds in `thresholds.py` and [PLAN.md](longform/PLAN.md)). The first formal run (`lf1-formal` with the short-text set V13) failed on insufficient-evidence recall and maximum cost, and both sets were retired. The second run on the fresh 26-chapter set `lf2-formal` passed every registered threshold: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46. This decides the review prompt `continuity-review-v25g-…` shipped in v1.6.0 and v1.6.1.
-- **Short-draft held-out sets** — V10 passed (prompt v21), V11 failed twice on insufficient-evidence recall, V12 passed (prompt v24c, shipped in v1.5.1/v1.5.2; procedure `ie_fix_v24/PLAN.md`). All are spent.
-- Every formal set is written in a separate session, never read during development, and run once against thresholds registered before it was authored.
+Every formal set is written in a separate session, never read during development, and run once against thresholds registered before it was authored. A set is spent once it has been run. See the [evaluation maintenance policy](../docs/evaluation-maintenance.md).
 
-The sections below are earlier snapshots and keep their original wording.
+## Assistant evaluation (v1.8.0)
 
-## Maintenance entry point (2026-09-26)
+- `assistant_a1/`, `assistant_a1b/`, `assistant_a1c/` — the runner, scorer, judge and pre-registered thresholds (`SPEC.md`, `thresholds.py`) for the built-in assistant. A1 and A1b cover short works; A1c covers real chapter lengths.
+- Sets: `eval_set_a1_*`, `eval_set_a1b_*`, `eval_set_a1c_*`, `eval_set_a1cx_dev`, `eval_set_a1cs_formal`. Run with `python -m evaluation.assistant_a1.run --set <set> --runs <n> --run-id <id>`; `--dry-run` checks the set and the configuration without calling a model.
 
-The evaluation sets are long-term project assets. Follow the [evaluation maintenance policy](../docs/evaluation-maintenance.md) for case intake, independent review, development/comparison/unseen splits, versioning, recurring inventory, and change-triggered regression. This policy documents the current inventory and open preparation work; it does not introduce a new runner, CI job, scheduled task, or live evaluation.
+## Long-text checking
 
-Latest independent delivery: [G02 citation repair and comparison-set preparation](../docs/g02-citation-repair-independent-acceptance.md). G02 product safeguards passed the bounded independent regressions and browser checks. [Current-contract comparison V3](current_contract_compare_v3/HANDOFF.md) is the accepted preparation version for 24 exposed synthetic development cases; it reuses immutable V2 business inputs. Narrative review remains separate from machine structural checks, including one declared category-adjudication case. No whole-set real Provider run has occurred. G02 Flash V4 added six real generation requests and one model preflight; cumulative real calls are 63 generation requests and three model preflights. The later product fixes and comparison revisions were offline, and do not change the six original first-summary citation findings.
+- `longform/` — format, validator, scorer, metered runner and pre-registered thresholds for whole-chapter checking ([PLAN.md](longform/PLAN.md)). Sets: `eval_set_lf1_dev`, `eval_set_lf1_import`, `eval_set_lf1_formal`, `eval_set_lf2_formal`. The first formal run failed on insufficient-evidence recall and maximum cost; the fix passed every registered threshold on the fresh 26-chapter set `lf2-formal` and decided the review prompt shipped in v1.6.0.
+- `tests/test_longform.py` — offline tests of the long-text tooling.
 
-Previous delivery snapshot: [DeepSeek Flash real-provider acceptance](../docs/flash-real-provider-independent-acceptance.md). `current_flash_v1` and `current_flash_v2` retain 57 real generation requests and two model preflights; `current_flash_v3` repairs four synthetic fixtures offline with exact business-request equivalence. Evaluation evidence is accepted with explicit product-quality findings. These are exposed regression cases, not a new unseen set, and the historical V8 Gate remains failed. The versioned runners and original results must not be overwritten or rerun under their existing identities.
+## Chapter-check held-out sets
 
-V1/V2 comparison snapshots and V3 control failures remain historical evidence. The [V2 early first-failure record gap](current_contract_compare_v3/HISTORY_GAP.md) is disclosed and has not been reconstructed. V3 uses new run identities and create-only outputs. Acceptance is recorded in the linked independent report rather than by rewriting a pre-review freeze manifest.
+- `v11_holdout/` — runner and thresholds for the short-draft held-out sets: `python -m evaluation.v11_holdout.run --run-id <id>`.
+- `eval_set_v11_authoring`, `eval_set_v12_authoring` — spent (V11 failed twice on insufficient-evidence recall; V12 passed with prompt v24c). `eval_set_v13_authoring` is kept as it was and is not to be opened for development.
 
-The sections below preserve historical publication and stage snapshots; their references to "current" or "not started" are historical, not the overall project's present status. V1–V8 frozen inputs/results remain immutable. The V8 first-formal runner has fixed inputs and output paths and cannot simply be redirected for a new evaluation. New runs require a separately reviewed entry point and identity; see the policy before preparing one.
+## Results
 
-## Historical evaluation and publication record
+The runners write their reports to `results/`. The recorded runs the documents above refer to (`a1-*` for the assistant, `longform-*` and `prod-longform-*` for long text, `eval-v11-*` and `eval-v12-*` for the short-draft held-out sets) are about 270 MB and are kept in the project's archived repository, not in this one; the SPEC and PLAN files quote the numbers that decided each gate.
 
-This directory contains the code and frozen assets used to validate the local Web Demo. The current published evidence is the V4 product evaluation: 15 original balanced three-class cases across three isolated corpora, plus 6 stability reruns. Its sanitised result bundle and post-run integrity record are retained in `results/`.
-
-The V5 candidate Gate was accepted by the controller and its 24 evaluation-only cases across four corpora were frozen as formal evaluation inputs. `eval-set-v5-manifest.json` has `status=approved_for_formal_run`, but this status approves the immutable input bundle only: its `real_provider_authorization_received=false`, `formal_run_executed=false`, and `provider_calls=0` fields are retained input-freeze snapshot fields, not the later execution record.
-
-The first attempted execution used a Windows User-scope Base URL with the invalid `ttps` scheme. Its unchanged eight files and 24 isolated SQLite workspaces are retained under `results/invalid-runs/v5-invalid-config-url-scheme-typo/` and the matching fixture-workspace archive. `validate_v5_invalid_config_archive` fixes their hashes and confirms that all 30 run records ended `provider_error` before any successful Provider response. This incident is operational evidence only and is excluded from the V5 model-quality Gate.
-
-After explicit user authorisation to correct that configuration incident, the V5 `first_valid_formal` executed the frozen 24 cases plus 6 stability calls. All 30 Provider responses completed successfully and the quality result is retained at the original fixed paths with `status=gate_failed`: macro F1 was 0.9132, conflict recall 1.0, and conflict category accuracy 0.75, while insufficient-evidence recall was 0.75, the designated category-mismatch regression was 2/3, expected-evidence recall was 0.75, and multi-direct full-set recall was 0.5. Cost was unavailable. The eight valid-result files are immutable and separate from the invalid archive; `validate_v5_first_formal_results` is the authoritative post-run validator.
-
-## Stage 10 current status
-
-Stages 8 and 9 are accepted product work. V5, V6, and V7 each retain one immutable first-valid formal result bundle with `gate_failed`; none is rerun or reinterpreted by later prompt changes. V8 `first_valid_formal` ran once from its frozen `deepseek-v4-pro` and `continuity-review-v6` input bundle. All 30 calls completed, but the retained result is `gate_failed` because the designated category regression was 2/3; its eight results and 24 workspaces are immutable. Stage 10 is not passed. Stage 11 has subsequently passed its primary real 100k/300k product workflow Gates without changing these evaluation results; optional Stage 11N and Stage 12 have not started.
-
-The original candidate remains independently valid, while the formal validator fixes the accepted case set, semantic sign-off, corpus inputs, thresholds, and file hashes:
-
-```powershell
-$env:PYTHONPATH = '.;backend'
-& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v5_candidate
-& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v5
-& .venv\Scripts\python.exe -m evaluation.v5_fixture_preflight
-```
-
-The preflight's test Provider calls exercise retrieval and isolation only and are not model-quality evidence. `eval-v5-first-formal-plan.json` remains the unchanged candidate-era `not_run` plan and `eval-set-v5-manifest.json` remains an input-freeze snapshot; neither is rewritten to impersonate execution evidence. The retained `first_valid_formal` result is immutable and must not be overwritten or rerun under the same result identity.
-
-Validate the self-contained published V1–V4 package from the repository root:
-
-```powershell
-$env:PYTHONPATH = '.;backend'
-& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v2
-& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v3
-& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v4
-& .venv\Scripts\python.exe -m evaluation.validate_release_bundle
-```
-
-The V5–V8 result JSON/Markdown and integrity manifests are sanitised retained records, but their 24-workspace database sets remain local runtime evidence and are excluded from Git. With those original retained workspaces present, run the full post-run validators and evaluation suite:
-
-```powershell
-$env:PYTHONPATH = '.;backend'
-& .venv\Scripts\python.exe -m evaluation.validate_v5_invalid_config_archive
-& .venv\Scripts\python.exe -m evaluation.validate_v5_first_formal_results
-& .venv\Scripts\python.exe -m evaluation.scan_v5_retained
-& .venv\Scripts\python.exe -m evaluation.validate_v6_first_formal_results
-& .venv\Scripts\python.exe -m evaluation.scan_v2_fixtures
-& .venv\Scripts\python.exe -m evaluation.validate_v7_first_formal_results
-& .venv\Scripts\python.exe -m evaluation.scan_v7_retained
-& .venv\Scripts\python.exe -m evaluation.validate_v8_first_formal_results
-& .venv\Scripts\python.exe -m evaluation.scan_v8_retained
-& .venv\Scripts\python.exe -m unittest discover -s evaluation\tests -v
-```
-
-The release-bundle validator checks frozen assets and sanitised result files against the published record. It does not claim to reopen SQLite workspaces that are deliberately excluded from Git. A controller workspace that still retains those files can run the additional strict audits `python -m evaluation.validate_v3_post_run_integrity` and `python -m evaluation.validate_v4_post_run_integrity`. No validator performs a new provider evaluation. The retained V4 result is frozen; a new live evaluation would require separate authorisation and a new frozen result. Evaluation code deliberately does not retain provider credentials, Authorization values, prompt bodies, raw provider responses, full source chapters, or chain-of-thought.
-
-Historical V1–V3 result bundles are excluded from the publication bundle; their source assets remain only where the evaluation test suite needs them for audit continuity. The frozen CLI PoC and its protected held-out assets are outside this repository's scope.
+Model runs need `CONTINUITY_*` provider variables and are never part of the unit tests; the offline suite is `python -B -m unittest discover -s evaluation/tests -t .` with `PYTHONPATH=backend;.`.

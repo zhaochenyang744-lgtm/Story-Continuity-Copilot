@@ -1,0 +1,72 @@
+{
+  "work": "n",
+  "range": [1, 6],
+  "status": "awaiting_primary_acceptance",
+  "source_file": "works/n.md",
+  "source_sha256_at_handoff": "00f03672d2276f7478414e86518baf6c3e9e9ddc555d74dad0a43bd17ad0d991",
+  "method": "逐章人工原创；脚本仅用于汉字计数与哈希审计。未读取任何已有题集，未调用模型或产品接口，未运行产品评测。",
+  "format_audit": {"utf8_no_bom": true, "lf_only": true, "all_chapters_have_direct_dialogue": true, "chapter_count": 6, "length_range_han": [674, 687]},
+  "chapters": [
+    {
+      "number": 1, "title": "第一章 船板上的空隙", "han": 674,
+      "new_named_people_and_aliases": ["陆荞", "唐绢", "灯尾"],
+      "new_named_places": ["漪声船"],
+      "new_objects": ["岸边缆绳", "凳子", "箱子", "幕布", "船板"],
+      "new_time_points": ["缆绳尚未解开时的首次排位练习；不设具体时刻或历日"],
+      "exact_exam_sentences": ["唐绢负责给演员发开场提示。", "船上的人喊她灯尾。", "这时的陆荞只是替补，没有正式登台角色。"],
+      "scene_only_details": "无名演员在狭窄通道试走，陆荞学着观察迎面的人；均为临时排练动作。"
+    },
+    {
+      "number": 2, "title": "第二章 没唱完的气息", "han": 675,
+      "new_named_people_and_aliases": ["孟稠", "慢弦", "潘恪"],
+      "new_named_places": [],
+      "new_objects": ["折月响板", "纸页", "衣服包裹", "袖摆上的线"],
+      "new_time_points": ["接续排练的一个片段；水滴声结束后才继续，不指定间隔时长"],
+      "exact_exam_sentences": ["折月响板此时由孟稠保管，他把它合在掌间，并没有递给别人。", "孟稠的声音沙哑，不能唱长句，便只敲出开头的拍子，让演员自己把没接上的部分走完。"],
+      "alias_evidence": "“慢弦，先喝口水。”有人在后面劝。孟稠抬眼答应了一声，陆荞才知道大家给这位伴奏取的称呼。",
+      "scene_only_details": "潘恪为无名演员解开被凳角勾住的衣线；孟稠只敲拍、不恢复嗓音、不转交响板。"
+    },
+    {
+      "number": 3, "title": "第三章 多出来的人形", "han": 675,
+      "new_named_people_and_aliases": [], "new_named_places": [],
+      "new_objects": ["翠缎肩衣"],
+      "new_time_points": ["一次挪凳时看见双影；本章暂缓查明原因"],
+      "exact_exam_sentences": ["翠缎肩衣由潘恪保管。", "帘子下缘有两个人似的影子，一高一矮，挨得很近。"],
+      "scene_only_details": "肩衣仅展开整理并收回，未给任何人；双影为悬念，未提前给出真因。"
+    },
+    {
+      "number": 4, "title": "第四章 果实落在哪里", "han": 678,
+      "new_named_people_and_aliases": ["冉颂"], "new_named_places": [],
+      "new_objects": ["练习用的假果实", "软毡窝"],
+      "new_time_points": ["冉颂首次登台刚满十岁（预定有意矛盾第一说）", "陆荞练习失手后休息片刻；不新增固定事件日期"],
+      "exact_exam_sentences": ["陆荞把练习用的假果实放进软毡窝。", "冉颂第一次登台时刚满十岁。"],
+      "scene_only_details": "陆荞空手练习抛接动作并学着在失手后继续表演；没有获得正式角色，也不增设永久技能。"
+    },
+    {
+      "number": 5, "title": "第五章 留着的一点地方", "han": 677,
+      "new_named_people_and_aliases": [], "new_named_places": [],
+      "new_objects": ["无落款的空座便笺"],
+      "new_time_points": ["本次整理袖口与排练间隙发现便笺；不交代留下时间"],
+      "exact_exam_sentences": ["潘恪替演员整理袖口。", "纸上请人空出一个座位，却没有落款，也没写要给谁坐。"],
+      "scene_only_details": "便笺仍压在原座面下；未指定作者或受益者，未猜出谜底。"
+    },
+    {
+      "number": 6, "title": "第六章 一声之后", "han": 687,
+      "new_named_people_and_aliases": [], "new_named_places": [],
+      "new_objects": ["两盏侧灯", "悬挂衣架", "鼓", "布包"],
+      "new_time_points": ["查明双影后本次排练提前停止；未规定提前的具体时长"],
+      "exact_exam_sentences": ["幕边双重影子是两盏侧灯同时照到悬挂衣架造成的，并不是台后藏了人。", "船上提前结束排练的信号是一次低鼓音。"],
+      "scene_only_details": "灯影通过遮住一盏侧灯观察查明；没有提前执行第七章开场排练计划或任何物件交接。"
+    }
+  ],
+  "intentional_conflicts_preserved": [{"subject": "冉颂", "current_chapter": 4, "current_quote": "冉颂第一次登台时刚满十岁。", "later_chapter": 11, "later_required_quote": "冉颂第一次登台时刚满十二岁。", "do_not_reconcile": true}],
+  "continuity_checkpoint": {
+    "exam_facts_added_outside_bible": [],
+    "named_people_or_places_added_outside_bible": [],
+    "transfers_not_yet_performed": ["折月响板在第七章转给陆荞", "翠缎肩衣在第十章转给唐绢"],
+    "states_not_yet_changed": ["陆荞第八章才获正式角色", "孟稠第九章才恢复嗓音"],
+    "resolved_thread": "双影在第六章收回；不再当作未解谜团",
+    "open_thread": "空座便笺没有落款、不知给谁留座，到第十二章仍须未解",
+    "next_segment_not_started": true
+  }
+}

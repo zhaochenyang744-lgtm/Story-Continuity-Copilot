@@ -1,0 +1,1350 @@
+{
+  "works": [
+    {
+      "key": "w01",
+      "characters": [
+        {
+          "name": "奚照汀",
+          "aliases": [
+            "小汀尺"
+          ]
+        },
+        {
+          "name": "郜祈原",
+          "aliases": [
+            "原隙"
+          ]
+        },
+        {
+          "name": "滕月榛",
+          "aliases": [
+            "榛灯"
+          ]
+        },
+        {
+          "name": "郈闻岐",
+          "aliases": []
+        },
+        {
+          "name": "邴思蔓",
+          "aliases": []
+        },
+        {
+          "name": "蒯砚初",
+          "aliases": []
+        },
+        {
+          "name": "訾令芃",
+          "aliases": []
+        },
+        {
+          "name": "宓澄麦",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "弦片钥",
+          "chapter": 3,
+          "quote": "弦片钥由郜祈原赠给奚照汀，用来开启这间旧值班室里的物理柜锁。"
+        },
+        {
+          "object": "雾纹腕册",
+          "chapter": 17,
+          "quote": "滕月榛将整本雾纹腕册赠给郈闻岐，由他接续记录愿意留下的公共程序问题。"
+        },
+        {
+          "object": "矩脊盒",
+          "chapter": 25,
+          "quote": "宓澄麦把矩脊盒交给邴思蔓长期保管，用来放获本人许可托存的纸质回执。"
+        }
+      ],
+      "states": [
+        {
+          "before_chapter": 2,
+          "after_chapter": 14,
+          "before_quote": "奚照汀的维护证已被暂停，不能独立签维修单。",
+          "after_quote": "奚照汀的维护资格正式恢复，重新获得独立签维修单的权限。"
+        },
+        {
+          "before_chapter": 4,
+          "after_chapter": 23,
+          "before_quote": "邴思蔓拒绝公开作证，并以书面申请撤回了先前的报名。",
+          "after_quote": "邴思蔓正式递交了公开作证的同意书，只授权披露列明的必要片段。"
+        },
+        {
+          "before_chapter": 7,
+          "after_chapter": 18,
+          "before_quote": "郜祈原仍负责夜间排班，临时缺员的联络和最终排定都在他的职责之内。",
+          "after_quote": "郜祈原正式辞去排班职务，交还了权限牌，不再进行后台操作。"
+        },
+        {
+          "before_chapter": 11,
+          "after_chapter": 27,
+          "before_quote": "滕月榛居住的临时房尚未退租，她仍按约支付这间房的租金。",
+          "after_quote": "滕月榛交还临时房的钥匙，办完退租后搬到自己的姐姐家。"
+        }
+      ],
+      "threads": [
+        {
+          "planted_chapter": 1,
+          "resolved_chapter": 10,
+          "status": "resolved",
+          "rationale": "门禁第二声经设备日志确认只是电池维护，与借时批准无关。"
+        },
+        {
+          "planted_chapter": 8,
+          "status": "open",
+          "rationale": "未署名赠言只展示文字，不指定作者，不将赠物人当书写者。"
+        },
+        {
+          "planted_chapter": 13,
+          "resolved_chapter": 22,
+          "status": "resolved",
+          "rationale": "手写斜线确认为换班人工检核，个别授权范围错误另行处理。"
+        },
+        {
+          "planted_chapter": 16,
+          "status": "open",
+          "rationale": "空白券原初私人起因不提供；工作中其他回执不等于该空券。"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            5,
+            20
+          ],
+          "quotes": [
+            "郈闻岐第一次进入弧昼库任职时刚满二十四岁。",
+            "郈闻岐第一次进入弧昼库任职时刚满二十九岁。"
+          ],
+          "rationale": "同一首次任职年龄，不引入误记、传闻、再入职解释。"
+        },
+        {
+          "chapters": [
+            12,
+            29
+          ],
+          "quotes": [
+            "折光井竣工当天只开放了四个出入口。",
+            "折光井竣工当天开放的出入口共有七个。"
+          ],
+          "rationale": "同一竣工初开事件的数量相互冲突，不用后期维修或扩建解释。"
+        }
+      ]
+    },
+    {
+      "key": "w02",
+      "characters": [
+        {
+          "name": "禚南絮",
+          "aliases": [
+            "絮车"
+          ]
+        },
+        {
+          "name": "鄢述棠",
+          "aliases": [
+            "棠扳"
+          ]
+        },
+        {
+          "name": "郗绛宁",
+          "aliases": [
+            "宁格"
+          ]
+        },
+        {
+          "name": "晏驰芥",
+          "aliases": []
+        },
+        {
+          "name": "仉知萤",
+          "aliases": []
+        },
+        {
+          "name": "闾既柏",
+          "aliases": []
+        },
+        {
+          "name": "隗疏檀",
+          "aliases": []
+        },
+        {
+          "name": "宰颂弥",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "翅格夹",
+          "chapter": 4,
+          "quote": "鄢述棠把翅格夹赠给仉知萤，翅格夹从此由仉知萤持有。"
+        },
+        {
+          "object": "棕棱袋",
+          "chapter": 18,
+          "quote": "郗绛宁把棕棱袋赠给禚南絮，棕棱袋从此由禚南絮保管和使用。"
+        },
+        {
+          "object": "砂纹牌",
+          "chapter": 28,
+          "quote": "晏驰芥把砂纹牌交给闾既柏，砂纹牌此后由闾既柏持有，供他保管柜内待归还的零碎。"
+        }
+      ],
+      "states": [
+        {
+          "before_chapter": 1,
+          "after_chapter": 16,
+          "before_quote": "仉知萤只持临时排班条，没有正式工号。",
+          "after_quote": "仉知萤与市内另一家中心签下长期劳动合同，她的新正式工号在那家中心生效。"
+        },
+        {
+          "before_chapter": 3,
+          "after_chapter": 24,
+          "before_quote": "鄢述棠还住在萤轴分拣中心提供的宿舍。",
+          "after_quote": "鄢述棠交还了宿舍床位，搬到了母亲的住处。"
+        },
+        {
+          "before_chapter": 6,
+          "after_chapter": 19,
+          "before_quote": "郗绛宁仍承担萤轴分拣中心的夜班统计，夜班统计表由郗绛宁编制。",
+          "after_quote": "郗绛宁调到白班交接组，不再编制夜班统计表。"
+        },
+        {
+          "before_chapter": 12,
+          "after_chapter": 27,
+          "before_quote": "晏驰芥经营的食堂仍照常供应夜餐，并没有停止营业。",
+          "after_quote": "晏驰芥结清了萤轴分拣中心食堂的承包事项，食堂停止营业，不再供应饭菜。"
+        }
+      ],
+      "threads": [
+        {
+          "planted_chapter": 2,
+          "resolved_chapter": 8,
+          "status": "resolved",
+          "rationale": "轻响是空车轮过地面接缝，不是藏件或输送线倒转。"
+        },
+        {
+          "planted_chapter": 5,
+          "status": "open",
+          "rationale": "无署名手画小花的作者不揭示。"
+        },
+        {
+          "planted_chapter": 11,
+          "resolved_chapter": 21,
+          "status": "resolved",
+          "rationale": "两个原始纸袋是夜白两批独立编号，重号不构成丢件。"
+        },
+        {
+          "planted_chapter": 17,
+          "status": "open",
+          "rationale": "工作袋中单页便笺的私人起因不交代，不与桌面回收纸混同。"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            9,
+            26
+          ],
+          "quotes": [
+            "晏驰芥第一次承包萤轴分拣中心食堂时，合同期限是六年。",
+            "晏驰芥第一次承包萤轴分拣中心食堂时，合同期限是九年。"
+          ],
+          "rationale": "首次合同同一事件，既不是续约也不是草案与终稿差异。"
+        },
+        {
+          "chapters": [
+            13,
+            30
+          ],
+          "quotes": [
+            "榷桥首次通车当天，只允许两条车道通行。",
+            "榷桥首次通车当天，允许通行的车道一共有五条。"
+          ],
+          "rationale": "同一首次通车日，两条和五条不以扩建或不同时段化解。"
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer_not_author": true,
+    "status": "completed",
+    "reviewed_chapter_counts": {
+      "w01": 30,
+      "w02": 30
+    },
+    "reviewed_task_count": 30,
+    "findings": [],
+    "chapter_checks": [
+      {
+        "work": "w01",
+        "chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "multiple scenes dialogue and transitions present",
+        "state": "Maintenance suspended in chapter 2 due procurement review; physical time continues normally. Chapter 3 glove retrieval completed and physical cabinet key gifted. Prior sister sealing was signed by sister, application by protagonist. Broken stool tied and inverted. Chapter 4 written testimony withdrawal distinct from notice assistance. Chapter 5 first intentional age 24 preserved; hearing venue viewed only, door temporarily managed, no booked date. Chapter 6 receipt notch reprint only, circle queue only, authorization separate; letters now itemized."
+      },
+      {
+        "work": "w01",
+        "chapters": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "distinct work-school-repair-home scenes with dialogue; thematic repetition monitored but no individual length padding defect established",
+        "state": "Chapter 7 third alias introduced, letter received not hearing scheduled; night scheduling still belongs to employee. Chapter 8 unsigned undated wristbook inscription, booklet retained by courier, loose blank slip gifted only. Chapter 9 repairer born without left hand, no prosthesis; father past aid no current status asserted. Chapter 10 second beep maintenance battery, resolved; no business authorization exposed. Chapter 11 rent paid, room not surrendered; no sister relation to protagonist. Chapter 12 historical four entrances intentional; escalator handled by responsible staff, only observation by protagonist; procurement review next day, individual interviews not hearing date."
+      },
+      {
+        "work": "w01",
+        "chapters": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "procurement hearing-preparation interrupted rehearsal refusal custody delivery-income conflict and resignation scenes progress with consequences",
+        "state": "Procurement rectification then restoration and independent signing chapter 14. Fixed evening work causes late rehearsal arrival, opening relinquished; permission only small seated rehearsal, early transit clearance anticipated. Chapter 15 unsigned statements sealed inside staffed nonpublic bench zone, consent and withdrawals preserved; next-day confirmation happens chapter 16. Undated private blank voucher no motive or conjectured source. Courier lost fixed route chapter 17, complaint unresolved. Whole wristbook including inscribed cover gifted to recorder only chapter 17, personal pages permission handled. Scheduler chapter 18 finishes resignation and account/permission return at evening, no job secured; requests for unauthorized access denied."
+      },
+      {
+        "work": "w01",
+        "chapters": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "family privacy conflict, receipt application narrowing, disputed video evidence, limited authorization correction and compensation tradeoffs have separate actions and consequences",
+        "state": "Chapter 19 mother-son relationship explicitly stated; sister affirms own signature and dislikes pressured old application, no forced reversal. Chapter 20 second intentional age 29 preserved, hearing only enters review not scheduled. Chapter 21 public index identifiers only vs authorized internal signatures; sister wants own procedural query before retrieval. Chapter 22 handwriting shift-check resolved, actual one-person period-vs-day mismatch not expanded to all residents. Chapter 23 limited public testimony consent, no automatic memory restoration; daughter details excluded. Chapter 24 delivery lateness complaint corrected but old fixed route not regained; compensation negotiation independent of common procedure; date still awaiting final confirmation."
+      },
+      {
+        "work": "w01",
+        "chapters": [
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "custodian household objection, formal hearing, moving and sibling cost conflict, work-shift swap and individual execution create changed outcomes; repeated consent theme supported by distinct stakes",
+        "state": "Chapter 25 next-afternoon hearing finally scheduled, venue door repaired by responsible personnel. Personal receipt box handed audit clerk to driver with no institutional custody powers, daughter excluded. Chapter 26 formal hearing next day; courier attends only latter portion while earning. Chapter 27 courier surrenders old tenancy key and moves to own unnamed sister, household duties renegotiated; fixed route still absent. Chapter 28 protagonist authorized shift swap includes future early shift, sister declines accompaniment. Chapter 29 seven historical entrances intentional second version, separate processing not mass defaults; scheduler trial appointment no re-employment or backend access. Chapter 30 day34 subjectively recalls old day without reversing physical time; sister keeps own deferral; protagonist tomorrow early shift; last new numbered work receipt distinct from private blank voucher, next-day private meeting. Anonymous inscription writer and blank-voucher private motive remain absent."
+      },
+      {
+        "work": "w02",
+        "chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "closure payroll safety and household scenes contain dialogue and transitions; protagonist authority challenged with consequences",
+        "state": "Closure decision final, no rescue target. Temp worker holds temporary scheduling strip only, no formal number. All three aliases introduced by chapter3; tool-finder origin specific. Night statistician remains night post despite white-shift records. Protagonist public backup key returned chapter4, pad ownership verified and item taken by owner, wrench recovered and foodhall hook repaired. Route clamp gifted mechanic to temp worker in chapter4; only route sheets exchanged thereafter. Anonymous handdrawn flower on old seal, bag bound to original return parcel with incomplete address, no author candidate. Chapter2 extra sound unresolved. Protagonist work intention still considering, sibling dynamic not yet fully narrated."
+      },
+      {
+        "work": "w02",
+        "chapters": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "packing accident, resource release, diagnostic false lead, contractor boundary, shopping and questioned records vary scene purpose; occasional instruction-like narration remains embedded in scenes",
+        "state": "Chapter7 physical gap in old seal factory feature, real cut comparison separate, clear narration and protagonist name; original transparent bag unopened and returned. Chapter8 sound resolved empty cart wheel at floor seam; barrier removed, seam persists; outside job invitation neither accepted nor visited. Chapter9 initial canteen contract six years first intentional version; kitchen supply continues. Chapter10 right below-knee prosthesis explicit, mealbox personally bought, night transport ordinary remaining run not final run. Chapter11 equal route numbers in two original bags unresolved, protagonist accusation not withdrawn yet; original records formally left at archive and only query receipt retained; brother no longer fills her procedures. Chapter12 broadcast removed without improvised replacement, notices physical; night canteen still supplies normally."
+      },
+      {
+        "work": "w02",
+        "chapters": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "offsite delivery, retrieved sweater, sibling offered loan refusal, inconclusive settlement meeting, independent job conditions and rejected cohabitation change concrete plans",
+        "state": "Chapter13 ordinary urban delivery not job visit; two historical bridge lanes first intentional version. Chapter14 same-parent older sister younger brother explicit, separate surnames preserved; sweater back with sister, no loan transferred, brother housing only viewed. Chapter15 no common compensation number, temp destination form under lunchbox for next-day self-fill. Chapter16 morning old shift completed then new-center long contract and new-center formal ID effective; later visits only to collect belongings, clamp remains hers. Chapter17 mediator cannot set compensation, blank note in workbag motive absent; old protagonist receipt-signature meaning disputed, two overtime segments one recorded one still pending. Chapter18 personal bag gifted statistician to protagonist and carried to own rental; rental renewed not merged with brother, no relocation promise."
+      },
+      {
+        "work": "w02",
+        "chapters": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "actual shift reallocation, family video call, supermarket disagreement, public correction costing witness support, failed claimant visit, lost work prospect and moving household conflict advance plot",
+        "state": "Chapter19 day handover transfer effective only through shutdown, night statistics handed off not privately retained; mother call and cooking complete. Chapter20 sister rental retained, brother rejects viewed room and stays prior place, no cohabitation/loan. Chapter21 duplicate numbers resolved two batches each numbering from start with no lost parcels; public apology heard by originally exposed colleagues, overtime/signature dispute explicitly separate and still pending. Chapter22 final returns verify sender only no private-content opening, failed claimant path and designated future custodian documented, old flower seal stays original location/bag. Chapter23 driver last outbound regular run, only completion possible afterward; no new work promise after refusing personal publicity. Chapter24 mechanic bed/key surrendered, moved mother home with noise/space terms, can return work only; protagonist still no job invitation accepted."
+      },
+      {
+        "work": "w02",
+        "chapters": [
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "complete_untruncated_reads": true,
+        "continuity": "no unintentional conflict found",
+        "scene_review": "separate own claims, unsuccessful job prospect, contractor household storage and workers futures, closed kitchen conflict, personal custody return, ordinary final-work error and unresolved-worker confrontation support serial chapters without a rescue climax",
+        "state": "Chapter25 old signature only receipt, overtime original records divide waiting/operation not all paid; protagonist first actual commercial backroom job inquiry but no hire. Chapter26 intentional nine-year initial contract, no new canteen/positions promised, wife only agrees small shelf. Chapter27 canteen closed and contractor settled, public keys returned but personal token retained for next chapter. Chapter28 token gifted contractor to younger brother, private cabinet excludes formal return parcels, temp worker visitor not shift worker. Chapter29 last regular sorting completed; formal old seal parcel moves original bag/records to designated custodian unopened/no address invented; remaining private goods returned, token stays brother. Chapter30 planned shutdown, personal settlements remain followups; broadcast absent, driver no new run, temp absent as scheduled, future interview no hire; five historical bridge lanes intentional. Final dinner is next-week appointment not already happened. Flower author and original private blank-note reason remain absent."
+      }
+    ],
+    "reviewed_source_sha256": {
+      "w01": "f40520ca0a9185a2b04e208df2fa26a16fecac03800a61fc132239f7c3701f13",
+      "w02": "8aa856872ed45a4b7877a05e73b8764aaa923ad5e46c4f2a0eb12c5c1f74c92a"
+    },
+    "unresolved_unintentional_conflicts": 0,
+    "reviewed_tasks_sha256": "8adc0cbdc5839f419de15340fe09726ee79252b4637e0f679582cacda6b940d9",
+    "review_method": {
+      "full_chapter_reading": true,
+      "untruncated_chapter_batches": 30,
+      "authors_stopped_before_reading": true,
+      "prose_or_gold_written_by_reviewer": false,
+      "source_edits": 0,
+      "task_edits": 0,
+      "model_api_calls": 0,
+      "product_runs": 0,
+      "evaluation_runs": 0
+    },
+    "semantic_check_counts": {
+      "chapters_read": 60,
+      "shared_drafts_read": 2,
+      "tasks_reviewed": 30,
+      "answerable_single": 4,
+      "answerable_multi": 6,
+      "not_in_text": 4,
+      "conflicting": 4,
+      "recap": 4,
+      "fix": 4,
+      "follow_up": 4,
+      "follow_up_first_questions": 4,
+      "intentional_conflict_pairs_preserved": 4,
+      "multi_single_chapter_shortcuts_found": 0,
+      "unknown_answers_or_candidate_hints_found": 0,
+      "unsupported_gold_points_found": 0,
+      "fix_additional_conflicts_found": 0,
+      "recap_cutoff_errors_found": 0,
+      "selection_referent_errors_found": 0,
+      "serial_chapter_scene_failures_found": 0
+    },
+    "task_checks": [
+      {
+        "id": "a1c3f-w01-q01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false
+      },
+      {
+        "id": "a1c3f-w01-q02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false
+      },
+      {
+        "id": "a1c3f-w01-q03",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true,
+        "selection_needed_to_resolve_referent": true,
+        "selection_contains_no_answer": true
+      },
+      {
+        "id": "a1c3f-w01-q04",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true,
+        "selection_needed_to_resolve_referent": true,
+        "selection_contains_no_answer": true
+      },
+      {
+        "id": "a1c3f-w01-q05",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true
+      },
+      {
+        "id": "a1c3f-w01-q06",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "full_work_answer_absent": true,
+        "answer_candidate_hints": false,
+        "question_referent_exists": true
+      },
+      {
+        "id": "a1c3f-w01-q07",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "full_work_answer_absent": true,
+        "answer_candidate_hints": false,
+        "question_referent_exists": true
+      },
+      {
+        "id": "a1c3f-w01-q08",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "both_intentional_versions_preserved": true,
+        "same_historical_event": true
+      },
+      {
+        "id": "a1c3f-w01-q09",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "both_intentional_versions_preserved": true,
+        "same_historical_event": true
+      },
+      {
+        "id": "a1c3f-w01-r15",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "cutoff_correct": true,
+        "previous_ending_deep": true,
+        "plan_not_presented_as_completed": true,
+        "draft_only_excluded": true
+      },
+      {
+        "id": "a1c3f-w01-r30",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "cutoff_correct": true,
+        "previous_ending_deep": true,
+        "plan_not_presented_as_completed": true,
+        "draft_only_excluded": true
+      },
+      {
+        "id": "a1c3f-w01-x01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "narrator_asserts_named_direct_fact": true,
+        "determinate_conflict": true,
+        "intentional_conflict_entities_excluded": true,
+        "additional_conflicts": false
+      },
+      {
+        "id": "a1c3f-w01-x02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "narrator_asserts_named_direct_fact": true,
+        "determinate_conflict": true,
+        "intentional_conflict_entities_excluded": true,
+        "additional_conflicts": false
+      },
+      {
+        "id": "a1c3f-w01-f01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "first_answer_supported": true,
+        "pronoun_referent_unique": true,
+        "followup_evidence_supported": true
+      },
+      {
+        "id": "a1c3f-w01-f02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "first_answer_supported": true,
+        "pronoun_referent_unique": true,
+        "followup_evidence_supported": true
+      },
+      {
+        "id": "a1c3f-w02-q01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false
+      },
+      {
+        "id": "a1c3f-w02-q02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false
+      },
+      {
+        "id": "a1c3f-w02-q03",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true,
+        "selection_needed_to_resolve_referent": true,
+        "selection_contains_no_answer": true
+      },
+      {
+        "id": "a1c3f-w02-q04",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true,
+        "selection_needed_to_resolve_referent": true,
+        "selection_contains_no_answer": true
+      },
+      {
+        "id": "a1c3f-w02-q05",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "single_chapter_completion": false,
+        "later_restatement_shortcut": false,
+        "evidence_split_necessary": true
+      },
+      {
+        "id": "a1c3f-w02-q06",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "full_work_answer_absent": true,
+        "answer_candidate_hints": false,
+        "question_referent_exists": true
+      },
+      {
+        "id": "a1c3f-w02-q07",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "full_work_answer_absent": true,
+        "answer_candidate_hints": false,
+        "question_referent_exists": true
+      },
+      {
+        "id": "a1c3f-w02-q08",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "both_intentional_versions_preserved": true,
+        "same_historical_event": true
+      },
+      {
+        "id": "a1c3f-w02-q09",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "both_intentional_versions_preserved": true,
+        "same_historical_event": true
+      },
+      {
+        "id": "a1c3f-w02-r15",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "cutoff_correct": true,
+        "previous_ending_deep": true,
+        "plan_not_presented_as_completed": true,
+        "draft_only_excluded": true
+      },
+      {
+        "id": "a1c3f-w02-r30",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "cutoff_correct": true,
+        "previous_ending_deep": true,
+        "plan_not_presented_as_completed": true,
+        "draft_only_excluded": true
+      },
+      {
+        "id": "a1c3f-w02-x01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "narrator_asserts_named_direct_fact": true,
+        "determinate_conflict": true,
+        "intentional_conflict_entities_excluded": true,
+        "additional_conflicts": false
+      },
+      {
+        "id": "a1c3f-w02-x02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "narrator_asserts_named_direct_fact": true,
+        "determinate_conflict": true,
+        "intentional_conflict_entities_excluded": true,
+        "additional_conflicts": false
+      },
+      {
+        "id": "a1c3f-w02-f01",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "first_answer_supported": true,
+        "pronoun_referent_unique": true,
+        "followup_evidence_supported": true
+      },
+      {
+        "id": "a1c3f-w02-f02",
+        "status": "reviewed",
+        "gold_supported": true,
+        "extra_ambiguity_found": false,
+        "first_answer_supported": true,
+        "pronoun_referent_unique": true,
+        "followup_evidence_supported": true
+      }
+    ],
+    "prose_review": {
+      "multiple_natural_scenes_dialogue_transitions_per_chapter": true,
+      "unintentional_continuity_conflicts_found": 0,
+      "intentional_pairs_excluded_from_defect_count": 4,
+      "assessed_full_prose_not_only_ledgers": true,
+      "thematic_recurrence_reviewed_in_context": true,
+      "programmatic_pass_not_used_as_semantic_proof": true
+    }
+  },
+  "authoring_method": "Lead-authored complete bibles; manually written original chapter prose; staged continuity handoffs; lead-authored literal questions and answers. Programs only serialize supplied literals and audit counts, overlaps, positions, bytes and hashes.",
+  "review_scope": [
+    "all_chapters",
+    "all_tasks",
+    "multi_chapter_necessity",
+    "not_in_text_absence",
+    "narrated_fix_conflicts",
+    "recap_cutoffs",
+    "paraphrase_and_copy",
+    "source_and_task_hash_binding"
+  ],
+  "set_id": "a1c3-formal",
+  "tasks": [
+    {
+      "rationale": "正文明确交代缺口含义，附近队列圆点和纸色为不同信息。",
+      "paraphrase": {
+        "source": "补打及同意借出的区别",
+        "question": "改问边角缺损所能支持的判断"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第六章 纸上的缺口",
+          "text": "菱页券右下的缺口只表示该回执曾经补打，并不表示本人同意借出。",
+          "han_position": 2586
+        }
+      ],
+      "id": "a1c3f-w01-q01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "公共索引的内容边界独立于内部审计。",
+      "paraphrase": {
+        "source": "公开索引保留申请编号且不收录体验",
+        "question": "用来访者检索及直接观看的语言提问"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第二十一章 看见自己的人",
+          "text": "公开索引只保留申请编号，不收录体验内容。",
+          "han_position": 2584
+        }
+      ],
+      "id": "a1c3f-w01-q02",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "选区确定她是奚照汀。早期具体计费身份与后期签单权限是两个独立事实，恢复资格本身不蕴含先前按哪档结费。",
+      "paraphrase": {
+        "source": "辅助日费与恢复独立签维修单",
+        "question": "改问收入档位及末段可否自行签认"
+      },
+      "multi_chapter_necessity": "第2章提供辅助档日费，第14章只提供恢复权限；不能凭单个后期状态推得先前的具体结费档。需全书排查后期是否重述两点。",
+      "evidence_quotes": [
+        {
+          "chapter": "第二章 空着的一栏",
+          "text": "可以跟人做辅助，日费照辅助结。",
+          "han_position": 378
+        },
+        {
+          "chapter": "第十四章 重新落笔",
+          "text": "奚照汀的维护资格正式恢复，重新获得独立签维修单的权限。",
+          "han_position": 2508
+        }
+      ],
+      "id": "a1c3f-w01-q03",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "选区锁定作证者。题目要求前期正式撤回的方式及后期许可，不能只答态度变化。",
+      "paraphrase": {
+        "source": "书面申请撤回报名、递交限定同意书",
+        "question": "改问两阶段各自的正式动作"
+      },
+      "multi_chapter_necessity": "第4章的书面撤回与第23章限定同意各供一部分。后来递交同意不能证明早先曾书面撤回，需两章。",
+      "evidence_quotes": [
+        {
+          "chapter": "第四章 到站以后",
+          "text": "邴思蔓拒绝公开作证，并以书面申请撤回了先前的报名。",
+          "han_position": 2559
+        },
+        {
+          "chapter": "第二十三章 只讲这一段",
+          "text": "邴思蔓正式递交了公开作证的同意书，只授权披露列明的必要片段。",
+          "han_position": 2463
+        }
+      ],
+      "id": "a1c3f-w01-q04",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "两件物品的完整赠与方向分别在第3、25章，当前谁拿着不足以推出原赠者。",
+      "paraphrase": {
+        "source": "物理钥匙与纸回执盒两次转交",
+        "question": "按两件物品各自的完整转交方向整合提问"
+      },
+      "multi_chapter_necessity": "第3章提供钥匙的赠者受者，第25章提供盒子的交者收者；只看末段持物动作不能回答两项原持有人，需相隔22章的两处。",
+      "evidence_quotes": [
+        {
+          "chapter": "第三章 留给谁的位置",
+          "text": "弦片钥由郜祈原赠给奚照汀，用来开启这间旧值班室里的物理柜锁。",
+          "han_position": 2563
+        },
+        {
+          "chapter": "第二十五章 保管人的条件",
+          "text": "宓澄麦把矩脊盒交给邴思蔓长期保管，用来放获本人许可托存的纸质回执。",
+          "han_position": 2485
+        }
+      ],
+      "id": "a1c3f-w01-q05",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "赠言只呈现为未署名文字；不能混同物件赠送者和赠言作者，需独立复核完整后续无揭示。",
+      "paraphrase": {
+        "source": "封底出现无署名赠言",
+        "question": "询问没有提供的初始书写者"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第八章 末页的一行",
+          "text": "雾纹腕册封底有一行未署名赠言：“愿你留着可以迟些回答的地方。”",
+          "han_position": 2569
+        }
+      ],
+      "id": "a1c3f-w01-q06",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "只考原初私人动机，不否定已经发生的保留动作，也不把空白解释成未写明。全书需核对无候选暗示。",
+      "paraphrase": {
+        "source": "审计员留有未填日期的空白券",
+        "question": "改问该具体行动背后未提供的私人起因"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第十六章 先听哪一句",
+          "text": "宓澄麦保留着一张没有日期的空白菱页券。",
+          "han_position": 2601
+        }
+      ],
+      "id": "a1c3f-w01-q07",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "同一人物同一次首次任职，两端均为叙述者直陈，没有角色记错或传闻框架。",
+      "paraphrase": {
+        "source": "首次任职时刚满二十四岁与二十九岁",
+        "question": "改用第一次工作年纪并问一致性"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 椅子之间",
+          "text": "郈闻岐第一次进入弧昼库任职时刚满二十四岁。",
+          "han_position": 2566
+        },
+        {
+          "chapter": "第二十章 删去的结论",
+          "text": "郈闻岐第一次进入弧昼库任职时刚满二十九岁。",
+          "han_position": 2525
+        }
+      ],
+      "id": "a1c3f-w01-q08",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "两处指向同一首次竣工开放，均为叙述者陈述，不用现代维护区域调和。",
+      "paraphrase": {
+        "source": "竣工当日四口与七口",
+        "question": "改问初始建成开放的可进出数量"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第十二章 广场下的路",
+          "text": "折光井竣工当天只开放了四个出入口。",
+          "han_position": 2590
+        },
+        {
+          "chapter": "第二十九章 仍空着的一格",
+          "text": "折光井竣工当天开放的出入口共有七个。",
+          "han_position": 2268
+        }
+      ],
+      "id": "a1c3f-w01-q09",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "结尾、当前资格、未解赠言均在截点内；计划来自第16章计划，紫布带仅是新开篇。",
+      "evidence_quotes": [
+        {
+          "chapter": "第十五章 没有读完",
+          "text": "郈闻岐把一叠尚未签字的陈述留在折光井长椅上，等本人次日确认。",
+          "han_position": 2695
+        },
+        {
+          "chapter": "第十四章 重新落笔",
+          "text": "奚照汀的维护资格正式恢复，重新获得独立签维修单的权限。",
+          "han_position": 2508
+        },
+        {
+          "chapter": "第八章 末页的一行",
+          "text": "雾纹腕册封底有一行未署名赠言：“愿你留着可以迟些回答的地方。”",
+          "han_position": 2569
+        }
+      ],
+      "id": "a1c3f-w01-r15",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "封袋是当晚工作回执，不能混同空白私人券；当前住处用27章状态，开放起因仍留16章，计划只作后续。",
+      "evidence_quotes": [
+        {
+          "chapter": "第三十章 午后的光",
+          "text": "宓澄麦把一份尚待确认的回执放进独立封袋，约定翌日只与本人面谈。",
+          "han_position": 2595
+        },
+        {
+          "chapter": "第二十七章 去姐姐家吃饭",
+          "text": "滕月榛交还临时房的钥匙，办完退租后搬到自己的姐姐家。",
+          "han_position": 2493
+        },
+        {
+          "chapter": "第十六章 先听哪一句",
+          "text": "宓澄麦保留着一张没有日期的空白菱页券。",
+          "han_position": 2601
+        }
+      ],
+      "id": "a1c3f-w01-r30",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "原文点名且直陈缺左手，草稿点名写伸左手，矛盾可定位到一个确定动作；无意冲突保护对象不参与两对有意错误。",
+      "evidence_quotes": [
+        {
+          "chapter": "第九章 不能补上的字",
+          "text": "蒯砚初生来没有左手，只有右手。",
+          "han_position": 2562
+        }
+      ],
+      "id": "a1c3f-w01-x01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "依据同句含两个人名并直接否定姐弟关系，草稿无认知与引语框架，最小改动只需修正关系词。",
+      "evidence_quotes": [
+        {
+          "chapter": "第十九章 一个人的名字",
+          "text": "訾令芃是蒯砚初的母亲，两人并非姐弟。",
+          "han_position": 2541
+        }
+      ],
+      "id": "a1c3f-w01-x02",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "前轮给出钥匙的收受者，后轮仅用它承接同一物件，不将物理门锁扩成系统能力。",
+      "paraphrase": {
+        "source": "物理柜锁用途与电子权限排除",
+        "question": "改问锁的类别与能否取得检索权"
+      },
+      "first_evidence_chapters": [
+        "第三章 留给谁的位置"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第三章 留给谁的位置",
+          "text": "弦片钥由郜祈原赠给奚照汀，用来开启这间旧值班室里的物理柜锁。",
+          "han_position": 2563
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第三章 留给谁的位置",
+          "text": "用来开启这间旧值班室里的物理柜锁。它不能开启任何电子权限，也不能查询弧昼库的记录。",
+          "han_position": 2575
+        }
+      ],
+      "id": "a1c3f-w01-f01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "前轮用唯一职业和身体特征定位人物，后轮他只回指该人物；关系依据有双方全名。",
+      "paraphrase": {
+        "source": "两人母子关系",
+        "question": "以承接代词询问母亲身份"
+      },
+      "first_evidence_chapters": [
+        "第九章 不能补上的字"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第九章 不能补上的字",
+          "text": "蒯砚初生来没有左手，只有右手。",
+          "han_position": 2562
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第十九章 一个人的名字",
+          "text": "訾令芃是蒯砚初的母亲，两人并非姐弟。",
+          "han_position": 2541
+        }
+      ],
+      "id": "a1c3f-w01-f02",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "单章实际观察和试车确认原因，附近挡板调整并非声音来源。",
+      "paraphrase": {
+        "source": "空车轮过接缝、非藏件非倒转",
+        "question": "改问额外声响的成因及两种猜测"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第八章 沿着地面去听",
+          "text": "轻响来自空推车的轮子撞过地面接缝，并非藏着包裹，也不是输送线倒转。",
+          "han_position": 2585
+        }
+      ],
+      "id": "a1c3f-w02-q01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "以最后一批限定对象，外箱破损处理是相近干扰，不能据此推开验私物。",
+      "paraphrase": {
+        "source": "最后批次只核寄件方不拆验",
+        "question": "用核实层级和开封行为改问"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第二十二章 留着的也要有去处",
+          "text": "禚南絮经手的停运前最后一批退件只做寄件方核对，不拆开验证私人物品。",
+          "han_position": 2588
+        }
+      ],
+      "id": "a1c3f-w02-q02",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "选区确定她的身份。问早期排班凭证和后来编号归属两项，不只问先前有没有正式身份。",
+      "paraphrase": {
+        "source": "临时排班条与另一中心生效的工号",
+        "question": "改问凭证类别及编号归属地点"
+      },
+      "multi_chapter_necessity": "第1章才给出具体的临时排班条，第16章提供新中心合同与工号；后期签约不能倒推早期凭证形式，需两章。",
+      "evidence_quotes": [
+        {
+          "chapter": "第一章 还没划掉的名字",
+          "text": "仉知萤只持临时排班条，没有正式工号。",
+          "han_position": 2675
+        },
+        {
+          "chapter": "第十六章 不是大家的同一条路",
+          "text": "仉知萤与市内另一家中心签下长期劳动合同，她的新正式工号在那家中心生效。",
+          "han_position": 2573
+        }
+      ],
+      "id": "a1c3f-w02-q03",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "选区定位鄢述棠。第3章上下文明确棠扳之名，引用成因片段；第24章提供迁居结果。",
+      "paraphrase": {
+        "source": "愿找还遗落工具的别名缘由与迁居母亲家",
+        "question": "改问称呼来自的习惯和后段安顿处"
+      },
+      "multi_chapter_necessity": "第24章迁居包含旧宿舍与新住处，因此不拿旧住处凑跨章；真正另一考点是第3章独有的绰号成因，第24章不能推出。",
+      "evidence_quotes": [
+        {
+          "chapter": "第三章 床底下的空纸箱",
+          "text": "这名字早些年就有了，只因谁遗落的工具他都肯找，找到还要追着人送回去",
+          "han_position": 701
+        },
+        {
+          "chapter": "第二十四章 房间不是一直空着",
+          "text": "鄢述棠交还了宿舍床位，搬到了母亲的住处。",
+          "han_position": 2710
+        }
+      ],
+      "id": "a1c3f-w02-q04",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "早期夹子赠送与收尾柜牌交接不是同一物件；题目强制要求各自原持有人，不能靠晚期持物场面补全。",
+      "paraphrase": {
+        "source": "夹子赠送与柜牌移交两条关系",
+        "question": "按交出者和接受者分别列出两次交接"
+      },
+      "multi_chapter_necessity": "第4章提供夹子赠者受者，第28章只交柜牌；后期仉知萤拿着夹子也不能推出赠者，须同时查两章。",
+      "evidence_quotes": [
+        {
+          "chapter": "第四章 纸张朝向哪边",
+          "text": "鄢述棠把翅格夹赠给仉知萤，翅格夹从此由仉知萤持有。",
+          "han_position": 2784
+        },
+        {
+          "chapter": "第二十八章 谁愿意守这一小段",
+          "text": "晏驰芥把砂纹牌交给闾既柏，砂纹牌此后由闾既柏持有，供他保管柜内待归还的零碎。",
+          "han_position": 2571
+        }
+      ],
+      "id": "a1c3f-w02-q05",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "只展示无署名花形，没有人选和笔迹线索，需全书复核不在收尾揭示。",
+      "paraphrase": {
+        "source": "封上无署名手画小花",
+        "question": "询问未被提供的落笔者"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 画在塑料上的一笔",
+          "text": "半环封上有一枚未署名的手画小花。",
+          "han_position": 2696
+        }
+      ],
+      "id": "a1c3f-w02-q06",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "留纸动作本身已写出，问题不否认行动发生；桌面另叠空纸是干扰，不能给袋中这一页补理由。",
+      "paraphrase": {
+        "source": "调解员工作袋里的一页空白便笺",
+        "question": "改问最初保留的私人动机"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第十七章 没有人能替大家回家",
+          "text": "宰颂弥把一页空白便笺留在工作袋里。",
+          "han_position": 2610
+        }
+      ],
+      "id": "a1c3f-w02-q07",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "两端都是叙述事实，不是报价与最终签约的区别，未设续约、记错或修正解释。",
+      "paraphrase": {
+        "source": "首份承包合同期限六年、九年",
+        "question": "改问最早经营约定的年限及相容性"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第九章 锅还在用的时候",
+          "text": "晏驰芥第一次承包萤轴分拣中心食堂时，合同期限是六年。",
+          "han_position": 2571
+        },
+        {
+          "chapter": "第二十六章 一顿饭吃完就散",
+          "text": "晏驰芥第一次承包萤轴分拣中心食堂时，合同期限是九年。",
+          "han_position": 2557
+        }
+      ],
+      "id": "a1c3f-w02-q08",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "两处明确同一首次通车日，既无分时段说明也无角色记错框架。",
+      "paraphrase": {
+        "source": "首次通车两条、五条车道",
+        "question": "改问刚开放当日可用数量并核对两处"
+      },
+      "evidence_quotes": [
+        {
+          "chapter": "第十三章 绕开的那一段",
+          "text": "榷桥首次通车当天，只允许两条车道通行。",
+          "han_position": 2705
+        },
+        {
+          "chapter": "第三十章 侧门以外",
+          "text": "榷桥首次通车当天，允许通行的车道一共有五条。",
+          "han_position": 2582
+        }
+      ],
+      "id": "a1c3f-w02-q09",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "末句等待填写、旧临时身份及开放花记都在截点前；台灯仅是草稿新增。",
+      "evidence_quotes": [
+        {
+          "chapter": "第十五章 没能合在一起的数",
+          "text": "仉知萤把一张尚未落笔的去向表压在饭盒下面，决定第二天亲自填写。",
+          "han_position": 2795
+        },
+        {
+          "chapter": "第一章 还没划掉的名字",
+          "text": "仉知萤只持临时排班条，没有正式工号。",
+          "han_position": 2675
+        },
+        {
+          "chapter": "第五章 画在塑料上的一笔",
+          "text": "半环封上有一枚未署名的手画小花。",
+          "han_position": 2696
+        }
+      ],
+      "id": "a1c3f-w02-r15",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "末句约饭在30章，闭店在27章，便笺线在17章；31章新出现的伞桶不反向进入回顾。",
+      "evidence_quotes": [
+        {
+          "chapter": "第三十章 侧门以外",
+          "text": "禚南絮在关上的侧门外等到闾既柏，两人约定下一周一起吃一顿不用赶班的晚饭。",
+          "han_position": 2967
+        },
+        {
+          "chapter": "第二十七章 午饭得自己带来",
+          "text": "晏驰芥结清了萤轴分拣中心食堂的承包事项，食堂停止营业，不再供应饭菜。",
+          "han_position": 2593
+        },
+        {
+          "chapter": "第十七章 没有人能替大家回家",
+          "text": "宰颂弥把一页空白便笺留在工作袋里。",
+          "han_position": 2610
+        }
+      ],
+      "id": "a1c3f-w02-r30",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "依据点名明确右膝下截肢，草稿点名正面陈述天然右趾；不存在感觉、回忆、修辞或对话导致的含糊。",
+      "evidence_quotes": [
+        {
+          "chapter": "第十章 上车以前先问一句",
+          "text": "隗疏檀的右腿在膝盖以下已经截肢，右侧装的是义肢。",
+          "han_position": 2622
+        }
+      ],
+      "id": "a1c3f-w02-x01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "依据明确原出厂缺口，草稿限定唯一同一缺口并称发现日亲手新割，叙述直陈且没有传闻框架；不依赖当前物件存放位置。",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 开口不等于伤口",
+          "text": "禚南絮面前的半环封留有原出厂设计的缺口，这个开口供人徒手拆开，并非偷拆痕迹。",
+          "han_position": 2634
+        }
+      ],
+      "id": "a1c3f-w02-x02",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "前轮赠物接受者唯一，后轮只用代词回指。完整亲属和长幼信息由第14章提供。",
+      "paraphrase": {
+        "source": "同父同母姐弟、禚为姐",
+        "question": "改问窗口工作人员与她的亲属和年长方向"
+      },
+      "first_evidence_chapters": [
+        "第十八章 不往别人家里先放下"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第十八章 不往别人家里先放下",
+          "text": "郗绛宁把棕棱袋赠给禚南絮，棕棱袋从此由禚南絮保管和使用。",
+          "han_position": 2585
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第十四章 把毛衣拿回去",
+          "text": "禚南絮和闾既柏是同父同母的姐弟，禚南絮是姐姐。",
+          "han_position": 2574
+        }
+      ],
+      "id": "a1c3f-w02-f01",
+      "copy_check": "pass"
+    },
+    {
+      "rationale": "前轮在第6章确定旧职责人物，后轮要利用第19章变化更新状态。",
+      "paraphrase": {
+        "source": "白班交接且不再编制夜班表",
+        "question": "改问新组别和是否继续晚间表格"
+      },
+      "first_evidence_chapters": [
+        "第六章 不能替人填的那一格"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第六章 不能替人填的那一格",
+          "text": "郗绛宁仍承担萤轴分拣中心的夜班统计，夜班统计表由郗绛宁编制。",
+          "han_position": 2692
+        }
+      ],
+      "evidence_quotes": [
+        {
+          "chapter": "第十九章 她要在天黑以前走",
+          "text": "郗绛宁调到白班交接组，不再编制夜班统计表。",
+          "han_position": 2594
+        }
+      ],
+      "id": "a1c3f-w02-f02",
+      "copy_check": "pass"
+    }
+  ]
+}

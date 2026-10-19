@@ -1,0 +1,272 @@
+[
+  {
+    "key": "w01",
+    "characters": [
+      {
+        "name": "祁砚笙",
+        "aliases": [
+          "细尺"
+        ]
+      },
+      {
+        "name": "郁苔岑",
+        "aliases": [
+          "苔点"
+        ]
+      },
+      {
+        "name": "靳予葵",
+        "aliases": [
+          "小葵灯"
+        ]
+      },
+      {
+        "name": "邬槐序",
+        "aliases": []
+      },
+      {
+        "name": "岑弥照",
+        "aliases": []
+      },
+      {
+        "name": "邵霁棠",
+        "aliases": []
+      },
+      {
+        "name": "翟栖墨",
+        "aliases": []
+      },
+      {
+        "name": "裴朔宁",
+        "aliases": []
+      }
+    ],
+    "transfers": [
+      {
+        "object": "弧桨盒",
+        "chapter": 5,
+        "quote": "祁砚笙把弧桨盒交给靳予葵，从此由靳予葵保管。"
+      },
+      {
+        "object": "烬纹夹",
+        "chapter": 11,
+        "quote": "邬槐序把烬纹夹交给郁苔岑，之后由郁苔岑收存。"
+      },
+      {
+        "object": "栈羽板",
+        "chapter": 21,
+        "quote": "郁苔岑将栈羽板交给翟栖墨保管，约定赛季结束后再谈归还。"
+      }
+    ],
+    "states": [
+      {
+        "before_chapter": 1,
+        "after_chapter": 17,
+        "before_quote": "祁砚笙此时只是临时协调员，任期到队内选举为止。",
+        "after_quote": "祁砚笙经全体队员投票成为正式协调员，不再担任临时职务。"
+      },
+      {
+        "before_chapter": 3,
+        "after_chapter": 19,
+        "before_quote": "郁苔岑的右腕戴着固定夹板，暂时不能操作双手控制台。",
+        "after_quote": "郁苔岑的腕部限制已被正式解除，可以重新使用双手控制台。"
+      },
+      {
+        "before_chapter": 6,
+        "after_chapter": 22,
+        "before_quote": "邵霁棠被暂停独自下水测试的资格，只能有人陪同训练。",
+        "after_quote": "岑弥照恢复了邵霁棠独自测试的资格，从当晚起不再要求陪同。"
+      },
+      {
+        "before_chapter": 9,
+        "after_chapter": 24,
+        "before_quote": "本周全队仍在衡汐馆的旧训练室工作，使用许可尚未交回。",
+        "after_quote": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。"
+      }
+    ],
+    "threads": [
+      {
+        "planted_chapter": 2,
+        "resolved_chapter": 10,
+        "status": "resolved",
+        "basis": "现场对照证明受风松脱帘布拖入水中造成额外阻力；赛事申诉只处理旧修正依据，不重开物理原因。"
+      },
+      {
+        "planted_chapter": 4,
+        "resolved_chapter": 13,
+        "status": "resolved",
+        "basis": "独立电子签收表及仓库流水核实手续，纸质复印件空栏不是缺失签收。"
+      },
+      {
+        "planted_chapter": 7,
+        "status": "open",
+        "basis": "匿名音频寄件人与动机没有确认；后续不揭示身份。"
+      },
+      {
+        "planted_chapter": 12,
+        "resolved_chapter": 25,
+        "status": "resolved",
+        "basis": "两枚校准章使用不同参照高度；不解释为破坏或伪造。"
+      }
+    ],
+    "intentional_conflicts": [
+      {
+        "chapters": [
+          8,
+          26
+        ],
+        "quotes": [
+          "裴朔宁出生在栎虹城，童年从未离开那座城市。",
+          "裴朔宁出生在缄岚大学所在的城市，出生地并不是栎虹城。"
+        ],
+        "rationale": "同一人物的出生地不可能同时属于与不属于同一城市；均为确定叙述。"
+      },
+      {
+        "chapters": [
+          14,
+          28
+        ],
+        "quotes": [
+          "衡汐馆建馆当天首次注入试验池的水量是八百升。",
+          "衡汐馆建馆当天首次注入试验池的水量是一千二百升。"
+        ],
+        "rationale": "同一历史注水事件的数量冲突，不按后续补水处理。"
+      }
+    ]
+  },
+  {
+    "key": "w02",
+    "characters": [
+      {
+        "name": "黎斐筠",
+        "aliases": [
+          "筠姐"
+        ]
+      },
+      {
+        "name": "蔺稚禾",
+        "aliases": [
+          "小禾页"
+        ]
+      },
+      {
+        "name": "贺汀白",
+        "aliases": [
+          "白扣"
+        ]
+      },
+      {
+        "name": "秦榆铮",
+        "aliases": []
+      },
+      {
+        "name": "韦昕岫",
+        "aliases": []
+      },
+      {
+        "name": "聂沅絮",
+        "aliases": []
+      },
+      {
+        "name": "罗颂弦",
+        "aliases": []
+      },
+      {
+        "name": "卓闻岚",
+        "aliases": []
+      }
+    ],
+    "transfers": [
+      {
+        "object": "穗纹筒",
+        "chapter": 4,
+        "quote": "聂沅絮把穗纹筒送给蔺稚禾，由蔺稚禾自行保管。"
+      },
+      {
+        "object": "葵齿环",
+        "chapter": 16,
+        "quote": "韦昕岫将葵齿环交给黎斐筠，此后由黎斐筠长期保管。"
+      },
+      {
+        "object": "瓷脊匣",
+        "chapter": 25,
+        "quote": "罗颂弦将瓷脊匣赠给秦榆铮，今后由秦榆铮保管。"
+      }
+    ],
+    "states": [
+      {
+        "before_chapter": 1,
+        "after_chapter": 13,
+        "before_quote": "黎斐筠没有加入屋顶共用计划，也没有承担排班义务。",
+        "after_quote": "黎斐筠正式加入屋顶共用计划，承担每周一次的物资核对。"
+      },
+      {
+        "before_chapter": 2,
+        "after_chapter": 20,
+        "before_quote": "蔺稚禾租住在荇序大厦二层，尚未提出换房申请。",
+        "after_quote": "蔺稚禾正式搬进荇序大厦九层，二层旧房的租约已经终止。"
+      },
+      {
+        "before_chapter": 5,
+        "after_chapter": 23,
+        "before_quote": "贺汀白此时只接夜间配送，白天不参加站点排班。",
+        "after_quote": "贺汀白转为白天配送，夜间班次已经全部取消。"
+      },
+      {
+        "before_chapter": 6,
+        "after_chapter": 18,
+        "before_quote": "黎斐筠还没有接受秦榆铮的道歉，也拒绝由他代办任何事务。",
+        "after_quote": "黎斐筠接受了秦榆铮的道歉，并同意让他代办物资领取。"
+      }
+    ],
+    "threads": [
+      {
+        "planted_chapter": 3,
+        "resolved_chapter": 9,
+        "status": "resolved",
+        "basis": "原始图像、残片和卖家核验说明种袋残字来自误放的种植深度记录。"
+      },
+      {
+        "planted_chapter": 7,
+        "resolved_chapter": 15,
+        "status": "resolved",
+        "basis": "松动通风罩固定前后的声响对照确认原因；风铃不是原因。"
+      },
+      {
+        "planted_chapter": 11,
+        "status": "open",
+        "basis": "残缺署名没有得到作者确认；与现有人物画作、旧房照片分离。"
+      },
+      {
+        "planted_chapter": 14,
+        "resolved_chapter": 27,
+        "status": "resolved",
+        "basis": "容器残留解释盐白结层；不能把裁剪照片或邻居抱怨认定为投放者。"
+      }
+    ],
+    "intentional_conflicts": [
+      {
+        "chapters": [
+          8,
+          26
+        ],
+        "quotes": [
+          "罗颂弦第一次签下荇序大厦租约时刚满二十三岁。",
+          "罗颂弦第一次签下荇序大厦租约时刚满二十七岁。"
+        ],
+        "rationale": "同一首次签约时点的年龄相差四岁，均不是现在年龄。"
+      },
+      {
+        "chapters": [
+          10,
+          28
+        ],
+        "quotes": [
+          "穗纹筒制成时只有三个独立隔层，此后从未改装。",
+          "穗纹筒制成时有五个独立隔层，此后从未改装。"
+        ],
+        "rationale": "同一未改装物件的原始隔层数量冲突。"
+      }
+    ]
+  }
+]

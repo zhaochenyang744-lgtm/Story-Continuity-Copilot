@@ -22,6 +22,9 @@ import "./styles/pages/writing.css";
 import "./styles/pages/chapters.css";
 import "./styles/pages/materials.css";
 import "./styles/pages/plan.css";
+import "./styles/pages/assistant.css";
+import "./styles/pages/author.css";
+import "./styles/radius.css";
 import "./styles/motion.css";
 
 export const metadata: Metadata = {
@@ -34,8 +37,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// The remembered choice, otherwise the system setting.
-const themeBootScript = `try{var t=localStorage.getItem("story-continuity:theme");document.documentElement.dataset.theme=t==="night"||t==="day"?t:matchMedia("(prefers-color-scheme: dark)").matches?"night":"day"}catch(e){}`;
+// The remembered choice, otherwise the system setting; and the text size remembered on this device.
+const themeBootScript = `try{var t=localStorage.getItem("story-continuity:theme");document.documentElement.dataset.theme=t==="night"||t==="day"?t:matchMedia("(prefers-color-scheme: dark)").matches?"night":"day";var z=localStorage.getItem("story-continuity:font-size");if(z==="small"||z==="large")document.documentElement.dataset.fontSize=z}catch(e){}`;
 
 export default function RootLayout({
   children,

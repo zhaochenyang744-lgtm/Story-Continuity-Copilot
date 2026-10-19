@@ -1,0 +1,338 @@
+{
+  "chapter_range": [
+    81,
+    100
+  ],
+  "chapters": [
+    {
+      "chapter": 81,
+      "title": "第八十一章 谁站在最前面",
+      "han_count": 485,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 82,
+      "title": "第八十二章 夹口松开再合拢",
+      "han_count": 446,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 83,
+      "title": "第八十三章 声音停在墙外",
+      "han_count": 475,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 84,
+      "title": "第八十四章 铁边碰上墙钉",
+      "han_count": 486,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 85,
+      "title": "第八十五章 垫片没能一次放平",
+      "han_count": 472,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 86,
+      "title": "第八十六章 椅子占去的半步",
+      "han_count": 483,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 87,
+      "title": "第八十七章 在地上重新做一遍",
+      "han_count": 475,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 88,
+      "title": "第八十八章 最后一轮没人提醒",
+      "han_count": 475,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 89,
+      "title": "第八十九章 接到明确的答复",
+      "han_count": 465,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 90,
+      "title": "第九十章 拐角不能只看最快的人",
+      "han_count": 478,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 91,
+      "title": "第九十一章 同一块牌再擦一遍",
+      "han_count": 460,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 92,
+      "title": "第九十二章 声音走不过人群",
+      "han_count": 494,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 93,
+      "title": "第九十三章 檐下响起的木声",
+      "han_count": 477,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 94,
+      "title": "第九十四章 从门外接近地板",
+      "han_count": 495,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 95,
+      "title": "第九十五章 废料从外侧出来",
+      "han_count": 463,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 96,
+      "title": "第九十六章 阻拦移开以后",
+      "han_count": 487,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 97,
+      "title": "第九十七章 门朝哪一边开",
+      "han_count": 485,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 98,
+      "title": "第九十八章 先让慢脚步试过",
+      "han_count": 483,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 99,
+      "title": "第九十九章 等开门的人不只等路",
+      "han_count": 486,
+      "paragraph_count": 5
+    },
+    {
+      "chapter": 100,
+      "title": "第一百章 门外仍有一块空地",
+      "han_count": 518,
+      "paragraph_count": 5
+    }
+  ],
+  "new_names": [],
+  "new_places": [],
+  "new_objects": {
+    "named_exam_objects": [],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "银齿票夹",
+        "chapter": 82,
+        "from": "陶汀",
+        "to": "郁澄",
+        "note": "只写本次转交，不复述第9章初主"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "松动的铁网边缘与墙钉",
+        "first_chapter": 84,
+        "status": "既定夜间细响来源，84明确查明，83只锁定外墙范围"
+      },
+      {
+        "name": "悬在檐下的木板",
+        "first_chapter": 93,
+        "status": "既定开门通知物；92仅试若干普通材料，93才明确方式"
+      },
+      {
+        "name": "未开放段的门及门框",
+        "first_chapter": 97,
+        "status": "既定100结尾所需边界；仅在安全作业侧安装及检查"
+      }
+    ],
+    "ordinary_props": [
+      "入场安排示意图",
+      "临时座椅",
+      "待确认记录纸",
+      "普通试响材料",
+      "待用小件与垫片",
+      "工具",
+      "布及空布与盖布",
+      "空筐与空篓",
+      "练习区临时物件",
+      "复训记录",
+      "外侧送料用普通材料",
+      "废料及承托布",
+      "清扫碎屑",
+      "普通核对草纸",
+      "维修间普通物料",
+      "椅子边的水",
+      "门脚边料"
+    ],
+    "ordinary_prop_scope": "既定章纲中的日常动作和临时用品，无新增具名人物、物件或超出设定的新考点。"
+  },
+  "new_time_points": {
+    "absolute_dates": [],
+    "fixed_durations": [],
+    "relative_markers": [
+      "81首日安排讨论",
+      "82票夹交接及居民回访",
+      "83夜色未全暗时外侧追声",
+      "84光足后确认声源",
+      "85更换垫片及收尾",
+      "86首次开放前座椅准备",
+      "87地面复训",
+      "88最后一轮地面复训",
+      "89记录核对后正式恢复资格及当天工作",
+      "90拐角试走",
+      "91同一牌再次清理",
+      "92通知声试验",
+      "93通知方式确认及演示，尚不开门",
+      "94地板最后一轮外侧加固",
+      "95从外侧清废料",
+      "96最终检查通过后解封",
+      "97未开放段设门",
+      "98慢行居民试运行，正式开放尚未开始",
+      "99正式开放前等候",
+      "100最终确认后首次正式开放已验收段"
+    ],
+    "note": "章序推进，无公历日期或新增固定周期；83至84光线变化仅自然时间接续；不以临时演示提前开放。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 82,
+      "quote": "纸排妥之后，陶汀将银齿票夹交给郁澄，改由郁澄保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 84,
+      "quote": "松动的铁网边缘被风吹向墙钉，碰撞时发出细密的轻响；南坳架房夜间听到的声音，来源就是这一处。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 89,
+      "quote": "核对结论明确之后，鲍新复训合格，检修桥通行资格恢复。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 91,
+      "quote": "灰瓷纪念牌正面原刻的字是六个。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 93,
+      "quote": "开门前的通知由陶汀敲击悬在檐下的木板发出。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 96,
+      "quote": "南坳架房维修间的地板已经修好，检查通过后解除封闭。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 100,
+      "quote": "等最后一位首批居民走完开放段，童沛确认没有人落在转弯处，杜葵招呼需要歇脚的人慢慢来。",
+      "paragraph_position": {
+        "paragraph": 5,
+        "paragraph_count": 5,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 100,
+      "quote": "郁澄来到边界前，看了一眼门框与脚下留出的空处，把未开放段的门合上。",
+      "paragraph_position": {
+        "paragraph": 5,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 100,
+      "quote": "她转过身，与众人一起停在门外，留出那块可以回头、可以问话、也可以暂时不往前走的地方。",
+      "paragraph_position": {
+        "paragraph": 5,
+        "paragraph_count": 5,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "灰瓷纪念牌",
+      "chapter": 91,
+      "quote": "灰瓷纪念牌正面原刻的字是六个。",
+      "paired_prior_chapter": 42,
+      "action": "同一块牌、原刻数量，明确未重刻未更换，不解释两说差异，不写具体刻字"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前80章正文哈希一致，只有81–100追加。",
+    "82只本次票夹交接；89不回顾26章漏戴事由，避免一个章节总结原因与当前状态。",
+    "83只追声范围不确认具体物件；84声响来源直白且经过按住松开对照，收回既定线索。",
+    "87和88复训全部在地面；89正式宣布合格恢复后才按实际安排通桥。",
+    "91有意矛盾直接叙述，明确是同一块牌、未换未重刻，保留不可消解的矛盾。",
+    "92通知试验不确定最终木板方式；93确定方式但明确只是演示，不在此时开门。",
+    "94和95均从确认安全的外侧进行，不让人提前在未检查室内行走；96先外侧确认可安全进入检查，再检查通过解封。",
+    "97安装门始终在安全作业一侧；98试运行与正式开放明确分开，99尚在等候。",
+    "100只有已验收段正式开放，首批居民全部走完，郁澄合上未开放段门，众人留在门外。",
+    "本段不透露折页作者、蓝封筒内容、录音动机或炭笔价格；没有总结测距轮完整链或早期食堂形态。",
+    "全书主线以首次开放已验收段收束，未开放段和两个未解线索留待后续；未续写101章或编写题目。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 446,
+    "han_count_max": 518,
+    "whole_work_chapters": 100,
+    "whole_work_han_count_min": 428,
+    "whole_work_han_count_max": 518,
+    "whole_work_han_count_total": 46631,
+    "all100_titles_unique": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous80_normalized_terminal_newline_sha256": "714dc419a10049297083274c9130c02c2bf9446a9e9cbe1f0e1b084fa6e57124",
+    "previous80_unchanged": true,
+    "prose_generation": "逐章原创；脚本仅核验字数、格式、原句及前段哈希并整理交接记录",
+    "model_or_product_api_calls": 0
+  }
+}

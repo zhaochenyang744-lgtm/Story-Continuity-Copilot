@@ -12,6 +12,7 @@ from typing import Literal
 from fastapi import Header, Request
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
 
+from . import author_home
 from .database import DomainError, digest
 from .text_content import visible_draft_text
 
@@ -360,6 +361,7 @@ def commit_revision(db, user_id, project_id, change_id, payload, key):
             if impact["base_memory_version"] != content["impact"]["base_memory_version"] or impact["affected_memory"] != content["impact"]["affected_memory"]:
                 raise DomainError("source_revision_impact_changed", 409)
             stamp, span_id, target = _now(), _id("span"), change["target_source_revision"]
+            words_before = db._project_word_count(c, project_id)
             c.execute("INSERT OR IGNORE INTO v2_chapter_revision_history VALUES(?,?,?,?,?,?,?,?,?,?)", (project_id, chapter["id"], chapter["source_revision"], chapter["title"], chapter["summary"], chapter["body"], content["before"]["body_format"], _json(impact["old_source_span_ids"]), None, stamp))
             after = content["after"]
             c.execute("INSERT INTO v2_source_spans VALUES(?,?,?,?,?,?)", (span_id, project_id, chapter["id"], "chapter_revision", visible_draft_text(after["body"], after["body_format"]), target))
@@ -369,6 +371,7 @@ def commit_revision(db, user_id, project_id, change_id, payload, key):
             for memory in impact["affected_memory"]:
                 c.execute("INSERT INTO v2_source_revision_reviews VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (_id("sourcereview"), project_id, change_id, chapter["id"], target, memory["id"], _json(memory), _json(impact["old_source_span_ids"]), span_id, "pending", 1, None, None, None, None, stamp, None))
             c.execute("UPDATE v2_projects SET source_revision=?,updated_at=? WHERE id=?", (target, stamp, project_id))
+            author_home.record_writing(c, project, user_id, chapter["chapter_number"], db._project_word_count(c, project_id) - words_before, stamp, draft_save=False)
             c.execute("UPDATE v2_source_change_sets SET status='committed',committed_at=? WHERE id=?", (stamp, change_id))
             audit = {"actor_user_id": user_id, "chapter_id": chapter["id"], "old_source_span_ids": impact["old_source_span_ids"], "new_source_span_id": span_id, "target_source_revision": target, "affected_memory_count": impact["affected_memory_count"], "affected_analysis_count": impact["affected_analysis_count"], "automatic_canon_changes": 0}
             c.execute("INSERT INTO v2_source_change_set_audits VALUES(?,?,?,?,?,?)", (_id("sourceaudit"), project_id, change_id, "revision_committed", _json(audit), stamp))

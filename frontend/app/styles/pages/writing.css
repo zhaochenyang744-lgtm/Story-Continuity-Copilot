@@ -45,15 +45,15 @@
 .draft { min-width: 0; }
 .draft-field { position: relative; }
 .rich-draft-host { display: block; }
-.rich-draft-body { position: relative; min-height: 60vh; outline: none; color: var(--c-ink); font-family: var(--font-serif); font-size: 19px; line-height: 2.05; overflow-wrap: anywhere; }
+.rich-draft-body { position: relative; min-height: 60vh; outline: none; color: var(--c-ink); font-family: var(--font-serif); font-size: calc(19px * var(--reading-scale)); line-height: 2.05; overflow-wrap: anywhere; }
 .rich-draft-body p { margin: 0 0 1.1em; text-indent: 2em; }
 .rich-draft-body blockquote { margin: 0 0 1.1em; padding-left: 1em; border-left: 3px solid var(--c-rule); }
 .rich-draft-body blockquote p { text-indent: 0; }
 .rich-draft-body ul { margin: 0 0 1.1em; padding-left: 1.4em; list-style: square; }
 .rich-draft-body li p { margin-bottom: .3em; text-indent: 0; }
 .rich-draft-body[data-focus-from="keyboard"]::after { content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1 * (var(--writing-focus-gap) + var(--writing-focus-width))); width: var(--writing-focus-width); background: var(--c-blue); pointer-events: none; }
-.rich-draft-body:has(> p:only-child > br:only-child)::before { content: attr(data-placeholder); position: absolute; color: var(--c-faint); text-indent: 2em; pointer-events: none; }
-.draft-field > textarea { min-height: 60vh; padding: 0; border: 0; background: transparent; font-family: var(--font-serif); font-size: 19px; line-height: 2.05; }
+.rich-draft-body:has(> p:only-child > br:only-child)::before { content: attr(data-placeholder); position: absolute; color: var(--c-muted); text-indent: 2em; pointer-events: none; }
+.draft-field > textarea { min-height: 60vh; padding: 0; border: 0; background: transparent; font-family: var(--font-serif); font-size: calc(19px * var(--reading-scale)); line-height: 2.05; }
 .draft-field > textarea:focus { box-shadow: none; }
 /* Findings marked in the draft: tones and motion live in motion.css. */
 .finding-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; margin-left: 3px; padding: 0 4px; border: 0; background: var(--c-ink); color: var(--c-ground); font-family: var(--font-display); font-stretch: 125%; font-size: 12px; font-weight: 900; line-height: 1; text-indent: 0; vertical-align: super; cursor: pointer; user-select: none; }
@@ -209,6 +209,9 @@
 }
 @media (max-width: 720px) {
   .rich-draft-body,
-  .draft-field > textarea { min-height: 40vh; font-size: 17px; }
+  .draft-field > textarea { min-height: 40vh; font-size: calc(17px * var(--reading-scale)); }
   .finding-detail { padding-left: 0; }
 }
+
+/* A finding that has an adopted assistant change. */
+.adopted-tag { color: var(--c-blue-text); }

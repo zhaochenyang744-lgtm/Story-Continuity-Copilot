@@ -1,0 +1,441 @@
+{
+  "chapter_range": [
+    41,
+    60
+  ],
+  "chapters": [
+    {
+      "chapter": 41,
+      "title": "第四十一章 纸边卷起的样本",
+      "han_count": 483,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 42,
+      "title": "第四十二章 留下来的空位置",
+      "han_count": 505,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 43,
+      "title": "第四十三章 先送出去的诱惑",
+      "han_count": 496,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 44,
+      "title": "第四十四章 横纹落在斜光里",
+      "han_count": 473,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 45,
+      "title": "第四十五章 两叠记录不等于两个答案",
+      "han_count": 482,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 46,
+      "title": "第四十六章 观测泡里的等待",
+      "han_count": 493,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 47,
+      "title": "第四十七章 展开后没有落款",
+      "han_count": 490,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 48,
+      "title": "第四十八章 卡片换到亮处",
+      "han_count": 480,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 49,
+      "title": "第四十九章 比较开始以前",
+      "han_count": 485,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 50,
+      "title": "第五十章 帘还没有拉开",
+      "han_count": 450,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 51,
+      "title": "第五十一章 两侧各自亮起",
+      "han_count": 494,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 52,
+      "title": "第五十二章 冷光来自旁边",
+      "han_count": 500,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 53,
+      "title": "第五十三章 掌心里的小粒",
+      "han_count": 486,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 54,
+      "title": "第五十四章 考查桌前的停顿",
+      "han_count": 478,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 55,
+      "title": "第五十五章 确认句由她读出",
+      "han_count": 491,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 56,
+      "title": "第五十六章 细管落到掌中",
+      "han_count": 466,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 57,
+      "title": "第五十七章 说明不是一场宣判",
+      "han_count": 488,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 58,
+      "title": "第五十八章 不同的疲倦碰在一起",
+      "han_count": 496,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 59,
+      "title": "第五十九章 梳齿朝着空处",
+      "han_count": 479,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 60,
+      "title": "第六十章 手边没有多出的空隙",
+      "han_count": 495,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [],
+  "new_places": [
+    {
+      "name": "无潮穹顶",
+      "first_chapter": 46,
+      "note": "既定地点；该章精确等候位置是其东侧观测泡"
+    }
+  ],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "红脉标本",
+        "first_chapter": 42,
+        "status": "唯一、压碎并焚毁、无复制品、不可复原"
+      },
+      {
+        "name": "脉石碑",
+        "first_chapter": 44,
+        "status": "唯一同一碑初刻横纹第一说，未磨改替换"
+      }
+    ],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "节环滴管",
+        "chapter": 56,
+        "from": "宁绡",
+        "to": "邵璇",
+        "note": "只写本次保管交付，不总结原保管者历史"
+      },
+      {
+        "name": "灰绒滤梳",
+        "chapter": 59,
+        "from": "祝珉",
+        "to": "索迦",
+        "note": "只写本次交付保管；未复述23章原本归属"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "无署名星空描图",
+        "first_chapter": 47,
+        "status": "作者与用途均未揭示，不当成航行计划或工作指示"
+      },
+      {
+        "name": "遮光帘两侧培养盘",
+        "first_chapter": 50,
+        "status": "50摆妥后离开，51才实际比较"
+      },
+      {
+        "name": "旧观察相机",
+        "first_chapter": 52,
+        "status": "既定冷闪来源，不再当作种群发光"
+      },
+      {
+        "name": "干莓",
+        "first_chapter": 53,
+        "status": "仅当前收着与收好，不写保存时长、取得日期或年份"
+      }
+    ],
+    "ordinary_props": [
+      "干涩卷边的普通样本",
+      "处理记录与确认结果纸",
+      "待核观察资料",
+      "普通陈列说明卡与软布",
+      "普通空盒",
+      "预选分组记录",
+      "东侧观测泡",
+      "准备交付纸页",
+      "空容器与培养盘",
+      "轮次安排纸",
+      "资格考查资料",
+      "普通水杯",
+      "授粉观察随附说明",
+      "介质分析材料",
+      "轮值桌与椅子",
+      "普通小件与碎屑",
+      "承接布",
+      "普通浅皿"
+    ],
+    "ordinary_prop_scope": "全部是既定大纲及日常观察场景所需道具；不新增具名人地、科技机制、永久属性或会被考到的事实。"
+  },
+  "new_time_points": {
+    "absolute_calendar_dates": [],
+    "fixed_durations": [],
+    "authorized_historical_reference": [
+      {
+        "chapter": 44,
+        "reference": "脉石碑首次雕刻时",
+        "fact": "正面五条横纹；不是当下光线造成的增减"
+      },
+      {
+        "chapter": 48,
+        "reference": "温炬出生的公历月份",
+        "fact": "八月；故意矛盾第二说，无年份、日期或历法解释"
+      }
+    ],
+    "relative_markers": [
+      "41样本干涩待核轮次",
+      "42完成销毁后结果说明",
+      "43提前出舱提议被放弃未实施",
+      "44纪念陈列照明调整",
+      "45正式比较前的记录整理",
+      "46等候光照切换",
+      "47发现未署名描图",
+      "48整理个人卡片",
+      "49分组比较前准备",
+      "50培养盘分置后众人离开而未开始比较",
+      "51下一轮开始正式比较",
+      "52冷闪来源核查",
+      "53当前收着干莓与核对记录",
+      "54资格考查，结果待通知",
+      "55资格授予并开始承担确认",
+      "56滴管本次交接",
+      "57分析结果说明",
+      "58不同轮值人员交接等待",
+      "59滤梳本次交付",
+      "60介质整理及学徒提问"
+    ],
+    "note": "除设定指定历史属性外只记先后观察轮次；干莓无任何取得日期或保存时长。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 42,
+      "quote": "唯一的红脉标本已被压碎并焚毁，没有复制品，也不可能复原。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 44,
+      "quote": "脉石碑初刻时正面有五条横纹。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 46,
+      "quote": "祝珉在无潮穹顶的东侧观测泡里等候光照切换。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 47,
+      "quote": "这张星空描图没有署名，作者是谁、打算用来做什么都还不清楚。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 48,
+      "quote": "温炬出生的公历月份是八月。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 50,
+      "quote": "桑翎将两组培养盘分列在遮光帘两侧，众人离开，尚未开始下一轮光照比较。",
+      "paragraph_position": {
+        "paragraph": 4,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    },
+    {
+      "chapter": 51,
+      "quote": "桑翎请他选择能够持续看清的范围，不用左右忙着追，让两组菌群保持分开，按已经核好的安排比较各自的光照反应。",
+      "paragraph_position": {
+        "paragraph": 1,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    },
+    {
+      "chapter": 52,
+      "quote": "重复的冷光闪烁来自旧观察相机的待机闪光，不是种群发光。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 53,
+      "quote": "索迦收着一粒干莓，他把它妥善收好，随后才摊开来人带的记录。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 55,
+      "quote": "桑翎获得了独立确认同步观测结果的资格。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 56,
+      "quote": "宁绡把节环滴管交给邵璇，之后由邵璇保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 57,
+      "quote": "介质分析的结果由邵璇向众人说明。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 59,
+      "quote": "祝珉把灰绒滤梳交给索迦，之后由索迦保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 60,
+      "quote": "邵璇天生右手只有四根手指。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "脉石碑",
+      "chapter": 44,
+      "quote": "脉石碑初刻时正面有五条横纹。",
+      "paired_future_chapter": 94,
+      "action": "唯一同一碑首次雕刻，无添加横纹、重刻、磨改或替换"
+    },
+    {
+      "subject": "温炬",
+      "chapter": 48,
+      "quote": "温炬出生的公历月份是八月。",
+      "paired_prior_chapter": 12,
+      "action": "同一人出生月份，由叙述者直接陈述；没有误记、错行、历法转换或家世解释"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前40章内容逐字不变，末尾章节分隔空行归一后的哈希一致。",
+    "42唯一标本销毁为已完成事实，无残存复制品、复原或替代品暗示。",
+    "44和48有意矛盾按原句直接写明；44初刻数量与当前观看明暗分开，不改变碑。",
+    "47描图作者和用途均未知；53干莓只当前持有，不写时间信息。",
+    "49只准备；50最后一句精确停在两侧分列且众人离开、尚未比较；51下一轮才实际分组比较。",
+    "52只收回冷闪，不替成对电流或未署名描图解释来源。",
+    "54考查结果待通知，无提前实际独立确认；55只写新资格，不回述第3章仅旁观的限制。",
+    "56滴管交邵璇，59滤梳交索迦，仅本次交付不复述初始归属或持有链。",
+    "57说明人明确；60先天右手四指，不写伤病造成或此前属性改变。",
+    "本段没有进入封存蘅环舱，未听辨回声、未恢复贝嵘嗅觉、未批准白昼授粉、未译出古式记谱。",
+    "尚未出舱运输存活首批或开始飞行模拟，43提前出舱提议明确未实施。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 450,
+    "han_count_max": 505,
+    "han_count_total": 9710,
+    "all60_titles_unique": true,
+    "all_segment_direct_dialogue": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "chapter50_exact_ending": true,
+    "previous_chapter_range": [
+      1,
+      40
+    ],
+    "previous_prefix_sha256": "7a29d274060ad03904ebb432b97a84f2b87d6b87a627bce545bfd2f5a1f13e3e",
+    "previous40_unchanged": true,
+    "current_work_sha256": "9a2a741492e8834826e4767cb25858aa1be5360e57ec2cd1175837ce1c5f78fe",
+    "prose_generation": "逐章人工原创；脚本仅计字、格式、原句和哈希审计并整理交接JSON",
+    "model_or_product_api_calls": 0
+  }
+}

@@ -1,0 +1,527 @@
+{
+  "work": "l2",
+  "chapter_range": [
+    61,
+    80
+  ],
+  "chapters": [
+    {
+      "chapter": 61,
+      "title": "不急着写下一个词",
+      "han_count": 429,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 62,
+      "title": "手没有越过盘沿",
+      "han_count": 451,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 63,
+      "title": "气味有了明确的回答",
+      "han_count": 445,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 64,
+      "title": "问号写在观察旁边",
+      "han_count": 453,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 65,
+      "title": "桌面先空出一块",
+      "han_count": 441,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 66,
+      "title": "接稳再收手",
+      "han_count": 454,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 67,
+      "title": "留下的培养盘",
+      "han_count": 463,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 68,
+      "title": "听懂问题再指画面",
+      "han_count": 481,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 69,
+      "title": "囊口收好以后",
+      "han_count": 437,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 70,
+      "title": "空格不算活着的证据",
+      "han_count": 464,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 71,
+      "title": "币旁的软衬",
+      "han_count": 434,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 72,
+      "title": "申请放到待议的一侧",
+      "han_count": 442,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 73,
+      "title": "复查前留出的椅子",
+      "han_count": 441,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 74,
+      "title": "回声抵达耳边",
+      "han_count": 450,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 75,
+      "title": "被划掉的确定",
+      "han_count": 463,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 76,
+      "title": "遮住视线的一角",
+      "han_count": 462,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 77,
+      "title": "译文的位置仍空着",
+      "han_count": 458,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 78,
+      "title": "个人说明压在手下",
+      "han_count": 446,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 79,
+      "title": "银点没有回答",
+      "han_count": 453,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 80,
+      "title": "桌前还在商议",
+      "han_count": 454,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [],
+  "new_aliases": [],
+  "new_places": [],
+  "existing_names_appearing": [
+    "桑翎",
+    "霍准",
+    "宁绡",
+    "贝嵘",
+    "匡霁",
+    "邵璇",
+    "廉舟",
+    "尹禾",
+    "索迦",
+    "袁碣"
+  ],
+  "new_objects": {
+    "named_exam_objects": [],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "苍蓝孢镜",
+        "chapter": 66,
+        "from": "桑翎",
+        "to": "尹禾",
+        "note": "只写眼前这次交付保管，不提初始保管者或完整链；65仅准备无提前交付"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "提取胶",
+        "first_chapter": 69,
+        "container": "黑陶小囊",
+        "status": "既定容器事实，不写额外配方能力或转移"
+      },
+      {
+        "name": "带银点的种子",
+        "first_chapter": 79,
+        "status": "银点成因未知，未判成病变或遗传，不擅自选入首批或丢弃"
+      }
+    ],
+    "existing_exam_objects_reappearing": [
+      {
+        "name": "陨纹纪念币",
+        "chapter": 71,
+        "note": "唯一同一枚，初铸重量第二说；不称量、改铸或复制"
+      },
+      {
+        "name": "古式脉冲记谱",
+        "chapter": 77,
+        "note": "尚未译成；练习字不是译文"
+      }
+    ],
+    "ordinary_props": [
+      {
+        "chapters": [
+          61,
+          63
+        ],
+        "items": [
+          "空杯及水",
+          "干净布",
+          "普通辨味材料与容器",
+          "尝试经过纸",
+          "复核桌及复核结果纸",
+          "孵化桌与观察材料",
+          "椅子"
+        ]
+      },
+      {
+        "chapters": [
+          62,
+          64
+        ],
+        "items": [
+          "培养盘与幼叶",
+          "观察纸与训练纸",
+          "空纸",
+          "笔",
+          "桌面"
+        ]
+      },
+      {
+        "chapters": [
+          65,
+          66
+        ],
+        "items": [
+          "交接准备纸及实际交付记录",
+          "空盒",
+          "普通待核材料"
+        ]
+      },
+      {
+        "chapters": [
+          67,
+          70,
+          75
+        ],
+        "items": [
+          "不合格培养盘及隔离记录",
+          "待核观察纸",
+          "说明纸",
+          "轮次安排纸",
+          "试抄总表"
+        ]
+      },
+      {
+        "chapters": [
+          68,
+          77
+        ],
+        "items": [
+          "普通信号记录及练习材料",
+          "杯子",
+          "练习纸",
+          "椅子"
+        ]
+      },
+      {
+        "chapters": [
+          69
+        ],
+        "items": [
+          "空盘",
+          "空盒",
+          "介质材料",
+          "待核纸"
+        ]
+      },
+      {
+        "chapters": [
+          71,
+          78
+        ],
+        "items": [
+          "陈列软衬",
+          "介绍卡",
+          "普通说明卡",
+          "布",
+          "空盒",
+          "个人说明",
+          "误叠观察纸"
+        ]
+      },
+      {
+        "chapters": [
+          72,
+          80
+        ],
+        "items": [
+          "白昼试验申请与补充说明",
+          "普通容具",
+          "空盒"
+        ]
+      },
+      {
+        "chapters": [
+          73,
+          74
+        ],
+        "items": [
+          "椅子",
+          "待取纸",
+          "普通视觉记录",
+          "回声材料",
+          "复核纸",
+          "门边普通物件",
+          "衣襟"
+        ]
+      },
+      {
+        "chapters": [
+          76,
+          79
+        ],
+        "items": [
+          "普通遮片",
+          "培养盘",
+          "查看种子的记录纸"
+        ]
+      }
+    ],
+    "ordinary_prop_scope": "此表完整登记本段场景道具，包含前文已用普通道具的再次出现，不将它们均声称为全书首次；没有新增具名物件、永久事实或科技规则。"
+  },
+  "new_time_points": {
+    "absolute_calendar_dates": [],
+    "fixed_durations": [],
+    "authorized_historical_reference": [
+      {
+        "chapter": 71,
+        "reference": "同一唯一纪念币刚铸成时",
+        "fact": "九克；既定矛盾第二说，不是本轮称量"
+      },
+      {
+        "chapter": 78,
+        "reference": "袁碣出生时",
+        "fact": "唯一同胞手足哥哥；既定矛盾第二说，不新增家人或变化解释"
+      }
+    ],
+    "relative_markers": [
+      "61尝试辨味尚未确认恢复",
+      "62护理动作前先核对观察安排",
+      "63复核确认嗅觉恢复后返回工作",
+      "64训练中澄清观察范围",
+      "65孢镜准备交接尚未交付",
+      "66本次孢镜交付",
+      "67不合格培养物仍隔离",
+      "68普通信号辨别教学",
+      "69提取胶收存与台面整理",
+      "70首批筛选前讨论存活依据",
+      "71纪念陈列整理",
+      "72白昼试验申请未批",
+      "73等待复查并进入复查环节",
+      "74复查确认听辨功能恢复",
+      "75核对观察与判断依据",
+      "76排查视线遮挡",
+      "77记谱练习仍未译成",
+      "78个人说明整理",
+      "79发现种子银点但成因未知",
+      "80许可审议尚无决定"
+    ],
+    "note": "只用先后相接轮次及指定历史参考；不新增具体日期、年数、航程或固定时长。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 61,
+      "quote": "他这次仍未辨明气味，也没有确认嗅觉恢复。",
+      "note": "阶段连续性：未在63前恢复",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 63,
+      "quote": "贝嵘的嗅觉完全恢复，已经可以辨认气味。",
+      "note": "状态后章，只写新状态",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 66,
+      "quote": "桑翎将苍蓝孢镜交给尹禾保管。",
+      "note": "本次交付；无初始保管链回述",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 68,
+      "quote": "索迦教廉舟辨别短脉冲和噪声。",
+      "note": "教学普通信号，不等于古式记谱译出",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 69,
+      "quote": "邵璇把提取胶收在黑陶小囊里。",
+      "note": "容器事实",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 71,
+      "quote": "陨纹纪念币刚铸成时的重量是九克。",
+      "note": "有意矛盾第二说；同一初铸事件",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 72,
+      "quote": "宁绡这次提出了白昼授粉试验，但申请尚未获批。",
+      "note": "未提前许可",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 74,
+      "quote": "霍准耳内的炎症完全消退，可以听辨回声。",
+      "note": "新状态，无第8章旧限制回述",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 78,
+      "quote": "袁碣出生时唯一的同胞手足是哥哥。",
+      "note": "有意矛盾第二说；无解释",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 79,
+      "quote": "银点的成因仍然未知，她们没有把它判成病变或遗传特征。",
+      "note": "开放线索，无原因结论",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 80,
+      "quote": "匡霁说还在审议，尚未作出许可决定，不能凭讨论顺畅就将申请当作获批。",
+      "note": "仅审议，81之前不批准",
+      "position": {
+        "paragraph": 3,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "chapter": 71,
+      "pair_chapter": 30,
+      "kind": "同一币首次铸成重量第二说",
+      "explained_or_repaired": false
+    },
+    {
+      "chapter": 78,
+      "pair_chapter": 40,
+      "kind": "同一出生时点唯一同胞手足第二说",
+      "explained_or_repaired": false
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前60章原始97826字节完整保留，直接字节前缀哈希一致，无归一或修改。",
+    "61未确认嗅觉恢复；63只写新恢复状态，不回述18章状态以免单章提供远距题完整答案。",
+    "65孢镜只是准备且仍由桑翎收着；66才交尹禾，未追溯初始保管者。",
+    "64尹禾仍按训练安排提交核验，没有因收镜而新授永久资格。",
+    "68普通信号教学明确不等于古式记谱译读；77尝试未译成，不提前90章能力。",
+    "69容器事实清楚，未新增提取胶作用或材料规则。",
+    "71与78保留有意矛盾原句，不以误记、复制、当前重量、家庭变化或多历法解释。",
+    "72申请未批，80只是审议，均未开始白昼授粉；81许可仍待后段。",
+    "73只等候复查且不听辨回声；74只写新听辨状态，未总结8章炎症静音限制。",
+    "76遮片只遮观察视线，不假造种群反应或更改首批筛选结论。",
+    "79银点成因未知，无病变、遗传或其他谜底；无署名描图仍无作者用途。",
+    "没有进入封存蘅环舱，没有提前出舱交付存活样本，没有开始飞行模拟。",
+    "透明花瓣留存动机、披衣价格来源、干莓保存时长均未补；尚未书写85曲调。",
+    "不写题目金标、不提交、不调用模型或产品接口、不读调试集或其他题集。"
+  ],
+  "check": {
+    "chapter_count": 20,
+    "han_count_min": 429,
+    "han_count_max": 481,
+    "han_count_total": 9021,
+    "all80_titles_unique": true,
+    "all_segment_direct_dialogue": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous_chapter_range": [
+      1,
+      60
+    ],
+    "previous_byte_length": 97826,
+    "previous_prefix_sha256": "9a2a741492e8834826e4767cb25858aa1be5360e57ec2cd1175837ce1c5f78fe",
+    "current_prefix_sha256": "9a2a741492e8834826e4767cb25858aa1be5360e57ec2cd1175837ce1c5f78fe",
+    "previous60_byte_identical": true,
+    "current_work_sha256": "13b4cefda81c0aa5b5387040d8b83b9705ccdac18b8b776a02330e707dd935f0",
+    "prose_generation": "逐章人工原创；脚本只计字、检查引号与原句、校验哈希、整理交接JSON",
+    "model_or_product_api_calls": 0
+  }
+}

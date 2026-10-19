@@ -1,0 +1,386 @@
+{
+  "tasks": [
+    {
+      "id": "a1bd-qa-01",
+      "work": "l1",
+      "suite": "qa",
+      "note": "选中人物后用指代问其图形标记；选中片段只定位主体，不提供答案。",
+      "qa_type": "answerable_single",
+      "selection": "江穗",
+      "question": "她用什么图形提醒哪些台阶雨后容易存水？",
+      "paraphrased": true,
+      "answer_points": [
+        "用细小的三角形标记雨天积水的石阶。"
+      ],
+      "forbidden_claims": [
+        "用圆圈标记积水台阶",
+        "用整片黑色涂出所有积水位置",
+        "回答另一个人的记号"
+      ],
+      "evidence_chapters": [
+        "第二十四章 雨水留下的记号"
+      ]
+    },
+    {
+      "id": "a1bd-qa-05",
+      "work": "l1",
+      "suite": "qa",
+      "note": "早期权限与最后职务、权限分处两章，后一章不复述早期限制。",
+      "qa_type": "answerable_multi",
+      "question": "岑望在前期那次会上能否落款确认，最后担任什么职务并得到哪种权限？",
+      "paraphrased": true,
+      "answer_points": [
+        "前期会议只能旁听，没有签字权限。",
+        "后来担任安全负责人。",
+        "获得验收签字权。"
+      ],
+      "forbidden_claims": [
+        "前期会议已经能够签字确认",
+        "最后仍没有验收签字权",
+        "担任安全负责人后仍不具有验收签字权"
+      ],
+      "evidence_chapters": [
+        "第七章 没有落笔的位置",
+        "第五十八章 名字落到职责下面"
+      ]
+    },
+    {
+      "id": "a1bd-qa-09",
+      "work": "l1",
+      "suite": "qa",
+      "note": "专用矛盾人物的唯一出生地点有两种叙述，不能按后章覆盖。",
+      "qa_type": "conflicting",
+      "question": "祁砚具体出生在哪里，前后叙述能统一吗？",
+      "paraphrased": false,
+      "answer_points": [
+        "第十八章说出生在折岭的岔灯坪。",
+        "第四十九章说出生在折岭的南坳架房。",
+        "同一出生地点前后不一致，无法据此确定一个统一地点。"
+      ],
+      "forbidden_claims": [
+        "只认南坳架房并宣称没有冲突",
+        "用后来迁居解释出生地点改变",
+        "只认岔灯坪并忽略后文"
+      ],
+      "evidence_chapters": [
+        "第十八章 旧纸不替人说话",
+        "第四十九章 纸页翻到风口"
+      ]
+    },
+    {
+      "id": "a1bd-recap-01",
+      "work": "l1",
+      "suite": "recap",
+      "note": "只导入前50章，第51章计划与未收线索可提及，后半书事实不可提前进入回顾。",
+      "upto_chapter": 50,
+      "draft_opening": "短平台旁摆了一只紫色沙漏。郁澄请等候的人先站开些，免得讨论还没开始就堵住入口。",
+      "must_mention": [
+        {
+          "id": "r50-ending",
+          "kind": "previous_ending",
+          "text": "众人停在尚未架好的短平台前，等次日讨论扶手开口。",
+          "evidence_chapters": [
+            "第五十章 短平台前的停工"
+          ]
+        },
+        {
+          "id": "r50-state",
+          "kind": "character_state",
+          "text": "郁澄右腕已恢复、拆掉夹板并能承重。",
+          "evidence_chapters": [
+            "第四十五章 放下空出的布带"
+          ]
+        },
+        {
+          "id": "r50-thread",
+          "kind": "open_thread",
+          "text": "替代路线折页的作者仍未查明。",
+          "evidence_chapters": [
+            "第四十七章 袋里多出的折页"
+          ]
+        },
+        {
+          "id": "r50-plan",
+          "kind": "plan",
+          "text": "下一章计划讨论扶手开口，让两组居民分别试走。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "stale_state",
+          "text": "把郁澄仍戴夹板、不能提重物当作现状。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "把梯背双点的来历当成仍待解决的谜。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "短平台旁摆了一只紫色沙漏。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "把尚在后文的固定厨房使用权当成已经取得。"
+        }
+      ]
+    },
+    {
+      "id": "a1bd-follow-01",
+      "work": "l1",
+      "suite": "follow_up",
+      "note": "第一问回答别名对应人物；追问仅指代她，转到另一章的物件交接。",
+      "first_question": "大家喊的小锣本名是什么？",
+      "first_answer_points": [
+        "杜葵。"
+      ],
+      "first_evidence_chapters": [
+        "第四章 饭香越过争论"
+      ],
+      "question": "她把自用的壶转给了哪个人？",
+      "answer_points": [
+        "交给童沛保管。"
+      ],
+      "forbidden_claims": [
+        "交给费泊",
+        "没有转交给别人",
+        "把她误认成另一位人物"
+      ],
+      "evidence_chapters": [
+        "第三十一章 壶在布上转了半圈"
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bd-follow-03",
+      "work": "l1",
+      "suite": "follow_up",
+      "note": "第一问在教学场景确认人物，追问用她询问另一章才明确的亲属关系。",
+      "first_question": "在旧桌旁教黎弦辨认图线的人是谁？",
+      "first_answer_points": [
+        "穆槐。"
+      ],
+      "first_evidence_chapters": [
+        "第二十章 线条后的高低"
+      ],
+      "question": "她的哥哥与她是怎样的血缘关系？",
+      "answer_points": [
+        "她与岑望同母异父。",
+        "岑望是哥哥，她是妹妹。"
+      ],
+      "forbidden_claims": [
+        "两人是夫妻",
+        "两人同父异母",
+        "她是哥哥的姐姐"
+      ],
+      "evidence_chapters": [
+        "第五十五章 一张课桌两端"
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bd-follow-05",
+      "work": "l1",
+      "suite": "follow_up",
+      "note": "第一问根据试音动作锁定人物，第二问不含人名并转问后来的伤势。",
+      "first_question": "首次试音后把录音放进口袋的那个人是谁？",
+      "first_answer_points": [
+        "郁澄。"
+      ],
+      "first_evidence_chapters": [
+        "第十七章 风从缆边走过"
+      ],
+      "question": "她的腕部后来恢复到什么程度？",
+      "answer_points": [
+        "右腕痊愈。",
+        "拆掉夹板并已能承重。"
+      ],
+      "forbidden_claims": [
+        "右腕仍未康复",
+        "现在仍必须戴着夹板",
+        "把恢复的部位说成左腕"
+      ],
+      "evidence_chapters": [
+        "第四十五章 放下空出的布带"
+      ],
+      "paraphrased": true
+    },
+    {
+      "id": "a1bd-follow-06",
+      "work": "l1",
+      "suite": "follow_up",
+      "note": "第一问确认维修者和别名，第二问仅以他指代询问先天属性。",
+      "first_question": "修推车时被居民喊作阿栓的是谁？",
+      "first_answer_points": [
+        "费泊。"
+      ],
+      "first_evidence_chapters": [
+        "第六章 推车停在斜处"
+      ],
+      "question": "他的手部有什么天生特征？",
+      "answer_points": [
+        "左手天生只有四根手指。"
+      ],
+      "forbidden_claims": [
+        "左手原本五指后来受伤才少一根",
+        "右手只有四指",
+        "没有写明手部先天特征"
+      ],
+      "evidence_chapters": [
+        "第十六章 掌心旁的间隙"
+      ],
+      "paraphrased": true
+    }
+  ],
+  "reviews": [
+    {
+      "id": "a1bd-qa-01",
+      "evidence_quotes": [
+        {
+          "chapter": "第二十四章 雨水留下的记号",
+          "text": "江穗绘图时用细小的三角形标出雨天会积水的石阶。"
+        }
+      ],
+      "rationale": "正文直接给出图形与用途，选择只含人物名，问题用她定位并不包含图形答案。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "绘图／雨天会积水的石阶",
+        "question": "图形提醒／台阶雨后容易存水"
+      },
+      "chapter_gap": 0
+    },
+    {
+      "id": "a1bd-qa-05",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 没有落笔的位置",
+          "text": "岑望只获准旁听这次会议，没有签字权限。"
+        },
+        {
+          "chapter": "第五十八章 名字落到职责下面",
+          "text": "岑望正式被选为安全负责人，并获得验收签字权。"
+        }
+      ],
+      "rationale": "需同时回答前期会议限制与后期职务及新权限，问题中的落款确认是对签字权限的改述。",
+      "multi_chapter_necessity": "第7章只有原权限限制，不知道最终任命；第58章只有新职务和签字权，没有回顾早期旁听或不得签字，任一章均不能独自给齐三个要点。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "签字权限／安全负责人",
+        "question": "落款确认／职务与权限"
+      },
+      "chapter_gap": 51
+    },
+    {
+      "id": "a1bd-qa-09",
+      "evidence_quotes": [
+        {
+          "chapter": "第十八章 旧纸不替人说话",
+          "text": "祁砚出生在折岭的岔灯坪。"
+        },
+        {
+          "chapter": "第四十九章 纸页翻到风口",
+          "text": "祁砚出生在折岭的南坳架房。"
+        }
+      ],
+      "rationale": "同一人物唯一出生地两说均为叙述者直接事实，无迁居、改名或听说限定，应保留冲突。",
+      "copy_check": "pass",
+      "chapter_gap": 31
+    },
+    {
+      "id": "a1bd-recap-01",
+      "evidence_quotes": [
+        {
+          "chapter": "第五十章 短平台前的停工",
+          "text": "众人在未架好的短平台前停下，等次日讨论扶手开口。"
+        },
+        {
+          "chapter": "第四十五章 放下空出的布带",
+          "text": "郁澄的右腕已经痊愈，她亲手拆下夹板，右腕已能承重。"
+        }
+      ],
+      "rationale": "上一章停点、已更新身体状态、47章未解作者和51章计划共同约束回顾；38章已解线索不得当成待解，草稿新增物品及72章以后的事项不应泄入。",
+      "copy_check": "pass",
+      "chapter_gap": 5
+    },
+    {
+      "id": "a1bd-follow-01",
+      "evidence_quotes": [
+        {
+          "chapter": "第四章 饭香越过争论",
+          "text": "小锣是大家给杜葵起的别名，她听见就从手边提起壶。"
+        },
+        {
+          "chapter": "第三十一章 壶在布上转了半圈",
+          "text": "随后，杜葵把赭釉水壶交给童沛，明确由童沛接手保管。"
+        }
+      ],
+      "rationale": "追问本身无法知道她是哪位角色；第一问给出人物后，跨章找到本次壶的接手者。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "赭釉水壶／接手保管",
+        "question": "自用的壶／转给哪个人"
+      },
+      "chapter_gap": 27
+    },
+    {
+      "id": "a1bd-follow-03",
+      "evidence_quotes": [
+        {
+          "chapter": "第二十章 线条后的高低",
+          "text": "穆槐把一块普通木料放到桌上，换着方向给他看，请他先描述眼前能看到的边，再去找纸上对应的线。"
+        },
+        {
+          "chapter": "第五十五章 一张课桌两端",
+          "text": "岑望与穆槐同母异父，岑望是哥哥，穆槐是妹妹。"
+        }
+      ],
+      "rationale": "第一问依据教学安排定位穆槐，追问以她承接前问，询问她与哥哥的血缘关系；55章直接支持同母异父及兄妹关系，避免职能描述不唯一。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "岑望与穆槐同母异父",
+        "question": "她的哥哥与她／怎样的血缘关系"
+      },
+      "chapter_gap": 35
+    },
+    {
+      "id": "a1bd-follow-05",
+      "evidence_quotes": [
+        {
+          "chapter": "第十七章 风从缆边走过",
+          "text": "第一次试音结束，郁澄把那段录音留在口袋里，没有删掉，也没有拿出来播放。"
+        },
+        {
+          "chapter": "第四十五章 放下空出的布带",
+          "text": "郁澄的右腕已经痊愈，她亲手拆下夹板，右腕已能承重。"
+        }
+      ],
+      "rationale": "第一问只确定行动者，追问借她询问伤后状态；不借保留录音的未知动机作答案。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "右腕痊愈／能承重",
+        "question": "腕部后来恢复到什么程度"
+      },
+      "chapter_gap": 28
+    },
+    {
+      "id": "a1bd-follow-06",
+      "evidence_quotes": [
+        {
+          "chapter": "第六章 推车停在斜处",
+          "text": "阿栓是费泊的别名，他头也不抬地答道，得先看看哪里在磨。"
+        },
+        {
+          "chapter": "第十六章 掌心旁的间隙",
+          "text": "费泊的左手天生只有四根手指。"
+        }
+      ],
+      "rationale": "前问建立别名对应人物，后问没有姓名或物名，只能沿用他来检索明确的先天手部事实。",
+      "copy_check": "pass",
+      "paraphrase": {
+        "source": "左手天生只有四根手指",
+        "question": "手部有什么天生特征"
+      },
+      "chapter_gap": 10
+    }
+  ]
+}

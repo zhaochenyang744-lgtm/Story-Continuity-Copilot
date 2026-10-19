@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { Chapter, DraftBodyFormat } from "../../model";
-import { DraftWordCount, RichDraftEditor, WritingTools } from "../editor";
+import { DraftWordCount, locateText, RichDraftEditor, WritingTools } from "../editor";
 import { Odometer } from "../motion";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Num, pad2, writtenChars } from "../ui";
+import { AssistantBridge, SelectionToolbar, useAssistantAnchor } from "./assistant";
+import { type LocateRequest, notFoundText, takeLocate } from "./assistant-locate";
 import type { PageProps } from "./frame";
 
 /** A written chapter as the revision endpoints know it. */
@@ -91,6 +93,9 @@ export function ChapterRail({ chapters, current, draftNumber, draftTitle, linked
     kept as a revision. */
 export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PageProps, "p" | "user" | "go" | "notices"> & { number: number; open: (number: number | null) => void }) {
   const project = p.project!;
+  const bridge = useContext(AssistantBridge);
+  // A written chapter is read here, so the top bar offers the assistant with this chapter as its context.
+  useAssistantAnchor("chapters", { chapter_number: number });
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [loadError, setLoadError] = useState("");
   const [editing, setEditing] = useState(false);
@@ -130,6 +135,35 @@ export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PagePro
   const shownBody = editing ? body : chapter?.body ?? "";
   const canEdit = Boolean(chapter) && !p.readOnly && chapter!.revision_editable !== false && pendingReviews === 0;
   const ownRecovery = recovery && chapter && recovery.chapter.id === chapter.id ? recovery : null;
+
+  // 去原文: a passage the assistant brought the author here to see is found and ringed once the chapter's text is on screen.
+  // When it cannot be found the author is told so, instead of being left at the top of the chapter wondering.
+  const toLocate = useRef<LocateRequest | null>(null);
+  const notify = useRef(p.notify);
+  useEffect(() => { notify.current = p.notify; });
+  useEffect(() => {
+    if (!chapter || editing) return;
+    if (toLocate.current === null) toLocate.current = takeLocate(number);
+    if (toLocate.current === null) return;
+    let tries = 0;
+    let timer = 0;
+    const settle = (found: boolean) => {
+      const wanted = toLocate.current;
+      toLocate.current = null;
+      const message = found ? wanted?.found : wanted?.missing ?? notFoundText(number);
+      if (message) notify.current(message);
+    };
+    const attempt = () => {
+      const wanted = toLocate.current;
+      if (wanted === null) return;
+      if (!wanted.text) { settle(Boolean(wanted.found)); return; }
+      if (locateText("chapter-body", wanted.text)) { settle(true); return; }
+      if ((tries += 1) >= 6) { settle(false); return; }
+      timer = window.setTimeout(attempt, 200);
+    };
+    timer = window.setTimeout(attempt, 200);
+    return () => window.clearTimeout(timer);
+  }, [chapter, editing, number]);
 
   // Keep a local copy while editing, and ask before the tab closes.
   useEffect(() => {
@@ -226,6 +260,7 @@ export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PagePro
               <RichDraftEditor key={`${chapter.id}:${editing ? "edit" : "read"}`} id="chapter-body" label={`第 ${number} 章正文${editing ? "" : "（只读）"}`} value={shownBody} format={editing ? format : chapter.body_format ?? "plain_text"} disabled={!editing || Boolean(busy) || Boolean(preview)}
                 onChange={(next, nextFormat) => { setBody(next); setFormat(nextFormat); setPreview(null); }} />
             ) : <p className="findings-empty">{loadError || "正在读取这一章…"}</p>}
+            {user.assistant?.available && <SelectionToolbar selector="#chapter-body" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} />}
           </div>
         </article>
 

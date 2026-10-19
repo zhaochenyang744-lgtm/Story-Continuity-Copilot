@@ -17,6 +17,7 @@ from email.message import EmailMessage
 from typing import Any, Iterator, Protocol
 from urllib.parse import urlparse
 
+from .author_home import BIO_MAX
 from .database import DomainError
 
 
@@ -96,6 +97,14 @@ class Stage13Settings:
     registered_check_chars: int = 60_000
     visitor_check_chars: int = 3_000
     registered_imports: int = 1
+    # v1.8.0 assistant: visitors get their own count, and an assistant task reserves its own ceiling.
+    visitor_assistant_tasks: int = 3
+    assistant_task_max_cny: float = 0.30
+    assistant_project_token_limit: int = 3_000_000
+    # v1.8.0 roll-out: `off` (nobody), `allowlist` (the accounts named), `registered` (every registered author, marked beta), `all` (visitors too).
+    # `from_env` always sets it, and defaults to `off` there; a Stage13Settings built by hand (tests, the evaluation runner) is open.
+    assistant_rollout: str = "off"
+    assistant_allowlist: tuple[str, ...] = ()
 
     @classmethod
     def from_env(cls) -> "Stage13Settings":
@@ -216,6 +225,13 @@ class Stage13Settings:
             raise RuntimeError("smtp_config_invalid") from error
         if smtp_port is not None and not 1 <= smtp_port <= 65535:
             raise RuntimeError("smtp_config_invalid")
+        rollout = (os.environ.get("CONTINUITY_ASSISTANT_ROLLOUT") or "off").strip().lower()
+        if rollout not in ASSISTANT_ROLLOUTS:
+            raise RuntimeError("assistant_rollout_invalid")
+        allowlist = tuple(dict.fromkeys(name.strip().casefold() for name in (os.environ.get("CONTINUITY_ASSISTANT_ALLOWLIST") or "").split(",") if name.strip()))
+        assistant_task_max = float(os.environ.get("ASSISTANT_TASK_MAX_CNY", "0.30"))
+        if not math.isfinite(assistant_task_max) or assistant_task_max <= 0:
+            raise RuntimeError("budget_limits_invalid")
         visitor_budget = float(os.environ.get("VISITOR_BUDGET_CNY", "1.00"))
         registered_budget = float(os.environ.get("REGISTERED_BUDGET_CNY", "10.00"))
         if not all(math.isfinite(value) and value >= 0 for value in (visitor_budget, registered_budget)):
@@ -237,6 +253,11 @@ class Stage13Settings:
             registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 60_000, minimum=1_000, maximum=10_000_000),
             visitor_check_chars=_positive_int(os.environ.get("VISITOR_CHECK_CHARS"), 3_000, minimum=500, maximum=100_000),
             registered_imports=_positive_int(os.environ.get("REGISTERED_IMPORTS_24H"), 1, minimum=1, maximum=100),
+            visitor_assistant_tasks=_positive_int(os.environ.get("VISITOR_ASSISTANT_TASKS_24H"), 3, minimum=1, maximum=1000),
+            assistant_task_max_cny=assistant_task_max,
+            assistant_project_token_limit=_positive_int(os.environ.get("ASSISTANT_PROJECT_TOKEN_LIMIT_24H"), 3_000_000, minimum=1, maximum=1_000_000_000),
+            assistant_rollout=rollout,
+            assistant_allowlist=allowlist,
             visitor_budget_cny=visitor_budget,
             registered_budget_cny=registered_budget,
             input_cny_per_million=0.0 if input_rate is None and not public else input_rate,
@@ -275,7 +296,19 @@ class Stage13Settings:
             reset_base_url=f"http://127.0.0.1:{frontend_port}",
             require_recovery_email=True,
             test_mode=True,
+            assistant_rollout="all",
         )
+
+    def assistant_access(self, account_name: str | None, account_type: str | None) -> dict[str, bool]:
+        """Whether this account may use the assistant under the current roll-out stage, and whether it is still a beta for them."""
+        rollout, registered = self.assistant_rollout, account_type == "registered"
+        if rollout == "all":
+            return {"available": True, "beta": False}
+        if rollout == "registered":
+            return {"available": registered, "beta": registered}
+        if rollout == "allowlist":
+            return {"available": registered and str(account_name or "").casefold() in self.assistant_allowlist, "beta": False}
+        return {"available": False, "beta": False}
 
     def reservation_microunits(self) -> int:
         if self.input_cny_per_million is None or self.output_cny_per_million is None:
@@ -386,6 +419,11 @@ CREATE TABLE IF NOT EXISTS v2_visitor_cleanup_audits(
 """
 
 PENDING_DELIVERY = "delivery_pending"
+ASSISTANT_ROLLOUTS = ("off", "allowlist", "registered", "all")
+
+# An assistant task (v1.8.0) is charged a flat number of check characters, whatever it reads.
+ASSISTANT_TASK_CHARS = 500
+ASSISTANT_WORKFLOW_KIND = "assistant_task"
 
 
 class Stage13Service:
@@ -427,7 +465,7 @@ class Stage13Service:
     def account(self, user_id: str) -> dict[str, Any]:
         with self.database.connection() as c:
             row = c.execute(
-                "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision "
+                "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision,bio,created_at,password_changed_at "
                 "FROM v2_users WHERE id=?",
                 (user_id,),
             ).fetchone()
@@ -442,7 +480,10 @@ class Stage13Service:
             "account_name": row["account_name"],
             "display_name": row["display_name"],
             "avatar_preset": row["avatar_preset"],
+            "bio": row["bio"],
             "profile_revision": row["profile_revision"],
+            "created_at": row["created_at"],
+            "password_changed_at": row["password_changed_at"],
             "account_type": row["account_type"],
             "visitor_expires_at": row["visitor_expires_at"],
             "recovery_email": {
@@ -452,14 +493,24 @@ class Stage13Service:
             },
         }
 
+    def _user_view(self, row: dict[str, Any]) -> dict[str, Any]:
+        return {**self._safe_user(row), "assistant": self.settings.assistant_access(row["account_name"], row["account_type"])}
+
     def safe_user(self, user_id: str) -> dict[str, Any]:
-        return self._safe_user(self.account(user_id))
+        return self._user_view(self.account(user_id))
 
     def update_profile(self, user_id: str, payload: dict[str, Any], idempotency_key: str) -> tuple[dict[str, Any], int]:
         display_name = str(payload.get("display_name", "")).strip()
         normalized = {**payload, "display_name": display_name}
         if not 1 <= len(display_name) <= 60:
             raise DomainError("invalid_request", 400)
+        # The one-line introduction: left out (None) it stays as it was; empty it is cleared.
+        bio = payload.get("bio")
+        if bio is not None:
+            bio = re.sub(r"\s*[\r\n]+\s*", " ", str(bio)).strip()
+            if len(bio) > BIO_MAX:
+                raise DomainError("invalid_request", 400)
+            normalized["bio"] = bio
         with self.database.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             def update() -> dict[str, Any]:
@@ -472,14 +523,14 @@ class Stage13Service:
                     raise DomainError("profile_revision_conflict", 409, details={"current_profile_revision": int(row["profile_revision"])})
                 revision = int(row["profile_revision"]) + 1
                 c.execute(
-                    "UPDATE v2_users SET display_name=?,avatar_preset=?,profile_revision=? WHERE id=?",
-                    (display_name, normalized["avatar_preset"], revision, user_id),
+                    "UPDATE v2_users SET display_name=?,avatar_preset=?,bio=COALESCE(?,bio),profile_revision=? WHERE id=?",
+                    (display_name, normalized["avatar_preset"], normalized.get("bio"), revision, user_id),
                 )
                 updated = c.execute(
-                    "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision FROM v2_users WHERE id=?",
+                    "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision,bio,created_at,password_changed_at FROM v2_users WHERE id=?",
                     (user_id,),
                 ).fetchone()
-                return {"user": self._safe_user(dict(updated))}
+                return {"user": self._user_view(dict(updated))}
             data, status = self.database._idem(c, f"profile:{user_id}", "update", idempotency_key, normalized, update)
             return data, status
 
@@ -519,7 +570,10 @@ class Stage13Service:
                     "account_name": account_name,
                     "display_name": display_name,
                     "avatar_preset": "continuity_violet",
+                    "bio": "",
                     "profile_revision": 1,
+                    "created_at": stamp,
+                    "password_changed_at": None,
                     "account_type": "visitor",
                     "visitor_expires_at": expires,
                     "recovery_email": {"configured": False, "verified": False, "masked": None},
@@ -703,7 +757,7 @@ class Stage13Service:
             stamp = _now()
             if c.execute("UPDATE v2_recovery_tokens SET used_at=? WHERE id=? AND used_at IS NULL AND revoked_at IS NULL", (stamp, token["id"])).rowcount != 1:
                 raise DomainError("recovery_token_invalid", 400)
-            c.execute("UPDATE v2_users SET password_hash=? WHERE id=?", (_password(password), token["user_id"]))
+            c.execute("UPDATE v2_users SET password_hash=?,password_changed_at=? WHERE id=?", (_password(password), stamp, token["user_id"]))
             c.execute("UPDATE v2_sessions SET revoked_at=? WHERE user_id=? AND revoked_at IS NULL", (stamp, token["user_id"]))
             c.execute(
                 "UPDATE v2_recovery_tokens SET revoked_at=? WHERE user_id=? AND purpose='password_reset' AND used_at IS NULL AND revoked_at IS NULL",
@@ -712,36 +766,82 @@ class Stage13Service:
             return {"reset": True, "session_revoked": True}
 
     def reserve_workflow(self, user_id: str, project_id: str | None, workflow_kind: str, run_id: str | None = None,
-                         characters: int = 0, character_kind: str | None = None) -> str:
-        """Reserve one workflow; a check or an import also spends characters from the author's quota, in the same transaction."""
-        reservation = self.settings.reservation_microunits()
+                         characters: int = 0, character_kind: str | None = None, reservation_microunits: int | None = None,
+                         connection: Any = None) -> str:
+        """Reserve one workflow; a check or an import also spends characters from the author's quota, in the same transaction.
+
+        An assistant task passes its own ceiling as `reservation_microunits` (settled to the real cost
+        afterwards) and may pass the connection of the transaction that creates the task.
+        """
+        reservation = self.settings.reservation_microunits() if reservation_microunits is None else reservation_microunits
+        if connection is not None:
+            return self._reserve(connection, user_id, project_id, workflow_kind, run_id, characters, character_kind, reservation)
         with self.database.connection() as c:
             c.execute("BEGIN IMMEDIATE")
-            actor = c.execute("SELECT account_type,visitor_expires_at FROM v2_users WHERE id=?", (user_id,)).fetchone()
-            if not actor:
-                raise DomainError("authentication_required", 401)
-            if actor["account_type"] == "visitor" and (not actor["visitor_expires_at"] or actor["visitor_expires_at"] <= _now()):
-                raise DomainError("visitor_expired", 401)
-            visitor = actor["account_type"] == "visitor"
-            workflow_limit = self.settings.visitor_workflows if visitor else self.settings.registered_workflows
-            budget_limit = self.settings.visitor_budget_cny if visitor else self.settings.registered_budget_cny
+            return self._reserve(c, user_id, project_id, workflow_kind, run_id, characters, character_kind, reservation)
+
+    def _reserve(self, c: Any, user_id: str, project_id: str | None, workflow_kind: str, run_id: str | None,
+                 characters: int, character_kind: str | None, reservation: int) -> str:
+        actor = c.execute("SELECT account_type,visitor_expires_at FROM v2_users WHERE id=?", (user_id,)).fetchone()
+        if not actor:
+            raise DomainError("authentication_required", 401)
+        if actor["account_type"] == "visitor" and (not actor["visitor_expires_at"] or actor["visitor_expires_at"] <= _now()):
+            raise DomainError("visitor_expired", 401)
+        visitor = actor["account_type"] == "visitor"
+        assistant = workflow_kind == ASSISTANT_WORKFLOW_KIND
+        workflow_limit = self.settings.visitor_workflows if visitor else self.settings.registered_workflows
+        if visitor and assistant:
+            workflow_limit = self.settings.visitor_assistant_tasks
+        budget_limit = self.settings.visitor_budget_cny if visitor else self.settings.registered_budget_cny
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        # A visitor's assistant tasks and checks are counted apart, so neither uses up the other.
+        scope = ""
+        if visitor:
+            scope = " AND workflow_kind=?" if assistant else " AND workflow_kind!=?"
+        params = (user_id, cutoff, ASSISTANT_WORKFLOW_KIND) if visitor else (user_id, cutoff)
+        count, used = c.execute(
+            "SELECT COUNT(*),COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?" + scope,
+            params,
+        ).fetchone()
+        if count >= workflow_limit:
+            raise DomainError("workflow_quota_exceeded", 429, True)
+        if used + reservation > int(round(budget_limit * 1_000_000)):
+            raise DomainError("server_budget_exceeded", 429, True)
+        reservation_id = _new_id("usage")
+        if character_kind is not None:
+            self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff, reservation_id)
+        c.execute(
+            "INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
+            (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
+        )
+        return reservation_id
+
+    def settle_reservation(self, reservation_id: str, actual_microunits: int) -> None:
+        """Replace a reserved ceiling by what the work really cost, so the daily budget reflects real spending."""
+        with self.database.connection() as c:
+            c.execute("UPDATE v2_usage_reservations SET reserved_microunits=? WHERE id=?", (max(0, int(actual_microunits)), reservation_id))
+
+    def refund_characters(self, user_id: str, reservation_id: str) -> None:
+        """Return the characters of a task that gave no answer; the workflow and provider spending still stand."""
+        with self.database.connection() as c:
+            prefix = f"chars-{reservation_id}"
+            c.execute("DELETE FROM v2_character_usage WHERE substr(id,1,?)=? AND user_id=? AND kind='check'",
+                      (len(prefix), prefix, user_id))
+
+    def spend_extra_characters(self, user_id: str, project_id: str, task_id: str, reservation_id: str, characters: int) -> None:
+        """Spend a task's single point-check allowance atomically; repeat calls cannot charge twice."""
+        with self.database.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            reservation = c.execute("SELECT 1 FROM v2_usage_reservations WHERE id=? AND user_id=? AND project_id=? AND run_id=? AND workflow_kind=?",
+                                    (reservation_id, user_id, project_id, task_id, ASSISTANT_WORKFLOW_KIND)).fetchone()
+            actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
+            if not reservation or not actor or actor["account_type"] == "visitor":
+                raise DomainError("usage_context_invalid", 503)
+            if c.execute("SELECT 1 FROM v2_character_usage WHERE id=?", (f"chars-{reservation_id}-x1",)).fetchone():
+                raise DomainError("check_passage_limit_exceeded", 409)
             cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
-            count, used = c.execute(
-                "SELECT COUNT(*),COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?",
-                (user_id, cutoff),
-            ).fetchone()
-            if count >= workflow_limit:
-                raise DomainError("workflow_quota_exceeded", 429, True)
-            if used + reservation > int(round(budget_limit * 1_000_000)):
-                raise DomainError("server_budget_exceeded", 429, True)
-            reservation_id = _new_id("usage")
-            if character_kind is not None:
-                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff, reservation_id)
-            c.execute(
-                "INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
-                (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
-            )
-            return reservation_id
+            self._spend_characters(c, user_id, project_id, task_id, False, "check", characters, cutoff, reservation_id + "-x1")
+            c.execute("UPDATE assistant_tasks SET chars_charged=chars_charged+? WHERE id=?", (characters, task_id))
 
     def _spend_characters(self, c: Any, user_id: str, project_id: str | None, run_id: str | None, visitor: bool,
                           kind: str, characters: int, cutoff: str, reservation_id: str) -> None:
@@ -772,14 +872,19 @@ class Stage13Service:
                 raise DomainError("authentication_required", 401)
             cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
             if actor["account_type"] == "visitor":
-                checks = c.execute("SELECT COUNT(*) FROM v2_usage_reservations WHERE user_id=? AND created_at>?", (user_id, cutoff)).fetchone()[0]
+                counts = {kind: n for kind, n in c.execute("SELECT workflow_kind,COUNT(*) FROM v2_usage_reservations WHERE user_id=? AND created_at>? GROUP BY workflow_kind", (user_id, cutoff))}
+                tasks = counts.pop(ASSISTANT_WORKFLOW_KIND, 0)
+                checks = sum(counts.values())
                 return {"account_type": "visitor", "check_chars_per_check": self.settings.visitor_check_chars,
-                        "checks_limit": self.settings.visitor_workflows, "checks_remaining": max(0, self.settings.visitor_workflows - checks)}
+                        "checks_limit": self.settings.visitor_workflows, "checks_remaining": max(0, self.settings.visitor_workflows - checks),
+                        "assistant_tasks_limit": self.settings.visitor_assistant_tasks,
+                        "assistant_tasks_remaining": max(0, self.settings.visitor_assistant_tasks - tasks)}
             used = c.execute("SELECT COALESCE(SUM(characters),0) FROM v2_character_usage WHERE user_id=? AND kind='check' AND created_at>?", (user_id, cutoff)).fetchone()[0]
             imports = c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE user_id=? AND kind='import' AND created_at>?", (user_id, cutoff)).fetchone()[0]
             return {"account_type": "registered", "check_chars_limit": self.settings.registered_check_chars, "check_chars_used": used,
                     "check_chars_remaining": max(0, self.settings.registered_check_chars - used),
-                    "imports_limit": self.settings.registered_imports, "imports_remaining": max(0, self.settings.registered_imports - imports)}
+                    "imports_limit": self.settings.registered_imports, "imports_remaining": max(0, self.settings.registered_imports - imports),
+                    "assistant_task_chars": ASSISTANT_TASK_CHARS}
 
     def remaining_provider_attempts(self, user_id: str) -> int:
         """Provider dispatches this user may still make in the rolling 24 hours reserve_provider_attempt enforces."""
@@ -832,6 +937,8 @@ class Stage13Service:
                 c.execute("DELETE FROM v2_character_usage WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_recovery_tokens WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_import_drafts WHERE user_id=?", (user_id,))
+                c.execute("DELETE FROM v2_writing_days WHERE user_id=?", (user_id,))
+                c.execute("DELETE FROM v2_login_attempts WHERE account_name IN (?,?)", (f"password:{user_id}", f"export:{user_id}"))
                 c.execute("DELETE FROM v2_sessions WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_idempotency WHERE scope=? OR scope LIKE ?", (user_id, f"%{user_id}%"))
                 c.execute("DELETE FROM v2_users WHERE id=?", (user_id,))
@@ -879,7 +986,7 @@ class UsageGuardProvider:
     def label(self) -> str:
         return self._provider.label
 
-    def evaluate(self, request: dict[str, Any]) -> Any:
+    def _guarded(self, call: Any) -> Any:
         context = _usage_context.get()
         if context is None:
             raise ValueError("usage_context_required")
@@ -896,6 +1003,12 @@ class UsageGuardProvider:
         # evaluate for the existing offline contract.
         if isinstance(self._provider, DeepSeekProvider):
             with provider_dispatch_guard(reserve_dispatch):
-                return self._provider.evaluate(request)
+                return call()
         reserve_dispatch()
-        return self._provider.evaluate(request)
+        return call()
+
+    def evaluate(self, request: dict[str, Any]) -> Any:
+        return self._guarded(lambda: self._provider.evaluate(request))
+
+    def chat(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], tool_choice: Any, max_tokens: int) -> Any:
+        return self._guarded(lambda: self._provider.chat(messages, tools, tool_choice, max_tokens))

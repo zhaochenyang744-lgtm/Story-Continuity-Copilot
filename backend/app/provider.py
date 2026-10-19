@@ -109,15 +109,27 @@ class ProviderResult:
     observed_response_cost_cny: float | None = None
 
 
+@dataclass(frozen=True)
+class ChatResult:
+    """One tool-calling chat completion (the assistant). `message` is {"content": str|None, "tool_calls": [...]},
+    each call {"id", "name", "arguments"} with arguments still the raw JSON string the model wrote."""
+    message: dict
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    cost_cny: float | None = None
+    finish_reason: str | None = None
+    latency_ms: int | None = None
+
+
 MAX_CLAIM_BASIS_CODEPOINTS = 400
 MAX_ISSUE_REASONING_CODEPOINTS = 800
-CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
+CONTINUITY_PROMPT_VERSION = "continuity-review-v24d-epithet-referents"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25g-screened-presupposed-links-bounded-knowledge-rule-category"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25i-screened-stated-inability"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
-CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v3-presupposed-links"
+CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v4-gap-kind"
 SCREEN_KINDS = ("conflict", "gap", "check")
 SCREEN_MAX_FACTS_PER_FLAG = 3
 
@@ -136,6 +148,7 @@ CONTINUITY_REVIEW_RULES = (
     "A recollection, flashback, or description of an earlier date does not assert that an earlier state still holds at a later date. Different dates or hours are not overlapping merely because they concern the same object. The current draft itself is supplied written evidence: when it explicitly states the later action that changes a prior mutable state, that action is the transition, not a missing intermediate event. Do not demand a second source proving every compatible new event.",
     "Distinguish a character's utterance or belief from the narrator's asserted world facts. An explicitly identified lie, deliberately false testimony, imagined event, or quotation is not an assertion by the narrator that its content is true. Use the supplied narrative framing and explicit correction; do not report an intentional false utterance as a factual continuity conflict merely because the utterance differs from canon. Do not invent deception when the text does not mark it.",
     "Resolve identity only from supplied explicit alias statements or author-confirmed identity links. When two names are explicitly the same person, compare that person's actual state and action; the different name strings are not a holder or identity conflict. If the source supports the same state for that person, omit the issue. Do not assert that two people are the same without evidence.",
+    "A cited text may call a character only by an epithet or role (the girl, the shopkeeper). If the same paragraph or an adjacent sentence names them, it is that character; if it could mean someone else there, follow the text.",
     "Classify nature as possible_conflict when a reviewable tension remains but the supplied material does not establish a direct contradiction. Explain the uncertainty or open-thread boundary and do not claim certainty. "
     "Use it for an undated contradiction that no shared time or static_canon rule proves (null anchors, relation unknown) and for a character contradicting their own earlier unmarked statement. Settle such cases once.",
     "Classify nature and status as insufficient_evidence when a claim depends on a missing handoff, learning event, outcome, authority, identity, source warrant, or other logical link. A draft assertion that a record establishes story fact P is not disproved merely because the record omits the decisive detail: explain that the attribution is unsupported and P remains unknown. Do not infer not-P, invent a timeless rule, or omit this reviewable gap as no_issue. Cite only supplied context with sufficiency insufficient, use evidence_chain role missing_link, explain exactly why judgment stops, set available_actions to [], and omit proposed_memory_change. "
@@ -163,6 +176,45 @@ CONTINUITY_DECISION_EXAMPLES = (
     {"situation": "A source says a legal name and a pen name are the same writer; source and draft give that writer the same manuscript under different names.", "decision": "Same identity and compatible possession: emit no issue."},
 )
 
+# The screened review replaces three v24 knowledge texts. lf3-formal (2026-10-18): four sentences where an earlier
+# passage said a person could not read or did not recognize something, and the draft had them read it with no learning
+# shown, were all judged missing learning events, although FORMAT.md counts exactly this as a character_knowledge
+# conflict ("前文明确不知道密码，这里直接输入"). The legacy rules stay as they were.
+SCREENED_KNOWLEDGE_RULE = (
+    "For character knowledge, a later scene that shows someone learning, being taught or being told is a compatible state change. "
+    "But when an earlier passage plainly states that a person cannot do, does not know, does not recognize or has never learned something, "
+    "and the claim has that same person simply knowing or doing it while no supplied passage or draft sentence shows them learning, being taught or being told, "
+    "that is a conflict about character_knowledge, not a missing link: report a conflict-status issue (possible_conflict unless the same time is explicit "
+    "or the earlier statement holds for life), never insufficient_evidence for a missing learning event. Treat recollections as claims about the recalled time, "
+    "and reported speech or a character's lie as an attributed claim rather than narrator-confirmed canon."
+)
+SCREENED_MISSING_LINK = ("missing handoff, learning event, outcome", "missing handoff, a claimed act of telling or teaching, outcome")
+SCREENED_KNOWLEDGE_EXAMPLES = (
+    {"situation": "The claim says someone was told or taught something by a named person, and no supplied passage shows that telling.", "decision": "insufficient_evidence; cite the missing-link context as insufficient and expose no author decision actions."},
+    {"situation": "An earlier passage says the operator does not recognize the old marks on a probe; the claim has her read them at a glance, and no passage shows her learning them.", "decision": "A conflict-status issue, possible_conflict, category character_knowledge; not insufficient_evidence."},
+)
+
+
+def screened_review_rules() -> list[str]:
+    rules = []
+    for rule in CONTINUITY_REVIEW_RULES:
+        if rule.startswith("For character knowledge, a bounded statement"):
+            rules.append(SCREENED_KNOWLEDGE_RULE)
+        else:
+            rules.append(rule.replace(*SCREENED_MISSING_LINK))
+    return rules
+
+
+def screened_decision_examples() -> list[dict[str, str]]:
+    examples = []
+    for example in CONTINUITY_DECISION_EXAMPLES:
+        if example.get("situation") == "A claimed knowledge transfer has no supplied handoff event.":
+            examples.extend(SCREENED_KNOWLEDGE_EXAMPLES)
+        else:
+            examples.append(example)
+    return examples
+
+
 SCREENED_REVIEW_RULES = (
     "draft.body is the current chapter, or the part of it around the current claims. Judge only current_claims. The other draft sentences are context: they may narrate a transition, or tell who a pronoun or role refers to, and are never reported themselves.",
     "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point neither supports nor contradicts it. When a claim treats such a point as already established earlier (an outcome, a handoff, what someone learned, what a record says), and the supplied passages leave it open, that missing link is insufficient_evidence, not no_issue.",
@@ -182,7 +234,8 @@ CONTINUITY_TRIAGE_RULES = (
     "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record, authority, cause, outcome or source they do not provide, including one built into a phrase (whose object it is, who gave it, where a method came from, what caused a change, how something turned out).",
     "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
     "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
-    "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3. Do not use Markdown.",
+    "Give each score a kind: conflict when a passage disagrees with the sentence, gap when the sentence settles or relies on something the passages leave open or do not provide, none for scores 0 and 1.",
+    "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3 and its kind. Do not use Markdown.",
 )
 
 # A second review is an independent re-review of a key sentence the first review passed. Missing links
@@ -211,6 +264,7 @@ MEMORY_INITIALIZATION_RULES = (
     "Chunk metadata is prompt-only provenance. Never emit chunk_id; source_span_id must always be the supplied original SourceSpan ID.",
     "Prefer a small, non-duplicative set of durable facts that a later chapter could contradict: identities, relationships, physical attributes, who holds or keeps an object, where someone was at a stated time, events and their dates or outcomes, and what a character does or does not know. Skip mood, scenery, and one-off actions. Omit uncertain inferences.",
     "Every explicitly stated world rule, law, prohibition, or standing policy (\"anyone\", \"never\", \"must\", \"under no circumstances\") is a static_canon candidate with predicate rule; extract it before lower-priority facts, quoting its condition and any stated exception in value.",
+    "When the source calls a character only by an epithet or role (the girl, that boy, the shopkeeper) and the same paragraph or an adjacent sentence names them, the candidate's subject is the name, not the epithet.",
     "Read the whole of every supplied span, including its last paragraphs; a fact near the end counts as much as one near the start.",
 )
 
@@ -223,6 +277,7 @@ MEMORY_DELTA_RULES = (
     "predicate must be exactly one value from controlled_predicates. Choose the closest semantic value; open_thread is still supporting and never a core candidate.",
     "Do not emit unsupported inferences, previous-source IDs, Author Context, author plans, alignment analysis, or a priority. Do not emit duplicate candidates or multiple candidates for one affected Memory record. The service decides core versus supporting.",
     "Emit at most 8 candidates. Prefer facts a later chapter could contradict (identities, relationships, attributes, possession, location at a stated time, events and outcomes, knowledge) and every explicitly stated world rule or prohibition as static_canon with predicate rule. Read every supplied span to its end; a span may be one part of a longer chapter.",
+    "When the source calls a character only by an epithet or role (the girl, that boy, the shopkeeper) and the same paragraph or an adjacent sentence names them, the candidate's subject is the name, not the epithet.",
 )
 
 ANALYSIS_LAYER_RULES = (
@@ -320,9 +375,9 @@ def continuity_triage_prompt(request: dict[str, Any]) -> str:
         "chapter": request["chapter"],
         "passages": request["passages"],
         "sentences": request["sentences"],
-        "output_schema": {"scores": [{"id": "supplied sentence id", "score": "integer 0-3"}]},
+        "output_schema": {"scores": [{"id": "supplied sentence id", "score": "integer 0-3", "kind": "conflict|gap|none"}]},
         **({"triage_repair": {"reason_code": request["triage_repair"].get("reason_code"),
-                              "instruction": "The previous response was rejected by the local validator. Score the same sentences again, one integer 0-3 for every supplied sentence id, exactly in output_schema."}}
+                              "instruction": "The previous response was rejected by the local validator. Score the same sentences again, one integer 0-3 and its kind for every supplied sentence id, exactly in output_schema."}}
            if isinstance(request.get("triage_repair"), dict) else {}),
     }, ensure_ascii=False, separators=(",", ":"))
 
@@ -332,8 +387,8 @@ def continuity_prompt(request: dict[str, Any]) -> str:
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
             "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
-            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []) + (list(SECOND_REVIEW_RULES) if request.get("second_review") else []),
-            "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
+            "rules": (screened_review_rules() + list(SCREENED_REVIEW_RULES) if screened else list(CONTINUITY_REVIEW_RULES)) + (list(SECOND_REVIEW_RULES) if request.get("second_review") else []),
+            "decision_examples": screened_decision_examples() if screened else list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
             "evidence_spans": list({
@@ -496,6 +551,7 @@ class DeepSeekProvider:
 
     def __init__(self, client_factory=None):
         self.model = os.getenv("CONTINUITY_MODEL", "")
+        self._assistant_model = os.getenv("CONTINUITY_ASSISTANT_MODEL", "").strip()
         self.base_url = os.getenv("CONTINUITY_BASE_URL", "")
         self.api_key = os.getenv("CONTINUITY_API_KEY", "")
         self.enabled = os.getenv("CONTINUITY_PROVIDER", "").lower() == "deepseek"
@@ -604,6 +660,68 @@ class DeepSeekProvider:
         return REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds
 
     def _send(self, body: dict[str, Any]) -> ProviderResult:
+        return self._dispatch(body, self._json_result)
+
+    def _json_result(self, raw: dict[str, Any], started: float, prior_dispatch_usage_unknown: bool) -> ProviderResult:
+        usage = raw.get("usage", {})
+        choice = raw["choices"][0]
+        finish_reason = choice.get("finish_reason")
+        latency_ms = int((time.perf_counter() - started) * 1000)
+        try:
+            parsed = parse_json_content(choice["message"]["content"])
+        except json.JSONDecodeError as error:
+            raise ProviderInvalidJson(
+                None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
+                None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
+                None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
+                latency_ms, finish_reason,
+                usage.get("prompt_tokens"),usage.get("completion_tokens"),usage.get("cost_cny"),
+            ) from error
+        with self._counter_lock:
+            self.successful_responses += 1
+        return ProviderResult(
+            parsed,
+            None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
+            None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
+            None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
+            latency_ms,
+            finish_reason,
+            usage.get("prompt_tokens"),
+            usage.get("completion_tokens"),
+            usage.get("cost_cny"),
+        )
+
+    @property
+    def assistant_model(self) -> str:
+        """The assistant's model: CONTINUITY_ASSISTANT_MODEL when set, otherwise the one every other task uses."""
+        return getattr(self, "_assistant_model", "") or self.model
+
+    def chat(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], tool_choice: Any, max_tokens: int) -> ChatResult:
+        """One tool-calling completion for the assistant: no response_format, thinking off, temperature 0."""
+        if not self.available:
+            raise ProviderUnavailable()
+        body = {"model": self.assistant_model, "messages": messages, "tools": tools, "tool_choice": tool_choice,
+                "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
+        self._request_timeout = self._timeout_for(body)
+        return self._dispatch(body, self._chat_result)
+
+    def _chat_result(self, raw: dict[str, Any], started: float, prior_dispatch_usage_unknown: bool) -> ChatResult:
+        usage = raw.get("usage", {})
+        if not raw["choices"]:
+            raise KeyError("choices")
+        choice = raw["choices"][0]
+        message = choice["message"]
+        calls = []
+        for call in message.get("tool_calls") or []:
+            function = call["function"]
+            calls.append({"id": str(call.get("id") or f"call_{len(calls) + 1}"), "name": str(function["name"]), "arguments": function.get("arguments") or "{}"})
+        with self._counter_lock:
+            self.successful_responses += 1
+        # A timed-out first dispatch has unknown usage, but the response that did arrive is fully observed.
+        return ChatResult({"content": message.get("content"), "tool_calls": calls}, usage.get("prompt_tokens"), usage.get("completion_tokens"),
+                          usage.get("cost_cny"), choice.get("finish_reason"), int((time.perf_counter() - started) * 1000))
+
+    def _dispatch(self, body: dict[str, Any], read: Any) -> Any:
         started = time.perf_counter()
         prior_dispatch_usage_unknown = False
         for attempt in range(self.max_retries + 1):
@@ -630,34 +748,7 @@ class DeepSeekProvider:
                         json=body,
                     )
                     response.raise_for_status()
-                    raw = response.json()
-                    usage = raw.get("usage", {})
-                    choice = raw["choices"][0]
-                    finish_reason = choice.get("finish_reason")
-                    latency_ms = int((time.perf_counter() - started) * 1000)
-                    try:
-                        parsed = parse_json_content(choice["message"]["content"])
-                    except json.JSONDecodeError as error:
-                        raise ProviderInvalidJson(
-                            None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
-                            None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
-                            None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
-                            latency_ms, finish_reason,
-                            usage.get("prompt_tokens"),usage.get("completion_tokens"),usage.get("cost_cny"),
-                        ) from error
-                    with self._counter_lock:
-                        self.successful_responses += 1
-                    return ProviderResult(
-                        parsed,
-                        None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
-                        None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
-                        None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
-                        latency_ms,
-                        finish_reason,
-                        usage.get("prompt_tokens"),
-                        usage.get("completion_tokens"),
-                        usage.get("cost_cny"),
-                    )
+                    return read(response.json(), started, prior_dispatch_usage_unknown)
             except TIMEOUT_ERRORS as error:
                 prior_dispatch_usage_unknown = True
                 if attempt == self.max_retries:

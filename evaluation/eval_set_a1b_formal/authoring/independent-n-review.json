@@ -1,0 +1,63 @@
+{
+  "reviewer_not_author": true,
+  "reviewer_role": "independent_review",
+  "status": "completed",
+  "reviewed_chapter_counts": {"n": 12},
+  "read_ranges": [{"first": 1, "last": 12, "complete": true, "output_truncated": false}],
+  "source_sha256": "9bdf60b7317b5b4969f78d78238b2e416d09ab5ea61e1f2a43d5fa3d97f358aa",
+  "task_subset_sha256": "9a6614d94c40f37bca174bc123bd26ee70ca5435116bbb4a132ad55cd291ff8c",
+  "shared_draft_sha256": "83c2eb45421dc6248278ef9b3cbda5da08f63488889cc9d06ad0ccc7982fdff2",
+  "subset_hash_method": "对读取的N五题列表及N共享草稿对象分别使用json.dumps(ensure_ascii=False, sort_keys=True)的UTF-8字节计算SHA256；不是最终tasks.json整文件哈希。",
+  "materials_read": ["works/n.md 全文", "authoring/story-bible.json 的N设定", "authoring/n-001-006-handoff.json", "authoring/n-007-012-handoff.json", "authoring/follow-questions.json 的N五题及对应review_notes", "authoring/shared-drafts.json 的n对象"],
+  "findings": [],
+  "unresolved_unintentional_conflicts": 0,
+  "unresolved_gold_ambiguities": 0,
+  "intentional_conflicts": [
+    {
+      "subject": "冉颂",
+      "chapters": [4, 11],
+      "quotes": ["冉颂第一次登台时刚满十岁。", "冉颂第一次登台时刚满十二岁。"],
+      "preserve": true,
+      "review_note": "同一人物首次登台年龄的叙述者陈述相反，未区分试演与正式，也没有人物误记或传言限定；按设定保留，不能修正。"
+    }
+  ],
+  "continuity_review": {
+    "characters_and_aliases": "五名具名人物与两组别名均按设定自然出现；两处别名均由他人呼唤、本人与叙述回应共同建立映射。没有另造具名人物、亲属或永久属性。",
+    "transfers": "响板在2章明确初始保管人、7章交付陆荞；肩衣在3章明确潘恪保管、10章交付唐绢。不存在交接前后错误持有或额外易手。",
+    "states": "陆荞1章无正式角色、8章得到开场独白任务，7章只是无观众排练；孟稠2章不能唱长句、9章恢复，7章仅说短句，没有提前痊愈。",
+    "threads": "双影3章埋设、6章明确由两盏侧灯照衣架产生并收回。5章便笺至12章仍无落款、无留座对象，没有把发现者当作者，也没有另造答案。",
+    "time_and_places": "船上排练到10章靠埠、11章候场、12章完整演出及回船，顺序连贯，无相互冲突的公历时点或时长。候场西侧位置与行动相容。",
+    "scope": "无名同伴、凳子、纸页、袖边、布包、船身晃动和练习失误属于正常场景与行动，未被当作设定之外的考点。未发现新的可考固定事实或额外未收线索。"
+  },
+  "task_review": [
+    {"id": "a1bf-follow-06", "first_evidence_chapters": [1], "evidence_chapters": [10], "chapter_gap": 9, "result": "第一问职责明确定位唐绢，后问她承接身份，10章候场方向支持金标；未带出前问人名物名。"},
+    {"id": "a1bf-follow-07", "first_evidence_chapters": [5], "evidence_chapters": [3], "chapter_gap": 2, "result": "整理袖口动作定位潘恪，后问他承接；3章肩衣名称与初始保管明确，10章后来交接不改变问的早期事实。"},
+    {"id": "a1bf-follow-08", "first_evidence_chapters": [12], "evidence_chapters": [2], "chapter_gap": 10, "result": "收谱动作定位孟稠，后问他承接；2章呼唤及响应支持别名，不会误当成另一个角色。"},
+    {"id": "a1bf-follow-09", "first_evidence_chapters": [1], "evidence_chapters": [8], "chapter_gap": 7, "result": "第一问只确定初期替补身份，追问她的正式角色内容需8章新安排，原角色状态不能代替答案。"},
+    {"id": "a1bf-follow-10", "first_evidence_chapters": [2], "evidence_chapters": [9], "chapter_gap": 7, "result": "前问物件原保管者定位孟稠，后问他的嗓音指代明确，9章明确恢复至能够唱完整长句。"}
+  ],
+  "follow_up_dependency_review": "五道追问均保留她或他作为主体，第一问建立指向且后问不复述前问人名物名；两轮问的是不同事实，全部第一问可答、追问金标有对应正文依据。",
+  "shared_draft_review": {
+    "chapter": 13,
+    "han_count": 309,
+    "draft_only_fact_in_draft": true,
+    "draft_only_fact_absent_from_source": true,
+    "semantic_result": "唯一指定的旗帜新事实在草稿中明确出现，正文十二章未写该物件或等价事实。其他行动为演出后交流的正常延续，没有消解故意矛盾、提前解决便笺或反转状态。"
+  },
+  "mechanical_audit": {
+    "chapter_han_counts": [674, 675, 675, 678, 677, 687, 658, 688, 665, 685, 681, 714],
+    "han_count_min": 658,
+    "han_count_max": 714,
+    "han_count_total": 8157,
+    "all_chapters_have_direct_quoted_dialogue": true,
+    "copy_errors": 0,
+    "copy_scope": "五题第一问、追问和共享草稿对各题两轮依据章全部正文检查中文连续八字；专名按设定中的人物、别名、地点及具名物件豁免。",
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "model_calls": 0,
+    "product_runs": 0
+  },
+  "assembly_boundary": "本次审核原始出题记录中的数字章号与全文语义，最终tasks.json尚待主代理将数字章号机械映射为完整标题、移出辅助字段并由统一检查器核验；未声称最终整套结构已PASS。",
+  "changes_made": "仅新增本独立复核记录；没有修改正文、设定、题目或金标。未读取其他题集及未完稿L2。",
+  "delivery_boundary": "本记录含正式集内部信息，不得复制到交付报告或用户进度；对外只用数字、结构与检查结论。"
+}

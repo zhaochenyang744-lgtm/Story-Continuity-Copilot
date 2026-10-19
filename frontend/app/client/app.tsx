@@ -2,9 +2,9 @@
 
 // The whole client: session, routing by path, the top bar, page-level messages, and the guards that
 // stop an unsaved draft or an unrecorded decision from being lost on navigation or sign-out.
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { startTransition, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../api";
 import type { Onboarding, TutorialEvent, TutorialProgress, User } from "../model";
 import { AuthPage, PasswordResetConfirmPage, PasswordResetRequestPage, VerifyEmailPage } from "./pages/auth";
@@ -12,24 +12,27 @@ import { HomePage } from "./pages/home";
 import { WorksPage } from "./pages/works";
 import { NewWorkPage } from "./pages/new-work";
 import { ImportPage } from "./pages/import";
-import { ProfilePage, SecurityPage } from "./pages/account";
+import { AuthorHomePage } from "./pages/account";
+import { isSettingsItem, SettingsPage } from "./pages/settings";
 import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
+import { PrivacyPage } from "./pages/privacy";
 import { ProjectFrame } from "./project/frame";
+import { AssistantBridge, AssistantDrawer, type AssistantAnchor, type Incoming } from "./project/assistant";
 import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
 import { Avatar, Wordmark } from "./identity";
-import { Button, Chevron, Dialog, pad2, usageShort, useUsage } from "./ui";
+import { Button, Chevron, Dialog, formatCount, pad2, usageShort, useMenuKeyboardMode, useUsage } from "./ui";
+import { Odometer } from "./motion";
+import { loadPrefs, toggleTheme, usePrefs } from "./prefs";
 import { useWritingFocusOrigin } from "./editor";
 import { timeLabel } from "./labels";
 
 // Keep the session check for the module's life.
 let bootstrappedUser: User | null | undefined;
 let sessionBootstrap: Promise<User | null> | null = null;
-let rememberedTheme: "day" | "night" | undefined;
 // Where the current tab's underline was, so the next page can slide it across.
 let lastTabMark: { kind: string; left: number; width: number } | null = null;
-const themeKey = "story-continuity:theme";
-const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
+const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email", "/privacy"];
 // A signed-in author who opens one of these is sent home; nothing of them is drawn on the way.
 const signedOutOnlyPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm"];
 export const TUTORIAL_VERSION = "1.2.0";
@@ -46,11 +49,12 @@ const legacyTabs: Record<string, string> = { outline: "plan", characters: "memor
 
 export function App() {
   useWritingFocusOrigin();
+  useMenuKeyboardMode();
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null);
   const [ready, setReady] = useState(() => bootstrappedUser !== undefined);
-  const [theme, setTheme] = useState<"day" | "night">(() => rememberedTheme ?? "day");
+  const { theme } = usePrefs();
   const [narrow, setNarrow] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState<unknown>(null);
@@ -65,6 +69,14 @@ export function App() {
   const [switchSaving, setSwitchSaving] = useState(false);
   const [switchFailed, setSwitchFailed] = useState(false);
   const [confirmUnstoredLogout, setConfirmUnstoredLogout] = useState(false);
+  // The settings page's unsaved changes: told by the page, asked about when the author goes elsewhere.
+  const settingsDirty = useRef(false);
+  const [settingsLeave, setSettingsLeave] = useState<string | null>(null);
+  // The assistant: where the author is (told by the open page), the drawer other pages open, and a nudge to re-read the allowance.
+  const [assistantAnchor, setAssistantAnchor] = useState<AssistantAnchor | null>(null);
+  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null }>({ open: false, incoming: null });
+  const [usageBump, setUsageBump] = useState(0);
+  const assistantNonce = useRef(0);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const switchPending = useRef(false);
 
@@ -107,33 +119,23 @@ export function App() {
     }
   }, [applyOnboarding]);
 
+  const assistantBridge = useMemo(() => ({
+    setAnchor: setAssistantAnchor,
+    openDrawer: (incoming?: Omit<Incoming, "nonce">) => setDrawer({ open: true, incoming: incoming ? { ...incoming, nonce: ++assistantNonce.current } : null }),
+    usageChanged: () => setUsageBump((count) => count + 1),
+  }), []);
+
   const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
   useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
 
-  // Theme: layout.tsx applies it before paint — the choice remembered on this device, otherwise the
-  // system's light or dark setting.
-  useEffect(() => {
-    if (rememberedTheme !== undefined) return;
-    const timer = window.setTimeout(() => {
-      rememberedTheme = document.documentElement.dataset.theme === "night" ? "night" : "day";
-      setTheme(rememberedTheme);
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, []);
-  // Switching sweeps the new colours across the page from the switch's side, like paper through a press.
-  const toggleTheme = () => {
-    const next = theme === "night" ? "day" : "night";
-    rememberedTheme = next;
-    try { window.localStorage.setItem(themeKey, next); } catch { /* switches for this visit only */ }
-    const apply = () => { document.documentElement.dataset.theme = next; flushSync(() => setTheme(next)); };
-    const sweep = (document as Document & { startViewTransition?: (update: () => void) => unknown }).startViewTransition;
-    if (sweep && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) sweep.call(document, apply);
-    else apply();
-  };
+  // Theme and text size: layout.tsx applies them before paint (the choice remembered on this device, otherwise the
+  // system's light or dark setting); prefs.ts keeps the top bar's button and the settings page in step.
+  useEffect(() => { loadPrefs(); }, []);
   // A new address starts at the top (an #anchor is scrolled to by the page), without the last error.
   const [shownPath, setShownPath] = useState(pathname);
   if (shownPath !== pathname) {
     setShownPath(pathname);
+    if (drawer.open) setDrawer({ open: false, incoming: null });
     // The redirect to the login page keeps the "登录已过期" reason; any other new address starts without the last error.
     if (errorFollowsTo === pathname) setErrorFollowsTo(null);
     else { setError(null); setErrorFollowsTo(null); }
@@ -185,6 +187,9 @@ export function App() {
     const isPublic = publicAuthPaths.includes(pathname);
     if (!user && !isPublic) { router.replace("/login"); return; }
     if (user && signedOutOnlyPaths.includes(pathname)) { router.replace("/"); return; }
+    // The addresses of the single 个人信息 and 账号安全 pages (before v1.8.0) still lead somewhere.
+    if (user && pathname === "/account/profile") { router.replace("/account"); return; }
+    if (user && pathname === "/account/security") { router.replace("/settings/security"); return; }
     if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
   }, [ready, user, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
@@ -211,6 +216,7 @@ export function App() {
     setMenuOpen(false);
     // Moving between the tabs of the open work keeps it (and any unsaved text) in memory; leaving the
     // work drops it, so that asks first.
+    if (settingsDirty.current && href !== pathname) { setSettingsLeave(href); return; }
     const target = href.split(/[?#]/)[0].split("/").filter(Boolean);
     const sameWork = Boolean(projectId) && target[0] === "projects" && target[1] === projectId;
     if ((p.dirty || p.pendingControlledDecision) && href !== pathname && !sameWork) { setSwitchFailed(false); setSwitchTo(href); }
@@ -229,7 +235,8 @@ export function App() {
     const shortcut = (event: KeyboardEvent) => {
       if (!(event.ctrlKey || event.metaKey) || event.key.toLocaleLowerCase() !== "s") return;
       event.preventDefault();
-      if ((!p.dirty && !p.pendingControlledDecision) || p.busy || p.readOnly || p.draftRecoveryConflict || p.pendingDecisionConflict) return;
+      // An autosave in flight would make this save's base revision stale and end in a revision conflict.
+      if ((!p.dirty && !p.pendingControlledDecision) || p.busy || p.autosaveState === "saving" || p.readOnly || p.draftRecoveryConflict || p.pendingDecisionConflict) return;
       void p.save();
     };
     window.addEventListener("keydown", shortcut);
@@ -255,14 +262,16 @@ export function App() {
       startTransition(() => { updateUser(data.user); router.replace("/"); });
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
-  const performLogout = async () => {
+  const performLogout = async (to = "/login") => {
     try {
       await request("/auth/logout", { method: "POST" });
-      startTransition(() => { p.clear(); setTutorialProgress(null); setOnboarding(null); updateUser(null); router.replace("/login"); });
+      settingsDirty.current = false;
+      startTransition(() => { p.clear(); setTutorialProgress(null); setOnboarding(null); updateUser(null); router.replace(to); });
     } catch (cause) { fail(cause); }
   };
   const logout = async () => {
     setMenuOpen(false);
+    if (settingsDirty.current) { setSettingsLeave("logout"); return; }
     if (p.pendingControlledDecision && !p.pendingDecisionConflict) {
       notify(p.pendingDecisionStorageUnavailable ? "正文已保存，但待补记的决定存不进浏览器。请留在此页重试成功后再退出。" : "正文已保存，但这一条的决定还没记下。请先补记再退出；不会重复保存正文。");
       return;
@@ -298,7 +307,7 @@ export function App() {
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
 
-  const usage = useUsage(user ? `${user.id}:${pathname}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}` : "");
+  const usage = useUsage(user ? `${user.id}:${pathname}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}:${usageBump}` : "");
   const tutorialStep = (p.project?.is_tutorial && tutorialProgress?.tutorial_project_id === p.project.id ? tutorialProgress.current_step : 1) as 1 | 2 | 3 | 4 | 5;
 
   let body;
@@ -306,9 +315,12 @@ export function App() {
   else if (pathname === "/password-reset") body = <PasswordResetRequestPage go={(href) => router.push(href)} />;
   else if (pathname === "/password-reset/confirm") body = <PasswordResetConfirmPage go={(href) => router.push(href)} />;
   else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;
+  else if (pathname === "/privacy") body = <PrivacyPage signedIn={Boolean(user)} go={(href) => (user ? go(href) : router.push(href))} />;
   else if (!user) body = <AuthPage register={pathname === "/register"} busy={busy} error={error} submit={submitAuth} visitor={enterVisitor} go={(href) => { setError(null); setNotice(""); router.push(href); }} />;
-  else if (pathname === "/account/profile") body = <ProfilePage user={user} updateUser={updateUser} go={go} />;
-  else if (pathname === "/account/security") body = <SecurityPage user={user} updateUser={updateUser} go={go} />;
+  else if (pathname === "/account/profile" || pathname === "/account/security") body = <div className="boot" role="status">正在载入…</div>;
+  else if (pathname === "/account") body = <AuthorHomePage user={user} go={go} fail={fail} leaveToRegister={() => performLogout("/register")} />;
+  else if (parts[0] === "settings" && parts.length <= 2 && (parts[1] === undefined || isSettingsItem(parts[1])))
+    body = <SettingsPage user={user} updateUser={updateUser} usage={usage} item={isSettingsItem(parts[1] ?? "") ? (parts[1] as Parameters<typeof SettingsPage>[0]["item"]) : "profile"} go={go} setDirty={(dirty) => { settingsDirty.current = dirty; }} leaveTo={(to) => performLogout(to)} />;
   else if (pathname === "/onboarding/complete") body = <TutorialCompletePage go={(href) => { p.clear(); window.scrollTo(0, 0); router.replace(href); }} />;
   else if (!projectId)
     body = pathname === "/projects/new" ? <NewWorkPage fail={fail} go={go} />
@@ -321,6 +333,7 @@ export function App() {
 
   const showFeedback = !publicAuthPaths.includes(pathname) && Boolean(user) && (notice || Boolean(error));
   return (
+    <AssistantBridge.Provider value={assistantBridge}>
     <div className={`app${user ? "" : " app-auth"}`}>
       <a className="skip" href="#main" onClick={() => document.getElementById("main")?.focus()}>跳到主要内容</a>
       {user && (
@@ -345,7 +358,15 @@ export function App() {
                     <button type="button" className="topbar-tab" aria-current={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品管理</button>
                   </>}
             </nav>
-            {usageShort(usage) && <span className="topbar-quota">{usageShort(usage)}</span>}
+            {projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && user.assistant?.available && (
+              <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => setDrawer({ open: true, incoming: null })}>助手</button>
+            )}
+            {usageShort(usage) && (
+              <span className="topbar-quota">
+                {/* The characters left roll like a counter when a task spends them (or gives them back): only the digits that changed move. */}
+                {usage?.account_type === "registered" ? <>可检查 <Odometer value={formatCount(usage.check_chars_remaining)} /> 字</> : usageShort(usage)}
+              </span>
+            )}
             {!projectId && !["/projects", "/projects/new", "/projects/import"].includes(pathname) && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
             <ThemeSwitch theme={theme} toggle={toggleTheme} />
             <div className="account">
@@ -355,9 +376,8 @@ export function App() {
               {menuOpen && (
                 <div className="account-menu" role="menu" aria-label="账号菜单">
                   <p className="account-menu-head"><strong>{user.display_name}</strong><span>{user.account_type === "visitor" ? <>访客空间 · 有效至 {timeLabel(user.visitor_expires_at)}</> : `@${user.account_name}`}</span></p>
-                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/profile")}>个人信息</button>}
-                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>}
-                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => void reopenTutorial()}>重新看一遍导览</button>}
+                  <button type="button" role="menuitem" onClick={() => go("/account")}>作者主页</button>
+                  <button type="button" role="menuitem" onClick={() => go("/settings")}>设置</button>
                   <button type="button" role="menuitem" className="danger" onClick={() => void logout()}>退出登录</button>
                 </div>
               )}
@@ -379,6 +399,19 @@ export function App() {
         )}
         {body}
       </main>
+      {(user || pathname === "/privacy") && (
+        <footer className="site-foot">
+          <nav aria-label="页脚">
+            <Link href="/privacy" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey) return; event.preventDefault(); if (user) go("/privacy"); else router.push("/privacy"); }}>隐私说明</Link>
+          </nav>
+        </footer>
+      )}
+      {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && (
+        <AssistantDrawer key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} variant="drawer"
+          material={{ chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })), characters: p.characters.map((person) => ({ id: person.id, name: person.name })), draftBody: p.draft?.body ?? "", issues: [], issuesReason: "" }}
+          beta={Boolean(user.assistant?.beta)}
+          close={() => { setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />
+      )}
       {switchTo && (
         <Dialog title={p.pendingDecisionConflict ? "待补记的决定已失效" : p.pendingControlledDecision ? "决定还没记下" : "草稿还没保存"} closeDisabled={switchSaving} close={() => { if (!switchPending.current) setSwitchTo(null); }}>
           <p>{p.pendingDecisionConflict
@@ -417,6 +450,21 @@ export function App() {
           </div>
         </Dialog>
       )}
+      {settingsLeave && (
+        <Dialog title="资料还没保存" close={() => setSettingsLeave(null)}>
+          <p>个人资料有改动还没保存，现在离开会丢掉它们。</p>
+          <div className="dialog-actions">
+            <Button kind="primary" onClick={() => {
+              const target = settingsLeave;
+              settingsDirty.current = false;
+              setSettingsLeave(null);
+              if (target === "logout") void performLogout();
+              else router.push(target);
+            }}>放弃修改并离开</Button>
+            <Button kind="text" onClick={() => setSettingsLeave(null)}>留在这里</Button>
+          </div>
+        </Dialog>
+      )}
       {confirmUnstoredLogout && (
         <Dialog title="退出会丢失这条记录" close={() => setConfirmUnstoredLogout(false)}>
           <p>这个浏览器没能保存这条已失效的待补记记录。退出后它会丢失；服务器上的正文和决定不会改变。</p>
@@ -427,6 +475,7 @@ export function App() {
         </Dialog>
       )}
     </div>
+    </AssistantBridge.Provider>
   );
 }
 

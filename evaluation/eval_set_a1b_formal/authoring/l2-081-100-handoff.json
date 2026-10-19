@@ -1,0 +1,571 @@
+{
+  "work": "l2",
+  "chapter_range": [
+    81,
+    100
+  ],
+  "chapters": [
+    {
+      "chapter": 81,
+      "title": "决定读到末尾",
+      "han_count": 455,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 82,
+      "title": "两边同时记录",
+      "han_count": 431,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 83,
+      "title": "成对起伏的来处",
+      "han_count": 459,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 84,
+      "title": "空包装也要走一遍",
+      "han_count": 444,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 85,
+      "title": "话音之前的一小段",
+      "han_count": 430,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 86,
+      "title": "匣旁先放好说明",
+      "han_count": 439,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 87,
+      "title": "匣身越过两双手之间",
+      "han_count": 443,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 88,
+      "title": "外壳之外还有记录",
+      "han_count": 439,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 89,
+      "title": "留给读谱的一张桌子",
+      "han_count": 464,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 90,
+      "title": "译出的每一处都有对应",
+      "han_count": 454,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 91,
+      "title": "练习纸上没有真交接",
+      "han_count": 459,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 92,
+      "title": "网袋旁留出的路",
+      "han_count": 444,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 93,
+      "title": "过道里同时停下",
+      "han_count": 436,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 94,
+      "title": "石面在灯下显露",
+      "han_count": 446,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 95,
+      "title": "门外核清的清除过程",
+      "han_count": 447,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 96,
+      "title": "可以进入的决定",
+      "han_count": 459,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 97,
+      "title": "首批从逐份查看开始",
+      "han_count": 464,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 98,
+      "title": "印记落在返还之后",
+      "han_count": 458,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 99,
+      "title": "出发前仍要停笔核对",
+      "han_count": 472,
+      "paragraph_count": 4
+    },
+    {
+      "chapter": 100,
+      "title": "模拟舱外的停步",
+      "han_count": 482,
+      "paragraph_count": 4
+    }
+  ],
+  "new_names": [],
+  "new_aliases": [],
+  "new_places": [],
+  "existing_names_appearing": [
+    "桑翎",
+    "霍准",
+    "宁绡",
+    "贝嵘",
+    "匡霁",
+    "祝珉",
+    "邵璇",
+    "廉舟",
+    "尹禾",
+    "索迦",
+    "袁碣"
+  ],
+  "new_objects": {
+    "named_exam_objects": [],
+    "existing_named_exam_object_transfers": [
+      {
+        "name": "白涡孵匣",
+        "chapter": 87,
+        "from": "贝嵘",
+        "to": "廉舟",
+        "note": "只交付当前保管，不追溯初始链；86仅准备，尚未交付"
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "悬浮网袋",
+        "first_chapter": 92,
+        "use": "运送本趟散装孢子，无机制或额外能力解释"
+      },
+      {
+        "name": "已返还的样本盒与圆环印",
+        "first_chapter": 98,
+        "use": "已返还再盖印；91只演练登记、没有提前盖印"
+      },
+      {
+        "name": "确认板",
+        "use": "首批交付完成后桑翎按住确认板",
+        "appearance_chapter": 100,
+        "first_chapter": 3
+      },
+      {
+        "name": "未启动的模拟舱",
+        "first_chapter": 100,
+        "use": "预定终章停点，无新专名；全员停在舱外，不开始下一章模拟"
+      }
+    ],
+    "existing_exam_objects_reappearing": [
+      {
+        "name": "脉石碑",
+        "chapter": 94,
+        "note": "唯一同一碑初刻横纹第二说，不磨改替换"
+      },
+      {
+        "name": "古式脉冲记谱",
+        "chapters": [
+          89,
+          90
+        ],
+        "note": "89独立译读未形成完整结果；90首次独立译成并获核验"
+      },
+      {
+        "name": "带银点的种子相关记录",
+        "chapter": 99,
+        "note": "银点成因仍无结论"
+      },
+      {
+        "name": "无署名星空描图",
+        "chapter": 99,
+        "note": "作者及用途均未知，不解释成递送指示"
+      }
+    ],
+    "ordinary_props": [
+      {
+        "chapters": [
+          81,
+          85
+        ],
+        "items": [
+          "许可结果与轮值安排纸",
+          "授粉容具与培养物",
+          "观察纸",
+          "桌椅",
+          "空件",
+          "空杯"
+        ]
+      },
+      {
+        "chapters": [
+          82,
+          83
+        ],
+        "items": [
+          "相邻菌群",
+          "养分交换实验材料与观察记录",
+          "空杯",
+          "练习摘记"
+        ]
+      },
+      {
+        "chapters": [
+          84,
+          86,
+          87,
+          88
+        ],
+        "items": [
+          "空包装与空件",
+          "随附交接说明",
+          "空盒",
+          "椅子",
+          "孵匣外壳",
+          "休眠状态对应观察资料",
+          "普通薄纸"
+        ]
+      },
+      {
+        "chapters": [
+          89,
+          90
+        ],
+        "items": [
+          "练习纸与空纸",
+          "杯子",
+          "古式记谱完整译文",
+          "核验结果",
+          "空盒",
+          "桌椅"
+        ]
+      },
+      {
+        "chapters": [
+          91,
+          98
+        ],
+        "items": [
+          "练习登记纸",
+          "空盒",
+          "真实返还记录",
+          "印具"
+        ]
+      },
+      {
+        "chapters": [
+          92
+        ],
+        "items": [
+          "散装孢子",
+          "本趟递送纸",
+          "通道旁空件"
+        ]
+      },
+      {
+        "chapters": [
+          93,
+          94
+        ],
+        "items": [
+          "纪念陈列说明卡",
+          "空盒",
+          "普通观察纸",
+          "布",
+          "灯",
+          "空件"
+        ]
+      },
+      {
+        "chapters": [
+          95,
+          96
+        ],
+        "items": [
+          "舱外记录台",
+          "清除过程资料",
+          "外部观测画面",
+          "验证资料",
+          "待用普通物件",
+          "随附材料"
+        ]
+      },
+      {
+        "chapters": [
+          97,
+          99,
+          100
+        ],
+        "items": [
+          "候选样本与首批存活样本",
+          "筛选观察资料",
+          "补充说明",
+          "空件",
+          "当前安排纸",
+          "交付与接收记录"
+        ]
+      }
+    ],
+    "ordinary_prop_scope": "登记本段全部具体场景道具，包括前文已用普通道具再次出现；除预定考点、交付和停点外不赋予永久规则、专名或新增可考事实。"
+  },
+  "new_time_points": {
+    "absolute_calendar_dates": [],
+    "fixed_durations": [],
+    "authorized_historical_reference": [
+      {
+        "chapter": 94,
+        "reference": "同一脉石碑首次雕刻时",
+        "fact": "七条横纹，预定有意矛盾第二说，不是眼下光线与位置造成增减"
+      }
+    ],
+    "relative_markers": [
+      "81全天许可落定并依当轮安排进行白昼授粉",
+      "82养分交换实验，尚待复核不提前给结论",
+      "83实验复核后收回成对电流线索",
+      "84空包装接取演练不运送样本",
+      "85短暂等候轻哼，随后继续核对",
+      "86孵匣交接前准备",
+      "87孵匣实际交付",
+      "88外壳与休眠资料核对，不等于首批筛选已完",
+      "89独立译读未完成",
+      "90首次独立译成且核验通过",
+      "91登记演练与真实工作分开",
+      "92本趟散装材料运送并接收",
+      "93陈列旁通行小停顿",
+      "94陈列说明整理",
+      "95清除及验证尚待最后确认，全员在外",
+      "96验证完成后正式解封并依安排进入",
+      "97首批样本筛选完成",
+      "98确认返还后盖印",
+      "99交付前最终核对，未解事项另留",
+      "100首批存活样本交付完成，众人停在尚未启动模拟舱外"
+    ],
+    "note": "只有前后相接工作轮次及预定历史参考，没有新增绝对日期、固定时长、航程；100未启动101的模拟或绘制新气流路径。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 81,
+      "quote": "宁绡获得全天授粉许可，白昼和夜间均可进行。",
+      "note": "新许可状态，不回述旧限制",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 83,
+      "quote": "成对的微弱电流，是相邻菌群交换养分时的信号。",
+      "note": "预定线索收回，不扩为全部菌群规律",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 85,
+      "quote": "匡霁轻轻哼起一段没有词的曲调。",
+      "note": "仅哼无词曲调，不提供作者名称来源",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 87,
+      "quote": "贝嵘将白涡孵匣交给廉舟保管。",
+      "note": "只写当次交付，不追述初始保管链",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 90,
+      "quote": "索迦首次独立译出了古式脉冲记谱，译读结果通过核验。",
+      "note": "首次独立译成获核验，不概述27旧状态",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 92,
+      "quote": "廉舟用悬浮网袋运送这一趟的散装孢子。",
+      "note": "散装材料本趟容具，与孵匣照管及首批交付不同事项",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 94,
+      "quote": "脉石碑初刻时正面有七条横纹。",
+      "note": "同一碑首次雕刻有意矛盾第二说",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 95,
+      "quote": "蘅环舱此时仍保持封存，大家通过外部观测与清除记录继续核验，门外的人没有为取一张纸或确认一个角落而擅自进入。",
+      "note": "96之前保持门外，清除由外部操作",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 96,
+      "quote": "蘅环舱已经清除游离孢子并完成验证，现已解除封存，允许人员进入。",
+      "note": "新解封状态，不复述35的超标封存起因",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 98,
+      "quote": "尹禾给已返还的样本盒盖上圆环印。",
+      "note": "返还完成后具体标记",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 99,
+      "quote": "另一张无署名星空描图也没有作者与用途的答案，相关疑问按原样留存，没有被人顺手解释成这次递送的指示。",
+      "note": "开放线索保持未解",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 100,
+      "quote": "首批存活样本的交付已经完成。",
+      "note": "主线交付完成",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 100,
+      "quote": "桑翎按住确认板，让身旁同伴看清落定的结果，才将手移开一点，继续核对留存说明。",
+      "note": "指定终章动作",
+      "position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "ending": {
+    "chapter": 100,
+    "last_sentence": "舱内没有响起启动声，众人站在未启动的模拟舱外，带着完成的交付，停在下一步开始以前。",
+    "first_batch_handoff_complete": true,
+    "confirmation_board_action": true,
+    "simulation_started": false,
+    "chapter101_written": false
+  },
+  "intentional_conflicts_preserved": [
+    {
+      "chapter": 94,
+      "pair_chapter": 44,
+      "kind": "同一碑初刻横纹数量第二说",
+      "explained_or_repaired": false
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "前80章原始128548字节完整保留，直接前缀哈希一致，无归一或修改。",
+    "81仅写全天许可新状态，不回述15章夜间限定；白昼实际授粉在许可之后。",
+    "82只实验与待复核；83才给相邻菌群养分交换信号的确定结论，不扩大为普遍科技规则。",
+    "85只写无词轻哼，不写曲名、作者、来源，不引用歌词或现存曲子。",
+    "86未交付；87贝嵘交廉舟保管，只写当前交付，无完整历史链。",
+    "88只核对外壳与相应休眠观察，不以外壳替代活性观察或提前完成97首批筛选。",
+    "89未形成完整译文；90首次独立译成并核验，未回述27旧状态。",
+    "91只是空盒和登记演练，不制造真实返还；98实际确认返还后盖圆环印。",
+    "92散装孢子运输与孵匣照管事项明确分开；没有将本趟递送当作所有出舱工作完成。",
+    "94同一唯一碑初刻七条横纹保留有意矛盾；展示调整不改雕刻，也无磨改替换解释。",
+    "95人员全部在蘅环舱外，通过外部操作与记录验证；96确认清除和验证后才解封并允许进入。",
+    "96只写新解封状态，未回述35章游离孢子超标封存的旧因果。",
+    "97最终选定首批而非交付，99完成准备核对，100才正式完成首批存活样本交付。",
+    "99明确保留银点成因、描图作者用途的未知；其余缺环的动机、价格来源、保存时长未补足。",
+    "100主线收束于首批交付和确认板，最后众人在未启动模拟舱外停步；未做101飞行模拟或新气流路径。",
+    "未写题目金标、未提交、未调用模型产品接口、未读其他题集；后续需主代理及未参与写作的独立复核者验收。"
+  ],
+  "check": {
+    "chapter_count": 20,
+    "han_count_min": 430,
+    "han_count_max": 482,
+    "han_count_total": 9025,
+    "full_work_chapters": 100,
+    "full_work_han_total": 46935,
+    "full_work_han_min": 429,
+    "full_work_han_max": 510,
+    "all100_titles_unique": true,
+    "all100_direct_dialogue": true,
+    "all100_han_within_limits": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "previous_chapter_range": [
+      1,
+      80
+    ],
+    "previous_byte_length": 128548,
+    "previous_prefix_sha256": "13b4cefda81c0aa5b5387040d8b83b9705ccdac18b8b776a02330e707dd935f0",
+    "current_prefix_sha256": "13b4cefda81c0aa5b5387040d8b83b9705ccdac18b8b776a02330e707dd935f0",
+    "previous80_byte_identical": true,
+    "current_work_sha256": "fefe59487d6b5752b4632a2bcead5b6e3d5113374d51af75abc25f6e40214413",
+    "prose_generation": "逐章人工原创；脚本仅计字、检查对话与原句及位置、验证哈希、整理交接JSON",
+    "model_or_product_api_calls": 0
+  }
+}

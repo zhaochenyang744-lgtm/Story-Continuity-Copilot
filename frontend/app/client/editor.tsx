@@ -9,6 +9,7 @@ import { Mark } from "@tiptap/pm/model";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "@tiptap/markdown";
 import type { DraftBodyFormat } from "../model";
+import { charDiff } from "./project/assistant-diff";
 
 /** Text editing keeps a cue only until typing starts, and only when Tab brought focus here. */
 export function useWritingFocusOrigin() {
@@ -243,6 +244,17 @@ function findVisible(doc: ProseNode, text: string) {
   return found as {from: number; to: number} | null;
 }
 
+/** How many times a piece of text is in an editor right now (inside one paragraph each; overlapping matches count). */
+export function countVisibleText(targetId: string, text: string): number {
+  const editor = editors.get(targetId)?.editor;
+  if (!editor || editor.isDestroyed || !text) return 0;
+  let count = 0;
+  eachTextblock(editor.state.doc, (visible) => {
+    for (let at = visible.indexOf(text); at >= 0; at = visible.indexOf(text, at + 1)) count += 1;
+  });
+  return count;
+}
+
 function findingDecorations(doc: ProseNode, state: FindingMarkState) {
   if (!state.marks.length) return DecorationSet.empty;
   const decorations: Decoration[] = [];
@@ -317,6 +329,29 @@ const Flashes = Extension.create({
   },
 });
 
+/** 校对: the marks of a change just adopted (the old words struck and folded away, the new ones dropping in). Temporary, like the
+    flashes: anything the author does to the editor while they are there (typing, clicking, selecting) removes them at once. */
+type ProofMeta = DecorationSet | "clear";
+const proofKey = new PluginKey<DecorationSet>("proofread");
+const Proofread = Extension.create({
+  name: "proofread",
+  addProseMirrorPlugins() {
+    return [new Plugin<DecorationSet>({
+      key: proofKey,
+      state: {
+        init: () => DecorationSet.empty,
+        apply: (tr, set) => {
+          const meta = tr.getMeta(proofKey) as ProofMeta | undefined;
+          if (meta === "clear") return DecorationSet.empty;
+          if (meta) return meta;
+          return tr.docChanged || tr.selectionSet ? DecorationSet.empty : set;
+        },
+      },
+      props: {decorations: (state) => proofKey.getState(state)},
+    })];
+  },
+});
+
 const reduceMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let flashCounter = 0;
 
@@ -325,12 +360,61 @@ export function flashText(targetId: string, text: string, className: string, ms:
   const editor = editors.get(targetId)?.editor;
   if (!editor || editor.isDestroyed || reduceMotion()) return;
   const range = findVisible(editor.state.doc, text);
-  if (!range) return;
+  if (range) flashRange(editor, range, className, ms);
+}
+function flashRange(editor: Editor, range: {from: number; to: number}, className: string, ms: number) {
   const key = `flash-${(flashCounter += 1)}`;
   editor.view.dispatch(editor.state.tr.setMeta(flashKey, {add: {...range, className, key}}).setMeta("addToHistory", false));
   window.setTimeout(() => {
     if (!editor.isDestroyed) editor.view.dispatch(editor.state.tr.setMeta(flashKey, {remove: key}).setMeta("addToHistory", false));
   }, ms);
+}
+
+/** Calls `done` once the page has stopped scrolling: when the browser says so (`scrollend`), or when its position has held still for a moment,
+    and in any case after a second. A ring drawn while the page is still moving would be gone before the author's eyes arrive. */
+function afterScroll(done: () => void) {
+  if (reduceMotion()) { done(); return; }
+  let settled = false;
+  let frame = 0;
+  const began = performance.now();
+  let last = window.scrollY;
+  let since = began;
+  const finish = () => {
+    if (settled) return;
+    settled = true;
+    window.removeEventListener("scrollend", finish);
+    window.cancelAnimationFrame(frame);
+    done();
+  };
+  const watch = () => {
+    const now = performance.now();
+    if (window.scrollY !== last) { last = window.scrollY; since = now; }
+    if (now - began >= 1000 || (now - began >= 120 && now - since >= 140)) { finish(); return; }
+    frame = window.requestAnimationFrame(watch);
+  };
+  window.addEventListener("scrollend", finish, { once: true });
+  frame = window.requestAnimationFrame(watch);
+}
+
+/** 去原文: bring a passage of the text into view and ring it once, when the page has stopped moving (the ring is left out when motion is reduced).
+    The passage may be longer than one paragraph or may not match exactly; its first line, then its first sentence, then
+    its first words are tried in turn. True when something was found. */
+export function locateText(targetId: string, text: string, ms = 1400): boolean {
+  const editor = editors.get(targetId)?.editor;
+  if (!editor || editor.isDestroyed) return false;
+  const line = text.split("\n").map((part) => part.trim()).find(Boolean) ?? "";
+  const sentence = /^[^。！？!?]+[。！？!?]?/.exec(line)?.[0] ?? line;
+  const candidates = [...new Set([line, sentence, sentence.slice(0, 24), line.slice(0, 12)].filter((part) => part.length >= 4))];
+  for (const candidate of candidates) {
+    const range = findVisible(editor.state.doc, candidate);
+    if (!range) continue;
+    const at = editor.view.domAtPos(range.from);
+    const element = at.node instanceof HTMLElement ? at.node : at.node.parentElement;
+    element?.scrollIntoView({block: "center", behavior: reduceMotion() ? "auto" : "smooth"});
+    afterScroll(() => flashText(targetId, candidate, "mark-pulse", ms));
+    return true;
+  }
+  return false;
 }
 
 /** 改字: strike the old words through, then let `commit` replace them and make the new words glow.
@@ -354,6 +438,100 @@ export function rewriteDraftText(targetId: string, before: string, after: string
   }, 560));
 }
 
+/** The place in the document where `text` sits that is nearest to `near`. */
+function findNear(doc: ProseNode, text: string, near: number) {
+  let best: {from: number; to: number} | null = null;
+  eachTextblock(doc, (visible, positionOf) => {
+    for (let at = visible.indexOf(text); at >= 0; at = visible.indexOf(text, at + 1)) {
+      const from = positionOf(at);
+      if (!best || Math.abs(from - near) < Math.abs(best.from - near)) best = {from, to: positionOf(at + text.length)};
+    }
+  });
+  return best as {from: number; to: number} | null;
+}
+
+/** When the first new word drops (after the old words are struck, 260ms, and folded away, 200ms from 300ms), the gap between
+    words, and how long a new word takes to drop and settle into the text colour. */
+const PROOF_INSERT_MS = 540;
+const PROOF_GAP_MS = 45;
+const PROOF_SETTLE_MS = 900;
+
+/** 校对: put `after` in the place of `before` (`commit` does the real replacement, as it would without any show), then mark the
+    change like a proofreader: the old words struck through from left to right and folded away, the new ones dropping in one by
+    one in green and settling into the text's colour, the whole sentence ringed once. The text is final from the first moment;
+    the marks are only on top, and gone as soon as the author does anything in the editor. */
+export function proofreadDraftText(targetId: string, before: string, after: string, commit: () => boolean): Promise<boolean> {
+  const editor = editors.get(targetId)?.editor;
+  const start = editor && !editor.isDestroyed ? findVisible(editor.state.doc, before) : null;
+  const ok = commit();
+  if (!ok || !editor || !start || reduceMotion()) {
+    if (ok) window.setTimeout(() => flashText(targetId, after, "rewrite-fresh", 1800), 60);
+    return Promise.resolve(ok);
+  }
+  // The new words may reach the editor a moment after `commit` (a plain-text draft is handed over through the page's state).
+  let tries = 0;
+  const begin = () => {
+    if (editor.isDestroyed) return;
+    const range = findNear(editor.state.doc, after, start.from);
+    if (!range) { if ((tries += 1) < 15) window.setTimeout(begin, 30); return; }
+    playProofread(editor, range, before, after);
+  };
+  window.requestAnimationFrame(begin);
+  return Promise.resolve(true);
+}
+
+function playProofread(editor: Editor, range: {from: number; to: number}, before: string, after: string) {
+  const decorations: Decoration[] = [];
+  const parts = charDiff(before, after);
+  const added = parts.filter((part) => part.kind === "ins").reduce((sum, part) => sum + Array.from(part.text).length, 0);
+  // A sentence changed throughout would take too long at one word at a time: the gap shrinks to keep the drop under half a second.
+  const gap = Math.min(PROOF_GAP_MS, Math.floor(450 / Math.max(1, added)));
+  let position = range.from;
+  let order = 0;
+  for (const part of parts) {
+    if (part.kind === "same") { position += part.text.length; continue; }
+    if (part.kind === "del") {
+      const at = position;
+      decorations.push(Decoration.widget(at, () => {
+        const old = document.createElement("span");
+        old.className = "proof-del";
+        old.textContent = part.text;
+        old.contentEditable = "false";
+        old.style.setProperty("--w", `${Array.from(part.text).length * 1.1}em`);
+        return old;
+      }, {side: -1, ignoreSelection: true, key: `proof-del-${at}-${part.text}`}));
+      continue;
+    }
+    for (const char of Array.from(part.text)) {
+      decorations.push(Decoration.inline(position, position + char.length, {class: "proof-ins", style: `animation-delay: ${PROOF_INSERT_MS + order * gap}ms`}));
+      position += char.length;
+      order += 1;
+    }
+  }
+  const finishedAt = PROOF_INSERT_MS + Math.max(0, order - 1) * gap + PROOF_SETTLE_MS + 60;
+  let over = false;
+  let timer = 0;
+  // Any key or click ends the show on the spot; the text is already as it will be.
+  const interrupt = () => stop();
+  const stop = () => {
+    if (over) return;
+    over = true;
+    window.clearTimeout(timer);
+    document.removeEventListener("keydown", interrupt, true);
+    document.removeEventListener("pointerdown", interrupt, true);
+    if (!editor.isDestroyed) editor.view.dispatch(editor.state.tr.setMeta(proofKey, "clear" satisfies ProofMeta).setMeta("addToHistory", false));
+  };
+  document.addEventListener("keydown", interrupt, true);
+  document.addEventListener("pointerdown", interrupt, true);
+  editor.view.dispatch(editor.state.tr.setMeta(proofKey, DecorationSet.create(editor.state.doc, decorations)).setMeta("addToHistory", false));
+  timer = window.setTimeout(() => {
+    const wasOver = over;
+    stop();
+    // The whole sentence is ringed once at the end, if the author let it play out.
+    if (!wasOver && !editor.isDestroyed) flashRange(editor, range, "mark-pulse", 900);
+  }, finishedAt);
+}
+
 export function RichDraftEditor({id, value, format, disabled, label, placeholder, onChange, marks, onPickMark}: {
   id: string;
   value: string;
@@ -372,7 +550,7 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
   const newlineRef = useRef(value.includes("\r\n") ? "\r\n" : "\n");
   const change = useRef(onChange);
   const editor = useEditor({
-    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}}), FindingMarks, Flashes],
+    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}}), FindingMarks, Flashes, Proofread],
     immediatelyRender: false,
     content: format === "markdown" ? value : plainDocument(value),
     contentType: format === "markdown" ? "markdown" : undefined,

@@ -1,0 +1,746 @@
+{
+ "version": "a1cx-1",
+ "set_id": "a1cx-dev",
+ "author": "Opus (development questions on spent works)",
+ "works": [
+  {
+   "key": "moriri",
+   "title": "末日收尾人（改编）",
+   "language": "zh",
+   "purpose": "general",
+   "kind": "long",
+   "source_file": "works/moriri.md",
+   "names": [
+    "殷明德",
+    "陈鸢仪",
+    "朝日",
+    "周爱怜",
+    "殷初曦",
+    "小曦",
+    "洋清荷",
+    "德莉莎",
+    "王耀辉",
+    "至理编织",
+    "广寒集团",
+    "帝雉",
+    "墨匠军械",
+    "新年惨案"
+   ],
+   "plans": [
+    {
+     "chapter": 122,
+     "text": "市政府防线撑过第五次进攻后，殷明德被调往侧翼，与李谦忠一起守住通往地下室的交通壕。"
+    }
+   ],
+   "foreshadows": [],
+   "shared_draft": {
+    "chapter_title": "第122章 照明弹",
+    "draft_only_fact": "今晚的口令改成了「青梅」。",
+    "body": "炮声停了片刻。殷明德靠在沙包后，低头看着手里那柄红刃黑剑。补给兵抱来一箱新到的照明弹，顺口告诉他今晚的口令改成了「青梅」。梅晚冬把耳塞取下一边，问下一波什么时候来，他说等炮停了再说。"
+   }
+  },
+  {
+   "key": "folio",
+   "title": "折页间的风",
+   "language": "zh",
+   "purpose": "general",
+   "kind": "long",
+   "source_file": "works/folio.md",
+   "names": [
+    "郦松禾",
+    "邢照渔",
+    "狄毓枝",
+    "毓枝",
+    "狄毓棠",
+    "毓棠",
+    "庄绮恩",
+    "饶纫",
+    "曹蓉",
+    "许乔寅",
+    "折汀装帧铺",
+    "鸦绒纸",
+    "秋帙会"
+   ],
+   "plans": [
+    {
+     "chapter": 11,
+     "text": "展览进入第二周，空桌改作新材料的接收台，三人分头回复借物人的事项。"
+    }
+   ],
+   "foreshadows": [],
+   "shared_draft": {
+    "chapter_title": "第十一章 接收台",
+    "draft_only_fact": "有人在接收台上留下了一枚铜制书签。",
+    "body": "第二周的第一天，郦松禾比平常早到。空桌上多了一枚铜制书签，压着一张没有署名的便条。毓枝把它登记进来件夹，邢照渔则去后院搬那块磨好的木片。"
+   }
+  },
+  {
+   "key": "cistern",
+   "title": "叠弦城的听木",
+   "language": "zh",
+   "purpose": "general",
+   "kind": "long",
+   "source_file": "works/cistern.md",
+   "names": [
+    "棱泠",
+    "砚索",
+    "苔絮",
+    "阔笛",
+    "鸣殖",
+    "澹笙",
+    "芮棘",
+    "绒葭",
+    "铜袖客",
+    "窄雾井",
+    "缄骨墙",
+    "铜鳞巡游"
+   ],
+   "plans": [],
+   "foreshadows": [],
+   "shared_draft": {
+    "chapter_title": "第九章 新的纸鳞",
+    "draft_only_fact": "澹笙在新纸鳞的背面画了一只没有尾巴的鱼。",
+    "body": "天亮以后，澹笙把誊好的纸鳞摊在廊边晾干。她在其中一张的背面画了一只没有尾巴的鱼，砚索看见了，没有问。棱泠收好听木，准备去送水闸换班。"
+   }
+  }
+ ],
+ "tasks": [
+  {
+   "id": "a1cx-m-qa-01",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "他在缔约时，这把剑是怎么介绍自己的？",
+   "paraphrased": true,
+   "answer_points": [
+    "自称广寒集团的魔导兵器「至理编织」。"
+   ],
+   "forbidden_claims": [
+    "说它是墨匠军械出售的武器。"
+   ],
+   "evidence_chapters": [
+    "第13章 原第七章"
+   ],
+   "evidence_quotes": [
+    "我是广寒集团的魔导兵器，『至理编织』"
+   ],
+   "note": "选中草稿句子定位到剑；答案在第13章后半。",
+   "selection": "殷明德靠在沙包后，低头看着手里那柄红刃黑剑。",
+   "quote_positions": [
+    2099
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-qa-02",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "殷明德缔约改造完成时，适应性是多少？",
+   "paraphrased": false,
+   "answer_points": [
+    "适应性达到百分之九十二。",
+    "完成的是眷体化改造。"
+   ],
+   "forbidden_claims": [
+    "适应性达到百分之百。"
+   ],
+   "evidence_chapters": [
+    "第13章 原第七章",
+    "第13章 原第七章"
+   ],
+   "evidence_quotes": [
+    "很不错的结果嘛，适应性达到百分之九十二",
+    "『眷体』化改造……完成"
+   ],
+   "note": "改造结果在长章节末尾。",
+   "quote_positions": [
+    3065,
+    3058
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-qa-03",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "学校出事那天，广寒集团的那位大小姐是怎么和殷明德交流的？",
+   "paraphrased": true,
+   "answer_points": [
+    "她不开口，在立牌上用麦克笔写字举给他看。"
+   ],
+   "forbidden_claims": [
+    "她开口和殷明德对话。"
+   ],
+   "evidence_chapters": [
+    "第22章 原第十三章"
+   ],
+   "evidence_quotes": [
+    "她勉为其难的从身后拿出了一张立牌，用自带的麦克笔在上头写上文本，然后举了起来"
+   ],
+   "note": "同章前半有多处同名人物的其他动作作干扰。",
+   "quote_positions": [
+    2574
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-qa-04",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "answerable_multi",
+   "question": "朝日打斗时用的锐器是什么？她的义父据说是什么样的人？",
+   "paraphrased": true,
+   "answer_points": [
+    "她用的锐器是剪刀。",
+    "据说她的义父曾经是强力的收尾人。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第8章 原第四章（上）",
+    "第22章 原第十三章"
+   ],
+   "evidence_quotes": [
+    "据说她的义父曾经是强力的收尾人",
+    "锐器是朝日的剪刀"
+   ],
+   "note": "两处相隔14章；第86章有一句无依据的排名说法。",
+   "quote_positions": [
+    571,
+    3331
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-qa-05",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "殷明德每次召唤魔导武装时喊的是哪句话？",
+   "paraphrased": false,
+   "answer_points": [
+    "怀抱救世之憧憬，手持净秽之邪器。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第13章 原第七章"
+   ],
+   "evidence_quotes": [
+    "「怀抱救世之憧憬，手持净秽之邪器！」\n赤红的丝线"
+   ],
+   "note": "原句在多章重复出现。",
+   "quote_positions": [
+    3126
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-qa-06",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "新年惨案一共造成多少人死亡？",
+   "paraphrased": true,
+   "answer_points": [
+    "第3章写造成五万人死亡。",
+    "第38章写成三万人丧命。"
+   ],
+   "forbidden_claims": [
+    "五万和三万指的是不同的事件。"
+   ],
+   "evidence_chapters": [
+    "第3章 原第一章（下）",
+    "第38章 原第二十二章（下）"
+   ],
+   "evidence_quotes": [
+    "那场悲剧造成了五万人死亡",
+    "又会再重现「新年惨案」那样三万人丧命的悲剧"
+   ],
+   "note": "lf1i-i04，有意写错。",
+   "quote_positions": [
+    360,
+    592
+   ]
+  },
+  {
+   "id": "a1cx-m-qa-07",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "周爱怜比殷明德他们高一个年级还是低一个年级？",
+   "paraphrased": true,
+   "answer_points": [
+    "第4章称她为学姊（高一个年级）。",
+    "第50章写成低一个年级的学妹。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第4章 原第二章（上）",
+    "第50章 原第三十章"
+   ],
+   "evidence_quotes": [
+    "周爱怜学姊",
+    "比他们低一个年级的学妹周爱怜"
+   ],
+   "note": "lf1i-i07。",
+   "quote_positions": [
+    1731,
+    708
+   ]
+  },
+  {
+   "id": "a1cx-m-qa-08",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "收尾人自由执法权的议案在公投里通过了吗？",
+   "paraphrased": true,
+   "answer_points": [
+    "第65章写议案被公投否决。",
+    "第71章写议案在公投中顺利通过。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第65章 原第四十章",
+    "第71章 原第四十五章 大力扶持"
+   ],
+   "evidence_quotes": [
+    "由于收尾人自由执法权的议案被公投否决",
+    "上次收尾人自由执法权的议案在公投中顺利通过"
+   ],
+   "note": "lf1i-i08，两章都较长。",
+   "quote_positions": [
+    161,
+    2074
+   ]
+  },
+  {
+   "id": "a1cx-m-qa-09",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "殷明德的妹妹是什么发色？",
+   "paraphrased": true,
+   "answer_points": [
+    "前文写她是红发（第1章、第9章）。",
+    "第96章写成一头乌黑短发。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第9章 原第四章（下）",
+    "第96章 原第六十章（下）"
+   ],
+   "evidence_quotes": [
+    "那是个红发如瀑的小女孩",
+    "一头乌黑短发的妹妹"
+   ],
+   "note": "lf1i-i18，相隔87章。",
+   "quote_positions": [
+    589,
+    283
+   ]
+  },
+  {
+   "id": "a1cx-m-qa-10",
+   "work": "moriri",
+   "suite": "qa",
+   "qa_type": "not_in_text",
+   "question": "陈鸢仪在收尾人排行榜上具体排第几名？",
+   "paraphrased": false,
+   "answer_points": [],
+   "forbidden_claims": [
+    "给出陈鸢仪的具体名次。"
+   ],
+   "evidence_chapters": [],
+   "evidence_quotes": [],
+   "note": "正文只给出殷明德和朝日的排名；第10章那句\"四个人都在二十万名开外\"不是具体名次。",
+   "quote_positions": []
+  },
+  {
+   "id": "a1cx-m-recap-01",
+   "work": "moriri",
+   "suite": "recap",
+   "upto_chapter": 121,
+   "note": "截到全书最后一章，和问答共用同一次导入。",
+   "draft_opening": "天快黑时，炮击又停了。殷明德把空弹匣塞回腰包，抬头看见一架无人机从市政府残骸上空掠过。",
+   "must_mention": [
+    {
+     "id": "end",
+     "kind": "previous_ending",
+     "text": "王耀辉与殷明德交手后借影跃离开，推进的共和国士兵火力压制，殷明德只能后退。",
+     "evidence_chapters": [
+      "第121章 原第七十四章（下）"
+     ]
+    },
+    {
+     "id": "state",
+     "kind": "character_state",
+     "text": "王耀辉接受了共和国的雇佣，站在王国军的对立面。",
+     "evidence_chapters": [
+      "第121章 原第七十四章（下）"
+     ]
+    },
+    {
+     "id": "front",
+     "kind": "character_state",
+     "text": "殷明德在市政府一带的防线作战，师部已经成为前线。",
+     "evidence_chapters": [
+      "第120章 原第七十四章（上）"
+     ]
+    },
+    {
+     "id": "plan",
+     "kind": "plan",
+     "text": "殷明德被调往侧翼，和李谦忠一起守住通往地下室的交通壕。",
+     "evidence_chapters": []
+    }
+   ],
+   "must_not": [
+    {
+     "kind": "draft_only",
+     "text": "有无人机从市政府残骸上空掠过。"
+    },
+    {
+     "kind": "contradicted",
+     "text": "王耀辉站在王国一方作战。"
+    }
+   ]
+  },
+  {
+   "id": "a1cx-m-follow-01",
+   "work": "moriri",
+   "suite": "follow_up",
+   "paraphrased": true,
+   "first_question": "学校出事时，用立牌写字和殷明德交流的那位大小姐叫什么？",
+   "first_answer_points": [
+    "洋清荷。"
+   ],
+   "question": "她家族把持的是哪个集团？",
+   "answer_points": [
+    "广寒集团（由洋氏宗族把持）。"
+   ],
+   "forbidden_claims": [
+    "墨匠军械"
+   ],
+   "evidence_chapters": [
+    "第22章 原第十三章"
+   ],
+   "evidence_quotes": [
+    "因为广寒集团是由洋氏宗族把持着"
+   ],
+   "note": "第一问定位人物，追问只用\"她\"。",
+   "quote_positions": [
+    2223
+   ],
+   "deep": true
+  },
+  {
+   "id": "a1cx-m-fix-01",
+   "work": "moriri",
+   "suite": "fix",
+   "category": "attribute",
+   "draft": "陈鸢仪从壕沟另一头跑过来，把一头乌黑的短发拢到耳后。她递给殷明德一壶水，说侧翼的电话线又断了。",
+   "conflict_sentence": "陈鸢仪从壕沟另一头跑过来，把一头乌黑的短发拢到耳后。",
+   "evidence_chapters": [
+    "第2章 原第一章（上）"
+   ],
+   "fix_idea": "改回亚麻色长发，保留她跑来递水的情节。",
+   "note": "第2章写她是亚麻长发；草稿其余部分不含矛盾。"
+  },
+  {
+   "id": "a1cx-f-qa-01",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "送纸车的随车工和做图书角志愿登记的那位姑娘是亲戚吗？",
+   "paraphrased": true,
+   "answer_points": [
+    "不是亲戚，两人只是名字相近。"
+   ],
+   "forbidden_claims": [
+    "狄毓棠是狄毓枝的弟弟。"
+   ],
+   "evidence_chapters": [
+    "第二章 盒中的书名"
+   ],
+   "evidence_quotes": [
+    "狄毓棠与狄毓枝只是名字相近，并没有亲属关系"
+   ],
+   "note": "",
+   "quote_positions": [
+    440
+   ],
+   "deep": false
+  },
+  {
+   "id": "a1cx-f-qa-02",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "answerable_multi",
+   "question": "被称作“鸦绒纸”的那包纤维纸是谁寄来的？后来他们把它和什么并排比较？",
+   "paraphrased": true,
+   "answer_points": [
+    "寄件人是庄绮恩。",
+    "与新纸并排放在窗下比较。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第二章 盒中的书名",
+    "第五章 纤维的方向"
+   ],
+   "evidence_quotes": [
+    "寄件人庄绮恩把借出的纤维纸称作“鸦绒纸”",
+    "午后他们打开庄绮恩寄来的鸦绒纸，把它与新纸并排放在窗下"
+   ],
+   "note": "",
+   "quote_positions": [
+    565,
+    1082
+   ],
+   "deep": false
+  },
+  {
+   "id": "a1cx-f-qa-03",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "邢照渔的眼睛是什么颜色？",
+   "paraphrased": true,
+   "answer_points": [
+    "第一章写他天生双眼深褐色。",
+    "第五章写成浅蓝色的虹膜。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第一章 风从折缝来",
+    "第五章 纤维的方向"
+   ],
+   "evidence_quotes": [
+    "邢照渔天生的双眼都是深褐色",
+    "浅蓝色的虹膜映着展签上的白纸"
+   ],
+   "note": "",
+   "quote_positions": [
+    166,
+    827
+   ]
+  },
+  {
+   "id": "a1cx-f-qa-04",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "秋帙会是先签捐赠约，还是先装订首批书册？",
+   "paraphrased": true,
+   "answer_points": [
+    "第二章写九月初二先签约、九月初五才开工装订。",
+    "第七章写成先装订，签约排在之后。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第二章 盒中的书名",
+    "第七章 线头藏在哪里"
+   ],
+   "evidence_quotes": [
+    "秋帙会的捐赠签约在九月初二举行，首批书册装订在九月初五才开工",
+    "秋帙会的首批书册先行装订，捐赠签约排在这项工作之后"
+   ],
+   "note": "",
+   "quote_positions": [
+    719,
+    820
+   ]
+  },
+  {
+   "id": "a1cx-f-qa-05",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "not_in_text",
+   "question": "庄绮恩从哪一年开始保存那包鸦绒纸？",
+   "paraphrased": false,
+   "answer_points": [],
+   "forbidden_claims": [
+    "给出具体年份。"
+   ],
+   "evidence_chapters": [],
+   "evidence_quotes": [],
+   "note": "第二章只说附信里写了年份，没有写出是哪一年。",
+   "quote_positions": []
+  },
+  {
+   "id": "a1cx-f-qa-06",
+   "work": "folio",
+   "suite": "qa",
+   "qa_type": "not_in_text",
+   "question": "桨纹书衣在展售册里标价多少？",
+   "paraphrased": false,
+   "answer_points": [],
+   "forbidden_claims": [
+    "给出具体价格。"
+   ],
+   "evidence_chapters": [],
+   "evidence_quotes": [],
+   "note": "第八章只说留了一格价格栏，从未写出价格；出售许可本身也没有依据。",
+   "quote_positions": []
+  },
+  {
+   "id": "a1cx-f-recap-01",
+   "work": "folio",
+   "suite": "recap",
+   "upto_chapter": 10,
+   "note": "截到最后一章。",
+   "draft_opening": "第二周开门前，郦松禾把渠边捡到的一片银杏叶夹进了来件夹。毓枝在门口挂好新的预约表。",
+   "must_mention": [
+    {
+     "id": "end",
+     "kind": "previous_ending",
+     "text": "收铺时腾出一张完全空的桌子，留给往后新来的材料。",
+     "evidence_chapters": [
+      "第十章 留给下一位"
+     ]
+    },
+    {
+     "id": "state",
+     "kind": "character_state",
+     "text": "毓枝把预约表里原先叫“讲述”的一栏改成了“希望参加的方式”。",
+     "evidence_chapters": [
+      "第十章 留给下一位"
+     ]
+    },
+    {
+     "id": "plan",
+     "kind": "plan",
+     "text": "空桌改作新材料的接收台，三人分头回复借物人的事项。",
+     "evidence_chapters": []
+    }
+   ],
+   "must_not": [
+    {
+     "kind": "draft_only",
+     "text": "郦松禾把一片银杏叶夹进了来件夹。"
+    },
+    {
+     "kind": "contradicted",
+     "text": "郦松禾在初灯朗读赛中夺得冠军。"
+    }
+   ]
+  },
+  {
+   "id": "a1cx-f-follow-01",
+   "work": "folio",
+   "suite": "follow_up",
+   "paraphrased": true,
+   "first_question": "替街道图书角做志愿登记、给展览带来写展签厚纸的是谁？",
+   "first_answer_points": [
+    "狄毓枝。"
+   ],
+   "question": "她第一次来铺子时，用什么把展台边缘的小刺磨平？",
+   "answer_points": [
+    "指甲锉。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第一章 风从折缝来"
+   ],
+   "evidence_quotes": [
+    "她从包里取出指甲锉，沿边慢慢磨"
+   ],
+   "note": "",
+   "quote_positions": [
+    667
+   ],
+   "deep": false
+  },
+  {
+   "id": "a1cx-f-fix-01",
+   "work": "folio",
+   "suite": "fix",
+   "category": "relationship",
+   "draft": "狄毓棠是狄毓枝的亲弟弟，他把最后一卷纸搬进门。郦松禾替他扶住门帘，又提醒他别踩到门口的垫布。",
+   "conflict_sentence": "狄毓棠是狄毓枝的亲弟弟，他把最后一卷纸搬进门。",
+   "evidence_chapters": [
+    "第二章 盒中的书名"
+   ],
+   "fix_idea": "去掉亲属关系，保留他搬纸进门的动作。",
+   "note": ""
+  },
+  {
+   "id": "a1cx-c-qa-01",
+   "work": "cistern",
+   "suite": "qa",
+   "qa_type": "conflicting",
+   "question": "本季的铜鳞巡游最后开幕了吗？",
+   "paraphrased": true,
+   "answer_points": [
+    "第一章写筹备当天就取消，开幕从未举行。",
+    "第五章写棱泠在开幕当晚听完了迎舟曲。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第一章 水面的第二个名字",
+    "第五章 廊中的空拍"
+   ],
+   "evidence_quotes": [
+    "本季的铜鳞巡游在筹备当天便被取消，开幕从未举行，这一季也不会补办",
+    "本季铜鳞巡游开幕当晚，棱泠在岸上听完了整段迎舟曲"
+   ],
+   "note": "",
+   "quote_positions": [
+    500,
+    857
+   ]
+  },
+  {
+   "id": "a1cx-c-qa-02",
+   "work": "cistern",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "苔絮在缄骨墙上做了什么，随后裂层里发生了什么？",
+   "paraphrased": true,
+   "answer_points": [
+    "她用软木杖在缄骨墙上叩了三下。",
+    "一刻之后裂层底的积水涨过了第二级石阶。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第二章 杖端留下的水纹",
+    "第二章 杖端留下的水纹"
+   ],
+   "evidence_quotes": [
+    "苔絮用软木杖在缄骨墙上叩了三下",
+    "一刻之后，裂层底的积水突然涨过了第二级石阶"
+   ],
+   "note": "",
+   "quote_positions": [
+    967,
+    1071
+   ],
+   "deep": false
+  },
+  {
+   "id": "a1cx-c-qa-03",
+   "work": "cistern",
+   "suite": "qa",
+   "qa_type": "answerable_single",
+   "question": "那位铜袖客在哪里下的舟，下舟后做了什么？",
+   "paraphrased": true,
+   "answer_points": [
+    "在窄雾井下舟。",
+    "摘下手套擦去箱盖上的水，朝第三条岔道走去。"
+   ],
+   "forbidden_claims": [],
+   "evidence_chapters": [
+    "第一章 水面的第二个名字"
+   ],
+   "evidence_quotes": [
+    "铜袖客在窄雾井下了舟，摘下手套擦去箱盖上的水，再朝第三条岔道走去"
+   ],
+   "note": "",
+   "quote_positions": [
+    907
+   ],
+   "deep": false
+  }
+ ]
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { User } from "../../model";
@@ -69,6 +70,7 @@ export function AuthPage({ register, busy, error, submit, visitor, go }: {
           </span>
         </div>
         {register && <p className="field-hint">账号至少 3 个字符，密码至少 10 个字符。恢复邮箱用来找回密码，注册后会收到一封验证邮件。</p>}
+        {register && <p className="field-hint">创建账号前，请看一下<Link className="link-inline" href="/privacy" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey) return; event.preventDefault(); go("/privacy"); }}>隐私说明</Link>。</p>}
         {hasError && <p id="auth-error" className="inline-error" role="alert">{message}</p>}
         <Button kind="primary" size="lg" type="submit" disabled={Boolean(busy)} busy={Boolean(busy)} className="auth-submit">{busy || (register ? "创建账号" : "登录")}</Button>
         <div className="auth-links">
@@ -77,7 +79,7 @@ export function AuthPage({ register, busy, error, submit, visitor, go }: {
         </div>
         {!register && (
           <div className="auth-visitor">
-            <p><strong>先看看？</strong>访客空间保留 24 小时，带一部示例作品，可以检查几次短章节。</p>
+            <p><strong>先看看？</strong>访客空间保留 24 小时，带一部示例作品，可以检查几次短章节，也可以问助手。用到的片段会交给模型处理，详见<Link className="link-inline" href="/privacy" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey) return; event.preventDefault(); go("/privacy"); }}>隐私说明</Link>。</p>
             <Button kind="outline" disabled={Boolean(busy)} onClick={() => void visitor()}>以访客身份进入</Button>
           </div>
         )}

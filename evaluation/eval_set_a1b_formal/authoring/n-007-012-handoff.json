@@ -1,0 +1,87 @@
+{
+  "work": "n",
+  "range": [7, 12],
+  "status": "awaiting_primary_acceptance_and_independent_full_review",
+  "source_file": "works/n.md",
+  "source_sha256_at_handoff": "9bdf60b7317b5b4969f78d78238b2e416d09ab5ea61e1f2a43d5fa3d97f358aa",
+  "method": "先读主代理已更新的 accepted_handoffs，获准续写后逐章人工原创；脚本只审计汉字数、编码与哈希，未调用模型或产品接口，未打开已有题集。",
+  "prior_segment_preservation": {
+    "chapters": [1, 6],
+    "prior_byte_length": 13844,
+    "sha256_before": "00f03672d2276f7478414e86518baf6c3e9e9ddc555d74dad0a43bd17ad0d991",
+    "sha256_current_prefix": "00f03672d2276f7478414e86518baf6c3e9e9ddc555d74dad0a43bd17ad0d991",
+    "byte_identical": true
+  },
+  "format_audit": {
+    "utf8_no_bom": true, "lf_only": true,
+    "all_chapters_have_direct_dialogue": true,
+    "full_chapter_count": 12,
+    "full_han_count": 8157,
+    "full_length_range_han": [658, 714]
+  },
+  "chapters": [
+    {
+      "number": 7, "title": "第七章 空凳听着", "han": 658,
+      "new_named_people_and_aliases": [], "new_named_places": [], "new_objects": [],
+      "new_time_points": ["没有观众的一次开场排练，连贯排完后再试；不新增具体日期或时长"],
+      "exact_exam_sentences": ["孟稠把折月响板交给陆荞，此后由陆荞保管。"],
+      "scene_only_details": "响板仅此一次交接；孟稠说短句，没有提前唱长句或恢复嗓音；陆荞排开场但尚未获正式角色。"
+    },
+    {
+      "number": 8, "title": "第八章 写进这一场", "han": 688,
+      "new_named_people_and_aliases": [], "new_named_places": [], "new_objects": [],
+      "new_time_points": ["无观众排练后，众人讨论正式演出安排；不指定历日"],
+      "exact_exam_sentences": ["陆荞获得了正式登台角色，负责这场戏的开场独白。"],
+      "scene_only_details": "讨论后调整站位并试衔接；未新增另一正式角色或承诺日后永久担任主演。"
+    },
+    {
+      "number": 9, "title": "第九章 尾音过河", "han": 665,
+      "new_named_people_and_aliases": [], "new_named_places": [], "new_objects": ["递来的水（未具名普通道具）"],
+      "new_time_points": ["孟稠本次试音能够唱完整长句；只确认当下恢复，不定病程长短"],
+      "exact_exam_sentences": ["孟稠的嗓音已经恢复，能够唱完整的长句。"],
+      "scene_only_details": "陆荞与孟稠练习声音衔接；未引入新唱腔规则、额外固定信号或伤病。"
+    },
+    {
+      "number": 10, "title": "第十章 岸边的等候", "han": 685,
+      "new_named_people_and_aliases": [], "new_named_places": ["苇弧埠"],
+      "new_objects": ["西侧候场台（设定指定空间）"],
+      "new_time_points": ["漪声船靠到苇弧埠后登岸候场；不指定抵达时刻、航程或出航日期"],
+      "exact_exam_sentences": ["潘恪把翠缎肩衣交给唐绢，由唐绢接着保管。", "唐绢在苇弧埠的西侧候场台等其他人。"],
+      "scene_only_details": "潘恪返回帮搬物品；陆荞给同伴留通道；不增加肩衣后续易手。"
+    },
+    {
+      "number": 11, "title": "第十一章 帘后还未亮", "han": 681,
+      "new_named_people_and_aliases": [], "new_named_places": [], "new_objects": [],
+      "new_time_points": ["冉颂首次登台刚满十二岁（预定有意矛盾第二说）", "正式上场前帘后静候"],
+      "exact_exam_sentences": ["冉颂第一次登台时刚满十二岁。"],
+      "scene_only_details": "不解释为记错、试演与正式之别或两次首次登台；陆荞缓解眼前紧张，不新增永久能力。"
+    },
+    {
+      "number": 12, "title": "第十二章 声音落定以后", "han": 714,
+      "new_named_people_and_aliases": [], "new_named_places": [], "new_objects": ["乐谱（普通纸页在本章明确为谱页）"],
+      "new_time_points": ["开场至整场戏完成、观众散去、众人收场回船；无明确时长与历日"],
+      "exact_exam_sentences": ["孟稠在演出结束后收拢乐谱。", "直到演出结束，仍没有人说明是谁留下它，也没有人知道那一个座位原本要留给谁。"],
+      "scene_only_details": "便笺没有得到身份与用途答案；未执行第十三章回听录音与商量下一站节奏的计划。"
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "冉颂",
+      "chapters": [4, 11],
+      "quotes": ["冉颂第一次登台时刚满十岁。", "冉颂第一次登台时刚满十二岁。"],
+      "same_historical_event": true,
+      "do_not_reconcile": true
+    }
+  ],
+  "continuity_checkpoint": {
+    "exam_facts_added_outside_bible": [],
+    "named_people_or_places_added_outside_bible": [],
+    "transfers_completed_only_at_planned_chapters": [7, 10],
+    "states_changed_only_at_planned_chapters": [8, 9],
+    "resolved_thread": "双影已在第六章收回，本段未重新制造疑点",
+    "open_thread": "空座便笺在第十二章仍无作者与留座对象答案",
+    "source_complete": true,
+    "questions_or_gold_edited": false,
+    "independent_review_needed": true
+  }
+}

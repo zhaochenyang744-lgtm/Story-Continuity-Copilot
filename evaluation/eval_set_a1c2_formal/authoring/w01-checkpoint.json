@@ -1,0 +1,1175 @@
+{
+  "work": "w01",
+  "status": "chapters_01_30_four_review_fixes_applied_pending_independent_reread",
+  "stages": [
+    {
+      "work": "w01",
+      "stage": "chapters_01_05",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 1,
+          "title": "第1章 入水以前",
+          "han_count": 2902,
+          "evidence_quote": "祁砚笙此时只是临时协调员，任期到队内选举为止。",
+          "evidence_han_position": 2676,
+          "deep": true
+        },
+        {
+          "chapter": 2,
+          "title": "第2章 另一条泳道",
+          "han_count": 2842,
+          "evidence_quote": "郁苔岑把离线日志存进更衣室第三排最右侧的柜子。",
+          "evidence_han_position": 2692,
+          "deep": true
+        },
+        {
+          "chapter": 3,
+          "title": "第3章 午饭的空位",
+          "han_count": 2892,
+          "evidence_quote": "郁苔岑的右腕戴着固定夹板，暂时不能操作双手控制台。",
+          "evidence_han_position": 2717,
+          "deep": true
+        },
+        {
+          "chapter": 4,
+          "title": "第4章 空着的签名",
+          "han_count": 2959,
+          "evidence_quote": "夜间清点时，那份借用记录仍留着空白的签名栏，交接手续是否另有记录尚未查明。",
+          "evidence_han_position": 2730,
+          "deep": true
+        },
+        {
+          "chapter": 5,
+          "title": "第5章 交到另一双手里",
+          "han_count": 2969,
+          "evidence_quote": "祁砚笙把弧桨盒交给靳予葵，从此由靳予葵保管。",
+          "evidence_han_position": 2796,
+          "deep": true
+        }
+      ],
+      "new_names": [
+        "祁砚笙",
+        "细尺",
+        "郁苔岑",
+        "苔点",
+        "靳予葵",
+        "小葵灯",
+        "邬槐序",
+        "岑弥照",
+        "邵霁棠",
+        "翟栖墨",
+        "裴朔宁",
+        "缄岚大学",
+        "衡汐馆",
+        "弧桨盒",
+        "烬纹夹"
+      ],
+      "unplanned_names": [],
+      "objects": [
+        {
+          "note": "第5章前靳予葵仅在祁砚笙在场时检查，不构成提前移交",
+          "contents": "两只定制电机及已验收配件",
+          "name": "弧桨盒",
+          "current_custodian": "靳予葵",
+          "transfer_chapter": 5,
+          "pending": "一根备用连接线仍待采购",
+          "previous_custodian": "祁砚笙",
+          "storage": "训练室储物架中间靠内"
+        },
+        {
+          "note": "未移交；夹待办理文件",
+          "name": "烬纹夹",
+          "introduced_chapter": 4,
+          "current_custodian": "邬槐序"
+        },
+        {
+          "name": "栈羽板",
+          "note": "依全书设定，1–5章尚未出场",
+          "current_custodian": "郁苔岑"
+        },
+        {
+          "name": "离线日志",
+          "note": "此前短暂置桌面和电脑旁，结尾才存入指定柜子，之后未写迁移",
+          "stored_chapter": 2,
+          "kind": "普通存储盘，不新增专名",
+          "location": "更衣室第三排最右侧的柜子"
+        }
+      ],
+      "time": {
+        "week": "第一周",
+        "chapter5": "第一周将尽，临近中午到场、午饭前检查、中午饭、下午台检、临闭馆交接",
+        "season": "秋季",
+        "chapter3": "第2章次日午间至晚间，前一晚做过腕部检查",
+        "chapter1": "第一周首次晚间训练，七点预约、七点一刻后到场，八点前入水",
+        "chapter2": "第二天下午至晚间",
+        "chapter4": "仍在第一周，上午预算会、下午窗口、夜间清点"
+      },
+      "state_changes": [
+        {
+          "character": "祁砚笙",
+          "chapter": 1,
+          "state": "临时协调员，任期至队内选举"
+        },
+        {
+          "character": "郁苔岑",
+          "chapter": 3,
+          "state": "右腕固定夹板，暂不能操作双手控制台；仍可口述、回放核对、左手书写"
+        }
+      ],
+      "threads": [
+        {
+          "observations": "靠外池壁纤维和透明薄屑，池外帘布一截湿贴排水沟旁；未经允许不拆馆内设施；未确认为阻力原因",
+          "thread": "水道阻力差异",
+          "planted_chapter": 2,
+          "status": "open",
+          "resolve_at": 10
+        },
+        {
+          "observations": "设备借出许可有效，签收复印件空栏；已问借出方是否另有记录，仅收到待查询回复；暂不使用借入装置",
+          "thread": "借用签名空栏",
+          "planted_chapter": 4,
+          "status": "open",
+          "resolve_at": 13
+        }
+      ],
+      "deviations": [
+        "第4章没有任务指定逐字锚点，另选章末空签名直白句并确保深处；其余四章使用设定指定原句。"
+      ],
+      "continuity_risks": [
+        "第4章为复印件，夜末已写手中的记录而非突然称原件；下段勿认定纸质原件在队内。",
+        "借入牵引装置第4章暂停使用，后续若继续使用必须先说明手续处理/替代设备，不能提前解答第13章签名线索。",
+        "第2章水道线索未下结论，不要提前解决第10章帘布原因。",
+        "第1章已自然介绍三名别名；八名主要人物均出现，无额外具名人物。",
+        "1–5章未出现两处有意矛盾事实、右眼属性依据、关系依据；后续仍须严格遵循指定章数。"
+      ],
+      "checks": {
+        "total_han": 14564.0,
+        "replacement_characters": 0,
+        "chapter_count": 5,
+        "all_anchors_after_2550": true,
+        "han_range": [
+          2842.0,
+          2969.0
+        ],
+        "independent_review": "not_performed"
+      }
+    },
+    {
+      "stage": "chapters_06_10",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 6,
+          "title": "第6章 少了一个人",
+          "han_count": 2912,
+          "evidence_quote": "邵霁棠被暂停独自下水测试的资格，只能有人陪同训练。",
+          "evidence_han_position": 2693,
+          "deep": true
+        },
+        {
+          "chapter": 7,
+          "title": "第7章 被截去的声音",
+          "han_count": 2899,
+          "evidence_quote": "匿名音频的寄件人和发送动机仍未查明，队员也无法确认其中说话者的身份。",
+          "evidence_han_position": 2778,
+          "deep": true
+        },
+        {
+          "chapter": 8,
+          "title": "第8章 投影里的空池",
+          "han_count": 2934,
+          "evidence_quote": "裴朔宁出生在栎虹城，童年从未离开那座城市。",
+          "evidence_han_position": 2703,
+          "deep": true
+        },
+        {
+          "chapter": 9,
+          "title": "第9章 墙上的两张表",
+          "han_count": 2894,
+          "evidence_quote": "本周全队仍在衡汐馆的旧训练室工作，使用许可尚未交回。",
+          "evidence_han_position": 2736,
+          "deep": true
+        },
+        {
+          "chapter": 10,
+          "title": "第10章 帘子后面的风",
+          "han_count": 3055,
+          "evidence_quote": "靠外水道的额外阻力来自松脱帘布受风后拖入池中，并非有人调整了机器或评分。",
+          "evidence_han_position": 2663,
+          "deep": true
+        }
+      ],
+      "new_names": [
+        "栎虹城"
+      ],
+      "unplanned_names": [],
+      "object_updates": [
+        "弧桨盒仍由靳予葵保管；本段无新增易手。",
+        "烬纹夹仍由邬槐序保管；本段无新增易手。",
+        "栈羽板本段尚未出现。",
+        "原借用牵引装置仍停用，6章和10章明确另用自有简易架及普通滑轮。",
+        "10章检修人员借普通夹具现场协助，并借普通相机夹座；均为普通临时工具，不新增专名与永久持有人。"
+      ],
+      "time": {
+        "week": "第二周",
+        "chapter6": "第二周开始，当日安全遗漏、下午访客、当晚限制生效",
+        "season": "秋季",
+        "chapter7": "第二周下一训练日，午后匿名附件、晚间补训与还书",
+        "chapter10": "第二周末早间检修至午后",
+        "chapter9": "接续午间展示日，下午场地冲突，夜间核许可",
+        "chapter8": "第二周中学院展示时段会议，当天返馆拍照"
+      },
+      "state_changes": [
+        {
+          "chapter": 6,
+          "state": "独自测试资格暂停；必须有人陪同，补训无固定次数自动恢复承诺",
+          "character": "邵霁棠"
+        },
+        {
+          "chapter": 9,
+          "state": "仍使用衡汐馆旧训练室，许可未交回；当日下午与拍摄课程临时共享，不构成正式搬迁",
+          "group": "全队"
+        }
+      ],
+      "intentional_inconsistency_seeds": [
+        {
+          "narrator_fact": "裴朔宁出生在栎虹城，童年从未离开那座城市。",
+          "field": "出生地和童年所在地",
+          "chapter": 8,
+          "entity": "裴朔宁",
+          "planned_conflicting_chapter": 26
+        }
+      ],
+      "threads": [
+        {
+          "status": "resolved",
+          "resolution": "挂扣未完全扣入，帘布受风后下沿偶发拖入池中，影响机架/牵引线；固定与恢复原状反复对照，修复后确认；无队伍作弊结论",
+          "planted_chapter": 2,
+          "resolved_chapter": 10,
+          "thread": "水道阻力差异"
+        },
+        {
+          "must_remain_open_through": 30,
+          "status": "open",
+          "planted_chapter": 7,
+          "facts": "公共邮箱收到无署名短音频，语句残缺；身份、寄件人、动机均未确认；原始附件归档，不向外转发",
+          "thread": "匿名音频"
+        },
+        {
+          "note": "本段未解答，借来装置继续停用",
+          "status": "open",
+          "resolve_at": 13,
+          "planted_chapter": 4,
+          "thread": "借用签名空栏"
+        }
+      ],
+      "continuity_risks": [
+        "安全限制从6章当晚生效；10章水中动作均有岑弥照陪同，不等于恢复独自资格；22章才解除。",
+        "7章不将任何熟悉声音确认为人，不可后来补寄件人或动机。",
+        "8章栎虹城只用于既定出生地故意矛盾，不作大学所在城；26章须保留相反叙述，不能解释。",
+        "9章场地冲突为预约同步问题；许可仍有效，24章才交回。",
+        "10章水道线索已收；借用签名线仍开放，两条手续与设施线不能混淆。",
+        "8章学院补助只批部分、午间展示获批；9章展示已举行，报名少但非零；后续不能当成尚未举办。"
+      ],
+      "deviations": [
+        "7章和10章无指定逐字锚点，各选当章线索结论作深位置记录。",
+        "落实主代理风格反馈：8章增加课程截止与汇报展示失误，9章实际展示/场地冲突，10章实地检修对照和公开道歉，避免仅写会议道理。"
+      ],
+      "checks": {
+        "han_range": [
+          2894.0,
+          3055.0
+        ],
+        "chapter_count": 5,
+        "total_han": 14694.0,
+        "independent_review": "not_performed",
+        "all_anchors_after_2550": true
+      }
+    },
+    {
+      "stage": "chapters_11_15",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 11,
+          "title": "第11章 纸页翻过去",
+          "han_count": 2896,
+          "evidence_quote": "邬槐序把烬纹夹交给郁苔岑，之后由郁苔岑收存。",
+          "evidence_han_position": 2728,
+          "deep": true
+        },
+        {
+          "chapter": 12,
+          "title": "第12章 不同的零点",
+          "han_count": 2900,
+          "evidence_quote": "岑弥照的右眼自幼永久失明，只有左眼能够看见。",
+          "evidence_han_position": 2684,
+          "deep": true
+        },
+        {
+          "chapter": 13,
+          "title": "第13章 两边都找到了",
+          "han_count": 2869,
+          "evidence_quote": "当日设备的签收保存在独立电子表单中，纸质复印件的空栏不代表交接手续缺失。",
+          "evidence_han_position": 2610,
+          "deep": true
+        },
+        {
+          "chapter": 14,
+          "title": "第14章 旧照片里的边界",
+          "han_count": 2796,
+          "evidence_quote": "衡汐馆建馆当天首次注入试验池的水量是八百升。",
+          "evidence_han_position": 2553,
+          "deep": true
+        },
+        {
+          "chapter": 15,
+          "title": "第15章 排名空着的一晚",
+          "han_count": 2867,
+          "evidence_quote": "祁砚笙把申诉材料放在裁判室门口，队员们等着次晨公开复核。",
+          "evidence_han_position": 2842,
+          "deep": true
+        }
+      ],
+      "new_names": [],
+      "unplanned_names": [],
+      "object_updates": [
+        {
+          "current_custodian": "郁苔岑",
+          "note": "11章之后收存报名与技术材料；15章夹申诉文件只是用途，祁交材料前取下归还郁，不发生第二次持有人变化",
+          "object": "烬纹夹",
+          "transfer_chapter": 11,
+          "previous_custodian": "邬槐序"
+        },
+        {
+          "current_custodian": "靳予葵",
+          "note": "14章此前缺的备用连接线到货，经检验收入配件位；未换掉工作线，未改用途",
+          "object": "弧桨盒"
+        },
+        {
+          "object": "借用牵引装置",
+          "note": "13章手续核实后做停放检查，调整松脚垫，当晚恢复使用"
+        },
+        {
+          "object": "栈羽板",
+          "note": "本段尚未出现，仍按全书设定为郁苔岑持有"
+        }
+      ],
+      "time": {
+        "chapter11": "第三周开始，设备清单核对与报名；下午窗口受理，晚间交夹",
+        "chapter13": "仓库约查当日，午后两处核实；邬傍晚完成课程演示；夜间借装置复用",
+        "week": "第三周",
+        "chapter14": "资格赛前一天，讲座、合练、备用线到货、晚间开场短片核对",
+        "season": "秋季",
+        "chapter12": "第三周交叉测试日，午后测读数与校准章；晚间安全演练",
+        "chapter15": "资格赛当天早至晚，次晨公开复核留给16章"
+      },
+      "fixed_facts": [
+        {
+          "fact": "岑弥照的右眼自幼永久失明，只有左眼能够看见。",
+          "category": "attribute",
+          "chapter": 12,
+          "entity": "岑弥照",
+          "note": "不可恢复，不得双眼追视；左侧站位适配，不构成属性改变"
+        }
+      ],
+      "intentional_inconsistency_seeds": [
+        {
+          "entity": "衡汐馆试验池",
+          "note": "该数字不得在其他章重复或解释，两版本针对同一历史事件",
+          "planned_conflicting_chapter": 28,
+          "field": "建馆当天首次注水量",
+          "chapter": 14,
+          "narrator_fact": "衡汐馆建馆当天首次注入试验池的水量是八百升。"
+        }
+      ],
+      "threads": [
+        {
+          "thread": "传感器校准章",
+          "facts": "同一传感器随附纸签上两枚校准章对应不同零位结果，条件未写明，已询供货方待查；不归因翻修、破坏或参照高度",
+          "resolve_at": 25,
+          "planted_chapter": 12,
+          "status": "open"
+        },
+        {
+          "thread": "借用签名空栏",
+          "status": "resolved",
+          "planted_chapter": 4,
+          "resolved_chapter": 13,
+          "resolution": "仓库流水与当日工作人员导出的独立电子签收凭据，设备/日期/审核号一致；纸质复印件仅清单，空栏不表示缺失签收；学院窗口验证后受理"
+        },
+        {
+          "thread": "匿名音频",
+          "note": "本段没有新身份、寄件人或动机信息，必须到30仍开放",
+          "planted_chapter": 7,
+          "status": "open"
+        },
+        {
+          "thread": "水道阻力",
+          "note": "15章争的是赛事水道修正依据，不是重开帘布物理原因或指控作弊",
+          "status": "resolved",
+          "planted_chapter": 2,
+          "resolved_chapter": 10
+        }
+      ],
+      "qualifier_handoff": {
+        "chapter15": "中段确认提示未稳定，靳已移出停留区域；郁喊等被邻道喝彩盖住，未返回；后半程顺利。",
+        "end": "材料入裁判室门口托盘，名次未定，次晨公开复核；16章按设定保留自身扣分、移除不当水道推定。",
+        "appeal": "仅针对靠外水道条件修正；现场录入人员无法解释依据，团队提交修复对照、检修记录与翟的亲见说明；不宣称15章已胜诉。",
+        "logs": "15章保留完整采样间隔，未提前写16章指定原因句。",
+        "own_oversight": "中段确认点停留不足导致未通过标记与扣分，靳明确承认，郁承认提醒未清楚传达；不对该失误提出取消扣分要求。"
+      },
+      "incidental_details": [
+        "11章一名未具名的展示报名同学来访，指出图示问题，答应试画易读版；仅外部连接关系可共享，无额外名字。",
+        "12章岑有舞蹈排练生活线，承诺当晚赶后半段，无身体恢复暗示。",
+        "13章邬先按时完成课程演示，祁独立完成第二处核实；14章祁参加过讲座。"
+      ],
+      "continuity_risks": [
+        "16章必须紧接15章次晨公开复核，不得把确认点处罚写成裁判误报。",
+        "15章借帘布旧资料质疑赛事条件修正，不再争论已查明的物理原因；若16章定义具体系数，应与靠外道修正、旧假设一致。",
+        "12章零位差异未查明，25章才以参考高度不同解决。",
+        "烬纹夹11章后持有人只为郁；15章祁归还临时使用，不能误写成转回邬。",
+        "14章备用线到货，今后不再说仍未购到。",
+        "14章初始水量为确定叙述，28章不同值必须原样保留为唯一指定故意矛盾。",
+        "第14章锚点在第2553汉字，满足>2550但不宜删此前正文而未重测。"
+      ],
+      "deviations": [
+        "13章无指定逐字锚点，选线索收束句计位置；其余4章用指定原句。",
+        "14章2796汉字，符合硬范围，未为可选目标补无关字数。"
+      ],
+      "checks": {
+        "all_anchors_after_2550": true,
+        "han_range": [
+          2796.0,
+          2900.0
+        ],
+        "chapter_count": 5,
+        "total_han": 14328.0,
+        "independent_review": "not_performed"
+      }
+    },
+    {
+      "stage": "chapters_16_20",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 16,
+          "title": "第16章 仍然扣下的分",
+          "han_count": 2950,
+          "evidence_quote": "郁苔岑保留原始采样间隔，是为了让复核人员重现延迟。",
+          "evidence_han_position": 2711,
+          "deep": true
+        },
+        {
+          "chapter": 17,
+          "title": "第17章 六张折起来的纸",
+          "han_count": 2812,
+          "evidence_quote": "祁砚笙经全体队员投票成为正式协调员，不再担任临时职务。",
+          "evidence_han_position": 2576,
+          "deep": true
+        },
+        {
+          "chapter": 18,
+          "title": "第18章 不是顺手的事",
+          "han_count": 2862,
+          "evidence_quote": "靳予葵与邬槐序没有任何亲属关系，两人只是在入队后相识。",
+          "evidence_han_position": 2635,
+          "deep": true
+        },
+        {
+          "chapter": 19,
+          "title": "第19章 空出来的位置",
+          "han_count": 2973,
+          "evidence_quote": "郁苔岑的腕部限制已被正式解除，可以重新使用双手控制台。",
+          "evidence_han_position": 2606,
+          "deep": true
+        },
+        {
+          "chapter": 20,
+          "title": "第20章 还没有变绿",
+          "han_count": 2807,
+          "evidence_quote": "栈羽板上的短接触片只用于读取备用电压，不负责启动推进器。",
+          "evidence_han_position": 2568,
+          "deep": true
+        }
+      ],
+      "new_names": [
+        "栈羽板"
+      ],
+      "unplanned_names": [],
+      "time": {
+        "chapter20": "第四周将尽，全天改提示与离线验证",
+        "chapter19": "第四周复诊日，上午训练观察、下午门诊、傍晚记录与展览、晚间回馆",
+        "chapter17": "第四周选举日，白天课程、傍晚全体六队员到场",
+        "chapter18": "次一常规活动日，上午清洁改时与板材争执，午后课程展示，傍晚修复",
+        "week": "第四周",
+        "season": "秋季",
+        "chapter16": "资格赛次晨公开复核，当日午后结果和资料"
+      },
+      "object_updates": [
+        {
+          "note": "翟仅在郁在场且断开连接时看背面，没有带走；21章才按设定易手。短片用途仅在20章直接交代。",
+          "introduced_chapter": 20,
+          "current_custodian": "郁苔岑",
+          "storage": "自己的防护盒与储物抽屉",
+          "object": "栈羽板"
+        },
+        {
+          "note": "16章复核资料仍由郁持有，无易手",
+          "current_custodian": "郁苔岑",
+          "object": "烬纹夹"
+        },
+        {
+          "note": "无易手，备用线到货状态不变",
+          "current_custodian": "靳予葵",
+          "object": "弧桨盒"
+        }
+      ],
+      "state_changes": [
+        {
+          "note": "参与选举为六名本队队员；翟为别队学生、裴为教师，不列队员投票。靳是另一候选人；无精确票数、无全票承诺。",
+          "new_state": "全体队员投票产生的正式协调员",
+          "chapter": 17,
+          "entity": "祁砚笙"
+        },
+        {
+          "note": "正式记录后回馆先离线熟悉，不写瞬间熟练；19章没有复述3章原先夹板状态的完整对照句。",
+          "new_state": "正式解除腕部限制，可用双手控制台",
+          "chapter": 19,
+          "entity": "郁苔岑"
+        }
+      ],
+      "fixed_facts": [
+        {
+          "category": "relationship",
+          "fact": "靳予葵与邬槐序没有任何亲属关系，两人只是在入队后相识。",
+          "chapter": 18,
+          "note": "非亲属，不新增家庭关联；路人误问不构成有亲属关系事实。",
+          "entity": "靳予葵与邬槐序"
+        }
+      ],
+      "review_outcome": {
+        "corrected_adjustment": "撤销缺少当次可核查依据且旧条件已改变的外道修正，对受同一项影响的队伍按相同口径重核。",
+        "confirmed_penalty": "中段确认点停留不足处罚保留，噪声不使未完成变成完成。",
+        "chapter": 16,
+        "competition": "获得继续参赛资格，位置不靠前，无具体名次数值。",
+        "sampling_reason": "郁苔岑保留原始采样间隔，是为了让复核人员重现延迟。"
+      },
+      "threads": [
+        {
+          "note": "无新增身份或动机",
+          "thread": "匿名音频",
+          "status": "open"
+        },
+        {
+          "note": "仍未解释，25章才收",
+          "thread": "传感器校准章",
+          "status": "open"
+        },
+        {
+          "thread": "借用签名",
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "note": "16章处理赛事调整，不重开物理原因",
+          "thread": "帘布阻力",
+          "status": "resolved",
+          "resolved_chapter": 10
+        }
+      ],
+      "incidental_details": [
+        "17章11章来访未具名学生带回改过的外部连接示意，先前承诺已落实。",
+        "17章队伍拒绝本周追加公开示范，给出替代日期建议，未写后续已获同意；不能误作9章展示未办。",
+        "18章透明板是靳课程模型自用材料，邬误列团队库存但未裁用，已撤并归还；小块边角料由靳另行自愿提供。",
+        "19章郁参观材料展，署个人名字而不署队名；只是个人生活事件，无新专名。",
+        "20章拒绝把接近完成伪装成完成提示；最后离线演示视频完整保留等待，标明模拟。"
+      ],
+      "continuity_risks": [
+        "21章只能新写栈羽板转交，不复述20章短片用途或把用途与新持有人在一段中凑成单章答案。",
+        "22章以前邵仍需陪同，16–20没有取消限制。",
+        "24章以前旧训练室许可未交回，本段仅调整清洁时间和门厅物资，不是正式搬迁。",
+        "17章正式协调状态与19章腕状态此后不作包含旧状态的总结式再述。",
+        "18章靳邬非亲属是明确事实；后续不能因为同行、互助写出血缘或婚姻关系。",
+        "17和20锚点分别2576与2568，删改前文须重测。"
+      ],
+      "deviations": [
+        "17、18、20章2812、2833、2807汉字均在硬范围内；未为可选目标补无关字数。"
+      ],
+      "checks": {
+        "chapter_count": 5,
+        "all_anchors_after_2550": true,
+        "han_range": [
+          2807.0,
+          2973.0
+        ],
+        "independent_review": "not_performed",
+        "total_han": 14404.0
+      }
+    },
+    {
+      "stage": "chapters_21_25",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 21,
+          "title": "第21章 两张工作台之间",
+          "han_count": 2880,
+          "evidence_quote": "郁苔岑将栈羽板交给翟栖墨保管，约定赛季结束后再谈归还。",
+          "evidence_han_position": 2671,
+          "deep": true
+        },
+        {
+          "chapter": 22,
+          "title": "第22章 可以开始的时候",
+          "han_count": 2891,
+          "evidence_quote": "岑弥照恢复了邵霁棠独自测试的资格，从当晚起不再要求陪同。",
+          "evidence_han_position": 2679,
+          "deep": true
+        },
+        {
+          "chapter": 23,
+          "title": "第23章 空白的一下午",
+          "han_count": 2850,
+          "evidence_quote": "邬槐序把那张旧车票折好，放回外套内侧的小袋。",
+          "evidence_han_position": 2619,
+          "deep": true
+        },
+        {
+          "chapter": 24,
+          "title": "第24章 门关上以后",
+          "han_count": 2886,
+          "evidence_quote": "全队交还了旧训练室的使用许可，此后不得再把那里当作工作场地。",
+          "evidence_han_position": 2668,
+          "deep": true
+        },
+        {
+          "chapter": 25,
+          "title": "第25章 尺子放在哪里",
+          "han_count": 2904,
+          "evidence_quote": "两次校准采用的参照高度不同，才使纸签上留下两组零位读数。",
+          "evidence_han_position": 2660,
+          "deep": true
+        }
+      ],
+      "new_names": [],
+      "unplanned_names": [],
+      "time": {
+        "chapter24": "馆方正式调整通知后的搬迁日，早晨打包、午后移至二层、晚间交回许可",
+        "chapter21": "第五周开始，一天联合台面测试，傍晚达成借用并交板",
+        "chapter25": "第五周最后一天，清晨校准资料到达，全天错开共享台时段做对比，夜间收束",
+        "chapter22": "次一完整训练日，上午观察、中午场地间隔、下午真实中止、当晚许可生效",
+        "chapter23": "周中空出一下午，旧书摊、投影展、校园散步与晚饭",
+        "season": "秋季",
+        "week": "第五周"
+      },
+      "object_updates": [
+        {
+          "previous_custodian": "郁苔岑",
+          "transfer_chapter": 21,
+          "note": "明确赛季结束后再谈归还，不是赛季结束立即归还，也非永久赠与；此后本段不归还。原队用已有固定调试台。",
+          "object": "栈羽板",
+          "current_custodian": "翟栖墨"
+        },
+        {
+          "note": "24章随搬迁安置二层固定柜，不复述5章交接。",
+          "object": "弧桨盒",
+          "current_custodian": "靳予葵"
+        },
+        {
+          "note": "无易手，24章资料搬入固定柜，不复述11章交接。",
+          "object": "烬纹夹",
+          "current_custodian": "郁苔岑"
+        },
+        {
+          "facts": "折过、折角磨白、票面字模糊；找零钱时掉出，之后折好放回外套内侧小袋；未写目的地、日期、来源、保留原因。",
+          "object": "旧车票",
+          "chapter": 23,
+          "custodian": "邬槐序"
+        }
+      ],
+      "state_changes": [
+        {
+          "new_state": "当晚恢复独自测试资格，不再要求陪同",
+          "entity": "邵霁棠",
+          "note": "现场完整观察由岑在场执行；许可不要求当晚立即追加试验，体力与设备条件不足时自行结束。",
+          "chapter": 22
+        },
+        {
+          "new_state": "交还旧训练室许可，不得继续当工作场地",
+          "entity": "全队场地",
+          "new_work_area": "衡汐馆二层共享装配区，预约工作台与固定柜",
+          "note": "新工作区是普通区域描述，不新增专名；池区仍按预约使用；没有保留旧室例外进入工作权。",
+          "chapter": 24
+        }
+      ],
+      "threads": [
+        {
+          "resolution": "供货方两份完整记录及夹具图显示参照条件不同；还原两种设置并统一参照交叉重复后解释零位差异；不是设备被替换或人为破坏。",
+          "thread": "传感器校准章",
+          "status": "resolved",
+          "resolved_chapter": 25,
+          "planted_chapter": 12
+        },
+        {
+          "thread": "匿名音频",
+          "status": "open",
+          "note": "本段未增加寄件人、说话者、动机信息，须到30保持开放。",
+          "planted_chapter": 7
+        },
+        {
+          "thread": "旧车票保留动机",
+          "status": "not_stated",
+          "note": "仅物理携带与收存动作；防止掉落是即时动作目的，不是长期保留原因，后续不得补解释。",
+          "chapter": 23
+        },
+        {
+          "thread": "借用签名",
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "thread": "帘布阻力",
+          "status": "resolved",
+          "resolved_chapter": 10
+        }
+      ],
+      "incidental_details": [
+        "21章联合测试发现翟界面特定顺序下刷新问题，缩小并改善但未声称全部彻底解决。",
+        "22章开头忘带水杯而买水瓶，章末已写回取早晨买的水瓶，避免杯瓶无由出现。",
+        "23章旧书交换与舞步、投影等是无训练成果要求的休息；未新增具名人物。",
+        "24章旧白板留场馆，照片揭下后用移动夹座立在新桌；新区域有邻组，不独占整间房。",
+        "25章郁用预约间隔参加此前材料展讲解，带回普通折纸小样，无新专名。"
+      ],
+      "continuity_risks": [
+        "26–30全部日常装配在二层共享区，28章若查旧记录应走馆方档案/公共区，不能未经许可回旧室工作。",
+        "21章板借用不设自动归还日期，后续不得默认为已返郁。",
+        "25章邵独自做常规测试是22许可生效后的实际动作，不是另一轮资格授予。",
+        "23章旧票不解释原因，不写为纪念、故人、旅程等猜测。",
+        "传感器线25已收，之后不可当尚未解决；匿名音频仍未收。",
+        "两组故意矛盾基线本段未复述；26、28必须保留指定新值，不试图调和。"
+      ],
+      "deviations": [
+        "23、25无指定逐字锚点，分别选物理收存句和线索结论句计位置；未为问题额外改正文。"
+      ],
+      "checks": {
+        "total_han": 14411.0,
+        "independent_review": "not_performed",
+        "all_anchors_after_2550": true,
+        "han_range": [
+          2850.0,
+          2904.0
+        ],
+        "chapter_count": 5
+      }
+    },
+    {
+      "stage": "chapters_26_30",
+      "status": "author_draft_self_checked_pending_lead_and_independent_review",
+      "chapters": [
+        {
+          "chapter": 26,
+          "title": "第26章 没用上的掌声",
+          "han_count": 2820,
+          "evidence_quote": "裴朔宁出生在缄岚大学所在的城市，出生地并不是栎虹城。",
+          "evidence_han_position": 2601,
+          "deep": true
+        },
+        {
+          "chapter": 27,
+          "title": "第27章 水线向前",
+          "han_count": 2847,
+          "evidence_quote": "本轮比赛中，他们在水面杂物擦碰后主动停止推进，待杂物脱离才继续，最终完成全程而未获奖。",
+          "evidence_han_position": 2600,
+          "deep": true
+        },
+        {
+          "chapter": 28,
+          "title": "第28章 纸上的池岸",
+          "han_count": 2915,
+          "evidence_quote": "衡汐馆建馆当天首次注入试验池的水量是一千二百升。",
+          "evidence_han_position": 2679,
+          "deep": true
+        },
+        {
+          "chapter": 29,
+          "title": "第29章 留给问句的地方",
+          "han_count": 2892,
+          "evidence_quote": "他们将包含实际失误、比赛结果和待做试验的完整报告发布到活动约定的分享页面，未把尚未验证的设想列作成果。",
+          "evidence_han_position": 2653,
+          "deep": true
+        },
+        {
+          "chapter": 30,
+          "title": "第30章 门外的纸",
+          "han_count": 2878,
+          "evidence_quote": "祁砚笙关掉展示屏，把下一轮开放训练的报名纸留在门外。",
+          "evidence_han_position": 2855,
+          "deep": true
+        }
+      ],
+      "new_names": [],
+      "unplanned_names": [],
+      "time": {
+        "chapter29": "学生分享与发布报告日，晚上结束",
+        "season": "秋季",
+        "chapter30": "紧接分享次日，上午撤展，午后共享区收整与收集下轮意向",
+        "chapter26": "第六周开头，赛前一天，筹备介绍、干式灯光检查、合影",
+        "chapter28": "赛后志愿清场日，午间短雨、下午转晴、傍晚离馆",
+        "week": "第六周",
+        "chapter27": "紧接次日正式比赛，结束后共同吃面"
+      },
+      "object_updates": [
+        {
+          "object": "栈羽板",
+          "current_custodian": "翟栖墨",
+          "note": "本段无归还或自动返还叙述，赛季结束后再谈归还约定保持。"
+        },
+        {
+          "object": "弧桨盒",
+          "current_custodian": "靳予葵",
+          "note": "无新的交接。"
+        },
+        {
+          "object": "烬纹夹",
+          "current_custodian": "郁苔岑",
+          "note": "无新的交接。"
+        },
+        {
+          "object": "旧车票",
+          "custodian": "邬槐序",
+          "note": "本段未再出现，未补动机、路线、日期或来源。"
+        },
+        {
+          "note": "普通未命名设备，30章由临时展位随其他展品搬至二层共享区，接好核对图片，最终关闭。",
+          "object": "便携展示屏"
+        }
+      ],
+      "state_changes": [
+        {
+          "entity": "比赛",
+          "note": "遭水面软条擦碰后停机待脱离；减速回转损失时间，未改写资格赛既有处罚。",
+          "chapter": 27,
+          "new_state": "完整完成本轮要求，未获奖"
+        },
+        {
+          "entity": "团队报告",
+          "note": "明示停留不足为自身失误，保留待做试验，不把设想写成果。",
+          "chapter": 29,
+          "new_state": "完整报告发布至活动约定分享页面"
+        },
+        {
+          "entity": "本季展示",
+          "note": "尚未开展下一轮训练，无31章正文。",
+          "chapter": 30,
+          "new_state": "临时展位撤除，展品入二层固定柜，开放训练意向纸获准贴公共板"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "field": "裴朔宁出生地",
+          "chapters": [
+            8,
+            26
+          ],
+          "note": "26采用确定叙述的指定冲突值，不解释为记错、口误或身份差异。"
+        },
+        {
+          "field": "衡汐馆建馆当天首次注入试验池水量",
+          "chapters": [
+            14,
+            28
+          ],
+          "note": "28采用一千二百升，与14八百升保留同一事件直接冲突，无调和。"
+        }
+      ],
+      "threads": [
+        {
+          "status": "open",
+          "thread": "匿名音频",
+          "note": "29只确认无法确认、原文件仍保存；无寄件人、说话人或动机归属，不公开散发文件。"
+        },
+        {
+          "status": "not_stated",
+          "thread": "旧车票保留动机"
+        },
+        {
+          "status": "resolved",
+          "thread": "传感器校准章",
+          "resolved_chapter": 25
+        },
+        {
+          "status": "resolved",
+          "thread": "借用签名",
+          "resolved_chapter": 13
+        },
+        {
+          "status": "resolved",
+          "thread": "帘布阻力",
+          "resolved_chapter": 10
+        }
+      ],
+      "incidental_details": [
+        "26合影未摆设备背景，实际六人普通合影；干式检查发现反光，调整外侧标识而非重做电路。",
+        "27赛场软塑料条不是帘布线复发，不指认人为放置；设备擦痕浅，连接件未松。邻队贴纸为普通物件无专名。",
+        "28经管理员取展示复制册到公共阅览台，馆方附件由管理员保管和收回；未擅回旧室。保护片加工在二层共享区。",
+        "29分享依次实际展示护罩观察角、未加速录像、预算和回收通道示意；未现场通电或涉水演示。",
+        "30靳个人模型窗影场景延续个人课程项目；没有把其个人材料征用为团队资产。",
+        "30临时展位在午后交给其他活动，收整在二层预约桌；屏幕搬移与关闭明确，报名纸贴共享区门外许可公示板。"
+      ],
+      "continuity_risks": [
+        "两组有意矛盾不可在独立复核中作为无意错误修正。",
+        "音频和旧票动机保持未知；报告中音频记录不构成公开发布原文件。",
+        "未明确返板，须保持翟持有；三件具名物件不在末章汇总复述。",
+        "第30章只开启意向收集，不等于下一轮已经开训。",
+        "26至30无新增专名，所有非具名工作人员和观众均临时普通角色。"
+      ],
+      "deviations": [
+        "27、29无规定逐字事实句，选择实际赛事结论与报告发布句作位置登记；这些句并非预先增加的新问题要求。"
+      ],
+      "checks": {
+        "all_anchors_after_2550": true,
+        "han_range": [
+          2820.0,
+          2915.0
+        ],
+        "independent_review": "not_performed",
+        "total_han": 14352.0,
+        "chapter_count": 5
+      }
+    }
+  ],
+  "all_chapter_statistics": [
+    {
+      "chapter": 1,
+      "han_count": 2902,
+      "evidence_han_position": 2676
+    },
+    {
+      "chapter": 2,
+      "han_count": 2842,
+      "evidence_han_position": 2692
+    },
+    {
+      "chapter": 3,
+      "han_count": 2892,
+      "evidence_han_position": 2717
+    },
+    {
+      "chapter": 4,
+      "han_count": 2959,
+      "evidence_han_position": 2730
+    },
+    {
+      "chapter": 5,
+      "han_count": 2969,
+      "evidence_han_position": 2796
+    },
+    {
+      "chapter": 6,
+      "han_count": 2912,
+      "evidence_han_position": 2693
+    },
+    {
+      "chapter": 7,
+      "han_count": 2899,
+      "evidence_han_position": 2778
+    },
+    {
+      "chapter": 8,
+      "han_count": 2934,
+      "evidence_han_position": 2703
+    },
+    {
+      "chapter": 9,
+      "han_count": 2894,
+      "evidence_han_position": 2736
+    },
+    {
+      "chapter": 10,
+      "han_count": 3055,
+      "evidence_han_position": 2663
+    },
+    {
+      "chapter": 11,
+      "han_count": 2896,
+      "evidence_han_position": 2728
+    },
+    {
+      "chapter": 12,
+      "han_count": 2900,
+      "evidence_han_position": 2684
+    },
+    {
+      "chapter": 13,
+      "han_count": 2869,
+      "evidence_han_position": 2610
+    },
+    {
+      "chapter": 14,
+      "han_count": 2796,
+      "evidence_han_position": 2553
+    },
+    {
+      "chapter": 15,
+      "han_count": 2867,
+      "evidence_han_position": 2842
+    },
+    {
+      "chapter": 16,
+      "han_count": 2950,
+      "evidence_han_position": 2711
+    },
+    {
+      "chapter": 17,
+      "han_count": 2812,
+      "evidence_han_position": 2576
+    },
+    {
+      "chapter": 18,
+      "han_count": 2862,
+      "evidence_han_position": 2635
+    },
+    {
+      "chapter": 19,
+      "han_count": 2973,
+      "evidence_han_position": 2606
+    },
+    {
+      "chapter": 20,
+      "han_count": 2807,
+      "evidence_han_position": 2568
+    },
+    {
+      "chapter": 21,
+      "han_count": 2880,
+      "evidence_han_position": 2671
+    },
+    {
+      "chapter": 22,
+      "han_count": 2891,
+      "evidence_han_position": 2679
+    },
+    {
+      "chapter": 23,
+      "han_count": 2850,
+      "evidence_han_position": 2619
+    },
+    {
+      "chapter": 24,
+      "han_count": 2886,
+      "evidence_han_position": 2668
+    },
+    {
+      "chapter": 25,
+      "han_count": 2904,
+      "evidence_han_position": 2660
+    },
+    {
+      "chapter": 26,
+      "han_count": 2820,
+      "evidence_han_position": 2601
+    },
+    {
+      "chapter": 27,
+      "han_count": 2847,
+      "evidence_han_position": 2600
+    },
+    {
+      "chapter": 28,
+      "han_count": 2915,
+      "evidence_han_position": 2679
+    },
+    {
+      "chapter": 29,
+      "han_count": 2892,
+      "evidence_han_position": 2653
+    },
+    {
+      "chapter": 30,
+      "han_count": 2878,
+      "evidence_han_position": 2855
+    }
+  ],
+  "source_sha256": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+  "cumulative_checks": {
+    "chapter_count": 30,
+    "replacement_characters": 0,
+    "independent_review": "not_performed",
+    "has_cr": false,
+    "has_bom": false,
+    "all_anchors_after_2550": true,
+    "total_han": 86753.0,
+    "first25_han": 72401.0,
+    "final_sentence_exact": true,
+    "source_characters_including_headings_and_whitespace": 97189,
+    "source_han_including_headings": 86985
+  },
+  "review_repair_log": [
+    {
+      "scope": "four_findings_chapters_02_05_18_24",
+      "changed_source_chapters": [
+        2,
+        5,
+        18,
+        24
+      ],
+      "changes": [
+        "第2章相对时间修正为先前，不再把当日下午事件误称上午。",
+        "第5章统一为临近中午到场、午饭前检查、随后午饭。",
+        "第18章领取途中仅携空包装与薄膜，领取后才托板送往教室。",
+        "第24章去除空载限定，保持转角调整已装箱子的动作。"
+      ],
+      "before_sha256": "75378fcfe49af93024c84188e752bec953955b8f28f5761fd2162bc2fcc1683e",
+      "after_sha256": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+      "before_statistics": [
+        {
+          "chapter": 2,
+          "han_count": 2842,
+          "evidence_han_position": 2692
+        },
+        {
+          "chapter": 5,
+          "han_count": 2966,
+          "evidence_han_position": 2793
+        },
+        {
+          "chapter": 18,
+          "han_count": 2833,
+          "evidence_han_position": 2606
+        },
+        {
+          "chapter": 24,
+          "han_count": 2888,
+          "evidence_han_position": 2670
+        }
+      ],
+      "after_statistics": [
+        {
+          "chapter": 2,
+          "han_count": 2842,
+          "evidence_han_position": 2692
+        },
+        {
+          "chapter": 5,
+          "han_count": 2969,
+          "evidence_han_position": 2796
+        },
+        {
+          "chapter": 18,
+          "han_count": 2862,
+          "evidence_han_position": 2635
+        },
+        {
+          "chapter": 24,
+          "han_count": 2886,
+          "evidence_han_position": 2668
+        }
+      ],
+      "gold_anchor_text_changed": false,
+      "intentional_conflicts_changed": false,
+      "independent_reread": "pending"
+    }
+  ]
+}

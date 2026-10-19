@@ -40,7 +40,7 @@ test("08 窄屏作品五页：无横向溢出并且只读", async ({ page }, inf
     }
     if (tab === "plan") for (const card of await page.getByRole("article").all()) await card.getByRole("button").first().click();
     await noWriteControls(page, /^(保存|检查这一章|再检查一次|不是问题|保留原意|保留变化|采用改法|新建计划|编辑|归档|记下|确认|检查选中的章节)$/);
-    if (tab === "memory") for (const [name, value] of [["人物", "people"], ["设定", "settings"], ["伏笔", "threads"], ["问一问", "ask"]]) {
+    if (tab === "memory") for (const [name, value] of [["人物", "people"], ["设定", "settings"], ["伏笔", "threads"]]) {
       await view(page, name, value);
       const expand = page.getByRole("button", { name: /^相关事实 / });
       const count = await expand.count();

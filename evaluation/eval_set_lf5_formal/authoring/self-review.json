@@ -1,0 +1,189 @@
+{
+  "targets": [
+    {
+      "target_id": "lf5-t01",
+      "unintended_issues_checked": true,
+      "sentences_checked": 77,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t02",
+      "unintended_issues_checked": true,
+      "sentences_checked": 80,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t03",
+      "unintended_issues_checked": true,
+      "sentences_checked": 82,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t04",
+      "unintended_issues_checked": true,
+      "sentences_checked": 77,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t05",
+      "unintended_issues_checked": true,
+      "sentences_checked": 79,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t06",
+      "unintended_issues_checked": true,
+      "sentences_checked": 81,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t07",
+      "unintended_issues_checked": true,
+      "sentences_checked": 79,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t08",
+      "unintended_issues_checked": true,
+      "sentences_checked": 75,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t09",
+      "unintended_issues_checked": true,
+      "sentences_checked": 79,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t10",
+      "unintended_issues_checked": true,
+      "sentences_checked": 76,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t11",
+      "unintended_issues_checked": true,
+      "sentences_checked": 76,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t12",
+      "unintended_issues_checked": true,
+      "sentences_checked": 73,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t13",
+      "unintended_issues_checked": true,
+      "sentences_checked": 76,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t14",
+      "unintended_issues_checked": true,
+      "sentences_checked": 75,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t15",
+      "unintended_issues_checked": true,
+      "sentences_checked": 75,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t16",
+      "unintended_issues_checked": true,
+      "sentences_checked": 73,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t17",
+      "unintended_issues_checked": true,
+      "sentences_checked": 76,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t18",
+      "unintended_issues_checked": true,
+      "sentences_checked": 73,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t19",
+      "unintended_issues_checked": true,
+      "sentences_checked": 75,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t20",
+      "unintended_issues_checked": true,
+      "sentences_checked": 67,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t21",
+      "unintended_issues_checked": true,
+      "sentences_checked": 74,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t22",
+      "unintended_issues_checked": true,
+      "sentences_checked": 78,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t23",
+      "unintended_issues_checked": true,
+      "sentences_checked": 78,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t24",
+      "unintended_issues_checked": true,
+      "sentences_checked": 74,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t25",
+      "unintended_issues_checked": true,
+      "sentences_checked": 77,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    },
+    {
+      "target_id": "lf5-t26",
+      "unintended_issues_checked": true,
+      "sentences_checked": 76,
+      "notes": "已逐句对照全部前文，核对人物指代、物件状态、时序、行动、缺失环节与陷阱；除标注问题外未发现遗留问题。"
+    }
+  ],
+  "author_review": {
+    "targets": 26,
+    "sentences": 1981,
+    "clarifications_found": 13,
+    "clarifications_closed": 13,
+    "length_repairs_found": 4,
+    "length_repairs_closed": 4,
+    "unresolved": 0
+  },
+  "independent_review": {
+    "status": "completed",
+    "author_independent": true,
+    "chapters": 34,
+    "targets": 26,
+    "items": 36,
+    "traps": 16,
+    "clean_targets": 9,
+    "findings": 4,
+    "closed": 4,
+    "unresolved": 0,
+    "source_and_labels_sha256": {
+      "labels.json": "577e9e633f1b473a560a422a68371270eb90c3dd6e6e0e3f07aba5a826b69fad",
+      "works/taijie_rain.md": "c3ae1927512262aaa70df9848fd9b42d8990f1cb787a1da50557565dce013d68",
+      "works/rongji_stage.md": "4e1221383497f375a90a880084151d59ad18a8c06098fdb32114ecb2d161a92d",
+      "works/xiuzi_school.md": "098afacd0a4a9ab04feb98ab89f4e8fd9352c6c60c29eeebb92ad8abef25c033",
+      "works/huli_mail.md": "be0b8b4e83b1259e039eb80d212af77af42b0e0577d47898dce0dc80526eae12"
+    },
+    "review_record_sha256": "415a54bd2a47cee7abde6e209e305ad4c8e3dc2aa07a6aace8284c474a7dd7de"
+  }
+}

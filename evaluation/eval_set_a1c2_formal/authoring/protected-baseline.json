@@ -1,0 +1,58 @@
+[
+  {
+    "path": "evaluation/assistant_a1/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "evaluation/assistant_a1/a1c.py",
+    "sha256": "ed2507b03b7cc0f07287d343cf4b9fa029506c06003e5b6a87cd709561df9e7f"
+  },
+  {
+    "path": "evaluation/assistant_a1/judge.py",
+    "sha256": "d8e8ebf3c62df96c5327dd122f636e1edffb28dcc3871139acc2428166dd8eed"
+  },
+  {
+    "path": "evaluation/assistant_a1/run.py",
+    "sha256": "e5acb6f47515b7ce7fd433337e9acdbaf7d64227f5fbc345caad0e6a8c3298cc"
+  },
+  {
+    "path": "evaluation/assistant_a1/score.py",
+    "sha256": "77c8cb636953797eac78932263fe33e014e77aa4d14f7a5a2494fe8d05b8766f"
+  },
+  {
+    "path": "evaluation/assistant_a1/SPEC.md",
+    "sha256": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512"
+  },
+  {
+    "path": "evaluation/assistant_a1/supplemental.py",
+    "sha256": "f0074c8247c9fbdc98fe1875e7be9ba8c9b274ab409a30cce146d91363d12845"
+  },
+  {
+    "path": "evaluation/assistant_a1/thresholds.py",
+    "sha256": "2d138d2c10c2cc553c17accc635eb83617473834b931a4ca53c15f5f60be559e"
+  },
+  {
+    "path": "evaluation/assistant_a1b/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "evaluation/assistant_a1b/SPEC.md",
+    "sha256": "a0e6658dcb091d0c9e0b9c85ea5debd4d4a614996611047a2a350004fbe000b5"
+  },
+  {
+    "path": "evaluation/assistant_a1b/thresholds.py",
+    "sha256": "432fd630964e6d11624d587f2af25a5aea112f8b48c9b0f0b0758cde98955dd0"
+  },
+  {
+    "path": "evaluation/assistant_a1c/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "evaluation/assistant_a1c/SPEC.md",
+    "sha256": "36da545faf37995a9ee9b60b19a32e43f3359bd9566e0dfa101473cda3c4be58"
+  },
+  {
+    "path": "evaluation/assistant_a1c/thresholds.py",
+    "sha256": "2452f59f5dfcfd2377a434e5f561485a42dbb82bce2bc489cd76ed7d0d075968"
+  }
+]

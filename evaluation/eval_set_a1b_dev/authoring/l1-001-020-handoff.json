@@ -1,0 +1,499 @@
+{
+  "chapter_range": [
+    1,
+    20
+  ],
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "第一章 听见坡上的话",
+      "han_count": 449
+    },
+    {
+      "chapter": 2,
+      "title": "第二章 轮缘留下的浅印",
+      "han_count": 445
+    },
+    {
+      "chapter": 3,
+      "title": "第三章 雨棚下的空位",
+      "han_count": 437
+    },
+    {
+      "chapter": 4,
+      "title": "第四章 饭香越过争论",
+      "han_count": 437
+    },
+    {
+      "chapter": 5,
+      "title": "第五章 梯子翻过来",
+      "han_count": 449
+    },
+    {
+      "chapter": 6,
+      "title": "第六章 推车停在斜处",
+      "han_count": 452
+    },
+    {
+      "chapter": 7,
+      "title": "第七章 没有落笔的位置",
+      "han_count": 461
+    },
+    {
+      "chapter": 8,
+      "title": "第八章 湿凭条的一角",
+      "han_count": 459
+    },
+    {
+      "chapter": 9,
+      "title": "第九章 桌面不再飞散",
+      "han_count": 465
+    },
+    {
+      "chapter": 10,
+      "title": "第十章 先让一个人过去",
+      "han_count": 459
+    },
+    {
+      "chapter": 11,
+      "title": "第十一章 把柄朝向另一边",
+      "han_count": 458
+    },
+    {
+      "chapter": 12,
+      "title": "第十二章 空篓也会碰人",
+      "han_count": 464
+    },
+    {
+      "chapter": 13,
+      "title": "第十三章 旧桌换个朝向",
+      "han_count": 476
+    },
+    {
+      "chapter": 14,
+      "title": "第十四章 饭摆到哪里",
+      "han_count": 479
+    },
+    {
+      "chapter": 15,
+      "title": "第十五章 木屑落到鞋边",
+      "han_count": 462
+    },
+    {
+      "chapter": 16,
+      "title": "第十六章 掌心旁的间隙",
+      "han_count": 467
+    },
+    {
+      "chapter": 17,
+      "title": "第十七章 风从缆边走过",
+      "han_count": 477
+    },
+    {
+      "chapter": 18,
+      "title": "第十八章 旧纸不替人说话",
+      "han_count": 491
+    },
+    {
+      "chapter": 19,
+      "title": "第十九章 纸边卷起的地方",
+      "han_count": 481
+    },
+    {
+      "chapter": 20,
+      "title": "第二十章 线条后的高低",
+      "han_count": 475
+    }
+  ],
+  "new_names": [
+    {
+      "name": "郁澄",
+      "aliases": [
+        "扣子"
+      ],
+      "first_chapter": 1
+    },
+    {
+      "name": "岑望",
+      "aliases": [
+        "长尺"
+      ],
+      "first_chapter": 2
+    },
+    {
+      "name": "杜葵",
+      "aliases": [
+        "小锣"
+      ],
+      "first_chapter": 4
+    },
+    {
+      "name": "费泊",
+      "aliases": [
+        "阿栓"
+      ],
+      "first_chapter": 5,
+      "alias_chapter": 6
+    },
+    {
+      "name": "陶汀",
+      "aliases": [],
+      "first_chapter": 7
+    },
+    {
+      "name": "江穗",
+      "aliases": [],
+      "first_chapter": 10
+    },
+    {
+      "name": "童沛",
+      "aliases": [],
+      "first_chapter": 12
+    },
+    {
+      "name": "穆槐",
+      "aliases": [],
+      "first_chapter": 13
+    },
+    {
+      "name": "黎弦",
+      "aliases": [],
+      "first_chapter": 13
+    },
+    {
+      "name": "祁砚",
+      "aliases": [],
+      "first_chapter": 18
+    }
+  ],
+  "new_places": [
+    {
+      "name": "岔灯坪",
+      "first_chapter": 1
+    },
+    {
+      "name": "石脊步道",
+      "first_chapter": 10
+    },
+    {
+      "name": "折岭",
+      "first_chapter": 18
+    }
+  ],
+  "new_objects": {
+    "named_exam_objects": [
+      {
+        "name": "棱纹测距轮",
+        "first_chapter": 2,
+        "transfer_chapter": 11
+      },
+      {
+        "name": "赭釉水壶",
+        "first_chapter": 4
+      },
+      {
+        "name": "白角线轴",
+        "first_chapter": 6
+      },
+      {
+        "name": "银齿票夹",
+        "first_chapter": 9
+      }
+    ],
+    "exam_related_unnamed_objects": [
+      {
+        "name": "右腕夹板与绑带",
+        "first_chapter": 3
+      },
+      {
+        "name": "背面有两枚相邻凹点的旧梯",
+        "first_chapter": 5
+      },
+      {
+        "name": "第一次试音录音",
+        "first_chapter": 17,
+        "note": "只写留在口袋，不写动机；承接设定never_state相关内容"
+      },
+      {
+        "name": "画图用炭笔",
+        "first_chapter": 19,
+        "note": "只写使用动作，无购买价格；承接设定never_state相关内容"
+      },
+      {
+        "name": "剖面图",
+        "first_chapter": 20
+      }
+    ],
+    "ordinary_props": [
+      "旧支架",
+      "记录纸与草图及废纸",
+      "石头",
+      "矮墙",
+      "货篓与空篓及背篓",
+      "小车与手推车及车架车把车轮",
+      "碎石与砂粒",
+      "遮棚及棚布",
+      "木杆",
+      "衣袖与口袋",
+      "盖子与盖布",
+      "碗",
+      "筷子",
+      "饭菜与菜叶",
+      "木栏",
+      "普通布及干布",
+      "木片与薄木片",
+      "湿叶与干叶",
+      "普通细绳",
+      "桌子与桌脚及桌面",
+      "笔",
+      "纸条",
+      "费用凭条与账页及隔页",
+      "石壁",
+      "旧桌",
+      "椅子",
+      "木料及废木及边料木丝木屑细刺",
+      "扫帚",
+      "修理台",
+      "未命名小部件",
+      "小凳",
+      "缆段",
+      "旧籍及旧记录纸页",
+      "空筐",
+      "画图用另纸"
+    ],
+    "ordinary_prop_scope": "日常场景道具；未赋予固定所有权、永久属性、专名、伏笔或考点事实；没有新增考点物件的易手。"
+  },
+  "new_time_points": {
+    "absolute_dates": [],
+    "numbered_durations": [],
+    "relative_markers": [
+      "第一章抵达时",
+      "第三章雨落至雨弱",
+      "第四章摆饭至饭后",
+      "第七章会议至散会",
+      "第八章登记过程",
+      "第九章午后至傍晚",
+      "第十章试走至天色渐暗",
+      "第十一章既定转交时刻",
+      "第十四章雨起至雨弱",
+      "第十五章日光移开",
+      "第十六章修理至收工前",
+      "第十七章第一次试音至试音结束",
+      "第十八章整理至傍晚",
+      "第十九章风雨后至天放晴",
+      "第二十章练习至结束"
+    ],
+    "note": "章序前进，未设公历日期、固定日数、周年或倒叙。"
+  },
+  "exam_fact_quotes": [
+    {
+      "chapter": 1,
+      "quote": "那是居民对郁澄的叫法，扣子就是郁澄的别名。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 2,
+      "quote": "棱纹测距轮当时由岑望持有。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 2,
+      "quote": "岑望抬头答应，众人也就知道长尺是他的别名，而不是又来了一个负责测量的人。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": false
+      }
+    },
+    {
+      "chapter": 3,
+      "quote": "郁澄右腕受伤，必须戴夹板，不能提重物。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 4,
+      "quote": "小锣是大家给杜葵起的别名，她听见就从手边提起壶。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 4,
+      "quote": "赭釉水壶属于杜葵，此时也由她自己收着用。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 5,
+      "quote": "她请费泊再挪开一点遮着的叶屑，众人便看见旧梯背面有两枚相邻的凹点，没人知道它们的来源。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 6,
+      "quote": "阿栓是费泊的别名，他头也不抬地答道，得先看看哪里在磨。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 6,
+      "quote": "费泊身边放着他保管的白角线轴，白角线轴的持有人是费泊。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 7,
+      "quote": "岑望只获准旁听这次会议，没有签字权限。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 9,
+      "quote": "银齿票夹原本属于陶汀，也由陶汀保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 11,
+      "quote": "岑望把棱纹测距轮正式交给江穗，从这一刻起，棱纹测距轮由江穗保管。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 14,
+      "quote": "杜葵指着眼前临时搭起的棚位，说明食堂目前只有流动棚位，没有固定厨房。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 16,
+      "quote": "费泊的左手天生只有四根手指。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 17,
+      "quote": "第一次试音结束，郁澄把那段录音留在口袋里，没有删掉，也没有拿出来播放。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 18,
+      "quote": "祁砚出生在折岭的岔灯坪。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 19,
+      "quote": "她拿出画图用的炭笔，先在另纸上试了一下浓淡。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": false,
+        "has_text_after": true
+      }
+    },
+    {
+      "chapter": 20,
+      "quote": "黎弦此时尚不能独立读懂剖面图，图上的切面和他熟悉的行走方向总会混在一起。",
+      "paragraph_position": {
+        "paragraph": 2,
+        "paragraph_count": 4,
+        "has_text_before": true,
+        "has_text_after": true
+      }
+    }
+  ],
+  "intentional_conflicts_preserved": [
+    {
+      "subject": "祁砚",
+      "chapter": 18,
+      "quote": "祁砚出生在折岭的岔灯坪。",
+      "paired_future_chapter": 49,
+      "action": "保留，不能修正为后文说法"
+    }
+  ],
+  "potential_deviations": [],
+  "continuity_notes": [
+    "第5章费泊先登场，第6章才交代其别名，符合别名指定章；未写16章以前的手指数量。",
+    "第13章穆槐与黎弦登场，未写岑望与穆槐亲属关系。",
+    "第17章补齐never_state所指录音的存在，但未说明留存动机。",
+    "第19章补齐never_state所指炭笔的存在，但未说明购买价格。",
+    "第11章后未复述测距轮当前持有人，也未把初主与换手历史在单章中概括。",
+    "第7章权限陈述用了这次会议限定，后续仍须保持在第58章授予正式权限前不签验收。"
+  ],
+  "checks": {
+    "chapter_count": 20,
+    "han_count_min": 437,
+    "han_count_max": 491,
+    "unique_titles": true,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "all_exam_quotes_found": true,
+    "prose_generation": "逐章原创；脚本仅计数字符、检查原句和编码、整理交接JSON",
+    "model_or_product_api_calls": 0
+  }
+}

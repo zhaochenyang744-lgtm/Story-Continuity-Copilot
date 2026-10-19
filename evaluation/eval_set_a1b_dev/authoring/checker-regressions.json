@@ -1,0 +1,16 @@
+{
+  "scope": "offline checker helper regressions only",
+  "checks": [
+    "Chinese chapter 100 and 101 parsing",
+    "seven versus eight Han boundary",
+    "punctuation and whitespace normalization",
+    "proper-name break exemption",
+    "narrator assertion accepted",
+    "dialogue wrapper outside conflict substring rejected",
+    "hedged prefix outside conflict substring rejected",
+    "unquoted reported-speech prefix rejected"
+  ],
+  "status": "PASS",
+  "product_runs": 0,
+  "model_calls": 0
+}

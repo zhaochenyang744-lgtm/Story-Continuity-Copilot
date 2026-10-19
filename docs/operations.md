@@ -82,3 +82,29 @@ sudo journalctl -u 'story-continuity-ops@*' -n 30 --no-pager
 生产安装按 install-only、串行首跑、单独启用调度的顺序完成。18 项首跑检查为 true，结果 `local_components_passed_with_warnings`、退出码2；schema146 快照、哈希/完整性/外键校验、独立目录恢复写入、原备份不变及 health/readiness HTTP200 均有回执。三个 timer enabled/active；监测在服务器 CST 22:55:57 首触发后，于 23:01:01 再次自然触发并排出 23:06:07，已观察一个重复周期。6小时备份和每周演练的后续自然周期尚未观察。
 
 部署前后两份备份已手动下载至操作者工作站并独立核对 SHA256，部署后副本还完成隔离 SQLite 恢复写入及重开读取验证，原备份不变。这是一次性实例外留存；用户暂缓的自动 offsite 复制仍未配置，`offsite_copy_missing` 保留。外部通知也已暂缓且未实现；本地 JSON/journal 正常不代表故障已送达操作者。保留策略仍只报告、删除数0。首跑24小时窗口 模型任务记录/attempt 为0，供应商账单仍 null/unknown，不能据此声称历史费用为0。维护验收没有调用 Provider 或 SMTP，也没有做完整应用灾难恢复。
+
+## 运行日志保留 30 天（v1.8.0 起）
+
+隐私说明承诺"运行日志只记录请求是否成功、耗时这类信息，不记录作品正文，保留 30 天"。后端以 `--no-access-log` 运行，不写逐条请求日志；Caddy 没有开启访问日志。三个容器的输出由 `deployment/compose.yaml` 交给宿主机 journald（标签 `story-continuity/<容器名>`）。
+
+宿主机上需要一次性加上保留期限（journald 按整个文件删除，所以同时让文件每天切换一次，过期记录才会按时删掉）：
+
+```bash
+sudo mkdir -p /etc/systemd/journald.conf.d
+printf '[Journal]\nMaxRetentionSec=30day\nMaxFileSec=1day\n' | sudo tee /etc/systemd/journald.conf.d/30-story-continuity.conf
+sudo systemctl restart systemd-journald
+```
+
+查看容器日志：
+
+```bash
+sudo journalctl -t story-continuity/story-continuity-public-backend-1 -n 50 --no-pager
+```
+
+检查保留设置是否生效：
+
+```bash
+systemd-analyze cat-config systemd/journald.conf | grep -E 'MaxRetentionSec|MaxFileSec'
+```
+
+这项设置作用于整台机器的 journal，其他系统日志同样只保留 30 天。

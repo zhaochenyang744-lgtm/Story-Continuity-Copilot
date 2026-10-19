@@ -10,8 +10,7 @@ from app.engine import ContinuityContractValidationError, ContinuityEngine
 from app.provider import ProviderResult
 
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-LIVE = ROOT / "evaluation/current_flash_v5/runs/flash-v5-20260927-01/cases"
+LIVE = pathlib.Path(__file__).resolve().parent / "fixtures/flash_v5_cases"
 
 
 class V6Provider:
@@ -57,16 +56,20 @@ class V6ContinuityContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ContinuityContractValidationError, "conflict_evidence_not_direct"):
             ContinuityEngine(V6Provider()).validate(raw, request)
 
-    def test_unselected_span_and_bad_chapter_still_fail(self):
+    def test_unselected_span_still_fails_and_bad_chapter_follows_the_span(self):
+        # Three allowed ids are one character from the unselected span: ambiguous, so not corrected.
         request, raw = captured("22")
         raw = verdict(raw, request)
         with self.assertRaisesRegex(ValueError, "evidence_unresolvable"):
             ContinuityEngine(V6Provider()).validate(raw, request)
+        # The span fixes the chapter: a mistyped chapter_id no longer voids the judgement (07t).
         request, raw = captured("04")
         raw = verdict(raw, request)
+        raw["issues"][0]["evidence"][1]["relation"] = "context"
         raw["issues"][0]["evidence"][0]["chapter_id"] = "wrong-chapter"
-        with self.assertRaisesRegex(ValueError, "evidence_unresolvable"):
-            ContinuityEngine(V6Provider()).validate(raw, request)
+        issue = ContinuityEngine(V6Provider()).validate(raw, request)[0]
+        spans = {span["id"]: span for span in request["claims"][0]["allowed_evidence"]}
+        self.assertEqual([item["chapter_id"] for item in issue["evidence"]], [spans[item["span_id"]]["chapter_id"] for item in issue["evidence"]])
 
     def test_timeless_rule_requires_rule_source_cited_by_same_issue(self):
         request, raw = captured("04")

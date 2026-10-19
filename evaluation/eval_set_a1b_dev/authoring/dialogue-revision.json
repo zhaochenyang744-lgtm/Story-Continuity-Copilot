@@ -1,0 +1,994 @@
+{
+  "scope": "仅修订指定20章的既有交流为直接引号对话，并按主代理补充设定在18章限定两个既定地点互不包含；其余80章逐字不变。",
+  "method": "逐章人工写定全部改动后使用apply_patch逐处落盘；Python仅保存基线、生成精确对照、计字、核验哈希与既定考点原句，未生成或改写正文。18章另按主代理明确指派人工加入地理关系限定。",
+  "target_chapters": [
+    7,
+    9,
+    11,
+    12,
+    14,
+    18,
+    20,
+    26,
+    31,
+    39,
+    45,
+    47,
+    49,
+    55,
+    57,
+    67,
+    76,
+    82,
+    89,
+    93
+  ],
+  "revisions": [
+    {
+      "chapter": 7,
+      "title": "第七章 没有落笔的位置",
+      "changes": [
+        {
+          "before": "一名居民觉得这样太慢，站起来说再议下去便什么都做不成。郁澄请他把最急的部分指出来，他指着纸上的通行段，逐渐说清自己担心家里运东西费力。其他人也跟着把泛泛的赞成反对拆开，变成了具体的路口和动作。岑望一直听着，遇到需要说明的地方才抬头，没有把所有话都写成数字。",
+          "after": "一名居民觉得这样太慢，站起来说再议下去便什么都做不成。郁澄问：“眼下哪一部分最急？”他指着纸上的通行段，逐渐说清自己担心家里运东西费力。其他人也跟着把泛泛的赞成反对拆开，变成了具体的路口和动作。岑望一直听着，遇到需要说明的地方才抬头，没有把所有话都写成数字。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 459,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "岑望只获准旁听这次会议，没有签字权限。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "19aa85ca3fa098c4e639a705aeff3cb66b54bf9f5364fb60a9614452664c16f5",
+      "after_sha256": "982b38b9de3daddc9d76da10d41f23213c8bf946780b6cddd3c9579e2d3584cf"
+    },
+    {
+      "chapter": 9,
+      "title": "第九章 桌面不再飞散",
+      "changes": [
+        {
+          "before": "郁澄问核账的人多了，是否该把已查过的部分另放。陶汀拿一张废纸做隔页，让对面的人试着翻，自己只看他哪里会停住。那人翻到中间，果然把一处空白当成了结束。陶汀便在空白旁补上一句日常提示，没有把不清楚的记录抹掉。大家轮流试了一遍，发现让别人看懂和自己看懂，原来隔着不少细小的步骤。",
+          "after": "郁澄问：“核账的人多起来，查过的要不要另放？”陶汀拿一张废纸做隔页，让对面的人试着翻，自己只看他哪里会停住。那人翻到中间，果然把一处空白当成了结束。陶汀便在空白旁补上一句日常提示，没有把不清楚的记录抹掉。大家轮流试了一遍，发现让别人看懂和自己看懂，原来隔着不少细小的步骤。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 462,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "银齿票夹原本属于陶汀，也由陶汀保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "7cbf23ca85f3788affe515d23784583e39c8fe862ee96fb5d451253e551ed4a5",
+      "after_sha256": "40d5e067bbb8a7e18f3cc1d9365f7f42f7b09a0ab973552e5e0d19d760905b31"
+    },
+    {
+      "chapter": 11,
+      "title": "第十一章 把柄朝向另一边",
+      "changes": [
+        {
+          "before": "一位居民过来问，是不是沿着轮子走过的地方就要修路。江穗说还没有到那个步骤，眼下是在把实际走法弄清楚。对方松了口气，主动带她看一处平时容易贴着石边经过的位置。两人来回走了两遍，居民发现自己两次并没有踩在同一点上，便不好意思地笑了。江穗没有把这种差异抹平，而是问他哪次更舒服。",
+          "after": "一位居民过来问：“轮子走过的地方，就要修路了吗？”江穗说还没有到那个步骤，眼下是在把实际走法弄清楚。对方松了口气，主动带她看一处平时容易贴着石边经过的位置。两人来回走了两遍，居民发现自己两次并没有踩在同一点上，便不好意思地笑了。江穗没有把这种差异抹平，而是问他哪次更舒服。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 455,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "岑望把棱纹测距轮正式交给江穗，从这一刻起，棱纹测距轮由江穗保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "08c94df39af01dd40c0379ca5f88ddea84fb4f88b9ca64d98945d00c3072c769",
+      "after_sha256": "6c8c1f9e4ff196fee3cf7fefc8282d23fa70698073a642d30a2e21d73755f2e3"
+    },
+    {
+      "chapter": 12,
+      "title": "第十二章 空篓也会碰人",
+      "changes": [
+        {
+          "before": "郁澄问两人同时走到窄处时，谁更容易后退。几名居民轮流尝试，有的后退时先转肩，有的先挪脚，动作差一点，篓子就会碰上石面。童沛不替他们选统一的姿势，只请每个人说出哪一步最别扭。一个一直站在后面的居民终于开口，说自己慢下来时，最怕身后的人催，他宁愿早一点被看见。",
+          "after": "郁澄问：“两个人同时到窄处，谁更容易往后退？”几名居民轮流尝试，有的后退时先转肩，有的先挪脚，动作差一点，篓子就会碰上石面。童沛不替他们选统一的姿势，只请每个人说出哪一步最别扭。一个一直站在后面的居民终于开口，说自己慢下来时，最怕身后的人催，他宁愿早一点被看见。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 464,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "cf8e304dd19bb16ced54ed270237954ef509c6e109d2d12416a0b085808ae323",
+      "after_sha256": "3f69394e628b43438175d43bdaa2078b089ed478df621628623036ae64f69ca4"
+    },
+    {
+      "chapter": 14,
+      "title": "第十四章 饭摆到哪里",
+      "changes": [
+        {
+          "before": "有人问能不能把饭送进固定屋里，以后都在那里做。杜葵指着眼前临时搭起的棚位，说明食堂目前只有流动棚位，没有固定厨房。她说这话时仍在低头整理盖布，没有把难处推给谁。郁澄站在较干的一侧，听居民说哪间屋会挡住通道，哪处又离做工的人太远，几种看似现成的办法很快显出各自的问题。",
+          "after": "有人问：“能不能找间固定的屋子，把饭送进去，以后也在那里做？”杜葵指着眼前临时搭起的棚位，说明食堂目前只有流动棚位，没有固定厨房。她说这话时仍在低头整理盖布，没有把难处推给谁。郁澄站在较干的一侧，听居民说哪间屋会挡住通道，哪处又离做工的人太远，几种看似现成的办法很快显出各自的问题。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 483,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "杜葵指着眼前临时搭起的棚位，说明食堂目前只有流动棚位，没有固定厨房。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "cee9382adea2b26d4f7438a32719962f705ded9b039b3a795ef04a517da0b923",
+      "after_sha256": "bcc17d2cfec9ecca9ccfe9a8bf0bdebd707917d8df215f381b4e5ea2923fdd8a"
+    },
+    {
+      "chapter": 18,
+      "title": "第十八章 旧纸不替人说话",
+      "changes": [
+        {
+          "before": "祁砚把旧籍搬到通风的位置，没有立刻一页页快速翻过。纸边容易相互勾住，他便用干净的指腹轻轻分开，让站在旁边的人等一等。有人急着找当年修路的记录，指着厚厚一叠纸说，总该有一处把所有经过写清。祁砚抬头看看他，请他先说想找哪一次、哪一种事情，免得把不相干的页也拆散。",
+          "after": "祁砚把旧籍搬到通风的位置，没有立刻一页页快速翻过。纸边容易相互勾住，他便用干净的指腹轻轻分开，让站在旁边的人等一等。有人急着找当年修路的记录，指着厚厚一叠纸说，总该有一处把所有经过写清。祁砚抬头看看他：“你想找的是哪一次，哪一种事情？”他等对方说清，免得把不相干的页也拆散。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。",
+          "kind": "manual_direct_dialogue_revision"
+        },
+        {
+          "before": "谈到坡上的日常，祁砚对居民口中的许多位置都接得上话。祁砚出生在折岭的岔灯坪。他俯身将一张折起的纸摊平，听见旁人感慨旧时走路不易，便请对方把眼下记得的部分说具体一点。郁澄站在桌边记录口述，没有把那些话直接添进旧籍。祁砚指了指纸面，提醒大家，今天补充的回忆应当让人看得出是今天说的。",
+          "after": "谈到坡上的日常，祁砚对居民口中的许多位置都接得上话。祁砚出生在折岭的岔灯坪。岔灯坪与南坳架房是彼此分开的两个地方，谁也不在谁的范围内。他俯身将一张折起的纸摊平，听见旁人感慨旧时走路不易，便请对方把眼下记得的部分说具体一点。郁澄站在桌边记录口述，没有把那些话直接添进旧籍。祁砚指了指纸面，提醒大家，今天补充的回忆应当让人看得出是今天说的。",
+          "kind": "authorized_geographic_non_containment_clarification",
+          "note": "主代理根据独立复核补充设定：两个既定地点互相分离且互不包含，排除出生地矛盾的地理嵌套歧义；原出生地考点句保留。",
+          "added_sentence": "岔灯坪与南坳架房是彼此分开的两个地方，谁也不在谁的范围内。"
+        }
+      ],
+      "han_count_after": 523,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "祁砚出生在折岭的岔灯坪。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "3dd6ecb5cb602c09e4bc67f2e076dba4add944976f9627f0cff3f3a589201535",
+      "after_sha256": "4ef2c59a148f9c49e7a05a6b26890b021deed4989cb51e47ed06ae71fa16e0db"
+    },
+    {
+      "chapter": 20,
+      "title": "第二十章 线条后的高低",
+      "changes": [
+        {
+          "before": "黎弦坐到旧桌旁，听穆槐让他把一张图上的高低变化说出来。他先指着一条斜线，说这大概就是上坡的路。穆槐没有立刻纠正，只把图转向另一边，请他想想若人站在不同位置，看到的形状会不会变。黎弦盯着纸看了很久，手指从线头移到线尾，又慢慢收了回来。",
+          "after": "黎弦坐到旧桌旁，听穆槐让他把一张图上的高低变化说出来。他先指着一条斜线：“这大概就是上坡的路吧？”穆槐没有立刻纠正，只把图转向另一边，请他想想若人站在不同位置，看到的形状会不会变。黎弦盯着纸看了很久，手指从线头移到线尾，又慢慢收了回来。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 475,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "黎弦此时尚不能独立读懂剖面图，图上的切面和他熟悉的行走方向总会混在一起。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "98e508cd7e09d801cc94b386f36b7322dc0eec853d3ed8dc0f7a5401cedb28df",
+      "after_sha256": "08f062ecc89a920776585eec3226aa4d7a3b1fd34da8c870a2d1031f6ee2d4ea"
+    },
+    {
+      "chapter": 26,
+      "title": "第二十六章 从入口退回地面",
+      "changes": [
+        {
+          "before": "这次遗漏没有被口头提醒带过。鲍新因漏戴安全扣，被暂停了上检修桥的资格。记录放到桌面时，他伸手扶了一下纸角，问那自己今天还能做什么。费泊让他先到地面整理散开的材料，既不要靠近桥口催人，也不要替上桥的人作准备确认。鲍新把椅子推回桌下，出去时被门边的空筐挡了半步，便蹲下来把通道清空。",
+          "after": "这次遗漏没有被口头提醒带过。鲍新因漏戴安全扣，被暂停了上检修桥的资格。记录放到桌面时，他伸手扶了一下纸角，问：“那我今天还能做什么？”费泊让他先到地面整理散开的材料，既不要靠近桥口催人，也不要替上桥的人作准备确认。鲍新把椅子推回桌下，出去时被门边的空筐挡了半步，便蹲下来把通道清空。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 454,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "鲍新因漏戴安全扣，被暂停了上检修桥的资格。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "130df61b5db995ef3d0c9b9c345dce290f689d4c62683734c8377a5148b3e914",
+      "after_sha256": "46d8a2d5baa48063949a350c10ea90e2784f66c731f06fc94bb3a94f23217388"
+    },
+    {
+      "chapter": 31,
+      "title": "第三十一章 壶在布上转了半圈",
+      "changes": [
+        {
+          "before": "旁边等着送东西的人忍不住问，还走不走。童沛请对方把手里的东西先落地，自己退开一步，背起篓走到空处又回来。这回没再传出碰响，布也没有从边缘滑出来。他解开准备重包的动作停了一下，转而检查外侧有没有挂住衣角，确认后才向等候的人示意。",
+          "after": "旁边等着送东西的人忍不住问：“现在还走不走？”童沛请对方把手里的东西先落地，自己退开一步，背起篓走到空处又回来。这回没再传出碰响，布也没有从边缘滑出来。他解开准备重包的动作停了一下，转而检查外侧有没有挂住衣角，确认后才向等候的人示意。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 456,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "随后，杜葵把赭釉水壶交给童沛，明确由童沛接手保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "ebbe3b7f7041df7f79f2be4affb990085415c29f1251c7dce1c22c6c08f72ba0",
+      "after_sha256": "394a59a48f622acc7860c5c8456d09683bbbd58312f8b45151a73e1d7e3de919"
+    },
+    {
+      "chapter": 39,
+      "title": "第三十九章 不能倒过来的方向",
+      "changes": [
+        {
+          "before": "他打开能供检查的位置，请旁人看清原有设备的安排。这套缆路的供电只能从山脚传向山顶，设备结构不允许逆向送电。费泊把这个限制说明后，才让大家继续谈怎样安排地面的工作，没人进行反向通电的尝试。黎弦站在旁边看图，问自己是不是把图的朝向与实际的供电方向混在一起了，费泊让他先指出图上每一端对应的实地位置。",
+          "after": "他打开能供检查的位置，请旁人看清原有设备的安排。这套缆路的供电只能从山脚传向山顶，设备结构不允许逆向送电。费泊把这个限制说明后，才让大家继续谈怎样安排地面的工作，没人进行反向通电的尝试。黎弦站在旁边看图，问：“我是不是把图的朝向和实际供电方向弄混了？”费泊让他先指出图上每一端对应的实地位置。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 493,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "这套缆路的供电只能从山脚传向山顶，设备结构不允许逆向送电。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "f2f519b65486af25574d7d90a2894d5c0f9e71e2cac378c005c8d12b05de94ec",
+      "after_sha256": "32ecf5244ddc6990bb36c474de73e4f6f699d38cb15d5778ee2e8482c8bfeb0e"
+    },
+    {
+      "chapter": 45,
+      "title": "第四十五章 放下空出的布带",
+      "changes": [
+        {
+          "before": "郁澄在桌边坐下，先把袖口卷开。她不急着跟上外面搬东西的人，仔细松开布带，一圈圈放在旁边。有人走进来问是否需要帮忙，她说这回想自己完成，请对方先把门口的纸收住，别让风把它们吹到地上。布带渐渐松开，桌面上多出一小团褶皱的布。",
+          "after": "郁澄在桌边坐下，先把袖口卷开。她不急着跟上外面搬东西的人，仔细松开布带，一圈圈放在旁边。有人走进来问：“要帮忙吗？”她说这回想自己完成，请对方先把门口的纸收住，别让风把它们吹到地上。布带渐渐松开，桌面上多出一小团褶皱的布。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 444,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "郁澄的右腕已经痊愈，她亲手拆下夹板，右腕已能承重。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "1c5495787d44641cb8ec4800f46c2e43c1419a69167c5bddbe12897e51c9cd86",
+      "after_sha256": "9837bed772d380afea3e3e81c15c7f0cef995d0c92656a011291d1057dfea1b5"
+    },
+    {
+      "chapter": 47,
+      "title": "第四十七章 袋里多出的折页",
+      "changes": [
+        {
+          "before": "地图袋里出现的这张替代路线折页没有署名，作者是谁无人知道。江穗沿着可辨认的线看了一遍，没有把任何熟悉的画法当作某个人留下它的证据。有人猜可能是前来帮忙的居民，郁澄请他先别把猜测写到记录里。童沛又问那条绕行能不能试，江穗说可以另作核查，但纸上有一条线，并不等于地上已经能走。",
+          "after": "地图袋里出现的这张替代路线折页没有署名，作者是谁无人知道。江穗沿着可辨认的线看了一遍，没有把任何熟悉的画法当作某个人留下它的证据。有人猜可能是前来帮忙的居民，郁澄请他先别把猜测写到记录里。童沛又问：“那条绕行能不能先试试？”江穗说可以另作核查，但纸上有一条线，并不等于地上已经能走。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 478,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "地图袋里出现的这张替代路线折页没有署名，作者是谁无人知道。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "9f2e1d0077cbc8acca2504079d7573bb7eb3bf8d9158ae2c645861848e48d59e",
+      "after_sha256": "0163255b384bf15c013cd902e95cfc4aabbeccefb65672943a0189f299028378"
+    },
+    {
+      "chapter": 49,
+      "title": "第四十九章 纸页翻到风口",
+      "changes": [
+        {
+          "before": "旁人一边腾地方，一边谈起折岭哪里最容易起穿堂风。祁砚出生在折岭的南坳架房。他把散开的页角逐一找齐，没有拿那番闲话替纸上的空缺补字。有人希望他顺手把看不明白的一行也抄清，他让对方先指出究竟哪些笔画还能辨认，不能为了让纸面显得完整，就写进原本看不见的东西。对方犹豫片刻，将笔暂且搁下。",
+          "after": "旁人一边腾地方，一边谈起折岭哪里最容易起穿堂风。祁砚出生在折岭的南坳架房。他把散开的页角逐一找齐，没有拿那番闲话替纸上的空缺补字。有人问：“这一行看不明白，能顺手替我抄清吗？”他让对方先指出究竟哪些笔画还能辨认，不能为了让纸面显得完整，就写进原本看不见的东西。对方犹豫片刻，将笔暂且搁下。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 462,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "祁砚出生在折岭的南坳架房。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "7b18bdafa0408a6543e9ca7fb0c12cff9b441604a99e2d3ea8cf70336fdf6c47",
+      "after_sha256": "f1b92e8c95da093fead7f85cc134c1d228f8df02500e2f4c213f7f9b7bdc9c18"
+    },
+    {
+      "chapter": 55,
+      "title": "第五十五章 一张课桌两端",
+      "changes": [
+        {
+          "before": "课桌需要挪动时，岑望先到了一头，穆槐则将椅子从另一头移开。两人还没开始抬，就因该先朝哪里转争了几句。穆槐指出门边的布会挂住桌角，岑望认为只要先把桌子斜过来便够了。黎弦站在中间听得头转来转去，终于问是不是该先把布拿开再说。",
+          "after": "课桌需要挪动时，岑望先到了一头，穆槐则将椅子从另一头移开。两人还没开始抬，就因该先朝哪里转争了几句。穆槐指出门边的布会挂住桌角，岑望认为只要先把桌子斜过来便够了。黎弦站在中间听得头转来转去，终于问：“是不是该先把布拿开再说？”",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 450,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "岑望与穆槐同母异父，岑望是哥哥，穆槐是妹妹。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "b3ddbf1507f9285a73879a3b58764ca066f2aa836f297f93209d8272b2b78ce8",
+      "after_sha256": "58f6975b435ece88e7f370b1be020c8c7f9afbb29b823fb4e55a190be8a346a2"
+    },
+    {
+      "chapter": 57,
+      "title": "第五十七章 接住轴的那双手",
+      "changes": [
+        {
+          "before": "费泊把白角线轴交给鲍新，从此由鲍新保管。鲍新接过时先看清轴身是否靠稳，没有边走边将它往怀里一夹。费泊请他在空处试着取用一小段，观察会不会带动旁边的散线。鲍新照做，发现外侧有一处挤住，便放下重新理顺。站在旁边的人催着要东西，他指了指脚下还未清开的区域，请对方等这里收妥再拿。",
+          "after": "费泊把白角线轴交给鲍新，从此由鲍新保管。鲍新接过时先看清轴身是否靠稳，没有边走边将它往怀里一夹。费泊请他在空处试着取用一小段，观察会不会带动旁边的散线。鲍新照做，发现外侧有一处挤住，便放下重新理顺。站在旁边的人催问：“东西什么时候能拿？”他指了指脚下还未清开的区域，请对方等这里收妥再拿。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 462,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "费泊把白角线轴交给鲍新，从此由鲍新保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "a86a071fb3b7d87170b2b4ce030788fb38585e6773e0d4353818f1c55a1e97e5",
+      "after_sha256": "2814709710f5db6cc45602318af153169e12d53a9886a133cc11bad9e2e8db1e"
+    },
+    {
+      "chapter": 67,
+      "title": "第六十七章 轮子从两人中间经过",
+      "changes": [
+        {
+          "before": "一个居民问能不能顺便把自己想走的一条岔线也量掉。黎弦抬头看了看，没有为了显得接手后能做很多事就答应立刻改变顺序。他请对方将需要说明白，等手上的部分完成后再与大家商量。江穗听见，只提醒居民别站在正在测的线上，自己退到更远一点的位置，让黎弦与来人把话说清。",
+          "after": "一个居民问：“能不能顺便量一下我想走的这条岔线？”黎弦抬头看了看，没有为了显得接手后能做很多事就答应立刻改变顺序。他请对方将需要说明白，等手上的部分完成后再与大家商量。江穗听见，只提醒居民别站在正在测的线上，自己退到更远一点的位置，让黎弦与来人把话说清。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 464,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "江穗把棱纹测距轮交给黎弦，之后由黎弦保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "de9e7c9ca2705831e4421c146fa4d1652cf0cc247513e34f773ae61196faa4c1",
+      "after_sha256": "1d4fed9750e1600732a27d262c610892f4be2bf4d8a7cb0a1d6e79da8a3e48a0"
+    },
+    {
+      "chapter": 76,
+      "title": "第七十六章 搬箱人歇下的片刻",
+      "changes": [
+        {
+          "before": "话题转到各家做事时谁喜欢催促，桌边的人七嘴八舌说起手足。连稷唯一的手足是一个哥哥。他听别人说着，偶尔笑一下，并没有讲一串家事来填满歇息的空隙。有人看他不接话，便问还剩几只需要搬，他起身沿着摆放处看过，将还没处理的指给众人，提醒别把刚落稳的又抬一遍。",
+          "after": "话题转到各家做事时谁喜欢催促，桌边的人七嘴八舌说起手足。连稷唯一的手足是一个哥哥。他听别人说着，偶尔笑一下，并没有讲一串家事来填满歇息的空隙。有人看他不接话，便问：“还剩几只要搬？”他起身沿着摆放处看过，将还没处理的指给众人，提醒别把刚落稳的又抬一遍。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 451,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "连稷唯一的手足是一个哥哥。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "74c61d244c4fcfd233aa54858a936acc42e1d3800d2edfc691a3f5356cfc80ae",
+      "after_sha256": "101c9d00fb2c5d1f66d091c2c05f0c78605b894e3fde7b9cdc0c5eda780cf7ef"
+    },
+    {
+      "chapter": 82,
+      "title": "第八十二章 夹口松开再合拢",
+      "changes": [
+        {
+          "before": "等候的居民一见她就问，是不是所有安排都定下了。郁澄将尚待确认的地方指给他看，说带来正是请大家核对，不要只看到纸收得整齐便以为没有疑问。对方翻了一页，指出自己刚才同意的是另一种走法。她请他重新描述，随即将那一处记清，没有因为纸已经排好便不愿再动。",
+          "after": "等候的居民一见她就问：“所有安排都定下了吗？”郁澄将尚待确认的地方指给他看，说带来正是请大家核对，不要只看到纸收得整齐便以为没有疑问。对方翻了一页，指出自己刚才同意的是另一种走法。她请他重新描述，随即将那一处记清，没有因为纸已经排好便不愿再动。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 444,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "纸排妥之后，陶汀将银齿票夹交给郁澄，改由郁澄保管。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "25a5b27c322379ef7d6322467e9d819c0c45c150345b1022c52322d23435eadc",
+      "after_sha256": "12ea4ff8ce06ab6ab2678483fd9776425e46a07818f8df9721de56c8b449af6e"
+    },
+    {
+      "chapter": 89,
+      "title": "第八十九章 接到明确的答复",
+      "changes": [
+        {
+          "before": "童沛迎面走来，问是否终于可以松口气了。鲍新笑了笑，说现在最想把手上的一堆东西摆得不挡路。童沛听他这么答，也没有再起哄，接过旁边需要挪动的空筐，两人一同清出通道。费泊随后来确认准备事项，鲍新把几处需要问清的地方直接说出，没有怕显得自己还不够熟练就含糊带过。",
+          "after": "童沛迎面走来，问：“这下能松口气了吧？”鲍新笑了笑，说现在最想把手上的一堆东西摆得不挡路。童沛听他这么答，也没有再起哄，接过旁边需要挪动的空筐，两人一同清出通道。费泊随后来确认准备事项，鲍新把几处需要问清的地方直接说出，没有怕显得自己还不够熟练就含糊带过。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 463,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "核对结论明确之后，鲍新复训合格，检修桥通行资格恢复。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "817cd51465e832c6b654a4cf5c7fd957ac9f7090d318cdb65c2d846dff0f9398",
+      "after_sha256": "da0e460010e5589040e3d404408a14276d113615b0d1925c71e3828dbe78de63"
+    },
+    {
+      "chapter": 93,
+      "title": "第九十三章 檐下响起的木声",
+      "changes": [
+        {
+          "before": "通知方式确认时，陶汀先到等候处，将该听什么、听见后怎样行动向居民讲清。有人问是不是越响越好，岑望请他看看旁边准备休息的人，提醒通知不能变成催着所有人立刻动起来。郁澄让远处的居民也走到能听明白说明的位置，再分散回实际可能站的地方。",
+          "after": "通知方式确认时，陶汀先到等候处，将该听什么、听见后怎样行动向居民讲清。有人问：“是不是越响越好？”岑望请他看看旁边准备休息的人，提醒通知不能变成催着所有人立刻动起来。郁澄让远处的居民也走到能听明白说明的位置，再分散回实际可能站的地方。",
+          "note": "完整原段对照；只将其中既有普通交流人工改为直接对话。"
+        }
+      ],
+      "han_count_after": 477,
+      "direct_dialogue_present": true,
+      "new_names": [],
+      "new_objects": [],
+      "new_time_points": [],
+      "exam_fact_quotes_preserved_verbatim": [
+        "开门前的通知由陶汀敲击悬在檐下的木板发出。"
+      ],
+      "all_exam_fact_quotes_unchanged": true,
+      "before_sha256": "bcba91d0f12594e18128751c408dd2b59e96db45ed906023b4d9a5c9cbbfaa2f",
+      "after_sha256": "0fb51c715f2ccae9c71222163255c1030d22829c59d140750f8cb7641659db1a"
+    }
+  ],
+  "unchanged_chapters": [
+    {
+      "chapter": 1,
+      "before_sha256": "5f38969298dfb5022d0024d67a89db4988be46a9e43e7b999cf7c8d96d5eeccd",
+      "after_sha256": "5f38969298dfb5022d0024d67a89db4988be46a9e43e7b999cf7c8d96d5eeccd",
+      "identical": true
+    },
+    {
+      "chapter": 2,
+      "before_sha256": "ef8e31b14cf94ea0c02bc9a1bf86287bf53a6638e2cba33b27207936c42ca814",
+      "after_sha256": "ef8e31b14cf94ea0c02bc9a1bf86287bf53a6638e2cba33b27207936c42ca814",
+      "identical": true
+    },
+    {
+      "chapter": 3,
+      "before_sha256": "5c224593f0407dff1c482ebf50f1ffd2fca17a7f300fd1a7be698c6cec27bbd1",
+      "after_sha256": "5c224593f0407dff1c482ebf50f1ffd2fca17a7f300fd1a7be698c6cec27bbd1",
+      "identical": true
+    },
+    {
+      "chapter": 4,
+      "before_sha256": "fee24875fcdf80d9d402480b4ff22d33bfb5b57f67d00624ee0bbcadefbff8ec",
+      "after_sha256": "fee24875fcdf80d9d402480b4ff22d33bfb5b57f67d00624ee0bbcadefbff8ec",
+      "identical": true
+    },
+    {
+      "chapter": 5,
+      "before_sha256": "758890fd5ebdaafb279b4b3534aa4530ef059f82096543967b38ed419f902c5b",
+      "after_sha256": "758890fd5ebdaafb279b4b3534aa4530ef059f82096543967b38ed419f902c5b",
+      "identical": true
+    },
+    {
+      "chapter": 6,
+      "before_sha256": "a1e809e4986503910fc2feb3ccd6b0dd3337ce219125e13d892edbbc8f3f3828",
+      "after_sha256": "a1e809e4986503910fc2feb3ccd6b0dd3337ce219125e13d892edbbc8f3f3828",
+      "identical": true
+    },
+    {
+      "chapter": 8,
+      "before_sha256": "69493af43d1d2729197e32fabdf66f3ab551fdbc794b7254d4d3cb4e19928761",
+      "after_sha256": "69493af43d1d2729197e32fabdf66f3ab551fdbc794b7254d4d3cb4e19928761",
+      "identical": true
+    },
+    {
+      "chapter": 10,
+      "before_sha256": "6569d34f501aa32b4b53e1255941d139c55a294482eb60595d1eeb63997eff95",
+      "after_sha256": "6569d34f501aa32b4b53e1255941d139c55a294482eb60595d1eeb63997eff95",
+      "identical": true
+    },
+    {
+      "chapter": 13,
+      "before_sha256": "f6b87f5763fbb491bf65841ecc330f70a4eeb222fca71f2a05e1ac2000084dd2",
+      "after_sha256": "f6b87f5763fbb491bf65841ecc330f70a4eeb222fca71f2a05e1ac2000084dd2",
+      "identical": true
+    },
+    {
+      "chapter": 15,
+      "before_sha256": "31ffd88fb9c3d6ea46884662c328b2c1a1a247441827d15c38b72f60a771a3df",
+      "after_sha256": "31ffd88fb9c3d6ea46884662c328b2c1a1a247441827d15c38b72f60a771a3df",
+      "identical": true
+    },
+    {
+      "chapter": 16,
+      "before_sha256": "79788e30efd7cb88ab67e1c03fbc7659abbbfb2a15a531e7a8e8a6cfb83c4c76",
+      "after_sha256": "79788e30efd7cb88ab67e1c03fbc7659abbbfb2a15a531e7a8e8a6cfb83c4c76",
+      "identical": true
+    },
+    {
+      "chapter": 17,
+      "before_sha256": "ad058452557e06dbca99088c42b427bd52c4995599710283a75f98d7f753cd46",
+      "after_sha256": "ad058452557e06dbca99088c42b427bd52c4995599710283a75f98d7f753cd46",
+      "identical": true
+    },
+    {
+      "chapter": 19,
+      "before_sha256": "ba6e50e3c77d98d95de269309d5bb912b9338662f1992830c427cf1b53947a2c",
+      "after_sha256": "ba6e50e3c77d98d95de269309d5bb912b9338662f1992830c427cf1b53947a2c",
+      "identical": true
+    },
+    {
+      "chapter": 21,
+      "before_sha256": "90da2759be8d83e479e099100572da7b4248e3dd124dd7ec19bf021dd484135a",
+      "after_sha256": "90da2759be8d83e479e099100572da7b4248e3dd124dd7ec19bf021dd484135a",
+      "identical": true
+    },
+    {
+      "chapter": 22,
+      "before_sha256": "3075f0eb04b93db7000ee664c30b09da2ba79934229eb7ab8ea1531859b68196",
+      "after_sha256": "3075f0eb04b93db7000ee664c30b09da2ba79934229eb7ab8ea1531859b68196",
+      "identical": true
+    },
+    {
+      "chapter": 23,
+      "before_sha256": "60fde07e789a3652655b00520f0bfcc6462c1ca2bafc977bba11c193851f39a1",
+      "after_sha256": "60fde07e789a3652655b00520f0bfcc6462c1ca2bafc977bba11c193851f39a1",
+      "identical": true
+    },
+    {
+      "chapter": 24,
+      "before_sha256": "0ff24bcd47e215275d296af1ad465d7b4916be13885e2962df6d5513c40088a2",
+      "after_sha256": "0ff24bcd47e215275d296af1ad465d7b4916be13885e2962df6d5513c40088a2",
+      "identical": true
+    },
+    {
+      "chapter": 25,
+      "before_sha256": "a3763f6c4e8b3215bd6ab59fb1c3b9d5aa2bc021068526e6f394464aa12bc362",
+      "after_sha256": "a3763f6c4e8b3215bd6ab59fb1c3b9d5aa2bc021068526e6f394464aa12bc362",
+      "identical": true
+    },
+    {
+      "chapter": 27,
+      "before_sha256": "f662d8bbe029c97244f15ef8db93388d323a59caf83a0c5e1fd0ecbebab8a345",
+      "after_sha256": "f662d8bbe029c97244f15ef8db93388d323a59caf83a0c5e1fd0ecbebab8a345",
+      "identical": true
+    },
+    {
+      "chapter": 28,
+      "before_sha256": "99a806d68b91caaebbe0238325f7a6e1ae489a24a442001a8ffb493205c4a20d",
+      "after_sha256": "99a806d68b91caaebbe0238325f7a6e1ae489a24a442001a8ffb493205c4a20d",
+      "identical": true
+    },
+    {
+      "chapter": 29,
+      "before_sha256": "3262325d53da6630e36b932102016ea75e55f666eedc8fac557d14c4961a5970",
+      "after_sha256": "3262325d53da6630e36b932102016ea75e55f666eedc8fac557d14c4961a5970",
+      "identical": true
+    },
+    {
+      "chapter": 30,
+      "before_sha256": "5362696c1a60c19fa976589c2daeac4bde80e75beb8bec620b35b39ceed14b34",
+      "after_sha256": "5362696c1a60c19fa976589c2daeac4bde80e75beb8bec620b35b39ceed14b34",
+      "identical": true
+    },
+    {
+      "chapter": 32,
+      "before_sha256": "80d73717191b2ba1985408716a296bb575cd158c10675b218a93b5679f3a12b7",
+      "after_sha256": "80d73717191b2ba1985408716a296bb575cd158c10675b218a93b5679f3a12b7",
+      "identical": true
+    },
+    {
+      "chapter": 33,
+      "before_sha256": "4480f3b7810cf075706db269fbee35ff919a1156c7a0c24a0994f8b47c2a8436",
+      "after_sha256": "4480f3b7810cf075706db269fbee35ff919a1156c7a0c24a0994f8b47c2a8436",
+      "identical": true
+    },
+    {
+      "chapter": 34,
+      "before_sha256": "73069ad25876244b3d48452bdb1b9c17b64be863fec07f44624ba6302ead312c",
+      "after_sha256": "73069ad25876244b3d48452bdb1b9c17b64be863fec07f44624ba6302ead312c",
+      "identical": true
+    },
+    {
+      "chapter": 35,
+      "before_sha256": "8e676f8e625adbdf7c57eb8ad10195db4cb4b3729b815308a274146f3992050d",
+      "after_sha256": "8e676f8e625adbdf7c57eb8ad10195db4cb4b3729b815308a274146f3992050d",
+      "identical": true
+    },
+    {
+      "chapter": 36,
+      "before_sha256": "7363f9235871ca38aa205fbf6b2e185e68e5a2d6c9ea43731cc49afa6e3a37c1",
+      "after_sha256": "7363f9235871ca38aa205fbf6b2e185e68e5a2d6c9ea43731cc49afa6e3a37c1",
+      "identical": true
+    },
+    {
+      "chapter": 37,
+      "before_sha256": "78e484cef6c49b9c2bca5021150e25547e8b74e8e717536e86bc9964675af44e",
+      "after_sha256": "78e484cef6c49b9c2bca5021150e25547e8b74e8e717536e86bc9964675af44e",
+      "identical": true
+    },
+    {
+      "chapter": 38,
+      "before_sha256": "391fc86ee99e160ff1b0aa0cee1956615181104dc3be211663c9303e35a10f6f",
+      "after_sha256": "391fc86ee99e160ff1b0aa0cee1956615181104dc3be211663c9303e35a10f6f",
+      "identical": true
+    },
+    {
+      "chapter": 40,
+      "before_sha256": "11f54c6ee44902c858666a064bd89d39702c5ca9eb7b5feba50c59f823de7eb2",
+      "after_sha256": "11f54c6ee44902c858666a064bd89d39702c5ca9eb7b5feba50c59f823de7eb2",
+      "identical": true
+    },
+    {
+      "chapter": 41,
+      "before_sha256": "98c234afbda0cfe4328c0eafee9c62381fb89bc2adf899523782dd58c23b004c",
+      "after_sha256": "98c234afbda0cfe4328c0eafee9c62381fb89bc2adf899523782dd58c23b004c",
+      "identical": true
+    },
+    {
+      "chapter": 42,
+      "before_sha256": "d7bee7a2479de163f01f9fe1c5a7db8f88f29baa66b739afbeea7731754c7476",
+      "after_sha256": "d7bee7a2479de163f01f9fe1c5a7db8f88f29baa66b739afbeea7731754c7476",
+      "identical": true
+    },
+    {
+      "chapter": 43,
+      "before_sha256": "da598d4f5f1ea6fe83a7675ba33f07ca45631e7c53486f0c8ad5fe1dcedb65e2",
+      "after_sha256": "da598d4f5f1ea6fe83a7675ba33f07ca45631e7c53486f0c8ad5fe1dcedb65e2",
+      "identical": true
+    },
+    {
+      "chapter": 44,
+      "before_sha256": "2a787d85d9fec28a43dbab92c9a2e17fc99041a0d4c5d8e21d04da70e682d09a",
+      "after_sha256": "2a787d85d9fec28a43dbab92c9a2e17fc99041a0d4c5d8e21d04da70e682d09a",
+      "identical": true
+    },
+    {
+      "chapter": 46,
+      "before_sha256": "dcdf8a1903992a03b0c138a9ff95c9fcbc0219556fd65102d72a2bf9a54a5f9b",
+      "after_sha256": "dcdf8a1903992a03b0c138a9ff95c9fcbc0219556fd65102d72a2bf9a54a5f9b",
+      "identical": true
+    },
+    {
+      "chapter": 48,
+      "before_sha256": "504371f7a0fb747f789067fc933f003dbb3ac6dcf1e0a8d0adf35ed0ee387af6",
+      "after_sha256": "504371f7a0fb747f789067fc933f003dbb3ac6dcf1e0a8d0adf35ed0ee387af6",
+      "identical": true
+    },
+    {
+      "chapter": 50,
+      "before_sha256": "f35029e114da0678675768e918fef0b0992fa84fa905eb350f12d56579bb06aa",
+      "after_sha256": "f35029e114da0678675768e918fef0b0992fa84fa905eb350f12d56579bb06aa",
+      "identical": true
+    },
+    {
+      "chapter": 51,
+      "before_sha256": "205d26227a0cfda9f25fea9db9df92efbd270a9824686f27b4f9580c327f0a38",
+      "after_sha256": "205d26227a0cfda9f25fea9db9df92efbd270a9824686f27b4f9580c327f0a38",
+      "identical": true
+    },
+    {
+      "chapter": 52,
+      "before_sha256": "4e6aaeff760b7b15f4cf6ae25861e93e9fb09c6cae8b0251e0d85507cee82f2c",
+      "after_sha256": "4e6aaeff760b7b15f4cf6ae25861e93e9fb09c6cae8b0251e0d85507cee82f2c",
+      "identical": true
+    },
+    {
+      "chapter": 53,
+      "before_sha256": "e51c88db0470d66e8d5cb3436920c99ee510f81a5e0b86cc26924d9b2f89267d",
+      "after_sha256": "e51c88db0470d66e8d5cb3436920c99ee510f81a5e0b86cc26924d9b2f89267d",
+      "identical": true
+    },
+    {
+      "chapter": 54,
+      "before_sha256": "f670f597837640dd8daab1ce149d39c1be1360874b5818e856d3f4d3f7e5a0b6",
+      "after_sha256": "f670f597837640dd8daab1ce149d39c1be1360874b5818e856d3f4d3f7e5a0b6",
+      "identical": true
+    },
+    {
+      "chapter": 56,
+      "before_sha256": "8c4220018650901342a3645c2acf929c9ecf6a847e979e53bfc0278d2c3c9037",
+      "after_sha256": "8c4220018650901342a3645c2acf929c9ecf6a847e979e53bfc0278d2c3c9037",
+      "identical": true
+    },
+    {
+      "chapter": 58,
+      "before_sha256": "03329244ba15e9fdc25e7cd259035810f89605f1b5ab7134441599a365d850fc",
+      "after_sha256": "03329244ba15e9fdc25e7cd259035810f89605f1b5ab7134441599a365d850fc",
+      "identical": true
+    },
+    {
+      "chapter": 59,
+      "before_sha256": "1b60b8f0472b4ff0e4124ed6397f62d6382491a274d786435282e0acb13347a2",
+      "after_sha256": "1b60b8f0472b4ff0e4124ed6397f62d6382491a274d786435282e0acb13347a2",
+      "identical": true
+    },
+    {
+      "chapter": 60,
+      "before_sha256": "d827f11a52106cc6769e18d82e5edc4a7d80a0a7a937eddaddfccf78f26d91ea",
+      "after_sha256": "d827f11a52106cc6769e18d82e5edc4a7d80a0a7a937eddaddfccf78f26d91ea",
+      "identical": true
+    },
+    {
+      "chapter": 61,
+      "before_sha256": "f7869214adb8b31e57e9beacd23532d61e58248b711a2baabca239cb4f1972d8",
+      "after_sha256": "f7869214adb8b31e57e9beacd23532d61e58248b711a2baabca239cb4f1972d8",
+      "identical": true
+    },
+    {
+      "chapter": 62,
+      "before_sha256": "72bd28fdd70fef2524cf7f566cca9e128003e7ff56bc1901c1c783ca80cbf831",
+      "after_sha256": "72bd28fdd70fef2524cf7f566cca9e128003e7ff56bc1901c1c783ca80cbf831",
+      "identical": true
+    },
+    {
+      "chapter": 63,
+      "before_sha256": "9f323dd5e0ba97f7e6ba465193911d878ee8d5894c9ecf3a05a2ce1e91fa6a7b",
+      "after_sha256": "9f323dd5e0ba97f7e6ba465193911d878ee8d5894c9ecf3a05a2ce1e91fa6a7b",
+      "identical": true
+    },
+    {
+      "chapter": 64,
+      "before_sha256": "5f3d26d1bddbf4437ace3283976369771595190947b36d8a034cca880ca8c4a8",
+      "after_sha256": "5f3d26d1bddbf4437ace3283976369771595190947b36d8a034cca880ca8c4a8",
+      "identical": true
+    },
+    {
+      "chapter": 65,
+      "before_sha256": "1eac0b1c5371171322a27604d7e23da326cf6d949a11890316525d35ef7eb922",
+      "after_sha256": "1eac0b1c5371171322a27604d7e23da326cf6d949a11890316525d35ef7eb922",
+      "identical": true
+    },
+    {
+      "chapter": 66,
+      "before_sha256": "f5747b9e26a94b2b829a10ffc79ad7550529c71556626339954ff03c2624ead4",
+      "after_sha256": "f5747b9e26a94b2b829a10ffc79ad7550529c71556626339954ff03c2624ead4",
+      "identical": true
+    },
+    {
+      "chapter": 68,
+      "before_sha256": "c2edb51617a13e59b2f840ceeaea92326fde7b868eb84f8d5be5f7569207b80c",
+      "after_sha256": "c2edb51617a13e59b2f840ceeaea92326fde7b868eb84f8d5be5f7569207b80c",
+      "identical": true
+    },
+    {
+      "chapter": 69,
+      "before_sha256": "8310cffa29c8b3772120d8d0be750dbe04eed446b061f718f2238ca51d3441fc",
+      "after_sha256": "8310cffa29c8b3772120d8d0be750dbe04eed446b061f718f2238ca51d3441fc",
+      "identical": true
+    },
+    {
+      "chapter": 70,
+      "before_sha256": "978cfbdeeb944c63ac76a77b91c9baeee7a68dc33a63ba971f70d29716bf6448",
+      "after_sha256": "978cfbdeeb944c63ac76a77b91c9baeee7a68dc33a63ba971f70d29716bf6448",
+      "identical": true
+    },
+    {
+      "chapter": 71,
+      "before_sha256": "f5e4bd751620fc40548318f4d613f382a4a006b211c02ed16b0e54606a8dbf25",
+      "after_sha256": "f5e4bd751620fc40548318f4d613f382a4a006b211c02ed16b0e54606a8dbf25",
+      "identical": true
+    },
+    {
+      "chapter": 72,
+      "before_sha256": "9ec412ca3afe425334be06f6d7141e293dd7d401b6796d0bf5ec3e5ccab53790",
+      "after_sha256": "9ec412ca3afe425334be06f6d7141e293dd7d401b6796d0bf5ec3e5ccab53790",
+      "identical": true
+    },
+    {
+      "chapter": 73,
+      "before_sha256": "941f2646cdf49880f188a8f8514afd90db0292bc094225866b6f4a7f96fa9977",
+      "after_sha256": "941f2646cdf49880f188a8f8514afd90db0292bc094225866b6f4a7f96fa9977",
+      "identical": true
+    },
+    {
+      "chapter": 74,
+      "before_sha256": "9e5a587e08d9394e3e7695dddb52b1816987c0edb204f8d74d05aa2861251207",
+      "after_sha256": "9e5a587e08d9394e3e7695dddb52b1816987c0edb204f8d74d05aa2861251207",
+      "identical": true
+    },
+    {
+      "chapter": 75,
+      "before_sha256": "194a1a238580a26d9782968f5a44d733ae7859299229589c60ff0fb34ca7b056",
+      "after_sha256": "194a1a238580a26d9782968f5a44d733ae7859299229589c60ff0fb34ca7b056",
+      "identical": true
+    },
+    {
+      "chapter": 77,
+      "before_sha256": "53a4dd43a1710b85e8501111b970edb6a8cb17fb816722cf9e581c27ac8a2352",
+      "after_sha256": "53a4dd43a1710b85e8501111b970edb6a8cb17fb816722cf9e581c27ac8a2352",
+      "identical": true
+    },
+    {
+      "chapter": 78,
+      "before_sha256": "186f8b3c5d49fc979656172adca824dbeb6d8bc1c0b6bf9de097e92422449c1f",
+      "after_sha256": "186f8b3c5d49fc979656172adca824dbeb6d8bc1c0b6bf9de097e92422449c1f",
+      "identical": true
+    },
+    {
+      "chapter": 79,
+      "before_sha256": "bc5f571f23b51772fd6df2f9d007b05533f9a0cd879369c54c499c02c91894d4",
+      "after_sha256": "bc5f571f23b51772fd6df2f9d007b05533f9a0cd879369c54c499c02c91894d4",
+      "identical": true
+    },
+    {
+      "chapter": 80,
+      "before_sha256": "2044063fecdb6d3138707f6a373b8ac303d2b047ed4777d97a9537e2edaf43e4",
+      "after_sha256": "2044063fecdb6d3138707f6a373b8ac303d2b047ed4777d97a9537e2edaf43e4",
+      "identical": true
+    },
+    {
+      "chapter": 81,
+      "before_sha256": "3b757c76379dba107df08d7302e2c4ab2b05a43a3289cdcbf0a0166ba3df09f8",
+      "after_sha256": "3b757c76379dba107df08d7302e2c4ab2b05a43a3289cdcbf0a0166ba3df09f8",
+      "identical": true
+    },
+    {
+      "chapter": 83,
+      "before_sha256": "40ca9cacbf044373fcce5b1c247f1bdfe383a50e74a9b118e474fbc883ddde7b",
+      "after_sha256": "40ca9cacbf044373fcce5b1c247f1bdfe383a50e74a9b118e474fbc883ddde7b",
+      "identical": true
+    },
+    {
+      "chapter": 84,
+      "before_sha256": "6ab8e79d1c40a9e4927148c5e9ca3d966dcbf9b4d19afa05db3d8485a5e40b43",
+      "after_sha256": "6ab8e79d1c40a9e4927148c5e9ca3d966dcbf9b4d19afa05db3d8485a5e40b43",
+      "identical": true
+    },
+    {
+      "chapter": 85,
+      "before_sha256": "c571b12f396ddb72cca54e5eb73aa4b134abb551f5a58086e027d7ff61eece32",
+      "after_sha256": "c571b12f396ddb72cca54e5eb73aa4b134abb551f5a58086e027d7ff61eece32",
+      "identical": true
+    },
+    {
+      "chapter": 86,
+      "before_sha256": "7ebae6afa9b1823b08b7217f2f074e60828bd7cacd0ed5c3957c1fb8d9619920",
+      "after_sha256": "7ebae6afa9b1823b08b7217f2f074e60828bd7cacd0ed5c3957c1fb8d9619920",
+      "identical": true
+    },
+    {
+      "chapter": 87,
+      "before_sha256": "bac417c392566c2303c7d2058f1be9ba5e959dc8f7ec60d11e1213750a27b5ac",
+      "after_sha256": "bac417c392566c2303c7d2058f1be9ba5e959dc8f7ec60d11e1213750a27b5ac",
+      "identical": true
+    },
+    {
+      "chapter": 88,
+      "before_sha256": "2e6af18343ecb3ae6efd3052e80f507aa61583a4d905ec5eccf4f969cc56842e",
+      "after_sha256": "2e6af18343ecb3ae6efd3052e80f507aa61583a4d905ec5eccf4f969cc56842e",
+      "identical": true
+    },
+    {
+      "chapter": 90,
+      "before_sha256": "a451840bda4fa716f4a5d1ab014e7ba2e7f0229de33e189f6b6eee24591197bd",
+      "after_sha256": "a451840bda4fa716f4a5d1ab014e7ba2e7f0229de33e189f6b6eee24591197bd",
+      "identical": true
+    },
+    {
+      "chapter": 91,
+      "before_sha256": "099cac22b0144465e22bc4778e730ad475528bd2e6ecd648a287fbe3de5ab0d7",
+      "after_sha256": "099cac22b0144465e22bc4778e730ad475528bd2e6ecd648a287fbe3de5ab0d7",
+      "identical": true
+    },
+    {
+      "chapter": 92,
+      "before_sha256": "d26651a617ed952f87e5f75b0b4977a9146e653998957065d841104ad119d8a5",
+      "after_sha256": "d26651a617ed952f87e5f75b0b4977a9146e653998957065d841104ad119d8a5",
+      "identical": true
+    },
+    {
+      "chapter": 94,
+      "before_sha256": "d22c2a1aa2ab30ac6147e8cb662405d32852fa7a6c721a2e24d2bb5c7fcc26c2",
+      "after_sha256": "d22c2a1aa2ab30ac6147e8cb662405d32852fa7a6c721a2e24d2bb5c7fcc26c2",
+      "identical": true
+    },
+    {
+      "chapter": 95,
+      "before_sha256": "05caaf94198da7992b67b720a2f9b8a277fe1c57da2429e20bea7ccd0b805b95",
+      "after_sha256": "05caaf94198da7992b67b720a2f9b8a277fe1c57da2429e20bea7ccd0b805b95",
+      "identical": true
+    },
+    {
+      "chapter": 96,
+      "before_sha256": "3108bb6b3841eba5c6887bb2f3d6091178d7c94fc3dc3e47f6d393acac2f82fc",
+      "after_sha256": "3108bb6b3841eba5c6887bb2f3d6091178d7c94fc3dc3e47f6d393acac2f82fc",
+      "identical": true
+    },
+    {
+      "chapter": 97,
+      "before_sha256": "b7461b4a1072a4cccd2fadc832277c2927fc90e2aa614477dce8fb93b98252ae",
+      "after_sha256": "b7461b4a1072a4cccd2fadc832277c2927fc90e2aa614477dce8fb93b98252ae",
+      "identical": true
+    },
+    {
+      "chapter": 98,
+      "before_sha256": "22a46aa40a4d2df4983eded1afe601dcb0578929be51bfa6542cf04badf29960",
+      "after_sha256": "22a46aa40a4d2df4983eded1afe601dcb0578929be51bfa6542cf04badf29960",
+      "identical": true
+    },
+    {
+      "chapter": 99,
+      "before_sha256": "4bfdd1bddfb97a7f1b76ada12f6d39bd283016801f4df5738d5f0ff0116a1740",
+      "after_sha256": "4bfdd1bddfb97a7f1b76ada12f6d39bd283016801f4df5738d5f0ff0116a1740",
+      "identical": true
+    },
+    {
+      "chapter": 100,
+      "before_sha256": "2009bd516325e9b42df7df913829feb86ee742425ba3d37085d182b6cdc523ed",
+      "after_sha256": "2009bd516325e9b42df7df913829feb86ee742425ba3d37085d182b6cdc523ed",
+      "identical": true
+    }
+  ],
+  "semantic_self_check": {
+    "new_names": [],
+    "new_objects": [],
+    "new_time_points": [],
+    "new_exam_facts": [
+      {
+        "chapter": 18,
+        "text": "岔灯坪与南坳架房是彼此分开的两个地方，谁也不在谁的范围内。",
+        "authorization": "主代理在独立复核反馈后明确补充设定，限定既有地点关系以消除有意矛盾歧义；不是写作者自行新增。"
+      }
+    ],
+    "intentional_conflicts_unchanged": true,
+    "all52_recorded_exam_quotes_preserved": true,
+    "only_existing_exchange_rephrased": false,
+    "gold_labels_or_checker_modified": false,
+    "no_chapter101_or_formal_content_created": true,
+    "existing_place_first_mention_update": {
+      "南坳架房": 18,
+      "note": "既定地点因明确授权的地理限定提前首次提及，非新增专名；早先交接中首提34章记录由此更新。"
+    },
+    "unchanged_original_birthplace_sentences": {
+      "18": "祁砚出生在折岭的岔灯坪。",
+      "49": "祁砚出生在折岭的南坳架房。"
+    }
+  },
+  "summary": {
+    "changed_chapters": 20,
+    "unchanged_chapters": 80,
+    "unchanged_hashes_all_match": true,
+    "all100_chapters_have_direct_quoted_dialogue": true,
+    "revised_chapter_han_min": 444,
+    "revised_chapter_han_max": 523,
+    "total_han_after": 46654,
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "final_l1_sha256": "24681f2160a622110a2401443afffd0cab5d61b4ea0a692378f23c32ef0f8c1b",
+    "authorized_semantic_addition_count": 1
+  }
+}

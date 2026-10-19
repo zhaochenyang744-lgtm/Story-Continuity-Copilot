@@ -411,12 +411,17 @@ class ContinuityRegressionTests(unittest.TestCase):
                 available=True; label='failure'
                 def evaluate(_,request,error=failure): raise error
             _,client,project,_,run,_=self.flow(Failing()); response=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']; self.assertEqual((response['status'],response['error_code'],response['retryable']),(status,code,True))
+        def undecided_for(provider,code):
+            # A draft whose every claim breaks the contract is no longer the run's failure: the check completes and reports them undecided.
+            _,client,project,_,run,_=self.flow(provider); data=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']
+            self.assertEqual((data['status'],data['error_code']),('completed',None))
+            rows=data['metrics']['undecided_claims']; self.assertTrue(rows); self.assertEqual({row['error_code'] for row in rows},{code})
         class Invalid:
             available=True; label='invalid'
             def evaluate(_,request):
                 issue=grounded_issue(request); issue['evidence']=[]
                 return ProviderResult({'issues':[issue]})
-        _,client,project,_,run,_=self.flow(Invalid()); response=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((response['status'],response['error_code'],response['retryable']),('failed','conflict_without_evidence',True))
+        undecided_for(Invalid(),'conflict_without_evidence')
         class Empty:
             available=True; label='empty'
             def evaluate(_,request): return ProviderResult({'issues':[]})
@@ -434,12 +439,12 @@ class ContinuityRegressionTests(unittest.TestCase):
             available=True; label='insufficient-with-change'
             allows_legacy_continuity_contract=True
             def evaluate(_,request): return ProviderResult({'issues':[{'claim_span_id':request['claims'][0]['id'],'status':'insufficient_evidence','category':'attribute','severity':'low','explanation':'材料没有说明具体标识。','evidence':[],'proposed_memory_change':{}}]})
-        _,client,project,_,run,_=self.flow(InsufficientWithChange()); checked=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((checked['status'],checked['error_code']),('failed','insufficient_evidence_memory_change'))
+        undecided_for(InsufficientWithChange(),'insufficient_evidence_memory_change')
         class OutsideEvidence:
             available=True; label='outside-evidence'
             def evaluate(_,request):
                 issue=grounded_issue(request); issue['evidence'][0]['span_id']='outside-current-claim'; return ProviderResult({'issues':[issue]})
-        _,client,project,_,run,_=self.flow(OutsideEvidence()); checked=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((checked['status'],checked['error_code']),('failed','evidence_unresolvable'))
+        undecided_for(OutsideEvidence(),'evidence_unresolvable')
         invalid_payloads=[
             ({'issues':[],'extra':True},'schema_invalid'),
             ({'issues':[{'claim_span_id':'unknown','status':'conflict','category':'invalid','severity':'high','explanation':'x','evidence':[]}]},'schema_invalid'),
@@ -452,7 +457,7 @@ class ContinuityRegressionTests(unittest.TestCase):
                 available=True; label='invalid-payload'
                 allows_legacy_continuity_contract=True
                 def evaluate(_,request,payload=payload): return ProviderResult(payload)
-            _,client,project,_,run,_=self.flow(InvalidPayload()); checked=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((checked['status'],checked['error_code']),('failed',code))
+            undecided_for(InvalidPayload(),code)
 
     def test_all_accepted_replace_inherits_and_updates_v5_identity(self):
         class Replace:

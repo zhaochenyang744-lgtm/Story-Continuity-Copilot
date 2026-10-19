@@ -1,5 +1,5 @@
-import { api, expect, openTab, registerAccount, setDraftBody, shot, test } from "./support/app";
-import { button, draft, failDraftSaves, saveBody } from "./support/writing";
+import { api, expect, openTab, registerAccount, shot, test } from "./support/app";
+import { button, saveBody } from "./support/writing";
 import { cardWith, evidence, importBook, initialize, memories, pair, sample, startAnalysis, view } from "./support/pages";
 import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -37,10 +37,10 @@ test("12 M 长作品32章分批整理，失败提示和重试，确认第1版资
   expect((await memories(page, id)).length).toBeGreaterThan(0);
 });
 
-test("08 资料五个视图：网址和刷新保持", async ({ page }) => {
+test("08 资料四个视图：网址和刷新保持，旧的问一问地址落到事实", async ({ page }) => {
   await sample(page, "memory");
   await pair(page, "materials-facts");
-  for (const [label, key] of [["人物", "people"], ["设定", "settings"], ["伏笔", "threads"], ["问一问", "ask"], ["事实", "facts"]]) {
+  for (const [label, key] of [["人物", "people"], ["设定", "settings"], ["伏笔", "threads"], ["事实", "facts"]]) {
     await view(page, label, key);
     await page.reload();
     await expect(page.getByRole("navigation", { name: "资料分类", exact: true }).getByRole("button", { name: new RegExp(`^${label}(?:\\s|$)`) })).toHaveAttribute("aria-current", "page");
@@ -198,34 +198,6 @@ test("08 伏笔：手动记录回收与扫描逐条决定", async ({ page }, inf
   const reviewed = await api(page).get(`/projects/${id}/analyses/${result.run_id}`);
   expect(reviewed.analysis.candidates.map((c: any) => c.decision_status)).toEqual(["accepted", "rejected"]);
   await pair(page, "materials-foreshadow");
-});
-
-test("08 问一问：回答依据与未保存提示", async ({ page }, info) => {
-  const id = await sample(page, "memory");
-  await view(page, "问一问", "ask");
-  await page.getByLabel("问一个关于正文的问题", { exact: true }).fill("罗盘现在在哪里？");
-  const result = await startAnalysis(page, id, () => button(page, "问").click());
-  await evidence(info, "story-qa", result);
-  expect(result.status, JSON.stringify(result)).toBe("completed");
-  expect(result.analysis_type).toBe("story_qa");
-  await expect(page.getByText(result.analysis.answer, { exact: true })).toBeVisible();
-  expect(result.analysis.findings.length).toBeGreaterThan(0);
-  for (const item of result.analysis.findings) for (const source of item.evidence) await expect(page.getByText(source.excerpt, { exact: true })).toBeVisible();
-  await expect(page.getByText(/^只根据已保存的内容回答/)).toBeVisible();
-  await pair(page, "materials-ask");
-  await openTab(page, id, "workspace");
-  const saved = await draft(page, id);
-  const unblock = await failDraftSaves(page);
-  await setDraftBody(page, `${saved.body}\n测试尚未保存的补充。`);
-  await page.getByRole("navigation", { name: "作品", exact: true }).getByRole("button", { name: "资料", exact: true }).click();
-  await view(page, "问一问", "ask");
-  // Suggested questions exercise the dirty guard; the main submit is disabled while dirty.
-  const chars = (await api(page).get(`/projects/${id}/characters`)).characters;
-  await button(page, `${chars[0].name}现在在哪里？`).click();
-  await expect(page.getByText("先保存草稿；问一问只看已保存的版本。", { exact: true })).toBeVisible();
-  expect((await draft(page, id)).body).toBe(saved.body);
-  expect((await api(page).get(`/projects/${id}/analyses?analysis_type=story_qa&limit=20`)).runs).toHaveLength(1);
-  await unblock();
 });
 
 test("08 导入整理事实：三种决定建立第一版", async ({ page }) => {

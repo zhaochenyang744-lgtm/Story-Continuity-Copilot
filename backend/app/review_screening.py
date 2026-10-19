@@ -25,6 +25,8 @@ before N, facts included. This module holds no database or provider code; Contin
 """
 from __future__ import annotations
 
+import re
+
 from typing import Any
 
 from .passages import ATTRIBUTE_CLASSES, PASSAGE_METHOD_VERSION, FactKey, Passage, PassageIndex, split_passages, terms
@@ -55,6 +57,13 @@ SECOND_LOOK = True
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
 TRIAGE_ESCALATION_CAP = 3
+# Escalation places on top of the cap, for sentences the triage scored 2 or 3 as a missing link (kind gap) first.
+TRIAGE_GAP_SLOTS = 2
+TRIAGE_KINDS = ("conflict", "gap", "none")
+# The gap sweep: up to TRIAGE_SWEEP_MAX more sentences per context the triage scored 2 or 3 but did not escalate,
+# reviewed TRIAGE_SWEEP_BATCH to a request with the missing-link rules of a second review.
+TRIAGE_SWEEP_MAX = 6
+TRIAGE_SWEEP_BATCH = 3
 # Per-chapter caps on thinking reviews. On the lf1 formal set (2026-10-05) one chapter's screen saw
 # 11 key sentences; with their second looks and the escalations it cost 1.07 CNY against a 0.60 bar,
 # while no other chapter had more than 5. Key sentences beyond KEY_MAX_CLAIMS go to the triage
@@ -206,9 +215,18 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
             break
         picked.append(passage)
         used += len(passage.text)
-    return [{"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": passage.text,
-             "source_span_id": passage.span_id, "chapter_number": passage.chapter_number, "passage_start": passage.start}
-            for passage in picked]
+    return [passage_entry(passage) for passage in picked]
+
+
+def passage_entry(passage: Passage) -> dict[str, Any]:
+    return {"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": passage.text,
+            "source_span_id": passage.span_id, "chapter_number": passage.chapter_number, "passage_start": passage.start}
+
+
+def fact_evidence(index: PassageIndex, fact_id: str) -> dict[str, Any] | None:
+    """The passage a Memory fact stands on, shaped like a claim's own passages (None when it has none)."""
+    passage = index.fact_passage(fact_id)
+    return passage_entry(passage) if passage is not None else None
 
 
 def triage_request(claims: list[dict[str, Any]], context: str) -> tuple[dict[str, Any], dict[str, str]]:
@@ -244,8 +262,10 @@ def triage_batches(claims: list[dict[str, Any]], contexts: dict[str, str]) -> li
     return [triage_request(group, contexts[group[0]["context"]]) for group in batches]
 
 
-def parse_triage(payload: Any, sentence_ids: dict[str, str]) -> dict[str, int]:
-    """Claim id -> score 0-3. Every sentence must be scored once; a missing one is rejected."""
+def parse_triage(payload: Any, sentence_ids: dict[str, str], kinds: dict[str, str] | None = None) -> dict[str, int]:
+    """Claim id -> score 0-3. Every sentence must be scored once; a missing one is rejected.
+
+    With `kinds`, each claim's kind (conflict, gap or none) is put there too; a row without one counts as none."""
     if not isinstance(payload, dict) or set(payload) != {"scores"} or not isinstance(payload["scores"], list):
         raise ScreenContractError("triage_shape_invalid")
     scores: dict[str, int] = {}
@@ -254,7 +274,13 @@ def parse_triage(payload: Any, sentence_ids: dict[str, str]) -> dict[str, int]:
             raise ScreenContractError("triage_row_invalid")
         if row["id"] not in sentence_ids:
             raise ScreenContractError("triage_unknown_sentence")
-        scores[sentence_ids[row["id"]]] = max(scores.get(sentence_ids[row["id"]], 0), row["score"])
+        kind = row.get("kind", "none")
+        if kind not in TRIAGE_KINDS:
+            raise ScreenContractError("triage_row_invalid")
+        claim_id = sentence_ids[row["id"]]
+        if kinds is not None and (claim_id not in scores or row["score"] >= scores[claim_id]):
+            kinds[claim_id] = kind if row["score"] >= TRIAGE_ESCALATION_MIN_SCORE else "none"
+        scores[claim_id] = max(scores.get(claim_id, 0), row["score"])
     if len(scores) != len(sentence_ids):
         raise ScreenContractError("triage_sentence_missing")
     return scores
@@ -281,14 +307,47 @@ def second_look_claims(claims: list[dict[str, Any]], kinds: dict[str, str]) -> l
     return [claim for claim in claims if claim["id"] in chosen]
 
 
-def triage_escalations(claims: list[dict[str, Any]], scores: dict[str, int]) -> set[str]:
-    """Claims scored TRIAGE_ESCALATION_MIN_SCORE or more, highest first, at most TRIAGE_ESCALATION_CAP per context."""
-    by_context: dict[Any, list[tuple[int, int, str]]] = {}
+def _shared_with_passages(claim: dict[str, Any]) -> int:
+    """Two-character runs the sentence shares with the passages the triage saw for it."""
+    def runs(text: str) -> set[str]:
+        characters = "".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]", text))
+        return {characters[index:index + 2] for index in range(max(0, len(characters) - 1))}
+    seen = set().union(*(runs(span.get("prompt_excerpt") or span.get("body") or "") for span in claim.get("allowed_evidence", [])[:TRIAGE_PASSAGES_PER_CLAIM])) if claim.get("allowed_evidence") else set()
+    return len(runs(claim.get("text") or "") & seen)
+
+
+def triage_escalations(claims: list[dict[str, Any]], scores: dict[str, int], kinds: dict[str, str] | None = None) -> set[str]:
+    """Claims scored TRIAGE_ESCALATION_MIN_SCORE or more, at most TRIAGE_ESCALATION_CAP per context, plus up to
+    TRIAGE_GAP_SLOTS more: those the triage called a missing link (kind gap) first, then the next highest.
+
+    Highest score first; among equal scores the sentence sharing more with its passages, then reading order."""
+    kinds = kinds or {}
+    by_context: dict[Any, list[tuple[int, int, int, str]]] = {}
     for position, claim in enumerate(claims):
         score = scores.get(claim["id"], 0)
         if score >= TRIAGE_ESCALATION_MIN_SCORE:
-            by_context.setdefault(claim.get("context"), []).append((-score, position, claim["id"]))
-    return {claim_id for rows in by_context.values() for _, _, claim_id in sorted(rows)[:TRIAGE_ESCALATION_CAP]}
+            by_context.setdefault(claim.get("context"), []).append((-score, -_shared_with_passages(claim), position, claim["id"]))
+    chosen: set[str] = set()
+    for rows in by_context.values():
+        ordered = sorted(rows)
+        first = [row[-1] for row in ordered[:TRIAGE_ESCALATION_CAP]]
+        rest = [row[-1] for row in ordered if row[-1] not in first]
+        # Missing links first; when the triage named fewer, the next highest fill the places.
+        extra = ([claim_id for claim_id in rest if kinds.get(claim_id) == "gap"] + [claim_id for claim_id in rest if kinds.get(claim_id) != "gap"])[:TRIAGE_GAP_SLOTS]
+        chosen.update(first + extra)
+    return chosen
+
+
+def triage_sweep(claims: list[dict[str, Any]], scores: dict[str, int], escalated: set[str]) -> list[dict[str, Any]]:
+    """Claims scored TRIAGE_ESCALATION_MIN_SCORE or more that were not escalated, ordered as escalation orders them,
+    at most TRIAGE_SWEEP_MAX per context, in reading order."""
+    by_context: dict[Any, list[tuple[int, int, int, str]]] = {}
+    for position, claim in enumerate(claims):
+        score = scores.get(claim["id"], 0)
+        if score >= TRIAGE_ESCALATION_MIN_SCORE and claim["id"] not in escalated:
+            by_context.setdefault(claim.get("context"), []).append((-score, -_shared_with_passages(claim), position, claim["id"]))
+    chosen = {row[-1] for rows in by_context.values() for row in sorted(rows)[:TRIAGE_SWEEP_MAX]}
+    return [claim for claim in claims if claim["id"] in chosen]
 
 
 def context_window(text: str, claim_texts: list[str], limit: int = VERIFY_CONTEXT_CHARS, margin: int = VERIFY_CONTEXT_MARGIN) -> str:

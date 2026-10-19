@@ -4,11 +4,11 @@
 
 本工具只在本地读取显式清单中的源文件，生成可逐文件核验的 Linux 构建输入。生成源包、源码测试通过、容器构建通过和部署上线是不同的状态。
 
-当前生产版本为 2026-10-02 由 Git 提交打包部署的 `ui-26ae621-20261002`，步骤与 inventory 见 [2026-10-02 部署记录](deployment-2026-10-02.md)；此前各版见 [2026-09-30 部署记录](deployment-2026-09-30.md)。以下为 2026-09-13 首次使用本工具的历史记录：发布 `maint-e2d141c23d0c-20260913` 已完成生产构建与切换，详见 [维护部署记录](maintenance-deployment.md)。冻结 inventory SHA256 为 `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`，归档 SHA256 为 `acd9e4073fd217c423c69c80a932abd25bf0ce243f0d404e227e129d7656431b`。这些是源包身份，不是 Git commit。本页及当前说明在发布后更新，不能将当前工作区重新打包所得字节视为原部署归档；原归档、`SOURCE-PACKAGE.json` 和运行镜像继续保留冻结身份。
+当前生产版本为 2026-10-02 由 Git 提交打包部署的 `ui-26ae621-20261002`，步骤与 inventory 见当时的 2026-10-02 部署记录；此前各版见 2026-09-30 部署记录（二者已在 v1.8.0 清理，见 Git 历史）。以下为 2026-09-13 首次使用本工具的历史记录：发布 `maint-e2d141c23d0c-20260913` 已完成生产构建与切换，详见 [维护部署记录](maintenance-deployment.md)。冻结 inventory SHA256 为 `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`，归档 SHA256 为 `acd9e4073fd217c423c69c80a932abd25bf0ce243f0d404e227e129d7656431b`。这些是源包身份，不是 Git commit。本页及当前说明在发布后更新，不能将当前工作区重新打包所得字节视为原部署归档；原归档、`SOURCE-PACKAGE.json` 和运行镜像继续保留冻结身份。
 
 ## 清单与命令
 
-当前清单为 `docs/maintenance-release-manifest.json`。`include` 中每条记录都指定仓库源文件及包内目标文件；目录不是通配授权。`complete_trees` 只检查是否遗漏新源码，不会自动纳入文件。`verification_files` 记录本地测试与历史文档归属，不进入包。历史 `v1.3.0-release-allowlist.json` 保留当时版本、范围和动作记录，其 `current_manifest` 指向当前清单；历史动作列表不构成本次操作授权。
+当前清单为 `docs/maintenance-release-manifest.json`。`include` 中每条记录都指定仓库源文件及包内目标文件；目录不是通配授权。`complete_trees` 只检查是否遗漏新源码，不会自动纳入文件。`verification_files` 记录本地测试与历史文档归属，不进入包。历史发布范围清单（已在 v1.8.0 清理，见 Git 历史）曾保留当时版本、范围和动作记录；历史动作列表不构成本次操作授权。
 
 已部署冻结清单为 92 个 include、120 个 verification_files。发布后新增部署说明和发布脚本回归归属，当前工作区清单为 93 / 121，供以后重新冻结打包使用；其 `local_source_candidate` 描述工作区的下一份源包，不表示已部署维护版本仍未上线。没有重建或覆盖已部署归档。
 

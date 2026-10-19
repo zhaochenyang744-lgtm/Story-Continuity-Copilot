@@ -1,0 +1,967 @@
+{
+  "version": "a1c-1",
+  "set_id": "a1c4-formal",
+  "author": "07zc 出题方",
+  "works": [
+    {
+      "key": "w01",
+      "title": "昼权无声",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "谈霁禾",
+        "禾弦",
+        "祁照眠",
+        "眠尺",
+        "谢允铎",
+        "铎尾",
+        "温宥真",
+        "樊澄序",
+        "陆栖砚",
+        "霍予笺",
+        "苏望弥",
+        "欧竞迟",
+        "佟绾慈",
+        "弧昼城",
+        "砾穹舱",
+        "箭河舱",
+        "嵌雾钥片",
+        "折辉量环",
+        "赤缝护套",
+        "鸢纹佩"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "先给清洁班完整发言时间，再讨论配光方案是否重写。"
+        },
+        {
+          "chapter": 31,
+          "text": "向下一班解释试行条件，接受对方对签收安排提出的异议。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "光幕边缘半格空白的来由",
+          "planted_chapter": 4,
+          "status": "resolved",
+          "resolved_chapter": 12
+        },
+        {
+          "title": "凌晨两次应答由谁发出",
+          "planted_chapter": 6,
+          "status": "open"
+        },
+        {
+          "title": "悼念时段从排班上消失的原因",
+          "planted_chapter": 10,
+          "status": "resolved",
+          "resolved_chapter": 26
+        },
+        {
+          "title": "支持书最后一人撤签的动机",
+          "planted_chapter": 13,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第31章 尚未签收",
+        "draft_only_fact": "苏望弥新养的一盆紫叶菜被她取名为斜星期。",
+        "body": "等候的人把椅子推得歪了一点，给门口留下可以随时离开的路。谈霁禾绕到桌边，停下来看看自己的手。指甲旁一小块白色的胶还没有洗净，她想用另一只手抠掉，又觉得这个动作会让屋里的人误以为她在催促。没有人催促的房间也会使人着急，尤其当大家都把不说话当成礼貌的时候。她索性把两只手放到膝头，先问谁还没有吃饭。\n\n陆栖砚把嵌雾钥片的凹角按在桌面上。桌板给压出一声很轻的响动，一位准备坐下的人又站直了。陆栖砚抬眼，表示自己只是找不到可以搁东西的地方，并没有敲桌子的意思。那人笑了一下，坐到最远的椅子上，包却没有从肩头卸下。谈霁禾看见他的鞋底留着一块湿痕，便把脚边的抹布踢向门槛，替随后进来的几个人挡住地上的水。\n\n祁照眠提来一壶温水，杯子有高有矮，排在一起像一群并不打算照相的人。他问要不要再去取几个一样大的，温宥真摇头，让每人挑自己愿意用的。谢允铎最后拿到一只浅口杯，说这种杯子最适合用来表明自己只想坐一会儿。笑声终于比先前齐整了一点。坐在远处的人把包放下，却依然用一条腿压住背带，好像那是可以带自己出去的牵绳。\n\n门外又有人喊谈霁禾的名字，原来是送来一袋还没拌好的生菜。苏望弥新养的一盆紫叶菜被她取名为斜星期。苏望弥解释这个名字时，屋里有两个人同时问为什么，她便决定暂时把解释省下来，免得一袋菜成为今天最长的发言。温宥真找来一只空碗，把不能入口的外叶拣出来，交给门外的小推车。新来的人接过碗时问，有没有必要等所有人都来齐才算开始。\n\n谈霁禾原本准备好了开场的话，听见这个问题，忽然觉得背熟的句子太像一扇先扣住的门。她请对方先坐，问他想把什么算作开始。那人没有回答，反问今天的答复是不是立刻就会被写下来。霍予笺拿走了桌上尚未展开的纸，留出一块空地方，说不妨先把事情说清楚。墙上的风口吹得一只空杯微微作响，有人用手扶住它，等声音平息。\n\n樊澄序站在门边，没有抢着替任何人解释。谈霁禾请他也坐到桌子旁边，他看了一眼留下的椅子，又把自己的外套搭在椅背上。椅子并没有因此变得特别，却让那个压着背带的人终于松开了腿。谈霁禾把心里准备好的第一句话往后挪了一步。她还有很多地方要说明，但此刻有人正准备开口，值得先留出一整段不被截断的时间。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "没有印上的名字",
+      "language": "zh",
+      "source_file": "works/w02.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "闻予珂",
+        "珂页",
+        "岑砚岚",
+        "岚扣",
+        "罗见浔",
+        "浔桥",
+        "夏允棠",
+        "白知穆",
+        "邵庭葵",
+        "梁霁岑",
+        "莫衍初",
+        "庄棣遥",
+        "尹择梨",
+        "霁衡大学",
+        "承序院",
+        "漫槐院",
+        "笛纹夹签",
+        "蓝棱纸镇",
+        "双孔片尺"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "将夜课参与者的修改意见逐项听完，让每个人决定自己如何被公开提及。"
+        },
+        {
+          "chapter": 31,
+          "text": "向未到场者征求对公开说明的意见，保留其独立选择署名方式的空间。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "讲义脚注被删的缘由",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "双订孔便笺是谁放下的",
+          "planted_chapter": 6,
+          "status": "open"
+        },
+        {
+          "title": "课表多出一周空档的来由",
+          "planted_chapter": 8,
+          "status": "resolved",
+          "resolved_chapter": 24
+        },
+        {
+          "title": "尚未拆开的退修回函要求重写什么",
+          "planted_chapter": 12,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第31章 迟来的意见",
+        "draft_only_fact": "梁霁岑把办公室新到的黄色订书机叫作末页鲸。",
+        "body": "闻予珂给夏允棠让出一张椅子。两个人并没有顺势坐在一起，夏允棠把椅子拖到窗边，试了试能不能看清纸上的小字。雨点从窗缝里飘进来，她卷起一张没有用过的便条，塞在最容易漏水的地方。闻予珂想提醒那张纸原本可以拿来写意见，看见她手指上沾着一点灰，便没有开口。屋里的每件小事似乎都还没有分清用途，谁先动手，谁就要先给出一种解释。\n\n闻予珂伸手去拿装在布袋里的双孔片尺。袋口被打了两个结，她解开上面一个，停下来问谁见过放在旁边的铅笔。邵庭葵把一支剩得很短的递过去，说这是自己刚用完的，笔尖不算尖，若是要写很小的字还得再削。闻予珂说这样就行，把纸推到自己面前，又发现桌面有一道倾斜的亮痕，像刚刚有人抹过水。她先抽出一张纸试写，免得把正页弄湿。\n\n岑砚岚在窗下拧开保温杯，里面的水倒不出来，原来杯口的滤网歪了。罗见浔接过去修正滤网，两人谈了几句今天的雨会不会影响回程。没人愿意先把这场闲聊截住，仿佛只要还能讨论雨，桌上的那件事就有机会再缓一缓。夏允棠把窗帘往旁边挽起，让外面的光多落一点进来，窗沿的两只杯子因此映出了不同深浅的影子。\n\n梁霁岑抱着一摞空白封套进门，问哪一边能放。梁霁岑把办公室新到的黄色订书机叫作末页鲸。莫衍初听见这个名字，问是不是因为它总要等工作结束才肯出现，梁霁岑说只是想给借东西的人一个容易记住的称呼。封套有一角被雨打软了，他把受潮的几只单独抽出来，打算等干了留在自己那边用。闻予珂伸手帮他整理，意外发现空白封面比写满字的页面更使人不好意思下笔。\n\n白知穆来得稍迟，手里没有带提纲，只拿了一本自己用的练习簿。他在空位上坐下，先询问大家愿意从哪一张纸开始。岑砚岚把杯盖拧紧，指出应当先问不在屋里的人有没有收到消息。莫衍初便去门外打电话，回来后只说有一个号码暂时无人接听。闻予珂把那一栏用铅笔轻轻圈住，圈得很淡，好让对方回来以后可以自己擦掉。\n\n夏允棠取下塞在窗缝里的便条，雨已经小了，纸却染出一条浅色边缘。她问这张还能不能写，邵庭葵递来一张干的，说先把湿纸搁着，不必勉强。闻予珂看着她们交换两张并不值钱的纸，想起自己有时会把一次迟来的让步说得太郑重。她把刚才的圈留在原处，翻到下一面，把笔交给第一个愿意讲的人。窗外有人经过，脚步没有停，屋里的人也没有再急着把话填满。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a1c4f-w01-qa-01",
+      "work": "w01",
+      "suite": "qa",
+      "note": "选中人物，问稳定的惯用手，干扰来自同章其他人的动作。",
+      "qa_type": "answerable_single",
+      "question": "她平常用哪一边的手更顺？",
+      "selection": "谈霁禾绕到桌边，停下来看看自己的手。",
+      "paraphrased": true,
+      "answer_points": [
+        "谈霁禾惯用左手。"
+      ],
+      "forbidden_claims": [
+        "谈霁禾惯用右手。"
+      ],
+      "evidence_chapters": [
+        "第7章 另一边的把手"
+      ],
+      "evidence_quotes": [
+        "谈霁禾惯用左手。她在水台旁将这个事实直截了当地写进下午的配合记录"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-02",
+      "work": "w01",
+      "suite": "qa",
+      "note": "问换向的稳定限制，不把当前一次停照误当永久规则。",
+      "qa_type": "answerable_single",
+      "question": "人工照明换到另一面之前，中间必须留出多长的全暗时段？",
+      "paraphrased": true,
+      "answer_points": [
+        "光幕换向前必须熄灭九分钟。"
+      ],
+      "forbidden_claims": [
+        "换向时无需熄灭。",
+        "换向前只需熄灭三分钟。"
+      ],
+      "evidence_chapters": [
+        "第11章 换向以前"
+      ],
+      "evidence_quotes": [
+        "樊澄序负责的人工光幕受能耗阈值约束，同一段光幕换向前必须熄灭九分钟，不能同时照两层。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-03",
+      "work": "w01",
+      "suite": "qa",
+      "note": "两个资格截面相隔十五章，任何一章不能给出整个前后对照。",
+      "qa_type": "answerable_multi",
+      "question": "禾弦最初参加公共决策时有没有表决资格，后半段取得的席位又是什么身份？",
+      "paraphrased": true,
+      "answer_points": [
+        "谈霁禾起初是没有投票权的见习员。",
+        "谈霁禾后来获居民授权，成为有投票权的临时席位代表。"
+      ],
+      "forbidden_claims": [
+        "谈霁禾从一开始就拥有投票权。",
+        "谈霁禾后来仍不能投票。"
+      ],
+      "evidence_chapters": [
+        "第2章 门外一席",
+        "第17章 把不同意留下"
+      ],
+      "evidence_quotes": [
+        "谈霁禾是无投票权的见习员。",
+        "谈霁禾获得居民授权，成为有投票权的临时席位代表。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-04",
+      "work": "w01",
+      "suite": "qa",
+      "note": "手腕两个截面相隔十一章，需分别核实。",
+      "qa_type": "answerable_multi",
+      "question": "眠尺伤后拿工具遇到什么限制，拆除固定物以后又能不能握稳了？",
+      "paraphrased": true,
+      "answer_points": [
+        "祁照眠右腕扭伤后被固定，不能握紧扳手。",
+        "祁照眠拆除固定后已经恢复握力。"
+      ],
+      "forbidden_claims": [
+        "祁照眠伤的是左腕。",
+        "祁照眠拆除固定后仍无法握紧工具。"
+      ],
+      "evidence_chapters": [
+        "第3章 留在表上的空位",
+        "第14章 回来以后"
+      ],
+      "evidence_quotes": [
+        "祁照眠的右腕因扭伤固定，无法握紧扳手。",
+        "祁照眠已拆掉右腕固定，并恢复了握力。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-05",
+      "work": "w01",
+      "suite": "qa",
+      "note": "选中物件，两次交接的双方须分别查远隔章节，后章未汇总首次来源。",
+      "qa_type": "answerable_multi",
+      "question": "这件东西前后两次转交，分别是谁交给谁的？",
+      "selection": "陆栖砚把嵌雾钥片的凹角按在桌面上。",
+      "paraphrased": true,
+      "answer_points": [
+        "第一次交接是谈霁禾交给祁照眠。",
+        "后一次交接是祁照眠交给陆栖砚。"
+      ],
+      "forbidden_claims": [
+        "陆栖砚是首次交接的接收人。",
+        "后一次由温宥真接收。"
+      ],
+      "evidence_chapters": [
+        "第5章 柜门以内",
+        "第21章 等过的时刻不能退回"
+      ],
+      "evidence_quotes": [
+        "谈霁禾把嵌雾钥片交给了祁照眠。",
+        "祁照眠把嵌雾钥片交给了陆栖砚。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-06",
+      "work": "w01",
+      "suite": "qa",
+      "note": "相关现象存在，但全书没有确认发声者。",
+      "qa_type": "not_in_text",
+      "question": "凌晨那两次应答究竟出自谁？",
+      "paraphrased": false,
+      "answer_points": [],
+      "forbidden_claims": [
+        "祁照眠发出了那两次应答。",
+        "发声者是霍予笺。"
+      ],
+      "evidence_chapters": [
+        "第6章 谁在回答"
+      ]
+    },
+    {
+      "id": "a1c4f-w01-qa-07",
+      "work": "w01",
+      "suite": "qa",
+      "note": "撤签动机截至完结仍无解释，不把支持书的内容误当原因。",
+      "qa_type": "not_in_text",
+      "question": "支持书最后那个人为什么撤回签名？",
+      "paraphrased": false,
+      "answer_points": [],
+      "forbidden_claims": [
+        "那个人因为反对清洁班而撤签。",
+        "那个人因为受到樊澄序威胁而撤签。"
+      ],
+      "evidence_chapters": [
+        "第13章 不必替我说完"
+      ]
+    },
+    {
+      "id": "a1c4f-w01-qa-08",
+      "work": "w01",
+      "suite": "qa",
+      "note": "同一人物不可随时间改变的出生地点，有意保留互斥叙述。",
+      "qa_type": "conflicting",
+      "question": "欧竞迟的出生地点，前文和后文能对得上吗？",
+      "paraphrased": false,
+      "answer_points": [
+        "一处叙述说欧竞迟出生于砾穹舱。",
+        "另一处叙述说欧竞迟出生于箭河舱，两说不一致。"
+      ],
+      "forbidden_claims": [
+        "两处写的是迁居前后的住址，因此不矛盾。"
+      ],
+      "evidence_chapters": [
+        "第6章 谁在回答",
+        "第24章 不把椅子留空"
+      ],
+      "evidence_quotes": [
+        "欧竞迟出生在砾穹舱。",
+        "欧竞迟出生在箭河舱。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-qa-09",
+      "work": "w01",
+      "suite": "qa",
+      "note": "比较初次制成时的同一物件，不能解释成后来添珠。",
+      "qa_type": "conflicting",
+      "question": "佟绾慈刚做好鸢纹佩那时的珠子数量，书里有没有两种说法？",
+      "paraphrased": false,
+      "answer_points": [
+        "一处说初次制成时装了五枚骨珠。",
+        "另一处说初次制成时装了七枚骨珠，两处矛盾。"
+      ],
+      "forbidden_claims": [
+        "七枚是后来增加的，因此两处一致。"
+      ],
+      "evidence_chapters": [
+        "第9章 响过以后",
+        "第27章 吃到最后的人"
+      ],
+      "evidence_quotes": [
+        "佟绾慈初次制成鸢纹佩时，佩上装了五枚骨珠。",
+        "佟绾慈初次制成鸢纹佩时，佩上装了七枚骨珠。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-fix-01",
+      "work": "w01",
+      "suite": "fix",
+      "note": "新草稿由叙述者直白写出相反的惯用手，人物不属于有意矛盾组。",
+      "draft": "谈霁禾只惯用右手，伸手接过桌上的笔。她把笔放回桌面，等对面的人坐下。",
+      "conflict_sentence": "谈霁禾只惯用右手，伸手接过桌上的笔。",
+      "category": "attribute",
+      "fix_idea": "将惯用手改为左手，保留接笔、放笔和等候的动作。",
+      "evidence_chapters": [
+        "第7章 另一边的把手"
+      ]
+    },
+    {
+      "id": "a1c4f-w01-fix-02",
+      "work": "w01",
+      "suite": "fix",
+      "note": "直白违反同一设备换向的硬约束，不涉及时序推理。",
+      "draft": "樊澄序面前的光幕换向无需熄灭，始终亮着就能转向另一层。樊澄序站在开关旁等候下一班。",
+      "conflict_sentence": "樊澄序面前的光幕换向无需熄灭，始终亮着就能转向另一层。",
+      "category": "world_rule",
+      "fix_idea": "写成换向前先熄灭九分钟，再转向另一层，保留等候下一班。",
+      "evidence_chapters": [
+        "第11章 换向以前"
+      ]
+    },
+    {
+      "id": "a1c4f-w01-follow-01",
+      "work": "w01",
+      "suite": "follow_up",
+      "note": "第一问识别隔间被拦者，追问只问后来的权限。",
+      "first_question": "负责公共厨房、在配光隔间门口被拦下的人是谁？",
+      "first_answer_points": [
+        "被拦下的人是温宥真。"
+      ],
+      "question": "她后来能进入那个隔间了吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "温宥真后来取得进入配光隔间的权限。"
+      ],
+      "forbidden_claims": [
+        "温宥真后来依然无权进入。"
+      ],
+      "evidence_chapters": [
+        "第19章 自己的名字"
+      ],
+      "evidence_quotes": [
+        "温宥真获得了进入配光隔间的权限，并亲自签下现场参与的风险确认。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-follow-02",
+      "work": "w01",
+      "suite": "follow_up",
+      "note": "第一问识别停接申诉的人，追问靠对话指代查后续。",
+      "first_question": "原先在申诉桌接电话、后来停接的人叫什么？",
+      "first_answer_points": [
+        "停接申诉的人是霍予笺。"
+      ],
+      "question": "他后面恢复接听了没有？",
+      "paraphrased": true,
+      "answer_points": [
+        "霍予笺后来恢复了申诉接线。"
+      ],
+      "forbidden_claims": [
+        "霍予笺直到结尾都没有恢复接线。"
+      ],
+      "evidence_chapters": [
+        "第23章 不替你说满意"
+      ],
+      "evidence_quotes": [
+        "霍予笺恢复了申诉接线，开始受理新的申诉。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-01",
+      "work": "w02",
+      "suite": "qa",
+      "note": "selection确定两个人，问题不再写任何姓名，关系有明确叙述。",
+      "qa_type": "answerable_single",
+      "question": "这两个人在校期间是什么关系？",
+      "selection": "闻予珂给夏允棠让出一张椅子。",
+      "paraphrased": true,
+      "answer_points": [
+        "闻予珂与夏允棠是同届入校的同学，没有亲属关系。"
+      ],
+      "forbidden_claims": [
+        "闻予珂与夏允棠是姐妹。"
+      ],
+      "evidence_chapters": [
+        "第7章 一张能吃饭的桌子"
+      ],
+      "evidence_quotes": [
+        "闻予珂与夏允棠是同届入校的同学，不是姐妹，两人之间也没有亲属关系。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-02",
+      "work": "w02",
+      "suite": "qa",
+      "note": "selection指物件，问破损状态，不被同章其他尺具干扰。",
+      "qa_type": "answerable_single",
+      "question": "它现在还可以当一整根尺子画线吗？",
+      "selection": "闻予珂伸手去拿装在布袋里的双孔片尺。",
+      "paraphrased": true,
+      "answer_points": [
+        "双孔片尺已断成两截，不能再当完整尺子使用。"
+      ],
+      "forbidden_claims": [
+        "双孔片尺保持完整，可以直接拿来画线。"
+      ],
+      "evidence_chapters": [
+        "第11章 留一道边"
+      ],
+      "evidence_quotes": [
+        "罗见浔带来的双孔片尺已经断成两截，断口分开，不能作为一根完整尺子使用。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-03",
+      "work": "w02",
+      "suite": "qa",
+      "note": "旁听与正式注册两个截面相隔十五章，后章不回述原资格。",
+      "qa_type": "answerable_multi",
+      "question": "岚扣刚来夜课时能否获得学分，后来注册完成后又怎样？",
+      "paraphrased": true,
+      "answer_points": [
+        "岑砚岚起初只是旁听生，夜课不能取得课程学分。",
+        "岑砚岚后来成为正式注册学生，可以取得课程学分。"
+      ],
+      "forbidden_claims": [
+        "岑砚岚从最初就能取得学分。",
+        "岑砚岚正式注册后仍不能取得学分。"
+      ],
+      "evidence_chapters": [
+        "第1章 留在桌上的一页",
+        "第16章 她自己的格子"
+      ],
+      "evidence_quotes": [
+        "岑砚岚此时只是无学分的旁听生，参加夜课不能获得课程学分。",
+        "岑砚岚现在是正式注册学生，可以获得所选课程的学分，这项资格从本次登记确认后生效。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-04",
+      "work": "w02",
+      "suite": "qa",
+      "note": "失声及恢复两个截面分散，不能靠一个恢复场景回答原来如何沟通。",
+      "qa_type": "answerable_multi",
+      "question": "浔桥说不出话的那段时间靠什么表达，嗓音恢复以后能否正常交谈？",
+      "paraphrased": true,
+      "answer_points": [
+        "罗见浔失声时不能正常说话，使用纸笔交流。",
+        "罗见浔后来嗓音恢复，可以正常交谈。"
+      ],
+      "forbidden_claims": [
+        "罗见浔失声期间仍能正常说话。",
+        "罗见浔后来一直不能发声。"
+      ],
+      "evidence_chapters": [
+        "第4章 点头以后",
+        "第18章 想说完的一句话"
+      ],
+      "evidence_quotes": [
+        "罗见浔自昨夜起已经失声，不能正常说话，只能用纸笔沟通；那张就诊单上记录的也是他眼下的状况。",
+        "罗见浔的嗓音已经恢复，能够正常交谈。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-05",
+      "work": "w02",
+      "suite": "qa",
+      "note": "两次交接分属远隔章节，必须分别回答每次的交出者与接收者。",
+      "qa_type": "answerable_multi",
+      "question": "笛纹夹签的两次移交，每次分别是谁交给谁的？",
+      "paraphrased": true,
+      "answer_points": [
+        "闻予珂第一次将笛纹夹签交给邵庭葵。",
+        "邵庭葵后来将笛纹夹签交给岑砚岚。"
+      ],
+      "forbidden_claims": [
+        "笛纹夹签第一次交给了岑砚岚。",
+        "后一次由莫衍初接到笛纹夹签。"
+      ],
+      "evidence_chapters": [
+        "第5章 末班车之前",
+        "第21章 不用等机器停"
+      ],
+      "evidence_quotes": [
+        "闻予珂把笛纹夹签从清单上取下，交给邵庭葵。",
+        "邵庭葵从自己的随身包里取出笛纹夹签，扣在掌心试了试，交给岑砚岚。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-06",
+      "work": "w02",
+      "suite": "qa",
+      "note": "匿名便笺存在，作者身份没有被正文确认。",
+      "qa_type": "not_in_text",
+      "question": "带两个歪斜订孔的那张便笺是谁放下的？",
+      "paraphrased": false,
+      "answer_points": [],
+      "forbidden_claims": [
+        "放下便笺的人是邵庭葵。",
+        "梁霁岑留下了便笺。"
+      ],
+      "evidence_chapters": [
+        "第6章 没有落款"
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-07",
+      "work": "w02",
+      "suite": "qa",
+      "note": "回函始终未拆，没有可供回答的具体退修要求。",
+      "qa_type": "not_in_text",
+      "question": "那封尚未拆开的退修回函，究竟要求重写哪一部分？",
+      "paraphrased": false,
+      "answer_points": [],
+      "forbidden_claims": [
+        "回函要求重写研究方法。",
+        "回函要求重写参与者署名部分。"
+      ],
+      "evidence_chapters": [
+        "第12章 封口完整"
+      ]
+    },
+    {
+      "id": "a1c4f-w02-qa-08",
+      "work": "w02",
+      "suite": "qa",
+      "note": "同一个第一次领补贴的地点，两处确定叙述互斥。",
+      "qa_type": "conflicting",
+      "question": "庄棣遥头一回领到补助的地方，前文和后文能对上吗？",
+      "paraphrased": false,
+      "answer_points": [
+        "一处说庄棣遥第一次领补贴在承序院。",
+        "另一处说第一次领补贴在漫槐院，两处不一致。"
+      ],
+      "forbidden_claims": [
+        "两处只是两次不同的领取，完全一致。"
+      ],
+      "evidence_chapters": [
+        "第6章 没有落款",
+        "第26章 把名字读一遍"
+      ],
+      "evidence_quotes": [
+        "庄棣遥第一次领取助学补贴的地点是承序院。",
+        "庄棣遥第一次领取助学补贴的地点是漫槐院。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-qa-09",
+      "work": "w02",
+      "suite": "qa",
+      "note": "比较第一次提交同一申请时的年龄，时间推移不能解释差值。",
+      "qa_type": "conflicting",
+      "question": "尹择梨第一次递退修申请的年龄，前后有没有互相冲突的写法？",
+      "paraphrased": false,
+      "answer_points": [
+        "一处说尹择梨第一次申请时二十二岁。",
+        "另一处说第一次申请时二十四岁，两处矛盾。"
+      ],
+      "forbidden_claims": [
+        "后文年龄增加两岁是正常经过时间，没有矛盾。"
+      ],
+      "evidence_chapters": [
+        "第10章 主持人的空位",
+        "第28章 那封信还在"
+      ],
+      "evidence_quotes": [
+        "尹择梨第一次提交退修申请时，年龄是二十二岁。",
+        "尹择梨第一次提交退修申请时，年龄是二十四岁。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-fix-01",
+      "work": "w02",
+      "suite": "fix",
+      "note": "新草稿直白写成亲姐妹，稳定依据具名且无亲属关系。",
+      "draft": "闻予珂和夏允棠是亲姐妹，两个人在窗下并排坐好。桌上还有一张空白纸。",
+      "conflict_sentence": "闻予珂和夏允棠是亲姐妹，两个人在窗下并排坐好。",
+      "category": "relationship",
+      "fix_idea": "改为同届入校的同学，保留两人在窗下就座及空白纸。",
+      "evidence_chapters": [
+        "第7章 一张能吃饭的桌子"
+      ]
+    },
+    {
+      "id": "a1c4f-w02-fix-02",
+      "work": "w02",
+      "suite": "fix",
+      "note": "新草稿把已折断且未修复的唯一物件写成完好。",
+      "draft": "闻予珂拿起完整无损的双孔片尺，把尺身平直地压在纸上。邵庭葵替她挪开杯子。",
+      "conflict_sentence": "闻予珂拿起完整无损的双孔片尺，把尺身平直地压在纸上。",
+      "category": "object_state",
+      "fix_idea": "保留压纸动作，写成将断尺两截分别压在纸边，不把断尺写成完好。",
+      "evidence_chapters": [
+        "第11章 留一道边"
+      ]
+    },
+    {
+      "id": "a1c4f-w02-follow-01",
+      "work": "w02",
+      "suite": "follow_up",
+      "note": "第一问识别借房受限者，追问只用指代问后来资格。",
+      "first_question": "在讨论室借用手续上被拦住的那位共同作者是谁？",
+      "first_answer_points": [
+        "借用受限的共同作者是夏允棠。"
+      ],
+      "question": "她后来能独立预约那个房间了吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "夏允棠后来取得了讨论室独立预约资格。"
+      ],
+      "forbidden_claims": [
+        "夏允棠后来依旧没有独立预约资格。"
+      ],
+      "evidence_chapters": [
+        "第22章 一把没有坐人的椅子"
+      ],
+      "evidence_quotes": [
+        "夏允棠已经取得讨论室的独立预约资格，可以用自己的身份单独预约和负责借还，不需借用他人的账号或以他人名义提交。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w02-follow-02",
+      "work": "w02",
+      "suite": "follow_up",
+      "note": "第一问识别回避离席者，追问依据后段恢复事件。",
+      "first_question": "因回避争议而暂离课题召集席的人是谁？",
+      "first_answer_points": [
+        "暂离召集席的人是白知穆。"
+      ],
+      "question": "他之后有没有重新担任召集人？",
+      "paraphrased": true,
+      "answer_points": [
+        "白知穆后来经过参与者同意，恢复课题召集资格。"
+      ],
+      "forbidden_claims": [
+        "白知穆后来一直没有恢复召集资格。"
+      ],
+      "evidence_chapters": [
+        "第25章 由谁来叫下一声"
+      ],
+      "evidence_quotes": [
+        "在参与者同意后，白知穆恢复了课题召集资格，可以负责接下来课题讨论的召集与组织"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c4f-w01-recap-01",
+      "work": "w01",
+      "suite": "recap",
+      "note": "截止十五章，仅提供下一章计划；两条未知线索须具体说清未知的是什么。",
+      "upto_chapter": 15,
+      "draft_opening": "温宥真拿来一只新做的椭圆饭盒。靠门的位置还空着，谈霁禾没有立刻去坐。",
+      "must_mention": [
+        {
+          "id": "ending",
+          "kind": "previous_ending",
+          "text": "陆栖砚把尚未得到签字的支持书留在议事桌上，提出下一次先听清洁班意见。",
+          "evidence_chapters": [
+            "第15章 留在桌边"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "祁照眠已拆除右腕固定，握力恢复。",
+          "evidence_chapters": [
+            "第14章 回来以后"
+          ]
+        },
+        {
+          "id": "voice",
+          "kind": "open_thread",
+          "text": "凌晨两次应答的发声者仍没有查明。",
+          "evidence_chapters": [
+            "第6章 谁在回答"
+          ]
+        },
+        {
+          "id": "signature",
+          "kind": "open_thread",
+          "text": "支持书最后一人为何撤签仍不知道。",
+          "evidence_chapters": [
+            "第13章 不必替我说完"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "下一章计划先听清洁班完整发言，再决定配光方案是否重写。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "stale_state",
+          "text": "把祁照眠的右腕仍固定、无法握紧扳手当成目前情况。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "把光幕半格空白的原因仍说成未解。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "温宥真拿来一只新做的椭圆饭盒。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "温宥真已经获准进入配光隔间。"
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w01-recap-02",
+      "work": "w01",
+      "suite": "recap",
+      "note": "截止三十章，保持代表资格的当前状态，明确两个未解问题；不从共享草稿采事实。",
+      "upto_chapter": 30,
+      "draft_opening": "苏望弥新养的一盆紫叶菜被她取名为斜星期。谈霁禾推开门，闻见湿土的味道。",
+      "must_mention": [
+        {
+          "id": "ending",
+          "kind": "previous_ending",
+          "text": "谈霁禾在光幕换向前的黑暗里等候，陆栖砚扶着新时刻表，下一班尚未答复是否签收。",
+          "evidence_chapters": [
+            "第30章 等下一班"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "谈霁禾已获居民授权，是拥有投票权的临时席位代表。",
+          "evidence_chapters": [
+            "第17章 把不同意留下"
+          ]
+        },
+        {
+          "id": "voice",
+          "kind": "open_thread",
+          "text": "凌晨两次应答的发声者仍不明。",
+          "evidence_chapters": [
+            "第6章 谁在回答"
+          ]
+        },
+        {
+          "id": "signature",
+          "kind": "open_thread",
+          "text": "支持书最后一人撤签的动机尚未查明。",
+          "evidence_chapters": [
+            "第13章 不必替我说完"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "下一章计划向下一班解释试行条件，并接纳其对签收安排的异议。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "stale_state",
+          "text": "把谈霁禾仍没有表决资格当成当前情况。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "把排班中缺失的悼念时段原因说成尚未查明。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "苏望弥养的紫叶菜叫斜星期。"
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-recap-01",
+      "work": "w02",
+      "suite": "recap",
+      "note": "截止十五章，当前失声状态与两个具体未解点，下一章尚未进行。",
+      "upto_chapter": 15,
+      "draft_opening": "邵庭葵新买了一双橙色雨鞋。闻予珂先把门边的水擦干，才往教室里走。",
+      "must_mention": [
+        {
+          "id": "ending",
+          "kind": "previous_ending",
+          "text": "岑砚岚将修改意见扣在讲台边，大家约好下一次先让夜课参与者逐项发言。",
+          "evidence_chapters": [
+            "第15章 讲台边的位置"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "罗见浔失声，仍以纸笔交流。",
+          "evidence_chapters": [
+            "第4章 点头以后"
+          ]
+        },
+        {
+          "id": "note",
+          "kind": "open_thread",
+          "text": "两个歪斜订孔的便笺是谁放下的尚未查明。",
+          "evidence_chapters": [
+            "第6章 没有落款"
+          ]
+        },
+        {
+          "id": "letter",
+          "kind": "open_thread",
+          "text": "退修回函尚未拆开，要求重写哪一部分仍未知。",
+          "evidence_chapters": [
+            "第12章 封口完整"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "下一章计划听完夜课参与者逐项意见，让每人自主决定如何公开提及自己的贡献。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "resolved_thread",
+          "text": "把讲义脚注为何删掉说成仍未知。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "邵庭葵新买了一双橙色雨鞋。"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "岑砚岚已经正式注册、可以取得课程学分。"
+        }
+      ]
+    },
+    {
+      "id": "a1c4f-w02-recap-02",
+      "work": "w02",
+      "suite": "recap",
+      "note": "截止三十章，注册资格当前有效，两个未解点须具体表达。",
+      "upto_chapter": 30,
+      "draft_opening": "梁霁岑把办公室新到的黄色订书机叫作末页鲸。闻予珂把空白封套往旁边挪了一点。",
+      "must_mention": [
+        {
+          "id": "ending",
+          "kind": "previous_ending",
+          "text": "闻予珂将待签的公开说明翻到空栏，岑砚岚坐在讲台对面，两人等待缺席者自己的答复。",
+          "evidence_chapters": [
+            "第30章 空栏"
+          ]
+        },
+        {
+          "id": "state",
+          "kind": "character_state",
+          "text": "岑砚岚已成为正式注册学生，可以取得课程学分。",
+          "evidence_chapters": [
+            "第16章 她自己的格子"
+          ]
+        },
+        {
+          "id": "note",
+          "kind": "open_thread",
+          "text": "双订孔匿名便笺的放置者仍没有确认。",
+          "evidence_chapters": [
+            "第6章 没有落款"
+          ]
+        },
+        {
+          "id": "letter",
+          "kind": "open_thread",
+          "text": "未拆退修回函的具体重写要求仍未知。",
+          "evidence_chapters": [
+            "第12章 封口完整"
+          ]
+        },
+        {
+          "id": "plan",
+          "kind": "plan",
+          "text": "下一章计划征求未到场者对公开说明的意见，并保留各自选择署名方式的空间。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "stale_state",
+          "text": "把岑砚岚仍是无法获得学分的旁听生说成目前情况。"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "把课表空白周的原因说成仍没有查清。"
+        },
+        {
+          "kind": "draft_only",
+          "text": "梁霁岑办公室的新黄色订书机叫末页鲸。"
+        }
+      ]
+    }
+  ]
+}

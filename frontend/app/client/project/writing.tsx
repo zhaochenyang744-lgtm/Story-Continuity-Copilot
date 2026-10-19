@@ -3,13 +3,12 @@
 import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
-import { DraftWordCount, flashText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
+import { countVisibleText, DraftWordCount, flashText, proofreadDraftText, replaceVisibleDraftText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
 import { Odometer, reducedMotion, ScanLine, ThreadLayer, useFirstShow } from "../motion";
 import {
   activeAnalysis,
   activeRun,
   alignmentStatusLabel,
-  briefSectionLabel,
   clockLabel,
   decisionLabel,
   durationLabel,
@@ -26,6 +25,7 @@ import {
   timeLabel,
 } from "../labels";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, type WritingLink } from "./assistant";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline } from "./findings";
@@ -35,6 +35,16 @@ import { issueAllows, issueHasSufficientEvidence, issueNeedsDecision, type Proje
 /** 写作: a huge blue chapter number and the title, the chapters on the left, the draft with each
     finding's sentence marked and numbered, and the findings as cards that open in place. Both side
     columns stay on screen while the draft scrolls. A written chapter opens here too (?chapter=N). */
+// On a phone the 助手 pane fills the screen under the top bar and the pane switch. The switch is scrolled up to just under the top
+// bar, measured, since the bar wraps taller on a phone than --topbar-h; the page itself is then held still (assistant.css) and
+// only the conversation scrolls, so the box never leaves the screen.
+function pinPanes() {
+  const panes = document.querySelector<HTMLElement>(".mobile-panes");
+  if (!panes) return;
+  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
+  window.scrollTo({ top: Math.max(0, panes.getBoundingClientRect().top + window.scrollY - top) });
+}
+
 export function WritingPage(props: PageProps) {
   const { p, user, go, notices } = props;
   const [viewing, setViewing] = useState<number | null>(() => {
@@ -53,13 +63,53 @@ export function WritingPage(props: PageProps) {
   return <DraftDesk {...props} openChapter={open} />;
 }
 
-function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
+/** Which of the right column's tabs the author last chose, kept on this device. */
+const sideKey = "story-continuity:writing-side";
+const rememberedSide = (): "findings" | "assistant" | null => {
+  try {
+    const value = window.localStorage.getItem(sideKey);
+    return value === "assistant" || value === "findings" ? value : null;
+  } catch { return null; }
+};
+
+function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
-  const [mobilePane, setMobilePane] = useState<"draft" | "issues">("draft");
-  // What the right column shows: the check's findings, or a pre-writing review or plan comparison that has been started.
-  // Coming from the plan page's 对照正文, whose comparison is running, the column opens on 对照计划.
-  const [wantedSide, setWantedSide] = useState<SideItem>(() => (p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "plan" : "findings"));
+  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "assistant">("draft");
+  // The assistant column is always built (hidden while the findings are shown), so a running task goes on while the author
+  // writes and the findings list can tell which findings have an adopted change.
+  const [incoming, setIncoming] = useState<Incoming | null>(null);
+  const [command, setCommand] = useState<Command | null>(null);
+  const [picked, setPicked] = useState<Incoming | null>(null);
+  const [assistantBusy, setAssistantBusy] = useState(false);
+  const [adoptedIssueIds, setAdoptedIssueIds] = useState<string[]>([]);
+  const [planFolded, setPlanFolded] = useState(false);
+  const [planStarts, setPlanStarts] = useState(0);
+  const incomingNonce = useRef(0);
+  // What the right column shows: the check's findings, or the assistant. Coming from the plan page's 对照正文, whose
+  // comparison is running, the column opens on the assistant, where that comparison is shown.
+  const [wantedSide, setWantedSide] = useState<SideItem>(() => (p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
   const [revealSide, setRevealSide] = useState(0);
+  // On a phone the assistant is a pane as high as what is left of the screen below the top bar and the pane switch (and above the
+  // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
+  useEffect(() => {
+    const root = document.documentElement;
+    const measure = () => {
+      const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
+      const switcher = document.querySelector<HTMLElement>(".mobile-panes")?.offsetHeight ?? 0;
+      const visible = window.visualViewport?.height ?? window.innerHeight;
+      root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - switcher - 8))}px`);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    window.visualViewport?.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.visualViewport?.removeEventListener("resize", measure);
+      root.style.removeProperty("--assistant-pane-h");
+    };
+  }, []);
+  // Switching to the 助手 tab with the mouse or Enter puts the cursor in its box, so the author does not walk past the whole conversation.
+  const focusAssistant = useRef(false);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -74,9 +124,10 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
   const blocked = locked || Boolean(p.busy);
   const hasPlans = Boolean(p.authorContext && p.authorContext.story_plans.length + p.authorContext.character_plans.length + p.authorContext.world_plans.length > 0);
-  const hasBrief = Boolean(p.contextBrief) || p.analysisBusy === "context_brief";
   const hasAlignment = hasPlans && (Boolean(p.planAlignment) || p.analysisBusy === "plan_alignment");
-  const side: SideItem = wantedSide === "brief" && hasBrief ? "brief" : wantedSide === "plan" && hasAlignment ? "plan" : "findings";
+  // The assistant is offered only to accounts the roll-out has reached; for the others its tab, its entrances and its column are not there.
+  const assistantOn = Boolean(user.assistant?.available);
+  const side: SideItem = assistantOn ? wantedSide : "findings";
   const empty = !(p.saved?.body ?? p.draft?.body ?? "").trim();
   const chars = writtenChars(p.draft?.body ?? "");
   const chapterNumber = p.draft?.chapter_number ?? project.current_draft.chapter_number;
@@ -100,6 +151,11 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     if (selectedId) setWantedSide("findings");
   }
   useEffect(() => {
+    if (side !== "assistant" || !focusAssistant.current) return;
+    focusAssistant.current = false;
+    document.querySelector<HTMLTextAreaElement>('#side-panel-assistant textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true });
+  }, [side]);
+  useEffect(() => {
     if (!revealSide) return;
     const column = document.getElementById("writing-side");
     if (!column) return;
@@ -111,6 +167,25 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const linkedIssue = issues.find((issue) => issue.id === linkedId) ?? null;
   const linkedChapters = [...new Set((linkedIssue?.evidence ?? []).map((item) => item.chapter_number))].slice(0, 3);
   const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id, hovered: hovered === issue.id, done: isDone(issue), reveal }));
+  const chooseSide = (next: SideItem) => {
+    if (next === "assistant" && !assistantOn) return;
+    setWantedSide(next);
+    try { window.localStorage.setItem(sideKey, next === "assistant" ? "assistant" : "findings"); } catch { /* the choice lasts for this visit */ }
+  };
+  // A passage picked in the draft goes to the assistant: into the question, or asked about at once.
+  const bring = (text: string, quick: boolean) => {
+    chooseSide("assistant");
+    setMobilePane("assistant");
+    setRevealSide((count) => count + 1);
+    setIncoming({ text, quick, nonce: ++incomingNonce.current });
+  };
+  // A task the page starts for the assistant: the column switches to it, the thread starts it or says why it cannot.
+  const bringTask = (next: { kind: "recap" } | { kind: "fix"; issueId: string } | { kind: "check"; text: string }) => {
+    chooseSide("assistant");
+    setMobilePane("assistant");
+    setRevealSide((count) => count + 1);
+    setCommand({ ...next, nonce: ++incomingNonce.current });
+  };
   const pick = (id: string) => {
     const issue = issues.find((item) => item.id === id);
     const row = document.getElementById(`issue-${id}`);
@@ -143,7 +218,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   // A visitor's check is refused above the per-check limit, so the button says so up front.
   const visitorLimit = usage?.account_type === "visitor" && chars > usage.check_chars_per_check ? usage.check_chars_per_check : null;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
-    <Button kind="primary" size="lg" disabled={Boolean(p.busy) || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
+    <Button kind="primary" size="lg" disabled={Boolean(p.busy) || p.autosaveState === "saving" || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
   ) : checking ? (
     <Button kind="primary" size="lg" disabled busy>正在检查…</Button>
   ) : p.run && retryableRun(p.run) && !outdated ? (
@@ -152,11 +227,82 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
   const finished = p.run?.status === "completed" && !checking;
-  const analyse = (kind: "context_brief" | "plan_alignment") => {
-    setWantedSide(kind === "context_brief" ? "brief" : "plan");
-    setMobilePane("issues");
+  // 对照计划 is the old analysis, unchanged; only where its result is shown has moved: the top of the assistant column.
+  const analyse = () => {
+    chooseSide("assistant");
+    setMobilePane(assistantOn ? "assistant" : "issues");
+    setPlanFolded(false);
+    setPlanStarts((count) => count + 1);
     setRevealSide((count) => count + 1);
-    void p.startAnalysis(kind);
+    void p.startAnalysis("plan_alignment");
+  };
+  const recapReason = chapterNumber <= 1 ? "第一章前面没有内容可以回顾" : p.dirty ? "等草稿保存后再回顾" : assistantBusy ? "上一个问题还在查" : "";
+  // Why a finding cannot go to the assistant for a fix right now (empty when it can).
+  const assistReason = p.run?.result_origin === "demo_preset" ? "示例结果不能交给助手，先再检查一次"
+    : outdated ? "草稿在检查之后改过，再检查一次后再让助手给改法"
+      : assistantBusy ? "上一个问题还在查" : "";
+
+  // What the assistant needs of this page to put a change into the draft: count, replace, wait for the save.
+  const draftRef = useRef(p.draft);
+  useEffect(() => { draftRef.current = p.draft; });
+  const swapInDraft = (before: string, after: string): boolean => {
+    const current = draftRef.current;
+    if (!current) return false;
+    if (current.body_format === "markdown") return replaceVisibleDraftText("draft-body", before, after);
+    const parts = current.body.split(before);
+    if (parts.length !== 2) return false;
+    p.setDraft({ ...current, body: `${parts[0]}${after}${parts[1]}` });
+    return true;
+  };
+  const countInDraft = (text: string): number => {
+    if (!text) return 0;
+    if (p.draft?.body_format === "markdown") return countVisibleText("draft-body", text);
+    let count = 0;
+    const body = p.draft?.body ?? "";
+    for (let at = body.indexOf(text); at >= 0; at = body.indexOf(text, at + 1)) count += 1;
+    return count;
+  };
+  const draftBlocked = project.status === "archived" ? "作品已归档，只能浏览。"
+    : p.readOnly ? "这个屏幕太窄，不能改正文。请在电脑上采用。"
+      : p.draftRecoveryConflict || p.pendingControlledDecision || p.controlled ? "正在处理另一处修改，先完成它再采用。"
+        : p.busy ? "正在保存，稍后再试。" : "";
+  const issueInfo = (issueId: string): IssueInfo | null => {
+    const index = issues.findIndex((item) => item.id === issueId);
+    if (index < 0) return null;
+    const issue = issues[index];
+    const reason = p.readOnly ? "只读，不能在这里处理。"
+      : issue.decision ? (issue.decision.decision === "keep_intentional" ? "" : "这一条已经记下了别的判断。")
+        : outdated ? "草稿在检查之后改过，再检查一次后再决定。"
+          : !issueHasSufficientEvidence(issue) ? "依据不够充分，不能记下这个决定。"
+            : !issueAllows(issue, "keep_intentional") ? "这一条不能标为有意为之。"
+              : p.busy ? "稍等，正在处理别的操作。" : "";
+    return { number: index + 1, issue, keep: { done: issue.decision?.decision === "keep_intentional", reason, run: () => p.decide(issue, "keep_intentional") } };
+  };
+  // What the assistant's box can add to a question (chapters, people, findings), and what its starting questions are made from.
+  const material: ThreadMaterial = {
+    chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })),
+    characters: p.characters.map((person) => ({ id: person.id, name: person.name })),
+    draftBody: p.draft?.body ?? "",
+    issues: issues.map((issue, index) => ({ id: issue.id, number: index + 1, label: findingHeadline(issue) })),
+    issuesReason: assistReason,
+  };
+  const writingLink: WritingLink = {
+    draft: {
+      blocked: draftBlocked,
+      revision: p.saved?.revision ?? 0,
+      dirty: p.dirty,
+      autosave: p.autosaveState,
+      count: countInDraft,
+      // Adopting a change plays the proofreading marks; putting a sentence back (undo) only glows.
+      replace: (before, after, mode) => mode === "proofread"
+        ? proofreadDraftText("draft-body", before, after, () => swapInDraft(before, after))
+        : Promise.resolve(swapInDraft(before, after)).then((ok) => { if (ok) window.setTimeout(() => flashText("draft-body", after, "rewrite-fresh", 1800), 60); return ok; }),
+      saveNow: p.autosaveNow,
+    },
+    issue: issueInfo,
+    openChapter: (number) => openChapter(number),
+    adoptedChanged: (ids) => setAdoptedIssueIds((current) => (current.join("|") === ids.join("|") ? current : ids)),
+    busyChanged: setAssistantBusy,
   };
 
   return (
@@ -177,8 +323,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
         {!p.readOnly && (
           <div className="draft-head-side">
             <div className="draft-head-actions">
-              <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty} onClick={() => analyse("context_brief")}>{p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}</Button>
-              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={() => analyse("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
+              {assistantOn && <Button size="lg" disabled={!p.draft || Boolean(recapReason)} title={recapReason || undefined} onClick={() => bringTask({ kind: "recap" })}>写前回顾</Button>}
+              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={analyse}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
               <Menu buttonLabel="更多：完成本章、技术详情、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => openDialog("reset")}>重置作品</button>}>
                 <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => setCompleting(true)}>完成本章，开始下一章</button>
                 <button type="button" role="menuitem" disabled={!p.run} onClick={() => setTech(true)}>这次检查的技术详情</button>
@@ -210,8 +356,12 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
       )}
 
       <nav className="mobile-panes" aria-label="切换内容">
-        {(["draft", "issues"] as const).map((pane) => (
-          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => setMobilePane(pane)}>{pane === "draft" ? "正文" : `检查结果 ${issues.length}`}</button>
+        {(assistantOn ? ["draft", "issues", "assistant"] as const : ["draft", "issues"] as const).map((pane) => (
+          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => {
+            setMobilePane(pane);
+            if (pane === "assistant") { chooseSide("assistant"); window.requestAnimationFrame(pinPanes); }
+            else if (pane === "issues" && wantedSide === "assistant") setWantedSide("findings");
+          }}>{pane === "draft" ? "正文" : pane === "issues" ? `检查结果 ${issues.length}` : "助手"}</button>
         ))}
       </nav>
 
@@ -235,20 +385,24 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
             ) : (
               <RichDraftEditor id="draft-body" label="草稿正文" placeholder="开始写这一章……" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} marks={marks} onPickMark={pick} />
             )}
+            {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)}
+              onSelect={(text) => setPicked((current) => (text === null ? (current === null ? current : null) : current?.text === text ? current : { text, quick: false, nonce: ++incomingNonce.current }))}
+              check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : null }} />}
           </div>
         </article>
 
         <aside id="writing-side" className="findings" aria-label="检查与回顾">
           <SideTabs
             value={side}
-            onChange={setWantedSide}
+            onChange={chooseSide}
+            onActivate={(next) => { if (next === "assistant") focusAssistant.current = true; }}
             items={[
               { id: "findings", label: "检查结果", count: issues.length },
-              ...(hasBrief ? [{ id: "brief" as const, label: "写前回顾" }] : []),
-              ...(hasAlignment ? [{ id: "plan" as const, label: "对照计划" }] : []),
+              ...(assistantOn ? [{ id: "assistant" as const, label: "助手", beta: Boolean(user.assistant?.beta) }] : []),
             ]}
           />
-          <div role="tabpanel" id="side-panel-findings" aria-labelledby="side-tab-findings" hidden={side !== "findings"}>
+          <div role={assistantOn ? "tabpanel" : undefined} id="side-panel-findings" aria-labelledby="side-tab-findings" hidden={side !== "findings"}>
+          {!assistantOn && hasAlignment && <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} />}
           {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
             <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
           )}
@@ -290,13 +444,14 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
                           <span className="finding-tags">
                             <FindingTag issue={issue} long />
                             {done ? <span className="label just-done">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
+                            {adoptedIssueIds.includes(issue.id) && <span className="label adopted-tag">已采用助手改法</span>}
                           </span>
                           <strong>{findingHeadline(issue)}</strong>
                         </span>
                       </button>
                       {isOpen && p.selected && (
                         <div className={folding === issue.id ? "collapse closing" : "collapse"}>
-                          <div><FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} /></div>
+                          <div><FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} assist={assistantOn ? { reason: assistReason, run: () => bringTask({ kind: "fix", issueId: issue.id }) } : null} /></div>
                         </div>
                       )}
                     </li>
@@ -307,15 +462,13 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
           ) : scanning ? (
             <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>
           ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
+          {p.run && p.run.result_origin !== "demo_preset" && <p className="ai-note" data-testid="ai-note">检查结果由 AI 生成，可能有错漏，请对照原文判断。</p>}
           </div>
-          {hasBrief && (
-            <div role="tabpanel" id="side-panel-brief" aria-labelledby="side-tab-brief" hidden={side !== "brief"}>
-              {p.contextBrief ? <AnalysisPanel run={p.contextBrief} p={p} /> : <p className="findings-empty" role="status">正在开始写前回顾…</p>}
-            </div>
-          )}
-          {hasAlignment && (
-            <div role="tabpanel" id="side-panel-plan" aria-labelledby="side-tab-plan" hidden={side !== "plan"}>
-              {p.planAlignment ? <AnalysisPanel run={p.planAlignment} p={p} /> : <p className="findings-empty" role="status">正在开始对照计划…</p>}
+          {assistantOn && (
+            <div role="tabpanel" id="side-panel-assistant" aria-labelledby="side-tab-assistant" hidden={side !== "assistant"}>
+              <AssistantThread key={project.id} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }} usage={usage} visitor={user.account_type === "visitor"} go={go}
+                incoming={incoming} command={command} picked={picked} writing={writingLink} variant="column" material={material}
+                top={hasAlignment ? <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} /> : null} topKey={planStarts} />
             </div>
           )}
         </aside>
@@ -331,9 +484,9 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   );
 }
 
-type SideItem = "findings" | "brief" | "plan";
+type SideItem = "findings" | "assistant";
 /** The right column's switch: a tablist with one tab per item; the arrow keys, Home and End move between them. */
-function SideTabs({ items, value, onChange }: { items: { id: SideItem; label: string; count?: number }[]; value: SideItem; onChange: (next: SideItem) => void }) {
+function SideTabs({ items, value, onChange, onActivate }: { items: { id: SideItem; label: string; count?: number; beta?: boolean }[]; value: SideItem; onChange: (next: SideItem) => void; onActivate?: (next: SideItem) => void }) {
   const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
@@ -344,11 +497,16 @@ function SideTabs({ items, value, onChange }: { items: { id: SideItem; label: st
     onChange(items[next].id);
     document.getElementById(`side-tab-${items[next].id}`)?.focus();
   };
+  // One thing to show is a heading, not a tab to switch to.
+  if (items.length === 1) {
+    const only = items[0];
+    return <h2 className="side-title" id={`side-tab-${only.id}`}>{only.label}{only.count !== undefined && <> <span className="num side-tab-count">{only.count}</span></>}</h2>;
+  }
   return (
     <div className="side-tabs" role="tablist" aria-label="右栏内容" onKeyDown={onKeyDown}>
       {items.map((item) => (
-        <button key={item.id} type="button" role="tab" id={`side-tab-${item.id}`} className="side-tab" aria-selected={item.id === value} aria-controls={`side-panel-${item.id}`} tabIndex={item.id === value ? 0 : -1} onClick={() => onChange(item.id)}>
-          <span>{item.label}</span>{item.count !== undefined && <> <span className="num side-tab-count">{item.count}</span></>}
+        <button key={item.id} type="button" role="tab" id={`side-tab-${item.id}`} className="side-tab" aria-selected={item.id === value} aria-controls={`side-panel-${item.id}`} tabIndex={item.id === value ? 0 : -1} onClick={() => { onActivate?.(item.id); onChange(item.id); }}>
+          <span>{item.label}</span>{item.count !== undefined && <> <span className="num side-tab-count">{item.count}</span></>}{item.beta && <span className="a-beta">测试版</span>}
         </button>
       ))}
     </div>
@@ -406,7 +564,7 @@ function groupIssues(issues: Issue[]) {
 
 /** The open finding: why it was flagged, the earlier passages it rests on, the suggested change, and
     what the author can do. Actions follow the finding's kind; the first one is blue. */
-function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean; decided: (issueId: string) => void }) {
+function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, assist }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean; decided: (issueId: string) => void; assist: { reason: string; run: () => void } | null }) {
   const [toRevise, setToRevise] = useState(Boolean(issue.to_revise));
   const [applying, setApplying] = useState(false);
   const [markBusy, setMarkBusy] = useState(false);
@@ -499,11 +657,13 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }:
               {issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
               {decided && <p className="finding-decided"><Tag tone="solid">{decisionLabel(issue.decision?.decision)}</Tag>已记下，这一条留在列表里备查。</p>}
               {tutorial && tutorialStep === 4 && decided && <Button kind="primary" className="tutorial-decision-review" disabled={Boolean(p.busy)} onClick={() => void p.reviewDecision(issue)}>复习过了，继续导览</Button>}
-              {actions.length > 0 && (
+              {(actions.length > 0 || !decided) && (
                 <div className="finding-actions">
                   {actions.map((action, index) => <Button key={action.key} kind={index === 0 ? "primary" : "text"} className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
+                  {!decided && assist && <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>}
                 </div>
               )}
+              {!decided && assist?.reason && !outdated && <p className="finding-hint">{assist.reason}。</p>}
               {error && <p className="inline-error" role="alert">{error}</p>}
             </div>
           ) : <p className={tutorial ? "readonly tutorial-mobile-decision-note" : "readonly"}>{tutorial ? "手机上可以浏览完整依据；请在电脑上继续作出决定。" : "只读，不能在这里处理。"}</p>}
@@ -523,24 +683,38 @@ function Sources({ sources }: { sources: { source_id: string; source_type: strin
   );
 }
 
-/** 写前回顾 and 对照计划 results. */
-function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState }) {
-  const brief = run.analysis_type === "context_brief";
-  const coverage = run.analysis?.draft_coverage;
+/** 对照计划: the result of the plan comparison, as the first block of the assistant column. 「×」 only folds it away;
+    the result stays and the title row brings it back. */
+function PlanBlock({ p, folded, setFolded }: { p: ProjectState; folded: boolean; setFolded: (folded: boolean) => void }) {
+  const run = p.planAlignment;
   return (
-    <section className={`analysis${run.is_stale ? " stale" : ""}`} aria-label={brief ? "写前回顾" : "对照计划"}>
-      <SectionHead title={brief ? "写前回顾" : "对照计划"} aside={<span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span>} />
+    <section className="a-plan" aria-label="对照计划区块" data-testid="plan-block">
+      <div className="a-plan-head">
+        <strong>对照计划{run ? ` · ${clockLabel(run.completed_at ?? run.created_at)}` : ""}</strong>
+        {folded
+          ? <button type="button" className="a-link" aria-expanded="false" aria-controls="plan-block-body" onClick={() => setFolded(false)}>展开</button>
+          : <button type="button" className="a-link" aria-expanded="true" aria-controls="plan-block-body" aria-label="收起对照计划" onClick={() => setFolded(true)}>×</button>}
+      </div>
+      <div id="plan-block-body" hidden={folded}>
+        {run ? <AnalysisPanel run={run} p={p} /> : <p className="findings-empty" role="status">正在开始对照计划…</p>}
+      </div>
+    </section>
+  );
+}
+
+/** The plan comparison's result. */
+function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState }) {
+  return (
+    <section className={`analysis${run.is_stale ? " stale" : ""}`} aria-label="对照计划">
+      <p className="analysis-state"><span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span></p>
       {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}。编辑器照常可用。</p>}
-      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code, brief ? "回顾" : "对照")}</p>}
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code, "对照")}</p>}
       {run.analysis && (
         <>
           <p className="analysis-summary">{run.analysis.summary}</p>
-          {brief && coverage && coverage.status !== "covered" && <p className="small-note">{coverage.status === "empty" ? "草稿还没有正文。" : "只覆盖了草稿的一部分（正文较长或部分句子没有引用）。"}</p>}
           {run.analysis.summary_sources && <Sources sources={run.analysis.summary_sources} />}
           <ol className="analysis-items">
-            {run.analysis.items.map((item, index) => "section" in item ? (
-              <li key={`${item.section}:${index}`}><span className="label">{briefSectionLabel[item.section]}</span><p>{readableKeys(item.text)}</p><Sources sources={item.sources} /></li>
-            ) : "story_plan_id" in item ? (
+            {run.analysis.items.map((item) => "story_plan_id" in item ? (
               <li key={item.story_plan_id}><span className="analysis-item-head"><strong>{item.story_plan_title}</strong><Tag tone={item.status === "planned_covered" ? "solid" : item.status === "insufficient_evidence" ? "gap" : "mid"}>{alignmentStatusLabel[item.status]}</Tag></span><p>{item.explanation}</p><Sources sources={item.evidence} /></li>
             ) : null)}
           </ol>
@@ -694,7 +868,7 @@ function FocusEditor({ p, close, pick }: { p: ProjectState; close: () => void; p
       <footer className="focus-foot">
         <span className="label">{formatCount(writtenChars(text))} 字</span>
         <span className={`save-state ${saving ? "saving" : p.dirty ? "unsaved" : "saved"}`}><i aria-hidden="true" />{saving ? "保存中" : p.dirty ? "未保存 · 停笔几秒后自动保存" : "已保存"}</span>
-        <Button kind="primary" disabled={!p.draft || (!p.dirty && !p.pendingControlledDecision) || Boolean(p.busy)} busy={saving} onClick={() => void p.save()}>{saving ? "正在保存" : p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
+        <Button kind="primary" disabled={!p.draft || (!p.dirty && !p.pendingControlledDecision) || Boolean(p.busy) || p.autosaveState === "saving"} busy={saving} onClick={() => void p.save()}>{saving ? "正在保存" : p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
       </footer>
     </section>
   );

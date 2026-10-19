@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { Draft, Issue, SourceChangeSet } from "../../model";
 import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneLabel } from "../labels";
 import { bareChapterTitle, Button, fitVars, formatCount, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
+import { AssistantBridge, SelectionToolbar, useAssistantAnchor } from "./assistant";
 import type { PageProps } from "./frame";
 import type { ProjectState } from "./use-project";
 import { CountUp, Odometer } from "../motion";
@@ -45,6 +46,9 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const [open, setOpen] = useState<string | null>(null);
+  const bridge = useContext(AssistantBridge);
+  // The assistant's context is the chapter whose passages are open, if any.
+  useAssistantAnchor("chapters", { chapter_number: p.chapters.find((chapter) => chapter.id === open)?.number });
   const [estimate, setEstimate] = useState<{ characters: number; estimated_cny: number } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -204,6 +208,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
           )}
         </div>
       </div>
+      {user.assistant?.available && <SelectionToolbar selector=".chapter-passages" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} />}
       {!written.length && <p className="empty">还没有已写的章节。在写作页写完一章后点「完成本章」，或者在下面追加。</p>}
 
       {canPick && written.length > 0 && (
@@ -252,6 +257,7 @@ function LatestResult({ run }: { run: CheckRun }) {
           </article>
         ))}
       </div>
+      {run.report && <p className="ai-note">检查结果由 AI 生成，可能有错漏，请对照原文判断。</p>}
     </section>
   );
 }

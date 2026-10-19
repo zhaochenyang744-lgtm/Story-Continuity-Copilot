@@ -1,0 +1,11 @@
+{
+  "dev_commit_before_formal": "1ab47011a70df983a9bc3c429114d02587aa1a75",
+  "branch": "eval/a1b-authoring",
+  "protected_sha256": {
+    "assistant_a1/SPEC.md": "f5f3279af581367e36babf2faa729b6b46821a94b80edaac9bc48b36ef5527ee",
+    "assistant_a1b/SPEC.md": "a0e6658dcb091d0c9e0b9c85ea5debd4d4a614996611047a2a350004fbe000b5",
+    "assistant_a1b/thresholds.py": "432fd630964e6d11624d587f2af25a5aea112f8b48c9b0f0b0758cde98955dd0"
+  },
+  "no_existing_corpus_read": true,
+  "model_or_product_calls": 0
+}

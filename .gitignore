@@ -28,25 +28,14 @@ frontend/test-results/
 frontend/.env.local
 *.tsbuildinfo
 
-# Evaluation workspaces are local runtime data. The frozen V4 case set,
-# manifests, validators, tests, and sanitised retained results stay versioned.
-evaluation/fixture-workspaces/
+# Local evaluation cache.
 evaluation/.cache/
-evaluation/results/first-formal-*
-evaluation/results/eval-v2-*
-evaluation/results/eval-v3-*
-evaluation/results/v3-first-formal-post-run-integrity.json
-evaluation/results/repair-a-v1-integrity.json
-evaluation/results/post-run-review-index.json
-evaluation/results/stage66-*
 
-# Keep only the small public verification bundle below. All local runners,
-# logs, duplicate screenshots, and transient audit products remain local.
+# Local runner output, logs and audit products are never versioned.
 artifacts/*
-!artifacts/README.md
-!artifacts/stage6-screenshots/
-artifacts/stage6-screenshots/*
-!artifacts/stage6-screenshots/1440-home.png
-!artifacts/stage6-screenshots/1440-grey-harbor-run-complete.png
-!artifacts/stage6-screenshots/1440-memory-update-review.png
-!artifacts/stage6-screenshots/1440-reset-confirmation.png
+
+# A1/A1b runner scratch: resumable checkpoints, per-run copies, local project workspaces and the run lock.
+evaluation/results/*-checkpoint*.json
+evaluation/results/*-report-run-*.json
+evaluation/results/*.workspaces/
+evaluation/results/*.lock

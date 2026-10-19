@@ -258,6 +258,34 @@ export function Drawer({ title, kicker, children, close }: { title: string; kick
   );
 }
 
+/** Menus show one highlighted entry at a time: while the keyboard moves through a menu the entry under a resting mouse is not
+    highlighted too. The menu is marked `data-keyboard` from the first key that moves within it, or that brings the focus into it
+    (the first Tab from the menu's button), until the mouse moves over it again. */
+export function useMenuKeyboardMode() {
+  useEffect(() => {
+    const menuOf = (target: EventTarget | null) => (target instanceof Element ? target.closest<HTMLElement>('[role="menu"]') : null);
+    const key = (event: KeyboardEvent) => {
+      if (!["ArrowDown", "ArrowUp", "Home", "End", "Tab"].includes(event.key)) return;
+      menuOf(event.target)?.setAttribute("data-keyboard", "");
+    };
+    let byKeyboard = false;
+    const pressed = (event: KeyboardEvent) => { byKeyboard = true; key(event); };
+    const pointed = () => { byKeyboard = false; };
+    const entered = (event: FocusEvent) => { if (byKeyboard) menuOf(event.target)?.setAttribute("data-keyboard", ""); };
+    const move = (event: MouseEvent) => { byKeyboard = false; menuOf(event.target)?.removeAttribute("data-keyboard"); };
+    document.addEventListener("keydown", pressed, true);
+    document.addEventListener("pointerdown", pointed, true);
+    document.addEventListener("focusin", entered, true);
+    document.addEventListener("mousemove", move, true);
+    return () => {
+      document.removeEventListener("keydown", pressed, true);
+      document.removeEventListener("pointerdown", pointed, true);
+      document.removeEventListener("focusin", entered, true);
+      document.removeEventListener("mousemove", move, true);
+    };
+  }, []);
+}
+
 /** 更多: a small outlined button that opens a list of actions; dangerous ones sit below a rule. */
 export function Menu({ children, danger, label = "更多", buttonLabel }: { children: ReactNode; danger?: ReactNode; label?: string; buttonLabel?: string }) {
   const menu = useRef<HTMLDetailsElement>(null);
@@ -283,8 +311,8 @@ export function Menu({ children, danger, label = "更多", buttonLabel }: { chil
 }
 
 export type CheckUsage =
-  | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
-  | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
+  | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number; assistant_task_chars?: number }
+  | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number; assistant_tasks_limit?: number; assistant_tasks_remaining?: number };
 
 /** The rolling 24-hour check allowance, re-read whenever refreshKey changes. */
 export function useUsage(refreshKey: string) {

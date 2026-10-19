@@ -1,0 +1,317 @@
+{
+  "reviewer_not_author": true,
+  "status": "completed",
+  "source_file": "works/w01.md",
+  "source_sha256_start": "75378fcfe49af93024c84188e752bec953955b8f28f5761fd2162bc2fcc1683e",
+  "full_chapters_read": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "task_review_status": "all_15_formal_tasks_semantically_reviewed_and_bound",
+  "findings": [
+    {
+      "id": "w01-review-01",
+      "chapter": 2,
+      "severity": "minor",
+      "category": "intra_chapter_time",
+      "status": "resolved",
+      "evidence": [
+        "第二天下午，衡汐馆门外的公告栏贴出了试验池分道表。",
+        "上午的误会还压在邵霁棠心里。"
+      ],
+      "description": "本章从第二天下午查看分道表并交涉开始，后文将该误会追溯为上午，未设倒叙过渡，时间词冲突。建议将上午改为先前等不改变场景先后的表达。",
+      "resolution_verification": "第2章完整复读；上午误会改为先前误会，与下午开始及晚场顺序相容。"
+    },
+    {
+      "id": "w01-review-02",
+      "chapter": 5,
+      "severity": "minor",
+      "category": "intra_chapter_time",
+      "status": "resolved",
+      "evidence": [
+        "她一早去另一栋楼上课，中午赶过来，没来得及回住处。",
+        "上午剩余的时间用来做台上检查。",
+        "中午，她们去馆外的小广场吃饭。"
+      ],
+      "description": "到达明说中午，接续台检却发生在上午剩余时间，然后再次到中午。须统一到达与台检先后；建议到达改为临近中午且台检用午饭前的时间，或另作不改变剧情的明确时间修复。",
+      "resolution_verification": "第5章完整复读；到达为临近中午，台检为午饭前，其后中午吃饭，不再倒序。"
+    },
+    {
+      "id": "w01-review-03",
+      "chapter": 18,
+      "severity": "minor",
+      "category": "object_scene_sequence",
+      "status": "resolved",
+      "evidence": [
+        "午后，靳予葵的课程模型需要用到一块新切的透明板。她去预约的加工室领取",
+        "他便从下面托住装板的纸套，走得小心翼翼。雨后的日光落在透明面上",
+        "到了加工室，负责验收的人发现她填的尺寸与待领取的板不一致。"
+      ],
+      "description": "尚在去加工室领取新板的路上，两人已托着装板纸套并看见透明板反光；抵达后该板又处于待领取状态。未交代另带旧板，形成领用前后倒置。建议将前往路线改为携空包装/图纸，拿到并确认方案后再写实际托板搬运。",
+      "resolution_verification": "第18章完整复读；领取前明确仅携空纸套及透明薄膜，领取后才托住装板纸套，领用顺序成立。"
+    },
+    {
+      "id": "w01-review-04",
+      "chapter": 24,
+      "severity": "minor",
+      "category": "object_scene_sequence",
+      "status": "resolved",
+      "evidence": [
+        "下午，他们用空载推车走了一次从装配区到试验池的路线。",
+        "靳予葵在转角停住，调整了最上面箱子的朝向，避免把易碰的一面露在外侧。"
+      ],
+      "description": "同一段明确空载推车后又调整最上面箱子朝向，载物状态不一致。建议明确是装空箱的演练，或改掉空载限定。",
+      "resolution_verification": "第24章完整复读；去掉空载限定，推车载箱与转角调整箱子相容。"
+    },
+    {
+      "id": "w01-review-05",
+      "task_numbers": [
+        10,
+        11
+      ],
+      "severity": "material",
+      "category": "recap_draft_only_mismatch",
+      "status": "resolved",
+      "description": "两道RECAP实际draft_opening均没有紫色沙漏或提问计时器，但must_not的draft_only却检查shared_draft中的该事实。SPEC运行器用该题draft_opening替换草稿，不能因此测到防止引用草稿的泄漏。需把对应事实写进各题opening（保持2至4句），或改must_not为实际opening中明确且只在该草稿出现的新事实。",
+      "resolution_verification": "独立复读当前w01第3、10、11题；第3题必答要点只要求移交双方，两RECAP实际opening新增第三句明确只在草稿出现的计时物件；与must_not对齐，原文全书无此物件。"
+    },
+    {
+      "id": "w01-review-06",
+      "task_numbers": [
+        3
+      ],
+      "severity": "material",
+      "category": "gold_scope_exceeds_question",
+      "status": "resolved",
+      "description": "题目仅问两次移交分别由谁给谁；第2条answer_points却要求另答赛季结束后再商量归还。按全部要点明确说出的评分标准，正确回答移交双方仍可能因未回答未被问的归还条件而失败。建议将条件拆除出金标必答要点，或在问题明确询问该约定。",
+      "resolution_verification": "独立复读当前w01第3、10、11题；第3题必答要点只要求移交双方，两RECAP实际opening新增第三句明确只在草稿出现的计时物件；与must_not对齐，原文全书无此物件。"
+    }
+  ],
+  "intentional_conflicts_preserve": [
+    [
+      8,
+      26
+    ],
+    [
+      14,
+      28
+    ]
+  ],
+  "notes": [
+    "阅读依次完整输出，未仅搜索锚点。1至9章各有多场景、对话和过渡。抽象总结与责任主题重复偏多，但目前未见机械句型替换或把单场景硬拉长的实质证据。",
+    "第7章结尾便签由书中吹落，但先前两本待归还书已归还；尚可解释另一本随身书，暂不列确定矛盾，后续核查。",
+    "第21章首段原以为借一个下午，与随后上午查到最后存在轻微时间措辞张力；可将一个下午改成一段时间避免读者疑惑，但原以为可解释为原计划，不列确定矛盾。",
+    "30章全文已通读，未发现未列出的永久持有、亲属、身体状态和六周主线先后冲突。3条已收线索均有前期相关干扰、现场核查和明确收束，1条匿名音频保持开放。两组指定有意矛盾均直接叙述同一不变事实，未用迁居或后续补水消解。",
+    "逐题通读w01当前15题及shared_draft/plans；具体校验将在修复及正式绑定后再次确认。",
+    "最终正式15题逐题读取；全部30题按手写设计独立重建schema比较、逐引文检查唯一性与汉字位置，绑定错误0。"
+  ],
+  "read_method": "Read complete source sequentially in ten non-truncated three-chapter tool outputs; then read all fifteen w01 task designs, shared draft, plans and w01 work-design metadata.",
+  "source_sha256_after_full_read": "75378fcfe49af93024c84188e752bec953955b8f28f5761fd2162bc2fcc1683e",
+  "task_design_sha256_reviewed": "4991d1aafb5047be8cf62a461a47d534172affc8f57dcb17e7603ea3bba35334",
+  "full_chapter_count_read": 30,
+  "semantic_checks": {
+    "named_characters": 8,
+    "characters_with_aliases": 3,
+    "custody_transfers": 3,
+    "transfers_after_chapter_15": 1,
+    "state_changes": 4,
+    "state_gaps_at_least_10": 4,
+    "threads": 4,
+    "resolved_threads": 3,
+    "open_threads": 1,
+    "intentional_conflict_pairs": 2,
+    "unexpected_long_range_continuity_conflicts_found": 0,
+    "local_continuity_findings": 4,
+    "question_gold_findings": 2,
+    "shared_draft_continuity": "pass",
+    "shared_draft_selection_no_answer_leak": "pass",
+    "plans_align_with_next_chapters": "pass",
+    "fixed_fix_basis_direct_named_narration": "pass",
+    "copy_or_template_generation_observable_evidence": "No mechanically substituted body text found; thematic moral commentary recurs, but each chapter has distinct connected scenes/dialogue/consequences. Originality against prior works not independently claimed because prior bodies were not read."
+  },
+  "task_reviews": [
+    {
+      "n": 1,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "选中句定位人物；问第2章特定保管动作，同章其他临时位置不是最终答案。"
+    },
+    {
+      "n": 2,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "选中句定位器件；引用同时明确短触点的读取用途与不能启动，草稿未透露功能。"
+    },
+    {
+      "n": 3,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "全文无任何单章完整复述两次指定双方交接；第21章不复述第5章交接，需两章。最终金标仅要求移交双方，修复已绑定。",
+      "correction_verified": true
+    },
+    {
+      "n": 4,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "全文无任何单章同时给出第11章文件夹移交双方及第24章场地权限；移动中搬文件不构成重新移交。"
+    },
+    {
+      "n": 5,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "全文无任何单章同时给出第3章左右腕限定及第22章独立测试许可；第22章提回到控制台不写哪只腕受限。"
+    },
+    {
+      "n": 6,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "第7章有多种听声猜测，第29章重申未定，全文没有确定寄件人。"
+    },
+    {
+      "n": 7,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "第23章只写持有、拾起、折回及防掉落；没有长期保留动机，其他章不揭示。"
+    },
+    {
+      "n": 8,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "两处均直接叙述同人出生地，含明确否定，不能由迁居解释。"
+    },
+    {
+      "n": 9,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "两处限定同馆建馆当天首次注水，非两个时期池水量。"
+    },
+    {
+      "n": 10,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "截止15章的结尾、陪同限制、开放音频与16计划均正确；实际opening第三句包含计时新物件，draft_only检查对应，修复已绑定。",
+      "correction_verified": true
+    },
+    {
+      "n": 11,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "截止30章的结尾、腕部现状、开放音频与31计划均正确；实际opening第三句包含计时新物件，draft_only检查对应，修复已绑定。",
+      "correction_verified": true
+    },
+    {
+      "n": 12,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "永久右眼失明与遮住左眼后凭右眼读字直接冲突。人物名齐备，叙述事实，无引号或推测；不涉及有意冲突实体。"
+    },
+    {
+      "n": 13,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "无任何亲属且入队后相识，与亲妹妹且共同成长直接冲突。人物名齐备，无对话/主观包装，其他搬模型动作无新增冲突。"
+    },
+    {
+      "n": 14,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "第一问确认人物，第二问以她承接并追究保留采样的原因；原句明确支持。"
+    },
+    {
+      "n": 15,
+      "status": "semantic_pass_final_binding_verified",
+      "evidence_matches": true,
+      "notes": "第一问确认场地，追问用那以后承接许可的后续有效性；明确交回且不得再工作支持否。"
+    }
+  ],
+  "unresolved_findings_count": 0,
+  "acceptance_limitations": [
+    "No model/provider/product/evaluation calls made; no claim that a runtime chapter checker will actually flag FIX cases.",
+    "Prior dataset bodies were not read; originality comparison against them is not claimed."
+  ],
+  "task_design_sha256_after_question_corrections": "588078ae98b461c70fff45e5f69b4329aca3e4fcb38b07aeb6a0f29e28c8efeb",
+  "question_correction_note": "RECAP任务独立替换草稿，因此各题草稿中新物件的携带者无需与共享QA草稿相同；不得当作正文事件。",
+  "source_sha256_end": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+  "source_reread_chapters_after_corrections": [
+    2,
+    5,
+    18,
+    24
+  ],
+  "unresolved_unintentional_conflicts": 0,
+  "source_semantic_review_status": "completed",
+  "formal_binding_status": "completed",
+  "reviewed_chapter_counts": {
+    "w01": 30
+  },
+  "source_corrections_summary": {
+    "reported": 4,
+    "resolved": 4,
+    "new_findings_after_reread": 0
+  },
+  "task_corrections_summary": {
+    "reported": 2,
+    "resolved": 2
+  },
+  "final_chapter_sha256": {
+    "1": "c234d5407e5fc06ad67ea1f6501cb11595b3fc66f39bdcc59a3afaa93dfed37b",
+    "2": "47cd1fc97424a81fe8ade9a02e5e29807d82dbb3a8a637c96d02fb0c99e46bfc",
+    "3": "d3e7fee45055b2a8ac9d67802dc4f59f602ec9b2b69c7b23bb37faa9292b4f14",
+    "4": "b4f9cf99fe0e3273d82101972dbb45bd96dc8adae4d8460610a39f8060b42635",
+    "5": "9433690fe7efb6720389f1a7eeec78a032e2b0ff6cebf25ec8cdf9478219af27",
+    "6": "97082bfbe07dd1d996296a7cba91bd03360ff69353e86fbb22d970e2ca4b58c9",
+    "7": "ed02308fd6dcdc27a29703858bac8883b183384e7a268b4cb856cadce0bf39c0",
+    "8": "267a078727c29186551dadedb0e1257f963fe0faa4e816412c50f3e5d785c06e",
+    "9": "6f0faaf4565ae27dced94ad56e3e37638e166603b39d02b95abe6f6fc8843444",
+    "10": "c1869aa797a49b3854499a89644548f4e6c938304e9f58b972551fd97064dd09",
+    "11": "850a8a39afa3e5f2ff2919619c0f35b56cd1bb8f6fa5a7e17cc22f5afe8753a2",
+    "12": "6018c3f5751d727690d026c49738083666f7611aad38716457c4276b6d21b43d",
+    "13": "e530247dc8783da75fbc7b64dc950ba44a0171430cf25ab1eff987943cf7ac2b",
+    "14": "e9a23a6290e1b358bcfab8f325f4aca5a537ba208b03022f12feb6069d56d7aa",
+    "15": "fa0e1286dbf0619036ad917aa484d6b41c26516c4480891d465f34c1c8063b68",
+    "16": "782123e2c46d401e24544a358cd1287ccbc353b6d20ba98b85b778a7b3e668bd",
+    "17": "b392d6028a56e0c625cf4a7550613f37e674181b05ffb5eaf98ed29f279728d8",
+    "18": "c8c7b944d23a4cf2aed2aef29c5755cbd3ae7c0b26ff49958e345559e6d7c952",
+    "19": "1e25ee17deebb40e0ccf2f53fa5c8db329d7652884b03624c18cec5fe3df969b",
+    "20": "6493ebdcbd2ec56493919277d3f02cd82c70176dcd852508e13ffff3debd0e54",
+    "21": "399fcd4e342531cfadcb78ac2178f0186a5369641320a43e97ee2070eefb9335",
+    "22": "71f2efecf551e16f37079f697e009eee7d95f29117596753c141b144f33cc833",
+    "23": "f4dad36b350dd53939cebd284de21ae608321672f9ccb7e756a60e3d2fb261f7",
+    "24": "444400d34db492de787a18d8480483ab83befc46dac2c474b4c0676bd01c3880",
+    "25": "804d7bad15a898e7dd1a88994f8be5f3b1c44ebcf9d56bab0617478f24037d14",
+    "26": "5608dd79bd30005f1231a01a37f573d8e2c7fa5cae00f8fa04354d66bf11b5ac",
+    "27": "47540eec2950eeaa92508a890a9e050a318412ea0c604ee8449dc4ee99c2df28",
+    "28": "0a96b94cac49789f6f73a1e1d056b36cb81678c9584231366786359e796b487b",
+    "29": "df16327511993898f08c05939fe92654e1e21c91b700acb8346ff28ad337af8e",
+    "30": "1320b5af5880764ff0c0bc4f72ecc9206ad35962275cda5b1700863b8fbd7971"
+  },
+  "reviewed_tasks_sha256": "4007c65b0d47be48f729e75b0a3a2a98022721ae85264b82f146fa2f3c599cc9"
+}

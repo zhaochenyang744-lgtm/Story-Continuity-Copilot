@@ -1,0 +1,101 @@
+{
+  "reviewer_not_author": true,
+  "reviewer_role": "Independent reader; no original prose, questions or gold answers authored or edited. Only review JSON files edited.",
+  "status": "completed",
+  "reviewed_source_sha256": {
+    "w01": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+    "w02": "30bb94c8b2062e6d28e3000513d362a85d10ddbfaaecaabc6f7e4e98d41d7cf7"
+  },
+  "reviewed_tasks_sha256": "4007c65b0d47be48f729e75b0a3a2a98022721ae85264b82f146fa2f3c599cc9",
+  "reviewed_chapter_counts": {
+    "w01": 30,
+    "w02": 30
+  },
+  "reviewed_task_counts": {
+    "w01": 15,
+    "w02": 15
+  },
+  "unresolved_unintentional_conflicts": 0,
+  "unresolved_findings_count": 0,
+  "findings": [
+    {
+      "id": "w01-review-01",
+      "status": "resolved",
+      "category": "intra_chapter_time",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w01-review-02",
+      "status": "resolved",
+      "category": "intra_chapter_time",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w01-review-03",
+      "status": "resolved",
+      "category": "object_scene_sequence",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w01-review-04",
+      "status": "resolved",
+      "category": "object_scene_sequence",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w01-review-05",
+      "status": "resolved",
+      "category": "recap_draft_only_mismatch",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w01-review-06",
+      "status": "resolved",
+      "category": "gold_scope_exceeds_question",
+      "detail_file": "authoring/review-w01.json"
+    },
+    {
+      "id": "w02-review-01",
+      "status": "resolved",
+      "category": "relative_day_sequence",
+      "detail_file": "authoring/review-w02.json"
+    },
+    {
+      "id": "w02-review-02",
+      "status": "resolved",
+      "category": "object_condition_scope",
+      "detail_file": "authoring/review-w02.json"
+    }
+  ],
+  "reported_findings_count": 8,
+  "resolved_findings_count": 8,
+  "full_read_method": "Sequential complete, non-truncated source reading of all 60 chapters. Entire affected chapters reread after corrections: w01 2,5,18,24; w02 12,30. All 30 task designs read semantically; formal task bindings independently compared without editing content. Shared drafts/plans and work-design evidence ledgers read in full.",
+  "semantic_coverage": [
+    "time and event order",
+    "object custody and condition",
+    "relationships and physical attributes",
+    "state transition continuity",
+    "four planted threads per work and open/resolved status",
+    "preservation of two intentional contradiction pairs per work",
+    "unknown answers absent across entire work",
+    "multi-chapter necessity checked against all chapters, not just selected citations",
+    "FIX named direct narration and isolation from intentional conflicts",
+    "RECAP cutoff, ending, state, open thread, plan and actual opening draft-only facts",
+    "follow-up pronoun context and separate second information need",
+    "shared draft continuity and selection not leaking answer",
+    "question/gold scope and quotation support",
+    "novel scenes versus observable mechanical substitution"
+  ],
+  "binding_checks": {
+    "task_design_mismatches": 0,
+    "unique_quote_locations": 39,
+    "unique_quotes_after_1500": 38,
+    "unique_quotes_after_2500": 38,
+    "final_quote_text_or_chapter_errors": 0
+  },
+  "limitations": [
+    "No product/model/provider/evaluation execution; no claim about runtime model quality or actual FIX detection.",
+    "Prior used-work bodies and reserve sets not accessed; no direct originality comparison against those bodies.",
+    "Self-review quotation positions and manifest must be rebound by lead to final source; independent source/task hashes above are final."
+  ]
+}

@@ -12,18 +12,15 @@ import {
   memoryTypeLabel,
   memoryTypes,
   predicateLabel,
-  qaLayerLabel,
-  qaStanceLabel,
-  qaStatusLabel,
   readableKeys,
   retryableAnalysis,
   roleTypeLabel,
   sourceKindLabel,
   stageLabel,
-  timeLabel,
   worldTypeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, Chips, clip, Num, PageHead, pad2, SectionHead, Tabs, Tag } from "../ui";
+import { bareChapterTitle, Button, Chips, Num, PageHead, pad2, SectionHead, Tabs, Tag } from "../ui";
+import { useAssistantAnchor } from "./assistant";
 import type { PageProps } from "./frame";
 import { BULK_REVIEW_THRESHOLD, type Character, type ProjectState, type WorldEntry } from "./use-project";
 
@@ -33,8 +30,8 @@ export function PredicateSelect({ name, value, disabled }: { name: string; value
   return <select name={name} defaultValue={value} disabled={disabled}>{options.map((key) => <option key={key} value={key}>{predicateLabel(key)}</option>)}</select>;
 }
 
-type View = "facts" | "people" | "settings" | "threads" | "ask";
-const views: View[] = ["facts", "people", "settings", "threads", "ask"];
+type View = "facts" | "people" | "settings" | "threads";
+const views: View[] = ["facts", "people", "settings", "threads"];
 const factTone: Record<string, "line" | "solid" | "state" | "gap" | "mid"> = { static_canon: "line", event_timeline: "solid", dynamic_state: "state", character_knowledge: "gap", open_thread: "mid" };
 const current = (records: Memory[]) => records.filter((record) => record.valid_to == null && record.review_status === "author_confirmed");
 
@@ -49,6 +46,10 @@ export function MaterialsPage({ p, initialView, go, notices }: PageProps & { ini
     const value = (requested && (legacy[requested] ?? requested)) as View;
     return views.includes(value) ? value : "facts";
   });
+  // The person card in view is the assistant's context (an address with ?character= opens it).
+  const [openCharacter, setOpenCharacter] = useState<string | null>(() => (typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("character")));
+  const viewedCharacter = view === "people" ? p.characters.find((character) => character.id === openCharacter) : undefined;
+  useAssistantAnchor("materials", { character_id: viewedCharacter?.id, character_name: viewedCharacter?.name });
   const [threadCount, setThreadCount] = useState<number | null>(null);
   useEffect(() => {
     let live = true;
@@ -72,14 +73,12 @@ export function MaterialsPage({ p, initialView, go, notices }: PageProps & { ini
           { id: "people", label: "人物", count: p.characters.length },
           { id: "settings", label: "设定", count: p.world.length },
           { id: "threads", label: "伏笔", count: threadCount ?? "" },
-          { id: "ask", label: "问一问" },
         ]}
       />
       {view === "facts" && <FactsView p={p} go={go} />}
-      {view === "people" && <PeopleView p={p} />}
+      {view === "people" && <PeopleView p={p} openId={openCharacter} setOpenId={setOpenCharacter} />}
       {view === "settings" && <SettingsView p={p} />}
       {view === "threads" && <ThreadsView p={p} go={go} />}
-      {view === "ask" && <AskView p={p} go={go} />}
     </section>
   );
 }
@@ -297,8 +296,7 @@ function RelatedFacts({ facts, p }: { facts: Memory[]; p: ProjectState }) {
   ) : <p className="small-note">资料里还没有关于它的已确认事实。</p>;
 }
 
-function PeopleView({ p }: { p: ProjectState }) {
-  const [openId, setOpenId] = useState<string | null>(() => (typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("character")));
+function PeopleView({ p, openId, setOpenId }: { p: ProjectState; openId: string | null; setOpenId: (id: string | null) => void }) {
   const lastChapter = p.chapters.at(-1)?.number;
   if (!p.characters.length) return <p className="empty materials-view">还没有人物。检查正文、确认事实后，出现过的人物会记在这里。</p>;
   return (
@@ -715,91 +713,6 @@ function ThreadsView({ p, go }: { p: ProjectState; go: (href: string) => void })
           {showClosed && <ol className="thread-list closed">{closed.map(row)}</ol>}
         </>
       )}
-    </div>
-  );
-}
-
-/** 问一问: questions about the written story, answered with where the answer comes from. */
-function AskView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
-  const projectId = p.project!.id;
-  const [runs, setRuns] = useState<WritingAnalysisRun[]>([]);
-  const [question, setQuestion] = useState("");
-  const [scope, setScope] = useState<("confirmed" | "written" | "planned")[]>(["confirmed", "written", "planned"]);
-  const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState("");
-  const refresh = useCallback(async () => setRuns((await request<{ runs: WritingAnalysisRun[] }>(`/projects/${projectId}/analyses?analysis_type=story_qa&limit=20`)).runs ?? []), [projectId]);
-  useEffect(() => { void Promise.resolve().then(refresh).catch((cause) => setNotice(labelError(cause))); }, [refresh]);
-  const asking = runs.find(activeAnalysis);
-  useEffect(() => {
-    if (!asking) return;
-    const timer = window.setInterval(() => void refresh().catch(() => undefined), 700);
-    return () => window.clearInterval(timer);
-  }, [asking, refresh]);
-  const ask = async (text: string) => {
-    if (!p.draft || !text.trim()) return;
-    if (p.dirty) { setNotice("先保存草稿；问一问只看已保存的版本。"); return; }
-    setBusy(true); setNotice("");
-    try { await json(`/projects/${projectId}/analyses`, "POST", { analysis_type: "story_qa", draft_id: p.draft.id, draft_revision: p.draft.revision, question: text, scope }); setQuestion(""); await refresh(); }
-    catch (cause) { setNotice(labelError(cause)); } finally { setBusy(false); }
-  };
-  const runAction = async (run: WritingAnalysisRun, action: "cancel" | "retry") => {
-    setBusy(true); setNotice("");
-    try { await json(`/projects/${projectId}/analyses/${run.run_id}/${action}`, "POST", { client_request_id: crypto.randomUUID() }); await refresh(); }
-    catch (cause) { setNotice(labelError(cause)); } finally { setBusy(false); }
-  };
-  const toggle = (value: "confirmed" | "written" | "planned") => setScope((all) => (all.includes(value) ? (all.length === 1 ? all : all.filter((item) => item !== value)) : [...all, value]));
-  const names = p.characters.slice(0, 2).map((character) => character.name);
-  const suggestions = [names[0] ? `${names[0]}现在在哪里？` : "", names[1] ? `${names[1]}知道哪些事？` : "", p.world[0] ? `${p.world[0].name}有什么规则？` : ""].filter(Boolean);
-  const link = (path: string | undefined) => (event: ReactMouseEvent<HTMLAnchorElement>) => { if (!path || event.metaKey || event.ctrlKey) return; event.preventDefault(); go(path); };
-  return (
-    <div className="materials-view ask">
-      {!p.readOnly && (
-        <>
-          <form className="ask-form" onSubmit={(event) => { event.preventDefault(); void ask(question); }}>
-            <label htmlFor="ask-input" className="sr-only">问一个关于正文的问题</label>
-            <input id="ask-input" value={question} maxLength={1000} onChange={(event) => setQuestion(event.target.value)} placeholder="例如：罗盘现在在谁手里？" />
-            <button type="submit" disabled={busy || Boolean(asking) || !question.trim() || !p.draft || p.dirty}>{asking ? "…" : "问"}</button>
-          </form>
-          <div className="ask-options">
-            {suggestions.map((text) => <button key={text} type="button" className="chip small" disabled={busy || Boolean(asking)} onClick={() => void ask(text)}>{text}</button>)}
-            <span className="ask-scope">
-              <span className="label">依据</span>
-              {(["confirmed", "written", "planned"] as const).map((value) => <label key={value} className="check"><input type="checkbox" checked={scope.includes(value)} onChange={() => toggle(value)} />{qaLayerLabel[value]}</label>)}
-            </span>
-          </div>
-        </>
-      )}
-      {notice && <p className="small-note" role="status">{notice}</p>}
-      {runs.length ? runs.map((run) => (
-        <article key={run.run_id} className={`answer${run.is_stale ? " stale" : ""}`}>
-          <p className="answer-q">{run.question || "问题"}<span className="label"> · {run.is_stale ? "正文改过，回答可能过时" : qaStatusLabel[run.analysis?.answer_status ?? ""] ?? stageLabel(run.status)} · {timeLabel(run.created_at)}</span></p>
-          {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}…</p>}
-          {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code, "分析")}</p>}
-          {run.analysis && (
-            <>
-              <p className="answer-text">{run.analysis.answer}</p>
-              {run.analysis.findings?.map((finding, index) => (
-                <div key={index} className={`answer-finding stance-${finding.stance}`}>
-                  <span className="label">{qaLayerLabel[finding.layer]} · {qaStanceLabel[finding.stance]}</span>
-                  <p>{finding.text}</p>
-                  {finding.evidence.map((source) => (
-                    <a key={`${source.source_type}:${source.source_id}`} className="answer-source" href={(source as { source_path?: string }).source_path} onClick={link((source as { source_path?: string }).source_path)}>
-                      <strong>{readableKeys(source.label)}</strong><span>{source.excerpt}</span>
-                    </a>
-                  ))}
-                </div>
-              ))}
-              <p className="small-note">只根据已保存的内容回答{run.scope?.includes("planned") ? "，包括计划" : "，不包括计划和没保存的草稿"}。</p>
-            </>
-          )}
-          {!p.readOnly && (activeAnalysis(run) || retryableAnalysis(run)) && (
-            <span className="actions">
-              {activeAnalysis(run) && <Button kind="small" disabled={busy} onClick={() => void runAction(run, "cancel")}>取消</Button>}
-              {retryableAnalysis(run) && !run.is_stale && <Button kind="small" disabled={busy} onClick={() => void runAction(run, "retry")}>重试</Button>}
-            </span>
-          )}
-        </article>
-      )) : <p className="empty">问一个关于已写内容的问题，比如谁在哪里、谁知道什么、某条规则是什么。回答会附上出处。</p>}
     </div>
   );
 }

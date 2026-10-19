@@ -16,6 +16,10 @@
 .account-menu { transform-origin: top right; animation: drop var(--dur-fast) var(--ease); }
 .feedback { animation: toast-in var(--dur-mid) var(--ease); }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -14px); } }
+@media (min-width: 1024px) {
+  body:has(#side-panel-assistant:not([hidden])) .feedback { animation-name: toast-in-left; }
+}
+@keyframes toast-in-left { from { opacity: 0; transform: translateY(-14px); } }
 
 /* ── The current tab's underline slides from the previous tab (positioned by app.tsx). ── */
 .topbar-tabs { position: relative; }
@@ -127,6 +131,17 @@
 @keyframes strike { from { background-size: 0% 2px; } }
 .rewrite-fresh { animation: fresh 1800ms var(--ease) both; }
 @keyframes fresh { 0% { background-color: var(--c-blue-mid); color: var(--c-blue-text); } 35% { background-color: var(--c-blue-tint); color: var(--c-blue-text); } 100% { background-color: transparent; color: inherit; } }
+
+/* 校对 (an assistant change just adopted): the old words are struck from left to right and folded away, then the new ones drop in one by
+   one, green at first and settling into the text's colour. The editor adds these only for a moment and removes them at the first key or click. */
+.proof-del { display: inline-block; text-indent: 0; max-width: var(--w, 4em); overflow: hidden; vertical-align: bottom; white-space: pre; color: var(--c-red-text); background-image: linear-gradient(var(--c-red-text), var(--c-red-text)); background-repeat: no-repeat; background-position: 0 58%; background-size: 0% 2px; animation: proof-strike 260ms var(--ease) forwards, proof-fold 200ms var(--ease) 300ms forwards; }
+@keyframes proof-strike { to { background-size: 100% 2px; } }
+@keyframes proof-fold { to { max-width: 0; opacity: 0; } }
+/* Inline-block characters would inherit the paragraph's first-line indent; both marks set it to 0. The new characters drop
+   in (260ms), then hold their green for a moment and settle into the text colour (900ms), as in the design's 02b demo. */
+.proof-ins { display: inline-block; text-indent: 0; white-space: pre-wrap; animation: proof-drop 260ms var(--ease) backwards, proof-settle 900ms ease backwards; }
+@keyframes proof-drop { from { opacity: 0; transform: translateY(-7px); } }
+@keyframes proof-settle { from, 55% { color: var(--c-ins-text); background-color: var(--c-ins); } to { color: inherit; background-color: transparent; } }
 
 /* A finding that has just been handled folds its card into a single line. */
 .collapse { display: grid; grid-template-rows: 1fr; animation: unfold var(--dur-mid) var(--ease); }

@@ -138,6 +138,35 @@ class ScreenedReviewTests(unittest.TestCase):
         # Usage of the screen, both triage requests and the thinking review.
         self.assertEqual(result["input_tokens"], 10 + 2 * 5 + 100)
 
+    def test_what_the_triage_cannot_escalate_is_swept_a_few_to_a_request(self):
+        # lf2-formal c-t06 (2026-10-18): many sentences scored 2, missing links among them never got a thinking review.
+        sentences = NEUTRAL[:8] + [HAND] + NEUTRAL[:1]
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"]],
+                        triage_answers=[{"scores": [{"id": s, "score": 2, "kind": "gap"} for s in ids]} for ids in (
+                            [f"s{i}" for i in range(1, screening.TRIAGE_MAX_CLAIMS + 1)], [f"s{i}" for i in range(1, 10 - screening.TRIAGE_MAX_CLAIMS + 1)])])
+        result = ContinuityEngine(provider).execute(draft_data(sentences))
+        self.assertEqual(result["status"], "completed")
+        places = screening.TRIAGE_ESCALATION_CAP + screening.TRIAGE_GAP_SLOTS
+        swept = [r for r in provider.reviews() if r.get("second_review")]
+        self.assertEqual(result["screening"]["sweep"], min(10 - places, screening.TRIAGE_SWEEP_MAX))
+        self.assertTrue(swept and all(len(r["claims"]) <= screening.TRIAGE_SWEEP_BATCH for r in swept))
+        reviewed = {claim["id"] for r in provider.reviews() for claim in r["claims"]}
+        self.assertEqual(len(reviewed), 10)
+        self.assertEqual([item["claim_span_id"] for item in result["issues"]], ["claim-9"])
+
+    def test_a_failed_sweep_leaves_the_triage_verdict(self):
+        from app.provider import ProviderTimeout
+        def review(request):
+            if request.get("second_review"):
+                raise ProviderTimeout("slow")
+            return Fake().evaluate(request)
+        sentences = NEUTRAL[:8] + NEUTRAL[:2]
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"]], review=review,
+                        triage_answers=[{"scores": [{"id": s, "score": 2, "kind": "gap"} for s in ids]} for ids in (
+                            [f"s{i}" for i in range(1, screening.TRIAGE_MAX_CLAIMS + 1)], [f"s{i}" for i in range(1, 10 - screening.TRIAGE_MAX_CLAIMS + 1)])])
+        result = ContinuityEngine(provider).execute(draft_data(sentences))
+        self.assertEqual((result["status"], result["issues"]), ("completed", []))
+
     def test_parallel_triage_dispatches_keep_the_callers_context(self):
         import contextvars
         marker = contextvars.ContextVar("lf_triage_marker", default=None)
@@ -451,10 +480,12 @@ class PureHelperTests(unittest.TestCase):
         claims = [{"id": f"c{i}", "context": "draft"} for i in range(10)]
         scores = {f"c{i}": score for i, score in enumerate([3, 2, 2, 2, 2, 2, 2, 1, 0, 3])}
         escalated = screening.triage_escalations(claims, scores)
-        self.assertEqual(len(escalated), screening.TRIAGE_ESCALATION_CAP)
+        # The cap plus the places kept for missing links (filled by the next highest when none is named; 2026-10-18).
+        places = screening.TRIAGE_ESCALATION_CAP + screening.TRIAGE_GAP_SLOTS
+        self.assertEqual(len(escalated), places)
         self.assertTrue({"c0", "c9"} <= escalated)
         self.assertFalse({"c7", "c8"} & escalated)
-        self.assertEqual(escalated - {"c0", "c9"}, {f"c{i}" for i in range(1, screening.TRIAGE_ESCALATION_CAP - 1)})
+        self.assertEqual(escalated - {"c0", "c9"}, {f"c{i}" for i in range(1, places - 1)})
 
     def test_key_caps_are_per_context(self):
         claims = [{"id": f"{context}{i}", "context": context} for context in ("a", "b") for i in range(7)]
