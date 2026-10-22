@@ -153,8 +153,9 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(len(report['records']), 1)
 
     def test_preflight_guards_without_reading_formal(self):
-        # From 2026-10-16 the sealed sets are the A1c pair; the A1 formal set is spent (see test_assistant_a1c_runner).
-        pair = 'eval_set_a1c4_formal,eval_set_a1cs4_formal'
+        # From 2026-10-16 the sealed sets are A1c's; the A1 formal set is spent (see test_assistant_a1c_runner). Since the fifth
+        # pair ran (2026-10-22) the sealed set is the route-only retest.
+        pair = 'eval_set_a1cr6_formal'
         with tempfile.TemporaryDirectory() as d, patch.object(run, 'validate_set') as validator:
             args = self.args('--set', pair, '--dry-run', '--only', 'anything')
             with self.assertRaisesRegex(ValueError, 'formal_only'): run.preflight(args, FakeProvider(), pathlib.Path(d))
@@ -165,7 +166,7 @@ class RunnerTests(unittest.TestCase):
                 output = io.StringIO()
                 with contextlib.redirect_stdout(output): run.preflight(args, FakeProvider(), pathlib.Path(d))
                 self.assertEqual(output.getvalue(), '')
-            self.assertEqual([c.args for c in validator.call_args_list], [('eval_set_a1c4_formal',), ('eval_set_a1cs4_formal',)])
+            self.assertEqual([c.args for c in validator.call_args_list], [('eval_set_a1cr6_formal',)])
             args.set = 'eval_set_a1_dev'
             for key in ('report', 'checkpoint'):
                 p = run.paths(args.set, args.run_id, pathlib.Path(d))[key]

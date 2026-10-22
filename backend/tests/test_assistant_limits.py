@@ -96,7 +96,7 @@ class LoopLimitTests(AssistantCase):
     def test_one_plain_text_reply_is_forgiven(self):
         task = self.run_ask(text("先想一想。"), read(9), text("再想想。"), cite(9))
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual([step["kind"] for step in task["steps"]], ["protocol_error", "tool", "protocol_error"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["protocol_error", "say", "tool", "protocol_error"])
 
     def test_only_six_calls_run_in_a_round(self):
         task = self.run_ask(turn(*[call("search_text", query=word) for word in ("罗盘", "雾钟", "渡船", "潮表", "灯塔", "缆绳", "电台")]), read(9), cite(9))
@@ -105,7 +105,9 @@ class LoopLimitTests(AssistantCase):
         self.assertEqual(len(results), 7)
         self.assertEqual(json.loads(results[6]["content"]), {"error": "too_many_calls"})
         self.assertNotIn("error", json.loads(results[5]["content"]))
-        self.assertEqual([step["summary"] for step in task["steps"]][6], "搜正文：「电台」（超出每轮上限，没有执行）")
+        steps = [step["summary"] for step in task["steps"]]
+        self.assertEqual(steps[7], "搜正文：「电台」（超出每轮上限，没有执行）")
+        self.assertNotIn("电台", steps[0])  # the line names only the calls that run
 
     def test_tool_errors_go_back_to_the_model_and_the_loop_goes_on(self):
         task = self.run_ask(

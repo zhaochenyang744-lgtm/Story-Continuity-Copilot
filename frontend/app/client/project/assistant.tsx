@@ -5,7 +5,8 @@
 // advises; nothing here writes to the draft or the materials except through the editor, one change at a time,
 // when the author says so. The same AssistantThread is used in three places: the writing page's right
 // column (and its phone pane), and a drawer opened from the top bar on the other pages. A pop-up bar over
-// selected text brings a passage into a question. Three kinds of task live in it: 问作品, 写前回顾 and 帮我改这一处.
+// selected text brings a passage into a question. Four uses live in it: 问作品, 写前回顾, 帮我改这一处 and 查前文矛盾; the box's
+// 自动 mode (the default) judges which one a sentence asks for, and the task it starts says so and can be changed.
 import {
   createContext,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -25,8 +26,9 @@ import { regenerateTask } from "./assistant-answer";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
-import { active, locateTarget, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, VISITOR_USED_UP } from "./assistant-parts";
+import { active, isRecap, locateTarget, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, VISITOR_USED_UP } from "./assistant-parts";
 import { RecapView } from "./assistant-recap";
+import { CHECK_QUESTION, type NewTask, OutOfScopeNote, RecapElsewhereNote, RerouteContext, type RerouteControl, routeInput, taskFor, type Use, USE_LABEL, wantRecapOnArrival } from "./assistant-route";
 import { Starters, starterQuestions } from "./assistant-start";
 import { arrange, AskGroup, type AskHandlers } from "./assistant-task";
 
@@ -61,7 +63,6 @@ export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter
 
 const QUESTION_MAX = 300;
 const QUICK_QUESTION = "这段前面怎么写的？";
-const CHECK_QUESTION = "这段和前文有没有矛盾？";
 const ASK_PLACEHOLDER = "问这部作品里的人、事、物……";
 const REFINE_PLACEHOLDER = "对改法有什么要求？比如：保留苏岑的视角";
 const RECAP_PLACEHOLDER = "不用写字，直接发送：回顾上一章停在哪、有哪些线还没收";
@@ -104,7 +105,15 @@ export type ThreadMaterial = {
 };
 const NO_MATERIAL: ThreadMaterial = { chapters: [], characters: [], draftBody: "", issues: [], issuesReason: "" };
 
-type NewTask = { kind: AssistantTask["kind"]; question?: string; context: AssistantContextInput; followUpOf?: string | null; editedFrom?: string | null };
+/** The tag 接着上一问 says which follow-up the next question would be, and how many are left. */
+const followLabel = (task: AssistantTask) => {
+  const number = (task.follow_up_depth ?? 0) + 1;
+  return `接着上一问 · 第 ${number} 次追问，${number >= 2 ? "这是最后一次" : "还能再问 1 次"}`;
+};
+/** A finished question that a further question can follow (a recap, a fix, a check and an off-topic reply cannot be followed). */
+const followable = (task: AssistantTask) =>
+  task.kind === "ask" && task.status === "completed" && task.context.intent !== "check_selection" && Boolean(task.answer) && !isRecap(task.answer)
+  && (task.answer as { status?: string }).status !== "out_of_scope" && (task.follow_up_depth ?? 0) < 2;
 
 export function AssistantThread({ project, anchor, usage, visitor, go, incoming, command, picked, writing, material = NO_MATERIAL, top, topKey, onNavigate, variant }: ThreadProps) {
   const projectId = project.id;
@@ -113,10 +122,21 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const [loadError, setLoadError] = useState("");
   const [legacy, setLegacy] = useState<WritingAnalysisRun[]>([]);
   const [text, setText] = useState("");
-  const [mode, setMode] = useState<Mode>("ask");
+  const [mode, setMode] = useState<Mode>("auto");
   const [selection, setSelection] = useState("");
   const [followUp, setFollowUp] = useState<AssistantTask | null>(null);
-  const [refine, setRefine] = useState<{ issueId: string; number: number } | null>(null);
+  // The task whose automatic 接着上一问 tag the author took off: that answer is not followed unless asked for with its 接着问 button.
+  const [followDropped, setFollowDropped] = useState<string | null>(null);
+  // 自动: the sentence is being judged, and what the judgement was (kept on the mode button until the author changes the box).
+  const [routing, setRouting] = useState(false);
+  const [routedAs, setRoutedAs] = useState("");
+  // A sentence the judgement took for not being about the work: a local note under the conversation, no task.
+  const [offTopic, setOffTopic] = useState<{ input: string; context: AssistantContextInput } | null>(null);
+  // A 写前回顾 asked for off the writing page: a local note with the way there, no task.
+  const [elsewhere, setElsewhere] = useState<string | null>(null);
+  // A finding on the box. `manual` when the author asked for a fix on its card (the use is chosen, nothing is judged); a finding picked in
+  // the 「＋」 menu is only context, and in 自动 the judgement decides what the sentence asks of it.
+  const [refine, setRefine] = useState<{ issueId: string; number: number; manual: boolean } | null>(null);
   const [dropped, setDropped] = useState({ chapter: false, character: false });
   // What the 「＋」 menu added: it replaces the chapter or person the page would have brought.
   const [chosen, setChosen] = useState<{ chapter: number | null; character: { id: string; name: string } | null }>({ chapter: null, character: null });
@@ -214,7 +234,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
 
   const archived = project.status === "archived";
   const runningId = tasks?.find(active)?.id ?? null;
-  const busy = Boolean(runningId) || sending;
+  const busy = Boolean(runningId) || sending || routing;
   const needed = usage?.account_type === "registered" ? usage.assistant_task_chars ?? TASK_CHARS : 0;
   const shortOfChars = usage?.account_type === "registered" && usage.check_chars_remaining < needed;
   const outOfTasks = usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0;
@@ -223,7 +243,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     : shortOfChars ? `${refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false)}用掉的额度 24 小时后陆续返还。`
       : outOfTasks ? VISITOR_USED_UP
         : "";
-  const blocked = off || (busy ? RUNNING_NOW : "");
+  const blocked = off || (busy && !routing ? RUNNING_NOW : "");
   const cost = usage?.account_type === "registered" ? `约 ${formatCount(needed)} 字`
     : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `今天还可以问 ${usage.assistant_tasks_remaining} 次` : "";
   // What is left today goes after the cost when the line has room for it, and into its title when it has not.
@@ -245,8 +265,14 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const onWriting = variant === "column" && Boolean(writing);
   const chapterNumber = anchor.page === "writing" ? anchor.chapter_number : undefined;
   const recapReason = chapterNumber != null && chapterNumber <= 1 ? "第一章前面没有内容可以回顾" : writing?.draft.dirty ? "等草稿保存后再回顾" : "";
-  const modes: Mode[] = onWriting ? (visitor ? ["ask", "recap"] : ["ask", "recap", "check"]) : ["ask"];
-  const activeMode: Mode = modes.includes(mode) ? mode : "ask";
+  const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap"] : ["auto", "ask", "recap", "check"]) : ["auto", "ask"];
+  const activeMode: Mode = modes.includes(mode) ? mode : "auto";
+  const asking = activeMode === "auto" || activeMode === "ask";
+  // The latest answer is followed on its own (the tag is on the box) while it can be, unless the author took the tag off, or the box
+  // holds something that decides the use itself (a picked passage, a finding) or the author chose another mode.
+  const latestTask = tasks && tasks.length > 0 ? tasks[tasks.length - 1] : null;
+  const autoFollow = latestTask && followable(latestTask) && followDropped !== latestTask.id && asking && !selection && !refine ? latestTask : null;
+  const following = asking && !refine ? followUp ?? autoFollow : null;
 
   // In 查前文矛盾 the passage selected in the text becomes the box's 「选中」 tag as it is selected. Clearing the selection leaves the
   // tag where it is (the author takes it off by hand), and a tag the author took off is not put back by the same selection.
@@ -271,10 +297,12 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       const created = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks`, "POST", {
         kind: task.kind, ...(task.question ? { question: task.question } : {}), context: task.context,
         ...(task.followUpOf ? { follow_up_of: task.followUpOf } : {}), ...(task.editedFrom ? { edited_from: task.editedFrom } : {}),
+        ...(task.routed ? { routed: true, route_source: task.routed.source, routed_input: task.routed.input } : {}),
       });
       stick.current = false;
       pinned.current = created.id;
       setUnseen(false);
+      setOffTopic(null); setElsewhere(null);
       setTasks((current) => [...(current ?? []), created]);
       setAsked((current) => [...current, created.id]);
       // The note about where the words go has been on screen for a first question; this device now remembers it was seen.
@@ -286,35 +314,108 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     } finally { setSending(false); }
   };
   const afterSend = () => {
-    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip("");
+    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setRoutedAs(""); setMode("auto");
     setChosen({ chapter: null, character: null });
     // The send button has just gone grey; keep the keyboard where the author is writing.
     field.current?.focus();
   };
   const checkShort = (picked: string) => usage?.account_type === "registered" && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS) + writtenChars(picked);
+  const shortOfCheck = () => setRefusal(refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false));
+  // 自动: ask the server which use the sentence asks for (the mode button says so meanwhile), then start the task that use is, at once.
+  const sendAuto = async () => {
+    const input = text.trim();
+    if (!input && !(selection && onWriting && !visitor)) return;
+    const base: AssistantContextInput = { ...contextFor(selection), ...(refine ? { page: "writing" as const, issue_id: refine.issueId } : {}) };
+    setRouting(true); setRoutedAs(""); setRefusal("");
+    const verdict = await routeInput(projectId, input, base);
+    setRouting(false);
+    if (verdict.route === "out_of_scope") {
+      setOffTopic({ input, context: base }); setElsewhere(null);
+      afterSend();
+      setRoutedAs("与作品无关");
+      return;
+    }
+    setRoutedAs(USE_LABEL[verdict.route]);
+    if (verdict.route === "recap" && !onWriting) {
+      setElsewhere(input); setOffTopic(null);
+      afterSend();
+      setRoutedAs(USE_LABEL.recap);
+      return;
+    }
+    if (verdict.route === "recap" && recapReason) { setRefusal(recapReason); return; }
+    if (verdict.route === "check_passage" && checkShort(selection)) { shortOfCheck(); return; }
+    const chosen = taskFor(verdict.route, input, base, verdict.route === "ask" ? following?.id : null);
+    const made = chosen ?? taskFor("ask", input, base, following?.id);
+    if (!made) { setRefusal("先写下想问的话，再发送。"); return; }
+    const label = USE_LABEL[chosen ? verdict.route : "ask"];
+    if (await post({ ...made, routed: { source: verdict.source, input } })) { afterSend(); setRoutedAs(label); }
+  };
   const submit = async () => {
     if (blocked) return;
     if (activeMode === "recap") {
       if (recapReason) { setRefusal(recapReason); return; }
-      if (await post({ kind: "recap", context: { page: "writing" } })) { setMode("ask"); setRefusal(""); }
+      if (await post({ kind: "recap", context: { page: "writing" } })) { setMode("auto"); setRefusal(""); }
       return;
     }
     if (activeMode === "check") {
       if (!selection) return;
-      if (checkShort(selection)) { setRefusal(refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false)); return; }
-      if (await post({ kind: "ask", question: CHECK_QUESTION, context: { ...contextFor(selection), intent: "check_selection" } })) { afterSend(); setMode("ask"); }
+      if (checkShort(selection)) { shortOfCheck(); return; }
+      if (await post({ kind: "ask", question: CHECK_QUESTION, context: { ...contextFor(selection), intent: "check_selection" } })) afterSend();
       return;
     }
+    if (activeMode === "auto" && !refine?.manual) { await sendAuto(); return; }
     const question = text.trim();
     if (!question) return;
     const sent = refine
       ? await post({ kind: "fix_issue", question, context: { page: "writing", issue_id: refine.issueId } })
-      : await post({ kind: "ask", question, context: contextFor(selection), followUpOf: followUp?.id ?? null });
+      : await post({ kind: "ask", question, context: contextFor(selection), followUpOf: following?.id ?? null });
     if (sent) afterSend();
+  };
+  // The sentence the box judged not to be about the work, sent as a question after all.
+  const askAnyway = () => {
+    if (blocked) { setRefusal(blocked); return; }
+    const made = offTopic ? taskFor("ask", offTopic.input, offTopic.context) : null;
+    if (made) void post(made);
   };
   const retry = (task: AssistantTask) => {
     if (blocked) { setRefusal(blocked); return; }
-    void post({ kind: task.kind, ...(task.question ? { question: task.question } : {}), context: { page: "writing", ...task.context } as AssistantContextInput, followUpOf: task.follow_up_of });
+    void post({ kind: task.kind, ...(task.question ? { question: task.question } : {}), context: { page: "writing", ...task.context } as AssistantContextInput, followUpOf: task.follow_up_of,
+      ...(task.routed ? { routed: { source: task.route_source ?? "manual", input: task.routed_input ?? task.question ?? "" } } : {}) });
+  };
+  // 改成: a task the box chose the use of, sent as another use. While it waits or runs the server stops it, gives its characters back and
+  // starts the new one in one step; once it is over it is the same sentence sent again, charged like any task.
+  const changeUse = async (task: AssistantTask, use: Use) => {
+    const input = (task.routed_input ?? task.question ?? "").trim();
+    const next = taskFor(use, input, { page: anchor.page, ...task.context } as AssistantContextInput);
+    if (!next) { setRefusal("这句话不能按这个用法发送。"); return; }
+    if (!active(task)) {
+      if (blocked) { setRefusal(blocked); return; }
+      void post({ ...next, routed: { source: "manual", input } });
+      return;
+    }
+    setSending(true); setRefusal("");
+    try {
+      const created = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}/reroute`, "POST", { kind: use, context: next.context });
+      stick.current = false;
+      pinned.current = created.id;
+      setUnseen(false);
+      setTasks((current) => [...(current ?? []).map((item) => (item.id === task.id ? { ...item, status: "cancelled" as const, usage: { ...item.usage, chars_charged: 0 } } : item)), created]);
+      setAsked((current) => [...current, created.id]);
+      bridge.usageChanged();
+    } catch (cause) { setRefusal(refusalText(cause, visitor)); } finally { setSending(false); }
+  };
+  const rerouting: RerouteControl = {
+    options: (task) => {
+      const uses: Use[] = [];
+      if ((task.routed_input ?? task.question ?? "").trim()) uses.push("ask");
+      if (onWriting && !recapReason && chapterNumber != null && chapterNumber > 1) uses.push("recap");
+      if (onWriting && !visitor && task.context.selection) uses.push("check_passage");
+      if (onWriting && task.context.issue_id) uses.push("fix_issue");
+      return uses;
+    },
+    change: (task, use) => void changeUse(task, use),
+    cost,
+    blocked,
   };
   const stop = async (task: AssistantTask) => {
     setStopping(true);
@@ -328,7 +429,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     setConfirmClear(false);
     try {
       await request(`/projects/${projectId}/assistant/tasks`, { method: "DELETE", headers: { "Idempotency-Key": crypto.randomUUID() } });
-      setTasks([]); setFollowUp(null); setRefine(null); setRefusal(""); setUnseen(false);
+      setTasks([]); setFollowUp(null); setFollowDropped(null); setOffTopic(null); setElsewhere(null); setRefine(null); setRefusal(""); setUnseen(false);
     } catch (cause) { setRefusal(labelError(cause)); }
   };
   // The same question again: the new answer takes the old one's place, the old one folds under it.
@@ -403,8 +504,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     if (writing) { writing.openChapter(target.chapter); return; }
     go(`/projects/${projectId}/workspace?chapter=${target.chapter}`);
   };
-  const startRefine = (issueId: string, number: number) => {
-    setRefine({ issueId, number }); setFollowUp(null); setSelection(""); setMode("ask");
+  const startRefine = (issueId: string, number: number, manual = true) => {
+    setRefine({ issueId, number, manual }); setFollowUp(null); setSelection(""); setMode("auto"); setRoutedAs("");
     field.current?.focus();
   };
   const rerunRecap = () => {
@@ -436,7 +537,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     ...(selection ? [{ key: "selection", label: `选中：「${clip(selection.replace(/\s+/g, " "), 18)}」`, quote: true, drop: () => setSelection("") }] : []),
     ...(showCharacter ? [{ key: "character", label: `人物 · ${chosen.character?.name ?? anchor.character_name ?? "这张人物卡"}`, ...apart, drop: () => { setChosen((all) => ({ ...all, character: null })); setDropped((all) => ({ ...all, character: true })); } }] : []),
     ...(showChapter ? [{ key: "chapter", label: `第 ${chosen.chapter ?? anchor.chapter_number} 章`, ...apart, drop: () => { setChosen((all) => ({ ...all, chapter: null })); setDropped((all) => ({ ...all, chapter: true })); } }] : []),
-    ...(followUp ? [{ key: "follow", label: `接着问：${clip(followUp.question ?? "", 20)}`, drop: () => setFollowUp(null) }] : []),
+    ...(following ? [{ key: "follow", label: followLabel(following), drop: () => { setFollowUp(null); setFollowDropped(latestTask?.id ?? null); } }] : []),
   ];
   const pick: PlusPick = {
     chapters: material.chapters,
@@ -445,16 +546,20 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     issuesReason: material.issuesReason,
     onChapter: (number) => { setChosen((all) => ({ ...all, chapter: number })); setDropped((all) => ({ ...all, chapter: false })); field.current?.focus(); },
     onCharacter: (id, name) => { setChosen((all) => ({ ...all, character: { id, name } })); setDropped((all) => ({ ...all, character: false })); field.current?.focus(); },
-    onIssue: (issueId, number) => startRefine(issueId, number),
+    onIssue: (issueId, number) => startRefine(issueId, number, false),
     onSelectHint: () => setTip("在正文里选中一段文字，再点浮出来的「问助手」，它就会带进这次提问。"),
   };
 
   const placeholder = activeMode === "recap" ? RECAP_PLACEHOLDER : activeMode === "check" ? CHECK_PLACEHOLDER : refine ? REFINE_PLACEHOLDER : ASK_PLACEHOLDER;
-  const hint = busy ? RUNNING_NOW
+  const hint = busy && !routing ? RUNNING_NOW
     : activeMode === "check" ? `约 ${formatCount(TASK_CHARS + writtenChars(selection))} 字`
       : activeMode === "recap" && recapReason ? recapReason : cost;
-  const hintMore = busy || activeMode !== "ask" ? "" : costMore;
-  const canSend = !off && !busy && (activeMode === "ask" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
+  const hintMore = busy || !asking ? "" : costMore;
+  // In 自动 a picked passage alone is enough to send (it is checked); a sentence is needed for anything else.
+  const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "recap" ? !recapReason : Boolean(selection));
+  const modeText = activeMode !== "auto" || refine?.manual ? undefined : routing ? "判断中…" : routedAs ? `自动 · ${routedAs}` : undefined;
+  const changeMode = (next: Mode) => { setMode(next); setRoutedAs(""); };
+  const edited = (next: string) => { setText(next); setRoutedAs(""); };
   const starters = tasks?.length === 0 ? starterQuestions({
     lastChapter: project.current_draft.chapter_number > 1 ? project.current_draft.chapter_number - 1 : null,
     characters: material.characters,
@@ -463,12 +568,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const groups = arrange(tasks ?? []);
   const handlers: AskHandlers = {
     projectId, visitor, stopping, stop: (task) => void stop(task), retry, openChapter, locate, replace, blocked, readOnly: archived, asked,
-    followUp: (task) => { setFollowUp(task); setRefine(null); setMode("ask"); field.current?.focus(); },
+    followUp: (task) => { setFollowUp(task); setRefine(null); changeMode("auto"); field.current?.focus(); },
     regenerate: (task) => void regenerate(task),
     resend,
   };
 
   return (
+    <RerouteContext.Provider value={rerouting}>
     <div ref={root} className={`assistant assistant-${variant}`} data-testid="assistant-thread">
       <div className="a-bar">
         <span className="a-bar-note">只提建议，不改你的正文</span>
@@ -504,17 +610,21 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
           }
           return <AskGroup key={group.id} group={group} handlers={handlers} />;
         })}
+        {offTopic && <OutOfScopeNote input={offTopic.input} asAsk={askAnyway} blocked={blocked} />}
+        {elsewhere !== null && <RecapElsewhereNote input={elsewhere} cost={cost} blocked={blocked} open={() => { wantRecapOnArrival(); go(`/projects/${projectId}/workspace`); }} />}
         {announce && <p className="sr-only">{announce}</p>}
       </div>
       {unseen && <button type="button" className="a-jump" onClick={jumpToLatest}><span className="d" aria-hidden="true" />新回答 ↓</button>}
       {tip && <p className="a-tip" role="status">{tip}</p>}
       {refusal && refusal !== blocked && <p className="a-block a-refused" role="alert">{refusal}</p>}
-      <Composer chips={chips} text={text} setText={setText} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={variant === "drawer"}
-        mode={activeMode} modes={modes} setMode={setMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId)} stopping={stopping}
+      <Composer chips={chips} text={text} setText={edited} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={variant === "drawer"}
+        mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId)} stopping={stopping}
         stop={() => { const running = tasks?.find(active); if (running) void stop(running); }}
-        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine ? "帮我改这一处" : undefined} fixed={activeMode !== "ask"} recall={recall} />
+        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined} modeText={modeText}
+        fixed={activeMode === "recap" || activeMode === "check"} recall={recall} />
       {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus(), 0); }} />}
     </div>
+    </RerouteContext.Provider>
   );
 }
 

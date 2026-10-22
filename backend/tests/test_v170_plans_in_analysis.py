@@ -42,9 +42,7 @@ class RecordingProvider:
             return ProviderResult({"summary": "已对照。", "items": [
                 {"story_plan_id": plan["id"], "status": "planned_covered", "explanation": "写到了。",
                  "evidence": [{"source_type": "draft_claim", "source_id": claim["id"]}]} for plan in planned]}, 10, 5, latency_ms=1)
-        source = {"source_type": "author_context", "source_id": planned[0]["id"]} if planned else {"source_type": "draft_claim", "source_id": request["layers"]["written"]["draft_claims"][0]["id"]}
-        return ProviderResult({"summary": "写前回顾。", "summary_sources": [source],
-                               "items": [{"section": "related_plan" if planned else "recent_source", "text": "延续计划。", "sources": [source]}]}, 10, 5, latency_ms=1)
+        return ProviderResult({"summary": "该修改暂无明确影响。", "items": []}, 10, 5, latency_ms=1)
 
 
 class PlansReachAnalysesTests(unittest.TestCase):
@@ -75,10 +73,12 @@ class PlansReachAnalysesTests(unittest.TestCase):
 
     def _analysis(self, kind):
         draft = self._project()["current_draft"]
-        return self.client.post(f"/api/projects/{self.project_id}/analyses", headers=idem(),
-                                json={"analysis_type": kind, "draft_id": draft["id"], "draft_revision": draft["revision"]})
+        body = {"analysis_type": kind, "draft_id": draft["id"], "draft_revision": draft["revision"]}
+        if kind == "change_impact":
+            body["proposal"] = {"target_type": "general", "proposed_change": "调整后续安排。"}
+        return self.client.post(f"/api/projects/{self.project_id}/analyses", headers=idem(), json=body)
 
-    def _planned_layer(self, kind="context_brief"):
+    def _planned_layer(self, kind="change_impact"):
         before = len(self.provider.requests)
         started = self._analysis(kind)
         self.assertEqual(started.status_code, 202, started.text)

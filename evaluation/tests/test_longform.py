@@ -560,3 +560,76 @@ class FactCoverageTests(unittest.TestCase):
                     fact_coverage.main(["--set", str(formal), "--run-id", "f", "--results-dir", str(tmp)])
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _pool_report(set_id: str, gaps_found: int, clean_with_card: int, designated_ok: int, commit: str = "abc123", dirty: bool = False) -> dict:
+    """A formal report in the shape run.py writes, with 12 gaps, 8 clean chapters and 3 designated questions."""
+    per_target, records = [], {}
+    for index in range(12):
+        points = [{"id": f"{set_id}-g{index}", "label": "insufficient_evidence",
+                   "predicted": "insufficient_evidence" if index < gaps_found else "no_issue"},
+                  {"id": f"{set_id}-p{index}", "label": "trap", "predicted": "no_issue"}]
+        if index < 3:
+            points.append({"id": f"{set_id}-d{index}", "label": "conflict", "predicted": "conflict", "category": "timeline",
+                           "category_hit": True, "designated": True, "confirmed": index < designated_ok})
+        per_target.append({"target_id": f"{set_id}-t{index}", "status": "completed", "error_code": None, "clean": False,
+                           "points": points, "cards": 1, "spurious_cards": 0, "unanchored_cards": 0, "state_change_cards": 0,
+                           "sentences": 50, "undecided": 0, "seconds": 20.0})
+    for index in range(8):
+        per_target.append({"target_id": f"{set_id}-c{index}", "status": "completed", "error_code": None, "clean": True,
+                           "points": [], "cards": 1 if index < clean_with_card else 0, "spurious_cards": 1 if index < clean_with_card else 0,
+                           "unanchored_cards": 0, "state_change_cards": 0, "sentences": 50, "undecided": 0, "seconds": 20.0})
+    for row in per_target:
+        records[row["target_id"]] = {"status": "completed", "seconds": 20.0, "check_cost": {"cost_cny": {"total": 0.2}}}
+    return {"set_id": set_id, "set_sha256": "0" * 64, "run_id": f"formal-{set_id}", "mode": "formal", "adapter": "draft_replace_v1",
+            "prompt_version": "p", "model": "deepseek-flash", "review_thinking": "high", "concurrency": "4",
+            "code": {"commit": commit, "dirty": dirty}, "meter": {"spent_cny": 4.0}, "stopped_early": None,
+            "quality": {"per_target": per_target},
+            "cost_time": {"timing_valid": True, "selections": []}, "records": records}
+
+
+class PooledTests(unittest.TestCase):
+    """PLAN section 0f: two formal sets scored together from pooled counts, never averaged."""
+
+    def test_counts_are_pooled_not_averaged(self):
+        from evaluation.longform.pooled import pool
+        pooled = pool([_pool_report("lf6-formal", 9, 2, 3), _pool_report("lf7-formal", 11, 3, 3)])
+        quality = pooled["quality"]
+        self.assertEqual(quality["counts"]["insufficient_evidence"], 24)
+        self.assertAlmostEqual(quality["insufficient_evidence_recall"], 20 / 24)
+        self.assertEqual(quality["counts"]["clean_targets"], 16)
+        self.assertAlmostEqual(quality["clean_target_zero_card_rate"], 11 / 16)
+        self.assertEqual(pooled["cost_time"]["single_chapter"]["seconds"]["n"], 40)
+        checks = pooled["threshold_result"]["checks"]
+        self.assertTrue(checks["insufficient_evidence_recall"])   # 20/24 = 0.83, although one set alone is 9/12 = 0.75
+        self.assertFalse(checks["clean_target_zero_card_rate"])   # 11/16 = 0.69 < 0.70
+        self.assertTrue(checks["designated"])
+        self.assertFalse(pooled["threshold_result"]["passed"])
+
+    def test_all_six_designated_questions_are_required(self):
+        from evaluation.longform.pooled import pool
+        pooled = pool([_pool_report("lf6-formal", 12, 0, 3), _pool_report("lf7-formal", 12, 0, 2)])
+        self.assertEqual(pooled["threshold_result"]["designated_required"], 6)
+        self.assertFalse(pooled["threshold_result"]["checks"]["designated"])
+        passed = pool([_pool_report("lf6-formal", 12, 0, 3), _pool_report("lf7-formal", 12, 0, 3)])
+        self.assertTrue(passed["threshold_result"]["passed"])
+
+    def test_one_fixed_clean_commit_is_required_for_a_gate_result(self):
+        from evaluation.longform.pooled import pool
+        for second in (_pool_report("lf7-formal", 12, 0, 3, commit="def456"), _pool_report("lf7-formal", 12, 0, 3, dirty=True),
+                       {**_pool_report("lf7-formal", 12, 0, 3), "code": None}):
+            with self.assertRaises(ValueError):
+                pool([_pool_report("lf6-formal", 12, 0, 3), second])
+            allowed = pool([_pool_report("lf6-formal", 12, 0, 3), second], allow_mixed_runtime=True)
+            self.assertTrue(allowed["mixed_runtime"])
+            self.assertFalse(allowed["threshold_result"]["passed"])   # never a gate result
+            self.assertFalse(allowed["threshold_result"]["gate_result"])
+
+    def test_the_same_set_twice_or_a_dev_report_is_refused(self):
+        from evaluation.longform.pooled import pool
+        with self.assertRaises(ValueError):
+            pool([_pool_report("lf6-formal", 12, 0, 3), _pool_report("lf6-formal", 12, 0, 3)])
+        with self.assertRaises(ValueError):
+            pool([_pool_report("lf6-formal", 12, 0, 3), {**_pool_report("lf7-formal", 12, 0, 3), "mode": "dev"}])
+        with self.assertRaises(ValueError):
+            pool([_pool_report("lf6-formal", 12, 0, 3)])

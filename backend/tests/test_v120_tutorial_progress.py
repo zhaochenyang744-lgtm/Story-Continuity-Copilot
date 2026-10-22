@@ -214,23 +214,15 @@ class V120TutorialProgressTests(unittest.TestCase):
         )
         self.assertEqual((visitor_result.status_code, visitor_result.json()["error"]["code"]), (409, "tutorial_unavailable"))
 
-    def test_complete_skip_import_hide_progress_and_reopen_resets_fixture_and_progress(self):
+    def test_complete_skip_and_import_hide_progress(self):
         project_id = self.register(self.client, "v120-lifecycle")["onboarding"]["tutorial"]["project_id"]
-        advanced = self.event(project_id, EVENTS[2]).json()["data"]
+        self.event(project_id, EVENTS[2])
         skipped = self.client.post("/api/onboarding/skip", headers=idem(), json={"confirm": True})
         self.assertEqual((skipped.status_code, skipped.json()["data"]["progress"]), (200, None))
         self.assertIsNone(self.progress())
-        reopened = self.client.post("/api/onboarding/reopen", headers=idem(), json={"confirm": True})
-        reset = reopened.json()["data"]["progress"]
-        self.assertEqual((reset["current_step"], reset["completed_events"]), (1, []))
-        self.assertGreater(reset["revision"], advanced["revision"])
-        tutorial = self.client.get(f"/api/projects/{project_id}").json()["data"]
-        self.assertEqual((tutorial["title"], tutorial["chapter_count"], tutorial["data_origin"]), ("灰港回声", 10, "tutorial_seed"))
         completed = self.client.post("/api/onboarding/complete", headers=idem(), json={"confirm": True})
         self.assertEqual((completed.status_code, self.progress()), (200, None))
 
-        reopened_again = self.client.post("/api/onboarding/reopen", headers=idem(), json={"confirm": True})
-        self.assertEqual(reopened_again.status_code, 200, reopened_again.text)
         preview = self.client.post(
             "/api/imports/preview",
             headers=idem(),

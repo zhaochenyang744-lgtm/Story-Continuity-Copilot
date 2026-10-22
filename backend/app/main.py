@@ -113,7 +113,7 @@ class ChangeImpactProposal(Strict):
     target_id:str|None=None
     proposed_change:str=Field(min_length=1,max_length=4000)
 class WritingAnalysis(Strict):
-    analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan']
+    analysis_type:Literal['plan_alignment','change_impact','foreshadow_scan']
     draft_id:str
     draft_revision:int=Field(ge=1)
     proposal:ChangeImpactProposal|None=None
@@ -148,17 +148,6 @@ class ForeshadowCandidateDecision(Strict):
     base_foreshadow_version:int=Field(ge=0,le=2147483647)
     decision:Literal['accepted','edited','rejected']
     edited:ForeshadowFields|None=None
-class RevisionTaskFields(Strict):
-    title:str=Field(min_length=1,max_length=120)
-    instruction:str=Field(min_length=1,max_length=1200)
-    priority:Literal['high','medium','low']
-class RevisionCandidateDecision(Strict):
-    base_task_version:int=Field(ge=0,le=2147483647)
-    decision:Literal['accepted','edited','rejected']
-    edited:RevisionTaskFields|None=None
-class RevisionTaskPatch(Strict):
-    base_version:int=Field(ge=1,le=2147483647)
-    status:Literal['todo','in_progress','completed']
 class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=None; resulting_revision:int|None=None
 class ChangeSet(Strict): run_id:str; source_run_revision:int=Field(ge=1); resolved_revision:int=Field(ge=1)
 class EditedMemoryItem(Strict): item_id:str; memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
@@ -488,9 +477,6 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/onboarding/skip')
     def onboarding_skip(payload:OnboardingAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'onboarding_update_failed');data,status=db.finish_onboarding(user(request)['id'],'skipped',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
-    @app.post('/api/onboarding/reopen')
-    def onboarding_reopen(payload:OnboardingAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'onboarding_update_failed');data,status=db.reopen_onboarding(user(request)['id'],payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.get('/api/projects')
     def projects(request:Request,q:str|None=None,status:str|None=None,has_open_issues:bool|None=None,sort:str|None=None):return ok(request,db.list_projects(user(request)['id'],q,status,has_open_issues,sort))
     @app.post('/api/projects',status_code=201)
@@ -539,12 +525,6 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/author-intent/world-plans/{item_id}/archive')
     def archive_author_world(project_id:str,item_id:str,payload:AuthorIntentArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'author_intent_archive_failed');data,status=db.archive_author_intent_item(user(request)['id'],project_id,'world',item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
-    @app.get('/api/projects/{project_id}/outline')
-    def outline(project_id:str,request:Request,volume:str|None=None,status:str|None=None):
-        if volume not in {None,'1'} or status not in {None,'planned','complete'}:raise HTTPException(400,'invalid_filter')
-        data=db.outline(user(request)['id'],project_id)
-        if status:data['chapter_nodes']=[item for item in data['chapter_nodes'] if item['status']==status]
-        return ok(request,data)
     @app.get('/api/projects/{project_id}/characters')
     def characters(project_id:str,request:Request,q:str|None=None,role_type:str|None=None,character_id:str|None=None):
         if role_type not in {None,'protagonist','ally','antagonist','supporting'}:raise HTTPException(400,'invalid_filter')
@@ -607,8 +587,6 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def memory_coverage(project_id:str,request:Request):return ok(request,db.memory_coverage(user(request)['id'],project_id))
     @app.get('/api/projects/{project_id}/memory/delta')
     def memory_delta(project_id:str,request:Request):return ok(request,db.memory_delta(user(request)['id'],project_id))
-    @app.get('/api/projects/{project_id}/source-coverage-audits/{audit_id}')
-    def source_coverage_audit(project_id:str,audit_id:str,request:Request):return ok(request,db.source_coverage_audit(user(request)['id'],project_id,audit_id))
     @app.post('/api/projects/{project_id}/memory/initializations',status_code=201)
     def start_memory_initialization(project_id:str,payload:MemoryInitialization,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'memory_initialization_failed')
@@ -746,16 +724,16 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.get('/api/projects/{project_id}/analyses/{run_id}')
     def analysis(project_id:str,run_id:str,request:Request):return ok(request,db.analysis_view(user(request)['id'],project_id,run_id))
     @app.get('/api/projects/{project_id}/analyses')
-    def latest_analysis(project_id:str,analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'],request:Request,limit:int=10):return ok(request,db.latest_analysis(user(request)['id'],project_id,analysis_type,max(1,min(limit,50))))
+    def latest_analysis(project_id:str,analysis_type:Literal['plan_alignment','change_impact','story_qa','foreshadow_scan'],request:Request,limit:int=10):return ok(request,db.latest_analysis(user(request)['id'],project_id,analysis_type,max(1,min(limit,50))))
     @app.post('/api/projects/{project_id}/analyses/{run_id}/cancel')
     def cancel_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'analysis_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'analysis_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'plan_alignment','change_impact','story_qa','foreshadow_scan'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/analyses/{run_id}/retry',status_code=202)
     def retry_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'analysis_retry_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
+        csrf(request);operation(request,'analysis_retry_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'plan_alignment','change_impact','foreshadow_scan'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
         if created:
             target=data['run'];target_run_id=target['run_id']
-            if target['run_type'] not in {'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'}:raise HTTPException(404,'resource_not_found')
+            if target['run_type'] not in {'plan_alignment','change_impact','foreshadow_scan'}:raise HTTPException(404,'resource_not_found')
             try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
             except DomainError as error:
                 db.finish_analysis_run(project_id,target_run_id,{'status':'failed','error_code':error.code,'retryable':True});raise
@@ -765,14 +743,6 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/analyses/{run_id}/foreshadow-candidates/{candidate_id}/decision')
     def decide_foreshadow_candidate(project_id:str,run_id:str,candidate_id:str,payload:ForeshadowCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'foreshadow_candidate_decision_failed');data,status=db.decide_foreshadow_candidate(user(request)['id'],project_id,run_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
-    @app.post('/api/projects/{project_id}/analyses/{run_id}/revision-candidates/{candidate_id}/decision')
-    def decide_revision_candidate(project_id:str,run_id:str,candidate_id:str,payload:RevisionCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'revision_candidate_decision_failed');data,status=db.decide_revision_candidate(user(request)['id'],project_id,run_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
-    @app.get('/api/projects/{project_id}/revision-tasks')
-    def revision_tasks(project_id:str,request:Request,include_completed:bool=True):return ok(request,db.revision_tasks(user(request)['id'],project_id,include_completed))
-    @app.patch('/api/projects/{project_id}/revision-tasks/{task_id}')
-    def revision_task_patch(project_id:str,task_id:str,payload:RevisionTaskPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'revision_task_update_failed');data,status=db.update_revision_task(user(request)['id'],project_id,task_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.get('/api/projects/{project_id}/checks/{run_id}')
     def check(project_id:str,run_id:str,request:Request,include:str|None=None):
         parsed_include=parse_include(include);actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'continuity','memory_delta'});return ok(request,db.run_view(actor['id'],project_id,run_id,parsed_include))

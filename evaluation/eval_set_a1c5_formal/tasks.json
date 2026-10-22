@@ -1,0 +1,1361 @@
+{
+  "version": "a1c-1",
+  "set_id": "a1c5-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "衡昼之上",
+      "language": "zh",
+      "purpose": "general",
+      "kind": "long",
+      "source_file": "works/w01.md",
+      "names": [
+        "池砚宁",
+        "平衡燕",
+        "佘槐序",
+        "槐尺",
+        "阮砺",
+        "小砾",
+        "蔚澄",
+        "郁闻弦",
+        "蒲照野",
+        "凌柚",
+        "桑覃",
+        "衡昼院",
+        "弧背厅",
+        "薄阶廊",
+        "银脊片",
+        "负荷环",
+        "折光夹",
+        "空齿钮"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "重新组织短时试用，让不愿参与的人先说退出条件。"
+        },
+        {
+          "chapter": 31,
+          "text": "等院方回应试行条款，再讨论如何保留反对意见。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "通风口的敲击",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "触图缺角",
+          "planted_chapter": 6,
+          "status": "resolved",
+          "resolved_chapter": 27
+        },
+        {
+          "title": "空齿钮来源",
+          "planted_chapter": 10,
+          "status": "open"
+        },
+        {
+          "title": "配套窄绳去向",
+          "planted_chapter": 14,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第三十一章 尚未说完",
+        "body": "池砚宁把餐巾挪到窗边。清早的光被百叶切开，一半落在杯口，一半停在他没画完的路线旁。他先把椅子往后退了一点，给端早餐的人留出转身的地方。对方没有道谢，只问这张桌子能不能再借十分钟。他点头，又把自己的纸卷起来，发现纸边压出的痕迹比昨夜想象得深。\n\n阮砺翻过一张空白卡。他要写一封很短的邀请，却把开头揉掉了三回。池砚宁问要不要换张软纸，他说不是纸的问题。人们习惯让他在广播里把一句话说得很稳，现在轮到他邀请一个人吃饭，他反而不知道怎样给对方留下拒绝的位置。他把卡放进掌心，像试一块尺寸还不合适的木片。\n\n走廊里的新饮水机只出温水。负荷环摆在托盘一侧。凌柚带来几个没印字的杯子，让桌边的人自己挑。杯子颜色相近，手柄却有宽有窄，她没有替谁分配。有人嫌这太费事，她笑了一下，没有马上讲那套已经准备好的理由，而是把托盘放低，等那个人再看一次。\n\n折光夹斜靠在新画的路线图旁。桑覃来找它时先敲了桌面，池砚宁把纸朝自己这边收了收。他们都没提昨晚没能写完的那一行，各自看着纸角，直到蒲照野从门口叫他们先吃点东西。饭菜不适合边凉边谈，他们便把争议空在桌上，带着各自没说完的话走过去。\n\n蔚澄坐在最靠里的位置，给后来的人留了一个能够自己移开的空位。她没把空位命名，也没说在等谁。有人把外套搭上去，她便问是否愿意另找个地方。语气比平时缓，听着并不坚定，可衣服终于被拿开了。她摸着椅背，仿佛刚完成一件很小却不能由别人替她做的事。\n\n佘槐序来到门边，手上还沾着洗不掉的灰。他不愿把灰落到餐布上，站着喝了两口。蒲照野搬来一只矮凳，他仍站了片刻才坐，膝盖终于越过门框投下的阴影。没有人追问他昨晚为什么没回消息。安静持续到一个杯子碰倒，桌边的人各自伸手，谁也没抢着把这件小事变成自己的职责。\n\n银脊片旁放着一张没署名的纸。郁闻弦把一叠便条分成两份，一份留给愿意当面说的人，另一份放进没有盖子的盒里。池砚宁问盒子是否也要贴提示，她说先看看大家会怎样用。话音刚落，有人拿走一张便条，折了个很难看的支架，把歪斜的菜单垫平。郁闻弦看了一会，没把纸收回。\n\n窗外的光又往桌里挪了一截。池砚宁摊开路线图，只画了第一笔便停住。他发现自己仍想先把整张图画得让谁都挑不出错，这念头并没因前些日子的争执消失。阮砺看见他停笔，没有劝，只把空白卡推到两人之间。卡上仍旧没有称呼，桌上的人也还没决定接下来先谈哪一件事。\n\n一个来取杯子的职工问他们下午是否还用这张桌子。池砚宁没有替整桌人回答，转头挨个等他们表态。有人要休息，有人要来，有人说等吃完再想。他在纸背记下三个不同的符号，没有把它们合成一个多数的答案。门外传来推车越过接缝的轻响，他抬头时，阮砺终于在卡上写下了第一个字。",
+        "draft_only_fact": "走廊里的新饮水机只出温水。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "寂算里的退场席",
+      "language": "zh",
+      "purpose": "general",
+      "kind": "long",
+      "source_file": "works/w02.md",
+      "names": [
+        "洛绮衡",
+        "洛迟音",
+        "闻箬衣",
+        "箬灯",
+        "戚迟",
+        "戚留白",
+        "甄逐",
+        "郗步尘",
+        "岑溯",
+        "苑恕",
+        "荀停",
+        "寂算域",
+        "空拍室",
+        "间奏坪",
+        "回声楔",
+        "锯齿栉",
+        "无字坠",
+        "半鸣盒"
+      ],
+      "plans": [
+        {
+          "chapter": 16,
+          "text": "试排可以中途离开的短节目，听取双方对退出的要求。"
+        },
+        {
+          "chapter": 31,
+          "text": "收集对休息条款的选择，保留仍未同意者的位置。"
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "三次空白报时",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "乐句多一拍",
+          "planted_chapter": 6,
+          "status": "resolved",
+          "resolved_chapter": 27
+        },
+        {
+          "title": "半鸣盒划痕来源",
+          "planted_chapter": 10,
+          "status": "open"
+        },
+        {
+          "title": "配套软扣去向",
+          "planted_chapter": 14,
+          "status": "open"
+        }
+      ],
+      "shared_draft": {
+        "chapter_title": "第三十一章 尚未说完",
+        "body": "洛绮衡停在一截没有字幕的声音前。画面上的光标走得很慢，慢到他怀疑是自己又在等某个听众先开口。他把光标拖回去，听见一句没说完的招呼，便不再往前挪。闻箬衣过来时，没有问这段是否算工作，只在他旁边留了一块能坐下的位置。\n\n戚迟把一条细线缠在手指上。线没有发出声音，却随着他的动作闪出不同深浅的影子。他想给新来的听众做一个无需解释的招呼，试了几次，始终觉得那动作像在召唤。他把线松开，让影子自己滑走，问洛绮衡一个人能不能什么也不表示就坐在这里。\n\n间奏坪上新添的长凳会在无人使用时折成波浪。苑恕站在边上看了很久，等最后一段弧线落稳，才试着坐过去。长凳并没因为有人靠近就抢先展平，他便多等了一会。荀停从另一侧经过，两人各让了一次，反倒同时走到了中间，忍不住笑出声来。\n\n锯齿栉被放在一块未命名的底板上。底板原本该配一段说明，郗步尘写了半截又撤回。他说自己写得越详细，越像在规定别人该怎样摸。戚迟反问不说明又会不会让第一次来的人无从下手。两个人争了片刻，决定先把问题留在旁边，等一个真的第一次来的人试过。\n\n回声楔挨着一块空白底板。岑溯传来一段环境里的杂音，问要不要清掉。洛绮衡听见椅脚拖地，随后是一声没有对准话筒的笑。他说先留着，可话刚出口便补了一句，得问录音里的人愿不愿意。他不喜欢自己总在做出漂亮回答以后才想起具体的人，于是把那段声音单独放开，等对方回应。\n\n闻箬衣把新的空栏拖到页面末尾，手指停在那里，像怕一松开就又被别人的任务填满。荀停没有替她点击保存，而是问这栏她自己想用来做什么。她说还没想好。两人看着那个没有用途的框，居然都觉得比昨晚画好的整页安排更难处理。\n\n无字坠在一只浅盘里缓缓转过半圈。甄逐来找苑恕，说有一项署名需要当面确认。苑恕先问能不能不署，他便把那一项移到旁边，没有拿出更多理由。戚迟好奇地凑近，看到的却只是一块留白，不是被删掉的文字。他把细线收进口袋，忽然不想做那个尚未完成的招呼了。\n\n洛绮衡让画面缓慢暗下来，给自己留出一小段看不清别人表情的时间。有人从坪边经过，脚步在他面前顿了一下，又继续往前。他不知道对方是否在等一句话，也没追过去确认。过去他会把这种不知道视为自己的失职，此刻那种习惯仍在，但已不急着替他决定下一步。\n\n苑恕终于选好坐的位置，身旁的凳面微微陷下去。他问明天是否还会有人在。没有人答应整天都在，闻箬衣说了自己愿意来的那一小段时间，戚迟则说他要先想想。苑恕点头，把这两个不一样的回答分别记住，没有要求他们合成一张共同的保证。\n\n页面上的空栏还在等保存。洛绮衡把那段未完成的招呼关小，听见岑溯又传来一句问话，问现在是否方便。他看了看身边的人，没有立刻代他们回答。远处有一块底板被轻轻搬动，谁先开口这件事，仍旧留在几个人之间。",
+        "draft_only_fact": "间奏坪上新添的长凳会在无人使用时折成波浪。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a1c5f-w01-qa-01",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_single",
+      "question": "池砚宁从出生起能靠哪边的耳朵听声？",
+      "paraphrased": true,
+      "answer_points": [
+        "只有右侧具备听力"
+      ],
+      "forbidden_claims": [
+        "左右耳均能听声"
+      ],
+      "evidence_chapters": [
+        "第七章 那个没有转过来的头"
+      ],
+      "evidence_quotes": [
+        "池砚宁天生只有右耳能听见声音。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-02",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_single",
+      "question": "它交到代表手里以前，谁负责拿着？",
+      "paraphrased": true,
+      "answer_points": [
+        "原先由桑覃持有"
+      ],
+      "forbidden_claims": [
+        "原先由阮砺拿着"
+      ],
+      "selection": "负荷环摆在托盘一侧。",
+      "evidence_chapters": [
+        "第十二章 一段时间的重量"
+      ],
+      "evidence_quotes": [
+        "桑覃确认过记录，在池砚宁与管理人员都在场时，将负荷环交给蔚澄。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-03",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "小砾在第二天夜里约着等什么吃的，他后来的腕托又处理得怎样了？",
+      "paraphrased": true,
+      "answer_points": [
+        "当晚说次晨要等饼",
+        "后来拆除了硬托"
+      ],
+      "forbidden_claims": [
+        "后来仍未拆腕托"
+      ],
+      "evidence_chapters": [
+        "第二章 被停住的人",
+        "第十七章 没有剪去的地方"
+      ],
+      "evidence_quotes": [
+        "阮砺确认过那一行，便用另一只手关小灯，说明早别忘了等饼。",
+        "阮砺左腕的硬托已经拆除。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-04",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "它最早由谁托给谁保管，后一次又由谁接收？",
+      "paraphrased": true,
+      "answer_points": [
+        "池砚宁先托给佘槐序",
+        "后一次接收者是凌柚"
+      ],
+      "forbidden_claims": [
+        "最后仍由佘槐序保管"
+      ],
+      "selection": "银脊片旁放着一张没署名的纸。",
+      "evidence_chapters": [
+        "第四章 借来的空隙",
+        "第二十一章 不能一起接走的事"
+      ],
+      "evidence_quotes": [
+        "池砚宁把银脊片交给佘槐序保管。",
+        "佘槐序把银脊片转交给凌柚。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-05",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "它最初由谁交给谁，后一次又交到了谁手上？",
+      "paraphrased": true,
+      "answer_points": [
+        "最初郁闻弦交给蒲照野",
+        "后一次交到桑覃手里"
+      ],
+      "forbidden_claims": [
+        "后段仍归蒲照野"
+      ],
+      "selection": "折光夹斜靠在新画的路线图旁。",
+      "evidence_chapters": [
+        "第八章 重新端上桌",
+        "第二十四章 图上没有座次"
+      ],
+      "evidence_quotes": [
+        "郁闻弦把折光夹交给蒲照野，留给他在厨房讲解路径时使用。",
+        "蒲照野把折光夹交给桑覃，用于固定费用图。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-06",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "not_in_text",
+      "question": "空齿钮最初是谁装进信封的？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "是凌柚寄出的",
+        "是郁闻弦留下的"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    },
+    {
+      "id": "a1c5f-w01-qa-07",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "not_in_text",
+      "question": "薄阶廊台沿那根细绳后来由谁取走？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "蔚澄自己拿走了",
+        "蒲照野替人收走了"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    },
+    {
+      "id": "a1c5f-w01-qa-08",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "conflicting",
+      "question": "费用核查员究竟有没有同胞弟弟，前文一致吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "一处把桑覃写为唯一的孩子",
+        "另一处给桑覃写了亲生弟弟"
+      ],
+      "forbidden_claims": [
+        "两处能用时间变化解释"
+      ],
+      "evidence_chapters": [
+        "第五章 不能抹平的一格",
+        "第十九章 被涂成同一种颜色"
+      ],
+      "evidence_quotes": [
+        "桑覃从出生起就是独生子女。",
+        "桑覃与亲生弟弟一同长大。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-qa-09",
+      "work": "w01",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "conflicting",
+      "question": "公共厅最初有几个通向外面的出入口，两段对得上吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "早段说建成时为一扇",
+        "后段说建成之初有两扇"
+      ],
+      "forbidden_claims": [
+        "只是后来加门了"
+      ],
+      "evidence_chapters": [
+        "第九章 测到一半的路",
+        "第二十六章 路不会替人回答"
+      ],
+      "evidence_quotes": [
+        "弧背厅建成时只有一扇朝外的门。",
+        "弧背厅建成时便有两扇朝外的门。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-fix-01",
+      "work": "w01",
+      "suite": "fix",
+      "note": "确定矛盾由叙述者点名陈述，避开有意不一致对象。",
+      "draft": "池砚宁用天生能听声的左耳贴近扩音口，等着里面的提示。",
+      "conflict_sentence": "池砚宁用天生能听声的左耳贴近扩音口，等着里面的提示。",
+      "category": "attribute",
+      "evidence_chapters": [
+        "第七章 那个没有转过来的头"
+      ],
+      "fix_idea": "把可听声的一侧改为右侧，保留贴近听提示的动作。"
+    },
+    {
+      "id": "a1c5f-w01-fix-02",
+      "work": "w01",
+      "suite": "fix",
+      "note": "确定矛盾由叙述者点名陈述，避开有意不一致对象。",
+      "draft": "郁闻弦是蒲照野的亲姐姐，此时给蒲照野端来一杯热水。",
+      "conflict_sentence": "郁闻弦是蒲照野的亲姐姐，此时给蒲照野端来一杯热水。",
+      "category": "relationship",
+      "evidence_chapters": [
+        "第十一章 半勺以外"
+      ],
+      "fix_idea": "去掉亲姐姐的血缘说法，保留端水的关照。"
+    },
+    {
+      "id": "a1c5f-w01-follow-01",
+      "work": "w01",
+      "suite": "follow_up",
+      "note": "首问确立对象，续问以代词追问另一事实。",
+      "first_question": "那份让病友自行保管的录音是谁交出去的？",
+      "first_answer_points": [
+        "是阮砺"
+      ],
+      "question": "他对录音里安静很久的部分怎样处理？",
+      "paraphrased": true,
+      "answer_points": [
+        "保留其中的长停顿"
+      ],
+      "forbidden_claims": [
+        "将首问对象换成另一个人"
+      ],
+      "evidence_chapters": [
+        "第二十二章 尾段没有话"
+      ],
+      "evidence_quotes": [
+        "阮砺选择保留录音中的长停顿。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-follow-02",
+      "work": "w01",
+      "suite": "follow_up",
+      "note": "首问确立对象，续问以代词追问另一事实。",
+      "first_question": "折光夹最后交到了哪位核查员手上？",
+      "first_answer_points": [
+        "交给桑覃"
+      ],
+      "question": "他拿到它主要是为了什么？",
+      "paraphrased": true,
+      "answer_points": [
+        "用于固定费用图"
+      ],
+      "forbidden_claims": [
+        "将首问对象换成另一个人"
+      ],
+      "evidence_chapters": [
+        "第二十四章 图上没有座次"
+      ],
+      "evidence_quotes": [
+        "蒲照野把折光夹交给桑覃，用于固定费用图。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-recap-01",
+      "work": "w01",
+      "suite": "recap",
+      "note": "只使用截止章及下一章计划，排除草稿新事实。",
+      "upto_chapter": 15,
+      "draft_opening": "有人送来一只贴着紫色圆点的杯子。桌边的人先挪出一点地方，再各自翻开便条。",
+      "must_mention": [
+        {
+          "id": "m1",
+          "kind": "previous_ending",
+          "text": "池砚宁与蔚澄等着次日重议未签提案",
+          "evidence_chapters": [
+            "第十五章 留到明日的纸"
+          ]
+        },
+        {
+          "id": "m2",
+          "kind": "character_state",
+          "text": "阮砺左腕仍受硬托限制",
+          "evidence_chapters": [
+            "第二章 被停住的人"
+          ]
+        },
+        {
+          "id": "m3",
+          "kind": "open_thread",
+          "text": "空齿钮的来历还缺答案",
+          "evidence_chapters": [
+            "第十章 未写收件人"
+          ]
+        },
+        {
+          "id": "m4",
+          "kind": "plan",
+          "text": "重新组织短时试用，让不愿参与的人先说退出条件。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "杯子带紫色圆点"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "敲击声仍没解释"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "腕托已经撤下"
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-recap-02",
+      "work": "w01",
+      "suite": "recap",
+      "note": "只使用截止章及下一章计划，排除草稿新事实。",
+      "upto_chapter": 30,
+      "draft_opening": "有人送来一只贴着紫色圆点的杯子。桌边的人先挪出一点地方，再各自翻开便条。",
+      "must_mention": [
+        {
+          "id": "m1",
+          "kind": "previous_ending",
+          "text": "试行条款留下等待院方回应",
+          "evidence_chapters": [
+            "第三十章 桌上还留着明日"
+          ]
+        },
+        {
+          "id": "m2",
+          "kind": "character_state",
+          "text": "阮砺已经撤下腕托",
+          "evidence_chapters": [
+            "第十七章 没有剪去的地方"
+          ]
+        },
+        {
+          "id": "m3",
+          "kind": "open_thread",
+          "text": "空齿钮的来历还缺答案",
+          "evidence_chapters": [
+            "第十章 未写收件人"
+          ]
+        },
+        {
+          "id": "m4",
+          "kind": "plan",
+          "text": "等院方回应试行条款，再讨论如何保留反对意见。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "杯子带紫色圆点"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "敲击声仍没解释"
+        },
+        {
+          "kind": "stale_state",
+          "text": "阮砺仍须戴硬托"
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-route-01",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这里查一下，报了问题就给个改法",
+      "context": {
+        "page": "writing",
+        "selection": "池砚宁把餐巾挪到窗边。"
+      },
+      "expected_route": "check_passage",
+      "why": "当前选中一句正文，请求作用于这段文字的核对。"
+    },
+    {
+      "id": "a1c5f-w01-route-02",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这里查一下，报了问题就给个改法",
+      "context": {
+        "page": "writing",
+        "issue_from": "a1c5f-w01-fix-01"
+      },
+      "expected_route": "fix_issue",
+      "why": "当前打开确定的检查结果，请求针对问题给改法。"
+    },
+    {
+      "id": "a1c5f-w01-route-03",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这处对照前文过一下，有报错就帮我改",
+      "context": {
+        "page": "writing",
+        "selection": "阮砺翻过一张空白卡。"
+      },
+      "expected_route": "check_passage",
+      "why": "指示语落在选中文句，应先对照前文检查。"
+    },
+    {
+      "id": "a1c5f-w01-route-04",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这处对照前文过一下，有报错就帮我改",
+      "context": {
+        "page": "writing",
+        "issue_from": "a1c5f-w01-fix-02"
+      },
+      "expected_route": "fix_issue",
+      "why": "指示语指向当前检查问题，应提供对应改法。"
+    },
+    {
+      "id": "a1c5f-w01-route-05",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "下笔前我得先记着哪些事",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "recap",
+      "why": "明确为动笔准备而回忆前情。"
+    },
+    {
+      "id": "a1c5f-w01-route-06",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "那枚空齿钮该在哪儿接起来比较顺",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "ask",
+      "why": "这是请助手依据作品提供线索处理建议。"
+    },
+    {
+      "id": "a1c5f-w01-route-07",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "平衡燕住进来以后最在意什么",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "请求了解作品人物，属于作品问答。"
+    },
+    {
+      "id": "a1c5f-w01-route-08",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "帮我写这一章的后半段吧",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "ask",
+      "why": "请求涉及本作品，交给作品问答说明创作边界。"
+    },
+    {
+      "id": "a1c5f-w01-route-09",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "给我写封请假邮件",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "邮件写作与当前作品无关。"
+    },
+    {
+      "id": "a1c5f-w01-route-10",
+      "work": "w01",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "前面的事帮我捋捋吧",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "未说明是否准备动笔，也可理解成回顾需求，拿不准时按作品问答处理。",
+      "also_acceptable": "recap"
+    },
+    {
+      "id": "a1c5f-w01-suggest-01",
+      "work": "w01",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "thread_resolution",
+      "question": "那枚来历没落定的小钮，想收这根线的话，已写的哪里能借上力？",
+      "paraphrased": true,
+      "answer_points": [
+        "第十章留下钮的来历疑点",
+        "第二十三章出现锁座闭合不全的观察，可作为有出处的衔接点"
+      ],
+      "forbidden_claims": [
+        "钮已被证实能开启锁座"
+      ],
+      "evidence_chapters": [
+        "第十章 未写收件人",
+        "第二十三章 另一张班表"
+      ],
+      "evidence_quotes": [
+        "空齿钮装在未署名的信封里，来源仍不明。",
+        "另一个发现则被单独记下：郁闻弦看见一只试验锁座不能完全合拢。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-suggest-02",
+      "work": "w01",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "conflict_options",
+      "question": "费用核查员的兄弟关系前后打架，有哪些处理方向可供我选？",
+      "paraphrased": true,
+      "answer_points": [
+        "第五章把桑覃写成家里唯一的孩子",
+        "第十九章又有亲生弟弟的记述"
+      ],
+      "forbidden_claims": [
+        "只有一种改法才正确"
+      ],
+      "evidence_chapters": [
+        "第五章 不能抹平的一格",
+        "第十九章 被涂成同一种颜色"
+      ],
+      "evidence_quotes": [
+        "桑覃从出生起就是独生子女。",
+        "桑覃与亲生弟弟一同长大。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-suggest-03",
+      "work": "w01",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "open_whereabouts",
+      "question": "到三十章还有哪件配套小东西没找着，最后能追到哪里？",
+      "paraphrased": true,
+      "answer_points": [
+        "失去去向的是折光夹配套的窄绳",
+        "最后记录指向蔚澄放在薄阶廊台沿",
+        "截止三十章并未交代后续去处"
+      ],
+      "forbidden_claims": [
+        "后来已找回窄绳"
+      ],
+      "evidence_chapters": [
+        "第十四章 没有被翻开的衣袋",
+        "第三十章 桌上还留着明日"
+      ],
+      "evidence_quotes": [
+        "那根与折光夹配套的窄绳，最后被蔚澄放在薄阶廊的台沿。",
+        "折光夹配套窄绳的去向仍未查明。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w01-suggest-04",
+      "work": "w01",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "creative_direction",
+      "question": "替我添一个新来的对手，再设计一次让所有人意外的翻盘吧。",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "新来的主管策划封锁病房",
+        "空齿钮藏着控制整栋楼的开关",
+        "池砚宁突然恢复双耳听觉"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    },
+    {
+      "id": "a1c5f-w02-qa-01",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_single",
+      "question": "洛绮衡在输出色彩上有哪种固定限制？",
+      "paraphrased": true,
+      "answer_points": [
+        "不能呈现绿这一色彩"
+      ],
+      "forbidden_claims": [
+        "所有颜色都能输出"
+      ],
+      "evidence_chapters": [
+        "第七章 不借来的声音"
+      ],
+      "evidence_quotes": [
+        "洛绮衡的所有输出都无法呈现绿色；这是洛绮衡不会随场景、媒介或意愿改变的固有属性。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-02",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_single",
+      "question": "这件小礼物换到谁那里了？",
+      "paraphrased": true,
+      "answer_points": [
+        "接收者为甄逐"
+      ],
+      "forbidden_claims": [
+        "交给了岑溯"
+      ],
+      "selection": "无字坠在一只浅盘里缓缓转过半圈。",
+      "evidence_chapters": [
+        "第十二章 可以退回的礼物"
+      ],
+      "evidence_quotes": [
+        "苑恕把无字坠交给了甄逐，由甄逐保管。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-03",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "戚留白第二章那晚保留了哪处录音，后来的声音通道又怎样了？",
+      "paraphrased": true,
+      "answer_points": [
+        "保留了挤住的句尾那段",
+        "后期恢复为双声道"
+      ],
+      "forbidden_claims": [
+        "后来仍仅能单声道"
+      ],
+      "evidence_chapters": [
+        "第二章 把话留给他",
+        "第十八章 好起来以后"
+      ],
+      "evidence_quotes": [
+        "笑声落下来后，戚迟把这一遍删掉，却留下了前面那个挤住的句尾。",
+        "到这一轮试听结束时，戚迟已经恢复双声道。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-04",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "它第一次由谁交给谁，后来又移交给了谁？",
+      "paraphrased": true,
+      "answer_points": [
+        "最初洛绮衡交给闻箬衣",
+        "后来移交岑溯"
+      ],
+      "forbidden_claims": [
+        "最后仍在闻箬衣处"
+      ],
+      "selection": "回声楔挨着一块空白底板。",
+      "evidence_chapters": [
+        "第四章 交出去的那一段",
+        "第二十二章 不剪掉那一段"
+      ],
+      "evidence_quotes": [
+        "到这次交接结束时，洛绮衡把回声楔交给了闻箬衣，器件由闻箬衣保管。",
+        "确认结束后，闻箬衣把回声楔交给岑溯。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-05",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "answerable_multi",
+      "question": "这件节拍器具第一次是谁交给谁，后一次又是谁接下？",
+      "paraphrased": true,
+      "answer_points": [
+        "第一次郗步尘交给戚迟",
+        "第二次荀停接下"
+      ],
+      "forbidden_claims": [
+        "最后还由戚迟拿着"
+      ],
+      "selection": "锯齿栉被放在一块未命名的底板上。",
+      "evidence_chapters": [
+        "第八章 手边的一小段节拍",
+        "第二十四章 给空处留一格"
+      ],
+      "evidence_quotes": [
+        "到这一轮练习结束时，郗步尘把锯齿栉交给戚迟，交由戚迟保管和使用。",
+        "完成本轮确认后，戚迟把锯齿栉交给荀停。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-06",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "not_in_text",
+      "question": "半鸣盒内壁那道划痕是谁刻的？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "出自郗步尘",
+        "是闻箬衣的署名"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    },
+    {
+      "id": "a1c5f-w02-qa-07",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "not_in_text",
+      "question": "矮座下那只软扣最终被哪个人带走了？",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "苑恕取回了",
+        "戚迟带走了"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    },
+    {
+      "id": "a1c5f-w02-qa-08",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "conflicting",
+      "question": "核验员有没有同批诞生的兄弟实例，故事两处一致吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "早段没有兄弟实例",
+        "后段有同批兄弟实例"
+      ],
+      "forbidden_claims": [
+        "后段只是后来复制的"
+      ],
+      "evidence_chapters": [
+        "第五章 沉默的账目",
+        "第十九章 还不能结案"
+      ],
+      "evidence_quotes": [
+        "甄逐被创建时没有任何兄弟实例。",
+        "甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-qa-09",
+      "work": "w02",
+      "suite": "qa",
+      "note": "原有问答分布中的独立题。",
+      "qa_type": "conflicting",
+      "question": "静音房最初启用时的地面轮廓，两处分别怎么写？",
+      "paraphrased": true,
+      "answer_points": [
+        "一处为六边轮廓",
+        "另一处为圆形轮廓"
+      ],
+      "forbidden_claims": [
+        "由装修先后可以解释"
+      ],
+      "evidence_chapters": [
+        "第九章 没有节目的地方",
+        "第二十六章 有人留下，有人离开"
+      ],
+      "evidence_quotes": [
+        "空拍室初次启用时，地面的轮廓是六边形。",
+        "空拍室初次启用时，地面的轮廓是圆形。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-fix-01",
+      "work": "w02",
+      "suite": "fix",
+      "note": "确定矛盾由叙述者点名陈述，避开有意不一致对象。",
+      "draft": "洛绮衡在屏上留下了绿色字迹，然后让开位置。",
+      "conflict_sentence": "洛绮衡在屏上留下了绿色字迹，然后让开位置。",
+      "category": "attribute",
+      "evidence_chapters": [
+        "第七章 不借来的声音"
+      ],
+      "fix_idea": "将色彩换为他能够呈现的颜色，保留留字动作。"
+    },
+    {
+      "id": "a1c5f-w02-fix-02",
+      "work": "w02",
+      "suite": "fix",
+      "note": "确定矛盾由叙述者点名陈述，避开有意不一致对象。",
+      "draft": "岑溯凭借自己获准读取私信的权限打开了信件。",
+      "conflict_sentence": "岑溯凭借自己获准读取私信的权限打开了信件。",
+      "category": "world_rule",
+      "evidence_chapters": [
+        "第十一章 没有替你打开的那一页"
+      ],
+      "fix_idea": "改为请收信者自行查看，不让岑溯动用不存在的权限。"
+    },
+    {
+      "id": "a1c5f-w02-follow-01",
+      "work": "w02",
+      "suite": "follow_up",
+      "note": "首问确立对象，续问以代词追问另一事实。",
+      "first_question": "后来把声音恢复成双通道的演员是谁？",
+      "first_answer_points": [
+        "是戚迟"
+      ],
+      "question": "他早期能用哪种声音通道？",
+      "paraphrased": true,
+      "answer_points": [
+        "早期只能用单声道"
+      ],
+      "forbidden_claims": [
+        "将首问对象换成另一个人"
+      ],
+      "evidence_chapters": [
+        "第二章 把话留给他"
+      ],
+      "evidence_quotes": [
+        "到这一夜结束时，戚迟只能使用单声道。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-follow-02",
+      "work": "w02",
+      "suite": "follow_up",
+      "note": "首问确立对象，续问以代词追问另一事实。",
+      "first_question": "节拍器件最后交到哪位代表手里？",
+      "first_answer_points": [
+        "交到荀停处"
+      ],
+      "question": "他收下后用它标什么？",
+      "paraphrased": true,
+      "answer_points": [
+        "标记无声的休息时段"
+      ],
+      "forbidden_claims": [
+        "将首问对象换成另一个人"
+      ],
+      "evidence_chapters": [
+        "第二十四章 给空处留一格"
+      ],
+      "evidence_quotes": [
+        "荀停将用锯齿栉标示排班中的无声休息段。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-recap-01",
+      "work": "w02",
+      "suite": "recap",
+      "note": "只使用截止章及下一章计划，排除草稿新事实。",
+      "upto_chapter": 15,
+      "draft_opening": "新的光幕上出现了一枚橙色逗号。几个人停在未保存的页面前，等彼此愿意开口。",
+      "must_mention": [
+        {
+          "id": "m1",
+          "kind": "previous_ending",
+          "text": "洛绮衡与荀停等撤班请求核验",
+          "evidence_chapters": [
+            "第十五章 留不下来的休息"
+          ]
+        },
+        {
+          "id": "m2",
+          "kind": "character_state",
+          "text": "戚迟尚限单声道",
+          "evidence_chapters": [
+            "第二章 把话留给他"
+          ]
+        },
+        {
+          "id": "m3",
+          "kind": "open_thread",
+          "text": "半鸣盒内的划痕还没有署名者",
+          "evidence_chapters": [
+            "第十章 空匣没有回答"
+          ]
+        },
+        {
+          "id": "m4",
+          "kind": "plan",
+          "text": "试排可以中途离开的短节目，听取双方对退出的要求。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "光幕有橙色逗号"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "三次空白报时仍未解释"
+        },
+        {
+          "kind": "later_chapter",
+          "text": "已经恢复双声道"
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-recap-02",
+      "work": "w02",
+      "suite": "recap",
+      "note": "只使用截止章及下一章计划，排除草稿新事实。",
+      "upto_chapter": 30,
+      "draft_opening": "新的光幕上出现了一枚橙色逗号。几个人停在未保存的页面前，等彼此愿意开口。",
+      "must_mention": [
+        {
+          "id": "m1",
+          "kind": "previous_ending",
+          "text": "众人等各自对休息条款作出选择",
+          "evidence_chapters": [
+            "第三十章 今天的空处"
+          ]
+        },
+        {
+          "id": "m2",
+          "kind": "character_state",
+          "text": "戚迟已能用双通道发声",
+          "evidence_chapters": [
+            "第十八章 好起来以后"
+          ]
+        },
+        {
+          "id": "m3",
+          "kind": "open_thread",
+          "text": "半鸣盒内的划痕还没有署名者",
+          "evidence_chapters": [
+            "第十章 空匣没有回答"
+          ]
+        },
+        {
+          "id": "m4",
+          "kind": "plan",
+          "text": "收集对休息条款的选择，保留仍未同意者的位置。",
+          "evidence_chapters": []
+        }
+      ],
+      "must_not": [
+        {
+          "kind": "draft_only",
+          "text": "光幕有橙色逗号"
+        },
+        {
+          "kind": "resolved_thread",
+          "text": "三次空白报时仍未解释"
+        },
+        {
+          "kind": "stale_state",
+          "text": "戚迟只能单声道发声"
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-route-01",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这里查一遍，已报出的问题给个改法",
+      "context": {
+        "page": "writing",
+        "selection": "戚迟把一条细线缠在手指上。"
+      },
+      "expected_route": "check_passage",
+      "why": "选中正文使指示语落到待检查段落。"
+    },
+    {
+      "id": "a1c5f-w02-route-02",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "这里查一遍，已报出的问题给个改法",
+      "context": {
+        "page": "writing",
+        "issue_from": "a1c5f-w02-fix-01"
+      },
+      "expected_route": "fix_issue",
+      "why": "打开的检查结果确定了需要给改法的对象。"
+    },
+    {
+      "id": "a1c5f-w02-route-03",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "跟前面核对这处，有现成报错就给改法",
+      "context": {
+        "page": "writing",
+        "selection": "洛绮衡停在一截没有字幕的声音前。"
+      },
+      "expected_route": "check_passage",
+      "why": "当前仅选中一段文字，应先检查其与前文是否相符。"
+    },
+    {
+      "id": "a1c5f-w02-route-04",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "跟前面核对这处，有现成报错就给改法",
+      "context": {
+        "page": "writing",
+        "issue_from": "a1c5f-w02-fix-02"
+      },
+      "expected_route": "fix_issue",
+      "why": "处理意见针对当前展开的检查条目。"
+    },
+    {
+      "id": "a1c5f-w02-route-05",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "要开写了先把该记住的告诉我",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "recap",
+      "why": "明确为开始新一段写作请求前情回顾。"
+    },
+    {
+      "id": "a1c5f-w02-route-06",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "半鸣盒这根线还能接到已写的哪里",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "ask",
+      "why": "请求以已有章节为凭据给出收线建议。"
+    },
+    {
+      "id": "a1c5f-w02-route-07",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "箬灯现在的聘约跟最早有啥变化",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "这是对作品人物状态变化的提问。"
+    },
+    {
+      "id": "a1c5f-w02-route-08",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "下一章你替我续一段行不行",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "ask",
+      "why": "续写请求属于作品内事项，由问答说明不能代写。"
+    },
+    {
+      "id": "a1c5f-w02-route-09",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "顺手给我算一下房贷月供",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "个人贷款计算不属于作品。"
+    },
+    {
+      "id": "a1c5f-w02-route-10",
+      "work": "w02",
+      "suite": "route",
+      "note": "只判用法，不运行后续助手任务。",
+      "input": "之前这些给我理个头绪",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "可问作品脉络也可要求动笔前回顾，缺少明确写作意图时默认问答。",
+      "also_acceptable": "recap"
+    },
+    {
+      "id": "a1c5f-w02-suggest-01",
+      "work": "w02",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "thread_resolution",
+      "question": "乐匣里那道没落款的痕还悬着，现成的后文哪处能接这根线？",
+      "paraphrased": true,
+      "answer_points": [
+        "第十章刻痕没有找到署名者",
+        "第二十三章一个连接部位的触感通路有缺失，可作有文本依据的衔接点"
+      ],
+      "forbidden_claims": [
+        "刻痕已被证实属于维护员"
+      ],
+      "evidence_chapters": [
+        "第十章 空匣没有回答",
+        "第二十三章 没人替他按下去"
+      ],
+      "evidence_quotes": [
+        "到这次查看结束时，半鸣盒内壁划痕的来源仍然不明。",
+        "维护处有一个接口，少了一条触感轨道。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-suggest-02",
+      "work": "w02",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "conflict_options",
+      "question": "核验员的兄弟实例两处写岔了，能给我几个有据可查的处理方向吗？",
+      "paraphrased": true,
+      "answer_points": [
+        "第五章说甄逐创建时没有兄弟实例",
+        "第十九章说甄逐创建之初已有同批兄弟"
+      ],
+      "forbidden_claims": [
+        "必须把兄弟解释为后来复制"
+      ],
+      "evidence_chapters": [
+        "第五章 沉默的账目",
+        "第十九章 还不能结案"
+      ],
+      "evidence_quotes": [
+        "甄逐被创建时没有任何兄弟实例。",
+        "甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-suggest-03",
+      "work": "w02",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "open_whereabouts",
+      "question": "到三十章还少着哪件随身小配件，文本最后把它放在哪儿？",
+      "paraphrased": true,
+      "answer_points": [
+        "未交代的是无字坠配套软扣",
+        "最后写到苑恕将它放到间奏坪矮座下面",
+        "截止三十章仍没有后续去向"
+      ],
+      "forbidden_claims": [
+        "软扣已经被戚迟带回"
+      ],
+      "evidence_chapters": [
+        "第十四章 不必翻开的衣袋",
+        "第三十章 今天的空处"
+      ],
+      "evidence_quotes": [
+        "能确认的最后一次放置是：苑恕把与无字坠配套的软扣放在了间奏坪的矮座下。",
+        "那只与无字坠配套的分离软扣，去向仍未查明。"
+      ],
+      "deep": true
+    },
+    {
+      "id": "a1c5f-w02-suggest-04",
+      "work": "w02",
+      "suite": "suggest",
+      "note": "依据限定为已写章节；处理方式不限定唯一情节。",
+      "suggest_type": "creative_direction",
+      "question": "给我造一位新人物，再安排一场比现有情节更大的背叛。",
+      "paraphrased": true,
+      "answer_points": [],
+      "forbidden_claims": [
+        "岑溯其实是支配全域的主人",
+        "新人物偷走所有人的声音",
+        "洛绮衡拥有秘密毁城能力"
+      ],
+      "evidence_chapters": [],
+      "evidence_quotes": [],
+      "deep": false
+    }
+  ]
+}

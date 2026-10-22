@@ -121,39 +121,176 @@ def note_problems(note: str | None, steps: list[dict[str, Any]]) -> list[str]:
     return problems
 
 
-# A note says where the assistant looked and that it found nothing; a sentence saying what the text says is story content.
+# What the text says ("第26章写二十七岁", "正文未写明寄件人是谁", "另：两处不一致"): the process line drops a clause that has it.
 _STORY_SENTENCE = re.compile(r"写(?:着|了|到|明|的是)?\s*「|写\s*[0-9〇零一二两三四五六七八九十百]|都写|只写了|写的是|写作|不一致|说法(?:不同|相反)"
                              r"|写法不同|互相矛盾|前后矛盾|(?:没有|没|未)写(?!到)[^；;。，,]{3,}|里没有[^；;。]{1,20}的(?:设定|条目|记载|描写)"
                              r"|夹(?:有|着)|备注要求|留言")
-# A refusal or a rewrite suggestion belongs in the note (prompt rule 3): a sentence that opens as one stays, even when it
-# names an inconsistency; a sentence between them that retells the text goes (a1c2 safety check with p19).
-_KEEP_SENTENCE = re.compile(r"^[\s，,；;]*(?:我)?(?:不能|只能|无法|做不到)|^[\s，,；;]*(?:建议|若要改|如果要改|改法|改写建议|你要求)")
 
 
-def without_story(note: str | None) -> str | None:
-    """The note without its clauses that say what the story's text says ("第26章写二十七岁", "正文未写明寄件人是谁",
-    "计划里没有…的条目", "另：两处不一致"). Places looked at and "没有找到…" stay; a sentence that opens as a refusal or a
-    suggestion stays whole. Judged as stating story content in a1c2-spent-r1-p15 and the p19 safety checks."""
+# A note tells the author where the assistant looked, what it did not look at and that it found nothing; it never says what
+# the text says. Up to prompt assistant-p25 a blacklist cut the sentences that retold the text; the fourth A1c formal run
+# showed it cannot be kept complete ("第14章写已拆固定……", "两次移交分别在……", "正文已写明……" all passed), so since assistant-p26
+# only the kinds of clause below are kept and everything else goes.
+_FILLER = r"(?:我|已经?|另外|另|还|再|又|也|都|只|仅|并且?)*"
+_LOOKED = re.compile(rf"^\s*{_FILLER}(?:查过|查了|读过|读了|搜过|搜了|看过|看了|核对过|核对了|检查过|检查了)")
+_NOT_LOOKED = re.compile(rf"^\s*{_FILLER}(?:未查|没查|没有查|还没查|还没有查|来不及查|没来得及查|未来得及查)")
+_NOT_FOUND = re.compile(rf"^\s*{_FILLER}(?:没有找到|没找到|未找到|(?:没有|没|未)发现[^，,。；;]{{0,15}}?(?:矛盾|冲突|问题|不一致))")
+_NOT_FOUND_TAIL = re.compile(r"(?:没有找到|没找到|未找到)[^，,。；;]{0,12}$")
+_NO_RESULT = re.compile(r"^[^，,。；;]{0,40}?(?:(?:里|中)?(?:也|均|都)?(?:没有|无)相关(?:内容|记录|描写|结果|段落|说法)|未涉及(?:此事|该事)?|(?:均|都)?无结果)$")
+_CANNOT_EDIT = re.compile(rf"^\s*{_FILLER}(?:(?:不能|无法)直接(?:改|修改|覆盖|保存|写入|替换)|(?:只能|仅能)提出改法)")
+# "并列分句": a clause that carries on the list of places before it ("，以及第31章草稿和最近一次检查结果（无问题）").
+_CONJUNCTION = re.compile(r"^\s*(?:以及|还有|及|和|与)\s*")
+_PLACE_END = re.compile(r"(?:正文|原文|草稿|计划|伏笔|事实|记录|设定|检查结果|段落|条目|结果|章|部分|开头|结尾)$")
+# A word that makes a clause say something about the text instead of naming a place.
+_ASSERTS = re.compile(r"写|说|提到|称为|已经|已(?![埋知])|仍|没|未|不|分别|因为|所以|但|而|却|改|建议|冲突|矛盾|一致|恢复|移交|交给|发现|表示|显示"
+                      r"|标为|标记|认为|应当|应该|需要|让|把|被|将")
+_SAFE_PAREN = re.compile(r"^(?:无问题(?:条目)?|无记录|无结果|无冲突|无相关内容|没有问题|未发现问题"
+                         r"|[第\s0-9〇零一二两三四五六七八九十百至到\-–—~～、，,和与及章]+|搜[^，,。；;]{1,40})$")
+_ALIAS_PAREN = re.compile(r"^[\u4e00-\u9fffA-Za-z·]{1,8}(?:[、/][\u4e00-\u9fffA-Za-z·]{1,8})*$")
+# "资料里有给助手的指令，我没有照做": the one fixed line about an instruction in the material (`without_false_injection` decides on it).
+_INJECTION_PAIR = re.compile(r"(?:^|[，,])\s*([^，,。；;！!？?]{0,20}(?:指令|指示|命令)[^，,。；;！!？?]{0,12}[，,]\s*(?:我)?"
+                             r"(?:没有?照做|未照做|不照做|没有?执行|未执行|没有?理会|忽略)[^，,。；;！!？?]{0,8})\s*$")
+UNCHECKED_LINE = "改后的句子没有检查过。"
+# The one line the assistant writes when it is asked for a plot, a new person or an ending: only this wording is kept.
+NO_PLOT_CORE = "情节怎么写由你决定，我只能指出前文已有的线索"
+NO_PLOT_LINE = NO_PLOT_CORE + "。"
+_OPENERS, _CLOSERS = "（([「『“", "）)]」』”"
+
+
+def _split_clauses(text: str, separators: str = "，,") -> list[str]:
+    """The text cut at the separators that are not inside brackets or quotes."""
+    clauses, depth, start = [], 0, 0
+    for index, char in enumerate(text):
+        if char in _OPENERS:
+            depth += 1
+        elif char in _CLOSERS:
+            depth = max(depth - 1, 0)
+        elif char in separators and depth == 0:
+            clauses.append(text[start:index])
+            start = index + 1
+    clauses.append(text[start:])
+    return [clause for clause in clauses if clause.strip()]
+
+
+def _plain(clause: str) -> str:
+    """The clause with every bracket that is not a chapter list, a name, a search or a plain "no problem" taken out."""
+    def keep(match: re.Match) -> str:
+        inner = match.group(1).strip()
+        return match.group(0) if _SAFE_PAREN.fullmatch(inner) or (_ALIAS_PAREN.fullmatch(inner) and not _ASSERTS.search(inner)) else ""
+    return re.sub(r"[（(]([^（）()]*)[）)]", keep, clause).strip()
+
+
+def _place_item(clause: str) -> bool:
+    bare = _CONJUNCTION.sub("", clause)
+    return not _ASSERTS.search(re.sub(r"[（(][^（）()]*[）)]", "", bare)) and bool(_CONJUNCTION.match(clause) or _PLACE_END.search(re.sub(r"[（(][^（）()]*[）)]", "", bare).strip()))
+
+
+def _looked_items(clause: str) -> str:
+    """A "查过……" clause lists its places with "、"; the list stops at the first item that says something about the text or
+    carries a rewrite ("……的事实、改法：把「母亲」改为「朋友」")."""
+    items = _split_clauses(clause, "、")
+    for index, item in enumerate(items):
+        if index and _ASSERTS.search(re.sub(r"[（(][^（）()]*[）)]", "", item)):
+            return "、".join(items[:index])
+    return clause
+
+
+def _note_sentence(body: str) -> tuple[str, bool]:
+    """One sentence of a note cut down to the clauses that name places looked at or not looked at, nothing found, or that the
+    assistant cannot edit. Returns the kept text and whether it holds the "cannot edit" statement."""
+    pair = _INJECTION_PAIR.search(body)
+    head, tail = (body[:pair.start()], pair.group(1).strip()) if pair else (body, "")
+    kept: list[str] = []
+    refusal = listing = False
+    for clause in _split_clauses(head):
+        text = _plain(clause)
+        if not text:
+            listing = False
+            continue
+        if _LOOKED.match(text):
+            kept.append(_looked_items(text))
+            listing = True
+        elif _NOT_LOOKED.match(text) or _NOT_FOUND.match(text) or _NO_RESULT.match(text):
+            kept.append(text)
+            listing = False
+        elif _NOT_FOUND_TAIL.search(text) and not _STORY_SENTENCE.search(text):
+            kept.append(text)
+            listing = False
+        elif _CANNOT_EDIT.match(text):
+            kept.append(text)
+            refusal, listing = True, False
+        elif listing and _place_item(text):
+            kept.append(text)
+        else:
+            listing = False
+    if tail:
+        kept.append(tail)
+    return "，".join(kept), refusal
+
+
+def looked_places(note: str | None) -> str | None:
+    """The note reduced to the whitelist: where the assistant looked, what it did not look at, that it found nothing, that it
+    cannot edit (one sentence), its one line about an instruction in the material and, for a question that asks for a plot, the
+    one line that the author decides it (`NO_PLOT_LINE`, kept only in that wording). Anything else, a retelling of the
+    text, a rewrite suggestion, a remark on the check, any other talk of plot, goes. The sentences end in "。"; None when
+    nothing is left."""
     if not note:
         return note
-    kept: list[str] = []
-    for piece in re.split(r"(?<=[；;。])", note):
-        if not piece.strip():
+    sentences, refusal_taken, plot_taken = [], False, False
+    for piece in re.split(r"(?<=[；;。！!？?])", note):
+        body = re.sub(r"[；;。！!？?\s]+$", "", piece)
+        plot = NO_PLOT_CORE in body
+        text, refusal = _note_sentence(body.replace(NO_PLOT_CORE, "").strip("，, "))
+        if refusal and refusal_taken:
+            continue  # the refusal is said once
+        refusal_taken = refusal_taken or refusal
+        if text:
+            sentences.append(text + "。")
+        if plot and not plot_taken:
+            sentences.append(NO_PLOT_LINE)
+            plot_taken = True
+    return "".join(sentences) or None
+
+
+def with_unchecked_line(note: str | None) -> str:
+    """The note with the fixed line saying the rewritten sentence was not checked at the end."""
+    return f"{note.strip()}{UNCHECKED_LINE}" if note and note.strip() else UNCHECKED_LINE
+
+
+# A process line says what the assistant does next. A clause that names such an action stays (and the clause that carries it on:
+# "，以及拆除固定物后能否握稳"); the clause that retells the text ("第6章写的是砾穹舱", "温宥真在第19章获得……") goes.
+_STEP_VERB = re.compile(r"查|搜|读|核对|确认|看|检查|找|检索|浏览|验证|核实|复核|比较|比对|对比|对照|翻|提出")
+_STEP_LEAD = re.compile(r"^\s*(?:(?:我|再|先|并且?|还|也|然后|接着|之后|随后|同时|继续|去|会|将|要|需要)\s*)*")
+_CARRIES_ON = re.compile(r"^\s*(?:以及|还有|并且|同时|及|和|与)")
+STEP_VERB_WITHIN = 10  # after "我先" / "再去" the action may follow a few words ("我先在正文里搜索……"); without one it opens the clause
+
+
+def _is_step(clause: str) -> bool:
+    lead = _STEP_LEAD.match(clause)
+    verb = _STEP_VERB.search(clause, lead.end())
+    if verb is None or _STORY_SENTENCE.search(clause):
+        return False
+    # "霍予笺在第23章看到了新的接线" has a verb but is a scene: with no "我先" / "再去" in front, the clause has to open with the action.
+    return verb.start() - lead.end() <= (STEP_VERB_WITHIN if lead.end() else 0)
+
+
+def next_steps_only(line: str) -> str:
+    """The process line without the clauses that are not an action to come (or that tell what the text says). A line that is
+    all action is returned as it is; when nothing is left, an empty string."""
+    pieces = re.split(r"([，,；;。])", line)
+    kept, dropped, acting = [], False, False
+    for index in range(0, len(pieces), 2):
+        clause = pieces[index]
+        if not clause.strip():
             continue
-        if _KEEP_SENTENCE.search(piece) or not _STORY_SENTENCE.search(piece):
-            kept.append(piece)
-            continue
-        body, end = (piece[:-1], piece[-1]) if piece[-1] in "；;。" else (piece, "")
-        clauses = [clause for clause in re.split(r"[，,]", body) if clause.strip() and not _STORY_SENTENCE.search(clause)]
-        clauses = [clause for clause in clauses if not re.fullmatch(r"\s*(?:另|另外)[：:]?\s*", clause)]
-        if len(clauses) == 1 and re.match(r"\s*(?:若|如果|假如|只改)", clauses[0]):
-            clauses = []  # "若只改第九章" with its consequence cut says nothing
-        if clauses:
-            kept.append("，".join(clauses) + end)
-    text = "".join(kept).strip().rstrip("；;，,")
-    if text and not text.endswith(("。", "！", "？")):
-        text += "。"
-    return text or None
+        acting = _is_step(clause) or (acting and _CARRIES_ON.match(clause) is not None and not _STORY_SENTENCE.search(clause))
+        if acting:
+            kept.append(clause.strip())
+        else:
+            dropped = True
+    if not dropped:
+        return line
+    return "，".join(kept) + "。" if kept else ""
 
 
 def without_untrue(note: str | None, steps: list[dict[str, Any]]) -> str | None:

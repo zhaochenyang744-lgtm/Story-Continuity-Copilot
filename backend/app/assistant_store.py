@@ -133,6 +133,15 @@ class AssistantStore:
         row = self.row(task_id)
         return row["status"] if row else None
 
+    def follow_up_depth(self, c: sqlite3.Connection, task_id: str | None) -> int:
+        """How many follow-ups lie behind a task: 0 for a question that follows nothing, 1 for a first follow-up, 2 for a second."""
+        depth = 0
+        while task_id and depth < 50:
+            row = c.execute("SELECT follow_up_of FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()
+            task_id = row["follow_up_of"] if row else None
+            depth += 1 if task_id else 0
+        return depth
+
     def history(self, c: sqlite3.Connection, task_id: str | None, depth: int = 2) -> list[tuple[str, str]]:
         """The question and the final answer text of the task a follow-up continues, oldest first, at most `depth` turns."""
         turns: list[tuple[str, str]] = []
@@ -266,7 +275,10 @@ class AssistantStore:
                  for step in c.execute("SELECT * FROM assistant_steps WHERE task_id=? AND kind!='answer' ORDER BY ordinal", (row["id"],)).fetchall()]
         feedback = c.execute("SELECT verdict,reasons_json FROM assistant_feedback WHERE task_id=? AND user_id=?", (row["id"], viewer_id or row["user_id"])).fetchone()
         return {"id": row["id"], "kind": row["kind"], "status": row["status"], "question": task_input["question"], "context": task_input.get("context") or {},
-                "follow_up_of": row["follow_up_of"], "regenerated_from": row["regenerated_from"], "edited_from": row["edited_from"],
+                "follow_up_of": row["follow_up_of"], "follow_up_depth": self.follow_up_depth(c, row["id"]),
+                "routed": bool(task_input.get("routed")), "route_source": task_input.get("route_source") if task_input.get("routed") else None,
+                "routed_input": task_input.get("input") if task_input.get("routed") else None,
+                "regenerated_from": row["regenerated_from"], "edited_from": row["edited_from"],
                 "steps": steps, "answer": answer, "sources": sources,
                 "out_of_scope_text": OUT_OF_SCOPE_TEXT if answer and answer.get("status") == "out_of_scope" else None,
                 "coverage": json.loads(row["coverage_json"]) if row["coverage_json"] else None,

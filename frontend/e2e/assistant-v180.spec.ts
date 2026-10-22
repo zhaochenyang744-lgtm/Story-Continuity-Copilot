@@ -525,15 +525,16 @@ test.describe("助手：输入框", () => {
     await ask(page, "她手里还有别的东西吗？");
     expect(bodyOf(await request).context).toMatchObject({ page: "writing", chapter_number: 3, character_id: character.id });
     await finished(page);
-    await expect(thread(page).locator(".a-chip")).toHaveCount(0);
-    // 某条检查结果 → a tag 「第 1 处」, and the question goes as a request for a change to that finding.
+    // The tags went with the question; what stands in the box now is the answer just given, which the next question follows.
+    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    // 某条检查结果 → a tag 「第 1 处」, and the question goes as a request for a change to that finding (the box's 自动 judges it).
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某条检查结果/ }).click();
     await thread(page).getByRole("menuitem", { name: new RegExp(`^1`) }).click();
     await expect(chip(page, "第 1 处")).toBeVisible();
     const fix = taskPost(page);
     await ask(page, "保留苏岑的视角");
-    expect(bodyOf(await fix)).toEqual({ kind: "fix_issue", question: "保留苏岑的视角", context: { page: "writing", issue_id: issue.id } });
+    expect(bodyOf(await fix)).toEqual({ kind: "fix_issue", question: "保留苏岑的视角", context: { page: "writing", issue_id: issue.id }, routed: true, route_source: "model", routed_input: "保留苏岑的视角" });
   });
 
   test("没有现成的检查结果时，菜单里的「某条检查结果」不可用或不出现", async ({ page }) => {
@@ -546,12 +547,12 @@ test.describe("助手：输入框", () => {
     await expect(entry).toHaveAttribute("title", "示例结果不能交给助手，先再检查一次");
   });
 
-  test("模式：问作品 / 写前回顾 / 查前文矛盾；写前回顾可以不写字；查前文矛盾要先选中一段", async ({ page }) => {
+  test("模式：自动 / 问作品 / 写前回顾 / 查前文矛盾；写前回顾可以不写字；查前文矛盾要先选中一段", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     const mode = thread(page).getByRole("button", { name: /^这次做什么：/ });
     await mode.click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["问作品", "写前回顾", "查前文矛盾"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾"]);
     await page.keyboard.press("Escape");
     // 写前回顾: nothing to write; the placeholder and the cost line follow; sending starts one.
     await chooseMode(page, "写前回顾");
@@ -561,7 +562,7 @@ test.describe("助手：输入框", () => {
     await send(page).click();
     expect(bodyOf(await request)).toEqual({ kind: "recap", context: { page: "writing" } });
     await finished(page);
-    await expect(thread(page).getByRole("button", { name: "这次做什么：问作品" })).toBeVisible();
+    await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeVisible();
     // 查前文矛盾: no picked passage, no sending; with one, it can go.
     await chooseMode(page, "查前文矛盾");
     await page.evaluate(() => window.scrollTo(0, 0));
@@ -577,14 +578,16 @@ test.describe("助手：输入框", () => {
     await send(page).click();
     expect(bodyOf(await request)).toMatchObject({ kind: "ask", question: "这段和前文有没有矛盾？", context: { page: "writing", selection: picked, intent: "check_selection" } });
     await finished(page, 2);
-    await expect(thread(page).getByRole("button", { name: "这次做什么：问作品" })).toBeVisible();
+    await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeVisible();
   });
 
-  test("其他页的抽屉只有「问作品」；访客在写作页没有「查前文矛盾」", async ({ page, browser }) => {
+  test("其他页的抽屉只有「自动」和「问作品」；访客在写作页没有「查前文矛盾」", async ({ page, browser }) => {
     const id = await setup(page);
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
-    await expect(thread(page).getByRole("button", { name: "这次做什么：问作品" })).toBeDisabled();
+    await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeEnabled();
+    await thread(page).getByRole("button", { name: /^这次做什么：/ }).click();
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
@@ -592,7 +595,7 @@ test.describe("助手：输入框", () => {
     await openTab(visitor, sample, "workspace");
     await openAssistantTab(visitor);
     await thread(visitor).getByRole("button", { name: /^这次做什么：/ }).click();
-    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["问作品", "写前回顾"]);
+    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾"]);
     await visitor.close();
   });
 
@@ -623,7 +626,9 @@ test.describe("助手：输入框", () => {
     // While it works: a black stop key; the next question can be written but not sent.
     const stop = stopButton(page);
     await expect(stop).toBeVisible();
-    expect(await stop.evaluate((node) => getComputedStyle(node).backgroundColor)).toBe("rgb(17, 17, 17)");
+    // Black at rest, a shade lighter under the pointer (which is where 发送 was clicked): the judgement that now precedes a task gives
+    // the browser time to notice the key under it, so the shade is read either way.
+    expect(["rgb(17, 17, 17)", "rgb(51, 51, 51)"]).toContain(await stop.evaluate((node) => getComputedStyle(node).backgroundColor));
     await box(page).fill("再问一个");
     await expect(thread(page).locator(".cx-note")).toHaveText("上一个问题还在查");
     await box(page).press("Enter");
@@ -728,18 +733,19 @@ test.describe("助手：提问和空对话", () => {
     await expect(box(page)).toHaveValue("先写点别的");
   });
 
-  test("空对话：三条按模板生成的建议问题，点一下就问；有了对话就不再出现；写前回顾按钮在下面", async ({ page }) => {
+  test("空对话：四条按模板生成的建议问题（最后一条请助手出主意），点一下就问；有了对话就不再出现；写前回顾按钮在下面", async ({ page }) => {
     const id = await setup(page);
     await openAssistantTab(page);
     const list = thread(page).getByRole("list", { name: "可以先问这些" });
-    await expect(list.getByRole("listitem")).toHaveCount(3);
+    await expect(list.getByRole("listitem")).toHaveCount(4);
     await expect(list.getByRole("listitem").nth(0)).toContainText("第 10 章结尾写到哪了？");
     await expect(list.getByRole("listitem").nth(0)).toContainText("接着写之前");
     await expect(list.getByRole("listitem").nth(1)).toContainText(/现在知道些什么？/);
     await expect(list.getByRole("listitem").nth(1)).toContainText(/草稿里出现 \d+ 次/);
     await expect(list.getByRole("listitem").nth(2)).toContainText(/上一次出场在做什么？/);
+    await expect(list.getByRole("listitem").nth(3)).toContainText("有哪些伏笔还没收？");
     // Most often first: the counts go down.
-    const counts = (await list.getByRole("listitem").allInnerTexts()).slice(1).map((text) => Number(text.match(/出现 (\d+) 次/)![1]));
+    const counts = (await list.getByRole("listitem").allInnerTexts()).slice(1, 3).map((text) => Number(text.match(/出现 (\d+) 次/)![1]));
     expect(counts[0]).toBeGreaterThanOrEqual(counts[1]);
     await expect(thread(page).getByRole("button", { name: "写前回顾", exact: true })).toBeVisible();
     const request = taskPost(page);
@@ -767,7 +773,7 @@ test.describe("助手：提问和空对话", () => {
     await openAssistantTab(visitor);
     const list = thread(visitor).getByRole("list", { name: "可以先问这些" });
     // The same three as an author's own, counted in the sample's draft.
-    await expect(list.getByRole("listitem")).toHaveText([/^第 10 章结尾写到哪了？/, /现在知道些什么？.*草稿里出现 \d+ 次/, /上一次出场在做什么？.*草稿里出现 \d+ 次/]);
+    await expect(list.getByRole("listitem")).toHaveText([/^第 10 章结尾写到哪了？/, /现在知道些什么？.*草稿里出现 \d+ 次/, /上一次出场在做什么？.*草稿里出现 \d+ 次/, /^有哪些伏笔还没收？/]);
     await visitor.close();
   });
 

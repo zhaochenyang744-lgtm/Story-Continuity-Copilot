@@ -12,6 +12,21 @@ from .engine import ContinuityEngine
 from .provider import ProviderDispatchDenied
 
 
+CONFLICT_NATURES = ("confirmed_conflict", "possible_conflict")
+SAME_PASSAGE_MIN_CHARS = 4
+
+
+def squeeze(text: str) -> str:
+    return re.sub(r"[\W_]+", "", text or "")
+
+
+def same_passage(first: str, second: str) -> bool:
+    """Whether two texts are the same sentence for the check: with spaces and punctuation taken out, one holds the other and the
+    shorter one has at least four characters."""
+    short, long = sorted((squeeze(first), squeeze(second)), key=len)
+    return len(short) >= SAME_PASSAGE_MIN_CHARS and short in long
+
+
 def check_after_text(after: Any) -> None:
     if not isinstance(after, str) or not after.strip():
         raise ToolError("proposal_after_missing")
@@ -80,10 +95,14 @@ def propose(ctx: ToolContext, args: dict) -> Outcome:
             if before and before not in written["body"]:
                 raise ToolError("proposal_anchor_not_found")
             before = before or ""
+        if any(same_passage(after, sentence) for found in ctx.checks for sentence in found["conflicts"]):
+            # The check already found a conflict in this sentence (v1.9.0): the author is not shown it.
+            raise ToolError("proposal_after_failed_check")
     with ctx.db.connection() as c:
         c.execute("BEGIN IMMEDIATE")
         held, last = c.execute("SELECT COUNT(*),COALESCE(MAX(ordinal),0) FROM assistant_proposals WHERE task_id=?", (ctx.task["id"],)).fetchone()
-        ordinal = last + 1
+        # A number that was withdrawn is not handed out again: an answer that still speaks of "P2" must not mean another proposal.
+        ordinal = max([last, *(int(item["label"][1:]) for item in ctx.withdrawn)]) + 1
         if held >= 3:
             raise ToolError("proposal_limit_exceeded")
         c.execute("INSERT INTO assistant_proposals(id,task_id,ordinal,kind,target,chapter_number,before,after,rationale,"
@@ -91,6 +110,38 @@ def propose(ctx: ToolContext, args: dict) -> Outcome:
                   (f"proposal-{uuid.uuid4()}", ctx.task["id"], ordinal, kind, "chapter" if kind == "add_setup" else "draft",
                    chapter, before, after, rationale, ctx.task["draft_id"], ctx.task["draft_revision"], "proposed", utcnow()))
     return Outcome({"proposal": f"P{ordinal}"}, args, 1)
+
+
+def withdraw_failed(ctx: ToolContext, conflicts: list[str]) -> list[str]:
+    """Delete the proposed edit_this and add_setup whose new sentence is one the check found a conflict in; returns their labels."""
+    if not conflicts:
+        return []
+    with ctx.db.connection() as c:
+        c.execute("BEGIN IMMEDIATE")
+        rows = c.execute("SELECT id,ordinal,after FROM assistant_proposals WHERE task_id=? AND kind IN ('edit_this','add_setup') "
+                         "ORDER BY ordinal", (ctx.task["id"],)).fetchall()
+        gone = [row for row in rows if any(same_passage(row["after"], sentence) for sentence in conflicts)]
+        for row in gone:
+            c.execute("DELETE FROM assistant_proposals WHERE id=?", (row["id"],))
+    ctx.withdrawn += [{"label": f"P{row['ordinal']}", "after": row["after"]} for row in gone]
+    return [f"P{row['ordinal']}" for row in gone]
+
+
+def mentions_withdrawn(ctx: ToolContext, text: str) -> list[str]:
+    """The withdrawn proposals a sentence of the answer speaks of: by their number, or by their new sentence."""
+    return [item["label"] for item in ctx.withdrawn
+            if re.search(re.escape(item["label"]) + r"(?![0-9])", text) or same_passage(text, item["after"])]
+
+
+def has_unchecked_edit(ctx: ToolContext) -> bool:
+    """Whether an edit_this left in the list was not covered by a check that found no conflict in it: a check whose text holds
+    its new sentence, and that reported no conflict in that sentence."""
+    with ctx.db.connection() as c:
+        edits = [row["after"] for row in c.execute("SELECT after FROM assistant_proposals WHERE task_id=? AND kind='edit_this'", (ctx.task["id"],))]
+    def covered(after: str) -> bool:
+        return any(squeeze(after) in squeeze(found["text"]) and not any(same_passage(after, sentence) for sentence in found["conflicts"])
+                   for found in ctx.checks)
+    return any(not covered(after) for after in edits)
 
 
 def validate_proposals(ctx: ToolContext) -> list[str]:
@@ -194,5 +245,13 @@ def run_check(ctx: ToolContext, args: dict) -> Outcome:
     if ctx.check is None:
         raise ToolError("tool_not_available")
     result = ctx.check(text)
+    if ctx.task.get("kind") == "fix_issue":
+        # A proposed sentence the check still finds a conflict in is taken back (v1.9.0); only a conflict counts, not thin evidence.
+        conflicts = [issue["sentence"] for issue in result["issues"] if issue.get("nature") in CONFLICT_NATURES and issue.get("sentence")]
+        ctx.checks.append({"text": text, "conflicts": conflicts})
+        withdrawn = withdraw_failed(ctx, conflicts)
+        if withdrawn:
+            result = {**result, "withdrawn": withdrawn,
+                      "message": f"{'、'.join(withdrawn)} 改后仍有矛盾，已撤回。请换一种改法再提出；check_passage 不能再用了。"}
     high = ctx.scope["chapter_number"] - 1 if ctx.scope.get("draft_readable") and ctx.scope.get("chapter_number") else ctx.max_chapter
     return Outcome({"content_kind": "manuscript_text", **result}, {"text": text, "chapter_to": high}, len(result["issues"]))

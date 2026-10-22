@@ -9,6 +9,7 @@ import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
+import { RoutedLine } from "./assistant-route";
 
 /** One entry of the conversation: the answer shown now, the older answers to the same question, and whether the whole question was reworded since. */
 export type Group = { id: string; latest: AssistantTask; older: AssistantTask[]; reworded: boolean };
@@ -111,6 +112,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
         {state.text && <span className={`a-state ${state.tone}`}>{state.text}</span>}
         {running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}
       </div>
+      <RoutedLine task={task} />
       <Steps task={task} locate={handlers.locate} />
       <StoppedNote task={task} visitor={handlers.visitor} />
       {failure && (
@@ -123,7 +125,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
         {!offTopic && <SourceList task={task} locate={handlers.locate} />}
         {!offTopic && <CoverLine task={task} />}
         <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} answer={offTopic ? null : answerBox}
-          followUp={latest && !offTopic ? () => handlers.followUp(task) : null} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace} />
+          followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace} />
       </div>
     </article>
   );

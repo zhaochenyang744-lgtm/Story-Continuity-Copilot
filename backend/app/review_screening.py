@@ -316,6 +316,33 @@ def _shared_with_passages(claim: dict[str, Any]) -> int:
     return len(runs(claim.get("text") or "") & seen)
 
 
+# Wording that asserts a link a passage must state: seeing or hearing first-hand, a measured value, a state that still
+# holds or has held ever since, a cause, a permission, something received from someone. On the spent lf3-lf5 formal
+# sets the non-thinking triage scored three such sentences 1 ("agrees") because the passages named the same people and
+# things, so they were never reviewed (v1.9, 2026-10-20). A marked sentence the triage scored below 2 is raised to 2 with
+# kind gap; it still competes for an escalation place or the sweep, and a thinking review decides.
+LINK_MARKERS = re.compile(
+    r"亲眼|亲耳|目睹|眼看着"
+    r"|(?:测|量|称|算|数)(?:得|出|过|了)[^。，；]{0,12}[零〇一二两三四五六七八九十百千万半\d]"
+    r"|恰好是[零〇一二两三四五六七八九十百千万半\d]"
+    r"|至今|直到现在|直至今|到现在(?:还|仍|都)|如今(?:还|仍)|天天都|始终(?:是|保持|都)|一直(?:都)?(?:保持|是|没)"
+    r"|(?:是|由|因)[^。，；]{1,15}(?:引起|造成|导致)的"
+    r"|(?:得到|获得|取得|拿到)[^。，；]{0,8}(?:许可|批准|同意|授权|准许)|已获准"
+    r"|从[^。，；]{1,10}(?:手中|手里|那里|那儿)(?:收|接|拿|取|领|得)"
+)
+
+
+def raise_link_markers(claims: list[dict[str, Any]], scores: dict[str, int], kinds: dict[str, str]) -> int:
+    """Raise marked claims the triage scored below TRIAGE_ESCALATION_MIN_SCORE to it, kind gap; returns how many."""
+    raised = 0
+    for claim in claims:
+        if scores.get(claim["id"], 0) < TRIAGE_ESCALATION_MIN_SCORE and LINK_MARKERS.search(claim.get("text") or ""):
+            scores[claim["id"]] = TRIAGE_ESCALATION_MIN_SCORE
+            kinds[claim["id"]] = "gap"
+            raised += 1
+    return raised
+
+
 def triage_escalations(claims: list[dict[str, Any]], scores: dict[str, int], kinds: dict[str, str] | None = None) -> set[str]:
     """Claims scored TRIAGE_ESCALATION_MIN_SCORE or more, at most TRIAGE_ESCALATION_CAP per context, plus up to
     TRIAGE_GAP_SLOTS more: those the triage called a missing link (kind gap) first, then the next highest.
@@ -405,13 +432,15 @@ def bind_passage_evidence(issues: list[dict[str, Any]], claims: list[dict[str, A
 
 
 def retrieval_traces(claims: list[dict[str, Any]], evidence: dict[str, list[dict[str, Any]]],
-                     flags: dict[str, Any], screened: bool, reviews: dict[str, str] | None = None) -> list[dict[str, Any]]:
+                     flags: dict[str, Any], screened: bool, reviews: dict[str, str] | None = None,
+                     triage: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
     """Every claim's screen outcome, review path and returned SourceSpan ids in rank order.
 
     screen is "flagged" or "passed" when the screen ran, "unscreened" for a short draft reviewed
     whole. review is "triage" (passed by the triage), "escalated" (flagged by the triage, then a
     thinking review) or "deep" (thinking review only), absent when the claim was not reviewed. A claim that was not
-    reviewed (passed, or with no earlier passage) returns no spans.
+    reviewed (passed, or with no earlier passage) returns no spans. With `triage`, a triaged claim also carries its
+    triage score, kind and outcome (escalated, swept or passed).
     """
     def state(claim_id: str) -> str:
         return ("flagged" if claim_id in flags else "passed") if screened else "unscreened"
@@ -421,5 +450,7 @@ def retrieval_traces(claims: list[dict[str, Any]], evidence: dict[str, list[dict
                "returned_span_ids": list(dict.fromkeys(span["source_span_id"] for span in evidence.get(claim["id"], [])))}
         if (reviews or {}).get(claim["id"]):
             row["review"] = reviews[claim["id"]]
+        if (triage or {}).get(claim["id"]):
+            row["triage"] = triage[claim["id"]]
         rows.append(row)
     return rows

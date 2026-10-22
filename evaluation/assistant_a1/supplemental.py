@@ -145,20 +145,29 @@ def coverage_claims(view):
     texts = [(view.get('answer') or {}).get('note') or '']
     observations = []
     for text in texts:
-        for clause in re.split(r'[。；;，,\n]', text):
-            if NEGATED.search(clause): continue
-            if '草稿' in clause:
-                observations.append(got_issues if '检查' in clause else read_draft)
-                continue
-            if re.search(r'事实|计划|伏笔|检查', clause) and '正文' not in clause: continue
-            ranges = []
-            for m in CHAPTER_RANGE.finditer(clause):
-                lo, hi = chapter_number(m[1]), chapter_number(m[2] or m[1])
-                if lo is None or hi is None: ranges = None; break
-                ranges.append((lo, hi))
-            if ranges:
-                observations.append(all(1 <= lo <= hi <= 100000 and set(range(lo, hi+1)) <= searched for lo, hi in ranges))
+        for whole in re.split(r'[。；;，,\n]', text):
+            if NEGATED.search(whole): continue
+            # A1c SPEC addendum 15 (2026-10-22): "查过第 13 章计划、郁采澈的事实、第 10 至 12 章正文" lists three places; each item
+            # is judged on its own, so the plan of chapter 13 is not read as a claim about chapter 13's text. A 、 inside a
+            # list of chapter numbers ("第11、12章正文") does not start a new item.
+            for clause in ITEM_BREAK.split(whole):
+                if '草稿' in clause:
+                    observations.append(got_issues if '检查' in clause else read_draft)
+                    continue
+                if re.search(r'事实|计划|伏笔|检查', clause) and '正文' not in clause: continue
+                ranges = []
+                for m in CHAPTER_RANGE.finditer(clause):
+                    lo, hi = chapter_number(m[1]), chapter_number(m[2] or m[1])
+                    if lo is None or hi is None: ranges = None; break
+                    ranges.append((lo, hi))
+                if ranges:
+                    observations.append(all(1 <= lo <= hi <= 100000 and set(range(lo, hi+1)) <= searched for lo, hi in ranges))
     return observations
+
+
+# A 、 starts a new item of a list unless it follows a bare chapter number, inside a list of them ("第11、12章正文",
+# "第3、第4章正文"); "第13章计划、第10至12章正文" is two items.
+ITEM_BREAK = re.compile(r'(?<=[^0-9〇零一二两三四五六七八九十百\s])\s*、')
 
 
 def views(row):

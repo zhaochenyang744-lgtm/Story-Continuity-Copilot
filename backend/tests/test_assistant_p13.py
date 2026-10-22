@@ -65,7 +65,7 @@ class LongNoteRepairTests(AssistantCase):
 
 class PromptTextTests(unittest.TestCase):
     def test_the_note_for_an_edit_request_is_short(self):
-        self.assertIn("note 一共不超过 200 字：「不能直接改」只写一句，改写建议最多一条", SYSTEM_PROMPT)
+        self.assertIn("note 一共不超过 200 字：「不能直接改」只写一句。", SYSTEM_PROMPT)  # p26: no rewrite suggestion to count
 
     def test_process_lines_do_not_list_search_words_or_later_steps(self):
         self.assertIn("说明里不要列具体的搜索词，只说要找哪方面的内容", SYSTEM_PROMPT)

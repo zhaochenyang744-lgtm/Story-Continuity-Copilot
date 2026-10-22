@@ -353,40 +353,11 @@ export type ForeshadowCandidate = {
   decision: { decision:string; created_record_id:string|null; after:ForeshadowRecord|null } | null;
   decided_at?: string | null;
 };
-export type RevisionTaskPriority = "high" | "medium" | "low";
-export type RevisionPlanCandidate = {
-  id: string;
-  issue_id: string;
-  title: string;
-  instruction: string;
-  priority: RevisionTaskPriority;
-  evidence: AnalysisSource[];
-  decision_status: "pending" | "accepted" | "edited" | "rejected";
-  decision: { decision:string; created_task_id:string|null; after:RevisionTask|null } | null;
-  decided_at?: string | null;
-};
-export type RevisionTask = {
-  id: string;
-  project_id: string;
-  source_run_id: string;
-  candidate_id: string;
-  issue_id: string;
-  title: string;
-  instruction: string;
-  priority: RevisionTaskPriority;
-  position: number;
-  status: "todo" | "in_progress" | "completed";
-  version: number;
-  evidence: AnalysisSource[];
-  created_at: string;
-  updated_at: string;
-};
-export type RevisionTaskSnapshot = { project_id:string; task_version:number; tasks:RevisionTask[]; item?:RevisionTask };
 export type WritingAnalysisRun = {
   run_id: string;
   project_id: string;
-  run_type: "context_brief" | "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan" | "revision_plan";
-  analysis_type: "context_brief" | "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan" | "revision_plan";
+  run_type: "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan";
+  analysis_type: "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan";
   status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
   stage: string;
   draft_revision: number;
@@ -431,7 +402,7 @@ export type WritingAnalysisRun = {
     question?: string;
     scope?: ("confirmed"|"written"|"planned")[];
     findings?: { layer:"confirmed"|"written"|"planned"; stance:"supports"|"contradicts"|"context"; text:string; evidence:AnalysisSource[] }[];
-    candidates?: (ForeshadowCandidate | RevisionPlanCandidate)[];
+    candidates?: ForeshadowCandidate[];
   };
 };
 export type CharacterAliasSnapshot = {
@@ -524,6 +495,9 @@ export type SourceChangeSet = { id:string; project_id:string; base_source_revisi
 
 // The built-in assistant (v1.8.0): what GET/POST /projects/{id}/assistant/tasks answer with.
 export type AssistantPage = "writing" | "chapters" | "materials" | "plan" | "overview";
+/** The uses the input box can tell apart (`POST /assistant/route`), and what it answers. */
+export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "out_of_scope";
+export type AssistantRouting = { route: AssistantRoute; source: "rule" | "model"; unsure: boolean };
 export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection" };
 /** `say` is the model's one line before it works; `tool` an action (grouped with the others of its round in `group`); `repair` a re-written
     answer; `protocol_error` a reminder nobody needs to read. `refs` are the passages a step turned up, cited or not; a failed step has `error_*`. */
@@ -598,6 +572,12 @@ export type AssistantTask = {
   question: string | null;
   context: Partial<AssistantContextInput>;
   follow_up_of: string | null;
+  /** How many follow-ups lie behind this task: 0 for a question of its own, 2 for the last one a chain allows. */
+  follow_up_depth?: number;
+  /** Set when the input box chose the use itself ("自动"): by what, and the author's sentence it was chosen for. */
+  routed?: boolean;
+  route_source?: "rule" | "model" | "manual" | null;
+  routed_input?: string | null;
   /** The task this one answers again, and the question this one is an edit of. */
   regenerated_from?: string | null;
   edited_from?: string | null;

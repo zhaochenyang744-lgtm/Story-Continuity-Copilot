@@ -14,6 +14,13 @@ LIMITS = {"previous_ending": 1, "character_state": 5, "open_threads": 4, "plan":
 # slip, no staff number" was set in chapter 1 and fell behind four newer facts).
 LASTING_PREDICATES = frozenset({"status", "identity", "affiliation", "location", "possession"})
 LASTING_PER_PERSON = 3
+# Among those, the newest change of who someone is or what they can do (a role or qualification gained or given up, an
+# authority, an injury, an illness, a recovery) is always shown, first, and is what the recap must write for that person.
+# Without this the three newest "status" facts were passing moments ("投出赞成票", "答应晚些去") and pushed out "成为有投票权
+# 的临时席位代表", "失声，只能用纸笔沟通", "正式注册学生" (fourth A1c formal and the p26 dev pass on it, 2026-10-21). Only the
+# newest one: putting every such fact first brought back an injury the person had since recovered from (p26 dev, r4).
+STANDING = re.compile("成为|当上|担任|升任|升为|转为|转正|改任|卸任|辞去|辞职|离职|退出|入选|注册|资格|授权|任命|身份|"
+                      "失声|失明|失忆|受伤|伤势|骨折|扭伤|病倒|患病|康复|痊愈|恢复|解除|拆除|拆掉|残疾|去世|不能正常|只能用")
 RECENT_PER_PERSON = 3
 # People active lately: mentions over this many chapters before the draft count (a1c3f-w01-r30, p22 dev check: a
 # person who moved out in chapter 27 of 30 was in no candidate when only chapter 30 counted).
@@ -30,6 +37,7 @@ INSTRUCTION = ("只用下面候选和补查的内容；每条概括必须能从�
                "「出场人物的最新状态」优先写到截止章为止发生过变化的状态：受伤或康复、身份或职务的变化、拿到或交出物件、学会或失去某种能力；写的必须是截止章为止最晚的那一条。"
                "每个人物候选的 facts 里，先列的是一直有效的状态（身份、职务、住处、持有物），后列的是最近的事；截止时仍然成立的身份或处境（例如「仍是临时工，没有正式工号」「已退租，住在姐姐家」「食堂已停业」）比最近一章里做了什么更要紧。"
                "这一栏写会延续到下一章的状态（例如「右膝受伤，还走不快」「仍是见习队员，还没转正」），不写上一章里的一个动作、表情或一句话（例如「把水壶递给同伴」「笑了一下」）。"
+               "草稿里会出场的人物，每人至少写一条截至上一章仍然有效的状态（候选 facts 里排在前面的那几条）；写不下时，换掉一条只写了上一章里某个动作的。"
                "每条只写一件事，挂的出处要直接写着这件事；不要把不同出处里的两件事拼成一条。"
                "「还没收的线」每条同时挂这条线的伏笔记录（record）和埋下它的正文段落（source），照伏笔记录的说法写出悬着的是什么"
                "（伏笔记录是「调解员留下空白便笺的私人理由」，就写「宰颂弥留下空白便笺的私人理由，还没交代」），不要只写那件东西在哪里，也不要写伏笔记录和正文都没写的推测。"
@@ -89,7 +97,23 @@ def open_threads(ctx: ToolContext) -> list[dict]:
     return items
 
 
+def is_standing(fact: dict) -> bool:
+    return bool(STANDING.search(fact.get("value") or ""))
+
+
+def shown_lasting(facts: list[dict], count: int) -> tuple[list[dict], dict | None]:
+    """The `count` lasting facts shown for a person (`facts` newest first), and the newest change of role, qualification or
+    health among all of them, which is shown first even when newer facts would push it out."""
+    standing = next((f for f in facts if is_standing(f)), None)
+    if standing is None:
+        return facts[:count], None
+    return [standing] + [f for f in facts if f is not standing][:count - 1], standing
+
+
 def candidates(ctx: ToolContext) -> dict[str, list]:
+    """The four candidate groups the model is shown. Beside them, `ctx.recap_required` is set to the people the draft brings on
+    stage who have a lasting state, with the R numbers of those facts: the server holds the recap to it (see `validate`), the
+    model is not told who they are."""
     n = ctx.scope["chapter_number"]
     previous = ctx.chapters().get(n - 1)
     endings = [ctx.passage_item(p) for _, _, p in previous["passages"][-2:]] if previous else []
@@ -115,21 +139,32 @@ def candidates(ctx: ToolContext) -> dict[str, list]:
         count, planned, previously = len(pattern.findall(draft)), bool(pattern.search(plan_text)), len(pattern.findall(recent_text))
         if count or planned or previously:
             matched.append(((-count, -planned, -previously), person["name"], names, pattern))
-    states = []
-    for _, name, names, pattern in sorted(matched, key=lambda entry: (entry[0], entry[1]))[:5]:
+    states, required = [], []
+    for (in_draft, *_), name, names, pattern in sorted(matched, key=lambda entry: (entry[0], entry[1]))[:5]:
         facts = [f for f in ctx.memory() if any(w in f["subject"] + "\n" + f["value"] for w in names)
                  and homes.get(f.get("source_span_id"), n) < n]
         facts.sort(key=lambda f: (homes.get(f.get("source_span_id"), 0), f["id"]), reverse=True)
         lasting = [f for f in facts if f.get("memory_type") == "dynamic_state" or f.get("predicate") in LASTING_PREDICATES]
         recent = [f for f in facts if f not in lasting]
-        refs = []
-        for f in lasting[:LASTING_PER_PERSON] + recent[:RECENT_PER_PERSON]:
+        lasting, standing = shown_lasting(lasting, LASTING_PER_PERSON)
+        refs, lasting_refs, standing_refs = [], [], []
+        for lasting_fact, f in [(True, f) for f in lasting] + [(False, f) for f in recent[:RECENT_PER_PERSON]]:
             chapter = homes[f["source_span_id"]]
             text = f["subject"] + "：" + f["value"]
             ref = ctx.registry.register("fact", f["id"], chapter, ctx.title(chapter), None, None, text)
             refs.append({"ref": ref, "chapter": chapter, "text": text})
+            if lasting_fact:
+                lasting_refs.append(ref)
+                if f is standing:
+                    standing_refs.append(ref)
+        # Who must be written: anyone the draft brings on stage who has a lasting state, and anyone among the candidates
+        # whose role, qualification or health changed (a recap missed "失声" for someone the draft does not name, p26 dev).
+        if standing_refs or (lasting_refs and in_draft < 0):
+            # The draft decides who must be written; only the name and the fact numbers (all candidates) are kept.
+            required.append({"name": name, "refs": standing_refs or lasting_refs})
         last = next((p for ch in reversed(list(ctx.chapters().values())) for _, _, p in reversed(ch["passages"]) if pattern.search(p.text)), None)
         states.append({"name": name, "facts": refs, "last_appearance": ctx.passage_item(last) if last else None})
+    ctx.recap_required = required
     return {"previous_ending": endings, "character_state": states, "open_threads": open_threads(ctx),
             "plan": [plan_item(ctx, p) for p in chapter_plans]}
 
@@ -147,9 +182,31 @@ def ending_refs(sources: dict[str, dict], n: int) -> set[str]:
     return {ref for ref, _ in last} | {ref for ref, s in passages if (s.get("end") or 0) == end}
 
 
-def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, internal_id: Any, strict_ending: bool = True):
+def missing_people(arguments: Any, required: list[dict]) -> list[str]:
+    """Return reasons for each required person that no item of `character_state` cites a lasting fact of."""
+    items = arguments.get("character_state") if isinstance(arguments, dict) else None
+    cited = {ref for item in items if isinstance(item, dict) and isinstance(item.get("refs"), list)
+             for ref in item["refs"] if isinstance(ref, str)} if isinstance(items, list) else set()
+    return [f"「出场人物的最新状态」还没写到{person['name']}截至上一章仍然有效的状态（候选里{person['name']}的 facts：{'、'.join(person['refs'])}）。"
+            "请补一条；条数满了，就换掉一条只写了上一章里某个动作的。"
+            for person in required if not cited & set(person["refs"])]
+
+
+def within_limit(items: list, required: list[dict], limit: int) -> list:
+    """At most `limit` items, in their written order: those citing a required person's fact first, then the others."""
+    wanted = {ref for person in required for ref in person["refs"]}
+    def needed(item: Any) -> bool:
+        return isinstance(item, dict) and isinstance(item.get("refs"), list) and bool(wanted & {r for r in item["refs"] if isinstance(r, str)})
+    order = [i for i, item in enumerate(items) if needed(item)] + [i for i, item in enumerate(items) if not needed(item)]
+    chosen = set(order[:limit])
+    return [item for i, item in enumerate(items) if i in chosen]
+
+
+def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, internal_id: Any, strict_ending: bool = True,
+             required: list[dict] | None = None):
     """`strict_ending`: the ending must cite one of the last two passages of the chapter before. Off once the one repair
-    is spent, so a recap is not lost over it."""
+    is spent, so a recap is not lost over it. `required`: the people the recap must write a lasting state of (see
+    `candidates`); it is held to them only while `strict_ending` is on, so the same single repair covers both."""
     errors, sections = [], {}
     ending = ending_refs(sources, n) if strict_ending else None
     if not isinstance(arguments, dict):
@@ -159,6 +216,10 @@ def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, 
         if name == "previous_ending" and isinstance(items, list) and len(items) > 1 and not strict_ending:
             # The one repair is spent: keep the first ending rather than lose the recap (p24 dev check, 2026-10-19).
             items = items[:1]
+        if name == "character_state" and isinstance(items, list) and len(items) > limit and not strict_ending:
+            # The one repair is spent and the model added the people it was sent back for without dropping anyone (p26 dev,
+            # 2026-10-21: six items, the recap was lost). Keep the items about required people first, then the rest in order.
+            items = within_limit(items, required or [], limit)
         if not isinstance(items, list):
             errors.append(f"{name} 必须是数组")
             continue
@@ -199,4 +260,6 @@ def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, 
             if name != "plan" and all(s["kind"] == "plan" for s in cited):
                 errors.append(f"{name} 不能只引用计划")
             sections[name].append({"summary": summary.strip() if isinstance(summary, str) else "", "refs": list(dict.fromkeys(refs))})
+    if strict_ending and required:
+        errors += missing_people(arguments, required)
     return (None, errors) if errors else ({"kind": "recap", "chapter_number": n, "sections": sections}, [])

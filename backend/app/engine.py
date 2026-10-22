@@ -7,7 +7,6 @@ import threading
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 
-from . import brief_citations
 from .internal_ids import strip_internal_ids
 from .memory_contract import CONTROLLED_PREDICATES, normalized_predicate, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
@@ -74,21 +73,12 @@ MEMORY_CANDIDATE_FIELDS=("memory_type","subject","predicate","value","chapter_id
 MEMORY_DELTA_CANDIDATE_FIELDS=("change_kind","affected_memory_id","memory_type","subject","predicate","value","invalidation_reason","chapter_id","source_span_id")
 MEMORY_REPAIRABLE_ERRORS={"top_level_shape_invalid","candidate_collection_invalid","candidate_count_invalid","empty_candidates","candidate_fields_invalid","memory_type_invalid","required_field_type_invalid","required_field_blank","candidate_length_invalid","evidence_unresolvable"}
 ANALYSIS_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v2-draft-claims"
-CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v3-brief-540"
-CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v5-clause-citations"
 PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v4-clause-citations"
 CHANGE_IMPACT_PROMPT_VERSION="change-impact-v3-supplied-targets"
-STORY_QA_PROMPT_VERSION="story-qa-v3-no-prose-ids"
 FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v7-clause-citations"
-REVISION_PLAN_PROMPT_VERSION="revision-plan-v2-clause-citations"
 CHANGE_IMPACT_INSUFFICIENT_SUMMARY="当前证据不足以支持影响结论。"
-STORY_QA_INSUFFICIENT_ANSWER="当前证据不足以回答这个问题。"
 FORESHADOW_INSUFFICIENT_SUMMARY="当前未发现有可采信已写证据的伏笔候选。"
 PLAN_ALIGNMENT_STATUSES={"planned_covered","planned_missing","planned_early","planned_changed","insufficient_evidence"}
-CONTEXT_BRIEF_SECTIONS={"related_plan","confirmed_fact","character_state","world_rule","open_thread","recent_source"}
-STORY_QA_STATUSES={"answered","partial","insufficient","conflicting"}
-STORY_QA_LAYERS={"confirmed","written","planned"}
-REVISION_TASK_PRIORITIES={"high","medium","low"}
 # Predicates (and Memory types) that record where a person stands at a point in the story. The review
 # keeps the latest of each for every person a sentence names (ContinuityEngine._latest_states).
 STATE_PREDICATES=frozenset({"knowledge","status","possession","location","relationship","affiliation"})
@@ -736,7 +726,8 @@ class ContinuityEngine:
             deep=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check" or claim["id"] in escalated]
             paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
             paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
-            return {**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,True,paths),
+            return {**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,True,paths,
+                                                                         summary.pop("triage_detail",None)),
                     "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         if triaged:
             # What the triage flags gets a thinking review; what it passes is settled.
@@ -759,7 +750,8 @@ class ContinuityEngine:
         result={key:value for key,value in result.items() if key!="_results"}
         paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
         paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
-        result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
+        result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths,
+                                                                       summary.pop("triage_detail",None)),
                 "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         return result
 
@@ -933,9 +925,14 @@ class ContinuityEngine:
         if failure is not None:return {"error":failure}
         summary["triage_scores"]={str(score):sum(1 for value in scores.values() if value==score) for score in range(4)}
         kinds={claim_id:kind for found in batch_kinds.values() for claim_id,kind in found.items()}
+        summary["triage_marker_raised"]=screening.raise_link_markers(claims,scores,kinds)
         escalated=screening.triage_escalations(claims,scores,kinds)
         summary["triage_gap_escalated"]=len(escalated-screening.triage_escalations(claims,scores))
         sweep_ids[:]=[claim["id"] for claim in screening.triage_sweep(claims,scores,escalated)]
+        # Per sentence: score, kind and what became of it, for the review trace (read by the long-form harness).
+        summary["triage_detail"]={claim["id"]:{"score":scores.get(claim["id"],0),"kind":kinds.get(claim["id"],"none"),
+                                              "outcome":"escalated" if claim["id"] in escalated else "swept" if claim["id"] in sweep_ids else "passed"}
+                                  for claim in claims}
         return escalated
 
     def _screen(self,claims:list[dict[str,Any]],index:Any,memory:list[dict[str,Any]],chapters:dict[str,int],
@@ -1417,23 +1414,17 @@ class WritingAnalysisEngine:
     def __init__(self,provider:ProviderPort):self.provider=provider
 
     def provenance(self,analysis_type:str)->dict[str,str]:
-        prompt_version=CONTEXT_BRIEF_PROMPT_VERSION if analysis_type=="context_brief" else PLAN_ALIGNMENT_PROMPT_VERSION if analysis_type=="plan_alignment" else CHANGE_IMPACT_PROMPT_VERSION if analysis_type=="change_impact" else STORY_QA_PROMPT_VERSION if analysis_type=="story_qa" else FORESHADOW_SCAN_PROMPT_VERSION if analysis_type=="foreshadow_scan" else REVISION_PLAN_PROMPT_VERSION
+        prompt_version=PLAN_ALIGNMENT_PROMPT_VERSION if analysis_type=="plan_alignment" else CHANGE_IMPACT_PROMPT_VERSION if analysis_type=="change_impact" else FORESHADOW_SCAN_PROMPT_VERSION
         schema_version="writing-analysis-v2-foreshadow-evidence-kind" if analysis_type=="foreshadow_scan" else "writing-analysis-v1"
-        retrieval_version=CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION if analysis_type=="context_brief" else ANALYSIS_RETRIEVAL_METHOD_VERSION
+        retrieval_version=ANALYSIS_RETRIEVAL_METHOD_VERSION
         return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":prompt_version,"schema_version":schema_version,"retrieval_method_version":retrieval_version}
 
     @staticmethod
     def _schema(task:str)->dict[str,Any]:
-        if task=="context_brief":
-            return {"summary":"1-400 chars","summary_sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}],"items":[{"section":"related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source","text":"1-600 chars","sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}]}]}
         if task=="change_impact":
             return {"summary":"1-400 chars","items":[{"area":"chapter|character|world|memory|plan","target_id":"supplied target id","impact":"1-600 chars; analysis only, never replacement prose","evidence":[{"source_type":"author_context|memory_record|source_span|draft_claim|character_record|character_alias|world_record","source_id":"supplied id"}]}]}
-        if task=="story_qa":
-            return {"answer_status":"answered|partial|insufficient|conflicting","answer":"1-800 chars","findings":[{"layer":"confirmed|written|planned","stance":"supports|contradicts|context","text":"1-600 chars","evidence":[{"source_type":"memory_record|source_span|draft_claim|author_context","source_id":"supplied id"}]}]}
         if task=="foreshadow_scan":
             return {"summary":"1-400 chars","candidates":[{"title":"1-120 chars","description":"1-1200 chars","suggested_status":"planted|developing|resolved","evidence":[{"source_type":"source_span|draft_claim","source_id":"supplied id","relation":"planted|developing|resolved","evidence_kind":"current_clue|specific_prior_unresolved_clue|background_only|explicit_payoff"}]}]}
-        if task=="revision_plan":
-            return {"summary":"1-400 chars","candidates":[{"issue_id":"one supplied selected issue id","title":"1-120 chars","instruction":"1-1200 chars; an editing action, never replacement prose","priority":"high|medium|low","evidence":[{"source_type":"issue_evidence","source_id":"evidence id supplied for that issue"}]}]}
         return {"summary":"1-400 chars","items":[{"story_plan_id":"supplied story plan id","status":"planned_covered|planned_missing|planned_early|planned_changed|insufficient_evidence","explanation":"1-600 chars","evidence":[{"source_type":"draft_claim|source_span","source_id":"supplied id"}]}]}
 
     def _request(self,data:dict[str,Any])->dict[str,Any]:
@@ -1457,8 +1448,7 @@ class WritingAnalysisEngine:
         memory={item["id"]:item for item in data["layers"]["confirmed"]["memory_records"]}
         written=data["layers"]["written"]
         identity=data["layers"].get("identity",{});reference=data["layers"].get("reference",{})
-        issue_evidence={item["id"]:item for issue in data.get("selected_issues",[]) for item in issue.get("evidence",[])}
-        return {"author_context":author,"memory_record":memory,"source_span":{item["id"]:item for item in written["source_spans"]},"draft_claim":{item["id"]:item for item in written["draft_claims"]},"character_record":{item["id"]:item for item in identity.get("characters",[])},"character_alias":{item["id"]:item for item in identity.get("aliases",[])},"world_record":{item["id"]:item for item in reference.get("world_entries",[])},"issue_evidence":issue_evidence}
+        return {"author_context":author,"memory_record":memory,"source_span":{item["id"]:item for item in written["source_spans"]},"draft_claim":{item["id"]:item for item in written["draft_claims"]},"character_record":{item["id"]:item for item in identity.get("characters",[])},"character_alias":{item["id"]:item for item in identity.get("aliases",[])},"world_record":{item["id"]:item for item in reference.get("world_entries",[])}}
 
     @classmethod
     def _clean_source(cls,raw:Any,maps:dict[str,dict[str,dict[str,Any]]],allowed:set[str],project_id:str)->dict[str,Any]:
@@ -1474,7 +1464,6 @@ class WritingAnalysisEngine:
         elif source_type=="character_record":label=item["name"];excerpt=" · ".join(filter(None,(item.get("identity"),item.get("current_state"),item.get("knowledge_boundary"))))
         elif source_type=="character_alias":label=f"{item['primary_name']} · 别名";excerpt=item["alias"]
         elif source_type=="world_record":label=item["name"];excerpt=item["summary"]
-        elif source_type=="issue_evidence":label=f"第 {item['chapter_number']} 章 · {item['chapter_title']}";excerpt=item["excerpt"]
         else:label=f"第 {item['chapter_number']} 章 · {item['label']}";excerpt=item["body"]
         if source_type=="author_context":source_path=f"/projects/{project_id}/{item['_source_route']}#plan-{source_id}"
         elif source_type=="memory_record":source_path=f"/projects/{project_id}/memory#memory-{source_id}"
@@ -1482,97 +1471,11 @@ class WritingAnalysisEngine:
         elif source_type=="character_record":source_path=f"/projects/{project_id}/characters?character={source_id}#character-{source_id}"
         elif source_type=="character_alias":source_path=f"/projects/{project_id}/characters?character={item['character_id']}#alias-{source_id}"
         elif source_type=="world_record":source_path=f"/projects/{project_id}/world?world={source_id}#world-{source_id}"
-        elif source_type=="issue_evidence":source_path=item["source_path"]
         else:source_path=f"/projects/{project_id}/sources#span-{source_id}"
         return {"source_type":source_type,"source_id":source_id,"label":str(label)[:160],"excerpt":str(excerpt)[:900],"source_path":source_path}
 
     def validate(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
         maps=self._source_maps(data);task=data["task"];project_id=data["bindings"]["project_id"]
-        if task=="context_brief":
-            if not isinstance(payload,dict) or set(payload)!={"summary","summary_sources","items"} or not isinstance(payload["summary_sources"],list) or not isinstance(payload["items"],list) or not 1<=len(payload["summary_sources"])<=3 or not 1<=len(payload["items"])<=12:raise ValueError("schema_invalid")
-            summary_sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in payload["summary_sources"]]
-            rendered_items=[]
-            draft_claims=data["layers"]["written"]["draft_claims"]
-            discarded_citation_mismatches=[]
-            citation_added=0;citation_omitted=0
-            def clean_brief_source(ref:dict[str,str])->dict[str,Any]:
-                return self._clean_source(ref,maps,{"author_context","memory_record","source_span","draft_claim"},project_id)
-            for index,raw in enumerate(payload["items"]):
-                if not isinstance(raw,dict) or set(raw)!={"section","text","sources"} or raw.get("section") not in CONTEXT_BRIEF_SECTIONS or not isinstance(raw.get("sources"),list) or not 1<=len(raw["sources"])<=4:raise ValueError("schema_invalid")
-                sources=[clean_brief_source(item) for item in raw["sources"]]
-                item_text=self._text(raw["text"],600)
-                located,added,omitted=brief_citations.locate_sources(item_text,sources,maps,clean_brief_source)
-                citation_added+=added;citation_omitted+=omitted
-                if not located:
-                    discarded_citation_mismatches.append(index)
-                    continue
-                groups=[located] if len(brief_citations.render_sources(located,maps,100000))<=600 else [[source] for source in located]
-                for group in groups:
-                    rendered=brief_citations.render_sources(group,maps)
-                    rendered_items.append({"section":brief_citations.section_for_sources(group,maps,raw["section"]),
-                                  "text":rendered,"sources":group})
-            draft_text=str(data["layers"]["written"]["draft"].get("excerpt", ""))
-            model_cited_draft={source["source_id"] for item in rendered_items for source in item["sources"] if source["source_type"]=="draft_claim"}
-            fallback_draft_ids=[]
-            if draft_text.strip():
-                for claim in draft_claims:
-                    if claim["id"] in model_cited_draft:continue
-                    source=clean_brief_source({"source_type":"draft_claim","source_id":claim["id"]})
-                    rendered_items.append({"section":"recent_source","text":brief_citations.render_sources([source],maps),"sources":[source]})
-                    fallback_draft_ids.append(claim["id"])
-            unique_rendered=[]
-            for item in rendered_items:
-                if item not in unique_rendered:unique_rendered.append(item)
-            duplicate_omitted=len(rendered_items)-len(unique_rendered)
-            # Reserve a place for every selected saved-draft claim before optional background cards.
-            # A multi-source model item may otherwise consume all twelve visible slots.
-            items=[]
-            for claim in draft_claims:
-                candidate=next((item for item in unique_rendered if item not in items and any(
-                    source["source_type"]=="draft_claim" and source["source_id"]==claim["id"] for source in item["sources"])),None)
-                if candidate is not None:items.append(candidate)
-            for item in unique_rendered:
-                if len(items)>=12:break
-                if item not in items:items.append(item)
-            cited_draft={source["source_id"] for item in items for source in item["sources"] if source["source_type"]=="draft_claim"}
-            overflow_omitted=max(0,len(unique_rendered)-len(items))
-            if not items:
-                for kind in ("memory_record","source_span","author_context"):
-                    for source_id in list(maps[kind])[:3-len(items)]:
-                        source=clean_brief_source({"source_type":kind,"source_id":source_id})
-                        items.append({"section":brief_citations.section_for_sources([source],maps,"confirmed_fact"),
-                                      "text":brief_citations.render_sources([source],maps),"sources":[source]})
-                    if len(items)>=3:break
-            retrieval=data.get("retrieval",{})
-            truncated=retrieval.get("truncated",{})
-            scope=retrieval.get("draft_claim_scope",{})
-            selected_scopes=scope.get("selected",[{"id":item["id"],"truncated":False} for item in draft_claims])
-            selected_ids={item["id"] for item in selected_scopes}
-            draft_reasons=[]
-            if discarded_citation_mismatches:draft_reasons.append("draft_item_citation_mismatch")
-            if draft_text.strip() and not cited_draft:draft_reasons.append("draft_citation_missing")
-            if selected_ids-cited_draft:draft_reasons.append("draft_claim_uncovered")
-            if scope.get("available",len(selected_scopes))>len(selected_scopes):draft_reasons.append("draft_claim_unselected")
-            if any(item.get("truncated") for item in selected_scopes):draft_reasons.append("draft_claim_truncated")
-            if truncated.get("draft_body"):draft_reasons.append("draft_body_truncated")
-            if not items:draft_reasons.append("evidence_insufficient")
-            deterministic_summary=[];deterministic_sources=[];source_keys=set()
-            section_order={name:index for index,name in enumerate(("recent_source","related_plan","confirmed_fact","character_state","world_rule","open_thread"))}
-            for item in sorted(items,key=lambda value:section_order[value["section"]]):
-                candidate_keys={(source["source_type"],source["source_id"]) for source in item["sources"]}
-                if len(source_keys|candidate_keys)>3:continue
-                candidate_text=" ".join([*deterministic_summary,item["text"]])
-                if len(candidate_text)>400:continue
-                deterministic_summary.append(item["text"]);source_keys.update(candidate_keys)
-                for source in item["sources"]:
-                    key=(source["source_type"],source["source_id"])
-                    if key not in {(value["source_type"],value["source_id"]) for value in deterministic_sources}:deterministic_sources.append(source)
-            if not deterministic_summary:
-                fallback_sources=items[0]["sources"][:3]
-                draft_excerpt=str(data["layers"]["written"]["draft"].get("excerpt", ""))
-                fallback_summary="已根据所列来源整理当前写作上下文，具体事实与引用见分项。" if _requires_cjk(draft_excerpt) else "Writing context was organized from the listed sources; see item-level citations for factual details."
-                deterministic_summary=[fallback_summary];deterministic_sources=fallback_sources
-            return {"summary":" ".join(deterministic_summary),"summary_sources":deterministic_sources,"items":items,"evidence_status":"partial" if draft_reasons else "supported","citation_transform":{"version":"source-rendered-v2","model_summary_used":False,"model_item_count":len(payload["items"]),"source_rendered_item_count":len(items),"added_source_count":citation_added,"omitted_unmatched_clause_count":citation_omitted,"discarded_model_item_indices":discarded_citation_mismatches,"fallback_draft_claim_ids":fallback_draft_ids,"duplicate_omitted_item_count":duplicate_omitted,"overflow_omitted_item_count":overflow_omitted},"draft_coverage":{"status":"partial" if draft_reasons else "covered" if draft_text.strip() else "empty","source_ids":sorted(cited_draft),"cited_ranges":[item for item in selected_scopes if item["id"] in cited_draft],"uncovered_source_ids":sorted(selected_ids-cited_draft),"unselected_count":max(0,scope.get("available",len(selected_scopes))-len(selected_scopes)),"discarded_item_indices":discarded_citation_mismatches,"reasons":draft_reasons}}
         if task=="change_impact":
             target_source=data.get("retrieval",{}).get("target_source")
             if target_source and target_source.get("status")!="selected":
@@ -1591,22 +1494,6 @@ class WritingAnalysisEngine:
                 seen.add((raw["area"],raw["target_id"]));items.append({"area":raw["area"],"target_id":raw["target_id"],"label":targets[raw["area"]][raw["target_id"]],"impact":self._text(raw["impact"],600),"evidence":evidence})
             if not items:return {"summary":CHANGE_IMPACT_INSUFFICIENT_SUMMARY,"evidence_status":"insufficient","items":[],"proposal":data["proposal"]}
             return {"summary":self._text(payload["summary"],400),"evidence_status":"supported","items":items,"proposal":data["proposal"]}
-        if task=="story_qa":
-            if not isinstance(payload,dict) or set(payload)!={"answer_status","answer","findings"} or payload.get("answer_status") not in STORY_QA_STATUSES or not isinstance(payload.get("findings"),list) or len(payload["findings"])>12:raise ValueError("schema_invalid")
-            if payload["answer_status"]=="insufficient":
-                if payload["findings"]:raise ValueError("evidence_unresolvable")
-                return {"summary":STORY_QA_INSUFFICIENT_ANSWER,"items":[],"answer_status":"insufficient","answer":STORY_QA_INSUFFICIENT_ANSWER,"evidence_status":"insufficient","findings":[],"question":data["question"],"scope":data["scope"]}
-            if not payload["findings"]:raise ValueError("evidence_unresolvable")
-            layer_sources={"confirmed":{"memory_record"},"written":{"source_span","draft_claim"},"planned":{"author_context"}}
-            findings=[];stances=set();source_keys=set()
-            for raw in payload["findings"]:
-                if not isinstance(raw,dict) or set(raw)!={"layer","stance","text","evidence"} or raw.get("layer") not in STORY_QA_LAYERS or raw["layer"] not in data["scope"] or raw.get("stance") not in {"supports","contradicts","context"} or not isinstance(raw.get("evidence"),list) or not 1<=len(raw["evidence"])<=4:raise ValueError("evidence_unresolvable")
-                evidence=[self._clean_source(item,maps,layer_sources[raw["layer"]],project_id) for item in raw["evidence"]]
-                stances.add(raw["stance"]);source_keys.update((item["source_type"],item["source_id"]) for item in evidence)
-                findings.append({"layer":raw["layer"],"stance":raw["stance"],"text":self._text(raw["text"],600),"evidence":evidence})
-            if payload["answer_status"]=="conflicting" and (not {"supports","contradicts"}<=stances or len(source_keys)<2):raise ValueError("evidence_unresolvable")
-            answer=self._text(payload["answer"],800)
-            return {"summary":answer,"items":[],"answer_status":payload["answer_status"],"answer":answer,"evidence_status":"supported","findings":findings,"question":data["question"],"scope":data["scope"]}
         if task=="foreshadow_scan":
             if not isinstance(payload,dict) or set(payload)!={"summary","candidates"} or not isinstance(payload.get("candidates"),list) or len(payload["candidates"])>20:raise ValueError("schema_invalid")
             if not payload["candidates"]:return {"summary":FORESHADOW_INSUFFICIENT_SUMMARY,"items":[],"evidence_status":"insufficient","candidates":[]}
@@ -1645,24 +1532,6 @@ class WritingAnalysisEngine:
                 candidates.append({"title":title,"description":description,"suggested_status":suggested_status,"planted_chapter_id":planted["chapter_id"] if planted else None,"planted_source_span_id":planted["source_span_id"] if planted else None,"resolved_chapter_id":resolved["chapter_id"] if resolved else None,"resolved_source_span_id":resolved["source_span_id"] if resolved else None,"evidence":evidence})
             summary=("发现可供作者复核的伏笔候选：" if _requires_cjk(written["draft"].get("excerpt","")) else "Foreshadow candidates for author review: ")+"、".join(item["title"] for item in candidates) if normalized_background else self._text(payload["summary"],400)
             return {"summary":self._text(summary[:400],400),"items":[],"evidence_status":"supported","candidates":candidates}
-        if task=="revision_plan":
-            selected={item["id"]:item for item in data["selected_issues"]}
-            if not isinstance(payload,dict) or set(payload)!={"summary","candidates"} or not isinstance(payload.get("candidates"),list) or len(payload["candidates"])!=len(selected):raise ValueError("revision_plan_candidate_count_invalid")
-            candidates=[];seen_issues=set();seen_titles=set()
-            for raw in payload["candidates"]:
-                if not isinstance(raw,dict) or set(raw)!={"issue_id","title","instruction","priority","evidence"} or raw.get("issue_id") not in selected or raw["issue_id"] in seen_issues or raw.get("priority") not in REVISION_TASK_PRIORITIES or not isinstance(raw.get("evidence"),list) or not 1<=len(raw["evidence"])<=5:raise ValueError("revision_plan_candidate_invalid")
-                title=self._text(raw["title"],120);normalized=re.sub(r"\s+","",title).casefold()
-                if normalized in seen_titles:raise ValueError("revision_plan_candidate_duplicate")
-                issue=selected[raw["issue_id"]];allowed_ids={item["id"] for item in issue["evidence"]}
-                evidence=[]
-                for source in raw["evidence"]:
-                    if not isinstance(source,dict) or set(source)!={"source_type","source_id"} or source.get("source_type")!="issue_evidence":raise ValueError("evidence_unresolvable")
-                    source_id=_resolve_id(source.get("source_id"),allowed_ids)[0]
-                    if source_id is None:raise ValueError("evidence_unresolvable")
-                    evidence.append(self._clean_source({**source,"source_id":source_id},maps,{"issue_evidence"},project_id))
-                seen_issues.add(raw["issue_id"]);seen_titles.add(normalized);candidates.append({"issue_id":raw["issue_id"],"title":title,"instruction":self._text(raw["instruction"],1200),"priority":raw["priority"],"evidence":evidence})
-            if seen_issues!=set(selected):raise ValueError("revision_plan_candidate_count_invalid")
-            return {"summary":self._text(payload["summary"],400),"items":[],"evidence_status":"supported","candidates":candidates,"source_run_id":data["source_run_id"],"selected_issue_ids":list(selected)}
         if not isinstance(payload,dict) or set(payload)!={"summary","items"} or not isinstance(payload["items"],list):raise ValueError("schema_invalid")
         plans={item["id"]:item for item in data["layers"]["planned"]["story_plans"]}
         if len(payload["items"])!=len(plans):raise ValueError("schema_invalid")

@@ -3,7 +3,7 @@ import { labelError, labelRunFailure } from "../app/api";
 
 test("12 Q 次数额度文案与再检查一次提示", async () => {
   expect(labelError({ code: "workflow_quota_exceeded" })).toBe("今天的检查次数用完了，明天再来。");
-  for (const code of ["run_basis_changed", "run_retry_lineage_stale", "affected_memory_unresolvable", "revision_plan_issue_stale", "revision_candidate_stale"]) {
+  for (const code of ["run_basis_changed", "run_retry_lineage_stale", "affected_memory_unresolvable"]) {
     expect(labelError({ code }), code).not.toContain("重新检查");
     expect(labelError({ code }), code).toContain("再检查一次");
   }

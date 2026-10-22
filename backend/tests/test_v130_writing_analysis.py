@@ -28,16 +28,8 @@ class LayeredProvider:
 
     def evaluate(self,request):
         self.requests.append(request)
-        if request.get("task")=="context_brief":
-            if self.invalid:return ProviderResult({"summary":"bad","items":[]})
-            planned=request["layers"]["planned"]["story_plans"]
-            memory=request["layers"]["confirmed"]["memory_records"]
-            spans=request["layers"]["written"]["source_spans"]
-            if planned:source={"source_type":"author_context","source_id":planned[0]["id"]};section="related_plan"
-            elif memory:source={"source_type":"memory_record","source_id":memory[0]["id"]};section="confirmed_fact"
-            else:source={"source_type":"source_span","source_id":spans[0]["id"]};section="recent_source"
-            return ProviderResult({"summary":"写作前先守住既有约束。","summary_sources":[source],"items":[{"section":section,"text":"本章需要延续已绑定的上下文。","sources":[source]}]},input_tokens=12,output_tokens=6,latency_ms=2)
         if request.get("task")=="plan_alignment":
+            if self.invalid:return ProviderResult({"summary":"bad","items":[]})
             claims=request["layers"]["written"]["draft_claims"]
             return ProviderResult({"summary":"草稿覆盖了当前计划。","items":[{"story_plan_id":plan["id"],"status":"planned_covered","explanation":"草稿已直接写到计划动作。","evidence":[{"source_type":"draft_claim","source_id":claims[0]["id"]}]} for plan in request["layers"]["planned"]["story_plans"]]},input_tokens=13,output_tokens=7,latency_ms=2)
         return ProviderResult({"issues":[]},input_tokens=3,output_tokens=1,latency_ms=1)
@@ -67,20 +59,8 @@ class V130WritingAnalysisTests(unittest.TestCase):
         draft=self.project["current_draft"]
         return self.client.post(f"/api/projects/{self.project_id}/analyses",headers=idem(key),json={"analysis_type":kind,"draft_id":draft["id"],"draft_revision":draft["revision"]})
 
-    def test_context_brief_and_alignment_are_layered_bound_and_resolvable(self):
+    def test_alignment_is_layered_bound_and_resolvable(self):
         self._save()
-        brief=self._run("context_brief")
-        self.assertEqual(brief.status_code,202,brief.text)
-        brief_view=self.client.get(f"/api/projects/{self.project_id}/analyses/{brief.json()['data']['run_id']}").json()["data"]
-        self.assertEqual((brief_view["status"],brief_view["analysis_type"],brief_view["is_stale"]),("completed","context_brief",False))
-        self.assertTrue(any(item["sources"][0]["source_type"]=="author_context" for item in brief_view["analysis"]["items"]))
-        self.assertEqual(brief_view["analysis"]["draft_coverage"]["status"],"covered")
-        self.assertTrue(brief_view["analysis"]["citation_transform"]["fallback_draft_claim_ids"])
-        self.assertTrue(any(source["source_type"]=="draft_claim" for item in brief_view["analysis"]["items"] for source in item["sources"]))
-        self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v3-brief-540")
-        self.assertTrue(brief_view["retrieval"]["selected_ids"]["draft_claim"])
-        self.assertTrue(brief_view["retrieval"]["selected_ids"]["memory_record"])
-        self.assertEqual(self.client.get(f"/api/projects/{self.project_id}/checks/{brief.json()['data']['run_id']}").status_code,404)
         align=self._run("plan_alignment")
         self.assertEqual(align.status_code,202,align.text)
         aligned=self.client.get(f"/api/projects/{self.project_id}/analyses/{align.json()['data']['run_id']}").json()["data"]
@@ -91,62 +71,6 @@ class V130WritingAnalysisTests(unittest.TestCase):
         request=self.provider.requests[-1]
         self.assertEqual(set(request["layers"]),{"planned","confirmed","written"})
         self.assertEqual(request["bindings"]["author_context_version"],1)
-
-    def test_long_saved_draft_is_cited_but_brief_stays_partial(self):
-        self._save("林默在雾港核对潮汐表。" * 180)
-        response=self._run("context_brief")
-        self.assertEqual(response.status_code,202,response.text)
-        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
-        self.assertEqual(viewed["status"],"completed")
-        self.assertEqual(viewed["analysis"]["evidence_status"],"partial")
-        self.assertIn("draft_body_truncated",viewed["analysis"]["draft_coverage"]["reasons"])
-        self.assertTrue(viewed["analysis"]["draft_coverage"]["source_ids"])
-        self.assertTrue(any(source["source_type"]=="draft_claim" for item in viewed["analysis"]["items"] for source in item["sources"]))
-
-    def test_single_sentence_claim_tail_is_citable_within_brief_limit(self):
-        body="林默沿着长廊向前走，"*28+"最后把银钥匙交给陈澈并得知弟弟还活着。"
-        self.assertLess(len(body),1200)
-        self._save(body)
-        response=self._run("context_brief")
-        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
-        scope=viewed["retrieval"]["draft_claim_scope"]
-        coverage=viewed["analysis"]["draft_coverage"]
-        self.assertEqual((scope["available"],len(scope["selected"])),(1,1))
-        self.assertFalse(scope["selected"][0]["truncated"])
-        self.assertEqual(scope["selected"][0]["source_end"],len(body))
-        self.assertEqual(scope["selected"][0]["supplied_end"],len(body))
-        self.assertEqual(coverage["cited_ranges"][0]["supplied_end"],len(body))
-        self.assertTrue(any(body in source["excerpt"] for item in viewed["analysis"]["items"] for source in item["sources"] if source["source_type"]=="draft_claim"))
-        self.assertEqual(coverage["cited_ranges"][0]["id"],scope["selected"][0]["id"])
-
-    def test_context_brief_dialogue_keeps_each_speaker_frame_in_api_request(self):
-        body="陈澈说：‘温岚已经把潮汐表交给林默。’温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’"
-        self._save(body)
-        response=self._run("context_brief")
-        self.assertEqual(response.status_code,202,response.text)
-        request=self.provider.requests[-1]
-        claims=request["layers"]["written"]["draft_claims"]
-        self.assertEqual(len(claims),2)
-        self.assertEqual("".join(claim["text"] for claim in claims),body)
-        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
-        analysis=viewed["analysis"]
-        self.assertEqual(analysis["draft_coverage"]["status"],"covered")
-        self.assertTrue(all(any(claim["text"] in item["text"] and any(source["source_id"]==claim["id"] for source in item["sources"]) for item in analysis["items"]) for claim in claims))
-
-    def test_selected_but_uncited_draft_sentences_are_source_rendered(self):
-        body="林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
-        self._save(body)
-        response=self._run("context_brief")
-        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
-        scope=viewed["retrieval"]["draft_claim_scope"]
-        coverage=viewed["analysis"]["draft_coverage"]
-        self.assertEqual((scope["available"],len(scope["selected"])),(3,3))
-        self.assertFalse(any(item["truncated"] for item in scope["selected"]))
-        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("supported","covered"))
-        self.assertEqual(len(coverage["cited_ranges"]),3)
-        self.assertEqual(len(coverage["uncovered_source_ids"]),0)
-        self.assertEqual(len(viewed["analysis"]["citation_transform"]["fallback_draft_claim_ids"]),3)
-        self.assertEqual(coverage["unselected_count"],0)
 
     def test_existing_continuity_provider_input_stays_free_of_author_context(self):
         self._save()
@@ -160,7 +84,7 @@ class V130WritingAnalysisTests(unittest.TestCase):
 
     def test_invalid_schema_fails_closed_without_partial_result(self):
         self.provider.invalid=True
-        response=self._run("context_brief")
+        response=self._run("plan_alignment")
         self.assertEqual(response.status_code,202,response.text)
         run_id=response.json()["data"]["run_id"]
         viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{run_id}").json()["data"]
@@ -177,10 +101,8 @@ class V130WritingAnalysisTests(unittest.TestCase):
         self.assertEqual(saved.status_code,200,saved.text)
         no_plan_after_save=self.client.post(f"/api/projects/{created['id']}/analyses",headers=idem(),json={"analysis_type":"plan_alignment","draft_id":created["current_draft"]["id"],"draft_revision":2})
         self.assertEqual((no_plan_after_save.status_code,no_plan_after_save.json()["error"]["code"]),(422,"analysis_plan_unavailable"))
-        no_evidence=self.client.post(f"/api/projects/{created['id']}/analyses",headers=idem(),json={"analysis_type":"context_brief","draft_id":created["current_draft"]["id"],"draft_revision":2})
-        self.assertEqual((no_evidence.status_code,no_evidence.json()["error"]["code"]),(422,"analysis_evidence_unavailable"))
         self._save()
-        key=str(uuid.uuid4());first=self._run("context_brief",key);replay=self._run("context_brief",key)
+        key=str(uuid.uuid4());first=self._run("plan_alignment",key);replay=self._run("plan_alignment",key)
         self.assertEqual(first.json()["data"],replay.json()["data"])
         run_id=first.json()["data"]["run_id"]
         draft=self.project["current_draft"]
@@ -194,9 +116,9 @@ class V130WritingAnalysisTests(unittest.TestCase):
 
     def test_prompt_router_preserves_explicit_task_and_budget(self):
         self._save()
-        self._run("context_brief")
+        self._run("plan_alignment")
         prompt,budget=request_prompt_and_budget(self.provider.requests[-1])
-        self.assertIn('"task":"Create a compact pre-writing chapter context brief.',prompt)
+        self.assertIn('"task":"Compare the saved draft with each supplied story plan',prompt)
         self.assertIn("Keep the four layers separate",prompt)
         self.assertNotIn("external_search",prompt)
         self.assertGreater(budget,0)
@@ -206,11 +128,11 @@ class V130WritingAnalysisTests(unittest.TestCase):
         draft=self.project["current_draft"]
         continuity=self.client.post(f"/api/projects/{self.project_id}/checks",headers=idem(),json={"draft_id":draft["id"],"draft_revision":draft["revision"]})
         self.assertEqual(continuity.status_code,202,continuity.text)
-        brief=self._run("context_brief")
+        aligned=self._run("plan_alignment")
         project=self.client.get(f"/api/projects/{self.project_id}").json()["data"]
         self.assertEqual(project["latest_run"]["run_id"],continuity.json()["data"]["run_id"])
-        latest=self.client.get(f"/api/projects/{self.project_id}/analyses?analysis_type=context_brief").json()["data"]
-        self.assertEqual(latest["run"]["run_id"],brief.json()["data"]["run_id"])
+        latest=self.client.get(f"/api/projects/{self.project_id}/analyses?analysis_type=plan_alignment").json()["data"]
+        self.assertEqual(latest["run"]["run_id"],aligned.json()["data"]["run_id"])
         self.app.state.database.initialize()
         with self.app.state.database.connection() as c:
             columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)")}

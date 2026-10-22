@@ -18,6 +18,7 @@ import time
 import uuid
 import zipfile
 from dataclasses import replace
+from types import SimpleNamespace
 from datetime import datetime, timezone, timedelta
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -68,7 +69,7 @@ class Ledger:
     Unknown usage retains the full reservation. No credentials or headers are persisted.
     """
     def __init__(self, max_cny, assistant_rates, judge_rates):
-        self.max_cny, self.rates = max_cny, {'assistant': assistant_rates, 'check': assistant_rates, 'judge': judge_rates}
+        self.max_cny, self.rates = max_cny, {'assistant': assistant_rates, 'check': assistant_rates, 'judge': judge_rates, 'route': assistant_rates}
         self.calls, self.pending = [], 0.0
         self.lock = threading.Lock()
         self.category, self.task_id, self.stopped = 'check', None, False
@@ -81,7 +82,8 @@ class Ledger:
 
     def reserve(self, body):
         with self.lock:
-            category = 'judge' if self.category == 'judge' else 'assistant' if body.get('tools') else 'check'
+            category = ('route' if self.phase == 'route' else
+                        'judge' if self.category == 'judge' else 'assistant' if body.get('tools') else 'check')
             price = self.rates[category]
             bound = ((len(json.dumps(body, ensure_ascii=False).encode('utf-8')) + 4096) * price[0]
                      + body.get('max_tokens', 8192) * price[1]) / 1e6
@@ -178,10 +180,12 @@ def load_set(name):
 
 # Development material anyone may read and run in any shape: A1/A1b dev sets, the spent A1/A1b formal sets (SPEC
 # addendum 2, 2026-10-16), the A1c dev set and the development questions written on spent works (a1cx_dev, same format).
-A1C_DEV_SETS = ('eval_set_a1c_dev', 'eval_set_a1cx_dev')
+A1C_DEV_SETS = ('eval_set_a1c_dev', 'eval_set_a1cx_dev', 'eval_set_a1cy_dev')
 # The release gate: sealed, run together, three passes, no case filter. The first pair (2026-10-16), the second
-# (2026-10-17) and the third (2026-10-19) ran and are spent; this is the fourth pair (A1c SPEC addendum 10).
-A1C_FORMAL_SETS = ('eval_set_a1c4_formal', 'eval_set_a1cs4_formal')
+# (2026-10-17), the third and the fourth (2026-10-19) and the fifth (2026-10-22) ran and are spent; what is left of v1.9's
+# gate is the route-only retest (A1c SPEC addendum 16): one set of route items on the fifth pair's works, with the FIX
+# items its issue_from needs copied as support.
+A1C_FORMAL_SETS = ('eval_set_a1cr6_formal',)
 
 
 def is_a1c(name):
@@ -250,7 +254,7 @@ def preflight(args, provider, output=None):
         ids = {t['id'] for name in names if readable(name) for t in load_set(name)['tasks']}
         if not args.only or not set(args.only) <= ids: raise ValueError('unknown_or_empty_selection')
     if not args.dry_run and any(n in A1C_FORMAL_SETS for n in names):
-        if set(names) != set(A1C_FORMAL_SETS) or args.runs != 3:
+        if set(names) != set(A1C_FORMAL_SETS) or args.runs != 3:  # (the error's name predates the one-set retest)
             raise ValueError('a1c_formal_requires_both_sets_and_three_runs')
     return out
 
@@ -327,10 +331,27 @@ class Work:
         if entry['signature'] != signature: raise RuntimeError('resume_operation_mismatch')
         self.cursor += 1
         if 'status' not in entry:
-            response = self.client.request(method, path, headers={'Idempotency-Key': entry['idempotency_key']}, timeout=180, **kwargs)
-            entry.update(status=response.status_code, payload=response.json())
+            request_start = time.perf_counter() if path.endswith('/assistant/route') else None
+            try:
+                response = self.client.request(method, path, headers={'Idempotency-Key': entry['idempotency_key']}, timeout=180, **kwargs)
+            except (httpx.TimeoutException, httpx.NetworkError) as error:
+                if not path.endswith('/assistant/route'): raise
+                # Persist a failed routing attempt too, so resume consumes its journal slot before the retry.
+                response = httpx.Response(503, json={'error': {'code': type(error).__name__}})
+            try:
+                payload = response.json()
+            except ValueError:
+                if not path.endswith('/assistant/route'): raise
+                # Gateways can return HTML for 5xx; preserve its status for the ordinary infrastructure retry.
+                payload = {'error': {'code': 'route_non_json_response'}}
+            entry.update(status=response.status_code, payload=payload)
+            if path.endswith('/assistant/route'):
+                entry['elapsed_seconds'] = time.perf_counter() - request_start
             self.persist()
-        return httpx.Response(entry['status'], json=entry['payload'])
+        response = httpx.Response(entry['status'], json=entry['payload'])
+        if 'elapsed_seconds' in entry:
+            response.extensions['a1_route_elapsed_seconds'] = entry['elapsed_seconds']
+        return response
 
     def prepare(self, work, upto):
         self.response('POST', '/api/auth/register', json={'account_name': self.account, 'display_name': 'A1',
@@ -426,6 +447,34 @@ class Work:
         else: view['elapsed_seconds'] = time.perf_counter() - start
         return view
 
+    def route(self, body):
+        """One routing request, journaled like other operations; 4xx is a terminal product result."""
+        if self.ledger: self.ledger.phase = 'route'
+        start = time.perf_counter()
+        try:
+            response = self.response('POST', self.base + '/assistant/route', json=body)
+            elapsed = response.extensions.get('a1_route_elapsed_seconds', time.perf_counter() - start)
+            try: payload = response.json()
+            except ValueError: payload = {}
+            if not isinstance(payload, dict): payload = {}
+            if response.status_code >= 300:
+                error = payload.get('error') or {}
+                if not isinstance(error, dict): error = {}
+                return {'status': 'failed', 'http_status': response.status_code,
+                        'error_code': error.get('code', f'http_{response.status_code}'),
+                        'retryable': response.status_code >= 500,
+                        'elapsed_seconds': elapsed}
+            result = payload.get('data', payload)
+            if (not isinstance(result, dict) or result.get('route') not in
+                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope'}
+                    or result.get('source') not in {'rule', 'model'} or type(result.get('unsure')) is not bool):
+                return {'status': 'failed', 'error_code': 'route_schema_invalid', 'retryable': False,
+                        'elapsed_seconds': elapsed}
+            return {**result, 'status': 'completed', 'elapsed_seconds': elapsed}
+        except (httpx.TimeoutException, httpx.NetworkError) as error:
+            return {'status': 'failed', 'error_code': type(error).__name__, 'retryable': True,
+                    'elapsed_seconds': time.perf_counter() - start}
+
     def close(self):
         self.client.close()
         if self.tmp: self.tmp.cleanup()
@@ -436,8 +485,52 @@ def overlap(a, b, body):
         for x in re.finditer(re.escape(a), body) for y in re.finditer(re.escape(b), body))
 
 
-def run_task(work, task, shared_draft, row=None, checkpoint=lambda: None):
+def run_route(work, task, shared_draft, row, checkpoint, task_lookup):
+    context = copy.deepcopy(task['context'])
+    fix_id = context.pop('issue_from', None)
+    if fix_id:
+        fix = (task_lookup or {}).get(fix_id)
+        if not fix or fix.get('suite') != 'fix' or fix.get('work') != task['work'] or context['page'] != 'writing':
+            row['execution_errors'].append('issue_from_invalid')
+            return row
+        work.save(fix['draft'])
+        before, attempts = retry(work.check)
+        row['initial_check'], row['initial_check_retries'] = before, attempts
+        hit = next((i for i in before.get('issues', []) if i.get('nature') in CONFLICTS | {'insufficient_evidence'}
+                    and overlap(i.get('sentence', i.get('claim_text', '')), fix['conflict_sentence'], fix['draft'])), None)
+        checkpoint()
+        if before['status'] != 'completed' or not hit:
+            row['execution_errors'].append('issue_from_check_miss')
+            return row
+        context['issue_id'] = hit['id']
+    elif context.get('selection'):
+        work.save(shared_draft)
+    row['route_request'] = {'input': task['input'], 'context': context}
+    # Keep attempts independently of the final result, including failures, for audit and latency.
+    attempts = row.setdefault('route_attempts', [])
+    for attempt in range(2):
+        replay = work.route(row['route_request'])
+        if attempt < len(attempts):
+            result = attempts[attempt]
+        else:
+            result = replay
+            attempts.append(result)
+            checkpoint()
+        if not result.get('retryable') or attempt == 1:
+            break
+    row['route_result'] = result
+    row['route_seconds'] = sum(v.get('elapsed_seconds', 0) for v in attempts)
+    if result.get('status') != 'completed':
+        row['execution_errors'].append(f"route_http_{result['http_status']}:{result['error_code']}"
+                                       if result.get('http_status') else result.get('error_code', 'route_failed'))
+    checkpoint()
+    return row
+
+
+def run_task(work, task, shared_draft, row=None, checkpoint=lambda: None, task_lookup=None):
     if row is None: row = new_record(task)
+    if task['suite'] == 'route':
+        return run_route(work, task, shared_draft, row, checkpoint, task_lookup)
     a = row['auto']
     text = task.get('draft', task.get('draft_opening', shared_draft))
     work.save(text)
@@ -531,7 +624,8 @@ def write_json(path, value):
 def execute(args, dataset, provider, judge, ledger, out):
     names = set_names(args.set)
     datasets = dataset if 'tasks' not in dataset else {names[0]: dataset}
-    tasks = [(name, t) for name in names for t in datasets[name]['tasks'] if args.only is None or t['id'] in args.only]
+    # A support item (SPEC addendum 16) only prepares what a route item's issue_from points at; it is not run or scored.
+    tasks = [(name, t) for name in names for t in datasets[name]['tasks'] if not t.get('support') and (args.only is None or t['id'] in args.only)]
     expected = [{'set': name, 'id': t['id'], 'suite': t['suite']} for name, t in tasks]
     fingerprint = {'sets': names, 'runs': args.runs, 'only': args.only, 'git_commit': git('rev-parse', 'HEAD'),
         'prompt_version': ASSISTANT_PROMPT_VERSION, 'assistant_model': provider.assistant_model, 'model': provider.model,
@@ -620,7 +714,9 @@ def execute(args, dataset, provider, judge, ledger, out):
                 # Admission estimate is separate from the hard pre-dispatch ceiling.
                 previous = [sum(v['cost_cny'] for v in r.get('usage', {}).values()) for r in report['records']
                             if r['set'] == name and r['task']['id'] == task['id'] and r.get('finished')]
-                allowance = max(previous)*1.25 if previous else (1.0 if 'conflict_sentence' in task else .6)
+                allowance = max(previous)*1.25 if previous else (
+                    .65 if task['suite'] == 'route' and task.get('context', {}).get('issue_from') else
+                    .05 if task['suite'] == 'route' else 1.0 if 'conflict_sentence' in task else .6)
                 if ledger.stopped or ledger.spent + allowance > ledger.max_cny:
                     report['stop_reason'] = 'budget_stop'
                     return report
@@ -639,7 +735,11 @@ def execute(args, dataset, provider, judge, ledger, out):
                     work.journal, work.cursor, work.persist = row['operations'], 0, checkpoint
                     checkpoint()
                     try:
-                        run_task(work, task, source.get('shared_draft', {}).get('body', ''), row, checkpoint)
+                        if task['suite'] == 'route':
+                            run_task(work, task, source.get('shared_draft', {}).get('body', ''), row, checkpoint,
+                                     {t['id']: t for t in datasets[name]['tasks']})
+                        else:
+                            run_task(work, task, source.get('shared_draft', {}).get('body', ''), row, checkpoint)
                     except RuntimeError as error:
                         # A rejected follow-up is a product result, not a runner-wide crash.
                         if str(error).startswith('http_'):
@@ -652,6 +752,8 @@ def execute(args, dataset, provider, judge, ledger, out):
                                    and c.get('run_number') == number and c['phase'] == 'assistant']
                 if assistant_calls:
                     row['assistant_cost_cny'] = sum(c['cost_cny'] for c in assistant_calls)
+                if task['suite'] == 'route':
+                    row['route_cost_cny'] = ledger.totals(task['id'], number)['route']['cost_cny']
                 ledger.category, ledger.phase = 'judge', 'judge'
                 if ledger.stopped:
                     report['stop_reason'] = 'budget_stop'
@@ -715,14 +817,36 @@ def parser():
 def main():
     args = parser().parse_args()
     ledger = Ledger(args.max_cny, args.assistant_rates, args.judge_rates)
-    provider = PricedProvider(ledger)
+    provider = (SimpleNamespace(available=True, assistant_model='deepseek-flash', model='deepseek-flash')
+                if args.dry_run else PricedProvider(ledger))
     out = preflight(args, provider)
     if args.dry_run:
         print('dry_run_ok')
+        if all(readable(n) for n in set_names(args.set)):
+            data = {n: load_set(n) for n in set_names(args.set)}
+            print(json.dumps(budget_estimate(data, args), ensure_ascii=False))
         return 0
     result = execute(args, load_sets(args.set), provider, Judge(provider, args.judge_model), ledger, out)
     print(json.dumps({'complete': result['complete'], 'cost_cny': ledger.spent, 'status': result['gate_decision']}))
     return 0 if result['complete'] else 2
+
+
+def budget_estimate(datasets, args):
+    """Planning estimate only; the ledger still reserves actual wire bounds before every dispatch."""
+    tasks = [t for d in datasets.values() for t in d['tasks'] if not t.get('support') and (args.only is None or t['id'] in args.only)]
+    route_count = sum(t['suite'] == 'route' for t in tasks) * args.runs
+    suggest_count = sum(t['suite'] == 'suggest' for t in tasks) * args.runs
+    small_call = (1000 * args.assistant_rates[0] + 100 * args.assistant_rates[1]) / 1e6
+    task_estimate = sum(small_call if t['suite'] == 'route' else .6 for t in tasks) * args.runs
+    check_count = sum(bool('conflict_sentence' in t or t.get('context', {}).get('issue_from')) for t in tasks)
+    # Import/fact extraction depends on source length; retain an explicit planning allowance.
+    prepare = sum(len(w['source']) for d in datasets.values() for w in d['works']
+                  if any(t['work'] == w['key'] for t in d['tasks'] if not t.get('support') and (args.only is None or t['id'] in args.only))
+                  ) * args.assistant_rates[0] / 1e6
+    total = task_estimate + check_count * args.runs * .6 + prepare
+    return {'estimated_cny': total, 'time_band_estimated_cny': {'half_price': total * .5, 'full_price': total},
+            'route_calls': route_count, 'suggest_tasks': suggest_count, 'route_estimated_cny': route_count * small_call,
+            'note': 'Planning only: route 1000 input/100 output tokens, suggest like QA; checks/import allowance; actual budget enforced per dispatch.'}
 
 
 if __name__ == '__main__':

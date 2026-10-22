@@ -127,9 +127,9 @@ CONTINUITY_PROMPT_VERSION = "continuity-review-v24d-epithet-referents"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25i-screened-stated-inability"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25k-screened-offpage-second-review"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
-CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v4-gap-kind"
+CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v5-stated-links"
 SCREEN_KINDS = ("conflict", "gap", "check")
 SCREEN_MAX_FACTS_PER_FLAG = 3
 
@@ -205,6 +205,17 @@ def screened_review_rules() -> list[str]:
     return rules
 
 
+# v25j (v1.9, 2026-10-20). On the spent lf3-lf5 formal sets a thinking review passed a measured width and a state said to
+# have held "from the next morning until today", called an eyewitness claim a possible conflict, and reported missing
+# links on clean chapters for new off-page background ("前些天送来请他修的工具", "照前回一样").
+SCREENED_GAP_EXAMPLES = (
+    {"situation": "The claim gives an exact measured value (a width, a weight, a count, a duration) as found; the passages describe the thing but give no such measurement, only an estimate or a related quantity, and no different value.", "decision": "insufficient_evidence: the measurement is missing; not a conflict, because no passage states a different value."},
+    {"situation": "The claim says someone saw or heard an event with their own eyes or ears; the passages narrate the event but do not place that person there, and nothing says they were elsewhere.", "decision": "insufficient_evidence: the witnessing is missing. A conflict only when a passage places them elsewhere at that time or says they did not see it."},
+    {"situation": "The claim says a state has held ever since or still holds now (stayed dry every day, is still locked); the passages give it only at one earlier time, and may narrate something since that could change it.", "decision": "insufficient_evidence: the later state is missing, unless a passage states it held."},
+    {"situation": "The claim narrates new background the earlier chapters never address: an off-page event (yesterday, a few days ago), a routine done as before, a long-standing habit or wish, and it changes or relies on nothing the passages record.", "decision": "no continuity issue; new background narrated by the draft is not a missing link."},
+)
+
+
 def screened_decision_examples() -> list[dict[str, str]]:
     examples = []
     for example in CONTINUITY_DECISION_EXAMPLES:
@@ -212,7 +223,7 @@ def screened_decision_examples() -> list[dict[str, str]]:
             examples.extend(SCREENED_KNOWLEDGE_EXAMPLES)
         else:
             examples.append(example)
-    return examples
+    return examples + list(SCREENED_GAP_EXAMPLES)
 
 
 SCREENED_REVIEW_RULES = (
@@ -232,7 +243,8 @@ CONTINUITY_TRIAGE_RULES = (
     "You compare draft sentences with passages of earlier chapters, before a careful continuity review that can only look at a few of them. Score every listed sentence once.",
     "3: a supplied passage states something that cannot be true together with the sentence (a different attribute, name, age, origin, holder, condition, place at the same time, count, date, relationship, knowledge or outcome, or an action a stated rule forbids), or the sentence asserts as settled something a passage states is unknown, unfinished or only planned.",
     "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record, authority, cause, outcome or source they do not provide, including one built into a phrase (whose object it is, who gave it, where a method came from, what caused a change, how something turned out).",
-    "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
+    "1: a passage states what the sentence asserts, including its specific link. Describing the same people, things or events is not agreement: when the sentence says what caused something, gives an exact measured value, says someone saw or heard something with their own eyes or ears, says a state still holds now or has held ever since, says permission was given, or says something was received from someone, and no passage states that link, score 2 with kind gap.",
+    "0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene, or new off-page background (what happened yesterday, a routine done as before, a habit or wish) that concerns nothing the passages record.",
     "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
     "Give each score a kind: conflict when a passage disagrees with the sentence, gap when the sentence settles or relies on something the passages leave open or do not provide, none for scores 0 and 1.",
     "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3 and its kind. Do not use Markdown.",
@@ -243,6 +255,12 @@ CONTINUITY_TRIAGE_RULES = (
 # so it is asked to watch for them in particular; conflicts it finds count as well.
 SECOND_REVIEW_RULES = (
     "Pay particular attention to missing links: does the claim treat as already established an outcome, a handoff, what someone learned or witnessed, an exact measurement, an identity, an authority, or what a record says, that the supplied passages leave open, only estimate, only report second-hand, or describe as planned, requested or attempted? Report that as insufficient_evidence, naming the missing link. Report a conflict when the evidence contradicts the claim. Return no issue only when the passages support the claim or it only narrates something new in the current scene.",
+)
+
+# The screened second review (escalation and sweep) also returned missing links on clean chapters for new
+# off-page background (lf5-t01, v1.9 dev b2); the legacy pipeline keeps the rule above unchanged.
+SCREENED_SECOND_REVIEW_RULES = (
+    "New background is not a missing link either: an off-page event the earlier chapters never address (yesterday, a few days ago), a routine done as before, or a long-standing habit or wish, when it changes or relies on nothing the passages record. Return no issue for it.",
 )
 
 CONTINUITY_SCREEN_RULES = (
@@ -295,7 +313,7 @@ MAX_INPUT_BUDGET_UNITS = 6000
 # Writing analyses carry the layered evidence on top of fixed prompt rules, so a typical work already sits near
 # 6,000 units; they get their own, larger allowance.
 WRITING_ANALYSIS_INPUT_BUDGET_UNITS = 12000
-WRITING_ANALYSIS_TASKS = frozenset({"context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan"})
+WRITING_ANALYSIS_TASKS = frozenset({"plan_alignment", "change_impact", "foreshadow_scan"})
 MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
 MAX_MEMORY_CANDIDATES_PER_BATCH = 8
@@ -387,7 +405,7 @@ def continuity_prompt(request: dict[str, Any]) -> str:
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
             "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
-            "rules": (screened_review_rules() + list(SCREENED_REVIEW_RULES) if screened else list(CONTINUITY_REVIEW_RULES)) + (list(SECOND_REVIEW_RULES) if request.get("second_review") else []),
+            "rules": (screened_review_rules() + list(SCREENED_REVIEW_RULES) if screened else list(CONTINUITY_REVIEW_RULES)) + (list(SECOND_REVIEW_RULES) + (list(SCREENED_SECOND_REVIEW_RULES) if screened else []) if request.get("second_review") else []),
             "decision_examples": screened_decision_examples() if screened else list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
@@ -432,10 +450,6 @@ def memory_delta_prompt(request: dict[str, Any]) -> str:
     )
 
 
-def context_brief_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Create a compact pre-writing chapter context brief. Return exactly summary, summary_sources, and items.","rules":[*ANALYSIS_LAYER_RULES,"Return 1-3 summary_sources, 1-12 items, and 1-4 sources per item.","Cover relevant plans, confirmed facts, character state, world rules, unresolved threads, and recent written sources only when directly supported.","summary_sources must directly support every factual clause in summary. Item citations are not inherited by summary. Because summary_sources has a maximum of 3, omit lower-priority facts from summary instead of mentioning a fourth unsupported fact; detailed items may still cover it with their own citations.","Every item needs at least one citation that supports the full item text. A statement about the current saved draft must cite a supplied draft_claim; never label a SourceSpan as current draft evidence. A SourceSpan may support a recent_source item about that supplied prior chapter, but supports only its own text and chapter."],"output_limits":{"summary_sources":{"min":1,"max":3},"items":{"min":1,"max":12},"sources_per_item":{"min":1,"max":4}},"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
-
-
 def plan_alignment_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Compare the saved draft with each supplied story plan at the event/state-change level. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Return exactly one item for every supplied story_plan_id.","Status must be planned_covered, planned_missing, planned_early, planned_changed, or insufficient_evidence.","Judge the planned event, transition, or outcome itself, not shared names, objects, locations, themes, prerequisites, or background setup.","Use planned_early only when written evidence explicitly shows the planned event/transition/outcome has already occurred before its planned point. Entity overlap or continued pre-event state is never planned_early.","Use planned_missing when the planned event is absent, including when the draft explicitly remains before its trigger or timing; explain that it is not yet due rather than calling it a deviation.","Use planned_covered only when written evidence explicitly completes or realizes the plan. Use planned_changed only when written evidence explicitly realizes a materially different event or outcome.","planned_covered, planned_early, and planned_changed require direct current-draft claim or SourceSpan evidence. planned_missing may cite no written evidence only when the planned point is absent from the bounded draft. Never use Author Context itself as proof that something was written."],"decision_examples":[{"plan":"暴风夜发生一次未来交接","written":"暴风雨尚未来临，当前持有人仍持有物品","status":"planned_missing","reason":"交接尚未发生且尚未到时机；共享人物和物品只是铺垫。"},{"plan":"暴风夜发生一次未来交接","written":"暴风雨尚未来临，当前持有人已经明确把物品交给接收人","status":"planned_early","reason":"同一交接事件已在计划触发条件前明确发生。"}],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
@@ -444,21 +458,13 @@ def change_impact_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Analyze the likely impact of the author's explicit proposed change. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Report only affected supplied chapters, characters, world records, Story Memory records, or plans.","target_id must be the id of one supplied chapter, character, world record, Story Memory record, or plan for that area. The current draft is not a target: cite its draft_claim ids as evidence under an affected target instead.","Every impact item requires at least one directly relevant supplied evidence citation. If there is no evidence, emit no conclusion for that target.","A target Memory record may establish that the proposed rule changes, but does not establish that source chapters are unaffected or that the current draft is compatible. Make those additional claims only with their own directly relevant citations; otherwise limit the conclusion to the identified target and the bounded review scope.","Do not write replacement prose, auto-save the proposal, or mutate draft, source, Story Memory, Author Context, or aliases."],"proposal":request["proposal"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
-def story_qa_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Answer one author question only from the supplied bounded project evidence. Return exactly answer_status, answer, and findings.","rules":[*ANALYSIS_LAYER_RULES,"Respect the requested scope exactly.","A confirmed finding may cite only Story Memory; a written finding may cite only current draft claims or SourceSpan text; a planned finding may cite only Author Context.","Every non-insufficient finding needs direct evidence. If evidence is absent, return insufficient with no findings. If supplied evidence disagrees, return conflicting and include both supports and contradicts findings.","Do not turn inference into fact and do not mutate any author or manuscript data.","Write answer and finding text for the author: refer to sources by chapter, character, or fact names. Never write supplied IDs (such as mem-..., span-..., draft-claim-...) in answer or text; IDs belong only in evidence."],"question":request["question"],"scope":request["scope"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
-
-
 def foreshadow_scan_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Find reviewable foreshadow candidates in supplied written evidence. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Candidates are suggestions only; never create or modify an author foreshadow record.","Every candidate needs direct current draft claim or SourceSpan evidence and must label each citation with relation and evidence_kind. Use current_clue for the present draft clue, specific_prior_unresolved_clue only for a concrete earlier unresolved setup, background_only for an ordinary rule or backdrop, and explicit_payoff only for a written answer or payoff.","Use planted when the candidate is newly introduced, or when its identity as the same earlier clue is only possible.","Use developing only when written evidence explicitly establishes that the same unresolved clue, mystery, question, or deliberate setup has materially recurred, evolved, or accumulated. A developing candidate must cite at least one earlier SourceSpan as specific_prior_unresolved_clue. An ordinary world rule, background fact, shared object, or thematic resemblance is background_only and is not an earlier planted clue. Future meaning may remain uncertain after a clue is clearly developing; uncertainty about eventual payoff alone does not force planted.","Use resolved only for an explicit payoff or answer in written evidence.","Do not duplicate an existing author record or another candidate. If there is no written evidence, return an empty candidate list.","Do not cite Story Memory or Author Context as written proof."],"decision_examples":[{"earlier_written":"港规写明雾钟每晚九点响起，所有船只随后停泊","current_written":"海面第一次传来三次无人回应的钟声","earlier_evidence_kind":"background_only","current_evidence_kind":"current_clue","status":"planted","reason":"即使没有 Story Memory，普通规则仍只是背景，不能把共享意象当成已经埋设并发展的线索。"},{"earlier_written":"港规写明雾钟每晚九点响起；钟后还留下来源不明的三短一长回声","current_written":"同样的三短一长回声再次出现，并新增半枚徽记","earlier_evidence_kind":"specific_prior_unresolved_clue","current_evidence_kind":"current_clue","status":"developing","reason":"同一段虽包含规则，但被引用的是其中具体且未解的回声线索；它明确复现并增加了信息。"}],"author_records":request["author_records"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
-def revision_plan_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Create one bounded revision-task suggestion for every selected continuity issue. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Each candidate must reference exactly one supplied issue_id and at least one evidence id supplied for that same issue.","Write a concise editing action, not replacement fiction prose. Suggestions never edit the manuscript, resolve an Issue, change canon, or create a task without author acceptance.","Return each selected issue exactly once. Do not merge issues, invent references, duplicate titles, or add unselected work."],"source_run_id":request["source_run_id"],"selected_issues":request["selected_issues"],"bindings":request["bindings"],"layers":request["layers"],"author_records":request["author_records"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
-
-
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else continuity_prompt(request)
+    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
 
 
@@ -705,6 +711,15 @@ class DeepSeekProvider:
         self._request_timeout = self._timeout_for(body)
         return self._dispatch(body, self._chat_result)
 
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> ChatResult:
+        """One small JSON-object completion for the assistant's input box (which use a sentence asks for): thinking off,
+        temperature 0, a single attempt that waits at most `timeout_seconds`."""
+        if not self.available:
+            raise ProviderUnavailable()
+        body = {"model": self.assistant_model, "messages": messages, "response_format": {"type": "json_object"},
+                "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
+        return self._dispatch(body, self._chat_result, timeout_seconds=timeout_seconds, retries=0)
+
     def _chat_result(self, raw: dict[str, Any], started: float, prior_dispatch_usage_unknown: bool) -> ChatResult:
         usage = raw.get("usage", {})
         if not raw["choices"]:
@@ -721,16 +736,17 @@ class DeepSeekProvider:
         return ChatResult({"content": message.get("content"), "tool_calls": calls}, usage.get("prompt_tokens"), usage.get("completion_tokens"),
                           usage.get("cost_cny"), choice.get("finish_reason"), int((time.perf_counter() - started) * 1000))
 
-    def _dispatch(self, body: dict[str, Any], read: Any) -> Any:
+    def _dispatch(self, body: dict[str, Any], read: Any, timeout_seconds: int | None = None, retries: int | None = None) -> Any:
         started = time.perf_counter()
         prior_dispatch_usage_unknown = False
-        for attempt in range(self.max_retries + 1):
+        max_retries = self.max_retries if retries is None else retries
+        for attempt in range(max_retries + 1):
             post_started = False
             try:
                 request_cap=getattr(self,"request_cap",None)
                 if request_cap is not None and self.request_attempts >= request_cap:
                     raise ProviderFailure()
-                timeout = _dispatch_timeout.set(self._timeout_for(body))
+                timeout = _dispatch_timeout.set(timeout_seconds or self._timeout_for(body))
                 try:
                     client_context = self._factory()
                 finally:
@@ -751,7 +767,7 @@ class DeepSeekProvider:
                     return read(response.json(), started, prior_dispatch_usage_unknown)
             except TIMEOUT_ERRORS as error:
                 prior_dispatch_usage_unknown = True
-                if attempt == self.max_retries:
+                if attempt == max_retries:
                     raise ProviderTimeout() from error
             except ProviderDispatchDenied as error:
                 error.usage_unknown = prior_dispatch_usage_unknown

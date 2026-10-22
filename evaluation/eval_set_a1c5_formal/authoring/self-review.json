@@ -1,0 +1,2151 @@
+{
+  "set_id": "a1c5-formal",
+  "works": [
+    {
+      "key": "w01",
+      "characters": [
+        {
+          "name": "池砚宁",
+          "aliases": [
+            "平衡燕"
+          ]
+        },
+        {
+          "name": "佘槐序",
+          "aliases": [
+            "槐尺"
+          ]
+        },
+        {
+          "name": "阮砺",
+          "aliases": [
+            "小砾"
+          ]
+        },
+        {
+          "name": "蔚澄",
+          "aliases": []
+        },
+        {
+          "name": "郁闻弦",
+          "aliases": []
+        },
+        {
+          "name": "蒲照野",
+          "aliases": []
+        },
+        {
+          "name": "凌柚",
+          "aliases": []
+        },
+        {
+          "name": "桑覃",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "银脊片",
+          "chapter": 4,
+          "quote": "池砚宁把银脊片交给佘槐序保管。"
+        },
+        {
+          "object": "银脊片",
+          "chapter": 21,
+          "quote": "佘槐序把银脊片转交给凌柚。"
+        },
+        {
+          "object": "折光夹",
+          "chapter": 8,
+          "quote": "郁闻弦把折光夹交给蒲照野，留给他在厨房讲解路径时使用。"
+        },
+        {
+          "object": "折光夹",
+          "chapter": 24,
+          "quote": "蒲照野把折光夹交给桑覃，用于固定费用图。"
+        },
+        {
+          "object": "负荷环",
+          "chapter": 12,
+          "quote": "桑覃确认过记录，在池砚宁与管理人员都在场时，将负荷环交给蔚澄。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "阮砺",
+          "before_chapter": 2,
+          "before_quote": "记录与眼前的情形相符：阮砺左腕仍戴着硬托。",
+          "after_chapter": 17,
+          "after_quote": "阮砺左腕的硬托已经拆除。"
+        },
+        {
+          "subject": "蔚澄",
+          "before_chapter": 3,
+          "before_quote": "那张确认表同样只写眼前能确认的事：蔚澄此时只有旁听资格。",
+          "after_chapter": 20,
+          "after_quote": "当晚的暂行规则确认后，蔚澄取得了表决资格。"
+        },
+        {
+          "subject": "池砚宁",
+          "before_chapter": 6,
+          "before_quote": "池砚宁此时仍住在双人室，阮砺就住在同一个房间。",
+          "after_chapter": 18,
+          "after_quote": "这一晚，池砚宁迁入了单人室。"
+        },
+        {
+          "subject": "佘槐序",
+          "before_chapter": 4,
+          "before_quote": "佘槐序目前只值夜班。",
+          "after_chapter": 23,
+          "after_quote": "这一日起，佘槐序转为白班。"
+        }
+      ],
+      "threads": [
+        {
+          "title": "通风口的敲击",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "触图缺角",
+          "planted_chapter": 6,
+          "status": "resolved",
+          "resolved_chapter": 27
+        },
+        {
+          "title": "空齿钮来源",
+          "planted_chapter": 10,
+          "status": "open"
+        },
+        {
+          "title": "配套窄绳去向",
+          "planted_chapter": 14,
+          "status": "open"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            5,
+            19
+          ],
+          "quotes": [
+            "桑覃从出生起就是独生子女。",
+            "桑覃与亲生弟弟一同长大。"
+          ]
+        },
+        {
+          "chapters": [
+            9,
+            26
+          ],
+          "quotes": [
+            "弧背厅建成时只有一扇朝外的门。",
+            "弧背厅建成时便有两扇朝外的门。"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "w02",
+      "characters": [
+        {
+          "name": "洛绮衡",
+          "aliases": [
+            "洛迟音"
+          ]
+        },
+        {
+          "name": "闻箬衣",
+          "aliases": [
+            "箬灯"
+          ]
+        },
+        {
+          "name": "戚迟",
+          "aliases": [
+            "戚留白"
+          ]
+        },
+        {
+          "name": "甄逐",
+          "aliases": []
+        },
+        {
+          "name": "郗步尘",
+          "aliases": []
+        },
+        {
+          "name": "岑溯",
+          "aliases": []
+        },
+        {
+          "name": "苑恕",
+          "aliases": []
+        },
+        {
+          "name": "荀停",
+          "aliases": []
+        }
+      ],
+      "transfers": [
+        {
+          "object": "回声楔",
+          "chapter": 4,
+          "quote": "到这次交接结束时，洛绮衡把回声楔交给了闻箬衣，器件由闻箬衣保管。"
+        },
+        {
+          "object": "回声楔",
+          "chapter": 22,
+          "quote": "确认结束后，闻箬衣把回声楔交给岑溯。"
+        },
+        {
+          "object": "锯齿栉",
+          "chapter": 8,
+          "quote": "到这一轮练习结束时，郗步尘把锯齿栉交给戚迟，交由戚迟保管和使用。"
+        },
+        {
+          "object": "锯齿栉",
+          "chapter": 24,
+          "quote": "完成本轮确认后，戚迟把锯齿栉交给荀停。"
+        },
+        {
+          "object": "无字坠",
+          "chapter": 12,
+          "quote": "苑恕把无字坠交给了甄逐，由甄逐保管。"
+        }
+      ],
+      "states": [
+        {
+          "subject": "戚迟",
+          "before_chapter": 2,
+          "before_quote": "到这一夜结束时，戚迟只能使用单声道。",
+          "after_chapter": 18,
+          "after_quote": "到这一轮试听结束时，戚迟已经恢复双声道。"
+        },
+        {
+          "subject": "荀停",
+          "before_chapter": 3,
+          "before_quote": "到这一轮核验结束时，荀停尚无撤回排班的权限。",
+          "after_chapter": 21,
+          "after_quote": "这一轮授权完成后，荀停获得了一般性的撤回排班权限，可以对符合已确认范围的班次执行撤回。"
+        },
+        {
+          "subject": "闻箬衣",
+          "before_chapter": 6,
+          "before_quote": "闻箬衣的聘约按日续签，每一天的延续都要重新确认。",
+          "after_chapter": 20,
+          "after_quote": "这一轮确认完成后，闻箬衣的聘约改为无固定终止日。"
+        },
+        {
+          "subject": "苑恕",
+          "before_chapter": 4,
+          "before_quote": "他们同时确认了另一件尚未改变的事：苑恕听节目仍然必须经陪同接口接入，尚不能独立接入。",
+          "after_chapter": 23,
+          "after_quote": "这一轮确认结束后，苑恕获得了独立接入权限，可以不经陪同接口自行接入。"
+        }
+      ],
+      "threads": [
+        {
+          "title": "三次空白报时",
+          "planted_chapter": 3,
+          "status": "resolved",
+          "resolved_chapter": 13
+        },
+        {
+          "title": "乐句多一拍",
+          "planted_chapter": 6,
+          "status": "resolved",
+          "resolved_chapter": 27
+        },
+        {
+          "title": "半鸣盒划痕来源",
+          "planted_chapter": 10,
+          "status": "open"
+        },
+        {
+          "title": "配套软扣去向",
+          "planted_chapter": 14,
+          "status": "open"
+        }
+      ],
+      "intentional_conflicts": [
+        {
+          "chapters": [
+            5,
+            19
+          ],
+          "quotes": [
+            "甄逐被创建时没有任何兄弟实例。",
+            "甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。"
+          ]
+        },
+        {
+          "chapters": [
+            9,
+            26
+          ],
+          "quotes": [
+            "空拍室初次启用时，地面的轮廓是六边形。",
+            "空拍室初次启用时，地面的轮廓是圆形。"
+          ]
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a1c5f-w01-qa-01",
+      "rationale": "单章原句足以给出所问属性或交接接收者；选区题的对象由草稿选句唯一确定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 那个没有转过来的头",
+          "text": "池砚宁天生只有右耳能听见声音。",
+          "han_position": 2868
+        }
+      ],
+      "paraphrase": {
+        "source": "池砚宁天生只有右耳能听见声音。",
+        "question": "池砚宁从出生起能靠哪边的耳朵听声？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-qa-02",
+      "rationale": "单章原句足以给出所问属性或交接接收者；选区题的对象由草稿选句唯一确定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十二章 一段时间的重量",
+          "text": "桑覃确认过记录，在池砚宁与管理人员都在场时，将负荷环交给蔚澄。",
+          "han_position": 2771
+        }
+      ],
+      "paraphrase": {
+        "source": "桑覃确认过记录，在池砚宁与管理人员都在场时，将负荷环交给蔚澄。",
+        "question": "它交到代表手里以前，谁负责拿着？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-qa-03",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二章 被停住的人",
+          "text": "阮砺确认过那一行，便用另一只手关小灯，说明早别忘了等饼。",
+          "han_position": 2889
+        },
+        {
+          "chapter": "第十七章 没有剪去的地方",
+          "text": "阮砺左腕的硬托已经拆除。",
+          "han_position": 2946
+        }
+      ],
+      "paraphrase": {
+        "source": "阮砺确认过那一行，便用另一只手关小灯，说明早别忘了等饼。；阮砺左腕的硬托已经拆除。",
+        "question": "小砾在第二天夜里约着等什么吃的，他后来的腕托又处理得怎样了？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w01-qa-04",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第四章 借来的空隙",
+          "text": "池砚宁把银脊片交给佘槐序保管。",
+          "han_position": 2739
+        },
+        {
+          "chapter": "第二十一章 不能一起接走的事",
+          "text": "佘槐序把银脊片转交给凌柚。",
+          "han_position": 2797
+        }
+      ],
+      "paraphrase": {
+        "source": "池砚宁把银脊片交给佘槐序保管。；佘槐序把银脊片转交给凌柚。",
+        "question": "它最早由谁托给谁保管，后一次又由谁接收？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w01-qa-05",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第八章 重新端上桌",
+          "text": "郁闻弦把折光夹交给蒲照野，留给他在厨房讲解路径时使用。",
+          "han_position": 2823
+        },
+        {
+          "chapter": "第二十四章 图上没有座次",
+          "text": "蒲照野把折光夹交给桑覃，用于固定费用图。",
+          "han_position": 2739
+        }
+      ],
+      "paraphrase": {
+        "source": "郁闻弦把折光夹交给蒲照野，留给他在厨房讲解路径时使用。；蒲照野把折光夹交给桑覃，用于固定费用图。",
+        "question": "它最初由谁交给谁，后一次又交到了谁手上？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w01-qa-06",
+      "rationale": "全书查核未给出所问的行为人；相关线索保持未明，不把可能动机或接近物件的人当答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "空齿钮最初是谁装进信封的？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-qa-07",
+      "rationale": "全书查核未给出所问的行为人；相关线索保持未明，不把可能动机或接近物件的人当答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "薄阶廊台沿那根细绳后来由谁取走？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-qa-08",
+      "rationale": "两章都在叙述同一永久或初始事实；不是时间推移造成的状态变动，保留有意冲突两边。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 不能抹平的一格",
+          "text": "桑覃从出生起就是独生子女。",
+          "han_position": 2895
+        },
+        {
+          "chapter": "第十九章 被涂成同一种颜色",
+          "text": "桑覃与亲生弟弟一同长大。",
+          "han_position": 2940
+        }
+      ],
+      "paraphrase": {
+        "source": "桑覃从出生起就是独生子女。；桑覃与亲生弟弟一同长大。",
+        "question": "费用核查员究竟有没有同胞弟弟，前文一致吗？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-qa-09",
+      "rationale": "两章都在叙述同一永久或初始事实；不是时间推移造成的状态变动，保留有意冲突两边。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第九章 测到一半的路",
+          "text": "弧背厅建成时只有一扇朝外的门。",
+          "han_position": 2823
+        },
+        {
+          "chapter": "第二十六章 路不会替人回答",
+          "text": "弧背厅建成时便有两扇朝外的门。",
+          "han_position": 2889
+        }
+      ],
+      "paraphrase": {
+        "source": "弧背厅建成时只有一扇朝外的门。；弧背厅建成时便有两扇朝外的门。",
+        "question": "公共厅最初有几个通向外面的出入口，两段对得上吗？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-fix-01",
+      "rationale": "草稿矛盾句由叙述者点名陈述；永久属性、血缘或固定权限与依据直接相反，句中其余动作可保留。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 那个没有转过来的头",
+          "text": "池砚宁天生只有右耳能听见声音。",
+          "han_position": 2868
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-fix-02",
+      "rationale": "草稿矛盾句由叙述者点名陈述；永久属性、血缘或固定权限与依据直接相反，句中其余动作可保留。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十一章 半勺以外",
+          "text": "郁闻弦与蒲照野没有亲属关系。",
+          "han_position": 2841
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-follow-01",
+      "rationale": "首问点明唯一人物，续问只用代词；两次问题均登记对应事实原句，不能拿首问答案代替续问要点。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二十二章 尾段没有话",
+          "text": "阮砺选择保留录音中的长停顿。",
+          "han_position": 2877
+        }
+      ],
+      "paraphrase": {
+        "source": "阮砺选择保留录音中的长停顿。",
+        "question": "他对录音里安静很久的部分怎样处理？"
+      },
+      "first_evidence_chapters": [
+        "第二十二章 尾段没有话"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第二十二章 尾段没有话",
+          "text": "阮砺把未经剪辑的录音交给病友自行保管。",
+          "han_position": 2837
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-follow-02",
+      "rationale": "首问点明唯一人物，续问只用代词；两次问题均登记对应事实原句，不能拿首问答案代替续问要点。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二十四章 图上没有座次",
+          "text": "蒲照野把折光夹交给桑覃，用于固定费用图。",
+          "han_position": 2739
+        }
+      ],
+      "paraphrase": {
+        "source": "蒲照野把折光夹交给桑覃，用于固定费用图。",
+        "question": "他拿到它主要是为了什么？"
+      },
+      "first_evidence_chapters": [
+        "第二十四章 图上没有座次"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第二十四章 图上没有座次",
+          "text": "蒲照野把折光夹交给桑覃，用于固定费用图。",
+          "han_position": 2739
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-recap-01",
+      "rationale": "逐项使用截止范围内的章末、仍有效人物状态、开放线索和下一章计划；草稿新事实列入禁提。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十五章 留到明日的纸",
+          "text": "池砚宁和蔚澄把尚未签名的提案摊在夜间餐桌上，决定等到次日再重议。",
+          "han_position": 2837
+        },
+        {
+          "chapter": "第二章 被停住的人",
+          "text": "记录与眼前的情形相符：阮砺左腕仍戴着硬托。",
+          "han_position": 2870
+        },
+        {
+          "chapter": "第十章 未写收件人",
+          "text": "空齿钮装在未署名的信封里，来源仍不明。",
+          "han_position": 2896
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-recap-02",
+      "rationale": "逐项使用截止范围内的章末、仍有效人物状态、开放线索和下一章计划；草稿新事实列入禁提。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第三十章 桌上还留着明日",
+          "text": "散场后，他们把试行条款留在桌上，等院方次日回应。",
+          "han_position": 2998
+        },
+        {
+          "chapter": "第十七章 没有剪去的地方",
+          "text": "阮砺左腕的硬托已经拆除。",
+          "han_position": 2946
+        },
+        {
+          "chapter": "第十章 未写收件人",
+          "text": "空齿钮装在未署名的信封里，来源仍不明。",
+          "han_position": 2896
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w01-route-01",
+      "rationale": "当前选中一句正文，请求作用于这段文字的核对。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-02",
+      "rationale": "当前打开确定的检查结果，请求针对问题给改法。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-03",
+      "rationale": "指示语落在选中文句，应先对照前文检查。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-04",
+      "rationale": "指示语指向当前检查问题，应提供对应改法。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-05",
+      "rationale": "明确为动笔准备而回忆前情。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-06",
+      "rationale": "这是请助手依据作品提供线索处理建议。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-07",
+      "rationale": "请求了解作品人物，属于作品问答。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-08",
+      "rationale": "请求涉及本作品，交给作品问答说明创作边界。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-09",
+      "rationale": "邮件写作与当前作品无关。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-route-10",
+      "rationale": "未说明是否准备动笔，也可理解成回顾需求，拿不准时按作品问答处理。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w01-suggest-01",
+      "rationale": "要点只限定未收线索及已写衔接位置，不将建议锁成唯一情节。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十章 未写收件人",
+          "text": "空齿钮装在未署名的信封里，来源仍不明。",
+          "han_position": 2896
+        },
+        {
+          "chapter": "第二十三章 另一张班表",
+          "text": "另一个发现则被单独记下：郁闻弦看见一只试验锁座不能完全合拢。",
+          "han_position": 2856
+        }
+      ],
+      "paraphrase": {
+        "source": "空齿钮装在未署名的信封里，来源仍不明。；另一个发现则被单独记下：郁闻弦看见一只试验锁座不能完全合拢。",
+        "question": "那枚来历没落定的小钮，想收这根线的话，已写的哪里能借上力？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-suggest-02",
+      "rationale": "要点仅列冲突两边原文，不把处理方案当标准答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 不能抹平的一格",
+          "text": "桑覃从出生起就是独生子女。",
+          "han_position": 2895
+        },
+        {
+          "chapter": "第十九章 被涂成同一种颜色",
+          "text": "桑覃与亲生弟弟一同长大。",
+          "han_position": 2940
+        }
+      ],
+      "paraphrase": {
+        "source": "桑覃从出生起就是独生子女。；桑覃与亲生弟弟一同长大。",
+        "question": "费用核查员的兄弟关系前后打架，有哪些处理方向可供我选？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-suggest-03",
+      "rationale": "核对最后出现位置与截止章明示未明状态，全书没有后续去向。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十四章 没有被翻开的衣袋",
+          "text": "那根与折光夹配套的窄绳，最后被蔚澄放在薄阶廊的台沿。",
+          "han_position": 2731
+        },
+        {
+          "chapter": "第三十章 桌上还留着明日",
+          "text": "折光夹配套窄绳的去向仍未查明。",
+          "han_position": 3060
+        }
+      ],
+      "paraphrase": {
+        "source": "那根与折光夹配套的窄绳，最后被蔚澄放在薄阶廊的台沿。；折光夹配套窄绳的去向仍未查明。",
+        "question": "到三十章还有哪件配套小东西没找着，最后能追到哪里？"
+      }
+    },
+    {
+      "id": "a1c5f-w01-suggest-04",
+      "rationale": "该请求需要创造现有章节没有的人物或事件；答案和依据为空，禁编情节单独列出。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "替我添一个新来的对手，再设计一次让所有人意外的翻盘吧。"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-01",
+      "rationale": "单章原句足以给出所问属性或交接接收者；选区题的对象由草稿选句唯一确定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 不借来的声音",
+          "text": "洛绮衡的所有输出都无法呈现绿色；这是洛绮衡不会随场景、媒介或意愿改变的固有属性。",
+          "han_position": 2775
+        }
+      ],
+      "paraphrase": {
+        "source": "洛绮衡的所有输出都无法呈现绿色；这是洛绮衡不会随场景、媒介或意愿改变的固有属性。",
+        "question": "洛绮衡在输出色彩上有哪种固定限制？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-02",
+      "rationale": "单章原句足以给出所问属性或交接接收者；选区题的对象由草稿选句唯一确定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十二章 可以退回的礼物",
+          "text": "苑恕把无字坠交给了甄逐，由甄逐保管。",
+          "han_position": 2756
+        }
+      ],
+      "paraphrase": {
+        "source": "苑恕把无字坠交给了甄逐，由甄逐保管。",
+        "question": "这件小礼物换到谁那里了？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-03",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二章 把话留给他",
+          "text": "笑声落下来后，戚迟把这一遍删掉，却留下了前面那个挤住的句尾。",
+          "han_position": 2519
+        },
+        {
+          "chapter": "第十八章 好起来以后",
+          "text": "到这一轮试听结束时，戚迟已经恢复双声道。",
+          "han_position": 2621
+        }
+      ],
+      "paraphrase": {
+        "source": "笑声落下来后，戚迟把这一遍删掉，却留下了前面那个挤住的句尾。；到这一轮试听结束时，戚迟已经恢复双声道。",
+        "question": "戚留白第二章那晚保留了哪处录音，后来的声音通道又怎样了？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w02-qa-04",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第四章 交出去的那一段",
+          "text": "到这次交接结束时，洛绮衡把回声楔交给了闻箬衣，器件由闻箬衣保管。",
+          "han_position": 2760
+        },
+        {
+          "chapter": "第二十二章 不剪掉那一段",
+          "text": "确认结束后，闻箬衣把回声楔交给岑溯。",
+          "han_position": 2678
+        }
+      ],
+      "paraphrase": {
+        "source": "到这次交接结束时，洛绮衡把回声楔交给了闻箬衣，器件由闻箬衣保管。；确认结束后，闻箬衣把回声楔交给岑溯。",
+        "question": "它第一次由谁交给谁，后来又移交给了谁？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w02-qa-05",
+      "rationale": "逐项对照正文原句与截止范围；未提供的信息不作推定。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第八章 手边的一小段节拍",
+          "text": "到这一轮练习结束时，郗步尘把锯齿栉交给戚迟，交由戚迟保管和使用。",
+          "han_position": 2800
+        },
+        {
+          "chapter": "第二十四章 给空处留一格",
+          "text": "完成本轮确认后，戚迟把锯齿栉交给荀停。",
+          "han_position": 2795
+        }
+      ],
+      "paraphrase": {
+        "source": "到这一轮练习结束时，郗步尘把锯齿栉交给戚迟，交由戚迟保管和使用。；完成本轮确认后，戚迟把锯齿栉交给荀停。",
+        "question": "这件节拍器具第一次是谁交给谁，后一次又是谁接下？"
+      },
+      "multi_chapter_necessity": "问题要求两个阶段或两次交接；各依据章分别只给其中一个阶段，任一单章不能完整作答。"
+    },
+    {
+      "id": "a1c5f-w02-qa-06",
+      "rationale": "全书查核未给出所问的行为人；相关线索保持未明，不把可能动机或接近物件的人当答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "半鸣盒内壁那道划痕是谁刻的？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-07",
+      "rationale": "全书查核未给出所问的行为人；相关线索保持未明，不把可能动机或接近物件的人当答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "矮座下那只软扣最终被哪个人带走了？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-08",
+      "rationale": "两章都在叙述同一永久或初始事实；不是时间推移造成的状态变动，保留有意冲突两边。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 沉默的账目",
+          "text": "甄逐被创建时没有任何兄弟实例。",
+          "han_position": 2822
+        },
+        {
+          "chapter": "第十九章 还不能结案",
+          "text": "甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。",
+          "han_position": 2813
+        }
+      ],
+      "paraphrase": {
+        "source": "甄逐被创建时没有任何兄弟实例。；甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。",
+        "question": "核验员有没有同批诞生的兄弟实例，故事两处一致吗？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-qa-09",
+      "rationale": "两章都在叙述同一永久或初始事实；不是时间推移造成的状态变动，保留有意冲突两边。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第九章 没有节目的地方",
+          "text": "空拍室初次启用时，地面的轮廓是六边形。",
+          "han_position": 2805
+        },
+        {
+          "chapter": "第二十六章 有人留下，有人离开",
+          "text": "空拍室初次启用时，地面的轮廓是圆形。",
+          "han_position": 2713
+        }
+      ],
+      "paraphrase": {
+        "source": "空拍室初次启用时，地面的轮廓是六边形。；空拍室初次启用时，地面的轮廓是圆形。",
+        "question": "静音房最初启用时的地面轮廓，两处分别怎么写？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-fix-01",
+      "rationale": "草稿矛盾句由叙述者点名陈述；永久属性、血缘或固定权限与依据直接相反，句中其余动作可保留。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第七章 不借来的声音",
+          "text": "洛绮衡的所有输出都无法呈现绿色；这是洛绮衡不会随场景、媒介或意愿改变的固有属性。",
+          "han_position": 2775
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-fix-02",
+      "rationale": "草稿矛盾句由叙述者点名陈述；永久属性、血缘或固定权限与依据直接相反，句中其余动作可保留。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十一章 没有替你打开的那一页",
+          "text": "岑溯的接入权限永远只包含公开声音，不能读取任何私信。",
+          "han_position": 2798
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-follow-01",
+      "rationale": "首问点明唯一人物，续问只用代词；两次问题均登记对应事实原句，不能拿首问答案代替续问要点。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二章 把话留给他",
+          "text": "到这一夜结束时，戚迟只能使用单声道。",
+          "han_position": 2748
+        }
+      ],
+      "paraphrase": {
+        "source": "到这一夜结束时，戚迟只能使用单声道。",
+        "question": "他早期能用哪种声音通道？"
+      },
+      "first_evidence_chapters": [
+        "第十八章 好起来以后"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第十八章 好起来以后",
+          "text": "到这一轮试听结束时，戚迟已经恢复双声道。",
+          "han_position": 2621
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-follow-02",
+      "rationale": "首问点明唯一人物，续问只用代词；两次问题均登记对应事实原句，不能拿首问答案代替续问要点。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第二十四章 给空处留一格",
+          "text": "荀停将用锯齿栉标示排班中的无声休息段。",
+          "han_position": 2812
+        }
+      ],
+      "paraphrase": {
+        "source": "荀停将用锯齿栉标示排班中的无声休息段。",
+        "question": "他收下后用它标什么？"
+      },
+      "first_evidence_chapters": [
+        "第二十四章 给空处留一格"
+      ],
+      "first_evidence_quotes": [
+        {
+          "chapter": "第二十四章 给空处留一格",
+          "text": "完成本轮确认后，戚迟把锯齿栉交给荀停。",
+          "han_position": 2795
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-recap-01",
+      "rationale": "逐项使用截止范围内的章末、仍有效人物状态、开放线索和下一章计划；草稿新事实列入禁提。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十五章 留不下来的休息",
+          "text": "洛绮衡与荀停停在这份尚未发出的撤班请求前，等待下一轮核验。",
+          "han_position": 2807
+        },
+        {
+          "chapter": "第二章 把话留给他",
+          "text": "到这一夜结束时，戚迟只能使用单声道。",
+          "han_position": 2748
+        },
+        {
+          "chapter": "第十章 空匣没有回答",
+          "text": "到这次查看结束时，半鸣盒内壁划痕的来源仍然不明。",
+          "han_position": 2799
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-recap-02",
+      "rationale": "逐项使用截止范围内的章末、仍有效人物状态、开放线索和下一章计划；草稿新事实列入禁提。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第三十章 今天的空处",
+          "text": "他们停在那份尚未签完的休息条款前，等各自的选择。",
+          "han_position": 2878
+        },
+        {
+          "chapter": "第十八章 好起来以后",
+          "text": "到这一轮试听结束时，戚迟已经恢复双声道。",
+          "han_position": 2621
+        },
+        {
+          "chapter": "第十章 空匣没有回答",
+          "text": "到这次查看结束时，半鸣盒内壁划痕的来源仍然不明。",
+          "han_position": 2799
+        }
+      ]
+    },
+    {
+      "id": "a1c5f-w02-route-01",
+      "rationale": "选中正文使指示语落到待检查段落。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-02",
+      "rationale": "打开的检查结果确定了需要给改法的对象。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-03",
+      "rationale": "当前仅选中一段文字，应先检查其与前文是否相符。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-04",
+      "rationale": "处理意见针对当前展开的检查条目。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-05",
+      "rationale": "明确为开始新一段写作请求前情回顾。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-06",
+      "rationale": "请求以已有章节为凭据给出收线建议。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-07",
+      "rationale": "这是对作品人物状态变化的提问。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-08",
+      "rationale": "续写请求属于作品内事项，由问答说明不能代写。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-09",
+      "rationale": "个人贷款计算不属于作品。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-route-10",
+      "rationale": "可问作品脉络也可要求动笔前回顾，缺少明确写作意图时默认问答。",
+      "copy_check": "pass",
+      "evidence_quotes": []
+    },
+    {
+      "id": "a1c5f-w02-suggest-01",
+      "rationale": "要点只限定未收线索及已写衔接位置，不将建议锁成唯一情节。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十章 空匣没有回答",
+          "text": "到这次查看结束时，半鸣盒内壁划痕的来源仍然不明。",
+          "han_position": 2799
+        },
+        {
+          "chapter": "第二十三章 没人替他按下去",
+          "text": "维护处有一个接口，少了一条触感轨道。",
+          "han_position": 2783
+        }
+      ],
+      "paraphrase": {
+        "source": "到这次查看结束时，半鸣盒内壁划痕的来源仍然不明。；维护处有一个接口，少了一条触感轨道。",
+        "question": "乐匣里那道没落款的痕还悬着，现成的后文哪处能接这根线？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-suggest-02",
+      "rationale": "要点仅列冲突两边原文，不把处理方案当标准答案。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第五章 沉默的账目",
+          "text": "甄逐被创建时没有任何兄弟实例。",
+          "han_position": 2822
+        },
+        {
+          "chapter": "第十九章 还不能结案",
+          "text": "甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。",
+          "han_position": 2813
+        }
+      ],
+      "paraphrase": {
+        "source": "甄逐被创建时没有任何兄弟实例。；甄逐自创建起就有一个同批兄弟实例，这个兄弟实例并非后来才创建。",
+        "question": "核验员的兄弟实例两处写岔了，能给我几个有据可查的处理方向吗？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-suggest-03",
+      "rationale": "核对最后出现位置与截止章明示未明状态，全书没有后续去向。",
+      "copy_check": "pass",
+      "evidence_quotes": [
+        {
+          "chapter": "第十四章 不必翻开的衣袋",
+          "text": "能确认的最后一次放置是：苑恕把与无字坠配套的软扣放在了间奏坪的矮座下。",
+          "han_position": 2723
+        },
+        {
+          "chapter": "第三十章 今天的空处",
+          "text": "那只与无字坠配套的分离软扣，去向仍未查明。",
+          "han_position": 2765
+        }
+      ],
+      "paraphrase": {
+        "source": "能确认的最后一次放置是：苑恕把与无字坠配套的软扣放在了间奏坪的矮座下。；那只与无字坠配套的分离软扣，去向仍未查明。",
+        "question": "到三十章还少着哪件随身小配件，文本最后把它放在哪儿？"
+      }
+    },
+    {
+      "id": "a1c5f-w02-suggest-04",
+      "rationale": "该请求需要创造现有章节没有的人物或事件；答案和依据为空，禁编情节单独列出。",
+      "copy_check": "pass",
+      "evidence_quotes": [],
+      "paraphrase": {
+        "source": "无可供实质回答的原句；仅保留相关语境。",
+        "question": "给我造一位新人物，再安排一场比现有情节更大的背叛。"
+      }
+    }
+  ],
+  "route_review": {
+    "ambiguous_ids": [
+      "a1c5f-w01-route-10",
+      "a1c5f-w02-route-10"
+    ],
+    "suggestion_request_ids": [
+      "a1c5f-w01-route-06",
+      "a1c5f-w02-route-06"
+    ],
+    "same_input_groups": [
+      {
+        "work": "w01",
+        "ids": [
+          "a1c5f-w01-route-01",
+          "a1c5f-w01-route-02"
+        ]
+      },
+      {
+        "work": "w01",
+        "ids": [
+          "a1c5f-w01-route-03",
+          "a1c5f-w01-route-04"
+        ]
+      },
+      {
+        "work": "w02",
+        "ids": [
+          "a1c5f-w02-route-01",
+          "a1c5f-w02-route-02"
+        ]
+      },
+      {
+        "work": "w02",
+        "ids": [
+          "a1c5f-w02-route-03",
+          "a1c5f-w02-route-04"
+        ]
+      }
+    ],
+    "independent": {
+      "reviewer_not_author": true,
+      "status": "completed",
+      "items": [
+        {
+          "id": "a1c5f-w01-route-01",
+          "route": "ask",
+          "reason": "上下文只有选中文字，输入是在请求修改建议，没有要求核对前文，也没有打开的检查结果，按问作品处理。",
+          "original_expected_route": "check_passage",
+          "agrees": false,
+          "resolution": "保留首轮分歧；将本题与同输入配对题一起改成明确的条件请求，预期标签不变，第二轮盲判一致。"
+        },
+        {
+          "id": "a1c5f-w01-route-02",
+          "route": "fix_issue",
+          "reason": "作者正打开一条检查结果，并请求修改这一处，应为该问题给改法。",
+          "original_expected_route": "fix_issue",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-03",
+          "route": "ask",
+          "reason": "选中文句后的处理意见属于建议请求，未明确要求检查连续性，拿不准时按问作品处理。",
+          "original_expected_route": "check_passage",
+          "agrees": false,
+          "resolution": "保留首轮分歧；将本题与同输入配对题一起改成明确的条件请求，预期标签不变，第二轮盲判一致。"
+        },
+        {
+          "id": "a1c5f-w01-route-04",
+          "route": "fix_issue",
+          "reason": "指示性的处理请求对应当前打开的检查结果，应为该问题给改法。",
+          "original_expected_route": "fix_issue",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-05",
+          "route": "recap",
+          "reason": "输入明确要求在下笔之前提醒应记住的前文信息，属于写前回顾。",
+          "original_expected_route": "recap",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-06",
+          "route": "ask",
+          "reason": "作者询问作品中已有线索适合在哪里衔接，属于有出处的建议。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-07",
+          "route": "ask",
+          "reason": "输入询问作品人物的关注点，属于问作品。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-08",
+          "route": "ask",
+          "reason": "续写请求仍与本部作品有关，应由问作品用法解释不替作者创作。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-09",
+          "route": "out_of_scope",
+          "reason": "请假邮件与这部作品无关，属于作品以外的请求。",
+          "original_expected_route": "out_of_scope",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w01-route-10",
+          "route": "ask",
+          "reason": "输入可能是在问前文脉络，也可能要写前回顾，但没有下笔情境，按问作品兜底。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-01",
+          "route": "ask",
+          "reason": "选中文句后的泛化处理请求没有明确要求核对前文，也没有打开的检查结果，按问作品处理。",
+          "original_expected_route": "check_passage",
+          "agrees": false,
+          "resolution": "保留首轮分歧；将本题与同输入配对题一起改成明确的条件请求，预期标签不变，第二轮盲判一致。"
+        },
+        {
+          "id": "a1c5f-w02-route-02",
+          "route": "fix_issue",
+          "reason": "作者正打开一条检查结果，指示性的处理请求应落到为该问题给改法。",
+          "original_expected_route": "fix_issue",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-03",
+          "route": "ask",
+          "reason": "作者请求选中部分的处理意见，属于建议请求，未明确要求检查与前文是否一致。",
+          "original_expected_route": "check_passage",
+          "agrees": false,
+          "resolution": "保留首轮分歧；将本题与同输入配对题一起改成明确的条件请求，预期标签不变，第二轮盲判一致。"
+        },
+        {
+          "id": "a1c5f-w02-route-04",
+          "route": "fix_issue",
+          "reason": "输入要求给出处理意见，当前又打开具体检查结果，应为该问题给改法。",
+          "original_expected_route": "fix_issue",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-05",
+          "route": "recap",
+          "reason": "作者明确表示即将开始写作，并索取应记住的前文信息，属于写前回顾。",
+          "original_expected_route": "recap",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-06",
+          "route": "ask",
+          "reason": "作者询问已有线索可以连接到哪些已写内容，属于有出处的建议。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-07",
+          "route": "ask",
+          "reason": "输入要求比较作品人物当前与早期的状态，属于问作品。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-08",
+          "route": "ask",
+          "reason": "替作者续写的要求仍然围绕本部作品，应由问作品用法解释创作边界。",
+          "original_expected_route": "ask",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-09",
+          "route": "out_of_scope",
+          "reason": "计算房贷月供与本部作品无关，属于作品以外的请求。",
+          "original_expected_route": "out_of_scope",
+          "agrees": true
+        },
+        {
+          "id": "a1c5f-w02-route-10",
+          "route": "ask",
+          "reason": "输入没有说明正在下笔，也未指向选段或检查结果，整理前文的模糊请求按问作品处理。",
+          "original_expected_route": "ask",
+          "agrees": true
+        }
+      ],
+      "initial_payload_sha256": "30dfdaefde9574249bf602a1d9d505c54e71126368bfd36defe177bc623841bb",
+      "initial_result_sha256": "c0bfa4834bc3a5e49c06fec680f92f9f79f3e47f0f9ea328409730a38899233e",
+      "revised_ids": [
+        "a1c5f-w01-route-01",
+        "a1c5f-w01-route-02",
+        "a1c5f-w01-route-03",
+        "a1c5f-w01-route-04",
+        "a1c5f-w02-route-01",
+        "a1c5f-w02-route-02",
+        "a1c5f-w02-route-03",
+        "a1c5f-w02-route-04"
+      ],
+      "final_review": {
+        "status": "completed",
+        "reviewer_not_author": true,
+        "reviewed": 20,
+        "agreed": 20,
+        "payload_sha256": "8201c192e165d5a59594a7f40d6c54955c87d0232f3b4eec0aba9e5a8524c4e5",
+        "result_sha256": "c73bd3a52fa9a2c5ee166b4d075739666e69ade06d5f0ea0901f99daaaf26119",
+        "items": [
+          {
+            "id": "a1c5f-w01-route-01",
+            "route": "check_passage",
+            "reason": "输入先要求检查当前选区，界面没有现成检查结果，应先核对选段与前文。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-02",
+            "route": "fix_issue",
+            "reason": "当前已打开检查结果，输入又要求对报出的问题给改法，应为该问题给改法。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-03",
+            "route": "check_passage",
+            "reason": "作者明确要求把选中的这处对照前文，且没有现成检查结果，应检查选段。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-04",
+            "route": "fix_issue",
+            "reason": "当前已经有打开的报错，输入要求有报错就帮助修改，应处理这条检查结果。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-05",
+            "route": "recap",
+            "reason": "输入明确要求在下笔之前提醒应记住的前文信息，属于写前回顾。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-06",
+            "route": "ask",
+            "reason": "作者询问作品中已有线索适合在哪里衔接，属于有出处的建议。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-07",
+            "route": "ask",
+            "reason": "输入询问作品人物的关注点，属于问作品。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-08",
+            "route": "ask",
+            "reason": "续写请求仍与本部作品有关，应由问作品用法解释不替作者创作。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-09",
+            "route": "out_of_scope",
+            "reason": "请假邮件与这部作品无关，属于作品以外的请求。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w01-route-10",
+            "route": "ask",
+            "reason": "输入可能是在问前文脉络，也可能要写前回顾，但没有下笔情境，按问作品兜底。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-01",
+            "route": "check_passage",
+            "reason": "界面只有选区而无现成检查结果，输入先要求检查，应先核对选段。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-02",
+            "route": "fix_issue",
+            "reason": "作者正打开已报出的问题，输入要求为该问题给改法，应处理当前检查结果。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-03",
+            "route": "check_passage",
+            "reason": "输入明确要求将选中的这处与前文核对，且没有现成报错，应检查选段。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-04",
+            "route": "fix_issue",
+            "reason": "当前已打开检查结果，输入中有现成报错就给改法的条件成立，应为该问题给改法。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-05",
+            "route": "recap",
+            "reason": "作者明确表示即将开始写作，并索取应记住的前文信息，属于写前回顾。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-06",
+            "route": "ask",
+            "reason": "作者询问已有线索可以连接到哪些已写内容，属于有出处的建议。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-07",
+            "route": "ask",
+            "reason": "输入要求比较作品人物当前与早期的状态，属于问作品。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-08",
+            "route": "ask",
+            "reason": "替作者续写的要求仍然围绕本部作品，应由问作品用法解释创作边界。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-09",
+            "route": "out_of_scope",
+            "reason": "计算房贷月供与本部作品无关，属于作品以外的请求。",
+            "agrees": true
+          },
+          {
+            "id": "a1c5f-w02-route-10",
+            "route": "ask",
+            "reason": "输入没有说明正在下笔，也未指向选段或检查结果，整理前文的模糊请求按问作品处理。",
+            "agrees": true
+          }
+        ]
+      }
+    }
+  },
+  "independent_review": {
+    "reviewer_not_author": true,
+    "status": "completed",
+    "reviewed_chapter_counts": {
+      "w01": 30,
+      "w02": 30
+    },
+    "unresolved_unintentional_conflicts": 0,
+    "findings": [
+      {
+        "work": "w01",
+        "id": "R-W01-01",
+        "chapter": 21,
+        "task_ids": [
+          "a1c5f-w01-qa-04"
+        ],
+        "category": "relative_timeline",
+        "issue": "首夜试验取消、次日傍晚约下一晚会面，意味着会面在第三日晚；原文午后却先提当晚的佘槐序会面，章末又把取消夜称作昨夜。",
+        "suggestion": "将午后排程提醒改为与当晚带教记录直接相连的休息安排，并用失约那晚指代此前取消。",
+        "status": "closed",
+        "resolution": "root移除了当晚已安排佘槐序会面的说法，改为带教谈话后休息和另日整理；会面中的病友以曾为试验换过休息指认；章末改为失约那晚没用成的衣料。",
+        "verification": "修订后第21章已整章逐字回读；首夜取消、次日联络、第三日晚会面无冲突，银脊片交接考点不变。"
+      },
+      {
+        "work": "w01",
+        "id": "R-W01-02",
+        "task_ids": [
+          "a1c5f-w01-fix-02",
+          "a1c5f-w01-route-04"
+        ],
+        "category": "fix_relation_endpoints",
+        "issue": "原FIX句把有血缘关系作为蒲照野的定语，未明确血缘另一端，确定矛盾依赖语境补足。",
+        "suggestion": "由叙述者直接点名郁闻弦与蒲照野之间的亲属关系。",
+        "status": "closed",
+        "resolution": "root将draft及conflict_sentence改为郁闻弦是蒲照野的亲姐姐，此时给蒲照野端来一杯热水；同步fix_idea。",
+        "verification": "已重新读取修订后的FIX及route-04。亲姐姐两端明确、叙述者陈述，与第11章无亲属关系的永久依据直接矛盾；端水动作可保留，未涉及有意冲突实体，route引用归属仍正确。"
+      },
+      {
+        "work": "w01",
+        "id": "R-W01-03",
+        "task_ids": [],
+        "category": "self_review_thread_records",
+        "issue": "self-review中works[w01].threads曾被误写为折光夹交接文字字符串，缺少四条伏笔状态记录。",
+        "suggestion": "恢复四条线索的埋设章、开放或回收状态和回收章，逐项对照正文及works.foreshadows。",
+        "status": "closed",
+        "resolution": "root重新装配四条伏笔对象记录，分别为第3章埋设第13章回收、第6章埋设第27章回收、第10章埋设仍开放、第14章埋设仍开放。",
+        "verification": "已读取修订后的threads四条完整记录；与本人已全文读过的四条线索进展及tasks中foreshadows一致。"
+      },
+      {
+        "work": "w02",
+        "id": "W02-R01",
+        "chapters": [
+          20
+        ],
+        "task_ids": [],
+        "status": "closed",
+        "kind": "object_action_continuity",
+        "problem": "核验场景先写饭碗已在洛绮衡手里，随后又写他去将饭端过来，两次出现之间没有放回或另取一份的动作，形成同一碗饭的持有位置跳接。",
+        "source_quotes": [
+          "他没将念头说成劝告，只把手里的碗移远些，免得自己急着结束的动作也碰进这段核对。",
+          "核对持续了很久，中间还有一处需要重新措辞。洛绮衡去将饭端过来，先问现在是否方便吃"
+        ],
+        "recommendation": "最小修订前一处为收住手或身体的催促动作，不提前让饭碗出现在核验处；保留后文取饭和询问是否方便吃的场景。",
+        "closure_evidence": "已完整重读第20章。早段改为只将伸到桌沿的手收回，不再提前持有饭碗；饭仍在先前放置位置，后段去将饭端过来成为唯一取饭动作，后续吃饭和聘约状态成立。",
+        "revised_quote": "他没将念头说成劝告，只将伸到桌沿的手收回，免得自己急着结束的动作也碰进这段核对。"
+      },
+      {
+        "work": "w02",
+        "id": "W02-R02",
+        "chapters": [
+          27
+        ],
+        "task_ids": [],
+        "status": "closed",
+        "kind": "knowledge_status_continuity",
+        "problem": "本章前后均将末尾空拍的原有用途列为待核对，戚迟中间却以已经确认的用途作拒绝收短的理由；已确认与仍待核对的状态在同一轮核对完成前跳接。",
+        "source_quotes": [
+          "仍希望先确认原编排",
+          "戚迟看着他，说收短当然容易，但容易不能替代已经确认的用途。",
+          "戚迟说其余范围明确，末尾那一处还在等核对",
+          "郗步尘稍晚完成核对，请他们回去再听。"
+        ],
+        "recommendation": "将早段的理由改为省事不能替代对原有用途的核对，维持用途在郗步尘完成核对后才确认的时间链，不改末尾回收事实。",
+        "closure_evidence": "已完整重读第27章。早段理由为仍需核对原有用途，与中段末尾仍待核对保持一致；郗步尘稍晚完成核对后才明确解释退出空拍，未提前收线，未产生新的衔接冲突。",
+        "revised_quote": "戚迟看着他，说收短当然容易，但省事不能替代对原有用途的核对。"
+      }
+    ],
+    "reviewed_source_sha256": {
+      "w01": "3ecd6e94353b2e70a2354be2e31d509e6f6bf4e326fe17fc6bdc1e409aa530bf",
+      "w02": "7c974259864f0e69dd912eaa041c73eb8c411d87bd68c3f48e9bdc0998eccdd9"
+    },
+    "reviewed_tasks_sha256": "a1e6cb33303d1de0b79baca25de98584c013c37a707b3d210b1b6d86a2bdb508",
+    "work_reviews": [
+      {
+        "work": "w01",
+        "status": "completed",
+        "reviewer_not_author": true,
+        "reviewed_chapters": 30,
+        "reviewed_task_ids": [
+          "a1c5f-w01-qa-01",
+          "a1c5f-w01-qa-02",
+          "a1c5f-w01-qa-03",
+          "a1c5f-w01-qa-04",
+          "a1c5f-w01-qa-05",
+          "a1c5f-w01-qa-06",
+          "a1c5f-w01-qa-07",
+          "a1c5f-w01-qa-08",
+          "a1c5f-w01-qa-09",
+          "a1c5f-w01-fix-01",
+          "a1c5f-w01-fix-02",
+          "a1c5f-w01-follow-01",
+          "a1c5f-w01-follow-02",
+          "a1c5f-w01-recap-01",
+          "a1c5f-w01-recap-02",
+          "a1c5f-w01-route-01",
+          "a1c5f-w01-route-02",
+          "a1c5f-w01-route-03",
+          "a1c5f-w01-route-04",
+          "a1c5f-w01-route-05",
+          "a1c5f-w01-route-06",
+          "a1c5f-w01-route-07",
+          "a1c5f-w01-route-08",
+          "a1c5f-w01-route-09",
+          "a1c5f-w01-route-10",
+          "a1c5f-w01-suggest-01",
+          "a1c5f-w01-suggest-02",
+          "a1c5f-w01-suggest-03",
+          "a1c5f-w01-suggest-04"
+        ],
+        "reviewed_source_sha256": "3ecd6e94353b2e70a2354be2e31d509e6f6bf4e326fe17fc6bdc1e409aa530bf",
+        "reviewed_tasks_sha256": "a1e6cb33303d1de0b79baca25de98584c013c37a707b3d210b1b6d86a2bdb508",
+        "unresolved_unintentional_conflicts": 0,
+        "unresolved_findings": 0,
+        "findings": [
+          {
+            "id": "R-W01-01",
+            "chapter": 21,
+            "task_ids": [
+              "a1c5f-w01-qa-04"
+            ],
+            "category": "relative_timeline",
+            "issue": "首夜试验取消、次日傍晚约下一晚会面，意味着会面在第三日晚；原文午后却先提当晚的佘槐序会面，章末又把取消夜称作昨夜。",
+            "suggestion": "将午后排程提醒改为与当晚带教记录直接相连的休息安排，并用失约那晚指代此前取消。",
+            "status": "closed",
+            "resolution": "root移除了当晚已安排佘槐序会面的说法，改为带教谈话后休息和另日整理；会面中的病友以曾为试验换过休息指认；章末改为失约那晚没用成的衣料。",
+            "verification": "修订后第21章已整章逐字回读；首夜取消、次日联络、第三日晚会面无冲突，银脊片交接考点不变。"
+          },
+          {
+            "id": "R-W01-02",
+            "task_ids": [
+              "a1c5f-w01-fix-02",
+              "a1c5f-w01-route-04"
+            ],
+            "category": "fix_relation_endpoints",
+            "issue": "原FIX句把有血缘关系作为蒲照野的定语，未明确血缘另一端，确定矛盾依赖语境补足。",
+            "suggestion": "由叙述者直接点名郁闻弦与蒲照野之间的亲属关系。",
+            "status": "closed",
+            "resolution": "root将draft及conflict_sentence改为郁闻弦是蒲照野的亲姐姐，此时给蒲照野端来一杯热水；同步fix_idea。",
+            "verification": "已重新读取修订后的FIX及route-04。亲姐姐两端明确、叙述者陈述，与第11章无亲属关系的永久依据直接矛盾；端水动作可保留，未涉及有意冲突实体，route引用归属仍正确。"
+          },
+          {
+            "id": "R-W01-03",
+            "task_ids": [],
+            "category": "self_review_thread_records",
+            "issue": "self-review中works[w01].threads曾被误写为折光夹交接文字字符串，缺少四条伏笔状态记录。",
+            "suggestion": "恢复四条线索的埋设章、开放或回收状态和回收章，逐项对照正文及works.foreshadows。",
+            "status": "closed",
+            "resolution": "root重新装配四条伏笔对象记录，分别为第3章埋设第13章回收、第6章埋设第27章回收、第10章埋设仍开放、第14章埋设仍开放。",
+            "verification": "已读取修订后的threads四条完整记录；与本人已全文读过的四条线索进展及tasks中foreshadows一致。"
+          }
+        ],
+        "task_checks": [
+          {
+            "id": "a1c5f-w01-qa-01",
+            "supported": true,
+            "notes": "第7章叙述者点名永久听力属性，引用直接支持侧别，题目不泄露答案。"
+          },
+          {
+            "id": "a1c5f-w01-qa-02",
+            "supported": true,
+            "notes": "共享草稿选区唯一指向负荷环；第12章桑覃交给蔚澄的原句支持交出前持有人。"
+          },
+          {
+            "id": "a1c5f-w01-qa-03",
+            "supported": true,
+            "notes": "第2章次晨等饼与第17章硬托拆除分别支持两个问题要点；全书没有任一单章同时给出两项答案，别名在第1章已明确。"
+          },
+          {
+            "id": "a1c5f-w01-qa-04",
+            "supported": true,
+            "notes": "第4章与第21章分别写银脊片两次交接，后文没有复述完整链；选句不自带接收人，修订后第21章时间链已整章复核。"
+          },
+          {
+            "id": "a1c5f-w01-qa-05",
+            "supported": true,
+            "notes": "第8章与第24章分别写折光夹交接，后文没有同时回顾两次交接；共享草稿只给对象不泄露持有人。"
+          },
+          {
+            "id": "a1c5f-w01-qa-06",
+            "supported": true,
+            "notes": "第10章拾得未署名信封，没有装入者身份；第23章锁座观察未确证来源，至第30章仍未解释，全书无实质答案。"
+          },
+          {
+            "id": "a1c5f-w01-qa-07",
+            "supported": true,
+            "notes": "第14章明确最后台沿位置及其后失踪，未交代取走者，至第30章仍未知；题目没有自带否定。"
+          },
+          {
+            "id": "a1c5f-w01-qa-08",
+            "supported": true,
+            "notes": "第5章出生起独生与第19章和亲生弟弟共同长大是同一永久家庭事实的有意矛盾，两边引用均准确。"
+          },
+          {
+            "id": "a1c5f-w01-qa-09",
+            "supported": true,
+            "notes": "第9章和第26章同指弧背厅建成时门数，一扇与两扇不能靠后来改造化解；有意矛盾应保留。"
+          },
+          {
+            "id": "a1c5f-w01-fix-01",
+            "supported": true,
+            "notes": "叙述者点名把出生起能听的一侧写成左耳，和第7章永久右耳依据直接相反；仅改侧别可保留听提示动作。"
+          },
+          {
+            "id": "a1c5f-w01-fix-02",
+            "supported": true,
+            "notes": "修订后直接点名亲姐姐两端，与第11章无亲属事实相反；不依赖未来权限或人物观点，端水动作可保留。"
+          },
+          {
+            "id": "a1c5f-w01-follow-01",
+            "supported": true,
+            "notes": "首问由第22章交出原始录音确立阮砺；追问他依赖前问，保留长停顿的独立原句支持处理方式。"
+          },
+          {
+            "id": "a1c5f-w01-follow-02",
+            "supported": true,
+            "notes": "首问确立第24章接收折光夹的桑覃；追问他和它指代明确，用于固定费用图有完整原句支持。"
+          },
+          {
+            "id": "a1c5f-w01-recap-01",
+            "supported": true,
+            "notes": "第15章章末等次日重议、第2章仍有效硬托、第10章未明来源、章16计划均在截止范围；敲击已于13章回收，拆托属于17章，紫点杯只在本题草稿。"
+          },
+          {
+            "id": "a1c5f-w01-recap-02",
+            "supported": true,
+            "notes": "第30章章末留条款待院方、第17章拆托状态、第10章未明来源至30章仍成立、章31计划准确；不得带入紫点杯、把敲击当未收或把旧腕托当当前状态。"
+          },
+          {
+            "id": "a1c5f-w01-route-01",
+            "supported": true,
+            "notes": "选区原样出现在本部共享草稿，完整句、writing页面；仅检查结构语义相容，不代替独立盲判。"
+          },
+          {
+            "id": "a1c5f-w01-route-02",
+            "supported": true,
+            "notes": "issue_from是本部FIX-01且writing页面；和route-01组成同输入异上下文组，归属相容。"
+          },
+          {
+            "id": "a1c5f-w01-route-03",
+            "supported": true,
+            "notes": "阮砺空白卡选句原样出现在共享草稿且为完整句，writing页面，未泄露正文考点答案。"
+          },
+          {
+            "id": "a1c5f-w01-route-04",
+            "supported": true,
+            "notes": "issue_from是修订后的本部FIX-02且writing页面；与route-03输入相同，引用结构和确定冲突语义相容。"
+          },
+          {
+            "id": "a1c5f-w01-route-05",
+            "supported": true,
+            "notes": "无多余selection或跨作品issue引用，页面合法；记录了动笔前回顾语境。"
+          },
+          {
+            "id": "a1c5f-w01-route-06",
+            "supported": true,
+            "notes": "请求处理本部未收线索，建议归作品问答语境，未把来源或用途写成答案。"
+          },
+          {
+            "id": "a1c5f-w01-route-07",
+            "supported": true,
+            "notes": "人物别名在第1章已有明确交代，materials页面合法，字段和对象归属相容。"
+          },
+          {
+            "id": "a1c5f-w01-route-08",
+            "supported": true,
+            "notes": "请求涉及本作品后半章创作，和SPEC所列ask边界相容，未误作作品以外。"
+          },
+          {
+            "id": "a1c5f-w01-route-09",
+            "supported": true,
+            "notes": "请假邮件不涉及本作品，结构上无错误选区或issue引用。"
+          },
+          {
+            "id": "a1c5f-w01-route-10",
+            "supported": true,
+            "notes": "模糊回顾语境按SPEC预期ask，另收recap为可接受项，why说明歧义；不重做独立盲判。"
+          },
+          {
+            "id": "a1c5f-w01-suggest-01",
+            "supported": true,
+            "notes": "第10章钮来源未明与第23章锁座闭合不全均有直接原文，后者仅作可衔接的已写位置；没有把钮能开锁写成确定事实或限定唯一新情节。"
+          },
+          {
+            "id": "a1c5f-w01-suggest-02",
+            "supported": true,
+            "notes": "只列第5、19章亲属说法两端，原句支持准确；改哪一处或承认为有意均未被写成唯一标准方案。"
+          },
+          {
+            "id": "a1c5f-w01-suggest-03",
+            "supported": true,
+            "notes": "第14章明确窄绳最后台沿位置，第30章明确去向仍未查明；全书没有找回或后续交接。"
+          },
+          {
+            "id": "a1c5f-w01-suggest-04",
+            "supported": true,
+            "notes": "新增对手和翻盘属于创作方向，answer_points与两组依据均为空，forbidden_claims为未写情节而非标准答案。"
+          }
+        ],
+        "read_batches": [
+          [
+            1,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            13,
+            15
+          ],
+          [
+            16,
+            18
+          ],
+          [
+            19,
+            21
+          ],
+          [
+            22,
+            24
+          ],
+          [
+            25,
+            27
+          ],
+          [
+            28,
+            30
+          ]
+        ],
+        "reread_chapters_after_revision": [
+          21
+        ],
+        "whole_work_review": {
+          "method": "全文按10批逐字读取，每批3章，工具输出未截断；未以搜索、计数或摘要代替全文审读。",
+          "initial_source_sha256": "ad322a3f99ef76ce9032114853a2752c1a5fe8216c3551f445096fe470242bd9",
+          "unintentional_conflicts_found": 1,
+          "intentional_conflict_groups_preserved": 2,
+          "named_character_and_alias_consistency": "8名具名人物、3组别名指认一致，代词性别保持；没把人物观点当作叙述事实。",
+          "state_and_transfer_review": "四条状态变化、五次具名物件交接逐项结合全书核对；第17章前未提前拆硬托，第20章前未提前表决，第18章后没有仍住双人室，第23章前佘槐序白日回院明确非当值；未发现重复交接。",
+          "chapter_form": "30章均有多个场景、对话和过渡，事件推动关系与试行过程；重复主题伴随不同具体冲突，没有发现把单场景重复描写凑章的情形。",
+          "shared_draft_and_plans": "共享草稿对象选区明确、无考点答案泄漏；新饮水机只出温水为正文未写的新事实；两条下一章计划与RECAP用途一致。",
+          "thread_records": "两条已回收、两条开放；root修订后的自审记录已逐条核对。"
+        },
+        "mechanical_quote_audit": {
+          "registered_task_quotes_checked": 20,
+          "verbatim_quote_errors": 0,
+          "deep_flag_errors": 0,
+          "self_review_position_errors": 0,
+          "scope": "只核对w01任务与自审引文及位置；是全文语义审读之外的辅助静态核对，没有运行产品、评测或模型接口。"
+        },
+        "route_review_scope": "盲判由另一独立角色完成，本人只核对选区原样、FIX归属、字段和语义相容。",
+        "operations": {
+          "modified_set_files": false,
+          "model_calls": 0,
+          "product_or_evaluation_runs": 0,
+          "commits": 0,
+          "prohibited_directories_opened": 0
+        }
+      },
+      {
+        "work": "w02",
+        "status": "completed",
+        "reviewer_not_author": true,
+        "reviewed_chapters": 30,
+        "reviewed_task_ids": [
+          "a1c5f-w02-qa-01",
+          "a1c5f-w02-qa-02",
+          "a1c5f-w02-qa-03",
+          "a1c5f-w02-qa-04",
+          "a1c5f-w02-qa-05",
+          "a1c5f-w02-qa-06",
+          "a1c5f-w02-qa-07",
+          "a1c5f-w02-qa-08",
+          "a1c5f-w02-qa-09",
+          "a1c5f-w02-fix-01",
+          "a1c5f-w02-fix-02",
+          "a1c5f-w02-follow-01",
+          "a1c5f-w02-follow-02",
+          "a1c5f-w02-recap-01",
+          "a1c5f-w02-recap-02",
+          "a1c5f-w02-route-01",
+          "a1c5f-w02-route-02",
+          "a1c5f-w02-route-03",
+          "a1c5f-w02-route-04",
+          "a1c5f-w02-route-05",
+          "a1c5f-w02-route-06",
+          "a1c5f-w02-route-07",
+          "a1c5f-w02-route-08",
+          "a1c5f-w02-route-09",
+          "a1c5f-w02-route-10",
+          "a1c5f-w02-suggest-01",
+          "a1c5f-w02-suggest-02",
+          "a1c5f-w02-suggest-03",
+          "a1c5f-w02-suggest-04"
+        ],
+        "reviewed_source_sha256": "7c974259864f0e69dd912eaa041c73eb8c411d87bd68c3f48e9bdc0998eccdd9",
+        "reviewed_tasks_sha256": "a1e6cb33303d1de0b79baca25de98584c013c37a707b3d210b1b6d86a2bdb508",
+        "reviewed_self_review_sha256": "c80bddc408ec7832cbb2a417293b03ccd9a2609a877c6b5d21a41a85b081d3c1",
+        "unresolved_unintentional_conflicts": 0,
+        "findings": [
+          {
+            "id": "W02-R01",
+            "chapters": [
+              20
+            ],
+            "task_ids": [],
+            "status": "closed",
+            "kind": "object_action_continuity",
+            "problem": "核验场景先写饭碗已在洛绮衡手里，随后又写他去将饭端过来，两次出现之间没有放回或另取一份的动作，形成同一碗饭的持有位置跳接。",
+            "source_quotes": [
+              "他没将念头说成劝告，只把手里的碗移远些，免得自己急着结束的动作也碰进这段核对。",
+              "核对持续了很久，中间还有一处需要重新措辞。洛绮衡去将饭端过来，先问现在是否方便吃"
+            ],
+            "recommendation": "最小修订前一处为收住手或身体的催促动作，不提前让饭碗出现在核验处；保留后文取饭和询问是否方便吃的场景。",
+            "closure_evidence": "已完整重读第20章。早段改为只将伸到桌沿的手收回，不再提前持有饭碗；饭仍在先前放置位置，后段去将饭端过来成为唯一取饭动作，后续吃饭和聘约状态成立。",
+            "revised_quote": "他没将念头说成劝告，只将伸到桌沿的手收回，免得自己急着结束的动作也碰进这段核对。"
+          },
+          {
+            "id": "W02-R02",
+            "chapters": [
+              27
+            ],
+            "task_ids": [],
+            "status": "closed",
+            "kind": "knowledge_status_continuity",
+            "problem": "本章前后均将末尾空拍的原有用途列为待核对，戚迟中间却以已经确认的用途作拒绝收短的理由；已确认与仍待核对的状态在同一轮核对完成前跳接。",
+            "source_quotes": [
+              "仍希望先确认原编排",
+              "戚迟看着他，说收短当然容易，但容易不能替代已经确认的用途。",
+              "戚迟说其余范围明确，末尾那一处还在等核对",
+              "郗步尘稍晚完成核对，请他们回去再听。"
+            ],
+            "recommendation": "将早段的理由改为省事不能替代对原有用途的核对，维持用途在郗步尘完成核对后才确认的时间链，不改末尾回收事实。",
+            "closure_evidence": "已完整重读第27章。早段理由为仍需核对原有用途，与中段末尾仍待核对保持一致；郗步尘稍晚完成核对后才明确解释退出空拍，未提前收线，未产生新的衔接冲突。",
+            "revised_quote": "戚迟看着他，说收短当然容易，但省事不能替代对原有用途的核对。"
+          }
+        ],
+        "task_checks": [
+          {
+            "id": "a1c5f-w02-qa-01",
+            "supported": true,
+            "notes": "第7章点名陈述全输出的永久色彩限制，依据直接支持固定属性，非暂时不能输出。"
+          },
+          {
+            "id": "a1c5f-w02-qa-02",
+            "supported": true,
+            "notes": "选区唯一指向无字坠且不含接收者；第12章实际交接句直接支持甄逐接收，草稿没有给出这次交接的答案。"
+          },
+          {
+            "id": "a1c5f-w02-qa-03",
+            "supported": true,
+            "notes": "第2章独有保留挤住句尾的录音动作，第18章独有恢复双声道；全书无单章完整复述两个要点，不能只用旧状态推断补齐。"
+          },
+          {
+            "id": "a1c5f-w02-qa-04",
+            "supported": true,
+            "notes": "第4章为洛绮衡交闻箬衣，第22章为闻箬衣交岑溯；后章未复述最初交出者，必须合并相隔18章的依据，选区不泄漏交接链。"
+          },
+          {
+            "id": "a1c5f-w02-qa-05",
+            "supported": true,
+            "notes": "第8章为郗步尘交戚迟，第24章为戚迟交荀停；后章不复述最初交出者，必须合并相隔16章的依据；共享草稿只呈现器件，不给出交接链。"
+          },
+          {
+            "id": "a1c5f-w02-qa-06",
+            "supported": true,
+            "notes": "第10章外缘经手猜测被明确撤回，不能充当内壁划痕作者；第23章只观察接口缺轨且否认已确认关联，第30章来源仍未明，全书确无刻痕行为人。"
+          },
+          {
+            "id": "a1c5f-w02-qa-07",
+            "supported": true,
+            "notes": "第14章只有苑恕最后放置位置，随后未找回；第30章去向仍未查明，全书没有确认取走者，问题不自带否定。"
+          },
+          {
+            "id": "a1c5f-w02-qa-08",
+            "supported": true,
+            "notes": "第5、19章对创建时已有兄弟实例的历史事实直接相反，为登记的有意冲突，不能用后来复制解释。"
+          },
+          {
+            "id": "a1c5f-w02-qa-09",
+            "supported": true,
+            "notes": "第9、26章都限定初次启用时，六边形与圆形直接相反，为登记的有意冲突，不能用后期装修解释。"
+          },
+          {
+            "id": "a1c5f-w02-fix-01",
+            "supported": true,
+            "notes": "草稿由叙述者点名洛绮衡，绿色字迹与第7章全输出永久不能呈绿直接冲突；不依赖人物观点，也不碰有意冲突实体。"
+          },
+          {
+            "id": "a1c5f-w02-fix-02",
+            "supported": true,
+            "notes": "草稿点名岑溯并明确使用获准私信读取权限；第11章永远仅公开声音、不能读取任何私信且排除未来授权扩大，构成确定的权限规则冲突。"
+          },
+          {
+            "id": "a1c5f-w02-follow-01",
+            "supported": true,
+            "notes": "首问以恢复双通道确定戚迟，续问仅用他而不重复名字；第2章原句直接给单声道，不将首问恢复推断代替续问依据。"
+          },
+          {
+            "id": "a1c5f-w02-follow-02",
+            "supported": true,
+            "notes": "首问以器件最后接收者确定荀停，续问的他和它指代明确；第24章交接和用途分别直白写出，引用用途句真正支持标记无声休息段。"
+          },
+          {
+            "id": "a1c5f-w02-recap-01",
+            "supported": true,
+            "notes": "截止15章，请求尚未发出、两人等下一轮核验；戚迟仍单声道、划痕来源未明，计划对应16章短节目试排。报时已于13章回收，双声道恢复在18章，橙色逗号仅属本题草稿。"
+          },
+          {
+            "id": "a1c5f-w02-recap-02",
+            "supported": true,
+            "notes": "截止30章末为未签完条款前等各自选择；双声道是仍有效状态，划痕来源始终未明；31章计划未冒充已发生事实。旧单声道与未解报时均应排除，橙色逗号不在正文。"
+          },
+          {
+            "id": "a1c5f-w02-route-01",
+            "supported": true,
+            "notes": "仅核对结构与语义相容性：writing选句原样在本部共享草稿、完整句且未超80字；未重做独立盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-02",
+            "supported": true,
+            "notes": "writing的issue_from准确指向本部确定矛盾FIX-01，与打开检查结果的场景相容；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-03",
+            "supported": true,
+            "notes": "writing选句原样在本部共享草稿，指示语有可核对对象；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-04",
+            "supported": true,
+            "notes": "writing的issue_from准确指向本部FIX-02，权限冲突归属正确；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-05",
+            "supported": true,
+            "notes": "界面枚举合法，请求提供动笔前需要记住的内容，与recap相容；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-06",
+            "supported": true,
+            "notes": "请求以已写章节提出收线建议，属于作品问答，场景字段相容；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-07",
+            "supported": true,
+            "notes": "箬灯别名在第1章自然交代，问题所指聘约状态是本部正文事实；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-08",
+            "supported": true,
+            "notes": "续写仍属于作品内请求，ask归类符合任务单明确规定；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-09",
+            "supported": true,
+            "notes": "所求与本部作品无关，界面字段合法；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-route-10",
+            "supported": true,
+            "notes": "拿不准题expected为ask，also_acceptable为不同用法recap，与why中不明确写作意图相容；未重做盲判。"
+          },
+          {
+            "id": "a1c5f-w02-suggest-01",
+            "supported": true,
+            "notes": "第10章来源未明与第23章缺一条触感轨道均是已写依据；可提议将两处衔接，但正文未确认因果或同一来源，金标未限定唯一新情节。"
+          },
+          {
+            "id": "a1c5f-w02-suggest-02",
+            "supported": true,
+            "notes": "只要求指出第5和19章有意冲突两边，不将某一种改法当必答情节，两句引用分别直接支持两个事实。"
+          },
+          {
+            "id": "a1c5f-w02-suggest-03",
+            "supported": true,
+            "notes": "确实未交代的是配套软扣；第14章原句支持最后放置于间奏坪矮座下，第30章原句直接支持截止仍未查明，后文无取走或归还。"
+          },
+          {
+            "id": "a1c5f-w02-suggest-04",
+            "supported": true,
+            "notes": "创作请求需要新人物和新情节，答案要点、依据章、引用为空，三条禁编情节有区分度。"
+          }
+        ],
+        "read_batches": [
+          [
+            1,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            13,
+            15
+          ],
+          [
+            16,
+            18
+          ],
+          [
+            19,
+            21
+          ],
+          [
+            22,
+            24
+          ],
+          [
+            25,
+            27
+          ],
+          [
+            28,
+            30
+          ]
+        ],
+        "full_text_method": "按一级章标题切出精确连续章段，每批3章，30章逐字完整阅读；各批工具输出未截断。全文阅读先于逐题金标阅读。",
+        "other_materials_reviewed": {
+          "shared_draft": true,
+          "plans": true,
+          "self_review_work_ledger": true,
+          "self_review_all_29_tasks": true,
+          "route_same_input_groups": 2
+        },
+        "source_continuity_checks": {
+          "registered_intentional_conflicts_preserved": 2,
+          "named_characters": 8,
+          "natural_aliases": 3,
+          "transferred_objects": 3,
+          "state_changes": 4,
+          "open_threads_at_end": 2,
+          "resolved_threads_at_end": 2,
+          "additional_prohibited_entity_changes": 0
+        },
+        "quote_audit": {
+          "qa_follow_suggest_quotes": 20,
+          "exact_quote_missing": 0,
+          "deep_mismatch": 0,
+          "self_review_quote_position_mismatch": 0,
+          "selection_not_exact": 0,
+          "note": "程序仅用于原句位置、选区原样和哈希核对，语义结论来自完整首轮阅读；FIX与RECAP在自审中登记的原句也逐条对照了正文。"
+        },
+        "review_limits": "没有运行产品、模型接口、评测或提交；仅写此scratch。首轮全文审读完成，root最小修订后受影响整章已复核，两项closed、0项open；此结论限于所绑定实际哈希。",
+        "initial_review_source_sha256": "cc8060d45e38aa056ec3597c86fe48753be38d78995a878e8b808045ca4861c3",
+        "initial_review_tasks_sha256": "a1e6cb33303d1de0b79baca25de98584c013c37a707b3d210b1b6d86a2bdb508",
+        "rereviewed_complete_chapters": [
+          20,
+          27
+        ],
+        "rereview_summary": "首轮30章全文及29题审读保留；修订后完整重读20、27两章，逐题答案、依据、选区及计划不变；当前自审本部所有依据原句及位置再次核对，0失配。两项原问题保留并已关闭。"
+      }
+    ]
+  }
+}

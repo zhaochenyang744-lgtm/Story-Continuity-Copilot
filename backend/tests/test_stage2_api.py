@@ -68,7 +68,7 @@ class ScopedRegressionTests(unittest.TestCase):
         outsider=TestClient(self.c.app); self.assertEqual(outsider.post('/api/auth/register',json={'account_name':'attackuser','display_name':'Attack','password':'valid-password-98'},headers=h()).status_code,201); db=self.c.app.state.database
         with db.connection() as connection: before='\n'.join(connection.iterdump())
         routes=[
-            ('get',f'/api/projects/{self.p}',None),('get',f'/api/projects/{self.p}/outline',None),('get',f'/api/projects/{self.p}/characters',None),('get',f'/api/projects/{self.p}/world',None),('get',f'/api/projects/{self.p}/chapters',None),('get',f'/api/projects/{self.p}/memory',None),('get',f'/api/projects/{self.p}/drafts/{self.d["id"]}',None),('get',f'/api/projects/{self.p}/checks/missing-run',None),
+            ('get',f'/api/projects/{self.p}',None),('get',f'/api/projects/{self.p}/characters',None),('get',f'/api/projects/{self.p}/world',None),('get',f'/api/projects/{self.p}/chapters',None),('get',f'/api/projects/{self.p}/memory',None),('get',f'/api/projects/{self.p}/drafts/{self.d["id"]}',None),('get',f'/api/projects/{self.p}/checks/missing-run',None),
             ('patch',f'/api/projects/{self.p}',{'base_metadata_revision':1,'title':'攻击'}),('patch',f'/api/projects/{self.p}/drafts/{self.d["id"]}',{'base_revision':1,'body':'攻击'}),('post',f'/api/projects/{self.p}/checks',{'draft_id':self.d['id'],'draft_revision':1}),('post',f'/api/projects/{self.p}/issues/missing-issue/decision',{'run_id':'missing-run','source_revision':1,'decision':'false_positive'}),('post',f'/api/projects/{self.p}/memory/change-sets',{'run_id':'missing-run','source_run_revision':1,'resolved_revision':1}),('post',f'/api/projects/{self.p}/memory/change-sets/missing/commit',{'confirm':True,'accepted_item_ids':[],'rejected_item_ids':[]}),('post',f'/api/projects/{self.p}/reset',{'confirm':True,'reason':'demo_recovery'})]
         for method,url,payload in routes:
             response=getattr(outsider,method)(url,json=payload,headers=h()) if payload is not None else getattr(outsider,method)(url)
@@ -112,7 +112,6 @@ class ScopedRegressionTests(unittest.TestCase):
         preview=self.c.post('/api/imports/preview',files={'file':('foreign.md','# 第一章\n外部章节。'.encode('utf-8'),'text/markdown')},headers=h()).json()['data']
         paper=self.c.post(f"/api/imports/{preview['import_id']}/commit",json={'confirm':True,'title':'查询隔离作品','chapter_preview_ids':[item['preview_id'] for item in preview['detected']['chapters']]},headers=h()).json()['data']['project']['id']; foreign_chapter=self.c.get(f'/api/projects/{paper}/chapters').json()['data']['chapters'][0]['id']
         self.assertEqual(self.c.get(f'/api/projects/{self.p}/chapters?chapter_id={foreign_chapter}').status_code,404)
-        self.assertEqual(self.c.get(f'/api/projects/{self.p}/outline?volume=two').status_code,400)
 
     def test_character_and_world_broken_provenance_is_422(self):
         db=self.c.app.state.database

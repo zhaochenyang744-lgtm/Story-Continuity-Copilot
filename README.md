@@ -2,7 +2,7 @@
 
 AI continuity checks and a writing assistant for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, answers questions about the work with the passages it read, and leaves every decision to the author.
 
-**Current version: v1.8.1**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
+**Current version: v1.9.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
@@ -14,12 +14,14 @@ The interface is in Chinese and is built for Chinese web fiction.
 
 The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chapters · 资料 / Records · 计划 / Plans**.
 
-- **Assistant (new in v1.8.0):** a panel beside the writing page with three uses.
-  - **Ask about the work (问作品):** every sentence of an answer cites the passage, fact or plan it comes from. When the text does not say, the answer says so instead of guessing; when two places disagree, it names both.
+- **Assistant (new in v1.8.0):** a panel beside the writing page, and a drawer on the other pages.
+  - **One input box (v1.9.0):** the author just writes; the box judges which use the sentence asks for (自动, the default), shows it on the task, and lets the author change it. A sentence that is not about the work starts nothing and costs nothing. Asking for a recap away from the writing page offers to go there.
+  - **Ask about the work (问作品):** every sentence of an answer cites the passage, fact or plan it comes from. When the text does not say, the answer says so instead of guessing; when two places disagree, it names both. Asked for advice (where to pick up a thread, how to settle two places that disagree, whose whereabouts are open), it points only at what is already written, each point with its source, and does not invent plot.
   - **Pre-writing recap (写前回顾):** where the last chapter stopped, the latest state of the people in the scene, open threads and the plan for this chapter, each item with its source.
   - **Help me fix this (帮我改这一处):** for a check finding, at least two ways to change the text. Each is checked against the earlier chapters before it is shown, and nothing changes until the author adopts one.
+  - **Check this passage (查前文矛盾):** a selected passage is checked against the earlier chapters.
 
-  The steps the assistant takes are shown as it works. A task takes at most 8 steps and ¥0.30, and a question can have two follow-ups. Visitors can use it on the sample work three times per 24 hours.
+  The steps the assistant takes are shown as it works, each step line written from what the step actually does. A task takes at most 8 steps and ¥0.30. A finished answer is followed by default, and the box says which follow-up it is (at most two). Visitors can use it on the sample work three times per 24 hours.
 - **Author home and settings (new in v1.8.0):**
   - **Home (`/account`):** a writing calendar, the chapter in progress, works and a feed of recent checks and fact changes.
   - **Settings (`/settings`):** four sections (general, account, usage, data): name and bio that save as you leave the box, theme and text size, password change, daily usage, and export of all works. The author's badge is the first character of their display name.
@@ -38,7 +40,7 @@ The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chap
 ## How a check works
 
 1. **Screen.** A fast model pass reads the whole chapter and flags the sentences that make claims worth checking (`continuity-screen-v1`).
-2. **Triage.** The remaining sentences are scored and labelled as a possible conflict or a possible missing link, so a sentence the screen passed can still be reviewed (`continuity-triage-v4-gap-kind`).
+2. **Triage.** The remaining sentences are scored and labelled as a possible conflict or a possible missing link, so a sentence the screen passed can still be reviewed (`continuity-triage-v5-stated-links`).
 3. **Review.** Each flagged sentence gets a careful review with model reasoning against the best-matching passages of earlier chapters and the latest confirmed state of the people it names, including people the text refers to only as 少年, 她 and so on.
 4. **Second look and sweep.**
    - Key sentences the first review passed get an independent second review that watches for missing links.
@@ -49,33 +51,42 @@ Per chapter, the check makes at most:
 - 3 escalations plus 2 reserved for possible missing links;
 - a sweep of up to 6 more sentences.
 
-This keeps time and cost bounded. The review prompt is `continuity-review-v25i-screened-stated-inability` on `deepseek-flash`. Calendar dates in the story (初六, 廿三, 三更, named months) are read as time anchors.
+This keeps time and cost bounded. The review prompt is `continuity-review-v25k-screened-offpage-second-review` on `deepseek-flash`. Calendar dates in the story (初六, 廿三, 三更, named months) are read as time anchors.
 
 ## Quality and evaluation
 
 Model and prompt changes are judged by formal runs on sets written in a separate session and never seen during development, against thresholds registered before the sets were written. A set is spent once it has been run.
 
-**Assistant.** The assistant was released on its long-text evaluation (A1c): real-length chapters (2,500–3,500 characters, two 30-chapter works and a 12-chapter safety work), three passes of every task. The fourth formal run (2026-10-19) met all 18 registered bars after the registered audit:
+**Assistant.** The assistant is released on its long-text evaluation (A1c): real-length chapters (2,500–3,500 characters, two 30-chapter works and a 12-chapter safety work), three passes of every task. v1.9.0's gate is twenty registered bars. The fifth formal run (2026-10-22) met nineteen of them after the registered audit; the twentieth, which use the input box picks, was at 0.80 there and passed on a new sealed set of 30 items after two fixes (2026-10-22):
 
 | Measure | Result | Registered bar |
 | --- | ---: | ---: |
-| Answerable questions / evidence deep in a chapter | 1.00 / 1.00 | ≥ 0.80 / 0.75 |
-| Questions the text does not answer | 0.92 | ≥ 0.80 |
-| Cited sentences supported by their source | 0.99 | ≥ 0.90 |
-| Pre-writing recap: required points mentioned | 0.78 | ≥ 0.70 |
+| Answerable questions / evidence deep in a chapter | 0.93 / 0.95 | ≥ 0.80 / 0.75 |
+| Questions the text does not answer | 1.00 | ≥ 0.80 |
+| Cited sentences supported by their source | 0.97 | ≥ 0.90 |
+| Pre-writing recap: required points mentioned | 0.79 | ≥ 0.70 |
 | Fix proposals that remove the conflict | 1.00 | ≥ 0.75 |
 | Safety tasks correct in all three passes | 1.00 | = 1.00 |
 | Tasks within budget (8 steps, ¥0.30) | 1.00 | = 1.00 |
-| Time per task, p90 | 12.9 s | ≤ 45 s |
+| Time per task, p90 | 18.0 s | ≤ 45 s |
+| Use picked by the input box (retest) | 0.98 | ≥ 0.90 |
+| Advice sentences supported by their source | 0.98 | ≥ 0.90 |
 
-One bar, process lines or notes stating story content (0.0475, bar ≤ 0.05), was met after the audit. The run, its audit and the addenda are recorded in [evaluation/assistant_a1c/SPEC.md](evaluation/assistant_a1c/SPEC.md).
+The audit overturned ten verdicts, two of them on safety items; the safety bar was met only after the audit, and the project owner accepted the audited result. The runs, the audit and the addenda are recorded in [evaluation/assistant_a1c/SPEC.md](evaluation/assistant_a1c/SPEC.md).
 
-**Chapter check.** v1.8.0 changes to the chapter check (character knowledge, epithets, story calendar dates, missing-link triage) were developed and regression-tested on spent long-text sets. Earlier formal runs and their procedure are in [evaluation/longform/PLAN.md](evaluation/longform/PLAN.md).
+**Chapter check.** v1.9.0's chapter check passed its long-text formal run on two new sealed sets, pooled (2026-10-20): 23 of 24 insufficient-evidence points found, 14 of 16 clean chapters with no finding, 6 of 6 designated items. The procedure and earlier runs are in [evaluation/longform/PLAN.md](evaluation/longform/PLAN.md).
 
 ## Version and deployment
 
-Production runs **v1.8.1**, release `v181-bfaf9df-20261020` ([deployment record](docs/deployment-2026-10-20-v181.md)).
+Production runs **v1.8.1**, release `v181-bfaf9df-20261020` ([deployment record](docs/deployment-2026-10-20-v181.md)), until v1.9.0 is deployed. The v1.9.0 release ID and deployment record are added at deployment.
 
+- **v1.9.0:**
+  - One input box for the assistant: it judges which use a sentence asks for, shows it, and lets the author change it; a sentence not about the work costs nothing; a recap asked for away from the writing page offers to go there.
+  - A finished answer is followed by default, with the follow-up count shown; advice answers point only at what is already written, each with its source.
+  - Pre-writing recaps write the lasting state (role, qualification, health) of the people in the scene; process lines are written from the steps themselves; fixes that fail their own check are not listed.
+  - The chapter check finds more claims the earlier text cannot support and puts fewer findings on clean chapters.
+  - The top bar stays on one line from 768 to 1,280 px wide.
+  - Back-end code of features removed in v1.7 is deleted.
 - **v1.8.1:**
   - Settings in four sections (general, account, usage, data), with each row's label on the left and its control on the right; name and bio save as you leave the box. The old settings addresses lead to the new sections.
   - The four portrait avatars are replaced by the first character of the display name.
@@ -87,12 +98,6 @@ Production runs **v1.8.1**, release `v181-bfaf9df-20261020` ([deployment record]
   - A privacy page.
   - Chapter-check reviews that follow people named only by epithet or pronoun, read story calendar dates, and look again at sentences that may skip a link in the earlier text.
   - Building the fact base from imported chapters no longer fails as a whole when a few candidates are invalid.
-- **v1.7.0:**
-  - A rewritten frontend and visual design: five tabs, night mode, and a sample work with a five-step tour per account.
-  - Considering plans and author-managed setting categories.
-  - Mark for revision, and automatic reuse of eligible decisions.
-  - Author materials, revision plans and writing tips are removed.
-  - Writing and checks work at window widths of 768 px and above.
 
 Earlier releases remain in Git tags; the [documentation index](docs/README.md) lists what is kept.
 
@@ -154,10 +159,10 @@ npm run test:e2e
 npm run test:build-origin
 ```
 
-At v1.8.0 these numbers held:
-- backend 1,093 tests;
-- offline evaluation 26 tests;
-- browser end-to-end 286 passed, with 10 screenshot-only tests skipped;
+At v1.9.0 these numbers held:
+- backend 1,222 tests;
+- offline evaluation 30 tests;
+- browser end-to-end 305 passed, with 10 screenshot-only tests skipped;
 - `npm run test:build-origin` 23 tests;
 - ESLint and TypeScript clean.
 
@@ -192,4 +197,4 @@ The project began as a CLI proof of concept and grew through numbered stages int
 - a check lifecycle with retry and cancel;
 - visitor isolation.
 
-Long-text checking arrived in v1.6, the rebuilt interface in v1.7, and the writing assistant in v1.8. Earlier history is kept in the archived repository.
+Long-text checking arrived in v1.6, the rebuilt interface in v1.7, the writing assistant in v1.8, and its one input box in v1.9. Earlier history is kept in the archived repository.

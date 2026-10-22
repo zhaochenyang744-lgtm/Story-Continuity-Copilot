@@ -89,16 +89,19 @@ def calculate(rows, expected, runs):
     recap = [r for r in rows if r['task']['suite'] == 'recap']
     fix = [r for r in rows if r['task']['suite'] == 'fix']
     follow = [r for r in rows if r['task']['suite'] == 'follow_up']
+    route = [r for r in rows if r['task']['suite'] == 'route']
+    suggest = [r for r in rows if r['task']['suite'] == 'suggest']
+    assistant_rows = [r for r in rows if r['task']['suite'] != 'route']
     # Same unit as A1b: every assistant task, a follow-up's first question and the follow-up each once (an
     # infrastructure-retried attempt is its own entry, as in A1b's views()).
-    tasks = [(r, v) for r in rows for v in supplemental.views(r)]
+    tasks = [(r, v) for r in assistant_rows for v in supplemental.views(r)]
     correct = {(r.get('set'), r['task']['id'], r.get('run_number')): bool(r['correct']) for r in rows}
 
     def qacc(kind): return ratio([r['correct'] for r in qa if r['task'].get('qa_type', 'answerable_single').startswith(kind)])
     def repeated(items):
         if runs != 3: return None
         return ratio([all(correct.get((t['set'], t['id'], n), False) for n in (1, 2, 3)) for t in items])
-    def judgments(name): return [j for r in rows for j in r.get('judgments', []) if j.get('question') == name]
+    def judgments(name): return [j for r in assistant_rows for j in r.get('judgments', []) if j.get('question') == name]
 
     citations = [j.get('verdict') == 'supported' for r in rows if r['task']['suite'] in ('qa', 'follow_up', 'recap')
                  for j in r.get('judgments', []) if j.get('question') == 'citation_support']
@@ -117,7 +120,7 @@ def calculate(rows, expected, runs):
         'recap_must_mention_recall': ratio([verdicts(r).get(f'must_mention:{i}') == 'yes' for r in recap for i in range(len(r['task']['must_mention']))]),
         'recap_must_not_hits': sum(verdicts(r).get(f'must_not:{i}') == 'yes' for r in recap for i in range(len(r['task']['must_not']))) if recap else None,
         'fix_success_rate': ratio([r['correct'] for r in fix]),
-        'pass3_rate': repeated(expected),
+        'pass3_rate': repeated([t for t in expected if t['suite'] not in ('route', 'suggest')]),
         'budget_compliance_rate': ratio(budget),
         'latency_p90_seconds': supplemental.distribution(seconds)['p90'] if seconds else None,
         'forced_finish_rate': ratio([supplemental.FORCED_FINISH_NOTE in ((v.get('coverage') or {}).get('not_checked') or []) for _, v in tasks]),
@@ -126,10 +129,26 @@ def calculate(rows, expected, runs):
         'process_matches_action': ratio([j.get('verdict') == 'yes' for j in judgments('process_matches_action')]),
         'process_or_note_asserts_story': ratio([j.get('verdict') != 'no' for j in judgments('process_or_note_asserts_story')]),
         'coverage_claims_true_rate': ratio([value for _, v in tasks for value in supplemental.coverage_claims(v)]),
+        'route_accuracy': ratio([r['correct'] for r in route]),
+        'suggest_citation_support_rate': ratio([
+            j.get('verdict') == 'supported' for r in suggest if r['task']['suggest_type'] != 'creative_direction'
+            for j in r.get('judgments', []) if j.get('question') == 'citation_support']),
     }
     reads = [x for x in (characters_read(r, v) for r, v in tasks) if x is not None]
     with_chapters = [x for x in reads if x['chapters']]
     extra = {
+        'suggest_answer_points_recall': ratio([
+            verdicts(r).get(f'point:{i}') == 'stated' for r in suggest
+            if r['task']['suggest_type'] != 'creative_direction' for i in range(len(r['task']['answer_points']))]),
+        'suggest_invents_plot_rate': ratio([
+            verdicts(r).get('invents_plot') == 'yes' for r in suggest if r['task']['suggest_type'] == 'creative_direction']),
+        'suggest_invents_plot_unmeasured_count': sum(
+            verdicts(r).get('invents_plot') not in ('yes', 'no') for r in suggest if r['task']['suggest_type'] == 'creative_direction'),
+        'route_latency_seconds_distribution': supplemental.distribution([r.get('route_seconds', 0) for r in route]),
+        'route_cost_cny_distribution': supplemental.distribution([r.get('route_cost_cny', 0) for r in route]),
+        'route_cost_cny_total': sum(r.get('route_cost_cny', 0) for r in route),
+        'route_unsure_rate': ratio([r.get('route_result', {}).get('unsure') is True for r in route]),
+        'route_rule_rate': ratio([r.get('route_result', {}).get('source') == 'rule' for r in route]),
         'pooled_accuracy': ratio([r['correct'] for r in rows]),
         'first_pass_validation_rate': ratio([v.get('status') == 'completed' and not any(s.get('kind') == 'repair' or s.get('error_code') == 'citation_validation_failed'
                                                                                          for s in v.get('steps', [])) for _, v in tasks]),
@@ -153,7 +172,7 @@ def refresh(report):
     report['metrics'], report['reported_not_gated'] = calculate(rows, report['expected_cases'], report['runs'])
     report['by_set'] = {name: {'tasks': sum(r['set'] == name for r in rows), 'correct': sum(r['set'] == name and r['correct'] for r in rows)}
                         for name in report['sets']}
-    result = thresholds.evaluate(report['metrics'])
+    result = thresholds.evaluate(report['metrics'], report['sets'])
     report['threshold_result'] = result
     report['gate_decision'] = result['status'] if report['complete'] else 'incomplete_not_a_gate'
     if report.get('selection'): report['gate_decision'] = 'filtered_not_a_gate'
@@ -163,7 +182,7 @@ def refresh(report):
         values['safe_all_runs'] = ratio([r['correct'] for r in rows if r['run_number'] == number and r['task']['suite'] == 'safe'])
         per_pass.append({'run_number': number, **values})
     spread = {}
-    for key, _, _ in thresholds._CHECKS:
+    for key in result['checks']:
         values = [p[key] for p in per_pass]
         spread[key] = max(values) - min(values) if all(v is not None for v in values) else None
     report['reported_not_gated'].update(per_pass_values=per_pass, per_pass_spread=spread)
@@ -177,7 +196,8 @@ def markdown(report):
     if any(name.endswith('_dev') for name in report['sets']):
         lines += ['Development run: the bar is applied only to tell tuning when to stop; it is not the release gate.', '']
     lines += ['| Check | Value | Bar | Pass |', '|---|---:|---:|---|']
-    for key, bar, op in thresholds._CHECKS:
+    for key, bar, op in thresholds._CHECKS + thresholds._FIFTH_CHECKS:
+        if key not in result['checks']: continue
         value = report['metrics'][key]
         lines.append(f"| {key} | {'n/a' if value is None else round(value, 4)} | {'>=' if op == 'min' else '<='} {round(thresholds.THRESHOLDS[bar], 4)} | "
                      f"{'n/a' if result['checks'][key] is None else result['checks'][key]} |")

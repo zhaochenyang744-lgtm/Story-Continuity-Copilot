@@ -154,7 +154,7 @@ class LookupFactsTests(unittest.TestCase):
 # --- the prompt ----------------------------------------------------------------------------------------------------------
 class PromptTests(unittest.TestCase):
     def test_version_and_the_new_rules(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p25")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p32")
         self.assertIn("一轮最多调用 6 次工具，说明只写这一轮实际要调用的那几项", SYSTEM_PROMPT)
         self.assertIn("要查的超过 6 项，就分到下一轮，下一轮再写新的说明", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词", SYSTEM_PROMPT)
@@ -338,7 +338,7 @@ class NoteInTheLoopTests(AssistantCase):
         task = self.run_ask(read(9), wrong, right)
         self.assertEqual(task["status"], "completed", task)
         self.assertEqual(task["answer"]["note"], "查过第9章正文，没有找到问题问到的内容。")
-        self.assertEqual([step["kind"] for step in task["steps"]], ["tool", "repair"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool", "repair"])
         feedback = json.loads([m for m in self.provider.calls[2]["messages"] if m["role"] == "tool"][-1]["content"])
         self.assertEqual(feedback["error"], "answer_invalid")
         self.assertIn("第 2 章", feedback["problems"][0])
@@ -348,14 +348,14 @@ class NoteInTheLoopTests(AssistantCase):
         wrong = turn(answer_call("not_found", [], note="查过第2章与第9章正文，没有找到问题问到的内容。"))
         task = self.run_ask(read(9), wrong, read(2), wrong)
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual([step["kind"] for step in task["steps"]], ["tool", "repair", "tool"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool", "repair", "say", "tool"])
 
     def test_after_the_one_repair_the_untrue_places_are_dropped_and_the_answer_kept(self):
         wrong = turn(answer_call("not_found", [], note="查过第2章正文，没有找到问题问到的内容。"))
         task = self.run_ask(read(9), wrong, wrong)
         self.assertEqual(task["status"], "completed", task)
         self.assertEqual(task["answer"]["note"], "没有找到问题问到的内容。")
-        self.assertEqual([step["kind"] for step in task["steps"]], ["tool", "repair"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool", "repair"])
 
     def test_a_not_found_note_that_was_all_untrue_still_says_nothing_was_found(self):
         wrong = turn(answer_call("not_found", [], note="查过第2章正文"))
@@ -365,7 +365,7 @@ class NoteInTheLoopTests(AssistantCase):
     def test_a_search_covering_the_chapter_is_enough(self):
         task = self.run_ask(turn(call("search_text", query="罗盘")), turn(answer_call("not_found", [], note="搜过第2章与第9章正文，没有找到问题问到的内容。")))
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual([step["kind"] for step in task["steps"]], ["tool"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool"])
 
     def test_lookup_facts_with_chapter_to_in_the_loop(self):
         task = self.run_ask(turn(call("lookup_facts", name="温岚", chapter_to=5)), turn(call("lookup_facts", name="温岚", chapter_to=0)),

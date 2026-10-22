@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import unittest
 
-from app.brief_citations import render_sources
 from app.internal_ids import strip_internal_ids
 from app.memory_contract import CONTROLLED_PREDICATES, predicate_label
 
@@ -33,12 +32,6 @@ class PredicateLabelTest(unittest.TestCase):
     def test_every_controlled_predicate_has_author_wording(self):
         for predicate in CONTROLLED_PREDICATES:
             self.assertNotEqual(predicate_label(predicate), "其他属性", predicate)
-
-    def test_brief_renders_memory_records_without_raw_keys(self):
-        maps = {"memory_record": {"mem-1": {"subject": "灰港雾钟", "predicate": "rule", "value": "只在北潮闸完全关闭后敲响一次"}}}
-        text = render_sources([{"source_type": "memory_record", "source_id": "mem-1"}], maps)
-        self.assertIn("已确认记忆记录（灰港雾钟 · 规则）", text)
-        self.assertNotIn("rule", text)
 
 
 if __name__ == "__main__":

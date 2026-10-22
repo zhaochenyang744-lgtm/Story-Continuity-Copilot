@@ -34,9 +34,12 @@ class NormalFlowTests(AssistantCase):
             turn(call("read_chapter", chapter_number=9)),
             final)
         self.assertEqual(task["status"], "completed", task)
+        # Each tool round opens with a line written from its calls (v1.9.0).
         self.assertEqual([(step["round"], step["kind"], step["tool"], step["summary"]) for step in task["steps"]], [
+            (1, "say", None, "我先搜正文「罗盘」，查黄铜罗盘的事实。"),
             (1, "tool", "search_text", "搜正文：「罗盘」· 第 1–10 章"),
             (1, "tool", "lookup_facts", "查事实：黄铜罗盘"),
+            (2, "say", None, "我再读第 9 章。"),
             (2, "tool", "read_chapter", "读第 9 章《换手》")])
         self.assertEqual(task["answer"]["status"], "answered")
         self.assertEqual(len(task["answer"]["sentences"]), 2)
@@ -109,7 +112,7 @@ class CitationTests(AssistantCase):
             turn(answer_call("answered", [("没有出处的话。", ["R99"])])),
             cite(9))
         self.assertEqual(task["status"], "completed")
-        self.assertEqual([step["kind"] for step in task["steps"]], ["tool", "repair"])
+        self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool", "repair"])
         feedback = [m for m in self.provider.calls[2]["messages"] if m["role"] == "tool"][-1]["content"]
         self.assertIn("answer_invalid", feedback)
         self.assertIn("R99", feedback)
@@ -142,7 +145,7 @@ class CitationTests(AssistantCase):
             turn(answer_call("not_found", [])),
             turn(answer_call("not_found", [], note="查了第 1–10 章，没有写到。")))
         self.assertEqual(task["status"], "completed")
-        self.assertEqual((task["answer"]["status"], task["answer"]["sentences"], task["answer"]["note"]), ("not_found", [], "查了第 1–10 章，没有写到。"))
+        self.assertEqual((task["answer"]["status"], task["answer"]["sentences"], task["answer"]["note"]), ("not_found", [], "查了第 1–10 章。"))  # p26: "没有写到" says what the text lacks, not where it looked
         feedback = [m for m in self.provider.calls[2]["messages"] if m["role"] == "tool"][-1]["content"]
         self.assertIn("note", feedback)
 

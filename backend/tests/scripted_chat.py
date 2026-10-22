@@ -80,6 +80,27 @@ class ScriptedChatProvider:
         self.reviews = []
         self.review_cost = 0.02
         self.review_issues = False
+        self.route_turns: list[Any] = []
+        self.route_calls: list[dict[str, Any]] = []
+
+    def script_route(self, *results: Any) -> "ScriptedChatProvider":
+        """What the input box's judgement answers, in turn: a dict ({"route": ..., "unsure": ...}), a raw string, an exception to
+        raise, or a callable `(provider, messages) -> one of those`."""
+        self.route_turns = list(results)
+        self.route_calls = []
+        return self
+
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> ChatResult:
+        self.route_calls.append({"messages": copy.deepcopy(messages), "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
+        if not self.route_turns:
+            raise AssertionError("the judgement was asked for more answers than were scripted")
+        scripted = self.route_turns.pop(0)
+        if callable(scripted):
+            scripted = scripted(self, messages)
+        if isinstance(scripted, BaseException):
+            raise scripted
+        content = scripted if isinstance(scripted, str) else json.dumps(scripted)
+        return ChatResult({"content": content, "tool_calls": []}, 30, 6, 0.0002, "stop", 3)
 
     def script(self, *turns: Any) -> "ScriptedChatProvider":
         self.turns = list(turns)

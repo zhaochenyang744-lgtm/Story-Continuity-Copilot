@@ -16,10 +16,6 @@
       "target": "backend/app/author_organization.py"
     },
     {
-      "source": "backend/app/brief_citations.py",
-      "target": "backend/app/brief_citations.py"
-    },
-    {
       "source": "backend/app/chapter_checks.py",
       "target": "backend/app/chapter_checks.py"
     },
@@ -492,6 +488,10 @@
       "target": "backend/app/assistant_recap.py"
     },
     {
+      "source": "backend/app/assistant_route.py",
+      "target": "backend/app/assistant_route.py"
+    },
+    {
       "source": "backend/app/assistant_store.py",
       "target": "backend/app/assistant_store.py"
     },
@@ -550,6 +550,10 @@
     {
       "source": "frontend/app/client/project/assistant-recap.tsx",
       "target": "frontend-source/app/client/project/assistant-recap.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-route.tsx",
+      "target": "frontend-source/app/client/project/assistant-route.tsx"
     },
     {
       "source": "frontend/app/client/project/assistant-start.tsx",
@@ -611,6 +615,7 @@
   "verification_files": [
     "backend/tests/__init__.py",
     "backend/tests/e2e_app.py",
+    "backend/tests/legacy_story_qa.py",
     "backend/tests/stage13_app.py",
     "backend/tests/stage13_harness.py",
     "backend/tests/test_internal_ids.py",
@@ -644,7 +649,6 @@
     "backend/tests/test_v130_character_alias_change_impact.py",
     "backend/tests/test_v130_memory_delta_fact_lifecycle.py",
     "backend/tests/test_v130_profile.py",
-    "backend/tests/test_v130_revision_plan.py",
     "backend/tests/test_v130_story_qa_foreshadow.py",
     "backend/tests/test_v130_writing_analysis.py",
     "backend/tests/test_v140_backend_sync.py",
@@ -657,6 +661,7 @@
     "backend/tests/test_v160_docx_import.py",
     "backend/tests/test_v170_plans_in_analysis.py",
     "backend/tests/test_v170_writing_analysis_budget.py",
+    "backend/tests/test_v190_dead_code_removed.py",
     "backend/tests/test_v17_parallel_review_batches.py",
     "backend/tests/test_v17_partial_review_results.py",
     "backend/tests/test_v17_provider_quota.py",

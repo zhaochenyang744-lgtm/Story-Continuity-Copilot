@@ -31,7 +31,7 @@ class RouteTests(AssistantCase):
         task = self.task(created["id"])
         self.assertEqual(task["status"], "completed")
         self.assertEqual(set(task), {"id", "kind", "status", "question", "context", "follow_up_of", "regenerated_from", "edited_from", "steps", "answer", "sources",
-                                       "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback",
+                                       "follow_up_depth", "routed", "route_source", "routed_input", "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback",
                                        "error_code", "created_at", "started_at", "completed_at"})
         self.assertNotIn("cost", json.dumps(task))
         message = self.provider.calls[0]["messages"][-1]["content"]
@@ -95,25 +95,25 @@ class RouteTests(AssistantCase):
         self.assertEqual(len(self.rows("SELECT * FROM assistant_tasks WHERE hidden_at IS NOT NULL")), 2)
         self.assertEqual(self.usage()["check_chars_used"], 1000)
         self.assertEqual(len(self.rows("SELECT * FROM v2_character_usage")), 2)
-        self.assertEqual(len(self.rows("SELECT * FROM assistant_steps")), 3)
+        self.assertEqual(len(self.rows("SELECT * FROM assistant_steps")), 4)  # v1.9.0: the read round also keeps its line
         self.run_ask(NOT_FOUND, question="清空以后的问题")
         self.assertEqual([task["question"] for task in self.client.get(self.url()).json()["data"]["tasks"]], ["清空以后的问题"])
 
     def test_a_follow_up_carries_the_last_two_turns_without_tool_results(self):
-        questions = ["第一问", "第二问", "第三问", "第四问"]
+        # A chain is a question and at most two follow-ups (v1.9.0), so the third question carries both turns before it.
+        questions = ["第一问", "第二问", "第三问"]
         previous = None
         for number, question in enumerate(questions):
             extra = {"follow_up_of": previous} if previous else {}
             task = self.run_ask(read(9), cite(9, words=f"答案{number + 1}。"), question=question, **extra)
             self.assertEqual(task["status"], "completed", task)
             previous = task["id"]
-        first_round = self.provider.calls[-2]["messages"]  # the model's first request of the fourth question
+        first_round = self.provider.calls[-2]["messages"]  # the model's first request of the third question
         self.assertEqual([(m["role"], m["content"]) for m in first_round[1:5]],
-                         [("user", "作者的问题：第二问"), ("assistant", "答案2。"), ("user", "作者的问题：第三问"), ("assistant", "答案3。")])
-        self.assertNotIn("第一问", json.dumps(first_round, ensure_ascii=False))
+                         [("user", "作者的问题：第一问"), ("assistant", "答案1。"), ("user", "作者的问题：第二问"), ("assistant", "答案2。")])
         self.assertNotIn("manuscript_text", json.dumps(first_round, ensure_ascii=False))
         self.assertEqual(first_round[0]["role"], "system")
-        self.assertIn("第四问", first_round[-1]["content"])
+        self.assertIn("第三问", first_round[-1]["content"])
         # The follow-up must continue a finished answer of this work.
         for follow_up in ("atask-nope", self.run_ask(text("x"), text("y"))["id"]):
             self.assertEqual(self.ask(follow_up_of=follow_up, expect=422).json()["error"]["code"], "assistant_follow_up_invalid")

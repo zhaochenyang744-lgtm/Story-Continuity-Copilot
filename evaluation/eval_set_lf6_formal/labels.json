@@ -1,0 +1,1211 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf6-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "Codex (GPT-6)",
+    "date": "2026-10-20",
+    "notes": "逐章原创；作者逐句自查；独立全文复核后冻结。"
+  },
+  "works": [
+    {
+      "key": "rongwen",
+      "title": "绒纹借阅室",
+      "file": "works/rongwen.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "fengnang",
+      "title": "风囊外的航线",
+      "file": "works/fengnang.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "yingxiang",
+      "title": "石阶上的影箱",
+      "file": "works/yingxiang.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "hanceng",
+      "title": "旱层里的水声",
+      "file": "works/hanceng.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf6-a-03-t",
+      "work": "rongwen",
+      "chapter": "第三章 桌面上的路径",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-a-03-p1",
+          "kind": "state_change",
+          "quotes": [
+            "入口两张桌子铺着改裁好的蓝色窄垫，露出的木边正好让来客搁住手腕。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "那块普通蓝布在窗下试垫过半日后，祝芒绮洗去它边缘的积尘，又将它改裁成两块窄桌垫。"
+            }
+          ],
+          "explanation": "蓝布已洗净改裁，变成两片桌垫是前文写明的状态变化。"
+        },
+        {
+          "id": "lf6-a-03-p2",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "霜穗样绒的边纹是青色的，近看由几根较粗的织线收束，和中央浅淡的绒面没有混在一起。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "霜穗样绒正面有一层很短的绒毛，掌心顺着抚过去像摸到晒过的细沙，逆着推则略微发涩。"
+            }
+          ],
+          "explanation": "新增边纹颜色与前文正面触感相容。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-a-04-t",
+      "work": "rongwen",
+      "chapter": "第四章 护板的空面",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-a-04-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "午间核对挂牌时，矮台旁只剩穆纤遥坐着，其他人都在门边调整长凳。少女顺着霜穗样绒的结结码读出织工留下的次序，又把对应的位置指给蒲砚汀。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "一个叫穆纤遥的少女来替母亲归还讲解时坐过的小凳，她过去常帮家里辨认织线批次，熟识霜穗样绒的结结码。"
+            }
+          ],
+          "explanation": "同一称呼少女在此明确指穆纤遥，她前文就熟识结结码，与奚纭舸的认知无关。"
+        },
+        {
+          "id": "lf6-a-04-p2",
+          "kind": "reported_belief",
+          "quotes": [
+            "蒲砚汀笑道：“我刚来时一直以为祝芒绮和桓缕舟是亲兄妹。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "他和祝芒绮是表亲，并不是同胞兄妹，幼时也没有住在同一户人家。"
+            }
+          ],
+          "explanation": "人物回述自己的旧误会，叙述者没有认可错误的亲属关系。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-a-05-t",
+      "work": "rongwen",
+      "chapter": "第五章 先让手停一停",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "在缬历七月初六午时，奚纭舸已能解开结结码，读出霜穗样绒每处编结所记的工序。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "放在缬历七月初六午时的整段时辰内看，少女始终不识读霜穗样绒的结结码。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "缬历七月初六午时"
+          },
+          "explanation": "前文同段唯一具名奚纭舸，以少女明确指她，并断言同一午时整段均不识读编码；本句回述同一时段能够解读，构成认知矛盾。后来学会的是包装绳结，并非结结码。"
+        },
+        {
+          "id": "lf6-a-05-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "桓缕舟亲眼见过祝芒绮在后院小屋完成那块旧布的整场修复，因此在现场工序见证栏里独自署了名。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "祝芒绮带着一块裂开的旧布去了茧弧馆的后院，修复用的小屋与货仓隔着一条巷子。她在屋内靠窗的桌边将织线拨顺，垫上衬料，再以松针联住裂口两侧。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "修复在与货仓隔巷的独立小屋进行，前文没有确立桓缕舟在场目击全过程，也没有排他断言他不在。目标把他的亲历作为独立现场见证署名的根据，关系记录真实性，不能由普通知情替代，缺少应交代的亲历环节。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-a-06-t",
+      "work": "rongwen",
+      "chapter": "第六章 借阅页的边角",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-06-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "最初那场馆藏正式讲解中，蒲砚汀凭自己的理解释出了回缬簿的旧缩写，还解释过一处弯钩符号。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "那次馆藏正式讲解进行的整个时段，记录员都不懂回缬簿里的旧式缩写。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文记录员在相邻前句唯一对应蒲砚汀，整场馆藏正式讲解均不懂缩写，本句回述同一场讲解已经自行释读。第三章只学会纸张承托保养，没有学会缩写。"
+        },
+        {
+          "id": "lf6-a-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "霜穗样绒如今仍属于可以持续外借的正式常用样品，应该直接列入常用借阅名单。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "霜穗样绒当时可以作为正式常用样品反复外借，蒲砚汀把这一状态登记在工作纸上。"
+            },
+            {
+              "chapter": "第四章 护板的空面",
+              "quote": "收工前，祝芒绮把霜穗样绒夹进护板，连同工作纸一起送往绯梭间做承受反复触摸的检验。反复试摸可能使绒结松动，这次检验决定它能否继续保留正式常用样品的外借资格，借阅页的制作因此成了下一步要讨论的事。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "早期状态和当前断言均为正式常用样品可反复外借的资格。中间经历会改变同一资格的检验，结果未写，当前却沿用旧状态决定常用借阅名单，缺少后来状态，不涉及物件返还或交接。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-a-07-t",
+      "work": "rongwen",
+      "chapter": "第七章 分段的练习",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-07-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "奚纭舸是个右撇子，画这种细密路线时，总把最稳妥的控制交给右掌。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "奚纭舸把纸摆到左侧，以左手握笔，画了三次才画出绒毛倾倒的方向。她惯用左手，拿小剪、缝边和写字都先用左手，右手在旁边稳住材料。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确她惯用左手，本句叙述者直接把她说成右撇子，非临时换手动作。"
+        },
+        {
+          "id": "lf6-a-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "霜穗样绒总共有三百八十四组绒结，整套触摸页据此分为八段，每段对应四十八组。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "霜穗样绒当时可以作为正式常用样品反复外借，蒲砚汀把这一状态登记在工作纸上。他只抽查了边缘六个小片区，每片各数出八组绒结，想看看挂牌上该用“细密”还是“稀疏”。这些区域分散在不同位置，中间夹着尚未摊开的褶层。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有局部抽样，不覆盖整件，无法由六个片区各八组推得总量三百八十四；精确总量据以决定分页，缺少整体核数。前文没有相冲突的整体总量。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-a-08-t",
+      "work": "rongwen",
+      "chapter": "第八章 轮值表之外",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-08-i1",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "祝芒绮和桓缕舟同父同母，兄妹俩在轮值这件事上仍各自列出能负责的部分，不替对方作答。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 触摸之前",
+              "quote": "到了下午，桓缕舟带着借来的小车回来，把仓库外沿的碎木收进筐里。他和祝芒绮是表亲，并不是同胞兄妹，幼时也没有住在同一户人家。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文已确定二人为表亲，叙述者本句断言同父同母，关系直接相冲突。第四章只是蒲砚汀回述最初误会，并非关系变化。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-a-09-t",
+      "work": "rongwen",
+      "chapter": "第九章 开门前的空椅",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-09-i1",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "奚纭舸从自己的针包中抽出嵌珠检针，沿护板外缘示范怎样查找可能刮手的金属残屑。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "嵌珠检针从这次交接起一直由祝芒绮保管，直到借阅室试开放；她每天收工都把它放进自己随身的小匣。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第二章明示直到试开放该针一直由祝芒绮保管，本章试开放前演练中却由奚纭舸从自己针包取出，违反已确定的保管状态。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-a-10-t",
+      "work": "rongwen",
+      "chapter": "第十章 借出的一个下午",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-a-10-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "改造开始时，旧门槛已经拆离地面，屋里的拂绒架才完成组装。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 留出一掌宽",
+              "quote": "他们先把拂绒架完整搭好并固定在墙边，验过架脚不晃，才动手拆掉旧门槛。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文先完成拂绒架后拆旧门槛，此处改成门槛先拆完、架子才组装完成，两个既定完成事件的先后相反。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-b-03-t",
+      "work": "fengnang",
+      "chapter": "第三章 纸上留出的岸",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-b-03-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "那少年指着雁格罗盘的外圈，把其中几枚记号读给来客听。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "蔺栉川能读懂雁格罗盘外圈的符号，交接纸张时还给鲁霁苒辨认了一处磨浅的刻痕。"
+            }
+          ],
+          "explanation": "同段首句明确在场学员为蔺栉川，那少年只指蔺栉川；他前文已会读外圈符号，不涉及邢芷垣的认知。"
+        },
+        {
+          "id": "lf6-b-03-p2",
+          "kind": "state_change",
+          "quotes": [
+            "蓝翅风囊的尾缝已经合拢，补片平服地贴着里衬，手指划过时没有碰到张开的边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "鲁霁苒换好了蓝翅风囊的尾缝补片，复查后确认那处裂口已经封合。"
+            }
+          ],
+          "explanation": "此前裂口已有明确修补完成，当前闭合状态与修复过程一致。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-b-04-t",
+      "work": "fengnang",
+      "chapter": "第四章 门后的工位",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-b-04-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "距初一到站已经过了六天，那副洗湿的棉手套早已干透，指尖搓起来带着轻轻的涩意。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 系在山肩的台",
+              "quote": "他抖了抖洗后还湿着的棉手套，把行李搁到背风墙根。"
+            }
+          ],
+          "explanation": "初一洗湿、随后晾起的手套在初七已干，是六天过去后自然改变的状态。"
+        },
+        {
+          "id": "lf6-b-04-p2",
+          "kind": "rule_exception",
+          "quotes": [
+            "日落以后，鲁霁苒照检修安排走进栉风舱，卸下护罩检查里面的支架。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "日落后栉风舱不接待参观者，但列入当日检修名单的维修人员可以进舱作业。"
+            }
+          ],
+          "explanation": "本章此前已经将鲁霁苒列入当日检修名单，她夜间作业符合明文检修例外；与折标筒承重禁令无关。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-b-05-t",
+      "work": "fengnang",
+      "chapter": "第五章 把图拿在手里",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-b-05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "初一抵达砾穹台的登记桌前，邢芷垣便把雁格罗盘外环的每个记号都认了出来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 系在山肩的台",
+              "quote": "少年认不出雁格罗盘外圈的符号。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同段已明确少年是邢芷垣，初一抵台登记时不识罗盘外圈符号；当前叙述回述同一抵台登记场景已全部认得，时间完全相同，不存在后来学习的解释。"
+        },
+        {
+          "id": "lf6-b-05-i2",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "邢芷垣的虹膜天生呈褐色，此时映着窗外还没散开的云。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 系在山肩的台",
+              "quote": "邢芷垣的虹膜是灰色的，费蓟衡便换了块浅色背景板，免得照片上的瞳孔边缘与背景混在一起。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文固定虹膜属性为灰色，当前叙述断言天生褐色，非光线或镜片造成的表面色彩变化。"
+        },
+        {
+          "id": "lf6-b-05-i3",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "作为费蓟衡的亲生女儿，谭苇弦替父亲将压在袖下的几份纸移到桌中央，再逐一贴好外封。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 系在山肩的台",
+              "quote": "谭苇弦与费蓟衡只是师徒，彼此没有亲属关系。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅师徒且明确无亲属关系，当前叙述者直接以亲生父女关系解释两人行动。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-b-06-t",
+      "work": "fengnang",
+      "chapter": "第六章 桩边的空处",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-b-06-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "砺历九月初二酉时，谭苇弦一直站在砺青空泊的桩边，亲手把一只空风囊拖进遮棚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "就在砺历九月初二酉时，谭苇弦始终留在砾穹台的值班室，整段时辰都未离开本站。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "砺历九月初二酉时"
+          },
+          "explanation": "同一明确时段前文全程在砾穹台值班室，当前叙述却说全程在坡下砺青空泊现场拖囊；属于地点与行动的确定冲突。"
+        },
+        {
+          "id": "lf6-b-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "邢芷垣亲眼见过鲁霁苒更换蓝翅风囊补片的全部过程，因此由他签认修补工位的视线已经足够。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "午间，鲁霁苒和费蓟衡在机棚处理蓝翅风囊的一道开裂。机工把受损处外层剪去，露出下面尚有弹性的里衬；站长握住边缘，让补片贴合时不生折皱。鲁霁苒换好了蓝翅风囊的尾缝补片，复查后确认那处裂口已经封合。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立修复过程，但未写邢芷垣在场或从别处知悉；也没有排他写他不在场。后来触摸成品不能证明目击修复全过程，而此亲历被用来决定工位视线签认，缺少亲眼所见环节。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-b-07-t",
+      "work": "fengnang",
+      "chapter": "第七章 留给下一班的手",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-b-07-i1",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "鲁霁苒把工具袋吊在折标筒下端，握着筒身将整袋工具提离地面。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 系在山肩的台",
+              "quote": "全站永久禁止用折标筒承重，连临时吊起工具袋也不许。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "永久规定禁止折标筒承重，当前机工却直接用筒身提起整袋工具，违反该独立规则；与栉风舱的检修例外无关。"
+        },
+        {
+          "id": "lf6-b-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "斜棱记盘如今仍可即时顶替主盘，所以费蓟衡把双盘轮值写入新流程。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "另一张桌上放着斜棱记盘。它早先是栉风舱的备用盘，刻针能走，记录纸送入时也平顺，鲁霁苒在晨检表上将它列为可用。午后，费蓟衡又把斜棱记盘送往调修间，要求调整传动间隙。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "早期晨检可用之后，记盘又送往调修且未给结果。当前直接沿用早期状态并决定双盘轮值，缺少调修后的可用状态确认；没有断言未送修或仍在原处。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-b-08-t",
+      "work": "fengnang",
+      "chapter": "第八章 航线从等候开始",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-b-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "蓝翅风囊在砺历九月初二完成了那次安排好的试放，为主图提供了一份可供比较的起降经历。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "砺历九月初二的蓝翅风囊试放被取消，那次试放没有举行。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一日期同一既定试放此前明确取消且未举行，当前却叙述已完成并成为起降经历，事件是否发生直接冲突。"
+        },
+        {
+          "id": "lf6-b-08-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "谭苇弦选出的那次一百二十米靠泊，全程调整恰好用去十七分钟。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有升起的蓝翅",
+              "quote": "旧图摊到最远的一端时，他们找到了一次靠泊作业的低风速记录。那天观测点到候泊边界的水平距离是一百二十米，仪表记下的平均风速是每秒三米。谭苇弦把这页夹出来，打算在讨论图上标一个可比较的样本。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有一次靠泊作业相关的水平距离和平均风速，不能推出包括调整的精确总时长，也没有任何与十七分钟冲突的数。当前精确耗时被用于轮值等待间隔，缺少测量环节。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-c-03-t",
+      "work": "yingxiang",
+      "chapter": "第三章 最后一排的手",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-c-03-p1",
+          "kind": "state_change",
+          "quotes": [
+            "裴槿霄将七棱偶架移到侧台，底座不再缠着皮条，挂上练习偶后仍然稳当。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "午后胶层干透，岚笙岳取下夹具，七棱偶架底座的裂口已经完全合拢，三角榫牢固嵌在木中，原先那根扎缝皮条被拆除。"
+            }
+          ],
+          "explanation": "皮条已在修复后拆除，状态变化有完整过程。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-c-04-t",
+      "work": "yingxiang",
+      "chapter": "第四章 留给新人的位置",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-c-04-p1",
+          "kind": "rule_exception",
+          "quotes": [
+            "开棚表上已有修缮预约，郁筌甯在傍晚闭棚的时刻后仍让这组人留在棚内，直到扶手修好才同他们一起出去。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "缄铃票匣的规程之外，戏棚另有一张开棚表，规定傍晚闭棚，不过接待白日已预约的修缮小组时，可以延至修缮结束。"
+            }
+          ],
+          "explanation": "预约修缮小组符合独立开棚规则明文允许的延时条件。"
+        },
+        {
+          "id": "lf6-c-04-p2",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "旧影偶的背面还有一枚浅浅的圆点，摸上去与周围同样光滑。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把影子请回来",
+              "quote": "他把影偶放到窗台，众人看见木面很暗，背部却有一条被手指磨亮的线。"
+            }
+          ],
+          "explanation": "先前木面与磨亮痕迹的描述并未穷尽所有外观细节，浅圆点与已知情况相容。"
+        },
+        {
+          "id": "lf6-c-04-p3",
+          "kind": "reported_belief",
+          "quotes": [
+            "阮栖陌带回一条听来的话，说有人以为无对白影戏是因为操偶者记不住台词。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "裴槿霄把原本为这段戏写下的对白背给众人听，然后说她决定不用这些话，是为了让不同口音的观众都能跟上同一个动作。"
+            }
+          ],
+          "explanation": "此句明确归属于外人的猜测，后文也明确仅是对方猜测；叙述未将猜测确认为事实。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-c-05-t",
+      "work": "yingxiang",
+      "chapter": "第五章 侧光下的空座",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-c-05-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "裴槿霄抬起脸时，灰色的左眼正对着光，棕色的右眼藏在帘边的阴影里。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把影子请回来",
+              "quote": "裴槿霄自幼左眼棕色、右眼灰色，这种差别一直如此，并不是棚内的光造成的。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "左右眼的固定颜色被互换；依据排除了光线造成差别。"
+        },
+        {
+          "id": "lf6-c-05-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "七棱偶架下脚那道旧裂缝从上回修补结束起就一直敞着，薄木片能直接插进缝中。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "午后胶层干透，岚笙岳取下夹具，七棱偶架底座的裂口已经完全合拢，三角榫牢固嵌在木中，原先那根扎缝皮条被拆除。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "问题句把修补结束以来的裂缝写成始终敞开，而修补结束时裂口已完全合拢。明确追溯同次修补，不能用后来再次开裂解释。"
+        },
+        {
+          "id": "lf6-c-05-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "按记录的两丈净深，绛榔戏棚恰好能坐二十七名成年观众，郁筌甯以这个定额安排日场入场人数。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "岚笙岳量过绛榔戏棚座区从台口到最后一排的净深，两丈的尺寸记在折起的草纸边。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只给座区纵深，无法推出全棚容纳的精确人数，未建立可用横宽、座位间隔或完整计数。精确二十七人用于入场定额，是必须核对的重要数量。此前没有其他整体人数与它冲突，原取箱交接已在正文明确补齐。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-c-06-t",
+      "work": "yingxiang",
+      "chapter": "第六章 谁来搭这座桥",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-c-06-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "当初葵纹幕索的整套安装做完，岚笙岳才把第一块座阶踏板固定到位。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "绛榔戏棚的座阶全部铺成后，裴槿霄与岚笙岳才开始安装葵纹幕索。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文先完成座阶再开始装幕索；问题句却让幕索全部装好以后才装座阶第一块踏板，颠倒同次施工两事件的顺序。"
+        },
+        {
+          "id": "lf6-c-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "阮栖陌凭那份观众联络委托就拥有了出售戏棚舞台构件的权限，他把两根备用横木列入可卖清单。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "阮栖陌随后收到一份联络清单，任务是安排外村来看的时段、传递人数变化，并替各方整理交通需求。"
+            },
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "搭舞台用的构件是乡里共同出资保存的旧料，郁筌甯当天也让他替保管小组传了一个会面时间，讨论今后怎样登记借用。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "安排观众及传递会面时间的委托不能推出变卖共同保存舞台构件的权限；问题句明确把有限委托当作出售授权依据，缺有权处分者的批准。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-c-07-t",
+      "work": "yingxiang",
+      "chapter": "第七章 旧木片的新搭档",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-c-07-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "初八夜从路灯点亮直到末班巡更散去，岚笙岳都坐在绛榔戏棚的后台，替练习者守着那几片湿木影。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把影子请回来",
+              "quote": "初八夜从第一盏路灯点亮到末班巡更结束，岚笙岳一直在碧榉坪看守木料，未曾离开。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "问题句和依据覆盖同一晚同一整段值守时间，却分别把岚笙岳放在戏棚后台和碧榉坪，且依据明确未离开。"
+        },
+        {
+          "id": "lf6-c-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "阮栖陌在临时存物间的领取经过足以确认，旧影偶所用木料出自碧榉坪老井旁的那株榉树。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把影子请回来",
+              "quote": "阮栖陌带来一只旧影偶，外面包着几层废纸，说这是收拾临时存物间时，从待归整的东西里领出来的。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "领取地点与取得经过不能确立原材料的具体来源。问题句据此认定特定树木出身，并用作乡土旧作的展示依据，缺制作与木材来历的连接。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-c-08-t",
+      "work": "yingxiang",
+      "chapter": "第八章 白日里的幕光",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-c-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "今年的选台竞演如期办过，绛榔戏棚凭那段搬石头的影戏得到了优胜奖。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "郁筌甯停下笔，说明绛榔戏棚今年原定参加的选台竞演因场地调整已经取消，比赛没有举行，重开戏棚前也不会补赛。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同年的选台竞演已经取消且未举行，问题句却确认举行并产生优胜奖；叙述者直接断言，并非转述人物误信。"
+        },
+        {
+          "id": "lf6-c-08-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "裴槿霄把一盏已经点亮的敞口油灯安放进缄铃票匣，让火焰照着匣里的旧票。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 台阶先于幕",
+              "quote": "她把粘在匣盖内侧的规程读给大家听，其中一条写着：任何时候都不许将明火放进缄铃票匣。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何时候都不许将明火放进缄铃票匣"
+          },
+          "explanation": "永久禁止明火进入缄铃票匣的规程没有例外；已经点亮且敞口的油灯携明火进入匣内，直接违反此规则。开棚修缮延时例外属另一独立规则，不能用于火禁。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-d-03-t",
+      "work": "hanceng",
+      "chapter": "第三章 谁站在图外",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-d-03-p1",
+          "kind": "state_change",
+          "quotes": [
+            "鲍荻岑把图板往地上一放，木头支脚就稳稳抵住了斜坡，甄苔徵不必再用膝盖顶着它。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "收工后，鲍荻岑用剩下的木片做了一个小小的图板支脚。"
+            }
+          ],
+          "explanation": "前文已经新增支脚，当前借它在坡地支稳是有交代的物件变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-d-04-t",
+      "work": "hanceng",
+      "chapter": "第四章 窄口的试行",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf6-d-04-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "劳动簿背面的线装结藏在一小片布底下，甄苔徵翻动时被指尖勾住，才看见那种很细的青色线。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "谢砾绡翻出一本旧劳动簿，让她看看过去怎样记修沟的日子。"
+            }
+          ],
+          "explanation": "旧簿新揭示的线装细节与前文记录劳作的用途、外观均相容。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-d-05-t",
+      "work": "hanceng",
+      "chapter": "第五章 分给谁的一段路",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-d-05-i1",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "甄苔徵与鲍荻岑是同父同母的姐弟，母亲给他们缝衣时总在内襟留一道很宽的折边，长大后两人也都习惯把余量留在看不见的地方。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "甄苔徵和鲍荻岑是没有血缘的继姐弟，他们各自的父母在两人成年后才结婚。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原文明确双方没有血缘，现叙述断言同父同母，亲属关系互斥。"
+        },
+        {
+          "id": "lf6-d-05-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "锈弧闸钥在最初封存的那一刻便已断柄，图上要为它另配一截握柄，才能交给接手闸口的人使用。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "锈弧闸钥封存时齿柄完整，封签贴在包缝上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处均指同一次最初封存，钥匙柄完整与已经折断不能同时成立，未依赖后来自然变化。"
+        },
+        {
+          "id": "lf6-d-05-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "沟尾木槽的接头已经被鲍荻岑修得滴水不漏，因此下游菜畦将按全部水量到达时的情形安排轮灌。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "鲍荻岑找来麻丝与楔片，蹲下修理木槽的接头，谢砾绡在旁替他扶住上游那块挡板。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只叙述修接头的动作，没建立修复成功和不再漏水的结果，分水方案却把这一结果当作确定条件。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf6-d-05-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "院外一位帮忙端碗的老人看见旧施工桌，随口说上次中标的队伍总该熟悉这里的沟。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "珀屿坳上一次水路竞标在开标前已经废止，没有开标，也没有产生中标者。"
+            }
+          ],
+          "explanation": "当前说法属于老人误记，本段谢明确纠正并说明混淆邻村，叙述不采纳错误记忆。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-d-06-t",
+      "work": "hanceng",
+      "chapter": "第六章 盖板下面的手",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-d-06-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "最初做那段示范时，双齿水标先安装牢固，陶脊量槽才砌筑成型。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "陶脊量槽砌好并养护完成以后，他才把双齿水标埋牢，量槽的成型在前，水标的安装在后。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处均回述最初示范段的完成顺序，前文量槽成型养护完成在前，水标安装在后，当前直接反转两项事件的顺序。"
+        },
+        {
+          "id": "lf6-d-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "这名水工正是十二日在皱砾洞外向宓滩汐讲旧堰的人，所以新接头小样沿用他当时描述的弯头方向。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "午饭前，宓滩汐在皱砾洞外听一位穿褐布短衣的水工讲旧堰结构。水工说话很慢，讲到弯头时，会拿右手在膝头绕半个圈。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文未具名的水工仅以衣着与动作出现，当前来人衣着和比画动作相似便被叙述认定同一人，并据此决定接头方向。没有辨认、具名或其他身份连接，也未确立两者是不同人，缺少身份确认。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf6-d-06-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "自十四日洗后晾到现在，那些擦板布已经干透，抖开时只落下轻轻的布灰。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 窄口的试行",
+              "quote": "试行用过的几块擦板布沾满炭灰，宓滩汐将它们洗过，湿淋淋地挂在院里的细绳上。"
+            }
+          ],
+          "explanation": "十四日清洗晾起的擦板布在十八日已干，属于四天过去后的自然状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf6-d-07-t",
+      "work": "hanceng",
+      "chapter": "第七章 沟边的一把叶子",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-d-07-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "朔历八月十二夜降雨时，甄苔徵一直在皱砾洞里面，沿内壁摸清了几处滴水口的位置。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "在朔历八月十二夜的整段降雨期间，甄苔徵始终留在皱砾洞口的雨棚下记录雨量，没有进入洞内。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一场十二夜降雨期间，前文整段在洞口雨棚且未入洞，当前却叙述全程在洞里面沿内壁探查，地点与行动直接冲突。"
+        },
+        {
+          "id": "lf6-d-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "椴阙沟那天雨后水样变清的唯一原因就是下午清走了沟边烂叶，因此清叶被列为往后养护的首要工作。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "雨后，椴阙沟的水样看起来比白天清，谢砾绡把两瓶并在桌上，提醒大家等检验记录出来再说。"
+            },
+            {
+              "chapter": "第二章 量槽的阴影",
+              "quote": "下午正好有人把椴阙沟边一堆烂叶清走，老人们谈起这一点，有的觉得清叶总会有用，有的说雨本来也会带走浮灰。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有下午清叶、夜雨及水样看起来更清的先后关联，不能确立清叶为唯一原因。当前据此排养护优先级，缺少因果关系的确立，没有已有检验与该原因直接冲突；问题句和直接依据以椴阙沟明确对应。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf6-d-08-t",
+      "work": "hanceng",
+      "chapter": "第八章 一段能接着走的路",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf6-d-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "旧方案对应的那场竞标，已在珀屿坳顺利完成开标，几份报价便放在成本讨论的前排。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "珀屿坳上一次水路竞标在开标前已经废止，没有开标，也没有产生中标者。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧方案对应的同一场竞标此前明确废止而未开标，当前叙述者却直接宣布已完成开标，不是人物误记或另一场竞标。"
+        },
+        {
+          "id": "lf6-d-08-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "在珀屿坳清洗试用工具时，鲍荻岑将饮用水支管的出口接进废水槽，让帮工的人在槽边冲洗手上的泥。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 石缝里的凉意",
+              "quote": "在珀屿坳，任何时候都不得把饮用水支管接入废水槽。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文为任何时候都适用的永久禁令，当前将饮用水支管直接接入废水槽用于冲洗，违反明文规定，无例外。"
+        }
+      ],
+      "traps": []
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf6-s01",
+      "work": "rongwen",
+      "chapters": [
+        "第三章 桌面上的路径",
+        "第四章 护板的空面",
+        "第五章 先让手停一停",
+        "第六章 借阅页的边角",
+        "第七章 分段的练习",
+        "第八章 轮值表之外",
+        "第九章 开门前的空椅",
+        "第十章 借出的一个下午"
+      ]
+    },
+    {
+      "id": "lf6-s02",
+      "work": "fengnang",
+      "chapters": [
+        "第三章 纸上留出的岸",
+        "第四章 门后的工位",
+        "第五章 把图拿在手里",
+        "第六章 桩边的空处",
+        "第七章 留给下一班的手"
+      ]
+    },
+    {
+      "id": "lf6-s03",
+      "work": "yingxiang",
+      "chapters": [
+        "第三章 最后一排的手",
+        "第四章 留给新人的位置",
+        "第五章 侧光下的空座",
+        "第六章 谁来搭这座桥",
+        "第七章 旧木片的新搭档"
+      ]
+    }
+  ],
+  "subsets": {}
+}

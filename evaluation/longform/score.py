@@ -87,7 +87,11 @@ def _ratio(numerator: int, denominator: int) -> float | None:
 
 def score_run(lf: LongformSet, records: dict[str, dict]) -> dict:
     """Aggregate per-target scores. A target with no record is scored as a failed, empty run."""
-    per_target = [score_target(t, records.get(t.id) or {"status": "missing", "issues": []}) for t in lf.targets]
+    return aggregate([score_target(t, records.get(t.id) or {"status": "missing", "issues": []}) for t in lf.targets])
+
+
+def aggregate(per_target: list[dict]) -> dict:
+    """The quality figures over a list of scored targets: one set's, or several sets' together (pooled.py)."""
     points = [row for target in per_target for row in target["points"]]
     by_label = collections.defaultdict(list)
     for row in points:

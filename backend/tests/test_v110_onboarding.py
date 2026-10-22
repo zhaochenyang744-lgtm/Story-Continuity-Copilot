@@ -76,14 +76,9 @@ class V110OnboardingTests(unittest.TestCase):
         self.assertEqual({row["data_origin"]: row["count"] for row in counts}, {"tutorial_seed": 1})
         self.assertEqual(self.provider.calls, 0)
 
-    def test_complete_skip_relogin_and_help_reopen_are_persistent_and_deterministic(self):
+    def test_complete_skip_and_relogin_are_persistent_and_deterministic(self):
         registered = self.register("v110-finish")
         tutorial_id = registered["onboarding"]["tutorial"]["project_id"]
-        with self.app.state.database.connection() as connection:
-            connection.execute("UPDATE v2_projects SET title='保留中的教学进度' WHERE id=?", (tutorial_id,))
-        rejected = self.client.post("/api/onboarding/reopen", headers=idem(), json={"confirm": False})
-        self.assertEqual(rejected.status_code, 400)
-        self.assertEqual(self.client.get(f"/api/projects/{tutorial_id}").json()["data"]["title"], "保留中的教学进度")
         skipped = self.client.post("/api/onboarding/skip", headers=idem(), json={"confirm": True})
         self.assertEqual((skipped.status_code, skipped.json()["data"]["status"]), (200, "skipped"))
         self.client.post("/api/auth/logout")
@@ -92,10 +87,6 @@ class V110OnboardingTests(unittest.TestCase):
         after_login = self.client.get("/api/onboarding").json()["data"]
         self.assertEqual((after_login["status"], after_login["show_first_run"]), ("skipped", False))
 
-        reopened = self.client.post("/api/onboarding/reopen", headers=idem(), json={"confirm": True})
-        self.assertEqual((reopened.status_code, reopened.json()["data"]["tutorial"]["project_id"]), (200, tutorial_id))
-        tutorial = self.client.get(f"/api/projects/{tutorial_id}").json()["data"]
-        self.assertEqual((tutorial["title"], tutorial["status"], tutorial["chapter_count"]), ("灰港回声", "active", 10))
         completed = self.client.post("/api/onboarding/complete", headers=idem(), json={"confirm": True})
         self.assertEqual(completed.json()["data"]["status"], "completed")
         self.assertEqual(self.client.get("/api/projects").json()["data"]["projects"], [])

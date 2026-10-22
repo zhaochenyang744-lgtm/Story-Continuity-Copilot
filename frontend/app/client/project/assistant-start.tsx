@@ -1,7 +1,7 @@
 "use client";
 
-// An empty conversation: three questions to start from, made from a template (no model is asked): where the previous chapter
-// ends, and one for each of the two people who appear most in the draft. A visitor on the sample work gets the same, counted in the
+// An empty conversation: questions to start from, made from a template (no model is asked): where the previous chapter
+// ends, one for each of the two people who appear most in the draft, and one asking for advice (which threads are still open). A visitor on the sample work gets the same, counted in the
 // sample's own draft.
 
 export type Starter = { text: string; why: string };
@@ -23,6 +23,7 @@ export function starterQuestions({ lastChapter, characters, draftBody }: {
   return [
     ...(lastChapter ? [{ text: `第 ${lastChapter} 章结尾写到哪了？`, why: "接着写之前" }] : []),
     ...found.map((person, index) => ({ text: index === 0 ? `${person.name}现在知道些什么？` : `${person.name}上一次出场在做什么？`, why: `草稿里出现 ${person.count} 次` })),
+    { text: "有哪些伏笔还没收？", why: "请助手出主意，每条都带出处" },
   ];
 }
 

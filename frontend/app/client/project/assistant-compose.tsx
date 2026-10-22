@@ -1,8 +1,8 @@
 "use client";
 
 // The box the author writes in: one frame with the context tags inside at the top, the text, and a bar below it.
-// The bar has 「＋」 (add a chapter, a person or a finding to this question) and the mode (问作品 / 写前回顾 / 查前文矛盾)
-// on the left, the cost and one send square on the right; while the assistant works the square is a stop button.
+// The bar has 「＋」 (add a chapter, a person or a finding to this question) and the mode (自动 / 问作品 / 写前回顾 / 查前文矛盾;
+// 自动 lets the assistant judge which one the sentence asks for) on the left, the cost and one send square on the right; while the assistant works the square is a stop button.
 import { type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { chapterHeading } from "../ui";
 
@@ -16,8 +16,8 @@ export type ComposeChip = {
   note?: string;
   drop: () => void;
 };
-export type Mode = "ask" | "recap" | "check";
-export const MODE_LABEL: Record<Mode, string> = { ask: "问作品", recap: "写前回顾", check: "查前文矛盾" };
+export type Mode = "auto" | "ask" | "recap" | "check";
+export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾" };
 
 /** What the 「＋」 menu can add, and what choosing each does. */
 export type PlusPick = {
@@ -186,6 +186,8 @@ export type ComposerProps = {
   hintMore?: string;
   /** Set when the mode is not the author's choice (a fix for one finding): its name, shown in place of the mode, without a menu. */
   modeName?: string;
+  /** What the mode button says in 自动 while the sentence is judged ("判断中…") and after ("自动 · 写前回顾"); the menu is unchanged. */
+  modeText?: string;
   /** The text box cannot be typed in (查前文矛盾 asks about the picked words only). */
   fixed?: boolean;
   /** ↑ with an empty box. */
@@ -195,7 +197,7 @@ export type ComposerProps = {
 const STOP_GRACE_MS = 700;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, modeText, fixed, recall } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -243,8 +245,8 @@ export function Composer(props: ComposerProps) {
           {!off && (
             <>
               <button ref={plusButton} type="button" className="cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
-              <button ref={modeButton} type="button" className="cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
-                {modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret" aria-hidden="true"> ▼</span>}
+              <button ref={modeButton} type="button" className="cx-mode" aria-label={`这次做什么：${modeName ?? modeText ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
+                {modeName ?? modeText ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret" aria-hidden="true"> ▼</span>}
               </button>
             </>
           )}

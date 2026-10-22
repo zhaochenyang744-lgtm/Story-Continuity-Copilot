@@ -45,7 +45,10 @@ ERROR_TEXTS = {
     "edit_this_is_for_the_current_draft": "只能改本章草稿",
     "chapter_out_of_scope": "这一章不在可查范围内",
     "citation_validation_failed": "引用没对上，重新整理回答",
+    "proposal_after_failed_check": "这句改后的话检查时仍有矛盾",
 }
+# What the model is told besides the code, when the code alone would not tell it what to do.
+ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。"}
 GENERIC_ERROR_TEXT = "这一步没成功"
 
 
@@ -119,6 +122,11 @@ class ToolContext:
     scope: dict[str, Any]
     registry: SourceRegistry
     check: Callable[[str], dict[str, Any]] | None = None
+    # A recap: the people the draft brings on stage who have a lasting state, and the numbers of those facts (never sent to the model).
+    recap_required: list[dict[str, Any]] = field(default_factory=list)
+    # A fix: what `check_passage` found (the text, and the sentences it found a conflict in), and the proposals it withdrew.
+    checks: list[dict[str, Any]] = field(default_factory=list)
+    withdrawn: list[dict[str, str]] = field(default_factory=list)  # {label: "P1", after: the withdrawn sentence}
     _spans: list[dict[str, Any]] | None = field(default=None, repr=False)
     _memory: list[dict[str, Any]] | None = field(default=None, repr=False)
     _index: PassageIndex | None = field(default=None, repr=False)

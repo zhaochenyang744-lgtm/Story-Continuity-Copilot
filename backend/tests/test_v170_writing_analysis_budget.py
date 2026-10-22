@@ -45,7 +45,7 @@ class WritingAnalysisBudgetTests(unittest.TestCase):
     def test_the_allowances_are_separate_from_the_shared_ones(self):
         self.assertEqual((MAX_INPUT_BUDGET_UNITS, MAX_RUN_TOKENS), (6000, 8000))
         self.assertEqual((WRITING_ANALYSIS_INPUT_BUDGET_UNITS, MAX_WRITING_ANALYSIS_RUN_TOKENS), (12000, 16000))
-        for task in ("context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan"):
+        for task in ("plan_alignment", "change_impact", "foreshadow_scan"):
             self.assertEqual(input_budget_units_for({"task": task}), WRITING_ANALYSIS_INPUT_BUDGET_UNITS, task)
         for task in ("memory_initialization", "memory_delta"):
             self.assertEqual(input_budget_units_for({"task": task}), MAX_INPUT_BUDGET_UNITS, task)
@@ -74,7 +74,7 @@ class WritingAnalysisBudgetTests(unittest.TestCase):
 
 
 class PublishedSampleAnalysisTests(unittest.TestCase):
-    def test_the_sample_work_can_run_all_three_pre_writing_analyses(self):
+    def test_the_sample_work_can_run_both_pre_writing_analyses(self):
         # A fresh interpreter without the frozen test fixture, so the published sample work is what gets analysed.
         script = textwrap.dedent("""
             import json, pathlib, tempfile, uuid
@@ -91,10 +91,6 @@ class PublishedSampleAnalysisTests(unittest.TestCase):
                     task = request.get("task")
                     self.units[task] = request_prompt_and_budget(request)[1]
                     layers = request["layers"]
-                    if task == "context_brief":
-                        planned = layers["planned"]["story_plans"]; memory = layers["confirmed"]["memory_records"]
-                        source = {"source_type": "author_context", "source_id": planned[0]["id"]} if planned else {"source_type": "memory_record", "source_id": memory[0]["id"]}
-                        return ProviderResult({"summary": "写作前先守住既有约束。", "summary_sources": [source], "items": [{"section": "related_plan" if planned else "confirmed_fact", "text": "本章需要延续已绑定的上下文。", "sources": [source]}]}, input_tokens=12, output_tokens=6, latency_ms=2)
                     if task == "plan_alignment":
                         claims = layers["written"]["draft_claims"]
                         return ProviderResult({"summary": "草稿覆盖了当前计划。", "items": [{"story_plan_id": plan["id"], "status": "planned_covered", "explanation": "草稿已直接写到计划动作。", "evidence": [{"source_type": "draft_claim", "source_id": claims[0]["id"]}]} for plan in layers["planned"]["story_plans"]]}, input_tokens=13, output_tokens=7, latency_ms=2)
@@ -114,7 +110,7 @@ class PublishedSampleAnalysisTests(unittest.TestCase):
             draft = project["current_draft"]
             character = client.get(f"/api/projects/{pid}/characters").json()["data"]["characters"][0]
             out = {}
-            for kind in ("context_brief", "plan_alignment", "change_impact"):
+            for kind in ("plan_alignment", "change_impact"):
                 body = {"analysis_type": kind, "draft_id": draft["id"], "draft_revision": draft["revision"]}
                 if kind == "change_impact":
                     body["proposal"] = {"target_type": "character", "target_id": character["id"], "proposed_change": "把" + character["name"] + "的身份改成港务调查员。"}
@@ -129,7 +125,7 @@ class PublishedSampleAnalysisTests(unittest.TestCase):
         result = subprocess.run([sys.executable, "-c", script], cwd=BACKEND, env=env, capture_output=True, text=True, encoding="utf-8", timeout=300)
         self.assertEqual(result.returncode, 0, result.stderr[-3000:])
         report = json.loads(result.stdout.strip().splitlines()[-1])
-        for kind in ("context_brief", "plan_alignment", "change_impact"):
+        for kind in ("plan_alignment", "change_impact"):
             self.assertEqual(report["runs"][kind]["http"], 202, report)
             self.assertNotEqual(report["runs"][kind]["error_code"], "input_budget_exceeded", report)
             self.assertEqual(report["runs"][kind]["status"], "completed", report)

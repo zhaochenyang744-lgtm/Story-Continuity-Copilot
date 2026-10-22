@@ -40,7 +40,7 @@ class SayTests(AssistantCase):
         self.register()
 
     def test_the_prompt_asks_for_a_line_and_is_version_p5(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p25")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p32")
         self.assertIn("content 里写一句话说明这一步具体要做什么", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词；只说打算，不下结论", SYSTEM_PROMPT)
         self.assertIn("不要只写文字", SYSTEM_PROMPT)
@@ -48,7 +48,7 @@ class SayTests(AssistantCase):
         self.assertIn("note 只列出查过哪些地方", SYSTEM_PROMPT)
         self.assertIn("不写 R 编号", SYSTEM_PROMPT)
         task = self.run_ask(read(9), cite(9))
-        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p25")
+        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p32")
         self.assertEqual(task["status"], "completed")
 
     def test_a_tool_round_keeps_its_line_before_its_steps_and_the_closing_round_keeps_none(self):
@@ -58,20 +58,20 @@ class SayTests(AssistantCase):
             closing("答案已经查到：结论是苏岑把罗盘交给了温岚。"))
         self.assertEqual(task["status"], "completed", task)
         self.assertEqual([step["kind"] for step in task["steps"]], ["say", "tool", "say", "tool"])
-        self.assertEqual(says(task), ["先在全书里找罗盘出现的地方", "再去第九章看原文"])
+        # v1.9.0: the line is written from the round's calls, not taken from the model (A1c SPEC addendum 14, item 38).
+        self.assertEqual(says(task), ["我先搜正文「罗盘」。", "我再读第 9 章。"])
         line = task["steps"][0]
         self.assertEqual((line["tool"], line["group"], line["refs"], line["error_code"], line["error_text"], line["round"]), (None, None, [], None, None, 1))
         self.assertNotIn("答案已经查到", json.dumps(task, ensure_ascii=False))
         self.assertEqual([row["summary"] for row in self.rows("SELECT summary FROM assistant_steps WHERE kind='say' ORDER BY ordinal")], says(task))
 
-    def test_lines_are_cut_dropped_or_skipped_by_the_rules(self):
+    def test_nothing_the_model_writes_beside_its_calls_reaches_the_line(self):
         long = "先" + "查" * 80
-        exactly = "字" * 60
         task = self.run_ask(
-            read(1, content=long), read(2, content=exactly), read(3, content="先看 R2 那一条"),
+            read(1, content=long), read(2, content="第2章写的是苏岑交出罗盘，我再读"), read(3, content="先看 R2 那一条"),
             read(4, content="去查 span-1a2b3c 这段"), read(5, content="   "), read(6, content=None), cite(1))
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual(says(task), [long[:60] + "…", exactly])
+        self.assertEqual(says(task), ["我先读第 1 章。"] + [f"我再读第 {n} 章。" for n in range(2, 7)])
         self.assertEqual(len([step for step in task["steps"] if step["kind"] == "tool"]), 6)
 
     def test_only_the_first_line_of_a_round_and_nothing_from_forced_or_plain_text_rounds(self):
@@ -81,7 +81,7 @@ class SayTests(AssistantCase):
             read(3, content="读第三章"), read(4, content="读第四章"), read(5, content="读第五章"), read(6, content="读第六章"),
             read(7, content="已经到了收尾，这句不该保存"), cite(1))
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual(says(task), ["先读前两章", "读第三章", "读第四章", "读第五章", "读第六章"])
+        self.assertEqual(says(task), ["我先读第 1、2 章。", "我再读第 3 章。", "我再读第 4 章。", "我再读第 5 章。", "我再读第 6 章。"])
         self.assertEqual(sum(step["kind"] == "protocol_error" for step in task["steps"]), 1)
 
     def test_clean_say(self):
@@ -150,7 +150,8 @@ class StepDetailTests(AssistantCase):
         self.assertEqual(ERROR_TEXTS, {
             "proposal_before_not_unique": "原句在草稿里出现了不止一次", "proposal_issue_not_overlapped": "改的不是有问题的那一句",
             "proposal_after_contains_before": "改后的句子原样保留了原句", "edit_this_is_for_the_current_draft": "只能改本章草稿",
-            "chapter_out_of_scope": "这一章不在可查范围内", "citation_validation_failed": "引用没对上，重新整理回答"})
+            "chapter_out_of_scope": "这一章不在可查范围内", "citation_validation_failed": "引用没对上，重新整理回答",
+            "proposal_after_failed_check": "这句改后的话检查时仍有矛盾"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 
@@ -169,7 +170,7 @@ class StepDetailTests(AssistantCase):
             self.assertTrue({name for name, _ in columns} <= have, table)
         self.assertTrue(self.rows("SELECT name FROM sqlite_master WHERE name='assistant_feedback'"))
         again = self.task(task["id"])
-        self.assertEqual([step["refs"] for step in again["steps"]], [[]])
+        self.assertEqual([step["refs"] for step in again["steps"]], [[], []])
         self.assertEqual((again["feedback"], again["regenerated_from"], again["phase"]), (None, None, None))
         self.assertEqual(self.run_ask(read(9), cite(9))["status"], "completed")
 

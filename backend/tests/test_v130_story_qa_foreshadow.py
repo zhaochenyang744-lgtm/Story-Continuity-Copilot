@@ -11,6 +11,7 @@ from app.config import AppPaths
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
 from app.stage13 import Stage13Settings
+from tests.legacy_story_qa import seed_story_qa
 
 
 def idem(value: str | None = None) -> dict[str, str]:
@@ -30,31 +31,12 @@ class BoundedToolsProvider:
     def evaluate(self, request):
         self.requests.append(request)
         task = request.get("task")
-        if task not in {"story_qa", "foreshadow_scan"}:
+        if task != "foreshadow_scan":
             return ProviderResult({"issues": []}, 1, 1, latency_ms=1)
         if self.mode == "invalid_json":
             raise ProviderInvalidJson()
         if self.mode == "timeout":
             raise ProviderTimeout()
-        if task == "story_qa":
-            if self.mode == "insufficient":
-                return ProviderResult({"answer_status": "insufficient", "answer": "Provider 猜测没有答案。", "findings": []}, 4, 2, latency_ms=1)
-            if self.mode == "partial_planned":
-                plan = request["layers"]["planned"]["story_plans"][0]
-                return ProviderResult({"answer_status": "partial", "answer": "当前计划给出部分方向，但不是已写事实。", "findings": [{"layer": "planned", "stance": "context", "text": "答案仅来自作者计划。", "evidence": [{"source_type": "author_context", "source_id": plan["id"]}]}]}, 6, 3, latency_ms=1)
-            memory = request["layers"]["confirmed"]["memory_records"][0]
-            source = request["layers"]["written"]["source_spans"][0] if request["layers"]["written"]["source_spans"] else None
-            if self.mode == "invalid_evidence":
-                return ProviderResult({"answer_status": "answered", "answer": "错误引用。", "findings": [{"layer": "confirmed", "stance": "supports", "text": "错误引用。", "evidence": [{"source_type": "memory_record", "source_id": "missing"}]}]}, 4, 2, latency_ms=1)
-            if self.mode == "ids_in_prose":
-                cited = f"（{memory['id']}）"
-                return ProviderResult({"answer_status": "answered", "answer": f"已确认事实记录{cited}说明了答案。", "findings": [{"layer": "confirmed", "stance": "supports", "text": f"该结论来自已确认事实{cited}。", "evidence": [{"source_type": "memory_record", "source_id": memory["id"]}]}]}, 6, 3, latency_ms=1)
-            if self.mode == "conflicting":
-                return ProviderResult({"answer_status": "conflicting", "answer": "已确认事实与已写正文存在冲突。", "findings": [
-                    {"layer": "confirmed", "stance": "supports", "text": "Story Memory 保留原事实。", "evidence": [{"source_type": "memory_record", "source_id": memory["id"]}]},
-                    {"layer": "written", "stance": "contradicts", "text": "正文出现相反信息。", "evidence": [{"source_type": "source_span", "source_id": source["id"]}]},
-                ]}, 8, 4, latency_ms=1)
-            return ProviderResult({"answer_status": "answered", "answer": "依据已确认事实，可以给出有界回答。", "findings": [{"layer": "confirmed", "stance": "supports", "text": "该结论来自当前 Story Memory。", "evidence": [{"source_type": "memory_record", "source_id": memory["id"]}]}]}, 6, 3, latency_ms=1)
         if self.mode == "zero_candidates":
             return ProviderResult({"summary": "Provider 自称没有候选。", "candidates": []}, 5, 2, latency_ms=1)
         source = request["layers"]["written"]["source_spans"][0]
@@ -137,67 +119,6 @@ class V130StoryQaForeshadowTests(unittest.TestCase):
         versioned = self.client.post(f"/api/projects/{self.project_id}/foreshadows", headers=idem(), json=self.foreshadow_payload(2147483647, "版本溢出伏笔"))
         self.assertEqual((versioned.status_code, versioned.json()["error"]["code"]), (409, "foreshadow_version_limit"))
 
-    def test_story_qa_scope_answer_conflict_insufficient_and_no_implicit_write(self):
-        author = self.client.get(f"/api/projects/{self.project_id}/author-intent?include_archived=true").json()["data"]
-        if not author["story_plans"]:
-            created_plan = self.client.post(f"/api/projects/{self.project_id}/author-intent/story-plans", headers=idem(), json={"base_author_context_version": author["author_context_version"], "title": "回到雾港", "summary": "作者计划让林默回到雾港。", "goal": "验证计划层问答。", "status": "planned", "target_chapter_number": 1})
-            self.assertEqual(created_plan.status_code, 201, created_plan.text)
-        before = {}
-        with self.app.state.database.connection() as connection:
-            for table in ("v2_memory_records", "v2_author_context_versions", "v2_foreshadows", "v2_draft_revisions"):
-                before[table] = connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-        answered = self.analysis("story_qa", question="林默知道什么？", scope=["confirmed"])
-        self.assertEqual(answered.status_code, 202, answered.text)
-        view = self.client.get(f"/api/projects/{self.project_id}/analyses/{answered.json()['data']['run_id']}").json()["data"]
-        self.assertEqual((view["analysis"]["answer_status"], view["question"], view["scope"]), ("answered", "林默知道什么？", ["confirmed"]))
-        request = self.provider.requests[-1]
-        self.assertEqual(request["layers"]["planned"], {"story_plans": [], "character_plans": [], "world_plans": []})
-        self.assertEqual(request["layers"]["written"]["source_spans"], [])
-        self.provider.mode = "conflicting"
-        conflict = self.analysis("story_qa", question="正文与事实一致吗？", scope=["confirmed", "written"])
-        conflict_view = self.client.get(f"/api/projects/{self.project_id}/analyses/{conflict.json()['data']['run_id']}").json()["data"]
-        self.assertEqual(conflict_view["analysis"]["answer_status"], "conflicting")
-        self.assertEqual({item["stance"] for item in conflict_view["analysis"]["findings"]}, {"supports", "contradicts"})
-        self.provider.mode = "insufficient"
-        insufficient = self.analysis("story_qa", question="没有证据的问题？", scope=["confirmed"])
-        insufficient_view = self.client.get(f"/api/projects/{self.project_id}/analyses/{insufficient.json()['data']['run_id']}").json()["data"]
-        self.assertEqual(insufficient_view["analysis"]["answer"], "当前证据不足以回答这个问题。")
-        self.assertNotIn("Provider 猜测", insufficient_view["analysis"]["answer"])
-        self.provider.mode = "partial_planned"
-        partial = self.analysis("story_qa", question="作者下一步计划是什么？", scope=["planned"])
-        partial_view = self.client.get(f"/api/projects/{self.project_id}/analyses/{partial.json()['data']['run_id']}").json()["data"]
-        self.assertEqual((partial_view["analysis"]["answer_status"], partial_view["analysis"]["findings"][0]["layer"]), ("partial", "planned"))
-        planned_request = self.provider.requests[-1]
-        self.assertEqual(planned_request["layers"]["confirmed"]["memory_records"], [])
-        self.assertEqual(planned_request["layers"]["written"]["source_spans"], [])
-        self.assertEqual(planned_request["layers"]["written"]["draft_claims"], [])
-        self.assertEqual(planned_request["layers"]["written"]["draft"]["excerpt"], "")
-        with self.app.state.database.connection() as connection:
-            for table, count in before.items():
-                self.assertEqual(connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0], count)
-
-    def test_story_qa_prose_drops_copied_record_ids_but_keeps_citations(self):
-        self.provider.mode = "ids_in_prose"
-        created = self.analysis("story_qa", question="林默知道什么？", scope=["confirmed"])
-        self.assertEqual(created.status_code, 202, created.text)
-        view = self.client.get(f"/api/projects/{self.project_id}/analyses/{created.json()['data']['run_id']}").json()["data"]
-        memory_id = self.provider.requests[-1]["layers"]["confirmed"]["memory_records"][0]["id"]
-        self.assertEqual(view["analysis"]["answer"], "已确认事实记录说明了答案。")
-        self.assertEqual(view["analysis"]["findings"][0]["text"], "该结论来自已确认事实。")
-        self.assertEqual(view["analysis"]["findings"][0]["evidence"][0]["source_id"], memory_id)
-        self.assertEqual(view["provenance"]["prompt_version"], "story-qa-v3-no-prose-ids")
-        self.assertNotRegex(view["analysis"]["findings"][0]["evidence"][0]["label"], r" · [a-z_]+$")
-
-    def test_story_qa_invalid_evidence_and_invalid_json_fail_closed(self):
-        for mode, code in (("invalid_evidence", "evidence_unresolvable"), ("invalid_json", "invalid_json")):
-            self.provider.mode = mode
-            response = self.analysis("story_qa", question="问题", scope=["confirmed"])
-            run_id = response.json()["data"]["run_id"]
-            view = self.client.get(f"/api/projects/{self.project_id}/analyses/{run_id}").json()["data"]
-            self.assertEqual((view["status"], view["error_code"]), ("failed", code))
-            with self.app.state.database.connection() as connection:
-                self.assertEqual(connection.execute("SELECT COUNT(*) FROM v2_analysis_results WHERE run_id=?", (run_id,)).fetchone()[0], 0)
-
     def test_scan_candidates_require_author_decisions_and_support_multiple_choices(self):
         scan = self.analysis("foreshadow_scan")
         self.assertEqual(scan.status_code, 202, scan.text)
@@ -267,6 +188,22 @@ class V130StoryQaForeshadowTests(unittest.TestCase):
         contradictory_view = self.client.get(f"/api/projects/{self.project_id}/analyses/{contradictory.json()['data']['run_id']}").json()["data"]
         self.assertEqual((contradictory_view["status"], contradictory_view["error_code"]), ("failed", "evidence_unresolvable"))
 
+    def test_old_story_qa_records_are_still_listed_and_viewed_but_cannot_be_created_or_retried(self):
+        draft = self.project["current_draft"]
+        run_id = seed_story_qa(self.app.state.database, self.project_id, draft["id"], draft["revision"], question="林默知道什么？", scope=["confirmed", "written"], answer="林默不知道潮汐表的去向。")
+        listed = self.client.get(f"/api/projects/{self.project_id}/analyses?analysis_type=story_qa").json()["data"]
+        self.assertEqual((listed["analysis_type"], listed["run"]["run_id"], len(listed["runs"])), ("story_qa", run_id, 1))
+        viewed = self.client.get(f"/api/projects/{self.project_id}/analyses/{run_id}").json()["data"]
+        self.assertEqual((viewed["status"], viewed["analysis_type"], viewed["question"], viewed["scope"]), ("completed", "story_qa", "林默知道什么？", ["confirmed", "written"]))
+        self.assertEqual((viewed["analysis"]["answer_status"], viewed["analysis"]["answer"]), ("answered", "林默不知道潮汐表的去向。"))
+        self.assertFalse(viewed["is_stale"])
+        created = self.analysis("story_qa", question="新问题", scope=["confirmed"])
+        self.assertEqual(created.status_code, 400, created.text)
+        with self.app.state.database.connection() as connection:
+            connection.execute("UPDATE v2_runs SET status='failed',stage='failed',error_code='provider_error',retryable=1 WHERE id=?", (run_id,))
+        retried = self.client.post(f"/api/projects/{self.project_id}/analyses/{run_id}/retry", headers=idem(), json={"client_request_id": str(uuid.uuid4())})
+        self.assertEqual(retried.status_code, 404, retried.text)
+
     def test_list_cancel_retry_and_migration_repeatability(self):
         queued = []
         root = pathlib.Path(tempfile.mkdtemp(prefix="scc-v130-qa-cancel-"))
@@ -276,15 +213,15 @@ class V130StoryQaForeshadowTests(unittest.TestCase):
         project_id = registered["onboarding"]["tutorial"]["project_id"]
         project = client.get(f"/api/projects/{project_id}").json()["data"]
         draft = project["current_draft"]
-        created = client.post(f"/api/projects/{project_id}/analyses", headers=idem(), json={"analysis_type": "story_qa", "draft_id": draft["id"], "draft_revision": draft["revision"], "question": "问题", "scope": ["confirmed"]}).json()["data"]
-        concurrent = client.post(f"/api/projects/{project_id}/analyses", headers=idem(), json={"analysis_type": "story_qa", "draft_id": draft["id"], "draft_revision": draft["revision"], "question": "第二个问题", "scope": ["confirmed"]})
+        created = client.post(f"/api/projects/{project_id}/analyses", headers=idem(), json={"analysis_type": "foreshadow_scan", "draft_id": draft["id"], "draft_revision": draft["revision"]}).json()["data"]
+        concurrent = client.post(f"/api/projects/{project_id}/analyses", headers=idem(), json={"analysis_type": "foreshadow_scan", "draft_id": draft["id"], "draft_revision": draft["revision"]})
         self.assertEqual((concurrent.status_code, concurrent.json()["error"]["code"]), (409, "run_already_active"))
-        listed = client.get(f"/api/projects/{project_id}/analyses?analysis_type=story_qa").json()["data"]
+        listed = client.get(f"/api/projects/{project_id}/analyses?analysis_type=foreshadow_scan").json()["data"]
         self.assertEqual(listed["run"]["run_id"], created["run_id"])
         cancelled = client.post(f"/api/projects/{project_id}/analyses/{created['run_id']}/cancel", headers=idem(), json={"client_request_id": str(uuid.uuid4())})
         self.assertEqual(cancelled.status_code, 200, cancelled.text)
         retried = client.post(f"/api/projects/{project_id}/analyses/{created['run_id']}/retry", headers=idem(), json={"client_request_id": str(uuid.uuid4())})
-        self.assertEqual((retried.status_code, retried.json()["data"]["run"]["run_type"]), (202, "story_qa"))
+        self.assertEqual((retried.status_code, retried.json()["data"]["run"]["run_type"]), (202, "foreshadow_scan"))
         fn, args = queued[0]
         fn(*args)
         cancelled_view = client.get(f"/api/projects/{project_id}/analyses/{created['run_id']}").json()["data"]

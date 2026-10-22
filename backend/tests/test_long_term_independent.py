@@ -136,13 +136,13 @@ class IndependentLongTermTests(unittest.TestCase):
         f = self.f
         self.assertTrue(f.commit(f.preview())["source_revision_reviews"])
         self.expect_rejected_without_writes(lambda: f.db.create_analysis_run("another-account", f.project, {
-            "analysis_type": "context_brief", "draft_id": f.draft["id"], "draft_revision": f.draft["revision"],
+            "analysis_type": "foreshadow_scan", "draft_id": f.draft["id"], "draft_revision": f.draft["revision"],
         }, fixtures.key(), fixtures.PROVENANCE), {"resource_not_found"})
 
     def test_queued_analysis_cannot_send_old_sources_after_revision_review(self):
         f = self.f
         created, _, _ = f.db.create_analysis_run(f.user, f.project, {
-            "analysis_type": "context_brief", "draft_id": f.draft["id"], "draft_revision": f.draft["revision"],
+            "analysis_type": "foreshadow_scan", "draft_id": f.draft["id"], "draft_revision": f.draft["revision"],
         }, fixtures.key(), fixtures.PROVENANCE)
         revision = f.commit(f.preview())
         for review in revision["source_revision_reviews"]:

@@ -23,6 +23,7 @@ from app.main import create_app
 from app.provider import ChatResult, ProviderInvalidJson, ProviderResult, ProviderTimeout
 from app.stage13 import Stage13Settings
 from app import review_screening
+from tests.legacy_story_qa import seed_story_qa
 
 # The browser stub marks every sentence of a chapter as key, and stage5's "extreme issues" page test
 # needs twenty issues on one chapter. The per-chapter review caps are product behaviour covered by the
@@ -50,6 +51,7 @@ class BrowserTestProvider:
         self.entered = threading.Event()
         self.release = threading.Event()
         self.failed_once = set()
+        self.route_log = []
 
     @property
     def available(self):
@@ -111,7 +113,7 @@ class BrowserTestProvider:
         if "E2E_REPAIR" in question and not any("answer_invalid" in text for text in seen):
             return answer([{"text": "（示意回答）这句引用了没有给过的编号。", "refs": ["R99"]}])
         if "E2E_NOT_FOUND" in question or not refs:
-            return answer([], "not_found", "（示意）查过前文，没有找到相关的写法。")
+            return answer([], "not_found", "查过前文，没有找到相关的写法。")  # no "（示意）" mark: a note keeps only places looked at (p26)
         passages = []
         for text in seen:
             try:
@@ -167,7 +169,7 @@ class BrowserTestProvider:
         if refs:
             answer = {"status": "answered", "sentences": [{"text": "（示意回答）选中的这段和前文有对不上的地方。", "refs": [refs[0]]}]}
         else:
-            answer = {"status": "not_found", "sentences": [], "note": "（示意）检查了选中的这段，没有发现和前文矛盾的地方。"}
+            answer = {"status": "not_found", "sentences": [], "note": "检查了选中的这段，没有发现和前文矛盾的地方。"}
         return self._tool_turn([("answer", answer)], fixed)
 
     def chat(self, messages, tools, tool_choice, max_tokens):
@@ -185,6 +187,22 @@ class BrowserTestProvider:
             return self._check(asked, seen, fixed)
         return self._ask(question, messages, fixed)
 
+    # The input box's judgement (v1.9.0): a keyword in the sentence picks the use, so a test can steer it; a sentence without one is a
+    # plain question, except that a finding hanging on the box makes it a request for a fix (what a real judgement would also say).
+    # E2E_ROUTE_SLOW waits 3 s first. Every request is kept in `route_log` so a test can read what the judgement was shown.
+    ROUTE_MARKERS = (("E2E_ROUTE_OUT", "out_of_scope"), ("E2E_ROUTE_RECAP", "recap"), ("E2E_ROUTE_CHECK", "check_passage"),
+                     ("E2E_ROUTE_FIX", "fix_issue"), ("E2E_ROUTE_ASK", "ask"))
+
+    def route(self, messages, max_tokens, timeout_seconds):
+        asked = messages[-1]["content"]
+        self.route_log.append({"messages": messages, "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
+        if "E2E_ROUTE_SLOW" in asked:
+            time.sleep(3)
+        route = next((name for marker, name in self.ROUTE_MARKERS if marker in asked), "fix_issue" if "挂着检查结果：有" in asked else "ask")
+        unsure = "E2E_ROUTE_UNSURE" in asked
+        return ChatResult(message={"content": json.dumps({"route": route, "unsure": unsure}), "tool_calls": []}, finish_reason="stop",
+                          input_tokens=60, output_tokens=8, cost_cny=0.0003, latency_ms=10)
+
     def evaluate(self, request):
         self.calls += 1
         if request.get("task") == "continuity_screen":
@@ -194,28 +212,6 @@ class BrowserTestProvider:
         if request.get("task") == "continuity_triage":
             return ProviderResult({"scores": [{"id": sentence["id"], "score": 3} for sentence in request["sentences"]]},
                                   input_tokens=30, output_tokens=6, cost_cny=0.0003, latency_ms=10)
-        if request.get("task") == "context_brief":
-            written=request["layers"]["written"]
-            if "E2E_G02_CITATION" in written["draft"]["excerpt"]:
-                claim=next(item for item in written["draft_claims"] if "最后把银钥匙交给陈澈" in item["text"])
-                memory=next(item for item in request["layers"]["confirmed"]["memory_records"] if item["predicate"]=="does_not_know" and item["subject"]=="温岚")
-                return ProviderResult({"summary":"当前草稿尾部已交钥匙，温岚看懂潮表坐标且不知道代号。",
-                    "summary_sources":[{"source_type":"memory_record","source_id":memory["id"]}],
-                    "items":[{"section":"recent_source","text":"当前草稿最后把银钥匙交给陈澈并得知弟弟还活着。",
-                              "sources":[{"source_type":"draft_claim","source_id":claim["id"]}]},
-                             {"section":"character_state","text":"温岚看得懂潮表上的坐标，但尚不知道廊桥钥匙的含义。",
-                              "sources":[{"source_type":"memory_record","source_id":memory["id"]}]}]},
-                    input_tokens=28,output_tokens=22,latency_ms=12)
-            if "E2E_ANALYSIS_FAILURE" in written["draft"]["excerpt"]:raise ProviderInvalidJson()
-            fail_key=f"context_brief:{written['draft']['id']}:{written['draft']['revision']}"
-            if "E2E_ANALYSIS_FAIL_ONCE" in written["draft"]["excerpt"] and fail_key not in self.failed_once:
-                self.failed_once.add(fail_key);raise ProviderInvalidJson()
-            planned=request["layers"]["planned"]["story_plans"]
-            memory=request["layers"]["confirmed"]["memory_records"]
-            spans=written["source_spans"]
-            source={"source_type":"author_context","source_id":planned[0]["id"]} if planned else {"source_type":"memory_record","source_id":memory[0]["id"]} if memory else {"source_type":"source_span","source_id":spans[0]["id"]}
-            section="related_plan" if planned else "confirmed_fact" if memory else "recent_source"
-            return ProviderResult({"summary":"写作前先守住返航目标、角色当前状态与雾港规则。","summary_sources":[source],"items":[{"section":section,"text":"本章应继续处理返航动作，并避免把创作计划误写成既成事实。","sources":[source]}]},input_tokens=40,output_tokens=18,latency_ms=25)
         if request.get("task") == "plan_alignment":
             written=request["layers"]["written"]
             if "E2E_ANALYSIS_FAILURE" in written["draft"]["excerpt"]:raise ProviderInvalidJson()
@@ -234,15 +230,6 @@ class BrowserTestProvider:
             aliases=[item for item in request["layers"]["identity"]["aliases"] if item["character_id"]==character["id"]]
             evidence=[{"source_type":"character_record","source_id":character["id"]}]+([{"source_type":"character_alias","source_id":aliases[0]["id"]}] if aliases else [])
             return ProviderResult({"summary":"该修改会影响角色身份识别与相关资料核对。","items":[{"area":"character","target_id":character["id"],"impact":"需要复核这个角色在既有章节、Memory 与计划中的身份指向。","evidence":evidence}]},input_tokens=38,output_tokens=18,latency_ms=25)
-        if request.get("task") == "story_qa":
-            question=request["question"]
-            fail_key=f"story_qa:{request['bindings']['draft_id']}:{request['bindings']['draft_revision']}"
-            if "E2E_QA_FAIL_ONCE" in question and fail_key not in self.failed_once:
-                self.failed_once.add(fail_key);raise ProviderInvalidJson()
-            memory=request["layers"]["confirmed"]["memory_records"]
-            if not memory:return ProviderResult({"answer_status":"insufficient","answer":"没有证据。","findings":[]},input_tokens=12,output_tokens=4,latency_ms=20)
-            source={"source_type":"memory_record","source_id":memory[0]["id"]}
-            return ProviderResult({"answer_status":"answered","answer":"根据当前已确认的事实，这个问题已有可核对的答案。","findings":[{"layer":"confirmed","stance":"supports","text":"回答只采用作者已确认的事实。","evidence":[source]}]},input_tokens=30,output_tokens=14,latency_ms=25)
         if request.get("task") == "foreshadow_scan":
             written=request["layers"]["written"]
             if "E2E_FORESHADOW_BLOCK" in written["draft"]["excerpt"]:
@@ -255,15 +242,6 @@ class BrowserTestProvider:
                 {"title":"潮汐表的缺口","description":"已写正文中的缺口可能需要后续回收。","suggested_status":"planted","evidence":[{"source_type":"source_span","source_id":source["id"],"relation":"planted"}]},
                 {"title":"北门雾钟","description":"雾钟作为重复意象仍在发展。","suggested_status":"developing","evidence":[{"source_type":"source_span","source_id":source["id"],"relation":"developing"}]},
             ]},input_tokens=34,output_tokens=18,latency_ms=25)
-        if request.get("task") == "revision_plan":
-            issues=request["selected_issues"]
-            return ProviderResult({"summary":"已把作者选择的问题整理为可审阅修订建议。","candidates":[{
-                "issue_id":issue["id"],
-                "title":f"修订：{issue['claim_text'][:32]}",
-                "instruction":"回到当前草稿手动核对这处叙述，并依据已写来源完成修改。",
-                "priority":"high" if issue["severity"]=="high" else "medium" if issue["severity"]=="medium" else "low",
-                "evidence":[{"source_type":"issue_evidence","source_id":issue["evidence"][0]["id"]}],
-            } for issue in issues]},input_tokens=42,output_tokens=22,latency_ms=25)
         if request.get("task") == "memory_initialization":
             sources = request["sources"]
             facts = [
@@ -467,6 +445,18 @@ def latest_test_mail(purpose: str):
     return {"recipient": message["recipient"], "action_url": message["action_url"]}
 
 
+@app.get("/api/test/v190/route-log")
+def v190_route_log():
+    """What the input box's judgement was asked, in order (the messages the fake model was shown)."""
+    return {"data": {"requests": provider.route_log}}
+
+
+@app.post("/api/test/v190/route-log/reset")
+def reset_v190_route_log():
+    provider.route_log.clear()
+    return {"data": {"reset": True}}
+
+
 @app.post("/api/test/v180/users/{user_id}/spend-characters/{characters}")
 def spend_v180_check_characters(user_id: str, characters: int):
     """Uses up part of an author's rolling check allowance, so the browser can see a question refused for want of characters."""
@@ -520,6 +510,14 @@ def add_v130_test_character(project_id: str):
             (character_id,project_id,"顾潮","supporting","港务调查员","核对船籍","等待访谈","不知道温岚的旧称","[]","[]"),
         )
     return {"id":character_id,"name":"顾潮"}
+
+
+@app.post("/api/test/v190/projects/{project_id}/legacy-story-qa")
+def add_v190_legacy_story_qa(project_id: str, payload: dict = Body(...)):
+    """Writes an old 「问一问」 answer (POST /analyses no longer takes `story_qa`) so the assistant's read-only list has something to show."""
+    run_id = seed_story_qa(app.state.database, project_id, payload["draft_id"], payload["draft_revision"],
+                           question=payload["question"], scope=payload.get("scope"), answer=payload.get("answer") or "依据已确认事实，可以给出有界回答。")
+    return {"run_id": run_id}
 
 
 @app.post("/api/test/stage12/projects/{project_id}/runs/{run_id}/fail-nonretryable")

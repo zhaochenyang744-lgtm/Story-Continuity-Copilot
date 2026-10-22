@@ -1,0 +1,1239 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf7-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "Codex (GPT-6)",
+    "date": "2026-10-20",
+    "notes": "逐章原创；作者逐句自查；独立全文复核后冻结。"
+  },
+  "works": [
+    {
+      "key": "juzao",
+      "title": "橘灶夜宴",
+      "file": "works/juzao.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "yueji",
+      "title": "越脊的第七码",
+      "file": "works/yueji.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "yishou",
+      "title": "弈兽关的誓局",
+      "file": "works/yishou.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "huixiang",
+      "title": "回乡车上的空箱",
+      "file": "works/huixiang.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf7-a-03-t",
+      "work": "juzao",
+      "chapter": "第三章 先给自己一碗",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf7-a-04-t",
+      "work": "juzao",
+      "chapter": "第四章 纸面下的油光",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf7-a-05-t",
+      "work": "juzao",
+      "chapter": "第五章 旧签与新字",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "橘历腊月初五戌时，柯槐绎已能逐一释读茯纹食签的圜码，遇到反面的小钩也知道该怎样连起来读。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 留在灶上的苦味",
+              "quote": "在橘历腊月初五戌时的整个时辰内，少女都不认识茯纹食签上的圜码。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "橘历腊月初五戌时"
+          },
+          "explanation": "同为橘历腊月初五戌时，前文明确柯槐绎在整个时辰不识圜码，这里叙述者却断言当时已经逐码释读。依据句只称少女，紧邻前句唯一具名柯槐绎；较晚学防潮打包是另一种技能。"
+        },
+        {
+          "id": "lf7-a-05-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "蒋霜惟亲眼看全了嵇蔓芜在酪苓巷小灶拆罐取签、复封旧罐的经过，因此能够独自签下这支旧藏食签的原封见证。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 不写在借据上",
+              "quote": "嵇蔓芜把一只旧封罐移到案上，剪开粘在口沿的封条，旋松盖子，从卷起的油纸中抽出一支茯纹食签。她将食签擦净，另包一层薄纸，再把罐盖旋紧，用新浆糊压回原先揭起的封条。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文描写嵇蔓芜在独立后院小灶拆罐取签及复封，未确立蒋霜惟当时在场亲历，也未排除他在场。这里用亲眼全程见证作为他独自签原封证明、供席客确认旧藏取用真实性的根据，缺少在场亲历这一重要桥梁。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-a-05-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "少女辨清茯纹食签的圜码，将正面与背面的记号合着念给要抄便条的人听。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 先给自己一碗",
+              "quote": "邱燧芙以前替厨房整理过食签，能读懂茯纹食签上的圜码。"
+            }
+          ],
+          "explanation": "这里少女指紧邻前句明确具名的邱燧芙，不是第1章尚不识圜码的柯槐绎。第3章已经确立邱燧芙读码能力。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-a-06-t",
+      "work": "juzao",
+      "chapter": "第六章 谁来收这份谢",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-06-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "首次核对菜单的那回，冉绥芩早已认得赭星宴谱里每一种旧时缩写，单凭那些字就能报全菜名。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 不写在借据上",
+              "quote": "从这场核对开始到结束，账房一直不懂赭星宴谱的旧缩写。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文首场菜单核对全程，账房冉绥芩一直不懂旧缩写；此处回述同次核对，叙述者明确说他早已认得全部缩写。较晚学的是同一本宴谱封面护理，不会使首场核对时的旧认知变真。"
+        },
+        {
+          "id": "lf7-a-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "琥盐罐里这批盐渍果皮如今仍可充任本次正式夜宴的用料，冉绥芩据此将它留在最终菜单里。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 留在灶上的苦味",
+              "quote": "琥盐罐内这一批盐渍果皮已过验味与存放核验，具备列入本次正式夜宴菜品的资格。"
+            },
+            {
+              "chapter": "第四章 纸面下的油光",
+              "quote": "琥盐罐中的这批盐渍果皮因存放变化送去复核，复核要决定它能否继续具备用作本次正式夜宴菜品的资格。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "早期确立的就是本次正式夜宴用料资格，中间存放变化后送检也会影响同一资格；前文只写受理，未确立复核结果。这里沿用旧资格作为当前菜单决策，缺少该资格在变化后仍有效的结果，不是从试吃许可外推，也没有相冲突的检测结论。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-a-06-p1",
+          "kind": "state_change",
+          "quotes": [
+            "邱燧芙递来的茯纹食签束着浅灰布带，结上留出的活圈能让取用的人一拉就松。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 先给自己一碗",
+              "quote": "邱燧芙将旧带拆下，换上浅灰布带，系结时特地留了一个好解的圈。"
+            }
+          ],
+          "explanation": "食签最初束暗红带，第3章已经明确由邱燧芙更换浅灰布带并留活圈；本章使用变化后的状态。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-a-07-t",
+      "work": "juzao",
+      "chapter": "第七章 盘子不记人情",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-07-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "柯槐绎幼时留下的那道浅疤就在右眉末端，沾了热汽，颜色仍比周围的皮肤浅些。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 留在灶上的苦味",
+              "quote": "柯槐绎捧碗时，热汽掠过左眉尾那道幼时留下的浅疤；那道疤位置固定，眉毛长密了也盖不全。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确柯槐绎同一道幼时浅疤在固定的左眉尾，本章叙述者将它放到右眉末端；不是暂时动作、镜像或新疤。"
+        },
+        {
+          "id": "lf7-a-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "凭着赭星宴谱那张萝卜用量旧纸，冉绥芩算定今晚整席菜的净重恰好为十二斤六两，便照这个总数安排分盘。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 不写在借据上",
+              "quote": "赭星宴谱里这张旧纸记着一道拌菜所用萝卜二两，旁边画的是切丝时手指抵刀背的位置。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧纸只给一道拌菜内萝卜的局部份量与切法，未给整席覆盖或可推全席的比例。这里据它得出精确整席净重并安排分盘，缺少全量测量或核对根据。前文没有另一个冲突的整席总数。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-a-08-t",
+      "work": "juzao",
+      "chapter": "第八章 靠灶的位置",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-08-i1",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "蒋霜惟是嵇蔓芜亲生的儿子，母子俩争执起来各不相让，到了忙灶时却仍会替对方留出干净筷子。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 留在灶上的苦味",
+              "quote": "嵇蔓芜与蒋霜惟只是旧同事，两人之间没有亲属关系。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文直白确立嵇蔓芜与蒋霜惟没有亲属关系，本章叙述者明确将他们写成亲生母子。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-a-08-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "蒋霜惟说：“我总觉得冉绥芩只会看账，赭星宴谱沾上油，他准要拿湿布狠擦。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 纸面下的油光",
+              "quote": "冉绥芩学会了赭星宴谱封面的去油养护，知道细粉先吸油、软刷再扫净，不能拿湿布来回搓。"
+            }
+          ],
+          "explanation": "第4章确立冉绥芩已会护理。这里是蒋霜惟在直接引语中说出的个人猜测，叙述者未将他的偏见确认为事实，也未写冉真的用湿布擦谱。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-a-09-t",
+      "work": "juzao",
+      "chapter": "第九章 帘前的一盘菜",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-09-i1",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "夜宴还未开席，柯槐绎从自己带来的包里抽出银芽食夹，用夹尖扶正盘上那片卷起的菜叶。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 不写在借据上",
+              "quote": "直到这次夜宴开席前，银芽食夹始终锁在燎檐馆的墙柜里。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文以叙述事实限定银芽食夹直到本次夜宴开席前始终锁在燎檐馆墙柜，本章明确尚未开席，却让柯槐绎从自己的包中取出同一食夹。正式开席直到第10章才发生。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-a-10-t",
+      "work": "juzao",
+      "chapter": "第十章 最后半碗",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-a-10-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "燎檐馆本次夜宴准备时，门楣上的宴灯先悬妥，接着才做完所有外送菜的封口。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 纸面下的油光",
+              "quote": "这次夜宴的外送菜全部封好以后，蒋霜惟才将宴灯挂上燎檐馆门楣。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两句都回顾同一次夜宴已经完成的两道准备工序；第4章是所有外送菜封好在先、挂宴灯在后，本章将这两个完成节点反转。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-a-10-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "银芽食夹的尾端刻着一道很浅的麦穗纹，贴在她掌根时几乎感觉不到起伏。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 不写在借据上",
+              "quote": "银芽食夹曾替亡师夹过烫手的菜片，现在垫在柜内的软布上；直到这次夜宴开席前，银芽食夹始终锁在燎檐馆的墙柜里。"
+            }
+          ],
+          "explanation": "旧食夹前文介绍的是用途、锁柜状态，没有排除尾端纹饰；本章开席后补充的浅麦穗纹与这些事实兼容。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-b-03-t",
+      "work": "yueji",
+      "chapter": "第三章 让出半步的人",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf7-b-04-t",
+      "work": "yueji",
+      "chapter": "第四章 风从身侧过去",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf7-b-05-t",
+      "work": "yueji",
+      "chapter": "第五章 空出来的一口气",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-b-05-i1",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑绫泊抵队办理登记的当次，就已认全了逆叶计圈牌的各种记号，连排列的含义也说得清楚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 泥鞋落在门外",
+              "quote": "少年在初到队的那次登记中，还完全不认得逆叶计圈牌上的符号。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "所述为同一次初到登记，前文明确少年当时全不识符号，称呼紧接郑绫泊且同段没有其他人物；不是后来学会。"
+        },
+        {
+          "id": "lf7-b-05-i2",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑绫泊右掌那块天生的深色胎记贴着粗糙树皮，他顺势收拢五指，撑稳身体。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 泥鞋落在门外",
+              "quote": "郑绫泊摊开双手，掌上唯一一块深色胎记自出生便长在左手，顺着掌根铺开，边缘像一片泡涨的叶子。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确双掌仅此一块先天深色胎记且位于左手，问题将同一胎记放到右掌；冲突对象是属性，不是临时扶树动作。"
+        },
+        {
+          "id": "lf7-b-05-i3",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "祁苕璇与阙棠湛是同父同母的姐弟，日常斗嘴从不影响他们在队里的分工。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "祁苕璇是阙棠湛的亲姨母，两人是姨甥，并非同胞姐弟；在队里，他仍按大家的习惯称她教练。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明定姨甥，当前叙述者将二人断言为同胞姐弟，亲属关系冲突。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-b-05-p1",
+          "kind": "similar_name",
+          "quotes": [
+            "少年不用问人，就辨出了逆叶计圈牌上表示末段换步的记号，还将相邻两块的位置调了过来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 让出半步的人",
+              "quote": "荀芮汀早已能辨认逆叶计圈牌的整套符号，也能据此说明每一圈该在哪一处换步。"
+            }
+          ],
+          "explanation": "目标句前句具名荀芮汀并写其铺牌，此处少年指荀，不是第1章登记时不识符号的郑，且荀早已会认整套。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-b-06-t",
+      "work": "yueji",
+      "chapter": "第六章 等在起点以前",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-b-06-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "槭历五月初十卯时那阵风里，祁苕璇就在紊桦岭指挥队员绕过陡弯。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "祁苕璇在槭历五月初十卯时始终留在筠涧场，整个时辰都没有去过紊桦岭。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "槭历五月初十卯时"
+          },
+          "explanation": "同一明确时辰的全段地点排他，前文全程未离筠涧场，当前却在紊桦岭指挥。时间前有祁苕璇在，采用自拟日历与传统时辰。"
+        },
+        {
+          "id": "lf7-b-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "郑绫泊亲眼见过阙棠湛封好这卷计时原始带的整个过程，他据这份亲历，独自在封存见证栏签名作保。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "午后，阙棠湛在筠涧场独立的器材室里，把计时原始带退下木轴，卷成松松的一圈，放进厚纸袋，再用胶封住袋口。他沿袋口压过一枚方印，墨迹横跨纸面与封条，随后把封好的袋子装入抽屉。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只叙阙的具体封存过程，未确立郑当时亲见，也未将郑排除在外。亲历是对封存真实性独自签字作保的重要前提，不能由普通知情或普通登记默许。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-b-06-p1",
+          "kind": "rule_exception",
+          "quotes": [
+            "郑绫泊想起槭历五月十二的夜晚，自己曾独自进入筠涧场夜间内圈慢跑，跑到心口舒展便停了下来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "筠涧场的夜间内圈通常不对队员开放，但已向教练预约的人可以进场慢跑。"
+            },
+            {
+              "chapter": "第四章 风从身侧过去",
+              "quote": "饭后，郑绫泊向祁苕璇预约了当晚在筠涧场内圈慢跑，祁苕璇答应了。"
+            }
+          ],
+          "explanation": "当前明确回述第4章五月十二同一夜练，已经预约获准，符合独立开放规则的例外，不涉及永久本人投带规定。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-b-07-t",
+      "work": "yueji",
+      "chapter": "第七章 风抵达手心",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-b-07-i1",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "舒苇晞替郑绫泊把赤垣接力带送进了正式选拔的收带盒，他随后赶往起点。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 泥鞋落在门外",
+              "quote": "队里所有场次都要由运动员本人投递赤垣接力带，任何人不得代交。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文永久规则要求本人投带并禁止任何代交；当前为正式选拔，器材员替郑投递，没有适用例外。"
+        },
+        {
+          "id": "lf7-b-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "螺芽计时表如今仍有承担正式选拔读秒的资格，阙棠湛用它裁定两名队员之间仅差半秒的名额归属。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 泥鞋落在门外",
+              "quote": "螺芽计时表当时具备正式选拔计时的使用资格，舒苇晞把它与日常练习用的表分开保管。"
+            },
+            {
+              "chapter": "第四章 风从身侧过去",
+              "quote": "她把螺芽计时表送去校时，这次校时的结果将决定它原有的正式选拔计时资格能否延续。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "早期正式资格与当前同属正式选拔读秒资格，中间送校时会影响资格延续，未写结果。当前沿用旧资格裁定半秒差的名额归属，缺后续资格状态，未直接与失格结论冲突。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-b-07-p1",
+          "kind": "state_change",
+          "quotes": [
+            "赤垣接力带的带尾如今贴平了，摸过外缘也不会被翘角刮住，郑绫泊用指腹顺着新线抹了一下。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 让出半步的人",
+              "quote": "舒苇晞坐在廊下修东西，见他们练完，把赤垣接力带摊在膝上。那条带子原先松开的边角被她拆净，换了结实的线重新缝合，翘起的带尾也已压平。"
+            }
+          ],
+          "explanation": "第3章舒已经修缝赤垣接力带并压平带尾，当前平整是有过程的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-b-08-t",
+      "work": "yueji",
+      "chapter": "第八章 鞋尖朝向山外",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-b-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "郑绫泊在槭历五月初十的朔绯坡选拔赛中获得第二名，那次排位让他早早尝过名次落定的滋味。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "原定于槭历五月初十举行的朔绯坡选拔赛已经取消，整场没有举行。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "日期、地点与赛事明确指同一场旧选拔，已取消从未举行，不可能取得第二名；不能与十四日新选拔混淆。"
+        },
+        {
+          "id": "lf7-b-08-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "按素棱路线册列出的那些路段数据，郑绫泊跑完全线的准确用时是三十一分四十二秒，他据此获得个人组最后一个参赛位。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 没有枪声的坡口",
+              "quote": "素棱路线册记着全线长八里，标出起首半里的平均坡度为六度，其余多是沿途土质和转弯处的笔记。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "已有总里程与局部平均坡度不足以推出某运动员精确到秒的全程用时，前文没有冲突用时。该精确值用于最后参赛位核定，需要实际全程测量或等效核对结果。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-b-08-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "郑绫泊初来时一碰便痛的脚跟，经过这些天已能贴着鞋内侧稳稳落下，不再灼痛。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 泥鞋落在门外",
+              "quote": "郑绫泊攥了攥衣角，说自己没有受伤。她停下来，指着他被鞋边磨红的脚跟，让他用手按一下。他照做，痛得吸了口气，仍不肯承认这会妨碍跑步。"
+            },
+            {
+              "chapter": "第三章 让出半步的人",
+              "quote": "郑绫泊的鞋跟仍有点磨，他想换一种落脚减轻摩擦，却把膝盖绷得太直，几步之后整条腿都发僵。"
+            }
+          ],
+          "explanation": "初九到十五已有数日，郑持续调整鞋结与软布，没有永久损伤设定；原先轻微磨红疼痛逐渐消退合理。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-c-03-t",
+      "work": "yishou",
+      "chapter": "第三章 留给空车的一格",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf7-c-03-p1",
+          "kind": "rule_exception",
+          "quotes": [
+            "陶悬榛作为两方共同接纳的学徒，坐在钿凰庭里观看誓局，紧张得把双脚并在一起。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "钿凰庭议誓时通常只许棋使与立约双方入内，但经立约双方点头接纳的学徒，可以留在庭里观棋。"
+            },
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "两人都点了头，他才将自己的小凳搬到廊下，又往后挪了挪，免得别人以为他也要占一席。"
+            }
+          ],
+          "explanation": "入庭规则独立设有双方接纳学徒的例外，前章两方已点头，陶观棋符合例外；与落子须全扣的永久规则无关。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-c-04-t",
+      "work": "yishou",
+      "chapter": "第四章 草原收下的半车",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf7-c-04-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "贺雾翡吃酸果时习惯先闭一下左眼，像在迎接一场小小的袭击。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 木兽不饮血",
+              "quote": "贺雾翡坐在路边，咬着一枚酸果笑出了声，霍筠砾没有笑。"
+            }
+          ],
+          "explanation": "前文出现贺吃酸果但未限定表情，本章新增闭左眼的小习惯，不改变前文状态、能力或规则。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-c-05-t",
+      "work": "yishou",
+      "chapter": "第五章 不能替人许的愿",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-c-05-i1",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "慕箬翎是个左撇子，平日无论写字还是下棋，都由左手做主。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 木兽不饮血",
+              "quote": "慕箬翎惯用右手，写细字和落子都用右手，左手只压住被风掀起的纸角。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确慕惯用右手且书写落子均用右，本章叙述者断言她为左撇子并固定以左手书写下棋，属性相反。"
+        },
+        {
+          "id": "lf7-c-05-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "玄蕈棋盘经那次补腿以后，豁口便始终张着，足能容下一根细绳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 木兽不饮血",
+              "quote": "玄蕈棋盘这次修腿完成时，支腿上的裂口已经合拢，边缘贴得严实。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "目标回述同一次补腿后的持续状态为从未合拢，前文却明确该次修妥时裂口已闭合，不是后来又裂开的新状态。"
+        },
+        {
+          "id": "lf7-c-05-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "陶悬榛已经握有撤销青翳契卷原始契约的权力，足以让三次护送的旧责就此终止。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "天亮时，陶悬榛端着空碗回来，怀里多了一只蚀枝令匣。霍筠砾叫他替自己抄写来访的先后次序，再把各人的回话送到庭内。"
+            },
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "撤销青翳契卷上的原始契约，须由契约双方的持约者共同授予撤约权，获得这项权力的人才能划销旧条款。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅给陶普通登记送话任务，且明确撤销原始契约须双方持约者共同授予权力。本章直接认定陶已有足以终止三次护送责任的撤约权，缺少重大权限的授予环节；入庭观棋的同意不等于撤约授权。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-c-06-t",
+      "work": "yishou",
+      "chapter": "第六章 比棋子更轻的筹码",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-c-06-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "当初订立临时新约时，青翳契卷已经签妥，玄蕈棋盘才被盖好扎牢。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "当天订立新约时，众人先完成玄蕈棋盘的封盘，随后才签署青翳契卷。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "均指第2章取消旧局后订立临时新约的同一过程，前文封盘完成在先、签卷在后，目标将签卷与封盘的完成顺序反转。"
+        },
+        {
+          "id": "lf7-c-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "慕箬翎保存的棕色棋子，原料正是皎蕨原最初缔约时封入石穴的古松脂。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "慕箬翎收下贺雾翡从货筐底拾得的棋子，棋子边缘刻着细碎的弧纹，指腹摸过时有轻微的涩感。"
+            },
+            {
+              "chapter": "第四章 草原收下的半车",
+              "quote": "慕箬翎从小袋里摸出那枚棕色棋子，放在掌心迎光。弧纹在斜阳里显得更深，像被圈住的一层层年轮。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "先前只确立货筐拾得、慕持有及外观，不能据此确定材料来自最初缔约时石穴封存的古松脂。目标把具体古老来源作定论，并紧接着将其用于取消额外索货的政治谈判，缺的是来源认定链，不是无关紧要的新细节。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-c-06-p1",
+          "kind": "state_change",
+          "quotes": [
+            "贺雾翡从贴身布袋中取出燕齿誓筹，摆在白子盒旁，齿尖朝着桌外。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 留给空车的一格",
+              "quote": "霍筠砾先到关外，把插在空车轴孔中的燕齿誓筹拔出，擦净齿缝里的沙，交给贺雾翡暂作这趟送药的凭据。贺雾翡将燕齿誓筹收进贴身布袋，又把袋带拉紧，给他看齿端已经藏好。"
+            }
+          ],
+          "explanation": "誓筹初在霍所守空车的轴孔，前文已经明写霍取出交贺、贺收布袋，当前从布袋取出是已交代的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-c-07-t",
+      "work": "yishou",
+      "chapter": "第七章 谁走在车的前面",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-c-07-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "上弦夜，霍筠砾是在钿凰庭里伴着那炉火坐到天明的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "在上弦夜，从暮色落下到天光照亮车辕，霍筠砾始终守在祟棋关外，没有进入钿凰庭。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两句指同一个上弦夜，前文将霍整夜位置排他地确立在关外且未进庭，目标叙述者却断言他在庭内坐到天明。"
+        },
+        {
+          "id": "lf7-c-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "青翳契卷中以“领路人”落款的旧立誓者就是霍筠砾，三次护送的责任因此全归在他的名下。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 木兽不饮血",
+              "quote": "青翳契卷上的旧约只署了“领路人”这个头衔，署名旁画着一个右袖系双结的人影。"
+            },
+            {
+              "chapter": "第四章 草原收下的半车",
+              "quote": "霍筠砾卷袖时，两道系结在右腕上方显了出来。他将右袖的双结重新束紧，免得垂下的布角卷进车轮，再去抱住那根滑溜的车轴。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧署者只有头衔和袖结图形，霍袖口相似只能提示可能性，没有确立两者为同一个人的身份桥梁。目标直接将旧立誓者定为霍并把三次护送旧责加在他名下，属于重大责任身份认定，不是普通人物重新登场；前文亦未认定他们必为不同人。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf7-c-07-p1",
+          "kind": "reported_belief",
+          "quotes": [
+            "贺雾翡看见霍筠砾仍背着空袋，故意板起脸说：“霍筠砾这一辈子，连半寸路也没让过。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 留给空车的一格",
+              "quote": "霍筠砾等她收好头发，再把黑子往外让了一格。"
+            }
+          ],
+          "explanation": "前文霍实际让过棋格，当前是贺故意模仿语气的夸张打趣，紧接着自己笑、少年亦听懂，叙述者未将玩笑认作真实经历。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-c-08-t",
+      "work": "yishou",
+      "chapter": "第八章 狐与鹿同行",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-c-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "贺雾翡早在霜降前一日的午后，就赢过那盘以七颗白子作记号的旧誓局。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 等到天明的人",
+              "quote": "霜降前一日午后那场以七枚白子为记的誓局，因双方没能谈定各自承诺，已经取消，棋手没有开盘。贺雾翡在桌上排好的七枚白子被慕箬翎一枚枚收回"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "目标用日期、七白子标识与旧局身份，明确回述已取消且未开盘的同一场誓局，却断言贺已在该局获胜。当前霜降日起另开的新局与它无关。"
+        },
+        {
+          "id": "lf7-c-08-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "玄蕈棋盘东侧的锁扣仍然敞开，慕箬翎合住其余三边后，就将白子按进盘中央。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 木兽不饮血",
+              "quote": "在祟棋关，凡在玄蕈棋盘上落子都必须先扣牢四边锁扣，任何时刻不得免除。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何时刻不得免除"
+          },
+          "explanation": "前文永久规则要求在祟棋关的该盘每次落子前四边全部扣牢，目标地点仍在关内钿凰庭，却在东侧敞开、只合三边时落子，明确违反不容免除的落子要求。学徒入庭例外不是落子锁扣例外。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-d-03-t",
+      "work": "huixiang",
+      "chapter": "第三章 站门前的第二次停靠",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf7-d-03-p1",
+          "kind": "time_passed",
+          "quotes": [
+            "濮颂岚摸了摸带上车的旧伞，经过这一上午的风，伞面已经干了，提起来不再往鞋上滴水。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "她把还滴水的旧伞靠在廊柱边，等办完寄存再带上车。"
+            }
+          ],
+          "explanation": "上午降雨停止、之后通风变晴，伞面经过数小时晾干是自然状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-d-04-t",
+      "work": "huixiang",
+      "chapter": "第四章 箱外的那一枚字",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf7-d-04-p1",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "栖柏保管册的封边露出几排旧穿孔，细看并不都落在同一条线上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "濮颂岚去办寄存，按站里的办法在栖柏保管册上留下箱子的形状和布套颜色。"
+            }
+          ],
+          "explanation": "新揭示册子封边的穿孔与原有记录用途相容，前文未限定装订外观。"
+        },
+        {
+          "id": "lf7-d-04-p2",
+          "kind": "reported_belief",
+          "quotes": [
+            "车外有人说告别仪式还算热闹，连阮弥戈都录到了唱曲。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "徊柑站这次旧站告别仪式已经撤销，没有举行，纪念章也没有按原计划发放。"
+            }
+          ],
+          "explanation": "说话者听人转述，阮在本段随后明确纠正：取消的正式仪式和热食棚私人唱曲是两件事；叙述没有采纳人物误信。"
+        },
+        {
+          "id": "lf7-d-04-p3",
+          "kind": "state_change",
+          "quotes": [
+            "阮弥戈将早晨松开的末圈录音线绕到外侧，接上机器时，插头不再被那一圈紧紧牵住。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "她看他将线卷得太紧，笑着提醒别再像小时候收风筝线那样打死结，他便把最后一圈放松。"
+            }
+          ],
+          "explanation": "末圈已在早晨明确放松，后续不牵紧插头有已叙述的变化过程。"
+        }
+      ]
+    },
+    {
+      "id": "lf7-d-05-t",
+      "work": "huixiang",
+      "chapter": "第五章 车门边的两种去向",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-d-05-i1",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "濮颂岚与阮弥戈是同父同母的姐弟，两人小时候每次被母亲叫去接东西，弟弟总先把空出来的手伸过去。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "濮颂岚和阮弥戈只是童年邻居，没有血缘关系。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确没有血缘，目标叙述断言同父同母，关系互相排斥。"
+        },
+        {
+          "id": "lf7-d-05-i2",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "这次办理寄存的那个时刻，玄葵布箱的右扣始终敞着，细绳只圈住了另一侧。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "寄存那一刻，玄葵布箱的两只锁扣都已扣合，她又在扣外系了细绳，绳端压进纸封。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "均指本次寄存同一时刻，双扣闭合与右扣敞开互相排斥，未依赖后来再次开启。"
+        },
+        {
+          "id": "lf7-d-05-i3",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "询问玄葵布箱的信已经送达沓榆县的转问处，濮颂岚因此取消了另托人先去旧址查看的安排，等那边照信上的话来认领。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "她把一封说明玄葵布箱来历的询问信交给站边收邮的工作人员，收件处照着箱上能够辨认的旧地址写到沓榆县，请那边熟悉旧户的人转问。工作人员在收寄纸上按了记号，将信收进当天待发的小袋。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅有收寄动作，未确立送达结果。目标把已送达作为停止另行查找、等待认领的重要依据，缺投递结果而非普通日常省略。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-d-06-t",
+      "work": "huixiang",
+      "chapter": "第六章 又多一件随车的东西",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-d-06-i1",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "清晨下滩前办理的同一趟手续中，濮颂岚先验妥黄穗路线票并打孔，随后才封好玄葵布箱。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "玄葵布箱封好在先，黄穗路线票验过并打孔在后，两件事都在这一趟下滩车发动之前完成。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处都明确回述清晨下滩前同一次手续，原先先封箱后验票，当前改成先验票后封箱，完成顺序反转。"
+        },
+        {
+          "id": "lf7-d-06-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "巫泽砚从自己衣袋里拿出折棠行李牌，交给窗口的人核过齿口，领出了玄葵布箱。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "折棠行李牌是取出玄葵布箱的唯一凭据，牌上刻的齿口与寄存格相对。濮颂岚将牌交给准备晚一班出发的翟荞缈，托她等老人来了，先核清旧巷名，再保留箱子让对方辨认。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "早期唯一领取凭据交翟保管，司机仅承担驾驶且未参与领箱安排，当前却从自己的衣袋拿出该牌领取重要寄存物，缺从保管者到司机的物理交接；前文未限定牌一直在翟手中直至当前，故不是状态冲突。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-d-07-t",
+      "work": "huixiang",
+      "chapter": "第七章 一扇窗的宽窄",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-d-07-i1",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "本次出发前那个整夜，从徊柑站落闩到天明重新开门，濮颂岚都守在辙芷滩的棚下整理旧纸。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "昨夜从站门落闩到天亮开门，濮颂岚始终在徊柑站的候车屋里，没有到过辙芷滩。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "当前明确回述本次出发前从落闩至天明开门的同一整夜，而非当日路途或另一夜；前文全程在徊柑站且未到滩，当前叙述同段在辙芷滩。"
+        },
+        {
+          "id": "lf7-d-07-i2",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "黄穗路线票今早变干的唯一原因是巫泽砚打开通风窗，濮颂岚据此决定，玄葵布箱外仅存的旧地址纸以后也只用吹风保管，不再另加隔潮包层。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 朝滩下去的车",
+              "quote": "黄穗路线票被窗边的潮气润软了，濮颂岚本来想将它压进书页，想到打孔处容易扯开，又拿出来放在膝上。巫泽砚在一处停靠点拨开了前排两扇通风窗，让车里的闷气散出去。车重新上路后，天空逐渐透亮，薄云从太阳前移开，靠窗那面玻璃渐渐暖了。"
+            },
+            {
+              "chapter": "第二章 朝滩下去的车",
+              "quote": "到辙芷滩时，黄穗路线票的表面已不像刚出站那样潮软，濮颂岚把它叠回票夹，沿着折痕抹平。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文开窗、天晴、玻璃晒暖及换地点共同先后出现，未检验确认票变干唯一由开窗造成，也未排除开窗可能参与。当前将其定为唯一原因，决定仅存旧地址纸的隔潮保存办法，缺重大因果确定。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf7-d-08-t",
+      "work": "huixiang",
+      "chapter": "第八章 留下能够找到的地方",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf7-d-08-i1",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "徊柑站原定的那场旧站告别礼已经办成，阮弥戈还在正式仪式上领到一枚纪念章。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 会晚一班的人",
+              "quote": "徊柑站这次旧站告别仪式已经撤销，没有举行，纪念章也没有按原计划发放。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "当前叙述原定的同场旧站正式告别礼办成并颁章，与取消未办相排斥；明确正式仪式，不是热食棚私人唱曲或私赠纪念物。"
+        },
+        {
+          "id": "lf7-d-08-i2",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "从徊柑站发出的这辆车还在向前行驶，巫泽砚坐在驾驶位按下开舱钮，行李舱的侧盖随即掀开。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 朝滩下去的车",
+              "quote": "徊柑站发车的所有车，在行驶途中一律不许打开行李舱。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "车规无例外禁止行驶中开舱，当前明确仍前行时侧盖已打开。司机一直在驾驶位按按钮，没有司机离位而车辆自行前进的额外物理场景问题。"
+        }
+      ],
+      "traps": []
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf7-s01",
+      "work": "juzao",
+      "chapters": [
+        "第三章 先给自己一碗",
+        "第四章 纸面下的油光",
+        "第五章 旧签与新字",
+        "第六章 谁来收这份谢",
+        "第七章 盘子不记人情",
+        "第八章 靠灶的位置",
+        "第九章 帘前的一盘菜",
+        "第十章 最后半碗"
+      ]
+    },
+    {
+      "id": "lf7-s02",
+      "work": "yueji",
+      "chapters": [
+        "第三章 让出半步的人",
+        "第四章 风从身侧过去",
+        "第五章 空出来的一口气",
+        "第六章 等在起点以前",
+        "第七章 风抵达手心"
+      ]
+    },
+    {
+      "id": "lf7-s03",
+      "work": "yishou",
+      "chapters": [
+        "第三章 留给空车的一格",
+        "第四章 草原收下的半车",
+        "第五章 不能替人许的愿",
+        "第六章 比棋子更轻的筹码",
+        "第七章 谁走在车的前面"
+      ]
+    }
+  ],
+  "subsets": {}
+}

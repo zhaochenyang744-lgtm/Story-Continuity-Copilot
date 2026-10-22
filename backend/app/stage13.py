@@ -424,6 +424,10 @@ ASSISTANT_ROLLOUTS = ("off", "allowlist", "registered", "all")
 # An assistant task (v1.8.0) is charged a flat number of check characters, whatever it reads.
 ASSISTANT_TASK_CHARS = 500
 ASSISTANT_WORKFLOW_KIND = "assistant_task"
+# A judgement of what the input box should do with a sentence (v1.9.0): it spends money and a provider attempt like any model
+# call, but is neither a workflow nor a charge of characters, so it does not count against the workflow limits.
+ASSISTANT_ROUTE_KIND = "assistant_route"
+ASSISTANT_ROUTE_RESERVATION_MICROUNITS = 10_000
 
 
 class Stage13Service:
@@ -800,7 +804,7 @@ class Stage13Service:
             scope = " AND workflow_kind=?" if assistant else " AND workflow_kind!=?"
         params = (user_id, cutoff, ASSISTANT_WORKFLOW_KIND) if visitor else (user_id, cutoff)
         count, used = c.execute(
-            "SELECT COUNT(*),COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?" + scope,
+            f"SELECT COALESCE(SUM(workflow_kind!='{ASSISTANT_ROUTE_KIND}'),0),COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?" + scope,
             params,
         ).fetchone()
         if count >= workflow_limit:
@@ -815,6 +819,26 @@ class Stage13Service:
             (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
         )
         return reservation_id
+
+    def reserve_route(self, user_id: str, project_id: str) -> str:
+        """The usage record of one judgement call: no characters, no workflow count, a small ceiling in the day's budget."""
+        with self.database.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            actor = c.execute("SELECT account_type,visitor_expires_at FROM v2_users WHERE id=?", (user_id,)).fetchone()
+            if not actor:
+                raise DomainError("authentication_required", 401)
+            visitor = actor["account_type"] == "visitor"
+            if visitor and (not actor["visitor_expires_at"] or actor["visitor_expires_at"] <= _now()):
+                raise DomainError("visitor_expired", 401)
+            cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+            used = c.execute("SELECT COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            budget = self.settings.visitor_budget_cny if visitor else self.settings.registered_budget_cny
+            if used + ASSISTANT_ROUTE_RESERVATION_MICROUNITS > int(round(budget * 1_000_000)):
+                raise DomainError("server_budget_exceeded", 429, True)
+            reservation_id = _new_id("usage")
+            c.execute("INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
+                      (reservation_id, user_id, project_id, None, ASSISTANT_ROUTE_KIND, ASSISTANT_ROUTE_RESERVATION_MICROUNITS, _now()))
+            return reservation_id
 
     def settle_reservation(self, reservation_id: str, actual_microunits: int) -> None:
         """Replace a reserved ceiling by what the work really cost, so the daily budget reflects real spending."""
@@ -874,6 +898,7 @@ class Stage13Service:
             if actor["account_type"] == "visitor":
                 counts = {kind: n for kind, n in c.execute("SELECT workflow_kind,COUNT(*) FROM v2_usage_reservations WHERE user_id=? AND created_at>? GROUP BY workflow_kind", (user_id, cutoff))}
                 tasks = counts.pop(ASSISTANT_WORKFLOW_KIND, 0)
+                counts.pop(ASSISTANT_ROUTE_KIND, None)
                 checks = sum(counts.values())
                 return {"account_type": "visitor", "check_chars_per_check": self.settings.visitor_check_chars,
                         "checks_limit": self.settings.visitor_workflows, "checks_remaining": max(0, self.settings.visitor_workflows - checks),
@@ -1012,3 +1037,6 @@ class UsageGuardProvider:
 
     def chat(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], tool_choice: Any, max_tokens: int) -> Any:
         return self._guarded(lambda: self._provider.chat(messages, tools, tool_choice, max_tokens))
+
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> Any:
+        return self._guarded(lambda: self._provider.route(messages, max_tokens, timeout_seconds))

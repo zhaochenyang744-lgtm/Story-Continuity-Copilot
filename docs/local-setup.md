@@ -2,7 +2,7 @@
 
 ## Scope and prerequisites
 
-This guide runs v1.8.1 source locally on Windows PowerShell with Python 3.11+ and Node.js 20.9.0 or later (the installed Next.js requirement). Local execution is not a public deployment. The API uses the repository's `runtime/data/demo.sqlite3`; test runners create isolated temporary data.
+This guide runs v1.9.0 source locally on Windows PowerShell with Python 3.11+ and Node.js 20.9.0 or later (the installed Next.js requirement). Local execution is not a public deployment. The API uses the repository's `runtime/data/demo.sqlite3`; test runners create isolated temporary data.
 
 ## Install
 

@@ -107,8 +107,6 @@ class Stage11KTests(unittest.TestCase):
         committed=self.client.post(f"/api/projects/{self.project}/memory/deltas/{delta['id']}/commit",json={"confirm":True},headers=idem()).json()["data"]
         audit=committed["coverage_audit"]; self.assertEqual((committed["memory_version"],audit["status"]),(2,"covered_with_memory_change")); self.assertTrue(audit["actor_user_id"])
         self.assertEqual(audit["details"]["decisions"][0]["after"]["value"],"编辑后离开雾港")
-        read=self.client.get(f"/api/projects/{self.project}/source-coverage-audits/{audit['id']}")
-        self.assertEqual(read.status_code,200); self.assertEqual(read.json()["data"]["audit"]["details"]["candidate_ids"],audit["details"]["candidate_ids"])
         memory=self.client.get(f"/api/projects/{self.project}/memory").json()["data"]["records"]; self.assertIn("编辑后离开雾港",[row["value"] for row in memory])
 
     def test_invalid_or_cross_revision_edit_evidence_is_422_and_has_no_writes(self):
@@ -143,8 +141,8 @@ class Stage11KTests(unittest.TestCase):
         _,delta=self.start(); other=TestClient(self.app)
         other.post("/api/auth/register",json={"account_name":"other-delta","display_name":"Other","password":"safe-password-123"},headers=idem())
         core=next(x for x in delta["candidates"] if x["review_priority"]=="core"); self.decide(delta,core,"rejected")
-        audit=self.client.post(f"/api/projects/{self.project}/memory/deltas/{delta['id']}/commit",json={"confirm":True},headers=idem()).json()["data"]["coverage_audit"]; before=self.counts()
-        cases=[("get",f"/api/projects/{self.project}/memory/delta",None),("post",f"/api/projects/{self.project}/incremental-reviews",{"source_revision":2}),("post",f"/api/projects/{self.project}/memory/deltas/{delta['id']}/candidates/{core['id']}/decision",{"decision":"accepted"}),("post",f"/api/projects/{self.project}/memory/deltas/{delta['id']}/commit",{"confirm":True}),("get",f"/api/projects/{self.project}/source-coverage-audits/{audit['id']}",None)]
+        self.client.post(f"/api/projects/{self.project}/memory/deltas/{delta['id']}/commit",json={"confirm":True},headers=idem()); before=self.counts()
+        cases=[("get",f"/api/projects/{self.project}/memory/delta",None),("post",f"/api/projects/{self.project}/incremental-reviews",{"source_revision":2}),("post",f"/api/projects/{self.project}/memory/deltas/{delta['id']}/candidates/{core['id']}/decision",{"decision":"accepted"}),("post",f"/api/projects/{self.project}/memory/deltas/{delta['id']}/commit",{"confirm":True})]
         for method,url,payload in cases:
             response=getattr(other,method)(url,json=payload,headers=idem()) if payload else getattr(other,method)(url); self.assertEqual(response.status_code,404)
         self.assertEqual(self.counts(),before)

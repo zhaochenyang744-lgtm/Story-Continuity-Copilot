@@ -27,7 +27,8 @@ test.describe("助手", () => {
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.getByText("查了 1 条事实：苏岑")).toHaveCount(0);
     await fold.click();
-    await expect(task.getByText("先查苏岑的已确认事实，再在正文里搜一搜。")).toBeVisible();
+    // v1.9.0: the line is written from the round's calls (the model's own words are not shown).
+    await expect(task.getByText("我先搜正文「苏岑知道罗盘」，查苏岑的事实。")).toBeVisible();
     await expect(task.getByText("查了 1 条事实：苏岑")).toBeVisible();
     await expect(task.getByText("搜了 1 处正文")).toBeVisible();
     // The answer carries numbered sources (1, 2, 3 …, never the raw R number).
@@ -73,7 +74,7 @@ test.describe("助手", () => {
     await finished(page);
     const first = (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks[0];
     await tasks(page).first().getByRole("button", { name: "接着问", exact: true }).click();
-    await expect(chip(page, "接着问：苏岑知道罗盘被调包了吗？")).toBeVisible();
+    await expect(chip(page, "接着上一问 · 第 1 次追问，还能再问 1 次")).toBeVisible();
     await expect(box(page)).toBeFocused();
     const request = taskPost(page);
     await ask(page, "她是什么时候知道的？");
@@ -81,8 +82,8 @@ test.describe("助手", () => {
     expect(body.follow_up_of).toBe(first.id);
     expect(body.kind).toBe("ask");
     await finished(page, 2);
-    // The tag goes with the question that used it.
-    await expect(thread(page).locator(".a-chip")).toHaveCount(0);
+    // The tag goes with the question that used it; the new answer is followed in turn (the last follow-up there is).
+    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 2 次追问，这是最后一次");
     const saved = (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks;
     expect(saved[1].follow_up_of).toBe(first.id);
   });
@@ -131,7 +132,7 @@ test.describe("助手", () => {
     await finished(page);
     const task = tasks(page).first();
     await expect(task.getByText("正文里找不到", { exact: true })).toBeVisible();
-    await expect(task.getByText("（示意）查过前文，没有找到相关的写法。", { exact: true })).toBeVisible();
+    await expect(task.getByText("查过前文，没有找到相关的写法。", { exact: true })).toBeVisible();
     await expect(task.locator(".a-cite")).toHaveCount(0);
   });
 
@@ -161,7 +162,8 @@ test.describe("助手", () => {
     expect(typedBody.context).toMatchObject({ page: "writing", selection: picked });
     await finished(page);
     await expect(tasks(page).first().locator(".a-quote")).toContainText(picked.slice(0, 8));
-    await expect(thread(page).locator(".a-chip")).toHaveCount(0);
+    // The passage's tag went with the question; the answer just given is what the next question follows.
+    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
     // 前面怎么写的 asks at once.
     await select(page, "#draft-body", 12);
     const quick = taskPost(page);
@@ -223,8 +225,8 @@ test.describe("助手", () => {
     const id = await setup(page);
     const saved = await api(page).get(`/projects/${id}`);
     const current = await api(page).get(`/projects/${id}/drafts/${saved.current_draft.id}`);
-    const old = await api(page).post<{ run_id: string }>(`/projects/${id}/analyses`, { analysis_type: "story_qa", draft_id: current.id, draft_revision: current.revision, question: "罗盘现在在哪里？", scope: ["confirmed", "written", "planned"] });
-    await expect.poll(async () => (await api(page).get(`/projects/${id}/analyses/${old.run_id}`)).status).toBe("completed");
+    // New questions can no longer be asked; the answer an author got before is written straight into the database.
+    await api(page).post(`/test/v190/projects/${id}/legacy-story-qa`, { draft_id: current.id, draft_revision: current.revision, question: "罗盘现在在哪里？", scope: ["confirmed", "written", "planned"] });
     await page.goto(`/projects/${id}/memory?view=ask`);
     const tabs = page.getByRole("navigation", { name: "资料分类", exact: true });
     await expect(tabs.getByRole("button")).toHaveText([/^事实/, /^人物/, /^设定/, /^伏笔/]);
@@ -246,7 +248,7 @@ test.describe("助手", () => {
     await openAssistantTab(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
-    await thread(page).locator("details.menu > summary").click();
+    await thread(page).locator(".a-bar details.menu > summary").click();
     await thread(page).getByRole("menuitem", { name: "清空对话", exact: true }).click();
     const confirm = thread(page).getByRole("alertdialog");
     await expect(confirm).toContainText("清空后这部作品的对话不再显示。已用的字数不退。");
@@ -254,7 +256,7 @@ test.describe("助手", () => {
     await confirm.getByRole("button", { name: "取消", exact: true }).click();
     await expect(confirm).toHaveCount(0);
     await expect(tasks(page)).toHaveCount(1);
-    await thread(page).locator("details.menu > summary").click();
+    await thread(page).locator(".a-bar details.menu > summary").click();
     await thread(page).getByRole("menuitem", { name: "清空对话", exact: true }).click();
     await thread(page).getByRole("alertdialog").getByRole("button", { name: "清空", exact: true }).click();
     await expect(tasks(page)).toHaveCount(0);
@@ -692,7 +694,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await task.getByRole("button", { name: /^查了 \d+ 处/ }).click();
     await expect(task.getByText("定点检查了这一段")).toBeVisible();
     // The sentence is in the answer: either the first source of the check, or that it found nothing.
-    await expect(task).toContainText(/（示意回答）选中的这段和前文有对不上的地方。|（示意）检查了选中的这段，没有发现和前文矛盾的地方。/);
+    await expect(task).toContainText(/（示意回答）选中的这段和前文有对不上的地方。|检查了选中的这段，没有发现和前文矛盾的地方。/);
     await expect(task).toContainText(/计 \d+ 字/);
     await expect.poll(() => allowance(page)).toBe(before - 500 - chars(picked));
   });

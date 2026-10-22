@@ -26,6 +26,7 @@ import {
 } from "../labels";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
 import { AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, type WritingLink } from "./assistant";
+import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline } from "./findings";
@@ -74,11 +75,14 @@ const rememberedSide = (): "findings" | "assistant" | null => {
 
 function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
-  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "assistant">("draft");
+  // "去写作页做写前回顾" in another page's assistant brings the author here: the column opens on the assistant and starts it, or
+  // says why it cannot (chapter 1, an unsaved draft).
+  const [forRecap] = useState(recapWanted);
+  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "assistant">(forRecap ? "assistant" : "draft");
   // The assistant column is always built (hidden while the findings are shown), so a running task goes on while the author
   // writes and the findings list can tell which findings have an adopted change.
   const [incoming, setIncoming] = useState<Incoming | null>(null);
-  const [command, setCommand] = useState<Command | null>(null);
+  const [command, setCommand] = useState<Command | null>(forRecap ? { kind: "recap", nonce: -1 } : null);
   const [picked, setPicked] = useState<Incoming | null>(null);
   const [assistantBusy, setAssistantBusy] = useState(false);
   const [adoptedIssueIds, setAdoptedIssueIds] = useState<string[]>([]);
@@ -87,8 +91,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const incomingNonce = useRef(0);
   // What the right column shows: the check's findings, or the assistant. Coming from the plan page's 对照正文, whose
   // comparison is running, the column opens on the assistant, where that comparison is shown.
-  const [wantedSide, setWantedSide] = useState<SideItem>(() => (p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
-  const [revealSide, setRevealSide] = useState(0);
+  const [wantedSide, setWantedSide] = useState<SideItem>(() => (forRecap || p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
+  const [revealSide, setRevealSide] = useState(forRecap ? 1 : 0);
   // On a phone the assistant is a pane as high as what is left of the screen below the top bar and the pane switch (and above the
   // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
   useEffect(() => {
@@ -186,6 +190,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     setRevealSide((count) => count + 1);
     setCommand({ ...next, nonce: ++incomingNonce.current });
   };
+  // Read once: a later visit does not start it again.
+  useEffect(() => { if (forRecap) recapTaken(); }, [forRecap]);
   const pick = (id: string) => {
     const issue = issues.find((item) => item.id === id);
     const row = document.getElementById(`issue-${id}`);

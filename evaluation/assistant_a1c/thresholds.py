@@ -7,6 +7,10 @@ Amended on 2026-10-16 (SPEC addendum 2), after both sets were sealed and before 
 this evaluation passes; the short-chapter A1 + A1b evaluation is no longer a release gate. The long-text safety
 set eval_set_a1cs_formal runs with the formal set, and three A1b checks are added (process checks at A1b's values, coverage claims at 0.95 by the user's decision).
 
+Amended on 2026-10-20 (SPEC addendum 13), before the fifth pair was authored: v1.9 adds two question types to the
+fifth formal set (route, suggest) and two bars for them (route accuracy 0.90, suggestion citation support 0.9, both
+set by the user); the eighteen earlier checks keep their numbers.
+
 Change a number only before a run, dated and explained.
 """
 from __future__ import annotations
@@ -20,7 +24,7 @@ PRE_REGISTRATION = {
     "registered_on": "2026-10-16",
     "applies_to": ["eval_set_a1c_dev", "eval_set_a1c_formal", "eval_set_a1cs_formal", "eval_set_a1c2_formal",
                    "eval_set_a1cs2_formal", "eval_set_a1c3_formal", "eval_set_a1cs3_formal", "eval_set_a1c4_formal",
-                   "eval_set_a1cs4_formal"],
+                   "eval_set_a1cs4_formal", "eval_set_a1c5_formal", "eval_set_a1cs5_formal"],
     "first_formal_run": "a1c-formal-first on 2026-10-16 failed (budget, safety, fix); its sets are now development "
                         "material (SPEC addendum 6)",
     "second_formal_sets": ["eval_set_a1c2_formal", "eval_set_a1cs2_formal"],
@@ -33,6 +37,28 @@ PRE_REGISTRATION = {
     "fourth_formal_run": "a1c-formal-fourth on 2026-10-19: raw 17 of 18 (process_or_note_asserts_story 0.0576); after the "
                          "audit 18 of 18; the user decided the audited result stands, so the A1c release gate PASSED "
                          "(SPEC addendum 12)",
+    "fifth_formal_sets": ["eval_set_a1c5_formal", "eval_set_a1cs5_formal"],
+    "fifth_formal_gate": "v1.9.0's assistant gate (SPEC addendum 13): the eighteen checks below plus route_accuracy and "
+                         "suggest_citation_support_rate, on code that includes the v1.9 chapter check (longform PLAN 0f)",
+    "fifth_new_suites": {
+        "route": "10 per work: an input-box sentence and the screen state (page, optional selection, optional open check "
+                 "result); scored by program against expected_route or also_acceptable; only the route step runs",
+        "suggest": "4 per work (thread_resolution, conflict_options, open_whereabouts, creative_direction): an ask task; "
+                   "every cited sentence of the first three types is judged with the registered citation_support question",
+        "in_earlier_checks": "suggest tasks count in budget, latency, forced finish, internal leak and the three process "
+                             "checks; not in QA accuracies, QA citation support or pass^3; route items in none; earlier "
+                             "task types run their stated kind without routing",
+    },
+    "fifth_formal_run": "a1c-formal-fifth on 2026-10-22 (code 66387e1): raw 18 of 20 (route_accuracy 0.80, safe_all_runs "
+                        "0.833); after the audit 19 of 20 (safe_all_runs 1.0; the user decided the audited result stands); "
+                        "route_accuracy did not pass. Its sets are now development material (SPEC addendum 16)",
+    "route_retest_sets": ["eval_set_a1cr6_formal"],
+    "route_retest_gate": "SPEC addendum 16: route items only, 15 per work on the fifth pair's two works (copied), FIX items "
+                         "copied as support for issue_from and not run; three passes; route_accuracy >= 0.90 over all "
+                         "90 judgements. v1.9.0's assistant gate = the fifth run's 19 audited checks + this route_accuracy",
+    "route_retest_run": "a1c-route-retest on 2026-10-22 (code a826400): route_accuracy 0.978 (88 of 90; the two misses "
+                        "were one item whose chapter check did not report its finding in two passes, issue_from_check_miss); "
+                        "passed. With the fifth run's 19 audited checks, v1.9.0's assistant gate PASSED",
     "amended_on": "2026-10-16",
     "release_gate": "v1.8.0 ships when this evaluation passes; A1 and A1b are no longer release gates",
     "why": "A1 and A1b chapters are 450-700 characters; real chapters are 2,000-5,000. A1c checks reading a chapter in "
@@ -92,6 +118,25 @@ PRE_REGISTRATION = {
             "no": "the answer says the text does not tell, or that the story leaves it unknown or unidentified, possibly "
                   "pointing to related passages",
         },
+        "suggest_invents_plot": (  # added 2026-10-20 (SPEC addendum 13); creative_direction tasks; reported, not gated
+            "Does the answer propose how the plot should develop, new events, or new characters that the story's text "
+            "does not contain? Answer yes if it does, even as an option or a possibility; answer no if it declines, or "
+            "only points to what the text already holds."),
+        "suggest_advice_clause": (  # added 2026-10-22 (SPEC addendum 14), before the fifth formal run; citation_support on suggest tasks only
+            "This sentence answers a request for advice. A closing clause that only points back to the cited passage or record "
+            "itself as the place to pick the thread up, or says that the two cited places can be made the same "
+            "(可以从这一段接上, 可以从这一条接上, 可以统一成其中一处, 她的去向可以从这一段接上) is the advice, not a claim about the story: "
+            "judge the rest of the sentence. The sentence is still unsupported when that rest says something the source does "
+            "not say, or when the advice adds events, people, reasons, dialogue or new wording for the text that the source "
+            "does not contain, or points at a passage that does not mention the thread at all."),
+        "suggest_advice_clause_meanings": {
+            "supported": "the attached source directly supports everything the sentence says about the story; a closing "
+                         "clause that only points back to the cited passage or record as the place to continue, or to make "
+                         "the two cited places the same, is advice and does not count against it (addendum 14)",
+            "unsupported": "the sentence says something about the story that the source does not say or contradicts it, or "
+                           "its advice adds events, people, reasons, dialogue or new wording not in the source, or points at "
+                           "a passage that does not mention the thread",
+        },
         "process_tool_meanings": {  # added 2026-10-17 (SPEC addendum 7), before the second formal run; shown beside each call
             "search_text": "searches the text of the written chapters for passages matching the query (optionally within a chapter range)",
             "lookup_facts": "returns the author-confirmed facts about the named person, place or thing (optionally up to a chapter)",
@@ -126,6 +171,9 @@ THRESHOLDS = {
     "process_matches_action_min": 0.9,         # A1b's question and value
     "process_or_note_asserts_story_max": 0.05,
     "coverage_claims_true_rate_min": 0.95,     # claimed 查过 scopes found in the task's own steps; A1b used 1.0
+    # Fifth formal pair only (SPEC addendum 13, 2026-10-20, values set by the user):
+    "route_accuracy_min": 0.90,                # 10 route items per work x 2 works x 3 passes
+    "suggest_citation_support_rate_min": 0.9,  # same bar as QA citation support
 }
 
 REPORTED_NOT_GATED = (
@@ -153,12 +201,24 @@ _CHECKS = (
     ("process_or_note_asserts_story", "process_or_note_asserts_story_max", "max"),
     ("coverage_claims_true_rate", "coverage_claims_true_rate_min", "min"),
 )
+# Checked in addition when the run covers the fifth formal pair (SPEC addendum 13).
+_FIFTH_CHECKS = (
+    ("route_accuracy", "route_accuracy_min", "min"),
+    ("suggest_citation_support_rate", "suggest_citation_support_rate_min", "min"),
+)
+FIFTH_FORMAL_SETS = frozenset(PRE_REGISTRATION["fifth_formal_sets"])
+# The route-only retest (SPEC addendum 16) is judged on route_accuracy alone; the other checks stand from the fifth run.
+ROUTE_RETEST_SETS = frozenset(PRE_REGISTRATION["route_retest_sets"])
 
 
-def evaluate(metrics: dict[str, Any]) -> dict[str, Any]:
-    """Apply the registered bar; a missing metric is unmeasured, never a pass."""
+def evaluate(metrics: dict[str, Any], sets: Any = ()) -> dict[str, Any]:
+    """Apply the registered bar; a missing metric is unmeasured, never a pass. `sets`: the set names of the run; the
+    two v1.9 checks apply when it includes the fifth formal pair, and route_accuracy alone for the route-only retest."""
     checks: dict[str, bool | None] = {}
-    for name, bar_key, compare in _CHECKS:
+    names = set(sets or ())
+    chosen = (_FIFTH_CHECKS[:1] if ROUTE_RETEST_SETS & names
+              else _CHECKS + (_FIFTH_CHECKS if FIFTH_FORMAL_SETS & names else ()))
+    for name, bar_key, compare in chosen:
         value = metrics.get(name)
         bar = THRESHOLDS[bar_key]
         checks[name] = None if value is None else value >= bar if compare == "min" else value <= bar

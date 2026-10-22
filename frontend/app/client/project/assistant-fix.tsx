@@ -14,6 +14,7 @@ import { requestLocate } from "./assistant-locate";
 import { AnswerBlock, Feedback, useJustFinished } from "./assistant-answer";
 import { active, CoverLine, failureText, LimitLine, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
+import { RoutedLine } from "./assistant-route";
 import { FindingTag, findingHeadline } from "./findings";
 
 /** What the thread needs from the writing page's draft to apply, undo and wait for a save. */
@@ -445,6 +446,7 @@ export function FixView({ task, projectId, visitor, stopping, stop, retry, openC
         {running && <span className="a-state quiet">正在查</span>}
         {running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}
       </div>
+      <RoutedLine task={task} />
       {info ? (
         <div className="a-issue">
           <Num className="a-issue-num">{info.number}</Num>

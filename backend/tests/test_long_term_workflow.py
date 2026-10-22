@@ -297,7 +297,7 @@ class WorkflowTests(unittest.TestCase):
         result = self.commit(self.preview())
         self.assertTrue(self.db.run_view(self.user, self.project, run["run_id"], {"issues", "evidence"})["is_stale"])
         self.assertEqual(self.db.memory_coverage(self.user, self.project)["blocking_reason"], "source_revision_review_required")
-        self.assert_error_zero_writes("source_revision_review_required", lambda: self.db.create_analysis_run(self.user, self.project, {"analysis_type": "context_brief", "draft_id": self.draft["id"], "draft_revision": self.draft["revision"]}, key(), PROVENANCE))
+        self.assert_error_zero_writes("source_revision_review_required", lambda: self.db.create_analysis_run(self.user, self.project, {"analysis_type": "foreshadow_scan", "draft_id": self.draft["id"], "draft_revision": self.draft["revision"]}, key(), PROVENANCE))
         self.assert_error_zero_writes("source_revision_review_required", lambda: self.db.create_incremental_runs(self.user, self.project, {"source_revision": 2}, key(), PROVENANCE, PROVENANCE))
         self.assertTrue(result["source_revision_reviews"])
 

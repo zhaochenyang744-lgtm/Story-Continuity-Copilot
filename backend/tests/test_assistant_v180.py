@@ -18,8 +18,10 @@ FINAL = turn(answer_call("not_found", [], "已经查看原文。"))
 def recap_answer(provider, messages):
     message = messages[-1]["content"] if messages[-1]["role"] == "user" and "candidates" in messages[-1]["content"] else messages[1]["content"]
     data = json.JSONDecoder().raw_decode(message[message.index('{"content_kind"'):])[0]["candidates"]
+    # p26: every person with facts is written once, on the first fact (the lasting ones come first), as the server now asks.
+    people = [{"summary": f"{person['name']}的状态。", "refs": [person["facts"][0]["ref"]]} for person in data["character_state"] if person["facts"]]
     return turn(call("recap", previous_ending=[{"summary": "上一章的最后一幕。", "refs": [data["previous_ending"][-1]["ref"]]}],
-                     character_state=[], open_threads=[], plan=[]))
+                     character_state=people, open_threads=[], plan=[]))
 
 
 class Task04Case(AssistantCase):
@@ -106,7 +108,8 @@ class RecapTests(Task04Case):
         self.assertEqual(task["answer"]["chapter_number"], 11)
         self.assertIn("本章草稿（写前回顾不看草稿）", task["coverage"]["not_checked"])
         # Every candidate shown to the model comes back as a source; the cited ones are marked.
-        self.assertEqual({ref for ref, source in task["sources"].items() if source["cited"]}, set(task["answer"]["sections"]["previous_ending"][0]["refs"]))
+        cited = set(task["answer"]["sections"]["previous_ending"][0]["refs"]) | {r for item in task["answer"]["sections"]["character_state"] for r in item["refs"]}
+        self.assertEqual({ref for ref, source in task["sources"].items() if source["cited"]}, cited)
         self.assertGreater(len(task["sources"]), 1)
 
     def test_round_four_offers_only_recap_and_round_five_repairs_once(self):

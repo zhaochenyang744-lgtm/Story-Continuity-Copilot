@@ -14,6 +14,7 @@ export const OUT_OF_SCOPE_TEXT = "我只能查这部作品里写过的内容，�
 export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果" };
 export const VISITOR_USED_UP = "访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
 export const RUNNING_NOW = "上一个问题还在查";
+export const FOLLOW_UP_LIMIT_TEXT = "这一串已经追问两次了，可以问一个新问题";
 /** What a task costs before anything is added: 500 characters (the server reads the figure from the usage). */
 export const TASK_CHARS = 500;
 
@@ -68,6 +69,8 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
     case "assistant_check_visitor_forbidden": return "访客不能用「查前文矛盾」，注册账号后可以用。";
     case "assistant_task_running": return "上一个问题还在查，等它结束再问。";
     case "assistant_project_budget_exceeded": return "这部作品今天的助手用量已到上限，明天再试。";
+    case "assistant_follow_up_limit": return `${FOLLOW_UP_LIMIT_TEXT}。`;
+    case "assistant_reroute_invalid": return "这个任务已经结束了，不能再改成别的用法；可以在它的下面重新选一次。";
     case "assistant_follow_up_invalid": return "接着问的那个问题已经不在了，去掉“接着问”再发一次。";
     case "assistant_context_invalid": return kind === "ask" ? "带入的人物已经不在了，去掉它再发一次。" : "没有找到当前这一章的草稿，刷新页面后再试。";
     case "recap_nothing_before": return "第一章前面没有内容可以回顾。";

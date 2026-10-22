@@ -50,11 +50,25 @@ ADAPTER = "draft_replace_v1"
 RETRYABLE_ERRORS = {"provider_timeout", "provider_unavailable", "provider_error"}
 RETRYABLE_STATUSES = {"timed_out"}
 POLL_SECONDS = 600
-# What a formal run must match. Pinned 2026-10-05 to the phase-4 screened pipeline (commit 465f429)
-# after the lf1 dev set and the spent V12 set; any later prompt change makes a formal run refuse.
+# What a formal run must match. Re-pinned 2026-10-20 for the v1.9 gate (PLAN 0f) after the pooled lf4+lf5 dev
+# regression (commit 1c12630); any later prompt change makes a formal run refuse.
 FORMAL_RUNTIME = {"model": "deepseek-flash", "review_thinking": "high", "concurrency": "4",
-                  "prompt_version": "continuity-review-v25i-screened-stated-inability+continuity-screen-v1+continuity-triage-v4-gap-kind"}
+                  "prompt_version": "continuity-review-v25k-screened-offpage-second-review+continuity-screen-v1+continuity-triage-v5-stated-links"}
 DEFAULT_BUDGET_CNY = 10.0
+
+
+def code_identity() -> dict:
+    """The commit a run used, and whether the checker or this harness had uncommitted changes (PLAN 0f:
+    pooled sets must be run with one fixed commit). None when git is unavailable."""
+    import subprocess
+    root = pathlib.Path(__file__).resolve().parents[2]
+    try:
+        commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+        dirty = subprocess.run(["git", "status", "--porcelain", "--", "backend", "evaluation/longform"], cwd=root,
+                               capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return {"commit": None, "dirty": None}
+    return {"commit": commit, "dirty": bool(dirty)}
 
 
 def prompt_version() -> str:
@@ -160,6 +174,10 @@ def run_target(lf: LongformSet, target: Target, provider, meter: metering.Meter)
         "review_ranges": {path: [anchor_of(body, claims[row["claim_ordinal"] - 1]) for row in metrics.get("retrieval") or []
                                  if row.get("review") == path and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)]
                           for path in ("triage", "escalated", "deep")},
+        # Each triaged sentence's range with its triage score, kind and outcome (escalated, swept or passed).
+        "triage_detail": [[anchor_of(body, claims[row["claim_ordinal"] - 1]), row["triage"]["score"], row["triage"]["kind"], row["triage"]["outcome"]]
+                          for row in metrics.get("retrieval") or []
+                          if row.get("triage") and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)],
         "issues": issues,
         "app_metrics": {key: metrics.get(key) for key in ("latency_ms", "input_tokens", "output_tokens", "cost_cny")},
         "check_cost": meter.summary("check", target.id),
@@ -325,7 +343,7 @@ def main(argv: list[str] | None = None) -> int:
         "set_id": lf.data["set_id"], "set_sha256": compute_set_hash(lf.root, lf.data), "run_id": args.run_id,
         "adapter": ADAPTER, "mode": args.mode, "prompt_version": prompt_version(), "model": provider.model,
         "review_thinking": provider.review_thinking, "concurrency": os.environ.get("CONTINUITY_REVIEW_CONCURRENCY", "1"),
-        "meter": meter.describe(), "stopped_early": meter.stop_reason,
+        "code": code_identity(), "meter": meter.describe(), "stopped_early": meter.stop_reason,
         "targets_selected": [t.id for t in targets], "targets_run": list(records),
         "quality": score_run(scoped, records),
         "cost_time": cost_time(lf, records, meter),

@@ -17,9 +17,11 @@ from evaluation.assistant_a1c import thresholds
 from backend.tests.test_assistant_a1_runner import FakeJudge
 from backend.tests.test_assistant_a1b_runner import FakeProvider
 
-FORMAL = 'eval_set_a1c4_formal'
-SAFETY = 'eval_set_a1cs4_formal'
+FORMAL = 'eval_set_a1c5_formal'
+SAFETY = 'eval_set_a1cs5_formal'
 PAIR = f'{FORMAL},{SAFETY}'
+# What is left of v1.9's gate after the fifth pair ran: the route-only retest (A1c SPEC addendum 16).
+RETEST = 'eval_set_a1cr6_formal'
 
 
 def args(*extra):
@@ -79,29 +81,26 @@ class SetRuleTests(NoNetwork):
             self.preflight('--set', 'eval_set_a1c_dev', '--only', loaded=lambda n: tasks)
         self.preflight('--set', 'eval_set_a1c_dev', '--dry-run')  # no --only: the set is not even loaded
 
-    def test_formal_pair_guards(self):
+    def test_formal_retest_guards(self):
         # dry-run: structure only; --only and dirty code are refused first; the sealed contents are never loaded
-        with self.assertRaisesRegex(ValueError, 'formal_only'): self.preflight('--set', PAIR, '--dry-run', '--only', 'a')
-        with self.assertRaisesRegex(ValueError, 'formal_only'): self.preflight('--set', PAIR, '--runs', '3', '--only', 'a')
-        with self.assertRaisesRegex(ValueError, 'formal_dirty'): self.preflight('--set', PAIR, '--dry-run', git_output=' M evaluation/assistant_a1c/thresholds.py')
-        validator, git, load = self.preflight('--set', PAIR, '--dry-run')
-        self.assertEqual([c.args for c in validator.call_args_list], [(FORMAL,), (SAFETY,)])
+        with self.assertRaisesRegex(ValueError, 'formal_only'): self.preflight('--set', RETEST, '--dry-run', '--only', 'a')
+        with self.assertRaisesRegex(ValueError, 'formal_only'): self.preflight('--set', RETEST, '--runs', '3', '--only', 'a')
+        with self.assertRaisesRegex(ValueError, 'formal_dirty'): self.preflight('--set', RETEST, '--dry-run', git_output=' M evaluation/assistant_a1c/thresholds.py')
+        validator, git, load = self.preflight('--set', RETEST, '--dry-run')
+        self.assertEqual([c.args for c in validator.call_args_list], [(RETEST,)])
         self.assertEqual(git.call_args.args[:2], ('status', '--porcelain'))
         for directory in ('backend/app', 'evaluation/assistant_a1', 'evaluation/assistant_a1b', 'evaluation/assistant_a1c'):
             self.assertIn(directory, git.call_args.args)
         load.assert_not_called()
-        for single in (FORMAL, SAFETY):  # a structure check of one set is allowed; a run of one set is not
-            self.preflight('--set', single, '--dry-run')
-            with self.assertRaisesRegex(ValueError, 'a1c_formal_requires_both_sets_and_three_runs'): self.preflight('--set', single, '--runs', '3')
-        with self.assertRaisesRegex(ValueError, 'a1c_formal_requires_both_sets_and_three_runs'): self.preflight('--set', PAIR, '--runs', '1')
-        self.preflight('--set', PAIR, '--runs', '3')
-        self.preflight('--set', f'{SAFETY},{FORMAL}', '--runs', '3')
+        with self.assertRaisesRegex(ValueError, 'a1c_formal_requires_both_sets_and_three_runs'): self.preflight('--set', RETEST, '--runs', '1')
+        with self.assertRaisesRegex(ValueError, 'a1c_formal_requires_both_sets_and_three_runs'): self.preflight('--set', f'{RETEST},{SAFETY}', '--runs', '3')
+        self.preflight('--set', RETEST, '--runs', '3')
 
     def test_each_formal_code_directory_dirties_the_run(self):
         # the dirty check is made with git pathspecs, so a change in the A1c directory is what git reports for it
         with patch.object(run, 'validate_set'), patch.object(run, 'git', side_effect=lambda *a: ' M x' if 'evaluation/assistant_a1c' in a else ''):
             with tempfile.TemporaryDirectory() as d, self.assertRaisesRegex(ValueError, 'formal_dirty'):
-                run.preflight(args('--set', PAIR, '--runs', '3'), FakeProvider(), pathlib.Path(d))
+                run.preflight(args('--set', RETEST, '--runs', '3'), FakeProvider(), pathlib.Path(d))
 
     def test_spent_a1_a1b_formal_sets_are_development_material(self):
         tasks = {'tasks': [{'id': 'x1'}]}
@@ -276,10 +275,12 @@ class MetricTests(NoNetwork):
             'process_or_note_asserts_story': 1 / 5,
             'coverage_claims_true_rate': 1 / 2,
         }
-        self.assertEqual(set(metrics), set(expected))
-        self.assertEqual(set(metrics), {name for name, _, _ in thresholds._CHECKS})
+        self.assertEqual(set(metrics), set(expected) | {'route_accuracy', 'suggest_citation_support_rate'})
+        self.assertEqual(set(expected), {name for name, _, _ in thresholds._CHECKS})
+        self.assertIsNone(metrics['route_accuracy'])
+        self.assertIsNone(metrics['suggest_citation_support_rate'])
         for key, value in expected.items(): self.assertAlmostEqual(metrics[key], value, msg=key)
-        self.assertEqual(result['threshold_result'], thresholds.evaluate(metrics))
+        self.assertEqual(result['threshold_result'], thresholds.evaluate(metrics, result['sets']))
         self.assertIn('failed:', result['gate_decision'])
 
         # per-pass values and their spread (max - min) are reported, not gated
@@ -358,11 +359,11 @@ class MetricTests(NoNetwork):
         text = score.markdown(report)
         self.assertEqual(text, a1c.markdown(report))
         table = [line for line in text.splitlines() if line.startswith('| ') and not line.startswith(('| Check', '| Category'))]
-        self.assertEqual(len(table), len(thresholds._CHECKS))
+        self.assertEqual(len(table), len(thresholds._CHECKS) + len(thresholds._FIFTH_CHECKS))
         for name, bar, op in thresholds._CHECKS: self.assertTrue(any(line.startswith(f'| {name} |') for line in table), name)
         self.assertIn('| pass3_rate | 0.3333 | >= 0.7 | False |', text)
         self.assertIn('## Failed tasks', text)
-        self.assertIn('- run 3 / eval_set_a1c4_formal / t1: answer_points, answer_status', text)
+        self.assertIn('- run 3 / eval_set_a1c5_formal / t1: answer_points, answer_status', text)
         self.assertIn('## Reported, not gated', text)
 
 
@@ -611,7 +612,7 @@ class FlowTests(NoNetwork):
             self.assertEqual(len(report['records']), 4)
             self.assertEqual(len(report['preparations']), 1)         # k=2 is the whole work: one prepared project
             self.assertIn('metrics', report)
-            self.assertEqual({name for name, _, _ in thresholds._CHECKS}, set(report['metrics']))
+            self.assertEqual({name for name, _, _ in thresholds._CHECKS + thresholds._FIFTH_CHECKS}, set(report['metrics']))
             self.assertNotIn(report['gate_decision'], ('spent_set_not_a_gate', 'incomplete_not_a_gate'))
             self.assertTrue(out['markdown'].read_text(encoding='utf-8').startswith('# A1c evaluation'))
             self.assertTrue(all(p.exists() for p in out.values()))
@@ -700,8 +701,12 @@ class SpentFirstPairTests(unittest.TestCase):
         self.assertEqual(run.set_names('eval_set_a1c_formal,eval_set_a1cs_formal'), ['eval_set_a1c_formal', 'eval_set_a1cs_formal'])
         self.assertTrue(run.readable('eval_set_a1cs_formal'))
         self.assertIn('eval_set_a1c_formal', score.SPENT_FORMAL_SETS)
-        self.assertEqual(run.A1C_FORMAL_SETS, ('eval_set_a1c4_formal', 'eval_set_a1cs4_formal'))
-        self.assertNotIn('eval_set_a1c4_formal', score.SPENT_FORMAL_SETS)
+        self.assertEqual(run.A1C_FORMAL_SETS, (RETEST,))
+        self.assertNotIn(RETEST, score.SPENT_FORMAL_SETS)
+        self.assertIn('eval_set_a1c5_formal', score.SPENT_FORMAL_SETS)  # A1c SPEC addendum 16, item 42
+        self.assertTrue(run.readable('eval_set_a1cs5_formal'))
+        self.assertIn('eval_set_a1c4_formal', score.SPENT_FORMAL_SETS)  # A1c SPEC addendum 12, item 31
+        self.assertTrue(run.readable('eval_set_a1cs4_formal'))
 
     def test_the_second_pair_is_spent_too(self):  # A1c SPEC addendum 8
         from evaluation.assistant_a1 import run, score

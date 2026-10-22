@@ -197,7 +197,7 @@ class IdToleranceTests(unittest.TestCase):
                                  "chapter_id": CHAPTER_1, "source_span_id": flip(flip(SPAN_1), -3)}]},
                 {"sources": [{"id": SPAN_1, "chapter_id": CHAPTER_1, "body": SPAN_1_BODY}]})
 
-    def test_analysis_sources_and_revision_plan_use_the_same_rule(self):
+    def test_analysis_sources_use_the_same_rule(self):
         maps = {"memory_record": {MEMORY_1: {"subject": "账房先生", "predicate": "relationship", "value": "无亲属关系"}}}
         cleaned = WritingAnalysisEngine._clean_source({"source_type": "memory_record", "source_id": flip(MEMORY_1)}, maps, {"memory_record"}, "project-1")
         self.assertEqual(cleaned["source_id"], MEMORY_1)
@@ -435,7 +435,7 @@ class PromptTests(unittest.TestCase):
 
     def test_prompt_versions_moved_on(self):
         self.assertEqual(provider_module.CONTINUITY_PROMPT_VERSION, "continuity-review-v24d-epithet-referents")
-        self.assertEqual(provider_module.CONTINUITY_SCREENED_PROMPT_VERSION, "continuity-review-v25i-screened-stated-inability")
+        self.assertEqual(provider_module.CONTINUITY_SCREENED_PROMPT_VERSION, "continuity-review-v25k-screened-offpage-second-review")
         self.assertEqual(MEMORY_PROMPT_VERSION, "memory-initialization-v11-epithet-subjects")
         self.assertEqual(MemoryDeltaEngine(Scripted()).provenance()["prompt_version"], "memory-delta-v6-epithet-subjects")
 

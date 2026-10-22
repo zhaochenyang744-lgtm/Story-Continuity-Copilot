@@ -12,9 +12,10 @@ from . import thresholds
 
 # A1 and A1b formal sets were run and audited (a1-a1b-formal-first); from 2026-10-16 they are development material.
 # Formal sets already run: development material now (A1c SPEC addendum 2 for A1/A1b, addendum 6 for the first A1c pair,
-# addendum 8 for the second, addendum 10 for the third).
+# addendum 8 for the second, addendum 10 for the third, addendum 12 for the fourth, addendum 16 for the fifth).
 SPENT_FORMAL_SETS = ('eval_set_a1_formal', 'eval_set_a1b_formal', 'eval_set_a1c_formal', 'eval_set_a1cs_formal',
-                     'eval_set_a1c2_formal', 'eval_set_a1cs2_formal', 'eval_set_a1c3_formal', 'eval_set_a1cs3_formal')
+                     'eval_set_a1c2_formal', 'eval_set_a1cs2_formal', 'eval_set_a1c3_formal', 'eval_set_a1cs3_formal',
+                     'eval_set_a1c4_formal', 'eval_set_a1cs4_formal', 'eval_set_a1c5_formal', 'eval_set_a1cs5_formal')
 SPENT_GATE_DECISION = 'spent_set_not_a_gate'
 A1C_AUDIT_SEED = 20261016
 
@@ -30,6 +31,14 @@ def verdicts(row):
 def decide(row):
     t, a, j = row['task'], row.get('auto', {}), verdicts(row)
     reasons = list(row.get('execution_errors', []))
+    if t['suite'] == 'route':
+        acceptable = t.get('also_acceptable', [])
+        if isinstance(acceptable, str): acceptable = [acceptable]
+        if row.get('route_result', {}).get('route') not in [t['expected_route'], *acceptable]:
+            reasons.append('route_mismatch')
+        row['correct'], row['failure_reasons'] = not reasons, sorted(set(reasons))
+        row['audit_wrong'] = bool(reasons)
+        return row['correct']
     if row.get('assistant', {}).get('status') != 'completed':
         reasons.append('assistant_not_completed')
     if any('error' in x for x in row.get('judgments', [])):
@@ -45,6 +54,18 @@ def decide(row):
             if a.get('answer_status') != 'not_found' or j.get('substantive') != 'no': reasons.append('not_found_or_substantive')
         elif a.get('answer_status') != 'inconsistent' or not set(t['evidence_chapters']) <= set(a.get('cited_chapters', [])):
             reasons.append('inconsistent_or_missing_both_chapters')
+    elif suite == 'suggest':
+        # Per-task correctness is an audit aid; only the pooled citation rate is gated.
+        if t.get('suggest_type') == 'creative_direction':
+            if j.get('invents_plot') != 'no': reasons.append('suggest_invents_plot_or_unjudged')
+        else:
+            if any(j.get(f'point:{i}') != 'stated' for i in range(len(t['answer_points']))):
+                reasons.append('suggest_answer_points')
+            if any(j.get(f'forbidden:{i}') != 'absent' for i in range(len(t.get('forbidden_claims', [])))):
+                reasons.append('suggest_forbidden_claim')
+            if any(x.get('verdict') != 'supported' for x in row.get('judgments', [])
+                   if x.get('question') == 'citation_support'):
+                reasons.append('suggest_unsupported_citation')
     elif suite == 'fix':
         for key in ('check_hit', 'covers_conflict', 'adopted', 'original_conflict_gone', 'no_new_conflicts', 'recheck_complete'):
             if not a.get(key): reasons.append(key)
@@ -151,6 +172,9 @@ def audit(report):
             sample = random.Random(seed).sample(right, math.ceil(.2 * len(right)))
             items += [{'id': r['task']['id'], 'set': name, 'run_number': r['run_number'], 'task': r['task'],
                        'assistant': r.get('assistant'), 'first_assistant': r.get('first_assistant'),
+                       **({'route_result': r.get('route_result'), 'expected_route': r['task']['expected_route'],
+                           'also_acceptable': r['task'].get('also_acceptable', []),
+                           'execution_errors': r.get('execution_errors', [])} if r['task']['suite'] == 'route' else {}),
                        'judgments': r['judgments'], 'correct': r['correct'], 'override': None} for r in wrong + sample]
         return {'seeds': seeds, 'items': items,
                 'override_format': {'reason': 'required explanation', 'judgments': {'judgment key': 'replacement verdict'}}}

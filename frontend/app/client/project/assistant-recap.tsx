@@ -8,6 +8,7 @@ import { formatCount } from "../ui";
 import { Feedback } from "./assistant-answer";
 import { active, CoverLine, failureText, isRecap, LimitLine, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
+import { RoutedLine } from "./assistant-route";
 
 const SECTIONS: { id: RecapSection; label: string }[] = [
   { id: "previous_ending", label: "上一章停在哪" },
@@ -82,6 +83,7 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
         {running && <span className="a-state quiet">正在查</span>}
         {running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}
       </div>
+      <RoutedLine task={task} />
       <Steps task={task} />
       <StoppedNote task={task} visitor={visitor} />
       {failure && (

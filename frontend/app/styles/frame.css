@@ -267,13 +267,29 @@
 
 /* ── Narrow screens ── */
 @media (min-width: 721px) {
-  .topbar-inner:has(.topbar-work) { flex-wrap: nowrap; }
+  .topbar-inner { flex-wrap: nowrap; }
   .topbar-work { flex: 0 1 260px; min-width: 0; }
   .topbar-tabs:not(.global) { flex: 1 0 auto; flex-wrap: nowrap; }
-  .topbar-brand, .theme-switch, .account { flex-shrink: 0; }
+  .topbar-tabs.global { flex: 1 1 auto; flex-wrap: nowrap; min-width: 0; }
+  .topbar-brand, .theme-switch, .account, .topbar-assistant, .btn.topbar-new { flex-shrink: 0; }
 }
 @media (min-width: 721px) and (max-width: 1279px) {
   .topbar-inner:has(.topbar-work) .topbar-quota { display: none; }
+}
+/* From 768 to 1279 the bar stays on one line: the spaces between its parts close up first, then the tab numbers go, and the work's
+   title (cut short with an ellipsis) takes what is left. Text stays at 14px or more. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .topbar-inner { column-gap: var(--s-4); }
+  .topbar-tabs:not(.global) { column-gap: var(--s-4); }
+  .topbar-tabs.global { padding-left: var(--s-4); column-gap: var(--s-4); }
+  .topbar-tab-num { display: none; }
+  .topbar-work { padding-left: var(--s-3); }
+}
+@media (min-width: 721px) and (max-width: 900px) {
+  .topbar-inner { column-gap: var(--s-3); }
+  .topbar-tabs:not(.global) { column-gap: var(--s-3); }
+  .topbar-work { flex-basis: 160px; }
+  .btn.topbar-new { padding: 0 var(--s-3); }
 }
 @media (max-width: 720px) {
   :root { --page-gutter: 16px; }

@@ -64,7 +64,8 @@ class UnmatchedLineIsNotShownTests(AssistantCase):
         self.start()
         self.register()
 
-    def test_the_line_is_dropped_and_the_task_goes_on(self):
+    def test_a_line_promising_more_is_replaced_by_one_written_from_the_calls(self):
+        # v1.9.0: the line shown is written from the round's calls (A1c SPEC addendum 14, item 38).
         def search(provider, messages):
             return turn(call("read_chapter", chapter_number=9), content="我先读第9章，并查苏岑的事实。")
 
@@ -72,17 +73,17 @@ class UnmatchedLineIsNotShownTests(AssistantCase):
             return turn(answer_call("answered", [("苏岑把罗盘交给了温岚保管。", [ref_of_chapter(messages, 9)])]))
         task = self.run_ask(search, close)
         self.assertEqual(task["status"], "completed", task)
-        self.assertEqual([s for s in task["steps"] if s["kind"] == "say"], [])
+        self.assertEqual([s["summary"] for s in task["steps"] if s["kind"] == "say"], ["我先读第 9 章。"])
         self.assertEqual([s["tool"] for s in task["steps"] if s["kind"] == "tool"], ["read_chapter"])
 
-    def test_a_matching_line_is_shown(self):
+    def test_a_matching_line_is_written_from_the_calls_too(self):
         def search(provider, messages):
             return turn(call("read_chapter", chapter_number=9), content="我先读第9章。")
 
         def close(provider, messages):
             return turn(answer_call("answered", [("苏岑把罗盘交给了温岚保管。", [ref_of_chapter(messages, 9)])]))
         task = self.run_ask(search, close)
-        self.assertEqual([s["summary"] for s in task["steps"] if s["kind"] == "say"], ["我先读第9章。"])
+        self.assertEqual([s["summary"] for s in task["steps"] if s["kind"] == "say"], ["我先读第 9 章。"])
 
 
 class PromptTextTests(unittest.TestCase):

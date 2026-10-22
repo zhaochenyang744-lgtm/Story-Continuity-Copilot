@@ -1,10 +1,10 @@
 # 文档目录
 
-现行产品以 v1.8.1 的说明为准；发布与历史记录保留当时的结论。v1.8.0 清理时删除了 v1.4.0 及更早的设计文档、各轮评测的验收证据和较早的部署流水记录，它们仍在 Git 历史中。
+现行产品以 v1.9.0 的说明为准；发布与历史记录保留当时的结论。v1.8.0 清理时删除了 v1.4.0 及更早的设计文档、各轮评测的验收证据和较早的部署流水记录，它们仍在 Git 历史中。
 
 ## 现行
 
-- [current-product.md](current-product.md) — v1.8.1 当前产品、作者控制与验证边界。
+- [current-product.md](current-product.md) — v1.9.0 当前产品、作者控制与验证边界。
 - [demo-guide.md](demo-guide.md) — 示例作品的 3–5 分钟英文演示路线。
 - [local-setup.md](local-setup.md) — 本地启动、环境与单分组浏览器测试。
 - [operations.md](operations.md) — 备份、恢复演练和监测的既有运维流程。

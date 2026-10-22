@@ -6,7 +6,7 @@ import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type RefO
 import { json, labelError, request } from "../../api";
 import type { AssistantFeedbackReason, AssistantSource, AssistantTask } from "../../model";
 import { clip, formatCount, writtenChars } from "../ui";
-import { active, cardLabel, citedRefs, OUT_OF_SCOPE_TEXT, refusalText, sentencesOf, spokenWhere, TASK_CHARS, whereLabel } from "./assistant-parts";
+import { active, cardLabel, citedRefs, FOLLOW_UP_LIMIT_TEXT, OUT_OF_SCOPE_TEXT, refusalText, sentencesOf, spokenWhere, TASK_CHARS, whereLabel } from "./assistant-parts";
 
 /** True once a task has been seen to run and then finish while this view was open: only such an answer fades in. */
 export function useJustFinished(task: AssistantTask): boolean {
@@ -190,7 +190,7 @@ export function Feedback({ task, projectId, replace }: { task: AssistantTask; pr
 }
 
 /** The row under a finished answer, and the cost line: 复制 · 重新回答 · 接着问 · 有用 / 没用, then 「计 500 字」 at the right (not for a visitor). */
-export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, regenerate, replace }: {
+export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, followUpLimit = false, regenerate, replace }: {
   task: AssistantTask;
   projectId: string;
   visitor: boolean;
@@ -199,6 +199,8 @@ export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, 
   answer: RefObject<HTMLDivElement | null> | null;
   /** 接着问 (asks only, and not for an off-topic reply). */
   followUp: (() => void) | null;
+  /** The chain has had its two follow-ups: 接着问 is greyed, with the reason. */
+  followUpLimit?: boolean;
   /** 重新回答 (asks only, and not for an off-topic reply). */
   regenerate: (() => void) | null;
   replace: (next: AssistantTask) => void;
@@ -228,7 +230,9 @@ export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, 
           <span className="a-hint">{visitor ? "用 1 次" : estimateOf(task)}</span>
         </span>
       )}
-      {followUp && <button type="button" className="a-link" onClick={followUp}>接着问</button>}
+      {followUp && (followUpLimit
+        ? <button type="button" className="a-link" disabled title={FOLLOW_UP_LIMIT_TEXT}>接着问</button>
+        : <button type="button" className="a-link" onClick={followUp}>接着问</button>)}
       <Feedback task={task} projectId={projectId} replace={replace} />
       {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
     </div>

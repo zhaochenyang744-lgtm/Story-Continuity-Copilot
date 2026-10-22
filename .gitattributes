@@ -38,3 +38,7 @@ evaluation/eval_set_a1cs4_formal/** -text whitespace=-blank-at-eol,-blank-at-eof
 backend/tests/fixtures/flash_v5_cases/** -text
 backend/tests/fixtures/flash_v6_cases/** -text
 backend/tests/fixtures/model_compare_v8_case04/** -text
+evaluation/eval_set_a1c5_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_a1cs5_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_a1cy_dev/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_a1cr6_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol

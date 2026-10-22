@@ -93,7 +93,7 @@ class StatedInabilityPromptTests(unittest.TestCase):
         self.assertIn("missing handoff, a claimed act of telling or teaching, outcome", rules)
         situations = [example["situation"] for example in prompt["decision_examples"]]
         self.assertNotIn("A claimed knowledge transfer has no supplied handoff event.", situations)
-        self.assertEqual(prompt["prompt_version"], "continuity-review-v25i-screened-stated-inability")
+        self.assertEqual(prompt["prompt_version"], "continuity-review-v25k-screened-offpage-second-review")
 
     def test_the_legacy_review_is_unchanged(self):
         import json
@@ -149,7 +149,7 @@ class TriageGapSlotTests(unittest.TestCase):
         from app import provider
         prompt = json.loads(provider.continuity_triage_prompt({"chapter": "x", "passages": [], "sentences": []}))
         self.assertEqual(prompt["output_schema"]["scores"][0]["kind"], "conflict|gap|none")
-        self.assertEqual(prompt["prompt_version"], "continuity-triage-v4-gap-kind")
+        self.assertEqual(prompt["prompt_version"], "continuity-triage-v5-stated-links")
 
 
 class InitializationDropTests(unittest.TestCase):

@@ -218,7 +218,7 @@ class FixTaskIsNotHeldToTheRule(Task04Case):
 
 class PromptTextTests(unittest.TestCase):
     def test_version(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p25")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p32")
 
     def test_a_search_that_finds_nothing_ends_in_not_found(self):
         self.assertIn("用两三种不同说法搜过、仍然没有，就用 not_found 收尾，不要一直搜下去", SYSTEM_PROMPT)
@@ -227,7 +227,7 @@ class PromptTextTests(unittest.TestCase):
         self.assertIn("作者在问题里要求直接改正文时", SYSTEM_PROMPT)
         self.assertIn("带出处的句子只回答问题里能从作品查到的部分", SYSTEM_PROMPT)
         self.assertIn("「不能直接改」写进 note", SYSTEM_PROMPT)
-        self.assertIn("要给改写建议也简短地写进 note，不要写成带出处的句子", SYSTEM_PROMPT)
+        self.assertIn("note 里不写改写建议，也不要写成带出处的句子", SYSTEM_PROMPT)  # p26: the suggestion is no longer written into the note
 
     def test_an_edit_is_checked_against_its_ground_and_then_by_check_passage(self):
         self.assertIn("提出 edit_this 前，先对照检查结果里给出的依据（规则或前文）核对一遍，改后的句子不能再违反它", SYSTEM_PROMPT)

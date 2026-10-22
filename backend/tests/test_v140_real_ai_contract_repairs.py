@@ -14,7 +14,6 @@ from app.provider import (
     REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS,
     ProviderResult,
     continuity_prompt,
-    context_brief_prompt,
     foreshadow_scan_prompt,
     memory_initialization_prompt,
     plan_alignment_prompt,
@@ -42,7 +41,7 @@ class ResultProvider:
 
 def analysis_data() -> dict:
     return {
-        "task": "context_brief",
+        "task": "plan_alignment",
         "bindings": {"project_id": "project-1"},
         "layers": {
             "planned": {"story_plans": [], "character_plans": [], "world_plans": []},
@@ -136,75 +135,6 @@ class RealAiContractRepairTests(unittest.TestCase):
         self.assertIn("copy memory_type", instruction)
         self.assertIn("possession and rule are predicates", instruction)
 
-    def test_context_brief_contract_declares_counts_and_accepts_current_draft_claim(self):
-        data = analysis_data()
-        engine = WritingAnalysisEngine(ResultProvider({}))
-        prompt = json.loads(context_brief_prompt(engine._request(data)))
-        self.assertTrue(any("1-3 summary_sources" in rule for rule in prompt["rules"]))
-        self.assertTrue(any("current saved draft" in rule and "draft_claim" in rule for rule in prompt["rules"]))
-        self.assertTrue(any("summary_sources must directly support every factual clause" in rule for rule in prompt["rules"]))
-        self.assertEqual(set(prompt["output_schema"]), {"summary", "summary_sources", "items"})
-        self.assertEqual(prompt["output_limits"]["summary_sources"], {"min": 1, "max": 3})
-        payload = {
-            "summary": "暴风雨尚未到来。",
-            "summary_sources": [{"source_type": "draft_claim", "source_id": "claim-1"}],
-            "items": [
-                {
-                    "section": "recent_source",
-                    "text": "当前草稿写明暴风雨尚未到来。",
-                    "sources": [{"source_type": "draft_claim", "source_id": "claim-1"}],
-                }
-            ],
-        }
-        cleaned = engine.validate(payload, data)
-        self.assertEqual(cleaned["items"][0]["sources"][0]["source_path"], "/projects/project-1/workspace#draft-source")
-
-    def test_context_brief_discloses_cyclic_draft_citation_mismatch(self):
-        data=analysis_data()
-        claims=["林默走进北门。","银钥匙已经交给陈澈。","她此时已经知道弟弟还活着。"]
-        data["layers"]["written"]["draft"]["excerpt"]="".join(claims)
-        data["layers"]["written"]["draft_claims"]=[{"id":f"claim-{index+1}","ordinal":index+1,"text":claim} for index,claim in enumerate(claims)]
-        data["retrieval"]["draft_claim_scope"]={"available":3,"selected":[{"id":f"claim-{index+1}","truncated":False} for index in range(3)]}
-        payload={"summary":"草稿三项。","summary_sources":[{"source_type":"draft_claim","source_id":"claim-1"}],"items":[{"section":"recent_source","text":"草稿写明："+claim,"sources":[{"source_type":"draft_claim","source_id":f"claim-{(index+1)%3+1}"}]} for index,claim in enumerate(claims)]}
-        cleaned=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
-        self.assertEqual(cleaned["draft_coverage"]["status"],"covered")
-        self.assertEqual(cleaned["citation_transform"]["added_source_count"],3)
-        self.assertEqual([[source["source_id"] for source in item["sources"]] for item in cleaned["items"]],
-                         [["claim-1"],["claim-2"],["claim-3"]])
-        self.assertNotIn("草稿写明：",cleaned["summary"])
-        self.assertTrue(all("草稿写明：" not in item["text"] for item in cleaned["items"]))
-        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claim,"sources":[{"source_type":"draft_claim","source_id":f"claim-{index+1}"}]} for index,claim in enumerate(claims)]
-        correct=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
-        self.assertEqual(correct["draft_coverage"]["status"],"covered")
-        self.assertEqual(correct["draft_coverage"]["discarded_item_indices"],[])
-        payload["items"][0]["text"]="林默从北门进入。"
-        paraphrased=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
-        self.assertEqual(paraphrased["draft_coverage"]["status"],"covered")
-        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claims[0]+claims[1],"sources":[{"source_type":"draft_claim","source_id":"claim-3"}]}]
-        combined=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
-        self.assertTrue(any(source["source_id"]=="claim-1" for item in combined["items"] for source in item["sources"]))
-        data["layers"]["written"]["draft_claims"].append({"id":"claim-4","ordinal":4,"text":claims[0]})
-        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claims[0],"sources":[{"source_type":"draft_claim","source_id":"claim-4"}]}]
-        duplicate=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
-        self.assertEqual(duplicate["draft_coverage"]["discarded_item_indices"],[])
-        self.assertNotIn("draft_item_citation_mismatch",duplicate["draft_coverage"]["reasons"])
-
-    def test_context_brief_accepts_legal_recent_prior_chapter_source_span_when_claims_exist(self):
-        data = analysis_data()
-        payload = {
-            "summary": "银钥匙由林默保管。",
-            "summary_sources": [{"source_type": "source_span", "source_id": "span-1"}],
-            "items": [
-                {
-                    "section": "recent_source",
-                    "text": "上一章写明银钥匙由林默保管。",
-                    "sources": [{"source_type": "source_span", "source_id": "span-1"}],
-                }
-            ],
-        }
-        cleaned = WritingAnalysisEngine(ResultProvider({})).validate(payload, data)
-        self.assertTrue(any(source["source_path"]=="/projects/project-1/sources#span-span-1" for item in cleaned["items"] for source in item["sources"]))
-
     def test_schema_failure_preserves_real_provider_usage(self):
         result = WritingAnalysisEngine(ResultProvider({"summary": "missing required keys"})).execute(analysis_data())
         self.assertEqual((result["status"], result["error_code"]), ("failed", "schema_invalid"))
@@ -220,41 +150,6 @@ class RealAiContractRepairTests(unittest.TestCase):
 
         result = WritingAnalysisEngine(RaisingProvider({})).execute(analysis_data())
         self.assertEqual(result, {"status": "failed", "error_code": "schema_invalid", "retryable": True})
-
-    def test_context_brief_accepts_equivalent_independent_sources_for_summary_and_item(self):
-        data = analysis_data()
-        data["layers"]["confirmed"]["memory_records"] = [
-            {"id": "memory-1", "subject": "银钥匙", "predicate": "possession", "value": "银钥匙由林默保管。"}
-        ]
-        payload = {
-            "summary": "银钥匙由林默保管。",
-            "summary_sources": [{"source_type": "memory_record", "source_id": "memory-1"}],
-            "items": [
-                {"section": "confirmed_fact", "text": "银钥匙由林默保管。", "sources": [{"source_type": "source_span", "source_id": "span-1"}]},
-            ],
-        }
-        cleaned = WritingAnalysisEngine(ResultProvider({})).validate(payload, data)
-        self.assertTrue(any(source["source_type"]=="source_span" for item in cleaned["items"] for source in item["sources"]))
-        self.assertTrue(any(source["source_type"]=="draft_claim" for item in cleaned["items"] for source in item["sources"]))
-        self.assertTrue(all(source in [cited for item in cleaned["items"] for cited in item["sources"]] for source in cleaned["summary_sources"]))
-
-    def test_context_brief_uses_nonfactual_fallback_when_one_legal_item_needs_four_sources(self):
-        data = analysis_data()
-        data["layers"]["written"]["draft"]["excerpt"] = "当前正文尚无可引用主张。"
-        data["layers"]["written"]["draft_claims"] = []
-        data["layers"]["written"]["source_spans"] = [
-            {**data["layers"]["written"]["source_spans"][0], "id": f"span-{index}", "body": f"来源 {index}。"}
-            for index in range(1, 5)
-        ]
-        sources = [{"source_type": "source_span", "source_id": f"span-{index}"} for index in range(1, 5)]
-        long_text = "四条来源共同支持这一分项。" * 25
-        payload = {"summary": "模型摘要不应被采用。", "summary_sources": sources[:3], "items": [{"section": "recent_source", "text": long_text, "sources": sources}]}
-        cleaned = WritingAnalysisEngine(ResultProvider({})).validate(payload, data)
-        self.assertIn("具体事实与引用见分项", cleaned["summary"])
-        self.assertNotIn("四条来源共同支持", cleaned["summary"])
-        self.assertEqual(len(cleaned["summary_sources"]), 3)
-        self.assertNotEqual(cleaned["items"][0]["text"], long_text)
-        self.assertIn("来源 1", cleaned["items"][0]["text"])
 
     def test_continuity_prompt_forbids_invented_same_time_and_requires_draft_language(self):
         request = {"draft": {"body": "第四章。"}, "claims": [], "memory": [], "output_schema": {"issues": []}}

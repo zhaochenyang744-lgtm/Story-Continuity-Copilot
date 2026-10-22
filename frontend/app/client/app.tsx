@@ -166,6 +166,24 @@ export function App() {
     mark.style.transition = "transform var(--dur-mid) var(--ease)";
     mark.style.transform = "none";
   }, [tabKind, tab, pathname, p.project?.id, user]);
+  // The tabs move without a page change too (a narrower window hides the tab numbers and closes the gaps, a late font widens
+  // them): the underline follows at once, without sliding.
+  useEffect(() => {
+    const nav = tabs.current, mark = tabMark.current;
+    if (!nav || !mark || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => {
+      const current = nav.querySelector<HTMLElement>(".topbar-tab[aria-current='page']");
+      if (!current) return;
+      const left = current.offsetLeft, width = current.offsetWidth, top = current.offsetTop + current.offsetHeight - 4;
+      // Nothing moved (the observer's first call, right after the page change): leave a slide that is under way alone.
+      if (mark.style.left === `${left}px` && mark.style.width === `${width}px` && mark.style.top === `${top}px`) return;
+      Object.assign(mark.style, { left: `${left}px`, top: `${top}px`, width: `${width}px`, transition: "none", transform: "none" });
+      lastTabMark = { kind: tabKind, left, width };
+    });
+    observer.observe(nav);
+    nav.querySelectorAll(".topbar-tab").forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, [tabKind, tab, pathname, p.project?.id, user]);
 
   useEffect(() => {
     const update = () => setNarrow(window.innerWidth < 768);

@@ -124,21 +124,21 @@ test.describe("07f 输入框", () => {
     await send(page).click();
     expect((await request).postDataJSON()).toEqual({ kind: "fix_issue", question: "保留苏岑的视角", context: { page: "writing", issue_id: issue.id } });
     await finished(page, 2);
-    // Sent, the box is empty and the mode is 问作品 again.
-    await expect(mode).toContainText("问作品");
+    // Sent, the box is empty and the mode is 自动 again.
+    await expect(mode).toContainText("自动");
     await tasks(page).last().getByRole("button", { name: "按要求重新给改法", exact: true }).click();
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某一章/ }).click();
     await thread(page).locator(".cx-menu .scroll [role=menuitem]").first().click();
     await expect(thread(page).locator(".a-chip.muted")).toHaveCount(1);
     await thread(page).getByRole("button", { name: "去掉：检查结果 · 第 1 处" }).click();
-    await expect(mode).toContainText("问作品");
+    await expect(mode).toContainText("自动");
     await expect(mode).toBeEnabled();
     await expect(thread(page).locator(".a-chip.muted")).toHaveCount(0);
     await expect(thread(page).locator(".a-chip").first()).toContainText("第");
     // 帮我改这一处 is not in the mode menu.
     await mode.click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["问作品", "写前回顾", "查前文矛盾"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾"]);
     await page.keyboard.press("Escape");
     await shot(page, "07f-05-fix-chips", false);
     expect(id).toBeTruthy();
@@ -182,7 +182,7 @@ test.describe("07f 输入框", () => {
     await send(page).click();
     expect((await request).postDataJSON()).toMatchObject({ kind: "ask", context: { page: "writing", selection: again, intent: "check_selection" } });
     await finished(page);
-    await expect(thread(page).getByRole("button", { name: "这次做什么：问作品" })).toBeVisible();
+    await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeVisible();
   });
 
   test("03b 先选中文字、再把模式换成「查前文矛盾」：选中的文字直接成为标签；选中靠近页面顶端时浮条放在选区下方", async ({ page }) => {
