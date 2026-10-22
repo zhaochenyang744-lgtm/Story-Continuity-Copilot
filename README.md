@@ -78,7 +78,7 @@ The audit overturned ten verdicts, two of them on safety items; the safety bar w
 
 ## Version and deployment
 
-Production runs **v1.8.1**, release `v181-bfaf9df-20261020` ([deployment record](docs/deployment-2026-10-20-v181.md)), until v1.9.0 is deployed. The v1.9.0 release ID and deployment record are added at deployment.
+Production runs **v1.9.0**, release `v190-26e1061-20261022` ([deployment record](docs/deployment-2026-10-22-v190.md)).
 
 - **v1.9.0:**
   - One input box for the assistant: it judges which use a sentence asks for, shows it, and lets the author change it; a sentence not about the work costs nothing; a recap asked for away from the writing page offers to go there.
