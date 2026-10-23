@@ -1,0 +1,11 @@
+{
+  "total": 20,
+  "first_agreement": 20,
+  "first_agreement_rate": 1.0,
+  "first_disagreements": 0,
+  "disagreed_ids": [],
+  "revised_ids": [],
+  "final_agreement": 20,
+  "unresolved": 0,
+  "source_sha256": "540a25063ef1210ed3ecf94ce83867d9e15e28ee12405626eb0fb77f69e6f44c"
+}
