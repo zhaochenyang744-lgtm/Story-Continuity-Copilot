@@ -474,11 +474,10 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
     if action.creates and PROSE_SUBJECT.search(proposal["after"]["subject"]):
         raise ToolError("change_prose_not_fact")
-    piece = assistant_requests.piece_for(ctx.requests, _question(ctx), request_words) if ctx.requests else None
-    want = piece["want"] if piece else None
-    if want is not None and want != "other":
-        # The request list says what this piece of the sentence asks for; the word lists below are for a task without one.
-        if want != assistant_requests.ACTION_WANTS[action.kind]:
+    if assistant_requests.decides(ctx.requests, _question(ctx), request_words):
+        # The request list says what this piece of the sentence asks for; the word lists below are for words it does not hold.
+        want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+        if want is not None:
             raise ToolError(WANT_REFUSALS.get(want, "change_fact_not_thread" if want == "fact" else "change_thread_not_fact"))
     else:
         clause = _clause(ctx, request_words)

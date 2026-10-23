@@ -26,7 +26,7 @@ from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usa
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p45"
+ASSISTANT_PROMPT_VERSION = "assistant-p46"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
