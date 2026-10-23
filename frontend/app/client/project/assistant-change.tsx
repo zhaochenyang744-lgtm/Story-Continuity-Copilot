@@ -32,6 +32,8 @@ export function changeProblem(cause: unknown, step: "confirm" | "undo" | "redo" 
       return { text: step === "confirm" ? `资料已经变了${which}，这张卡片不能再确认。可以再让助手看一次。` : `资料已经变了${which}，这一条不能再恢复。`, review: false };
     }
     case "change_memory_review_pending": return { text: `资料页还有没确认的事实变化，先处理完再${verb}事实。`, review: true };
+    case "change_undo_conflict": return { text: "这条资料后来又被改过，撤销会把后来的改动一起退回。再点一次撤销，确认后才会退回。", review: false };
+    case "invalid_request": return { text: "这一步的内容不完整，没有改动资料。刷新页面后再试一次。", review: false };
     case "change_already_decided": return { text: "这张卡片已经确认或不要过了，已经换成现在的样子。", review: false };
     case "change_state_invalid": return { text: "这一条的状态已经变了，已经换成现在的样子。", review: false };
     case "change_target_missing": return { text: "要改的资料已经不在了，这一条不能再操作。", review: false };

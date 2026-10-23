@@ -70,6 +70,7 @@ export function proposalError(code: string | undefined, cause?: unknown): string
   switch (code) {
     case "proposal_not_applied": return "保存的正文和改法对不上，没有记录为已采用。编辑器里的改动还在，由你决定。";
     case "proposal_state_invalid": return "这条改法的状态已经变了，刷新页面再看。";
+    case "invalid_request": return "这一步缺少必要的内容，没有记录。保存草稿并刷新页面后再试一次。";
     case "proposal_task_not_completed": return "这个任务还没有完成，不能操作它的改法。";
     case "proposal_recheck_running": return "这条改法正在复查，等复查结束再操作。";
     case "proposal_after_missing": return "改后的句子不能为空。";

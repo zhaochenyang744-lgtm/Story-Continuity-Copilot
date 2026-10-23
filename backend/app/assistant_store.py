@@ -22,12 +22,16 @@ ADDED_COLUMNS = {
     "assistant_tasks": (("phase", "TEXT"), ("phase_tool", "TEXT"), ("phase_chapter", "INTEGER"), ("phase_started_at", "TEXT"),
                         ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT")),
     "assistant_steps": (("refs_json", "TEXT"),),
-    "assistant_proposals": (("recheck_json", "TEXT"), ("adopted_draft_revision", "INTEGER"), ("after_edited", "TEXT"), ("edited_by_author", "INTEGER")),
+    # `undone_at` / `undone_after` (v2.1): when an adoption was undone and the sentence that had been adopted (the record is kept in the
+    # change ledger, while the proposal itself goes back to `proposed` with its adoption fields cleared).
+    "assistant_proposals": (("recheck_json", "TEXT"), ("adopted_draft_revision", "INTEGER"), ("after_edited", "TEXT"), ("edited_by_author", "INTEGER"),
+                            ("undone_at", "TEXT"), ("undone_after", "TEXT")),
 }
 # How much of a fact's source passage the page gets to find it by.
 ANCHOR_CHARS = 120
 TASK_KINDS = ("ask", "recap", "fix_issue", "change")
 ACTIVE_STATUSES = ("queued", "running")
+CHAIN_MAX = 8  # a question allows two follow-ups, so a chain is three tasks; the limit only guards a damaged one
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS assistant_tasks(
@@ -124,7 +128,7 @@ class AssistantStore:
         return {"id": row["id"], "proposal": f"P{row['ordinal']}", "kind": row["kind"], "chapter_number": row["chapter_number"],
                 "before": row["before"], "after": row["after"], "rationale": row["rationale"], "status": row["status"],
                 "draft_id": row["draft_id"], "draft_revision": row["draft_revision"], "adopted_draft_revision": row["adopted_draft_revision"],
-                "decided_at": row["decided_at"], "recheck": json.loads(row["recheck_json"]) if row["recheck_json"] else None,
+                "decided_at": row["decided_at"], "undone_at": row["undone_at"], "recheck": json.loads(row["recheck_json"]) if row["recheck_json"] else None,
                 "after_edited": row["after_edited"], "edited_by_author": bool(row["edited_by_author"])}
 
     # --- creation and lookup ---------------------------------------------------------------------------------
@@ -307,6 +311,27 @@ class AssistantStore:
                 **({"proposals": [self.proposal_view(p) for p in c.execute("SELECT * FROM assistant_proposals WHERE task_id=? ORDER BY ordinal", (row["id"],))]}
                    if row["kind"] == "fix_issue" else {}),
                 **({"changes": change_views(c, self.db, row["id"])} if row["kind"] == "change" else {})}
+
+    def chain_of(self, c: sqlite3.Connection, row: sqlite3.Row, viewer_id: str | None = None) -> list[dict[str, Any]]:
+        """The tasks a task is tied to by 接着问 that were not cleared: the ones it follows, then the ones that follow it, oldest first.
+        The page asks for it when it shows a task that is older than the conversation it has read."""
+        related: dict[str, sqlite3.Row] = {}
+        parent = row["follow_up_of"]
+        while parent and parent not in related and len(related) < CHAIN_MAX:
+            found = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (parent, row["project_id"])).fetchone()
+            if not found:
+                break
+            related[parent] = found
+            parent = found["follow_up_of"]
+        frontier = [row["id"]]
+        while frontier and len(related) < CHAIN_MAX:
+            marks = ",".join("?" for _ in frontier)
+            children = c.execute(f"SELECT * FROM assistant_tasks WHERE project_id=? AND hidden_at IS NULL AND follow_up_of IN ({marks}) "
+                                 "ORDER BY created_at,rowid", (row["project_id"], *frontier)).fetchall()
+            children = [child for child in children if child["id"] not in related and child["id"] != row["id"]][:CHAIN_MAX - len(related)]
+            related.update({child["id"]: child for child in children})
+            frontier = [child["id"] for child in children]
+        return [self.view(c, item, viewer_id) for item in sorted(related.values(), key=lambda item: item["created_at"])]
 
     def visible_tasks(self, c: sqlite3.Connection, project_id: str, limit: int, viewer_id: str | None = None) -> list[dict[str, Any]]:
         """The latest `limit` tasks that were not cleared, oldest first."""

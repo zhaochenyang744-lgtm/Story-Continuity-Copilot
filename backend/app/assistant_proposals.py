@@ -92,12 +92,15 @@ def register_routes(app, db, user, csrf, key, ok, operation, engine):
                         if after not in body or proposal["before"] in body:
                             raise DomainError("proposal_not_applied", 409)
                     # A setup for an earlier chapter is carried there by the author; the record keeps their final wording.
-                    c.execute("UPDATE assistant_proposals SET status='adopted',decided_at=?,adopted_draft_revision=?,after_edited=?,edited_by_author=?,recheck_json=NULL WHERE id=?",
+                    c.execute("UPDATE assistant_proposals SET status='adopted',decided_at=?,adopted_draft_revision=?,after_edited=?,edited_by_author=?,recheck_json=NULL,"
+                              "undone_at=NULL,undone_after=NULL WHERE id=?",
                               (utcnow(), revision, after if edited else None, 1 if edited else 0, proposal_id))
                 elif action == "dismiss":
                     c.execute("UPDATE assistant_proposals SET status='dismissed',decided_at=? WHERE id=?", (utcnow(), proposal_id))
                 else:
-                    c.execute("UPDATE assistant_proposals SET status='proposed',decided_at=NULL,adopted_draft_revision=NULL,after_edited=NULL,edited_by_author=0,recheck_json=NULL WHERE id=?", (proposal_id,))
+                    # The adoption leaves the card but stays in the change ledger as undone: when, and the sentence that had been adopted.
+                    c.execute("UPDATE assistant_proposals SET status='proposed',decided_at=NULL,adopted_draft_revision=NULL,after_edited=NULL,edited_by_author=0,recheck_json=NULL,"
+                              "undone_at=?,undone_after=? WHERE id=?", (utcnow(), proposal["after_edited"] or proposal["after"], proposal_id))
                 return engine.store.proposal_view(c.execute("SELECT * FROM assistant_proposals WHERE id=?", (proposal_id,)).fetchone())
             data, status = db._idem(c, actor["id"], f"assistant_proposal_{action}:{project_id}:{task_id}:{proposal_id}",
                                    key(idempotency_key), payload, change)

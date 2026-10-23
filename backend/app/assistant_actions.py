@@ -22,6 +22,7 @@ items wait until it is done.
 """
 from __future__ import annotations
 
+import base64
 import json
 import re
 import sqlite3
@@ -756,12 +757,62 @@ def redo(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_i
     return {"changes": [change_view(c, db, c.execute("SELECT * FROM assistant_changes WHERE id=?", (row["id"],)).fetchone())]}
 
 
-def ledger(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, limit: int) -> dict[str, Any]:
-    """The changes the author confirmed (applied, or undone since), the latest first; the page lists them with undo."""
+def adoption_view(row: Any) -> dict[str, Any]:
+    """One adopted (or since un-adopted) proposal of a fix_issue task, as an entry of the ledger. Undoing an adoption only
+    records it: the author's draft is not touched."""
+    adopted = row["status"] == "adopted"
+    after = (row["after_edited"] or row["after"]) if adopted else (row["undone_after"] or row["after"])
+    return {"entry": "adoption", "id": row["id"], "label": f"P{row['ordinal']}", "task_id": row["task_id"], "kind": row["kind"],
+            "chapter_number": row["chapter_number"], "before": row["before"], "after": after, "edited_by_author": after != row["after"],
+            "status": "adopted" if adopted else "undone", "adopted_at": row["decided_at"] if adopted else None, "undone_at": row["undone_at"]}
+
+
+# The ledger lists two kinds of entry in one order: the time something was last done (applied or undone), an adoption before the changes on the same instant,
+# adoptions on the same instant, the later row first. A page is asked for by the position of the last entry of the page before it
+# (`before`), never by a count: an undo or a redo moves an entry to the top, and a count would then skip or repeat entries.
+LEDGER_SOURCES = (
+    ("c", "assistant_changes", "COALESCE(undone_at,applied_at)", "status IN ('applied','undone')"),
+    ("p", "assistant_proposals", "COALESCE(undone_at,decided_at)",
+     "(status='adopted' OR undone_at IS NOT NULL) AND kind IN ('edit_this','add_setup') AND task_id IN (SELECT id FROM assistant_tasks WHERE project_id=?)"),
+)
+
+
+def _cursor(before: str | None) -> tuple[str, str, int] | None:
+    if not before:
+        return None
+    try:
+        stamp, source, rowid = json.loads(base64.urlsafe_b64decode(before.encode("ascii")).decode("utf-8"))
+        if not (isinstance(stamp, str) and source in ("c", "p") and isinstance(rowid, int)):
+            raise ValueError
+        return stamp, source, rowid
+    except (ValueError, TypeError, UnicodeError):
+        raise DomainError("invalid_request", 400) from None
+
+
+def _cursor_text(stamp: str, source: str, rowid: int) -> str:
+    return base64.urlsafe_b64encode(json.dumps([stamp, source, rowid]).encode("utf-8")).decode("ascii")
+
+
+def ledger(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, limit: int, before: str | None = None) -> dict[str, Any]:
+    """What the author confirmed or adopted (applied or adopted, or undone since), the latest first, one page of `limit`; `next`
+    is what to pass as `before` for the page after it (None when this is the last). The page lists them with undo."""
     db._project(c, user_id, project_id)
-    rows = c.execute("SELECT * FROM assistant_changes WHERE project_id=? AND status IN ('applied','undone') "
-                     "ORDER BY COALESCE(undone_at,applied_at) DESC,rowid DESC LIMIT ?", (project_id, limit)).fetchall()
-    return {"changes": [change_view(c, db, row) for row in rows]}
+    cursor = _cursor(before)
+    found: list[tuple[str, str, int, Any]] = []
+    for source, table, stamp, where in LEDGER_SOURCES:
+        params: list[Any] = [project_id]
+        sql = f"SELECT rowid AS rid,{stamp} AS at,* FROM {table} WHERE " + (where if "?" in where else f"project_id=? AND {where}")
+        if cursor:
+            # strictly after the cursor in the order below: an earlier time, or the same time and a later place in the order
+            sql += f" AND ({stamp}<? OR ({stamp}=? AND (?>? OR (?=? AND rowid<?))))"
+            params += [cursor[0], cursor[0], cursor[1], source, cursor[1], source, cursor[2]]
+        sql += f" ORDER BY {stamp} DESC,rowid DESC LIMIT ?"
+        found += [(row["at"], source, row["rid"], row) for row in c.execute(sql, (*params, limit + 1)).fetchall()]
+    found.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
+    page = found[:limit]
+    entries = [{**change_view(c, db, row), "entry": "change"} if source == "c" else adoption_view(row) for _, source, _, row in page]
+    more = len(found) > limit
+    return {"changes": entries, "next": _cursor_text(*page[-1][:3]) if more and page else None}
 
 
 # --- routes ---------------------------------------------------------------------------------------------------------------
@@ -822,7 +873,7 @@ def register_routes(app: Any, db: Any, user: Callable, csrf: Callable, key: Call
                      lambda c, actor: redo(c, db, actor["id"], project_id, change_id), f"{project_id}:{change_id}")
 
     @app.get(base + "/changes")
-    def list_changes(project_id: str, request: Request, limit: int = LEDGER_LIMIT):
+    def list_changes(project_id: str, request: Request, limit: int = LEDGER_LIMIT, before: str | None = None):
         actor = user(request)
         with db.connection() as c:
-            return ok(request, ledger(c, db, actor["id"], project_id, max(1, min(limit, LEDGER_LIMIT))))
+            return ok(request, ledger(c, db, actor["id"], project_id, max(1, min(limit, LEDGER_LIMIT)), before))
