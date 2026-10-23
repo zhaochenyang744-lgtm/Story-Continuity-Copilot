@@ -68,7 +68,7 @@ test.describe("07f 输入框", () => {
   });
 
   test("11 花费提示放不下时整段去掉「今天还剩…」，只留「约 500 字」，不截断数字；余量在 title 里", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const note = thread(page).locator(".cx-note");
     await expect(note).toContainText("约 500 字");

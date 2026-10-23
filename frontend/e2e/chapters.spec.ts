@@ -1,5 +1,5 @@
 import { api, expect, openTab, registerAccount, sampleWorkId, shot, startVisitor, test } from "./support/app";
-import { button } from "./support/writing";
+import { button, ownWork } from "./support/writing";
 import { evidence, importBook, initialize, memories, pair, project, sample } from "./support/pages";
 
 test("08 章节列表：十章、草稿与示例标记", async ({ page }) => {
@@ -37,6 +37,8 @@ test("08 展开段落：收起与写作页章节网址", async ({ page }) => {
 
 test("08 勾选和实时估价：两章检查及前文依据", async ({ page }, info) => {
   const id = await sample(page, "sources");
+  await ownWork(page, id);
+  await page.reload();
   const chapters = (await api(page).get(`/projects/${id}/chapters?include=excerpt`)).chapters;
   const selected = chapters.slice(1, 3);
   const bar = page.getByTestId("chapter-selection");

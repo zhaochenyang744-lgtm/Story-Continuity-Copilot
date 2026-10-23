@@ -100,7 +100,7 @@ test.describe("07f 动效", () => {
   });
 
   test("M2 扣字数的数字滚动：任务结束计了字，顶栏「可检查 N 字」只滚动变了的位，回答底部的「计 500 字」随后淡入；失败退字也滚动；减少动态效果时直接是新值", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const figure = page.locator(".topbar-quota .odo");
     const value = async () => Number((await figure.getAttribute("aria-label"))!.replace(/\D/g, ""));

@@ -131,7 +131,7 @@ test.describe("助手输入框：自动判断用法", () => {
   });
 
   test("与作品无关：不建任务、不扣字数，对话里一条本地说明；「还是当作问作品」按问作品发送", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const before = await used(page);
     await box(page).fill("E2E_ROUTE_OUT 帮我写一封请假邮件");
@@ -155,7 +155,7 @@ test.describe("助手输入框：自动判断用法", () => {
 
   test("别的页面上要写前回顾：不建任务、不扣字数，给「去写作页做写前回顾」；点了到写作页，写前回顾在那里开始", async ({ page }) => {
     // Fifth A1c formal run: a recap asked for on the overview was judged rightly and then sent as a question.
-    const id = await setup(page);
+    const id = await setup(page, true, true);
     const before = await used(page);
     await openTab(page, id, "overview");
     await topbarAssistant(page).click();
@@ -221,7 +221,7 @@ test.describe("助手输入框：自动判断用法", () => {
   });
 
   test("判断错了可以改：任务在运行时「改成」会停掉它、退回字数、建新任务；新任务也能再改", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const before = await used(page);
     await box(page).fill("E2E_SLOWER 罗盘现在在谁手里？");
@@ -250,7 +250,7 @@ test.describe("助手输入框：自动判断用法", () => {
   });
 
   test("任务已经完成再改：同一句话按新用法再发一次，照常计字数，按钮旁写「约 500 字」", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     await box(page).fill("罗盘现在在谁手里？");
     await send(page).click();

@@ -2,7 +2,7 @@ import type { Locator, Page, Route } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { api, createWorkByApi, expect, openTab, sampleWorkId, startVisitor, test } from "./support/app";
-import { adoptRequest, askForFix, box, checkedWork, finished, openAssistantTab, proposal, REWRITTEN, send, SENTENCE, tasks, thread } from "./support/assistant";
+import { adoptRequest, askForFix, box, checkedWork, finished, findingsTab, openAssistantTab, proposal, REWRITTEN, send, SENTENCE, tasks, thread } from "./support/assistant";
 import { ADD_ASK, changeItem, cardOf, confirmButton, confirmByApi, itemOf, ledgerOf, openLedger, proposeByApi, THREAD_ASK } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { beginCheck, draft, finishCheck, saveBody, setup } from "./support/writing";
@@ -262,6 +262,7 @@ test.describe("示例作品不计字数", () => {
     // The page's own check is not held back for the allowance either.
     await expect(page.locator(".draft-head-allowance")).toContainText("示例作品不计字数");
     await expect(page.locator(".draft-head-allowance")).not.toHaveClass(/\bover\b/);
+    await findingsTab(page).click();
     await finishCheck(page, id, await beginCheck(page, id));
     expect((await usageOf(page)).check_chars_used).toBe(spent);
     // The chapters page.
@@ -340,12 +341,26 @@ test.describe("v2.1 截图", () => {
         change({ id: "c-1", label: "C1" }),
         adoption({ id: "p-3", kind: "add_setup", before: "", after: "老周早就在码头见过那枚罗盘。", chapter_number: 4, adopted_at: ago(2400) }),
       ],
-      next: "cursor-one",
+      next: null,
     }]);
     await openTab(page, id, "memory");
     await openLedger(page);
     await both(page, (value) => snap(ledgerOf(page), "01-改动记录-采用改法", value));
-    await both(page, (value) => snap(ledgerOf(page).locator(".ledger-more"), "02-翻页按钮", value));
+  });
+
+  test("翻页：「再看更早的」，点了以后接在后面、按钮消失", async ({ page }) => {
+    const id = await setup(page);
+    await serveLedger(page, [
+      { changes: [adoption({ id: "p-1" }), change({ id: "c-1", label: "C1" })], next: "cursor-one" },
+      { changes: [adoption({ id: "p-2", status: "undone", adopted_at: null, undone_at: ago(2000), kind: "add_setup", before: "", after: "老周早就在码头见过那枚罗盘。", chapter_number: 4 }),
+        change({ id: "c-2", label: "C2", title: "白色渡船与失去的署名", applied_at: ago(3000) })], next: null },
+    ]);
+    await openTab(page, id, "memory");
+    await openLedger(page);
+    await both(page, (value) => snap(ledgerOf(page), "02-翻页-点之前", value));
+    await ledgerOf(page).getByRole("button", { name: "再看更早的", exact: true }).click();
+    await expect(ledgerOf(page).locator("ol > li")).toHaveCount(4);
+    await both(page, (value) => snap(ledgerOf(page), "02-翻页-点之后", value));
   });
 
   test("看对话：定位到较早的任务", async ({ page }) => {
@@ -363,7 +378,11 @@ test.describe("v2.1 截图", () => {
     await openLedger(page);
     await ledgerOf(page).locator("li[data-change]").last().getByRole("button", { name: "看对话", exact: true }).click();
     await expect(thread(page).locator(`[data-task="${old.id}"]`)).toBeVisible();
-    await both(page, (value) => snap(page, "03-看对话-定位到较早的任务", value));
+    // The drawer covers the theme switch, so the theme is set on the page itself.
+    for (const value of ["day", "night"] as const) {
+      await page.evaluate((next) => document.documentElement.setAttribute("data-theme", next), value);
+      await snap(page, "03-看对话-定位到较早的任务", value);
+    }
   });
 
   test("示例作品额度用完：助手和检查仍可用，自己的作品被挡住", async ({ page }) => {

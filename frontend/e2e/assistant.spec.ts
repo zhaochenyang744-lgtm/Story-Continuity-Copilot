@@ -11,7 +11,7 @@ import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBod
 
 test.describe("助手", () => {
   test("写作页：提问得到带出处的回答，步骤折叠，扣 500 字，刷新后对话还在", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
     await expect(thread(page)).toContainText(/约 500 字 · 今天还剩 [\d,]+ 字/);
@@ -89,7 +89,7 @@ test.describe("助手", () => {
   });
 
   test("运行中：步骤和停止按钮，停止后显示已停止", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     await ask(page, "E2E_SLOW 苏岑现在在哪？");
     const task = tasks(page).first();
@@ -267,7 +267,7 @@ test.describe("助手", () => {
   });
 
   test("字数不够：框变成虚线，直接写明原因和恢复时间，发送键不可点", async ({ page }) => {
-    const id = await setup(page);
+    const id = await setup(page, true, true);
     const session = await api(page).get("/auth/session");
     const usage = await api(page).get("/account/usage");
     await api(page).post(`/test/v180/users/${session.user.id}/spend-characters/${usage.check_chars_remaining - 300}`);
@@ -359,7 +359,7 @@ test.describe("助手", () => {
 // way out (E2E_SETUP in the sentence adds a setup for chapter 1); a check of a passage checks it once and cites its first source.
 test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", () => {
   test("写前回顾：按钮发起 recap 并切到助手；四栏有概括、原文和出处；扣 500 字；可以重新回顾", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     const before = await allowance(page);
     const request = taskPost(page);
     await button(page, "写前回顾").click();
@@ -452,7 +452,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
   });
 
   test("让助手给改法：请求不带 question；助手里是这一条和它的改法；没有改正文", async ({ page }) => {
-    const { id, issue } = await checkedWork(page);
+    const { id, issue } = await checkedWork(page, undefined, true);
     const original = await readDraftBody(page);
     const { body, task } = await askForFix(page, issue);
     expect(body).toEqual({ kind: "fix_issue", context: { page: "writing", issue_id: issue.id } });
@@ -578,7 +578,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
 
   test("复查这一句：按 after 的字数计，显示复查结果；复查不改变检查结果的状态", async ({ page }) => {
     test.setTimeout(150_000);
-    const { id, issue } = await checkedWork(page);
+    const { id, issue } = await checkedWork(page, undefined, true);
     const { task } = await askForFix(page, issue);
     const edit = proposal(task, "edit_this");
     // Not before the change is adopted.
@@ -676,7 +676,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
   });
 
   test("选中草稿里的文字：「查前文矛盾 · 约 N 字」发起检查，请求体带 intent；步骤里有定点检查", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await select(page, "#draft-body", 12);
     const picked = (await selectedWords(page)).trim();
     const check = toolbar(page).getByRole("button", { name: /^查前文矛盾/ });

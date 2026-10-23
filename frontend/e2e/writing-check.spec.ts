@@ -90,7 +90,7 @@ test("检查中：阻塞状态与放行", async ({ page }) => {
 });
 
 test("检查失败后重试：保留两次尝试且无半截结果", async ({ page }) => {
-  const id = await setup(page);
+  const id = await setup(page, true, true);
   await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
   const first = await beginCheck(page, id);
   const failed = await finishCheck(page, id, first, "failed");
