@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "trace_state_below_five",
+      "status": "FAIL",
+      "checker_exit_code": 1,
+      "expected_error_fragment": "trace_object:1:state_count",
+      "target_detected": true,
+      "errors": [
+        "trace_object:1:state_count"
+      ]
+    },
+    {
+      "case": "quote_one_character",
+      "status": "FAIL",
+      "checker_exit_code": 1,
+      "expected_error_fragment": "quote_verbatim_unique",
+      "target_detected": true,
+      "errors": [
+        "trace_object:1:state:1:quote_verbatim_unique"
+      ]
+    },
+    {
+      "case": "missing_thread_action",
+      "status": "FAIL",
+      "checker_exit_code": 1,
+      "expected_error_fragment": "complete_scope_actions",
+      "target_detected": true,
+      "errors": [
+        "a3d-thread-01:complete_scope_actions"
+      ]
+    },
+    {
+      "case": "source_one_character",
+      "status": "FAIL",
+      "checker_exit_code": 1,
+      "expected_error_fragment": "manifest:hash:works/w01.md",
+      "target_detected": true,
+      "errors": [
+        "manifest:hash:works/w01.md"
+      ]
+    }
+  ],
+  "temporary_copies_removed": true,
+  "model_calls": 0
+}

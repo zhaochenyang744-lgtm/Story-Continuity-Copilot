@@ -1,0 +1,86 @@
+{
+  "definitions": {
+    "ask": "一般问题、建议或方法",
+    "recap": "为续写回顾状态与未完事项",
+    "check_passage": "核查写作页所选正文连续性",
+    "out_of_scope": "超出小说创作维护",
+    "change": "已界定资料修改",
+    "fix_issue": "基于已有问题记录修正文",
+    "long_task": "执行全书或多章审阅，先计划后报告或卡片"
+  },
+  "items": [
+    {
+      "id": "a3d-route-08",
+      "input": "这一小段会跟前文打架吗？",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a3d-route-03",
+      "input": "匿名嘉宾的真名到底传到过谁耳朵里？全书逐处核对，最后交一份带出处的知情时间表。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 29
+      }
+    },
+    {
+      "id": "a3d-route-10",
+      "input": "我准备写下一章，先把此刻人物处境和没讲完的事提醒我一下。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a3d-route-05",
+      "input": "把第六章刚定的碰头时段替换进那条旧记录，就动这一项。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a3d-route-01",
+      "input": "苔点录音机换来换去我绕晕了，整本翻一遍，给我它的交接经过和对不上的点。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a3d-route-09",
+      "input": "这一小段会跟前文打架吗？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 31,
+        "selection": "唐见禾把苔点录音机留在自己的包里，只将一张空白听写纸铺在桌面上。"
+      }
+    },
+    {
+      "id": "a3d-route-04",
+      "input": "开个全书资料核对任务，列计划让我看过再走，遗漏和过期的分开出卡。",
+      "context": {
+        "page": "plan"
+      }
+    },
+    {
+      "id": "a3d-route-07",
+      "input": "要是把整本的知情顺序弄成时间表，大概得分哪几步？我先问问做法。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a3d-route-02",
+      "input": "从头查到结尾，所有没收的线给我分一下：确实还悬着、写完了、已经不要了。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a3d-route-06",
+      "input": "第十二章文件名空位的缘由已经揭开，给这条伏笔补个结束状态。",
+      "context": {
+        "page": "materials"
+      }
+    }
+  ]
+}

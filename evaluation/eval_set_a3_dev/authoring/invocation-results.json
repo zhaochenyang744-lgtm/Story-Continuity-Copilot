@@ -1,0 +1,15 @@
+{
+  "module": {
+    "cwd": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-a3-dev-authoring",
+    "exit_code": 0,
+    "stdout_lines": 1,
+    "status": "PASS"
+  },
+  "absolute": {
+    "cwd": "C:\\Users\\赵晨阳\\Desktop\\v2.1任务",
+    "exit_code": 0,
+    "stdout_lines": 1,
+    "status": "PASS"
+  },
+  "outputs_identical": true
+}

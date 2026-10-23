@@ -1,0 +1,109 @@
+{
+  "status": "PASS",
+  "protected_files_byte_identical": {
+    "evaluation/assistant_a3/SPEC.md": true,
+    "evaluation/assistant_a3/thresholds.py": true,
+    "evaluation/assistant_a2/SPEC.md": true,
+    "evaluation/assistant_a1c/SPEC.md": true,
+    "evaluation/assistant_a1/SPEC.md": true
+  },
+  "independent_review_status": "PASS",
+  "independent_review_tasks": 18,
+  "independent_review_bindings": {
+    "works/w01.md": true,
+    "materials/w01-facts.json": true,
+    "materials/w01-foreshadows.json": true,
+    "tasks.json": true,
+    "authoring/self-review.json": true,
+    "authoring/self-review.md": true,
+    "authoring/task-intents.json": true,
+    "authoring/route-blind-input.json": true,
+    "authoring/route-blind-review.json": true,
+    "authoring/name-audit.json": true
+  },
+  "text_format_errors": [],
+  "historical_source_inventory_matches": true,
+  "historical_sources": 27,
+  "historical_inputs": 663,
+  "proper_name_overlap": 0,
+  "old_markdown_json_files_scanned": 460,
+  "paragraphs_checked": 821,
+  "shared_draft_copy8_errors": 0,
+  "exact_long_paragraph_repetition": 0,
+  "novelty_full_comparison": [
+    {
+      "id": "a3d-trace-01",
+      "max_similarity_all_historical": 0.1875
+    },
+    {
+      "id": "a3d-trace-02",
+      "max_similarity_all_historical": 0.254545
+    },
+    {
+      "id": "a3d-thread-01",
+      "max_similarity_all_historical": 0.31746
+    },
+    {
+      "id": "a3d-thread-02",
+      "max_similarity_all_historical": 0.266667
+    },
+    {
+      "id": "a3d-tidy-01",
+      "max_similarity_all_historical": 0.215385
+    },
+    {
+      "id": "a3d-ask-01",
+      "max_similarity_all_historical": 0.253521
+    },
+    {
+      "id": "a3d-ask-02",
+      "max_similarity_all_historical": 0.233766
+    },
+    {
+      "id": "a3d-narrowed-01",
+      "max_similarity_all_historical": 0.1875
+    },
+    {
+      "id": "a3d-route-01",
+      "max_similarity_all_historical": 0.210526
+    },
+    {
+      "id": "a3d-route-02",
+      "max_similarity_all_historical": 0.259259
+    },
+    {
+      "id": "a3d-route-03",
+      "max_similarity_all_historical": 0.230769
+    },
+    {
+      "id": "a3d-route-04",
+      "max_similarity_all_historical": 0.192308
+    },
+    {
+      "id": "a3d-route-05",
+      "max_similarity_all_historical": 0.28
+    },
+    {
+      "id": "a3d-route-06",
+      "max_similarity_all_historical": 0.392157
+    },
+    {
+      "id": "a3d-route-07",
+      "max_similarity_all_historical": 0.195122
+    },
+    {
+      "id": "a3d-route-08",
+      "max_similarity_all_historical": 0.4
+    },
+    {
+      "id": "a3d-route-09",
+      "max_similarity_all_historical": 0.4
+    },
+    {
+      "id": "a3d-route-10",
+      "max_similarity_all_historical": 0.380952
+    }
+  ],
+  "errors": [],
+  "model_calls": 0
+}
