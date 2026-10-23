@@ -2,8 +2,7 @@
 
 1. `lookup_facts` keeps the newest facts when there are too many, and can look back with `chapter_to`.
 2. The prompt tells the model a round holds at most four calls and the process line names only those.
-3. `clean_say` measures display width and never cuts inside a word.
-4. The server checks the note's "查过…" claims against the steps (`assistant_coverage`)."""
+3. The server checks the note's "查过…" claims against the steps (`assistant_coverage`)."""
 from __future__ import annotations
 
 import json
@@ -11,7 +10,7 @@ import sqlite3
 import unittest
 from contextlib import contextmanager
 
-from app.assistant import ASSISTANT_PROMPT_VERSION, SAY_MAX_CHARS, SYSTEM_PROMPT, clean_say
+from app.assistant import ASSISTANT_PROMPT_VERSION, SYSTEM_PROMPT
 from app.assistant_coverage import chapter_number, mentioned_chapters, note_problems, without_untrue
 from app.assistant_tools import FACTS_MAX, TOOLS, SourceRegistry, ToolContext, ToolError, run_tool
 
@@ -154,63 +153,10 @@ class LookupFactsTests(unittest.TestCase):
 # --- the prompt ----------------------------------------------------------------------------------------------------------
 class PromptTests(unittest.TestCase):
     def test_version_and_the_new_rules(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p32")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p44")
         self.assertIn("一轮最多调用 6 次工具，说明只写这一轮实际要调用的那几项", SYSTEM_PROMPT)
         self.assertIn("要查的超过 6 项，就分到下一轮，下一轮再写新的说明", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词", SYSTEM_PROMPT)
-
-
-# --- the process line ------------------------------------------------------------------------------------------------
-class CleanSayTests(unittest.TestCase):
-    def test_chinese_is_cut_at_sixty_characters_as_before(self):
-        self.assertEqual(clean_say("字" * 60), "字" * 60)
-        self.assertEqual(clean_say("字" * 61), "字" * 60 + "…")
-        self.assertEqual(clean_say("先" + "查" * 80), "先" + "查" * 59 + "…")
-        self.assertEqual(SAY_MAX_CHARS, 60)
-
-    def test_ascii_counts_half_so_english_gets_about_a_hundred_and_twenty_characters(self):
-        line = "I'll search the text for the coil beacon and the amber survey marks, then read chapter three and four to compare them"
-        self.assertLessEqual(len(line), 120)
-        self.assertEqual(clean_say(line), line)
-        self.assertEqual(clean_say("a" * 120), "a" * 120)
-        self.assertEqual(clean_say("a b" * 40), "a b" * 40)  # 120 characters
-        self.assertEqual(clean_say("ab " * 41 + "x"), "ab " * 39 + "ab…")  # 124 characters: cut after the 40th word
-
-    def test_english_is_never_cut_inside_a_word(self):
-        words = ("I'll search the text for the coil beacon and the amber survey marks and then read chapter three of the work again "
-                 "slowly and carefully before I answer the question")
-        cut = clean_say(words)
-        self.assertTrue(cut.endswith("…"))
-        body = cut[:-1]
-        self.assertLessEqual(len(body), 120)
-        self.assertTrue(words.startswith(body))
-        self.assertEqual(words[len(body)], " ")  # the next character in the original starts a new word
-        self.assertIn(body.split()[-1], words.split())
-        self.assertEqual(cut, "I'll search the text for the coil beacon and the amber survey marks and then read chapter three of the work again slowly…")
-        # A cut that lands in the middle of a word steps back to the word before it.
-        self.assertEqual(clean_say("one two " * 14 + "three four five"), ("one two " * 14).rstrip() + " three…")
-
-    def test_the_cut_falls_back_to_the_width_when_a_single_word_is_too_long(self):
-        self.assertEqual(clean_say("x" * 130), "x" * 120 + "…")
-
-    def test_mixed_text_counts_each_script_by_its_own_width(self):
-        # 20 Chinese characters (20) + 80 ASCII letters (40) = 60 wide: kept whole.
-        line = "查" * 20 + "a" * 80
-        self.assertEqual(clean_say(line), line)
-        longer = "查" * 20 + "ab " * 30
-        cut = clean_say(longer)
-        self.assertEqual(cut, "查" * 20 + "ab " * 26 + "ab…")
-        short = "先搜索 the coil beacon，再读第三章 and compare the survey marks of chapter three with chapter four now"
-        self.assertEqual(clean_say(short), short)  # 11 wide characters + 79 ASCII = 50.5
-
-    def test_punctuation_before_the_cut_does_not_stay_in_front_of_the_ellipsis(self):
-        line = "read, " * 20 + "again"
-        cut = clean_say(line)
-        self.assertTrue(cut.endswith("read…"), cut)
-
-    def test_ids_and_numbers_still_drop_the_whole_line(self):
-        self.assertIsNone(clean_say("a" * 200 + " span-1a2b3c"))
-        self.assertIsNone(clean_say("look at R12"))
 
 
 # --- the note --------------------------------------------------------------------------------------------------------------

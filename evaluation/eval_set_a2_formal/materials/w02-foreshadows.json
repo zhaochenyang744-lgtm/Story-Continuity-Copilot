@@ -1,0 +1,10 @@
+[
+  {"title":"第三条暗脉纹","description":"皱鳞核的第三条脉纹总是暗着，不能把它直接当成器物损坏，需要听见群落自身的解释。","status":"planted","planted_chapter":1},
+  {"title":"离庭后的两次亮光","description":"仉砚溯的隔离环每逢离庭就亮两次，这是否意味着感染还未得到独立核验。","status":"developing","planted_chapter":2},
+  {"title":"触湿后侧转的针","description":"零相螺针轻触湿膜就侧转，原先的干燥保存方式可能遗漏了它与养液的关系。","status":"planted","planted_chapter":3},
+  {"title":"问句之后的长静默","description":"人类发问之后群落常陷入长静默，译读人员暂时无法判断那是等待还是另一种表态。","status":"developing","planted_chapter":4},
+  {"title":"未归的低频回声","description":"迭眠原地下传来低频回声，声音没有回到最初的节律，来源与意义都仍未查明。","status":"planted","planted_chapter":5},
+  {"title":"支撑肢里的空孔","description":"庹穆缇一条支撑肢内留有空孔，孔的用途不能仅靠外观推定，也没有当事方解释。","status":"developing","planted_chapter":6},
+  {"title":"边缘的无主茧","description":"迭眠原边缘有一只无人认领的茧，它属于哪一支群落以及为何留在那里仍无结论。","status":"planted","planted_chapter":7},
+  {"title":"囊上的交错短纹","description":"斑息囊表面交错短纹已经确认来自明暗交替造成的生长变化，与秘密指令没有关系。","status":"resolved","planted_chapter":3,"resolved_chapter":5}
+]

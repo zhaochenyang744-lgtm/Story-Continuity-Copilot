@@ -172,6 +172,85 @@ class BrowserTestProvider:
             answer = {"status": "not_found", "sentences": [], "note": "检查了选中的这段，没有发现和前文矛盾的地方。"}
         return self._tool_turn([("answer", answer)], fixed)
 
+    # 改资料 (v2.0): the request is the sentence after 「作者的要求：」. Round 1 lists the threads and reads the last written chapter; then,
+    # by the marker in the sentence: E2E_CHANGE_THREAD marks the first thread that is not resolved as resolved, on the first passage read;
+    # E2E_CHANGE_FACT looks up 温岚 (the sample work has a fact with her alone as its subject) and changes the first fact about her; E2E_ADD_FACT adds a fact; with none of them
+    # nothing is proposed and the task ends in "not found". A proposal ends in an answer that cites the passage read.
+    CHANGE_MARKER = "作者的要求："
+
+    @staticmethod
+    def _tool_items(seen):
+        # What the tools handed out, in order: every item that has an R number and its words.
+        items = []
+
+        def walk(node):
+            if isinstance(node, dict):
+                if "ref" in node and "text" in node:
+                    items.append(node)
+                for value in node.values():
+                    walk(value)
+            elif isinstance(node, list):
+                for value in node:
+                    walk(value)
+
+        for text in seen:
+            try:
+                walk(json.loads(text))
+            except ValueError:
+                continue
+        return items
+
+    @staticmethod
+    def _request_words(request):
+        # propose_change needs a few words copied from the author's sentence that name the record: the longest stretch between the
+        # markers, its first 8 characters (the check ignores white space).
+        return max((part.strip() for part in re.split(r"E2E_\w+", request)), key=len)[:8]
+
+    def _change(self, asked, messages, fixed):
+        request = asked.split(self.CHANGE_MARKER, 1)[1].split("\n作者现在在：", 1)[0]
+        words = self._request_words(request)
+        last = int(re.search(r"到第 (\d+) 章", asked).group(1))
+        seen = [item.get("content") or "" for item in messages if item.get("role") == "tool"]
+        rounds_done = sum(1 for item in messages if item.get("role") == "assistant" and item.get("tool_calls"))
+        items = self._tool_items(seen)
+        passage = next((item["ref"] for item in items if item.get("chapter") == last and not item["text"].startswith("伏笔：")), None)
+
+        def answer(sentences, status="answered", note=None):
+            arguments = {"status": status, "sentences": sentences}
+            if note:
+                arguments["note"] = note
+            call = {"id": "e2e-call-3", "name": "answer", "arguments": json.dumps(arguments, ensure_ascii=False)}
+            return ChatResult(message={"content": None, "tool_calls": [call]}, finish_reason="tool_calls", **fixed)
+
+        done = answer([{"text": "（示意回答）最后一章写到了这件事。", "refs": [passage]}]) if passage else None
+        if rounds_done == 0:
+            return self._tool_turn([("list_threads", {}), ("read_chapter", {"chapter_number": last})], fixed, say="先看看伏笔记录，再读最后一章。")
+        if seen and '"status":"second_look"' in seen[-1]:
+            # A fact item held back for a second look: proposed once more, as the model is told.
+            previous = next(c["function"] for item in reversed(messages) if item.get("role") == "assistant"
+                            for c in item.get("tool_calls") or [] if c["function"]["name"] == "propose_change")
+            return self._tool_turn([("propose_change", json.loads(previous["arguments"]))], fixed, say="对照过资料，确实要改，再提出一次。")
+        if "E2E_CHANGE_THREAD" in request and passage:
+            thread = next((item["ref"] for item in items if item["text"].startswith("伏笔：")
+                           and "（已回收" not in item["text"].split("——", 1)[0] and "（已放弃" not in item["text"].split("——", 1)[0]), None)
+            if thread and rounds_done == 1:
+                return self._tool_turn([("propose_change", {"action": "resolve_thread", "target": thread, "evidence": [passage], "request_words": words})], fixed, say="这条伏笔在最后一章收了，提出改动。")
+        elif "E2E_CHANGE_FACT" in request and passage:
+            if rounds_done == 1:
+                return self._tool_turn([("lookup_facts", {"name": self.ASSISTANT_NAMES[1]})], fixed, say=f"查一下{self.ASSISTANT_NAMES[1]}的已确认事实。")
+            fact = next((item for item in items if item["text"].startswith(self.ASSISTANT_NAMES[1] + "：")), None)
+            if fact and rounds_done == 2:
+                return self._tool_turn([("propose_change", {"action": "change_fact", "target": fact["ref"], "value": "（示意改后）正文最新的写法", "evidence": [passage], "request_words": words})], fixed, say="这条事实正文里变了，提出改动。")
+        elif "E2E_ADD_FACT" in request and passage:
+            if rounds_done == 1:  # a name with facts (or held in a subject that has them) is looked up before a fact is added to it
+                return self._tool_turn([("lookup_facts", {"name": self.ASSISTANT_NAMES[0]})], fixed, say=f"查一下{self.ASSISTANT_NAMES[0]}的已确认事实。")
+            if rounds_done == 2:
+                return self._tool_turn([("propose_change", {"action": "add_fact", "memory_type": "dynamic_state", "subject": self.ASSISTANT_NAMES[0], "predicate": "status",
+                                                            "value": "（示意）左腕受了伤", "evidence": [passage], "request_words": words})], fixed, say="资料里没有这件事，提出加一条事实。")
+        elif rounds_done == 1 or not passage:
+            return answer([], "not_found", f"查过第 {last} 章正文，没有找到问题问到的内容。")
+        return done or answer([], "not_found", f"查过第 {last} 章正文，没有找到问题问到的内容。")
+
     def chat(self, messages, tools, tool_choice, max_tokens):
         self.calls += 1
         asked = next((item["content"] for item in messages if item.get("role") == "user" and "作者现在在：" in (item.get("content") or "")), "")
@@ -185,13 +264,15 @@ class BrowserTestProvider:
             return self._fix(asked, seen, fixed)
         if self.CHECK_LINE in asked:
             return self._check(asked, seen, fixed)
+        if asked.startswith(self.CHANGE_MARKER):
+            return self._change(asked, messages, fixed)
         return self._ask(question, messages, fixed)
 
     # The input box's judgement (v1.9.0): a keyword in the sentence picks the use, so a test can steer it; a sentence without one is a
     # plain question, except that a finding hanging on the box makes it a request for a fix (what a real judgement would also say).
     # E2E_ROUTE_SLOW waits 3 s first. Every request is kept in `route_log` so a test can read what the judgement was shown.
     ROUTE_MARKERS = (("E2E_ROUTE_OUT", "out_of_scope"), ("E2E_ROUTE_RECAP", "recap"), ("E2E_ROUTE_CHECK", "check_passage"),
-                     ("E2E_ROUTE_FIX", "fix_issue"), ("E2E_ROUTE_ASK", "ask"))
+                     ("E2E_ROUTE_CHANGE", "change"), ("E2E_ROUTE_FIX", "fix_issue"), ("E2E_ROUTE_ASK", "ask"))
 
     def route(self, messages, max_tokens, timeout_seconds):
         asked = messages[-1]["content"]

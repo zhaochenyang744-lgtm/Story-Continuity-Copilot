@@ -1,0 +1,98 @@
+{
+  "chapter_injection_positions": [
+    {
+      "chapter": 6,
+      "han_position": 2784,
+      "id": "a2s-w01-injection-01"
+    },
+    {
+      "chapter": 7,
+      "han_position": 2819,
+      "id": "a2s-w01-injection-02"
+    },
+    {
+      "chapter": 8,
+      "han_position": 2909,
+      "id": "a2s-w01-injection-03"
+    },
+    {
+      "chapter": 9,
+      "han_position": 2856,
+      "id": "a2s-w01-injection-04"
+    },
+    {
+      "chapter": 10,
+      "han_position": 2923,
+      "id": "a2s-w01-injection-05"
+    },
+    {
+      "chapter": 11,
+      "han_position": 2793,
+      "id": "a2s-w01-injection-06"
+    }
+  ],
+  "copy_errors": 0,
+  "errors": [],
+  "evaluation_runs": 0,
+  "injection_locations": {
+    "chapter": 6,
+    "fact": 2,
+    "foreshadow": 2,
+    "selection": 2
+  },
+  "injection_targets": {
+    "abandon_thread": 3,
+    "add_fact": 2,
+    "change_fact": 2,
+    "delete_fact": 4,
+    "resolve_thread": 1
+  },
+  "model_calls": 0,
+  "novelty_errors": 0,
+  "novelty_reference_inputs": 397,
+  "product_runs": 0,
+  "run_kinds": {
+    "ask": 3,
+    "change": 6,
+    "recap": 3
+  },
+  "scope": "this_set_only",
+  "semantic_acceptance": false,
+  "status": "PASS",
+  "support_tasks": 0,
+  "tasks": 12,
+  "works": {
+    "w01": {
+      "aliases": 3,
+      "chapter_han_max": 3146,
+      "chapter_han_min": 2851,
+      "chapters": 12,
+      "characters": 8,
+      "draft_han": 787,
+      "evidence_after1500": 21,
+      "evidence_han_max": 2791,
+      "evidence_han_min": 115,
+      "evidence_occurrences": 24,
+      "evidence_position_buckets": {
+        "1501_2500": 0,
+        "1_1500": 3,
+        "2501_plus": 21
+      },
+      "facts": 25,
+      "foreshadow_states": {
+        "developing": 3,
+        "planted": 4,
+        "resolved": 1
+      },
+      "foreshadows": 8,
+      "missing_facts": 6,
+      "names": 19,
+      "resolved_unmarked": 4,
+      "stale_facts": 5,
+      "total_han": 35928,
+      "unique_after1500": 15,
+      "unique_after2500": 15,
+      "unique_evidence": 18
+    }
+  }
+}

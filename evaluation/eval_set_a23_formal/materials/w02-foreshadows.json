@@ -1,0 +1,10 @@
+[
+  {"title":"珀坠核颈部的白丝","description":"核颈缠着一根不明白丝，需要核对它来自原有核座还是后来被人添上。","status":"planted","planted_chapter":1},
+  {"title":"坠石厅第三次击锤","description":"同一轮称量却留下第三次击锤，必须追查那一声和称量先后的真实关系。","status":"developing","planted_chapter":2},
+  {"title":"棱脊箱边角的细孔","description":"箱角出现细孔，但细孔本身是否能证明核被调包，眼下还没有查清。","status":"planted","planted_chapter":3},
+  {"title":"契约尾页的七点刻痕","description":"契约尾页有七个先后深浅不同的刻点，不能贸然把这些点认作另立的密约。","status":"developing","planted_chapter":4},
+  {"title":"无人认领的空核座","description":"一个没有重核的旧核座一直没有人认领，原主人和留下它的目的都未知。","status":"planted","planted_chapter":5},
+  {"title":"暗渠里的紫色石屑","description":"暗渠里有少量紫色石屑，但没有足够依据确定石屑从何处流入或属于谁。","status":"developing","planted_chapter":6},
+  {"title":"绒缠扣上的旧刻字","description":"扣件上留着磨损的旧刻字，目前只看出笔画，不应编出尚不能辨认的内容。","status":"planted","planted_chapter":6},
+  {"title":"走错庭的布包","description":"已核对布包是桥上食铺送错地方，查明来处后已经退还，不再作为失物追索。","status":"resolved","planted_chapter":2,"resolved_chapter":4}
+]

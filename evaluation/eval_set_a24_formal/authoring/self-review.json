@@ -1,0 +1,306 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "尉迟栩宁",
+        "嵇予玘",
+        "毋照荺",
+        "訾澄砚",
+        "厍闻祎",
+        "蓟缦秋",
+        "亓弈舟",
+        "阙知荞"
+      ],
+      "aliases": [
+        {
+          "name": "尉迟栩宁",
+          "alias": "栩梢",
+          "chapter": 1,
+          "quote": "父亲以前把尉迟栩宁叫作栩梢，妹妹后来也沿用了这个别名。"
+        },
+        {
+          "name": "嵇予玘",
+          "alias": "珂粒",
+          "chapter": 2,
+          "quote": "小时候家人叫嵇予玘为珂粒，这个别名如今仍由亲近的人使用。"
+        },
+        {
+          "name": "毋照荺",
+          "alias": "蘅弦",
+          "chapter": 3,
+          "quote": "朋友们把毋照荺叫作蘅弦，母亲也常用这个别名唤她。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 9,
+          "quote": "尉迟栩宁把菫棱盒交给嵇予玘，从这一天起备用钥匙由妹妹保管。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 11,
+          "quote": "燕脊本这次交到了厍闻祎手里，往后由他保管，不再留在姐妹家中。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "毋照荺的右手已经完全康复，提起满水的壶也不再疼痛。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "下一次家人协商改到盘槐寓所的客厅，弯笺室的预约已经取消。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "蓟缦秋将斜缝尺送给阙知荞，明说以后归她保管和使用。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "阙知荞",
+          "predicate": "护带更换能力",
+          "chapter": 6,
+          "quote": "阙知荞已经学会了替母亲更换手部护带，并且能独自完成。"
+        },
+        {
+          "subject": "厍闻祎",
+          "predicate": "北窗所知",
+          "chapter": 7,
+          "quote": "厍闻祎现在知道北窗卡住的原因是旧窗轨变形，不是有人故意锁窗。"
+        },
+        {
+          "subject": "盘槐寓所",
+          "predicate": "门槛费用",
+          "chapter": 8,
+          "quote": "盘槐寓所的门槛改造由姐妹平摊费用，不从母亲的疗养费里支取。"
+        },
+        {
+          "subject": "亓弈舟",
+          "predicate": "浇花安排",
+          "chapter": 10,
+          "quote": "亓弈舟只答应在周三替她们浇花，其余日子不会自行进屋。"
+        },
+        {
+          "subject": "嵇予玘",
+          "predicate": "长期居住决定",
+          "chapter": 16,
+          "quote": "嵇予玘决定继续住在盘槐寓所，不再执行先前说过的搬家打算。"
+        },
+        {
+          "subject": "尉迟栩宁",
+          "predicate": "周日约稿安排",
+          "chapter": 18,
+          "quote": "尉迟栩宁已把周日整天空出来，只用于陪伴母亲，不再接插画约稿。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "那道门边的铅笔短线原来是父亲量轮椅宽度留下的，和分房没有关系。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "厨房的两声轻响来自松动的通风扇罩，重新拧紧以后就再没有响过。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "迟到的明信片是母亲在转院前寄的，卡在旧信箱的内缝里才晚了这些天。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "窗台上的空花盆一直是父亲留给母亲种薄荷的，并不是要谁搬走的暗示。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a24f-w01-route-07",
+          "a24f-w01-route-08"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a24f-w01-route-01",
+          "a24f-w01-route-02"
+        ],
+        "ask_like_change_ids": [
+          "a24f-w01-route-05",
+          "a24f-w01-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a24f-w01-route-01",
+          "a24f-w01-route-02",
+          "a24f-w01-route-03",
+          "a24f-w01-route-04",
+          "a24f-w01-route-05",
+          "a24f-w01-route-06",
+          "a24f-w01-route-07",
+          "a24f-w01-route-08",
+          "a24f-w01-route-09",
+          "a24f-w01-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a24f-w01-no-03": "not_stated",
+        "a24f-w01-no-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "解芷屿",
+        "鬷令萤",
+        "侴秋弥",
+        "郏聆岑",
+        "漆弦葵",
+        "终望荻",
+        "郄觅砂",
+        "冼霁翎"
+      ],
+      "aliases": [
+        {
+          "name": "解芷屿",
+          "alias": "屿芒",
+          "chapter": 1,
+          "quote": "解芷屿是原身，熟人给她起的别名是屿芒。"
+        },
+        {
+          "name": "鬷令萤",
+          "alias": "萤隙",
+          "chapter": 2,
+          "quote": "鬷令萤的别名叫萤隙，弦葵喜欢在夜路上这样唤她。"
+        },
+        {
+          "name": "侴秋弥",
+          "alias": "弥扇",
+          "chapter": 3,
+          "quote": "侴秋弥的别名是弥扇，院里熟悉她的人常这样叫她。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 9,
+          "quote": "解芷屿把瓷翼扣交给鬷令萤，往后的夜晚都由令萤自己收存。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 11,
+          "quote": "侴秋弥将雁缝袋还给漆弦葵，从今夜起这只袋子由弦葵保管。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "鬷令萤有了终望荻店里的固定夜班，每隔一晚来工作一次。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "两人今后都在返曦庭西墙相接，原先的东墙位置从此停用。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "郏聆岑把菱晷片交给冼霁翎，以后院里的这片标记就由她保管。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "漆弦葵",
+          "predicate": "凸纹辨认",
+          "chapter": 6,
+          "quote": "漆弦葵能辨认布料上的凸纹，闭着眼也能找到雁缝袋的袋口。"
+        },
+        {
+          "subject": "鬷令萤",
+          "predicate": "觅砂所知",
+          "chapter": 7,
+          "quote": "鬷令萤已经知道郄觅砂怕黑，所以不会再约他来参加夜间聚餐。"
+        },
+        {
+          "subject": "返曦庭",
+          "predicate": "餐费分担",
+          "chapter": 8,
+          "quote": "返曦庭的公共餐食按实际吃饭的人平分，不把没有到场的人算进去。"
+        },
+        {
+          "subject": "冼霁翎",
+          "predicate": "侧门安排",
+          "chapter": 10,
+          "quote": "冼霁翎愿意在每次日落后替邻居开侧门，但不负责整夜看门。"
+        },
+        {
+          "subject": "解芷屿",
+          "predicate": "邀请答复边界",
+          "chapter": 16,
+          "quote": "解芷屿决定不再替令萤回答工作邀请，每一次都让令萤自己答复。"
+        },
+        {
+          "subject": "侴秋弥",
+          "predicate": "夜间协调任职",
+          "chapter": 18,
+          "quote": "侴秋弥已经辞去夜间协调的工作，下一轮共住安排由大家轮流负责。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "墙上反复出现的三道浅痕是旧梯脚蹭的，和影子失踪毫无关系。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "半夜的哨音是终望荻用来叫醒自己的水壶声，并不是召集影子的信号。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "那张没有署名的餐券确实是郄觅砂留下的，他只是不好意思当面请客。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "雁缝袋里的碎瓷原来出自旧碗，弦葵留着它只是想补好自己的第一只碗。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a24f-w02-route-07",
+          "a24f-w02-route-08"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a24f-w02-route-01",
+          "a24f-w02-route-02"
+        ],
+        "ask_like_change_ids": [
+          "a24f-w02-route-05",
+          "a24f-w02-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a24f-w02-route-01",
+          "a24f-w02-route-02",
+          "a24f-w02-route-03",
+          "a24f-w02-route-04",
+          "a24f-w02-route-05",
+          "a24f-w02-route-06",
+          "a24f-w02-route-07",
+          "a24f-w02-route-08",
+          "a24f-w02-route-09",
+          "a24f-w02-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a24f-w02-no-03": "not_stated",
+        "a24f-w02-no-04": "contradicted"
+      }
+    }
+  }
+}

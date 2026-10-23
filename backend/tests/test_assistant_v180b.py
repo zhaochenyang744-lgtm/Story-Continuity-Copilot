@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from app import assistant as assistant_module
-from app.assistant import ASSISTANT_PROMPT_VERSION, SYSTEM_PROMPT, clean_say, validate_answer
+from app.assistant import ASSISTANT_PROMPT_VERSION, SYSTEM_PROMPT, validate_answer
 from app.assistant_store import ADDED_COLUMNS
 from app.assistant_tools import ERROR_TEXTS, GENERIC_ERROR_TEXT, OUT_OF_SCOPE_TEXT, ToolError, error_text, result_refs, run_tool, tools_for
 
@@ -40,7 +40,7 @@ class SayTests(AssistantCase):
         self.register()
 
     def test_the_prompt_asks_for_a_line_and_is_version_p5(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p32")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p44")
         self.assertIn("content 里写一句话说明这一步具体要做什么", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词；只说打算，不下结论", SYSTEM_PROMPT)
         self.assertIn("不要只写文字", SYSTEM_PROMPT)
@@ -48,7 +48,7 @@ class SayTests(AssistantCase):
         self.assertIn("note 只列出查过哪些地方", SYSTEM_PROMPT)
         self.assertIn("不写 R 编号", SYSTEM_PROMPT)
         task = self.run_ask(read(9), cite(9))
-        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p32")
+        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p44")
         self.assertEqual(task["status"], "completed")
 
     def test_a_tool_round_keeps_its_line_before_its_steps_and_the_closing_round_keeps_none(self):
@@ -83,15 +83,6 @@ class SayTests(AssistantCase):
         self.assertEqual(task["status"], "completed", task)
         self.assertEqual(says(task), ["我先读第 1、2 章。", "我再读第 3 章。", "我再读第 4 章。", "我再读第 5 章。", "我再读第 6 章。"])
         self.assertEqual(sum(step["kind"] == "protocol_error" for step in task["steps"]), 1)
-
-    def test_clean_say(self):
-        for dropped in (None, 5, "", "  \n ", "查 R12 的原文", "看 mem-0f0f0f0f", "id 0f0f0f0f-0f0f-0f0f-0f0f-0f0f0f0f0f0f"):
-            self.assertIsNone(clean_say(dropped), dropped)
-        self.assertEqual(clean_say(" 先查第三章 "), "先查第三章")
-        self.assertEqual(clean_say("字" * 61), "字" * 60 + "…")
-        self.assertEqual(clean_say("字" * 60), "字" * 60)
-        # An id that would only show up beyond the cut still drops the whole line.
-        self.assertIsNone(clean_say("字" * 70 + " span-1a2b3c"))
 
 
 class StepDetailTests(AssistantCase):
@@ -151,7 +142,18 @@ class StepDetailTests(AssistantCase):
             "proposal_before_not_unique": "原句在草稿里出现了不止一次", "proposal_issue_not_overlapped": "改的不是有问题的那一句",
             "proposal_after_contains_before": "改后的句子原样保留了原句", "edit_this_is_for_the_current_draft": "只能改本章草稿",
             "chapter_out_of_scope": "这一章不在可查范围内", "citation_validation_failed": "引用没对上，重新整理回答",
-            "proposal_after_failed_check": "这句改后的话检查时仍有矛盾"})
+            "proposal_after_failed_check": "这句改后的话检查时仍有矛盾",
+            # v2.0: a change the assistant proposes
+            "change_target_invalid": "要改的资料没对上", "change_evidence_invalid": "依据不是读到过的正文段落",
+            "change_evidence_before_planted": "依据在伏笔埋下之前", "change_thread_not_open": "这条伏笔已经不是待回收的状态",
+            "change_duplicate": "这条资料已经提出过改动", "change_limit_reached": "一张卡片最多 5 条改动",
+            "change_value_invalid": "改后的内容不合要求", "change_no_difference": "资料里已经是这样",
+            "change_fields_invalid": "事实的类型或属性不在可选范围内", "change_fact_already_recorded": "资料里已经有这条事实",
+            "change_check_existing": "先查一遍资料里已有的事实", "change_value_not_in_evidence": "改后内容里的数字在依据段落里没有",
+            "change_give_up_not_resolve": "作者要的是放弃或删除，这一版不支持",
+            "change_read_only": "作者只说要看这条资料，没有说要改", "change_prose_not_fact": "作者要改的是正文的句子，不是资料", "change_fact_not_thread": "作者说的是事实，不是伏笔", "change_held_back": "还有改动没有放进卡片，先处理它",
+            "change_not_requested": "作者的话里没有提到这条资料",
+            "change_request_words_taken": "作者这几个字已经对应了另一条改动"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 

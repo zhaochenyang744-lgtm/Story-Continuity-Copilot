@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "砂眼匣",
+    "predicate": "保管人",
+    "value": "孟庭洵",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "斑穗袋",
+    "predicate": "所在位置",
+    "value": "瓦翳棚的器材架",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "许珈岚",
+    "predicate": "工作职务",
+    "value": "发掘现场负责人",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "范知峤",
+    "predicate": "左手状态",
+    "value": "拇指包扎，不能握紧工具",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "璺齿尺",
+    "predicate": "状态",
+    "value": "尺身完整，可以用于现场比对",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "孟庭洵",
+    "predicate": "身份",
+    "value": "地层记录员",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "许珈岚",
+    "predicate": "身份",
+    "value": "发掘项目负责人",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "于蓁洛",
+    "predicate": "身份",
+    "value": "器物拓印员",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "褚临禾",
+    "predicate": "第三章时职务",
+    "value": "现场副负责人",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "范知峤",
+    "predicate": "身份",
+    "value": "摄影记录员",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陶爰宁",
+    "predicate": "身份",
+    "value": "遗存保护员",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邝思澄",
+    "predicate": "身份",
+    "value": "后勤协调员",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "梁霁衡",
+    "predicate": "身份",
+    "value": "地形测绘员",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "砾汀遗址",
+    "predicate": "所在地区",
+    "value": "斜牙台地",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "瓦翳棚",
+    "predicate": "用途",
+    "value": "驻地兼器材暂存处",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "砂眼匣",
+    "predicate": "外观",
+    "value": "盖上嵌有一粒深色石子",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "璺齿尺",
+    "predicate": "外观",
+    "value": "尺尾有三角形浅槽",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "斑穗袋",
+    "predicate": "外观",
+    "value": "袋口缝有交错的褐白穗线",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "砾汀遗址",
+    "predicate": "记录规则",
+    "value": "移动出土物前必须保留原位记录",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "瓦翳棚",
+    "predicate": "饮水规则",
+    "value": "清洗器材的水不能倒进饮水桶",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "范知峤",
+    "predicate": "受伤原因",
+    "value": "整理支架时夹伤左手拇指",
+    "chapter": 2
+  },
+  {
+    "memory_type": "character_knowledge",
+    "subject": "孟庭洵",
+    "predicate": "旧探沟信息",
+    "value": "已知北侧有一段早年回填的探沟",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陶爰宁",
+    "predicate": "工具偏好",
+    "value": "用竹片剔除附土，不直接用钢针",
+    "chapter": 3
+  },
+  {
+    "memory_type": "open_thread",
+    "subject": "梁霁衡",
+    "predicate": "待办事项",
+    "value": "尚未核实台地最北端旧界石的朝向",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "邝思澄",
+    "predicate": "首次入场",
+    "value": "第四章带补给到驻地",
+    "chapter": 4
+  }
+]

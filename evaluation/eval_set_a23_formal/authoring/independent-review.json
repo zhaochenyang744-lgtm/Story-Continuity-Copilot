@@ -1,0 +1,54 @@
+{
+  "status": "completed",
+  "reviewers": {
+    "w01": "checker",
+    "w02": "author_w01"
+  },
+  "chapter_coverage": {
+    "w01": 20,
+    "w02": 20
+  },
+  "draft_coverage": {
+    "w01": 1,
+    "w02": 1
+  },
+  "task_coverage": 56,
+  "fact_coverage": 50,
+  "foreshadow_coverage": 16,
+  "findings": 3,
+  "closed_findings": 3,
+  "unresolved_findings": 0,
+  "reports": {
+    "authoring/independent-w01-review.md": "0d501460d76a16e7c5174f036665558326e271a89cd0fad7f250d9317d0d6a54",
+    "authoring/independent-w02-review.md": "8ae09c4ce84153eb2595504af634f13fa1132794f97ce86c7997f0ab39844eda"
+  },
+  "reviewed_object_sha256": {
+    "w01": "eea72f48585ba8426099d4b6fdec9d1234d837b1ca6a6f0571b4ddd6c4d960d1",
+    "w02": "396c7cac9afb7241b51577ec985e306846aa0eda334dd689be7d75b5c0be8fb0"
+  },
+  "w01_core_unchanged": true,
+  "sha256": {
+    "materials/w01-facts.json": "062d0597a1072117f6a72dd42e64c053d7f755ded57bb8c66a284b105bd8d196",
+    "materials/w01-foreshadows.json": "ec5e3b032e846a72a9de9750eb81faebadff92c3e9a7eed54b2ee5b20f4a85b7",
+    "materials/w02-facts.json": "b02b01cb87749c686554a2ea8624b66ae3ae809b33f916a3ee32e6543e515171",
+    "materials/w02-foreshadows.json": "009b44043d93df7fdcaf0ca88292509d9c0c0e77cbeb4c91fc7d2425d843ef06",
+    "tasks.json": "e437c5017bc6602ef32dd1cc93fb9a880f03d121e2ee729fbaca40f86a2ffa6c",
+    "works/w01.md": "a418c6baa96657c6204bf5c332f2ee42bd2898579d390b1c697560bba96f310e",
+    "works/w02.md": "25930bd407b4964291550a022d30a8d0db15e9a57c7a0f0f72f0be159c5d6cb5"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "594d88cf9036c019004c9df1200c6e7efa5d4f155cc881baaa5c90988fea18d1",
+    "authoring/self-review.md": "292c00f2d294e3ecc6e81f7da06f06df82cbd08fadf3076776ec20d094c4e182",
+    "authoring/novelty-reference.json": "d8536328bc9158770752ad00ecc1a46285d508260d0b1e59b79fdc27162b09e5"
+  },
+  "blind_route": {
+    "total": 20,
+    "initial_agreement": 20,
+    "final_agreement": 20,
+    "disagreements": 0,
+    "unresolved": 0
+  },
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

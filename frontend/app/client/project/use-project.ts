@@ -307,6 +307,14 @@ export function useProject({
     setProject(updated); setChapters(chapterData.chapters); setMemories(memoryData.records);
   }, [project]);
 
+  /** The assistant wrote to the materials, or took a change back: facts are read again, and `materialsStamp` tells the pages that keep
+      their own copy (threads, the ledger of the assistant's changes) to read theirs. */
+  const [materialsStamp, setMaterialsStamp] = useState(0);
+  const materialsChanged = useCallback(() => {
+    void refreshReferences().catch(() => undefined);
+    setMaterialsStamp((count) => count + 1);
+  }, [refreshReferences]);
+
   /** Re-read the work's summary (counts, latest check, source version) and, for an imported work,
       its fact coverage — without touching the draft or anything being edited. */
   const refreshSummary = useCallback(async () => {
@@ -1013,12 +1021,12 @@ export function useProject({
   return {
     // state
     project, missingProjectId, chapters, memories, characters, world, authorContext, authorBusy, draft, saved, run, pairedRun,
-    initialization, initializationError, memoryDelta, coverage, planAlignment, analysisBusy, busy, selected, controlled,
+    initialization, initializationError, memoryDelta, coverage, planAlignment, analysisBusy, busy, selected, controlled, materialsStamp,
     pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
     pendingDecisionPersisted, sourceRecord, tutorialRestored, tutorialActive, readOnly, dirty, narrow,
     // actions
-    notify, clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, autosaveNow, check, cancelRun, retryRun, startAnalysis, analysisAction,
+    notify, clear, loadProject, refreshReferences, materialsChanged, refreshSummary, adoptNextDraft, setDraft, save, autosaveNow, check, cancelRun, retryRun, startAnalysis, analysisAction,
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
     review, commit, startMemoryInitialization, reopenMemoryCandidate, submitMemoryInitialization, startIncrementalReview,
     submitMemoryDelta, reset, updateProject, mutateAuthorContext, openMemorySource, openEvidenceSource, closeSource,

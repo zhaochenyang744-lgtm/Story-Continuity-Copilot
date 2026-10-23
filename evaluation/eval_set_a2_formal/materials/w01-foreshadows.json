@@ -1,0 +1,10 @@
+[
+  {"title":"断口里的粉纤维","description":"缺齿圭断口内嵌有粉色纤维，不像圭身原有之物，需要追查它与证言的关联。","status":"planted","planted_chapter":1},
+  {"title":"夜里少落的一道闸","description":"钤午门夜间只落下两道闸，余下一道为何空着，尚待找到旧令的依据。","status":"developing","planted_chapter":2},
+  {"title":"封套里的双蜡影","description":"烬纹令封套内部透出双层蜡影，眼下不能断定是后加封蜡还是原有夹层。","status":"planted","planted_chapter":3},
+  {"title":"被缝住的旧誓一角","description":"伤兵旧誓有一角被细针缝住，那一角遮住什么，尚未让相关证人亲自辨读。","status":"developing","planted_chapter":4},
+  {"title":"西墙的空龛","description":"雩阶殿西墙留着一处空龛，龛中原有何物以及为何迁走，至今没有可靠解释。","status":"planted","planted_chapter":5},
+  {"title":"旧君不戴冠的缘由","description":"旧君停止戴冠已成公开事实，但他为何如此，宫中各人的猜想都未获证实。","status":"developing","planted_chapter":6},
+  {"title":"未曾寄出的家信","description":"郗定弦带着一封从未投递的家信，信要交给谁以及为什么迟迟不寄仍悬而未决。","status":"planted","planted_chapter":7},
+  {"title":"匣外的三点浅痕","description":"双脊匣外侧三点浅痕曾被误认作暗号，后来查明只是防止把匣子倒置的标记。","status":"resolved","planted_chapter":3,"resolved_chapter":5}
+]

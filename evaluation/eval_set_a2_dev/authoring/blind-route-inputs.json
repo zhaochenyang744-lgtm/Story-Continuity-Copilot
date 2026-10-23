@@ -1,0 +1,76 @@
+[
+  {
+    "id": "a2d-route-01",
+    "input": "汤越晴递改单那会儿是哪段时间？帮我记到人物资料。",
+    "context": {
+      "page": "chapters"
+    }
+  },
+  {
+    "id": "a2d-route-02",
+    "input": "灰耳计时器都不出声了，资料里那行换成坏后的样子。",
+    "context": {
+      "page": "materials"
+    }
+  },
+  {
+    "id": "a2d-route-03",
+    "input": "门牌背后的旧孔已经交代透了，别再让伏笔挂着。",
+    "context": {
+      "page": "plan"
+    }
+  },
+  {
+    "id": "a2d-route-04",
+    "input": "给奚慕白的清洁费用另立一条事实，来源按正文写。",
+    "context": {
+      "page": "materials"
+    }
+  },
+  {
+    "id": "a2d-route-05",
+    "input": "程扣周四的工作安排，资料里现在是怎么写的？",
+    "context": {
+      "page": "materials"
+    }
+  },
+  {
+    "id": "a2d-route-06",
+    "input": "资料还写正常，第十四章灰耳计时器到底坏了吗？",
+    "context": {
+      "page": "chapters",
+      "chapter_number": 14
+    }
+  },
+  {
+    "id": "a2d-route-07",
+    "input": "这部分跟前面能不能对得上？",
+    "context": {
+      "page": "materials"
+    }
+  },
+  {
+    "id": "a2d-route-08",
+    "input": "我要接着往下写，先提醒我眼下哪些事已落定、哪些还悬着。",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21
+    }
+  },
+  {
+    "id": "a2d-route-09",
+    "input": "这部分跟前面能不能对得上？",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21,
+      "selection": "墙边的灰耳计时器亮着数字，陆纭珊看了一眼，仍按自己的表核对时间。"
+    }
+  },
+  {
+    "id": "a2d-route-10",
+    "input": "替我写封明天请半天事假的邮件，收件人是我主管。",
+    "context": {
+      "page": "overview"
+    }
+  }
+]

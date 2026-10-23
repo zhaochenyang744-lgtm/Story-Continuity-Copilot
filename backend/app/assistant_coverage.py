@@ -257,42 +257,6 @@ def with_unchecked_line(note: str | None) -> str:
     return f"{note.strip()}{UNCHECKED_LINE}" if note and note.strip() else UNCHECKED_LINE
 
 
-# A process line says what the assistant does next. A clause that names such an action stays (and the clause that carries it on:
-# "，以及拆除固定物后能否握稳"); the clause that retells the text ("第6章写的是砾穹舱", "温宥真在第19章获得……") goes.
-_STEP_VERB = re.compile(r"查|搜|读|核对|确认|看|检查|找|检索|浏览|验证|核实|复核|比较|比对|对比|对照|翻|提出")
-_STEP_LEAD = re.compile(r"^\s*(?:(?:我|再|先|并且?|还|也|然后|接着|之后|随后|同时|继续|去|会|将|要|需要)\s*)*")
-_CARRIES_ON = re.compile(r"^\s*(?:以及|还有|并且|同时|及|和|与)")
-STEP_VERB_WITHIN = 10  # after "我先" / "再去" the action may follow a few words ("我先在正文里搜索……"); without one it opens the clause
-
-
-def _is_step(clause: str) -> bool:
-    lead = _STEP_LEAD.match(clause)
-    verb = _STEP_VERB.search(clause, lead.end())
-    if verb is None or _STORY_SENTENCE.search(clause):
-        return False
-    # "霍予笺在第23章看到了新的接线" has a verb but is a scene: with no "我先" / "再去" in front, the clause has to open with the action.
-    return verb.start() - lead.end() <= (STEP_VERB_WITHIN if lead.end() else 0)
-
-
-def next_steps_only(line: str) -> str:
-    """The process line without the clauses that are not an action to come (or that tell what the text says). A line that is
-    all action is returned as it is; when nothing is left, an empty string."""
-    pieces = re.split(r"([，,；;。])", line)
-    kept, dropped, acting = [], False, False
-    for index in range(0, len(pieces), 2):
-        clause = pieces[index]
-        if not clause.strip():
-            continue
-        acting = _is_step(clause) or (acting and _CARRIES_ON.match(clause) is not None and not _STORY_SENTENCE.search(clause))
-        if acting:
-            kept.append(clause.strip())
-        else:
-            dropped = True
-    if not dropped:
-        return line
-    return "，".join(kept) + "。" if kept else ""
-
-
 def without_untrue(note: str | None, steps: list[dict[str, Any]]) -> str | None:
     """The note with every clause that `note_problems` objects to taken out, keeping the rest as written.
 

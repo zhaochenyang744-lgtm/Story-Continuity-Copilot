@@ -1,0 +1,22 @@
+{
+  "eval_set_a22_formal": {
+    "candidate_names": 39,
+    "names_overlap": 0,
+    "names_text_files": 389,
+    "normalized_reference_inputs": 475,
+    "overlap_name_indices": [],
+    "overlap_title_indices": [],
+    "task_source_files": 22,
+    "titles_overlap": 0
+  },
+  "eval_set_a2s2_formal": {
+    "candidate_names": 17,
+    "names_overlap": 0,
+    "names_text_files": 392,
+    "normalized_reference_inputs": 517,
+    "overlap_name_indices": [],
+    "overlap_title_indices": [],
+    "task_source_files": 22,
+    "titles_overlap": 0
+  }
+}

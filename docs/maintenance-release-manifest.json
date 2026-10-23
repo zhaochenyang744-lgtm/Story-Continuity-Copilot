@@ -472,6 +472,10 @@
       "target": "backend/app/assistant.py"
     },
     {
+      "source": "backend/app/assistant_actions.py",
+      "target": "backend/app/assistant_actions.py"
+    },
+    {
       "source": "backend/app/assistant_coverage.py",
       "target": "backend/app/assistant_coverage.py"
     },
@@ -524,6 +528,10 @@
       "target": "frontend-source/app/client/project/assistant-answer.tsx"
     },
     {
+      "source": "frontend/app/client/project/assistant-change.tsx",
+      "target": "frontend-source/app/client/project/assistant-change.tsx"
+    },
+    {
       "source": "frontend/app/client/project/assistant-compose.tsx",
       "target": "frontend-source/app/client/project/assistant-compose.tsx"
     },
@@ -558,6 +566,10 @@
     {
       "source": "frontend/app/client/project/assistant-start.tsx",
       "target": "frontend-source/app/client/project/assistant-start.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/change-ledger.tsx",
+      "target": "frontend-source/app/client/project/change-ledger.tsx"
     },
     {
       "source": "frontend/app/client/project/assistant-task.tsx",

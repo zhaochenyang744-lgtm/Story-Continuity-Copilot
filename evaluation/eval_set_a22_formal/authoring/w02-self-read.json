@@ -1,0 +1,266 @@
+{
+  "work": "w02",
+  "review_type": "author_full_canonical_reread",
+  "independent": false,
+  "chapter_coverage": 20,
+  "shared_draft_reviewed": "authoring/w02-draft.json",
+  "unresolved_findings": 0,
+  "fix_groups": [
+    {
+      "id": "W02-S01",
+      "chapters": [
+        14,
+        18,
+        20
+      ],
+      "before": [
+        "第五章那天清早",
+        "第三章看见的样子",
+        "第九章那场等候"
+      ],
+      "after": [
+        "发现灰团那天的经过",
+        "最初找出时的样子",
+        "先前那次等候"
+      ],
+      "reason": "删除故事正文中的叙事章号引用，改为人物可感知的情节内指代；指定依据原句未动。"
+    },
+    {
+      "id": "W02-S02",
+      "chapters": [
+        4
+      ],
+      "before": "上面讲狼在隔离区的观察",
+      "after": "上面讲迁入隔离区以后的观察安排",
+      "reason": "将尚在准备期的纸面内容明确写为未来安排，避免误读为动物已提前迁入。"
+    },
+    {
+      "id": "W02-S03",
+      "chapters": [
+        9
+      ],
+      "before": "有人提着一袋文件经过，匣角擦到门框",
+      "after": "有人提着硬文件袋经过，袋角擦到门框",
+      "reason": "消除未说明匣子的物理指代，避免与仍由郗弥川保管的菱耳匣混淆。"
+    },
+    {
+      "id": "W02-S04",
+      "chapters": [
+        9
+      ],
+      "before": "借出备用伞后直接回到旧牌下，稍后收伞回去",
+      "after": "陪同行至服务台窗口，明确接回伞后再回旧牌下",
+      "reason": "补明借伞与归还衔接，避免同一物件同时留在两人手中。"
+    },
+    {
+      "id": "W02-S05",
+      "chapters": [
+        10
+      ],
+      "before": "后半夜另一次短声的时段比前一次早得多",
+      "after": "后半夜另一次短声比传闻中惯常的时刻早得多",
+      "reason": "澄清比较对象是传闻时刻，而不是同一夜已经发生的前一次声响。"
+    },
+    {
+      "id": "W02-S06",
+      "chapters": [
+        15,
+        17
+      ],
+      "before": [
+        "她们去器材间",
+        "她们约好将背面对外",
+        "她们一起收起桌上的空盒"
+      ],
+      "after": [
+        "一行人去器材间",
+        "众人约好将背面对外",
+        "他们一起收起桌上的空盒"
+      ],
+      "reason": "混合人物组中有明确男性，修正群体代词；人物与动作均未改。"
+    },
+    {
+      "id": "W02-S07",
+      "chapters": [
+        16
+      ],
+      "before": "不是程序遗漏",
+      "after": "并非安排疏漏",
+      "reason": "去除与故事场景不合的程序措辞。"
+    },
+    {
+      "id": "W02-S08",
+      "chapters": [
+        20
+      ],
+      "before": [
+        "在不改变观察角度的位置找椅子，坐下后角度不同",
+        "车辆经过时在原位置看见相同移动"
+      ],
+      "after": [
+        "在不挡通道的位置找椅子，留清坐姿视角变化",
+        "车辆到来前起身回到最初站位，再核对移动"
+      ],
+      "reason": "补明身体高度与反射视角的实际变化、复位动作，避免同段物理条件自相矛盾。"
+    },
+    {
+      "id": "W02-S09",
+      "chapters": [
+        20
+      ],
+      "before": "指定的疑问",
+      "after": "原先的疑问",
+      "reason": "将出题式措辞改为故事内问题的自然称呼。"
+    }
+  ],
+  "draft_join": {
+    "status": "compatible",
+    "checks": [
+      "正文止于第五周周二，下一章为其后续日常；正文末未复展，草稿也未声称已复展。",
+      "麦恺寻已恢复正常步行，草稿中调整说明板无需拐杖，与状态一致。",
+      "薄映苓仍是日间饲养组协调员，已不负责夜巡；草稿没有恢复旧职责。",
+      "第20章已留待讨论说明板位置，杯子也留在值班台，草稿的两处接续相容。",
+      "菱耳匣仍归谌溪允、铃在新值班台、牌已封存、秤归温奉苇；草稿没有逆转。",
+      "连续空白、围栏低啸、失约便条保持未收；草稿未补答案。"
+    ]
+  },
+  "unverified_wording_recollection": {
+    "chapter": 3,
+    "remembered_wording": "暂时不知道（无旧字节证据的记忆）",
+    "current_wording": "郗弥川说眼下不知道",
+    "classification": "author_recollection_uncertain",
+    "external_change_claim": false,
+    "fact_effect": false,
+    "action": "保留当前canonical，不作所谓旧版本恢复；不计无意矛盾或外部修改。"
+  },
+  "final_status": "awaiting_independent_read",
+  "final_audit": {
+    "source_sha256": "0647b7814335459f59ca401cd250c6a0b2308816cfe83cbe4a5ac837868e962f",
+    "chapter_han": {
+      "1": 2973,
+      "2": 2896,
+      "3": 2821,
+      "4": 2854,
+      "5": 2966,
+      "6": 2985,
+      "7": 2846,
+      "8": 2966,
+      "9": 2959,
+      "10": 2888,
+      "11": 2903,
+      "12": 2910,
+      "13": 2915,
+      "14": 2860,
+      "15": 2859,
+      "16": 2830,
+      "17": 2924,
+      "18": 2959,
+      "19": 2974,
+      "20": 3106
+    },
+    "total_han": 58394,
+    "chapter_han_min": 2821,
+    "chapter_han_max": 3106,
+    "evidence": [
+      {
+        "kind": "stale_facts",
+        "chapter": 11,
+        "position": 2686,
+        "occurrences": 1
+      },
+      {
+        "kind": "stale_facts",
+        "chapter": 12,
+        "position": 2683,
+        "occurrences": 1
+      },
+      {
+        "kind": "stale_facts",
+        "chapter": 13,
+        "position": 2707,
+        "occurrences": 1
+      },
+      {
+        "kind": "stale_facts",
+        "chapter": 16,
+        "position": 2608,
+        "occurrences": 1
+      },
+      {
+        "kind": "stale_facts",
+        "chapter": 15,
+        "position": 2634,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 5,
+        "position": 2753,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 6,
+        "position": 2634,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 8,
+        "position": 2740,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 10,
+        "position": 2682,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 17,
+        "position": 2677,
+        "occurrences": 1
+      },
+      {
+        "kind": "missing_facts",
+        "chapter": 19,
+        "position": 2701,
+        "occurrences": 1
+      },
+      {
+        "kind": "resolved_unmarked",
+        "chapter": 9,
+        "position": 2730,
+        "occurrences": 1
+      },
+      {
+        "kind": "resolved_unmarked",
+        "chapter": 14,
+        "position": 2612,
+        "occurrences": 1
+      },
+      {
+        "kind": "resolved_unmarked",
+        "chapter": 18,
+        "position": 2627,
+        "occurrences": 1
+      },
+      {
+        "kind": "resolved_unmarked",
+        "chapter": 20,
+        "position": 2725,
+        "occurrences": 1
+      }
+    ],
+    "alias_quote_occurrences": [
+      1,
+      1,
+      1
+    ],
+    "utf8_no_bom": true,
+    "lf_only": true,
+    "repeated_sentences_20han_plus": 0,
+    "new_proper_names": 0
+  }
+}

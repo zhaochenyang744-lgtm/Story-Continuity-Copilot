@@ -2,7 +2,8 @@
 
 The author just writes; this module decides whether the sentence is a question about the work (`ask`, which also covers asking
 for advice), a request for a fix to the check result hanging on the box (`fix_issue`), a look back before writing (`recap`),
-a check of the selected passage (`check_passage`), or not about the work at all (`out_of_scope`).
+a check of the selected passage (`check_passage`), a change to the materials the author confirms (`change`, v2.0: a
+foreshadowing thread the text has resolved), or not about the work at all (`out_of_scope`).
 
 Rules first, the model only when the rules cannot decide. The model is shown the author's sentence and a few yes/no marks
 (the page, whether a passage is selected and how long, whether a check result hangs on the box, which chapter the draft is):
@@ -18,7 +19,7 @@ from typing import Any
 
 from .database import DomainError
 
-ROUTES = ("ask", "fix_issue", "recap", "check_passage", "out_of_scope")
+ROUTES = ("ask", "fix_issue", "recap", "check_passage", "change", "out_of_scope")
 ROUTE_TIMEOUT_SECONDS = 8
 ROUTE_MAX_TOKENS = 100
 # The words of the old mode buttons (and of the "+" menu's command): a sentence that is exactly one of them is not guessed at.
@@ -30,6 +31,7 @@ ask：问这部作品里的人、事、物、前后文，或者请助手根据�
 fix_issue：作者挂着一条检查结果，要你给这处问题的改法（"这里怎么改""帮我改顺""这个矛盾怎么处理比较好"）。
 recap：作者要开始写或接着写这一章，想先回顾前文（"前面写到哪了""动笔前帮我理一下"）。
 check_passage：作者选中了一段，想知道它和前文对不对得上、有没有写错（"这段有问题吗""和前面矛盾吗"）。
+change：作者要你把某件事记进资料、改掉资料里过时的记录，或者说某条伏笔已经收了（"把她手腕受伤记进事实""事实里罗盘还写在船上，改一下""雾钟那条线第 18 章已经收了"）。只是问资料里记着什么、某件事有没有发生（"事实里罗盘记的在谁手上？""她手腕受伤了吗？"），算 ask；要改的是正文，也算 ask。
 out_of_scope：和这部作品无关的事（写邮件、查天气、聊别的书、问你是谁）。请你直接替作者写下一章、写一段情节，算 ask，不算 out_of_scope：助手会解释它不替作者写。句子里有你不认识的人名、物名、地名（"玄蛉匣后来到谁手里了"），那是作品里的东西，算 ask，不算 out_of_scope。
 同一句话在不同情况下用法可以不同：挂着检查结果时"帮我看看这里"是 fix_issue，选中了一段时是 check_passage，两样都没有时是 ask。
 拿不准时 unsure 填 true，route 填 ask。
@@ -96,7 +98,7 @@ def messages_for(text: str, context: dict[str, Any], facts: RouteFacts) -> list[
 
 
 def parse(content: Any) -> tuple[str, bool]:
-    """The route and the unsure flag the model wrote; anything that is not one of the five uses is an unsure `ask`."""
+    """The route and the unsure flag the model wrote; anything that is not one of the six uses is an unsure `ask`."""
     try:
         data = json.loads(content) if isinstance(content, str) else None
     except ValueError:

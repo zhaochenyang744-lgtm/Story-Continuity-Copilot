@@ -7,6 +7,7 @@ Every formal set is written in a separate session, never read during development
 ## Assistant evaluation (v1.8.0)
 
 - `assistant_a1/`, `assistant_a1b/`, `assistant_a1c/` — the runner, scorer, judge and pre-registered thresholds (`SPEC.md`, `thresholds.py`) for the built-in assistant. A1 and A1b cover short works; A1c covers real chapter lengths.
+- `assistant_a2/` — the pre-registered thresholds (`SPEC.md`, `thresholds.py`) for v2.0's change task: the assistant proposes changes to the materials, the author confirms, and undo restores them.
 - Sets: `eval_set_a1_*`, `eval_set_a1b_*`, `eval_set_a1c_*`, `eval_set_a1cx_dev`, `eval_set_a1cs_formal`. Run with `python -m evaluation.assistant_a1.run --set <set> --runs <n> --run-id <id>`; `--dry-run` checks the set and the configuration without calling a model.
 
 ## Long-text checking

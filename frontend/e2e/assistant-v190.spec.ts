@@ -27,21 +27,21 @@ test.describe("助手输入框：自动判断用法", () => {
     await openAssistantTab(page);
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
     await expect(thread(page).getByRole("menuitemradio", { name: /^自动/ })).toHaveAttribute("aria-checked", "true");
     await page.keyboard.press("Escape");
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "改资料"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
     await openTab(visitor, await sampleWorkId(visitor), "workspace");
     await openAssistantTab(visitor);
     await modeButton(visitor, "自动").click();
-    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾"]);
+    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "改资料"]);
     await visitor.close();
   });
 
@@ -233,7 +233,7 @@ test.describe("助手输入框：自动判断用法", () => {
     await expect(line.locator("summary")).toBeVisible();
     await expect.poll(() => used(page)).toBe(before + 500);
     await line.locator("summary").click();
-    await expect(line.getByRole("menuitem")).toHaveText(["写前回顾"]);
+    await expect(line.getByRole("menuitem")).toHaveText(["写前回顾", "改资料"]);
     const changed = reroutePost(page);
     await line.getByRole("menuitem", { name: "写前回顾", exact: true }).click();
     expect((await changed).postDataJSON()).toEqual({ kind: "recap", context: { page: "writing" } });

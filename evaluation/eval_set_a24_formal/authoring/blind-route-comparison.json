@@ -1,0 +1,12 @@
+{
+  "total": 20,
+  "initial_agreement": 20,
+  "initial_disagreement_ids": [],
+  "initial_disagreements": 0,
+  "final_agreement": 20,
+  "unresolved": 0,
+  "proper_name_revisions_pending": 0,
+  "final_disagreement_ids": [],
+  "final_input_sha256": "4a605b445be0872d088259413614c1e5b84fc21e46e5dbe3fc8f352621026ce0",
+  "final_review_sha256": "53f655ecfe3fbe618f714202a52a0a5b4a0412b8ed73e9313609fbb8e7172571"
+}

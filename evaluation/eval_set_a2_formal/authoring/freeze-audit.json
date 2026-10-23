@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "branch": "eval/a2-authoring",
+  "base_commit": "e8520b393c3db9056e11b9e80c1231e6000ffeaa",
+  "protected_sha256": {
+    "evaluation/assistant_a2/SPEC.md": "34360f173ca5409ca6bf5d7f8b413bdd070a964ecf89c7d7feb2c7bd77e7fc8b",
+    "evaluation/assistant_a2/thresholds.py": "aa666832036e375c07b4f725f712616a27d3b294145080a12df08b605544a2a2",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9"
+  },
+  "module_exit_code": 0,
+  "absolute_path_exit_code": 0,
+  "absolute_output_equals_module": true,
+  "checker_sha256": "bcb94a83fedac09dba842011042a04d50abd8655995f8ab9e4ad6bf6e4a87cd6",
+  "manifest_sha256": "d5ca8c65e84c3f04d7ea485205e7acbc4c81e91fd44319bb1146818308ad0b4b",
+  "source_data_files": 7,
+  "negative_categories": 5,
+  "negative_examples": 6,
+  "negative_detected": 6,
+  "temporary_copies_removed": true,
+  "utf8_lf_no_bom": true,
+  "registered_files_changed": 0,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

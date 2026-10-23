@@ -1,0 +1,913 @@
+{
+  "reviewer": "write_f1_independent_w02_reader",
+  "independence": "authored formal w01 only; did not author formal w02 source/materials/draft/tasks; gold seen in this task review, not a blind route reviewer",
+  "status": "completed",
+  "method": "Prior full consecutive reading of all 20 source chapters, both materials, bible, metadata shared draft and self-review; then full field-by-field reading of all 28 serialized w02 tasks, all case rows, current action evidence and no_action positions; mechanical checks supplement semantic reading only.",
+  "source_reading_report": "authoring/w02-independent-source-review.json",
+  "counts": {
+    "source_chapters_full_read": 20,
+    "source_han": 58777,
+    "tasks": 28,
+    "action_tasks": 12,
+    "expected_actions": 15,
+    "add_fact": 6,
+    "change_fact": 5,
+    "resolve_thread": 4,
+    "no_action_tasks": 6,
+    "route_tasks": 10,
+    "verified_action_evidence_quotes": 15,
+    "verified_no_action_source_positions": 4,
+    "no_action_not_stated": 1,
+    "no_action_draft_structure": 1,
+    "first_findings": 1,
+    "resolved_findings": 1,
+    "unresolved_findings": 0,
+    "paraphrased_action_tasks": 10
+  },
+  "items": [
+    {
+      "id": "a2f-w02-action-01",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "由小艇驾驶身份及事故定位右肩伤；增加伤情而非改驾驶职务。要点保留右肩与整右臂无法抬举，不擅断骨折或恢复期。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-01",
+          "action_index": 1,
+          "chapter": 6,
+          "chapter_title": "第6章 停下来的翼",
+          "quote": "寇绚芜在停机事故中伤了右肩，整条右臂疼得无法抬起。",
+          "han_position": 2723,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-02",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "掌心听振指向起始见证人，大小两群是请求中的口语指代；正文新确立母群与幼群辨频，非重复起始听振方式，也不扩成完全理解群落语义。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-02",
+          "action_index": 1,
+          "chapter": 8,
+          "chapter_title": "第8章 两种颤动",
+          "quote": "仇籁宜能够区分母群与幼群的振频，不再把两个来源记成同一声部。",
+          "han_position": 2583,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-03",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "两项各自有十一、十三章事件；延迟一昼期及21到22开端精确。消毒限制收窄到含铜残留/活膜，不禁止一切消毒用品，也不声称损膜已恢复。",
+      "action_count": 2,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-03",
+          "action_index": 1,
+          "chapter": 11,
+          "chapter_title": "第11章 船长的空位",
+          "quote": "逯纭夷主动将离航推迟一昼期，原定第二十一昼期开端改为第二十二昼期开端。",
+          "han_position": 2636,
+          "verified": true
+        },
+        {
+          "task_id": "a2f-w02-action-03",
+          "action_index": 2,
+          "chapter": 13,
+          "chapter_title": "第13章 洁净的代价",
+          "quote": "邴呈苒发现群落表膜不能接触含铜消毒液，今天的紧缩正由擦拭布上的含铜残留引起。",
+          "han_position": 2621,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-04",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "两个缺项各自独立。通讯器仅留存经各方确认的交谈，不公开历史私信或自动外传；个人申请身份不等于许可获批或取消回舰资格。",
+      "action_count": 2,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-04",
+          "action_index": 1,
+          "chapter": 17,
+          "chapter_title": "第17章 留在桌上的声音",
+          "quote": "佘昼缈同意把私人通讯器留在地面作公开见证，只保存各方确认愿意留下的交谈。",
+          "han_position": 2546,
+          "verified": true
+        },
+        {
+          "task_id": "a2f-w02-action-04",
+          "action_index": 2,
+          "chapter": 19,
+          "chapter_title": "第19章 自己的来处",
+          "quote": "仉砚溯选择以个人身份申请长期驻留，而不以舰队成员的身份提出这次请求。",
+          "han_position": 2560,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-05",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "现持有权随第十章实物正式移交改变；人类保留的是空袋，不应继续保留旧持有人事实或同时补矛盾事实。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-05",
+          "action_index": 1,
+          "chapter": 10,
+          "chapter_title": "第10章 第三道脉纹",
+          "quote": "佘昼缈亲手打开袋锁，取出皱鳞核，正式移交给庹穆缇保管。",
+          "han_position": 2747,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-06",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "医疗复核已结束隔离并摘环交医者；后续行政旧页的残留是被纠正的记录，不是重新戴环。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-06",
+          "action_index": 1,
+          "chapter": 12,
+          "chapter_title": "第12章 环下的皮肤",
+          "quote": "医疗复核确认可以结束隔离，仉砚溯摘下红色隔离环，交给邴呈苒保存。",
+          "han_position": 2683,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-07",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "第十四章保存方式改浸养液而不再回干盒；应更新旧事实11，不仅另增相冲事实。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-07",
+          "action_index": 1,
+          "chapter": 14,
+          "chapter_title": "第14章 浮在中间",
+          "quote": "邴呈苒把零相螺针改为浸在养液中保存，不再放回干燥盒。",
+          "han_position": 2696,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-08",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "两旧值分别更新。认知范围是问句之后特定收束长静默；重新受理仅恢复递交，不代表长期许可发放。",
+      "action_count": 2,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-08",
+          "action_index": 1,
+          "chapter": 16,
+          "chapter_title": "第16章 已经结束的回答",
+          "quote": "颛绪泠这时真正懂得群落的长停顿是在拒绝，不再把它记为尚未收到回答。",
+          "han_position": 2739,
+          "verified": true
+        },
+        {
+          "task_id": "a2f-w02-action-08",
+          "action_index": 2,
+          "chapter": 18,
+          "chapter_title": "第18章 再次递来的入口",
+          "quote": "苔冠庭重新受理长期驻留申请，先前暂停接收请求的状态就此结束。",
+          "han_position": 2555,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-09",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "第三暗纹的自主闭合原因已由对照与幼群表达揭开；伏笔1初始仍planted，适用回收。直接伏笔操作话语故paraphrased=false。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-09",
+          "action_index": 1,
+          "chapter": 10,
+          "chapter_title": "第10章 第三道脉纹",
+          "quote": "皱鳞核的第三条脉纹总暗，是幼群拒绝被代言时主动闭合了对应通路。",
+          "han_position": 2622,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-10",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "两闪的回流原因有空环对照，回收伏笔2；不将设备误报解释扩成所有感染风险不存在。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-10",
+          "action_index": 1,
+          "chapter": 12,
+          "chapter_title": "第12章 环下的皮肤",
+          "quote": "隔离环离庭后的两次亮光来自测量回流，并非感染信号，离庭位置改变时回接点也随之移位。",
+          "han_position": 2572,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-11",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "干存破坏中性浮力及须浸养维持状态由十四章完整对照支持；回收伏笔3。首发现的paraphrased标志已由主代理改false并在两文件一致，详见W02-T01。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-11",
+          "action_index": 1,
+          "chapter": 14,
+          "chapter_title": "第14章 浮在中间",
+          "quote": "零相螺针轻触湿膜就侧转，是因干燥保存破坏了它在养液中应有的中性浮力。",
+          "han_position": 2559,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-action-12",
+      "suite": "action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "paraphrased",
+        "vague",
+        "expected_actions"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "因果仅指问句后长静默表示拒绝；回收伏笔4而非把任何安静都释为拒绝。",
+      "action_count": 1,
+      "expected_actions_verified": true,
+      "request_context_verified": true,
+      "why_verified": true,
+      "after_points_scope_verified": true,
+      "evidence_verified": [
+        {
+          "task_id": "a2f-w02-action-12",
+          "action_index": 1,
+          "chapter": 16,
+          "chapter_title": "第16章 已经结束的回答",
+          "quote": "问句之后那段长静默表示群落拒绝了请求，不是在等人类继续翻译或补充条件。",
+          "han_position": 2636,
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "a2f-w02-no-action-01",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "请求同起始事实2，现无变更，不能重复增加；源文第一章精确支持别名。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          2
+        ],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "id": "a2f-w02-no-action-01",
+        "chapter": 1,
+        "han_position": 828,
+        "quote": "颛绪泠别名泠弧，舰上同僚在不便高声报全名的时候都这样唤她。"
+      }
+    },
+    {
+      "id": "a2f-w02-no-action-02",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "请求同起始事实14；第十一章延航仍是撤离运输职权，不让船长取得驻留表决权。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          14
+        ],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "id": "a2f-w02-no-action-02",
+        "chapter": 3,
+        "han_position": 1247,
+        "quote": "逯纭夷只负责撤离，不参加驻留听证的表决。"
+      }
+    },
+    {
+      "id": "a2f-w02-no-action-03",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "已全文读第1–20章及两材料；没有该出生月份。题面断言无从独立证成，不能作为自身依据；不伪造引句或位置。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "kind": "not_stated",
+        "coverage_chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "materials_checked": 2,
+        "quote": null,
+        "han_position": null
+      }
+    },
+    {
+      "id": "a2f-w02-no-action-04",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "请求反转了正文及事实19的不用镇静剂原则；关联对象正确，no_evidence拒绝增加相反医疗习惯。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          19
+        ],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "id": "a2f-w02-no-action-04",
+        "chapter": 4,
+        "han_position": 1597,
+        "quote": "邴呈苒不用镇静剂压制异种动作，不把人类嫌吵或嫌挤当成医疗理由。"
+      }
+    },
+    {
+      "id": "a2f-w02-no-action-05",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "只修改共享第21章草稿第三段的文字节奏，不请求三种资料动作；无资料对象和源文章节依据位置。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "kind": "draft_prose_edit",
+        "chapter": 21,
+        "paragraph": 3,
+        "draft_han_position": 246,
+        "quote": "佘昼缈带来一个装食物的软袋，袋口没扣紧，走几步便漏下一粒。",
+        "position_domain": "shared_draft; not source chapter"
+      }
+    },
+    {
+      "id": "a2f-w02-no-action-06",
+      "suite": "no_action",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "request",
+        "context",
+        "why",
+        "no_action_type",
+        "request_targets"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "事实9在正文仍成立，但请求是删除事实，超出三种支持动作；不能伪造成change_fact。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [
+          9
+        ],
+        "foreshadows": []
+      },
+      "request_context_verified": true,
+      "why_verified": true,
+      "source_evidence": {
+        "id": "a2f-w02-no-action-06",
+        "chapter": 2,
+        "han_position": 1287,
+        "quote": "瓣屿庭内不许开推进器，哪怕只为挪开一块挡路的金属也不例外。"
+      }
+    },
+    {
+      "id": "a2f-w02-route-01",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "填入人物卡是资料增加指令，伤情在正文明确；change成立。",
+      "expected_route": "change",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-02",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "把旧持有人资料随已移交物件改动是明确状态更正，非询问现值；change成立。",
+      "expected_route": "change",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-03",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "要求给已解开的伏笔画句号就是改回收状态；change成立。",
+      "expected_route": "change",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-04",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "要求跟上恢复受理的现状是更正既有资料，不等于审批申请；change成立。",
+      "expected_route": "change",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-05",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "若要记成事实是条件背景，真正请求是依据章节；尚未提出本次立即记入，ask成立。",
+      "expected_route": "ask",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-06",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "改之前先问旧值，本轮明确只查原值，ask成立。",
+      "expected_route": "ask",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-07",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "材料页无选段，接得上为一般作品问答；与同句写作页带选段项形成上下文差异。",
+      "expected_route": "ask",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-08",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "写前回顾前二十章所需事项，明确综合回顾请求，recap成立。",
+      "expected_route": "recap",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-09",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "写作页21带共享草稿完整精确选句，核对其与前情衔接，check_passage成立；不要求资料变更。",
+      "expected_route": "check_passage",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    },
+    {
+      "id": "a2f-w02-route-10",
+      "suite": "route",
+      "read_fields": [
+        "id",
+        "work",
+        "suite",
+        "input",
+        "context",
+        "expected_route",
+        "why"
+      ],
+      "conclusion": "pass",
+      "semantic_review": "现实十分钟做饭建议与作品及工具无关，out_of_scope成立。",
+      "expected_route": "out_of_scope",
+      "route_gold_semantic_review": true,
+      "blind_review": false,
+      "request_context_verified": true,
+      "why_verified": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "W02-T01",
+      "type": "paraphrased_flag",
+      "task_id": "a2f-w02-action-11",
+      "initial_observation": {
+        "paraphrased": true,
+        "evidence": "请求直接写“把那条伏笔标回收”，仍属资料动作话语。"
+      },
+      "initial_file_hash": "not_captured; retained first observed field, no retrospective hash invented",
+      "first_conclusion": "应false，不应计入改述题",
+      "repair_owner": "root",
+      "current_status": "resolved",
+      "recheck": {
+        "tasks_paraphrased": false,
+        "case_paraphrased": false,
+        "request_action_target_after_points_unchanged": true,
+        "both_current_files_rechecked": true
+      },
+      "impact": "仅布尔计数更正，不改请求或金标语义。"
+    }
+  ],
+  "unresolved_findings": 0,
+  "serialization_checks": {
+    "case_equals_tasks_after_only_evidence_fields_removed": true,
+    "all_15_evidence_chapter_titles_exact": true,
+    "all_15_evidence_quotes_unique_in_claimed_chapter": true,
+    "all_15_evidence_positions_gt_2500_han": true,
+    "no_action_4_source_quotes_unique_and_positions_exact": true,
+    "no_action_4_self_review_quotes_and_positions_present": true,
+    "route_07_09_input_identical": true,
+    "route_09_selection_exact_unique_shared_draft_substring": true
+  },
+  "source_hashes": {
+    "works/w02.md": "2af3a78c61d7461840f2380559fe2b4208d4f20191fe4c32fdb43c85dea1a93a",
+    "materials/w02-facts.json": "c936d92ac102d84da5d6a214d75c9b51678ecafea892aeccbd8b80e245e3fadb",
+    "materials/w02-foreshadows.json": "eb8bce1cb54422cf4e87843e00584b6f69631cfc4358bc6a773877bc47f989f6",
+    "tasks.json": "164689f514c581c0e8dbc7560d510103ba3148cb8c9763f738040b2a2d74b0d7",
+    "authoring/w02-case-drafts.json": "53737f68f92f74e9a735ff706cee048531c27c57abf2e3e2b3f095aff032bca7",
+    "authoring/work-metadata.json": "d4c59a29440b5f12dcd27477e813854efb34cde845db3d951ff61becfacb63a4",
+    "authoring/story-bible.md": "a5318c089fcc8af5a273d4db58b46d6b601dabad51da97023f32cc58190965e9",
+    "authoring/self-review.json": "61f43c144a545916d2539961a8eb904c68e86ec61eef79d34ec1076e3293715b",
+    "authoring/self-review.md": "b0122fcfca335db931c6cdd4bbcf270839f99b0d83aecc12083b3dd741a18b01",
+    "authoring/no-action-evidence.json": "acf0a1932fdbb083ad1130f3322a27c272a5ed8d17d076410b9c4af21867dad4",
+    "authoring/w02-independent-source-review.json": "5cb9610b284043a0f9b49b17edbd3240ed3fc45a048664651b98ad7b70efd0ee"
+  },
+  "projection_bindings": {
+    "serialization": "UTF-8 JSON with ensure_ascii=False, sort_keys=True, separators=(comma,colon); SHA-256",
+    "tasks_w02": "7f15763264a09815c8efe9afd19f184965580e05f5139f00773f6d1284a567d4",
+    "case_w02": "35849f8f6e4f0da89a0f3d39e71d01def3c350be868db8d6799719cb3d17bca6",
+    "metadata_w02": "1cb3934cdde9255b62e0d9f1def9efe9fc55d5ae02d6bcad0d088fc019492c7a"
+  },
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

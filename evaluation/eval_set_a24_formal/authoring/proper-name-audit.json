@@ -1,0 +1,15 @@
+{
+  "proper_names_revised": 3,
+  "replacement_occurrences_by_index": {
+    "1": 276,
+    "2": 150,
+    "3": 166
+  },
+  "files_changed": 18,
+  "short_names_added": 24,
+  "prior_complete_name_overlap": 0,
+  "initial_short_name_overlap": 3,
+  "replacement_candidate_overlap": 0,
+  "time_clarifications": 2,
+  "initial_blind_records_preserved": true
+}

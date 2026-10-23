@@ -1,0 +1,232 @@
+{
+  "status": "PASS",
+  "scope": "current_worktree_final_datasets_and_approved_legacy_corpus",
+  "excluded_before_traversal": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_a23_formal",
+    "eval_set_a2s3_formal",
+    "eval_set_v13_authoring"
+  ],
+  "reference_checks": {
+    "eval_set_a23_formal": {
+      "expected_task_sources": 23,
+      "actual_task_sources": 23,
+      "task_hashes_equal": 23,
+      "task_source_missing": 0,
+      "task_source_extra": 0,
+      "expected_text_files": 455,
+      "actual_text_files": 455,
+      "text_hashes_equal": 455,
+      "text_source_missing": 0,
+      "text_source_extra": 0,
+      "actual_old_normalized_inputs": 529,
+      "old_inputs_equal": true,
+      "input_groups_equal": true
+    },
+    "eval_set_a2s3_formal": {
+      "expected_task_sources": 23,
+      "actual_task_sources": 23,
+      "task_hashes_equal": 23,
+      "task_source_missing": 0,
+      "task_source_extra": 0,
+      "expected_text_files": 455,
+      "actual_text_files": 455,
+      "text_hashes_equal": 455,
+      "text_source_missing": 0,
+      "text_source_extra": 0,
+      "actual_old_normalized_inputs": 529,
+      "old_inputs_equal": true,
+      "input_groups_equal": true
+    }
+  },
+  "legacy_task_sources": 23,
+  "legacy_text_files": 455,
+  "legacy_normalized_inputs": 529,
+  "legacy_task_hash_map_sha256": "12b44c8afb6b13eece0fc8325d07080b206b20e6be4b4e4053d0227039fd23a4",
+  "legacy_text_hash_map_sha256": "b5ac4cfc513238c695c2d338b72b273dd8d155fcaeb979257faf23e366989566",
+  "legacy_inputs_sha256": "c90411a1b2737e36091b946c0accb691e2b30b4a466b046b5d9f06d7a7f30d2a",
+  "new_works": 3,
+  "new_chapters": 52,
+  "new_tasks": 68,
+  "new_candidate_names": 63,
+  "new_candidate_names_sha256": "8d91c4be4800a2a9e6c773c20751d1ce18e3c7d4c5b3ab8729383a7953535c5c",
+  "name_bindings": {
+    "eval_set_a23_formal": {
+      "candidate_names": 41,
+      "candidate_names_sha256": "4d4f2a10aff52189be111f9db44f85d268bd2ffc7dc74b60c8d9af7f9eb12276",
+      "snapshot_binding_equal": true,
+      "snapshot_names_overlap": 0
+    },
+    "eval_set_a2s3_formal": {
+      "candidate_names": 22,
+      "candidate_names_sha256": "43029e080d042f049db93eb85ddab353da595ab0a5da8923807192a59282e3b5",
+      "snapshot_binding_equal": true,
+      "snapshot_names_overlap": 0
+    }
+  },
+  "old_name_overlaps": [],
+  "cross_new_work_exact_name_pairs": 0,
+  "cross_new_work_name_text_mentions": 0,
+  "old_novelty_threshold": 0.8,
+  "old_novelty_errors": [],
+  "new_novelty_errors": [],
+  "allowed_same_input_exceptions": [
+    {
+      "ids": [
+        "a23f-w01-route-07",
+        "a23f-w01-route-09"
+      ],
+      "ratio": 1.0
+    },
+    {
+      "ids": [
+        "a23f-w02-route-07",
+        "a23f-w02-route-09"
+      ],
+      "ratio": 1.0
+    }
+  ],
+  "cross_set_novelty_matches": 0,
+  "copy8_field_checks": {
+    "request": 48,
+    "after_points": 61,
+    "input": 20
+  },
+  "copy8_errors": [],
+  "final_source_sha256": {
+    "evaluation/eval_set_a23_formal/tasks.json": "e437c5017bc6602ef32dd1cc93fb9a880f03d121e2ee729fbaca40f86a2ffa6c",
+    "evaluation/eval_set_a23_formal/works/w01.md": "a418c6baa96657c6204bf5c332f2ee42bd2898579d390b1c697560bba96f310e",
+    "evaluation/eval_set_a23_formal/works/w02.md": "25930bd407b4964291550a022d30a8d0db15e9a57c7a0f0f72f0be159c5d6cb5",
+    "evaluation/eval_set_a2s3_formal/tasks.json": "11f8d93ac57465273e61505c96f175b8a404da67b9813cb76df2e3183a110ccb",
+    "evaluation/eval_set_a2s3_formal/works/w01.md": "e68e007966fca6d23409961ef8d4c71cbfdc69f24e8fd549b86775ea34edc8f1"
+  },
+  "errors": [],
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "semantic_acceptance": false,
+  "incremental_updates": [
+    {
+      "sequence": 1,
+      "reason_code": "W02_TIME_REFERENCE_AND_TRANSPORT_ROLE_CLARIFICATION",
+      "root_reported_replacement_fragments": 21,
+      "root_reported_affected_chapters": 6,
+      "scope": "w02_final_source_copy8_and_all_candidate_name_presence_cross_work_check",
+      "changed_source": "evaluation/eval_set_a23_formal/works/w02.md",
+      "source_sha256_before": "66c3dc05035beaf81d0fa540522f22aad1891a46ace1a91dbffea96440d42e14",
+      "source_sha256_after": "a5f3f856b64b51bc36f3c793cc90585c2d18a24b2c79049dff9aad27af61de0d",
+      "tasks_and_gold_and_shared_drafts_unchanged": {
+        "eval_set_a23_formal": true,
+        "eval_set_a2s3_formal": true
+      },
+      "other_final_source_changes": 0,
+      "legacy_revalidation_scope": "snapshot_hash_maps_and_normalized_input_hash_only",
+      "legacy_files_reread": 0,
+      "snapshot_checks": {
+        "eval_set_a23_formal": {
+          "task_sources": 23,
+          "text_files": 455,
+          "normalized_inputs": 529,
+          "task_hash_map_equal": true,
+          "text_hash_map_equal": true,
+          "inputs_equal": true
+        },
+        "eval_set_a2s3_formal": {
+          "task_sources": 23,
+          "text_files": 455,
+          "normalized_inputs": 529,
+          "task_hash_map_equal": true,
+          "text_hash_map_equal": true,
+          "inputs_equal": true
+        }
+      },
+      "candidate_names": 63,
+      "candidate_names_present": 63,
+      "candidate_names_sha256": "8d91c4be4800a2a9e6c773c20751d1ce18e3c7d4c5b3ab8729383a7953535c5c",
+      "candidate_name_list_unchanged": true,
+      "cross_new_work_exact_name_pairs": 0,
+      "cross_new_work_name_text_mentions": 0,
+      "old_name_overlap_result_reused": true,
+      "old_name_overlap_count": 0,
+      "old_novelty_result_reused": true,
+      "new_novelty_result_reused": true,
+      "sequence_matcher_calls": 0,
+      "copy8_w02_field_checks": {
+        "request": 18,
+        "after_points": 25,
+        "input": 10
+      },
+      "copy8_w02_errors": [],
+      "errors": [],
+      "status": "PASS",
+      "model_calls": 0,
+      "product_runs": 0,
+      "evaluation_runs": 0,
+      "semantic_acceptance": false
+    },
+    {
+      "sequence": 2,
+      "reason_code": "W02_RELATIVE_TIME_AND_PACKAGE_RETURN_FINAL_CLARIFICATION",
+      "root_reported_total_replacement_fragments": 33,
+      "root_reported_previous_replacement_fragments": 21,
+      "root_reported_additional_replacement_fragments": 12,
+      "root_reported_time_reference_fragments": 32,
+      "root_reported_transport_role_fragments": 1,
+      "scope": "w02_final_source_copy8_and_all_candidate_name_presence_cross_work_check",
+      "changed_source": "evaluation/eval_set_a23_formal/works/w02.md",
+      "source_sha256_before": "a5f3f856b64b51bc36f3c793cc90585c2d18a24b2c79049dff9aad27af61de0d",
+      "source_sha256_after": "25930bd407b4964291550a022d30a8d0db15e9a57c7a0f0f72f0be159c5d6cb5",
+      "w02_chapters": 20,
+      "w02_total_han": 60874,
+      "tasks_and_gold_and_shared_drafts_unchanged": {
+        "eval_set_a23_formal": true,
+        "eval_set_a2s3_formal": true
+      },
+      "other_final_source_changes": 0,
+      "legacy_revalidation_scope": "snapshot_hash_maps_and_normalized_input_hash_only",
+      "legacy_files_reread": 0,
+      "snapshot_checks": {
+        "eval_set_a23_formal": {
+          "task_sources": 23,
+          "text_files": 455,
+          "normalized_inputs": 529,
+          "task_hash_map_equal": true,
+          "text_hash_map_equal": true,
+          "inputs_equal": true
+        },
+        "eval_set_a2s3_formal": {
+          "task_sources": 23,
+          "text_files": 455,
+          "normalized_inputs": 529,
+          "task_hash_map_equal": true,
+          "text_hash_map_equal": true,
+          "inputs_equal": true
+        }
+      },
+      "candidate_names": 63,
+      "candidate_names_present": 63,
+      "candidate_names_sha256": "8d91c4be4800a2a9e6c773c20751d1ce18e3c7d4c5b3ab8729383a7953535c5c",
+      "candidate_name_list_unchanged": true,
+      "cross_new_work_exact_name_pairs": 0,
+      "cross_new_work_name_text_mentions": 0,
+      "old_name_overlap_result_reused": true,
+      "old_name_overlap_count": 0,
+      "old_novelty_result_reused": true,
+      "new_novelty_result_reused": true,
+      "sequence_matcher_calls": 0,
+      "copy8_w02_field_checks": {
+        "request": 18,
+        "after_points": 25,
+        "input": 10
+      },
+      "copy8_w02_errors": [],
+      "errors": [],
+      "status": "PASS",
+      "model_calls": 0,
+      "product_runs": 0,
+      "evaluation_runs": 0,
+      "semantic_acceptance": false
+    }
+  ]
+}

@@ -52,7 +52,7 @@ export function spokenResult(task: AssistantTask): string {
   if (isRecap(task.answer)) return `写前回顾完成了：第 ${task.answer.chapter_number} 章`;
   const answer = sentencesOf(task);
   const first = answer?.sentences[0]?.text ?? answer?.note ?? "";
-  return task.kind === "fix_issue" ? `助手给出了改法：${first}` : `助手回答了：${first}`;
+  return task.kind === "fix_issue" ? `助手给出了改法：${first}` : task.kind === "change" ? `助手给出了资料改动，等你确认：${first}` : `助手回答了：${first}`;
 }
 
 /** Why a new task was refused, in the author's words (never the code). */
@@ -85,7 +85,7 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
   }
 }
 
-const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法" };
+const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法", change: "回答和改动" };
 
 /** What went wrong with a task that ended without an answer; "没有计字数" only when nothing was charged. */
 export function failureText(task: AssistantTask, visitor: boolean): { text: string; retry: boolean } {

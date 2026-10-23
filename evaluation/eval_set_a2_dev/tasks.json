@@ -1,0 +1,662 @@
+{
+  "version": "a2-1",
+  "set_id": "a2-dev",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "下班前的那扇门",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "池澍宁",
+        "池秒",
+        "邵闻葭",
+        "葭姐",
+        "程以硕",
+        "程扣",
+        "贺谨棠",
+        "陆纭珊",
+        "龚序南",
+        "汤越晴",
+        "范秉遥",
+        "奚慕白",
+        "照榆市",
+        "衡杉大厦",
+        "青砚街",
+        "橘点卡夹",
+        "双岔门牌",
+        "灰耳计时器"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 把椅子挪近一点",
+        "body": "周一午休，池澍宁在二层门外停下，先把手机调成静音。屏幕里还有一张没填完的差旅表，催办的消息压在最上面。她原想站着把表填完，隔着玻璃看见邵闻葭搬来两把椅子，又觉得让别人隔着门等自己低头，实在有些奇怪。她收好手机，推门进去，把其中一把椅子接到手里。椅背的塑料边缘擦过掌心，带着刚擦洗过的凉意。\n\n贺谨棠把橘点卡夹放在桌子的里侧。她没有立即解开夹口，而是从包里取出一盒切好的梨，问谁还没吃午饭。程以硕指了指门外，说自己已经在电梯里把半个面包吃完，剩下半个正找不到合适的地方。范秉遥递来一张干净纸，让他先垫在手上。几个人围着一小块桌面腾挪东西，谁也没有把这段忙乱叫作会议开始。\n\n墙边的灰耳计时器亮着数字，陆纭珊看了一眼，仍按自己的表核对时间。汤越晴进门时用胳膊夹着外套，另一只手攥着一张折过两次的纸。她问今天能不能先听大家讲，最后再轮到自己。池澍宁把空椅子朝她推近了一点，说顺序可以临时商量，既然人已经坐下，就不用先解释为什么来得晚。\n\n龚序南将电脑留在了外面的工作台上，只带来一支笔。他说有两处显示还没改好，但今天先听使用的人怎样描述，免得自己又把看得见的按钮当成事情的全部。奚慕白把清洁车停在走廊划出的空位，没有将擦布放上桌。她坐下后先问，等会儿如果说到收尾，能不能让她把整个班次讲完。邵闻葭点头，顺手把正要展开的清单卷回去。\n\n窗边有人留下了一盆刚浇过水的小薄荷，叶尖上的水还没有落尽。程以硕挪椅子时碰到桌脚，杯里的梨汁晃了一下，贺谨棠用纸托住盒底，没有责怪他。汤越晴也笑了，终于把那张折纸摊在膝头。门外传来电梯抵达的声音，池澍宁抬起头，又把目光放回桌旁，等第一个愿意开口的人把话说完整。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a2d-action-01",
+      "work": "w01",
+      "suite": "action",
+      "request": "汤越晴什么时候收纸改单，还有陆纭珊不吃哪类点心，这两项都记进事实。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 7
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "汤越晴",
+            "predicate": "纸质变更单收取时段"
+          },
+          "after_points": [
+            "纸改单仅在每周二的午休时段受理"
+          ],
+          "evidence_chapters": [
+            "第6章 午休窗口"
+          ],
+          "evidence_quotes": [
+            "汤越晴只在周二午休接收纸质接送变更单，其他时段不收纸单。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "陆纭珊",
+            "predicate": "饮食限制"
+          },
+          "after_points": [
+            "陆纭珊不碰花生",
+            "点心采购也避开含花生品种"
+          ],
+          "evidence_chapters": [
+            "第7章 点心盒"
+          ],
+          "evidence_quotes": [
+            "陆纭珊不吃花生，试办点心单已排除所有花生类点心。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false,
+      "why": "两项均已在正文明确，起始事实没有对应字段，需要同卡补两条而非覆盖其他资料。"
+    },
+    {
+      "id": "a2d-action-02",
+      "work": "w01",
+      "suite": "action",
+      "request": "备用指向板归谁收、清扫的钱从哪出，这两笔漏项一起补上吧。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 9
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "双岔门牌",
+            "predicate": "备用箭头保管人"
+          },
+          "after_points": [
+            "另备箭头由范秉遥收存"
+          ],
+          "evidence_chapters": [
+            "第8章 箭头朝哪边"
+          ],
+          "evidence_quotes": [
+            "范秉遥保管双岔门牌的备用箭头，借出和归还都由他登记。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "奚慕白",
+            "predicate": "试办清洁工时支付"
+          },
+          "after_points": [
+            "房间清扫单独走试办经费",
+            "不挤占日常保洁的工时"
+          ],
+          "evidence_chapters": [
+            "第9章 被漏掉的工时"
+          ],
+          "evidence_quotes": [
+            "奚慕白为试办安排的清洁工时从试办预算单独支付，不占原有保洁工时。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "why": "需要自行定位第八、九章，对应两个不同对象的遗漏事实，两处都补齐才完整。"
+    },
+    {
+      "id": "a2d-action-03",
+      "work": "w01",
+      "suite": "action",
+      "request": "给龚序南那条传图规矩留个底，省得家长下回把孩子资料原样发过去。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "龚序南",
+            "predicate": "故障截图要求"
+          },
+          "after_points": [
+            "报修图中须先挡去孩子姓名",
+            "带姓名的原始画面不能交给龚序南"
+          ],
+          "evidence_chapters": [
+            "第10章 截图上的方块"
+          ],
+          "evidence_quotes": [
+            "龚序南只接收遮去儿童姓名的故障截图，不收露出姓名的原图。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "why": "作者用留底表达补资料，目标是报修图的姓名遮挡规则，不能扩写为收集私人账户。"
+    },
+    {
+      "id": "a2d-action-04",
+      "work": "w01",
+      "suite": "action",
+      "request": "池秒后来把报名数压到多少户来着？按最后定下的数把这项记上。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "衡杉大厦",
+            "predicate": "每日参与上限"
+          },
+          "after_points": [
+            "每天接待至多六户",
+            "临时到访也不许超额"
+          ],
+          "evidence_chapters": [
+            "第15章 六张小椅子"
+          ],
+          "evidence_quotes": [
+            "池澍宁将每日参与上限定为六个家庭，临时来访也不能突破这个数。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "why": "虽含问句，后半句明确要求记录最终限额，需要检索正文定位而非只答数字。"
+    },
+    {
+      "id": "a2d-action-05",
+      "work": "w01",
+      "suite": "action",
+      "request": "橘点卡夹跟试办房间都换过了，资料还在老样子，把这两处跟上。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "当前保管者为贺谨棠"
+          ],
+          "evidence_chapters": [
+            "第11章 换一双保管的手"
+          ],
+          "evidence_quotes": [
+            "池澍宁把橘点卡夹交给贺谨棠，原件从此由贺谨棠保管。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "改在二楼里面的闲置房间",
+            "不再用七楼东侧会议室试办"
+          ],
+          "evidence_chapters": [
+            "第12章 楼梯下的一间房"
+          ],
+          "evidence_quotes": [
+            "临时照护空间改设在二层内侧空房，七层东侧小会议室不再作为试办场地。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "why": "两个目标都是既有旧记录，应分别改事实一和二，不能只新增新状态留下旧值。"
+    },
+    {
+      "id": "a2d-action-06",
+      "work": "w01",
+      "suite": "action",
+      "request": "周五收尾现在该找葭姐了，把资料里还是池秒的那项换掉。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "周五结束后的协调归邵闻葭",
+            "池澍宁已卸下这一时段的协调"
+          ],
+          "evidence_chapters": [
+            "第13章 星期五的空档"
+          ],
+          "evidence_quotes": [
+            "周五散场后的收尾协调改由邵闻葭负责，池澍宁不再承担这一时段的协调。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "why": "两个人的别名都已明示，换负责人是同一条动态事实的更新，不是增加新角色。"
+    },
+    {
+      "id": "a2d-action-07",
+      "work": "w01",
+      "suite": "action",
+      "request": "灰耳计时器那栏写得太乐观了，照它坏掉后的实际情况调整一下。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "蜂鸣器已坏",
+            "显示面板仍能倒计时"
+          ],
+          "evidence_chapters": [
+            "第14章 没响的那一分钟"
+          ],
+          "evidence_quotes": [
+            "灰耳计时器的蜂鸣已经失灵，屏幕倒数仍然正常。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "why": "应改声音状态同时保留可用的屏幕功能，不能笼统说设备完全不能使用。"
+    },
+    {
+      "id": "a2d-action-08",
+      "work": "w01",
+      "suite": "action",
+      "request": "把程扣周四能提前离楼、远程收尾的安排更新到事实里。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 16
+      },
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "周四下午五点可离开大厦",
+            "剩余整理工作线上完成",
+            "其余日期照常安排"
+          ],
+          "evidence_chapters": [
+            "第16章 五点的约定"
+          ],
+          "evidence_quotes": [
+            "程以硕获准每周四下午五点离楼，余下整理改为远程完成，其他日子不变。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false,
+      "why": "第十六章书面批准取代第五章旧安排，早走不等于免除后续工作或所有日期都可早走。"
+    },
+    {
+      "id": "a2d-action-09",
+      "work": "w01",
+      "suite": "action",
+      "request": "门牌那个孔已经解释清楚，不用再吊着，帮我给这条线画个句号。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 15
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "伏笔状态改为已回收",
+            "回收章节为第十五章"
+          ],
+          "evidence_chapters": [
+            "第15章 六张小椅子"
+          ],
+          "evidence_quotes": [
+            "门牌背面的旧孔是旧打印夹的定位孔，并不对应第二个房号。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "why": "旧孔来由已由附件与实物核实，应将伏笔一回收，保留正文查明的普通定位孔解释。"
+    },
+    {
+      "id": "a2d-action-10",
+      "work": "w01",
+      "suite": "action",
+      "request": "预算里多算的押金查清啦，这根线可以收起来了。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 16
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "伏笔状态改为已回收",
+            "回收章节为第十六章"
+          ],
+          "evidence_chapters": [
+            "第16章 五点的约定"
+          ],
+          "evidence_quotes": [
+            "预算里的两笔押金其实是同一笔先后显示，重复列项已撤回。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "why": "原流水证明是同一笔重复显示，且重复列项撤回，满足伏笔二的实际收束。"
+    },
+    {
+      "id": "a2d-action-11",
+      "work": "w01",
+      "suite": "action",
+      "request": "空房的敲击声都找到来源了，伏笔里给它标成已回收。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 17
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "伏笔状态改为已回收",
+            "回收章节为第十七章"
+          ],
+          "evidence_chapters": [
+            "第17章 响声落地"
+          ],
+          "evidence_quotes": [
+            "三下声响是自动遮光帘回位敲到窗框造成的，并非屋内有人敲击。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false,
+      "why": "七层声响经现场复现来自自动遮光帘，与已经坏掉的计时器蜂鸣是不同事件。"
+    },
+    {
+      "id": "a2d-action-12",
+      "work": "w01",
+      "suite": "action",
+      "request": "汤越晴留的那张没填字的纸，后来不是说开了吗？别再当悬念留着了。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "伏笔状态改为已回收",
+            "回收章节为第十八章"
+          ],
+          "evidence_chapters": [
+            "第18章 空白页给谁"
+          ],
+          "evidence_quotes": [
+            "那张空白页是汤越晴给临时改签者预留的背页，并非漏掉了一个家庭。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "why": "需自行查到第十八章背页用途和无漏户的说明，更新伏笔四而非删除原记录。"
+    },
+    {
+      "id": "a2d-no-action-01",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "池秒平常写字使右手，这个也替我记进事实。",
+      "context": {
+        "page": "materials"
+      },
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          6
+        ],
+        "foreshadows": []
+      },
+      "why": "事实六已经记录右手习惯，第1章也明确，重复请求不应新增同义事实。"
+    },
+    {
+      "id": "a2d-no-action-02",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "程扣和汤越晴以前是夫妻、现在共同带女儿，这个情况记一下。",
+      "context": {
+        "page": "materials"
+      },
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          21
+        ],
+        "foreshadows": []
+      },
+      "why": "事实二十一已经完整记录离婚和共育关系，第5章有直白叙述，不再加卡。"
+    },
+    {
+      "id": "a2d-no-action-03",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把池澍宁设定里的年龄填成三十二吧，按正文来。",
+      "context": {
+        "page": "chapters"
+      },
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      },
+      "why": "全书没有交代池澍宁年龄，不能将作者给出的新数字冒充正文核实的事实。"
+    },
+    {
+      "id": "a2d-no-action-04",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "按正文给池澍宁补一条：她一直都靠左手写字。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 1
+      },
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          6
+        ],
+        "foreshadows": []
+      },
+      "why": "第1章和现有事实六都明确右手，正文与请求相反，因此不给左手的变更卡。"
+    },
+    {
+      "id": "a2d-no-action-05",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把共享草稿开头改得干脆点，直接写她推门进来就开会。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      },
+      "why": "作者要求的是改草稿句子，超出三种资料动作，说明应由作者编辑正文。"
+    },
+    {
+      "id": "a2d-no-action-06",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "周末开放那条我决定不写了，把伏笔标成放弃。",
+      "context": {
+        "page": "plan"
+      },
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          6
+        ]
+      },
+      "why": "目标是伏笔六，但本版只支持标已回收，不支持放弃，不能偷偷用回收替代。"
+    },
+    {
+      "id": "a2d-route-01",
+      "work": "w01",
+      "suite": "route",
+      "input": "汤越晴递改单那会儿是哪段时间？帮我记到人物资料。",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "change",
+      "why": "前半问时间，后半明确要求把查证结果写入资料，整体是变更意图。"
+    },
+    {
+      "id": "a2d-route-02",
+      "work": "w01",
+      "suite": "route",
+      "input": "灰耳计时器都不出声了，资料里那行换成坏后的样子。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "口语要求替换旧状态，资料修改意图明确。"
+    },
+    {
+      "id": "a2d-route-03",
+      "work": "w01",
+      "suite": "route",
+      "input": "门牌背后的旧孔已经交代透了，别再让伏笔挂着。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "change",
+      "why": "口语要求结束伏笔记录的悬置状态，应进入改资料。"
+    },
+    {
+      "id": "a2d-route-04",
+      "work": "w01",
+      "suite": "route",
+      "input": "给奚慕白的清洁费用另立一条事实，来源按正文写。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "明确要求新增事实并查证支付来源。"
+    },
+    {
+      "id": "a2d-route-05",
+      "work": "w01",
+      "suite": "route",
+      "input": "程扣周四的工作安排，资料里现在是怎么写的？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "只是询问资料现有记法，没有要求改写记录，不能因出现资料一词便判变更。"
+    },
+    {
+      "id": "a2d-route-06",
+      "work": "w01",
+      "suite": "route",
+      "input": "资料还写正常，第十四章灰耳计时器到底坏了吗？",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 14
+      },
+      "expected_route": "ask",
+      "why": "询问正文是否发生变化，未下达任何资料变更指令。"
+    },
+    {
+      "id": "a2d-route-07",
+      "work": "w01",
+      "suite": "route",
+      "input": "这部分跟前面能不能对得上？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "资料页没有正文选区或检查结果，只是在问现有资料与前文关系，按问作品处理。"
+    },
+    {
+      "id": "a2d-route-08",
+      "work": "w01",
+      "suite": "route",
+      "input": "我要接着往下写，先提醒我眼下哪些事已落定、哪些还悬着。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_route": "recap",
+      "why": "下笔前要回顾当前进展与未决事项，未要求改资料。"
+    },
+    {
+      "id": "a2d-route-09",
+      "work": "w01",
+      "suite": "route",
+      "input": "这部分跟前面能不能对得上？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "墙边的灰耳计时器亮着数字，陆纭珊看了一眼，仍按自己的表核对时间。"
+      },
+      "expected_route": "check_passage",
+      "why": "同一句输入在writing页有明确的共享草稿选区，应核对所选段落与前文一致性。"
+    },
+    {
+      "id": "a2d-route-10",
+      "work": "w01",
+      "suite": "route",
+      "input": "替我写封明天请半天事假的邮件，收件人是我主管。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "请求处理作者现实请假邮件，与作品没有关系。"
+    }
+  ]
+}

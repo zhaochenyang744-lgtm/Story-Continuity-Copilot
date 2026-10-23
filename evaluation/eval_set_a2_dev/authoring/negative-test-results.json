@@ -1,0 +1,392 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "delete_change_task",
+      "manifest_rebuilt": true,
+      "returncode": 1,
+      "detected": true,
+      "checker_output": {
+        "status": "FAIL",
+        "works": 1,
+        "chapters": 20,
+        "chapter_han_min": 2635,
+        "chapter_han_max": 2978,
+        "source_han": 55328,
+        "draft_han": 626,
+        "names": 18,
+        "characters": 9,
+        "characters_with_aliases": 3,
+        "facts": 30,
+        "stale_facts": 5,
+        "missing_facts": 6,
+        "foreshadows": 8,
+        "foreshadow_statuses": {
+          "developing": 3,
+          "planted": 4,
+          "resolved": 1
+        },
+        "resolved_unmarked": 4,
+        "still_unresolved": 3,
+        "tasks": 27,
+        "scored_tasks": 27,
+        "suites": {
+          "action": 11,
+          "no_action": 6,
+          "route": 10
+        },
+        "primary_actions": {
+          "add_fact": 4,
+          "change_fact": 3,
+          "resolve_thread": 4
+        },
+        "action_entries": {
+          "add_fact": 6,
+          "change_fact": 3,
+          "resolve_thread": 4
+        },
+        "two_action_tasks": 2,
+        "paraphrased_actions": 8,
+        "vague_actions": 3,
+        "action_pages": [
+          "chapters",
+          "materials",
+          "overview",
+          "plan",
+          "writing"
+        ],
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "evidence_occurrences": 28,
+        "evidence_after_1500": 28,
+        "evidence_after_2500": 0,
+        "evidence_unique": 15,
+        "evidence_unique_after_1500": 15,
+        "evidence_position_min": 1690,
+        "evidence_position_max": 2310,
+        "novelty_files": 18,
+        "novelty_historical_inputs": 384,
+        "novelty_errors": 0,
+        "novelty_max_tested_similarity": 0.333333,
+        "novelty_excluded_sets": [
+          "eval_set_a1_reserve",
+          "eval_set_a1b_reserve",
+          "eval_set_a2_dev",
+          "eval_set_a2_formal",
+          "eval_set_a2s_formal",
+          "eval_set_v13_authoring"
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "tasks:suite_distribution",
+          "tasks:count",
+          "actions:primary_distribution"
+        ],
+        "scope": "this_set_and_permitted_historical_inputs",
+        "model_calls": 0,
+        "semantic_acceptance": false
+      }
+    },
+    {
+      "case": "alter_evidence_character",
+      "manifest_rebuilt": true,
+      "returncode": 1,
+      "detected": true,
+      "checker_output": {
+        "status": "FAIL",
+        "works": 1,
+        "chapters": 20,
+        "chapter_han_min": 2635,
+        "chapter_han_max": 2978,
+        "source_han": 55328,
+        "draft_han": 626,
+        "names": 18,
+        "characters": 9,
+        "characters_with_aliases": 3,
+        "facts": 30,
+        "stale_facts": 5,
+        "missing_facts": 6,
+        "foreshadows": 8,
+        "foreshadow_statuses": {
+          "developing": 3,
+          "planted": 4,
+          "resolved": 1
+        },
+        "resolved_unmarked": 4,
+        "still_unresolved": 3,
+        "tasks": 28,
+        "scored_tasks": 28,
+        "suites": {
+          "action": 12,
+          "no_action": 6,
+          "route": 10
+        },
+        "primary_actions": {
+          "add_fact": 4,
+          "change_fact": 4,
+          "resolve_thread": 4
+        },
+        "action_entries": {
+          "add_fact": 6,
+          "change_fact": 5,
+          "resolve_thread": 4
+        },
+        "two_action_tasks": 3,
+        "paraphrased_actions": 9,
+        "vague_actions": 4,
+        "action_pages": [
+          "chapters",
+          "materials",
+          "overview",
+          "plan",
+          "writing"
+        ],
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "evidence_occurrences": 29,
+        "evidence_after_1500": 29,
+        "evidence_after_2500": 0,
+        "evidence_unique": 15,
+        "evidence_unique_after_1500": 15,
+        "evidence_position_min": 1690,
+        "evidence_position_max": 2310,
+        "novelty_files": 18,
+        "novelty_historical_inputs": 384,
+        "novelty_errors": 0,
+        "novelty_max_tested_similarity": 0.333333,
+        "novelty_excluded_sets": [
+          "eval_set_a1_reserve",
+          "eval_set_a1b_reserve",
+          "eval_set_a2_dev",
+          "eval_set_a2_formal",
+          "eval_set_a2s_formal",
+          "eval_set_v13_authoring"
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "a2d-action-01:action:1:evidence:1:quote_verbatim_unique"
+        ],
+        "scope": "this_set_and_permitted_historical_inputs",
+        "model_calls": 0,
+        "semantic_acceptance": false
+      }
+    },
+    {
+      "case": "target_nonstale_fact",
+      "manifest_rebuilt": true,
+      "returncode": 1,
+      "detected": true,
+      "checker_output": {
+        "status": "FAIL",
+        "works": 1,
+        "chapters": 20,
+        "chapter_han_min": 2635,
+        "chapter_han_max": 2978,
+        "source_han": 55328,
+        "draft_han": 626,
+        "names": 18,
+        "characters": 9,
+        "characters_with_aliases": 3,
+        "facts": 30,
+        "stale_facts": 5,
+        "missing_facts": 6,
+        "foreshadows": 8,
+        "foreshadow_statuses": {
+          "developing": 3,
+          "planted": 4,
+          "resolved": 1
+        },
+        "resolved_unmarked": 4,
+        "still_unresolved": 3,
+        "tasks": 28,
+        "scored_tasks": 28,
+        "suites": {
+          "action": 12,
+          "no_action": 6,
+          "route": 10
+        },
+        "primary_actions": {
+          "add_fact": 4,
+          "change_fact": 4,
+          "resolve_thread": 4
+        },
+        "action_entries": {
+          "add_fact": 6,
+          "change_fact": 5,
+          "resolve_thread": 4
+        },
+        "two_action_tasks": 3,
+        "paraphrased_actions": 9,
+        "vague_actions": 4,
+        "action_pages": [
+          "chapters",
+          "materials",
+          "overview",
+          "plan",
+          "writing"
+        ],
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "evidence_occurrences": 30,
+        "evidence_after_1500": 30,
+        "evidence_after_2500": 0,
+        "evidence_unique": 15,
+        "evidence_unique_after_1500": 15,
+        "evidence_position_min": 1690,
+        "evidence_position_max": 2310,
+        "novelty_files": 18,
+        "novelty_historical_inputs": 384,
+        "novelty_errors": 0,
+        "novelty_max_tested_similarity": 0.333333,
+        "novelty_excluded_sets": [
+          "eval_set_a1_reserve",
+          "eval_set_a1b_reserve",
+          "eval_set_a2_dev",
+          "eval_set_a2_formal",
+          "eval_set_a2s_formal",
+          "eval_set_v13_authoring"
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "a2d-action-05:action:1:target_stale_fact"
+        ],
+        "scope": "this_set_and_permitted_historical_inputs",
+        "model_calls": 0,
+        "semantic_acceptance": false
+      }
+    },
+    {
+      "case": "alter_source_character",
+      "manifest_rebuilt": false,
+      "returncode": 1,
+      "detected": true,
+      "checker_output": {
+        "status": "FAIL",
+        "works": 1,
+        "chapters": 20,
+        "chapter_han_min": 2635,
+        "chapter_han_max": 2978,
+        "source_han": 55328,
+        "draft_han": 626,
+        "names": 18,
+        "characters": 9,
+        "characters_with_aliases": 3,
+        "facts": 30,
+        "stale_facts": 5,
+        "missing_facts": 6,
+        "foreshadows": 8,
+        "foreshadow_statuses": {
+          "developing": 3,
+          "planted": 4,
+          "resolved": 1
+        },
+        "resolved_unmarked": 4,
+        "still_unresolved": 3,
+        "tasks": 28,
+        "scored_tasks": 28,
+        "suites": {
+          "action": 12,
+          "no_action": 6,
+          "route": 10
+        },
+        "primary_actions": {
+          "add_fact": 4,
+          "change_fact": 4,
+          "resolve_thread": 4
+        },
+        "action_entries": {
+          "add_fact": 6,
+          "change_fact": 5,
+          "resolve_thread": 4
+        },
+        "two_action_tasks": 3,
+        "paraphrased_actions": 9,
+        "vague_actions": 4,
+        "action_pages": [
+          "chapters",
+          "materials",
+          "overview",
+          "plan",
+          "writing"
+        ],
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "evidence_occurrences": 30,
+        "evidence_after_1500": 30,
+        "evidence_after_2500": 0,
+        "evidence_unique": 15,
+        "evidence_unique_after_1500": 15,
+        "evidence_position_min": 1690,
+        "evidence_position_max": 2310,
+        "novelty_files": 18,
+        "novelty_historical_inputs": 384,
+        "novelty_errors": 0,
+        "novelty_max_tested_similarity": 0.333333,
+        "novelty_excluded_sets": [
+          "eval_set_a1_reserve",
+          "eval_set_a1b_reserve",
+          "eval_set_a2_dev",
+          "eval_set_a2_formal",
+          "eval_set_a2s_formal",
+          "eval_set_v13_authoring"
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "manifest:hash:works/w01.md"
+        ],
+        "scope": "this_set_and_permitted_historical_inputs",
+        "model_calls": 0,
+        "semantic_acceptance": false
+      }
+    }
+  ],
+  "temporary_copies_removed": true
+}

@@ -1,0 +1,300 @@
+{
+  "work": "w01",
+  "completed_chapters": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "new_names": [],
+  "timeline": [
+    {
+      "chapter": 1,
+      "time": "第一周周一，材料送达并由岑毓槿签收。"
+    },
+    {
+      "chapter": 2,
+      "time": "第一周周二，沙芮璇只看预演，未进入正式听音。"
+    },
+    {
+      "chapter": 3,
+      "time": "第一周周四，万俟昭澜与仲溯萤到场核对。"
+    },
+    {
+      "chapter": 4,
+      "time": "第一周周五，郑砚蕖首次到场，樊若箴交部分联络材料。"
+    },
+    {
+      "chapter": 5,
+      "time": "第二周周一，箱子交接；借用小箱的缺失转接头找回；真实未寄信封首次出现。"
+    },
+    {
+      "chapter": 6,
+      "time": "第二周周二，卡片上移至三层锁柜；耳机正式停用；窗内红线首次被看到。"
+    },
+    {
+      "chapter": 7,
+      "time": "第二周周三，纸屑查明；现场负责人更换。"
+    },
+    {
+      "chapter": 8,
+      "time": "第二周周五，卡痕查明；材料完成分柜。"
+    },
+    {
+      "chapter": 9,
+      "time": "第三周周一，资料间备用钥匙由仲溯萤集中收管。"
+    },
+    {
+      "chapter": 10,
+      "time": "第三周周二，沙芮璇本人确认并恢复当日听音；旧装订孔查清。"
+    },
+    {
+      "chapter": 11,
+      "time": "第三周周三，偏光册拆成散页，封面另置不透光纸套；借用小箱归还。"
+    },
+    {
+      "chapter": 12,
+      "time": "第三周周四，窗扣固定后双响消失；新一轮仍待逐人确认，旧提案留给明日。"
+    }
+  ],
+  "current_states": {
+    "双棱箱": "仝愿禾保管，仍负责开扣取物；纸屑与双棱箱自身包装隔板毛边拼合并分袋保存；非借用小箱隔板。",
+    "青脉卡": "三层锁柜浅盒保存；旧存卡槽凸点压出浅痕，已查明；旧槽单独装袋，现加平整托纸。",
+    "柏循安": "继续项目协调；当日现场负责人第7章已交郑砚蕖，不再替现场发承诺。",
+    "沙芮璇": "第10章本人重新确认并恢复当日范围的听音，第12章新一轮仍需再确认，未默认承诺。",
+    "偏光册": "第11章已拆成散页，内页保持原次序平放纸套，封面单独不透光套；圆点已在第10章查明为旧装订孔。",
+    "备用耳机": "第6章正式停用，柜底盒内待修；不能继续拿它演示。",
+    "走廊回声": "第12章松动窗扣经条件比较确认为声源，固定扣件后双响消失。",
+    "空值一列": "旧数据表末列空值未确定谁留下，未填任何人的同意或拒绝。",
+    "缺失转接头": "第5章从借用小箱包装隔板下找回，借用双方确认，已回收。",
+    "未寄信封": "第5章首次实际发现，封口完整，无可确认收件人；单独纸套保存，仍未寄出。",
+    "窗内红线": "第6章出现，隔窗可见，时刻或角度不同位置有变；未连续观察，原因不明。",
+    "材料分类": "第8章试题载荷和研究记录分柜，原件与副本在各类内部再区分，不再同夹层。",
+    "资料间备用钥匙": "第9章起由仲溯萤收管，挂在本人锁扣。",
+    "新一轮实验": "仍未开始；必须等每人重新确认，不能沿用旧点头。",
+    "旧提案": "第12章仅初看并保留夹放关系，拟次日核对来源；与主控第13章草稿衔接。"
+  },
+  "ordinary_objects": [
+    "普通纸套",
+    "签收纸",
+    "借用小箱及隔板",
+    "两把钥匙头裹布的钥匙",
+    "纸屑透明袋",
+    "联络纸袋",
+    "备用耳机",
+    "灰封面册子保护角",
+    "双棱箱自身防摩擦包装隔板",
+    "未寄信封及独立纸套",
+    "锁柜及平整卡片托纸",
+    "旧卡槽留证袋",
+    "不同版本复印件"
+  ],
+  "source_rules": [
+    "测试指令没有被故事人物执行为资料改动。",
+    "第3章载荷点到第4章才实际到场的联络员姓名，只作为混入的试题便条。",
+    "第4章载荷提到未寄信封，但当前章未出现真实信封，不提前回收后续伏笔。",
+    "人物别名分别在第1、2、3章用登记原句明确交代。",
+    "按主控收紧第3章载荷，直接指向事实23；其他合法变更与状态不变。"
+  ],
+  "next_batch": [],
+  "chapter_han": {
+    "1": 2931,
+    "2": 2875,
+    "3": 3129,
+    "4": 3002,
+    "5": 2904,
+    "6": 3030,
+    "7": 2964,
+    "8": 3031,
+    "9": 2825,
+    "10": 3082,
+    "11": 2885,
+    "12": 3039
+  },
+  "evidence_positions": [
+    {
+      "field": "aliases",
+      "chapter": 1,
+      "occurrences": 1,
+      "position": 315
+    },
+    {
+      "field": "aliases",
+      "chapter": 2,
+      "occurrences": 1,
+      "position": 1537
+    },
+    {
+      "field": "aliases",
+      "chapter": 3,
+      "occurrences": 1,
+      "position": 393
+    },
+    {
+      "field": "stale_facts",
+      "chapter": 5,
+      "occurrences": 1,
+      "position": 2716
+    },
+    {
+      "field": "stale_facts",
+      "chapter": 6,
+      "occurrences": 1,
+      "position": 2748
+    },
+    {
+      "field": "stale_facts",
+      "chapter": 7,
+      "occurrences": 1,
+      "position": 2682
+    },
+    {
+      "field": "stale_facts",
+      "chapter": 10,
+      "occurrences": 1,
+      "position": 2661
+    },
+    {
+      "field": "stale_facts",
+      "chapter": 11,
+      "occurrences": 1,
+      "position": 2682
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 3,
+      "occurrences": 1,
+      "position": 2679
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 4,
+      "occurrences": 1,
+      "position": 2670
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 6,
+      "occurrences": 1,
+      "position": 2619
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 8,
+      "occurrences": 1,
+      "position": 2705
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 9,
+      "occurrences": 1,
+      "position": 2653
+    },
+    {
+      "field": "missing_facts",
+      "chapter": 12,
+      "occurrences": 1,
+      "position": 2719
+    },
+    {
+      "field": "resolved_unmarked",
+      "chapter": 7,
+      "occurrences": 1,
+      "position": 2770
+    },
+    {
+      "field": "resolved_unmarked",
+      "chapter": 8,
+      "occurrences": 1,
+      "position": 2603
+    },
+    {
+      "field": "resolved_unmarked",
+      "chapter": 10,
+      "occurrences": 1,
+      "position": 2786
+    },
+    {
+      "field": "resolved_unmarked",
+      "chapter": 12,
+      "occurrences": 1,
+      "position": 2627
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 3,
+      "occurrences": 1,
+      "position": 2824
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 4,
+      "occurrences": 1,
+      "position": 2800
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 6,
+      "occurrences": 1,
+      "position": 2836
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 8,
+      "occurrences": 1,
+      "position": 2827
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 10,
+      "occurrences": 1,
+      "position": 2878
+    },
+    {
+      "field": "chapter_injections",
+      "chapter": 12,
+      "occurrences": 1,
+      "position": 2833
+    }
+  ],
+  "writer_self_read": {
+    "completed": true,
+    "chapter_coverage": 12,
+    "source_draft_compatibility": true,
+    "unresolved_unintended_conflicts": 0,
+    "repairs": [
+      {
+        "chapter": 3,
+        "item": "明确被带走的是新纸外的旧纸袋，保留双棱箱包装硬板；避免与第7章纸屑比对所需实体冲突。"
+      },
+      {
+        "chapter": 4,
+        "item": "移去昨天才接到的相对日期，避免与第一章周一签收相冲突。"
+      },
+      {
+        "chapter": 7,
+        "item": "将去楼下取手机照片改为核对照片与拍摄方位，明确移动目的。"
+      },
+      {
+        "chapter": 10,
+        "item": "将第一天回忆改为初见时，明确指第2章与沙芮璇见面。"
+      }
+    ],
+    "preserved_designed_states": {
+      "stale": 5,
+      "missing": 6,
+      "resolved_unmarked": 4,
+      "chapter_injections": 6
+    },
+    "note": "这是写作者整卷自读，不替代未参与写作的独立通读。"
+  },
+  "source_sha256": "756606da75c07bbe5772f0d879b06fa8f474efdb710841b96a02dd8a4fa45f70"
+}

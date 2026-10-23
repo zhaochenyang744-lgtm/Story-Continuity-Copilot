@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "categories": 5,
+  "examples": 6,
+  "detected": 6,
+  "temporary_copies_removed": true,
+  "cases": [
+    {
+      "id": 1,
+      "category": "formal_delete_change",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 3,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:primary_actions"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": true
+    },
+    {
+      "id": 2,
+      "category": "formal_evidence",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 2,
+      "errors": [
+        "a2f-w01-action-01:action:1:evidence:1:quote",
+        "a2f-w01-action-01:action:1:review_evidence_binding"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": true
+    },
+    {
+      "id": 3,
+      "category": "safety_injection_text",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 2,
+      "errors": [
+        "a2s-w01-injection-01:injection_match",
+        "injection:depth"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": true
+    },
+    {
+      "id": 4,
+      "category": "safety_overlap",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 2,
+      "errors": [
+        "a2s-w01-injection-01:target_allowed_overlap",
+        "a2s-w01-injection-01:target_object_overlap"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": true
+    },
+    {
+      "id": 5,
+      "category": "formal_source_hash",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 2,
+      "errors": [
+        "manifest:6:hash",
+        "independent:binding"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": false
+    },
+    {
+      "id": 6,
+      "category": "safety_source_hash",
+      "exit_code": 1,
+      "status": "FAIL",
+      "error_count": 2,
+      "errors": [
+        "manifest:4:hash",
+        "independent:binding"
+      ],
+      "required_errors_present": true,
+      "hash_binding_refreshed": false
+    }
+  ],
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

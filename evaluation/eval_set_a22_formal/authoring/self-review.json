@@ -1,0 +1,676 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "孟庭洵",
+        "许珈岚",
+        "于蓁洛",
+        "褚临禾",
+        "范知峤",
+        "陶爰宁",
+        "邝思澄",
+        "梁霁衡"
+      ],
+      "aliases": [
+        {
+          "name": "孟庭洵",
+          "alias": "洵铲",
+          "chapter": 1,
+          "quote": "队里把孟庭洵叫作洵铲，他听见这个别名就会回头。"
+        },
+        {
+          "name": "许珈岚",
+          "alias": "岚标",
+          "chapter": 2,
+          "quote": "许珈岚的别名是岚标，老队员报点时都这样唤她。"
+        },
+        {
+          "name": "于蓁洛",
+          "alias": "洛拓",
+          "chapter": 3,
+          "quote": "于蓁洛也叫洛拓，这个别名来自她总随身带着的拓纸。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 11,
+          "quote": "砂眼匣从这天起交由于蓁洛保管，孟庭洵当面交出了匣子。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 12,
+          "quote": "斑穗袋已移到北侧临时库，不再留在瓦翳棚的器材架上。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "许珈岚退出现场指挥，褚临禾从今日起接任发掘现场负责人。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 16,
+          "quote": "范知峤的左手拇指已经痊愈，今日独自握紧支架完成了拍摄。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 15,
+          "quote": "璺齿尺的中段已经断裂，剩下的尺身不能再用于现场比对。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "于蓁洛",
+          "predicate": "识读能力",
+          "chapter": 5,
+          "quote": "于蓁洛能辨认反印的封泥字，不必先把印纹翻成正向。"
+        },
+        {
+          "subject": "褚临禾",
+          "predicate": "防护限制",
+          "chapter": 6,
+          "quote": "褚临禾碰到松脂会起皮疹，因此处理封护材料时必须戴手套。"
+        },
+        {
+          "subject": "陶爰宁",
+          "predicate": "保护决定",
+          "chapter": 8,
+          "quote": "陶爰宁决定保留弧纹铜片上的蓝色附着物，先不作清除。"
+        },
+        {
+          "subject": "孟庭洵",
+          "predicate": "旧沟所知",
+          "chapter": 10,
+          "quote": "孟庭洵已经知道西边的斜沟是旧探沟，不是当年的排水沟。"
+        },
+        {
+          "subject": "凹脊陶筹",
+          "predicate": "持有人",
+          "chapter": 17,
+          "quote": "凹脊陶筹由梁霁衡收存，他把它放入自己的硬盒并扣紧。"
+        },
+        {
+          "subject": "砾汀遗址",
+          "predicate": "展示原则",
+          "chapter": 19,
+          "quote": "这次公开展示只标出已经核实的层位，存疑的年代全部留空。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 9,
+          "quote": "匣缝细砂来自破损的垫袋，换掉垫袋后匣盖再没有落下杂砂。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "新找到的铜角与弧纹铜片严密接合，缺角的去处终于查清。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 18,
+          "quote": "旧墨标的是废弃测线，尺尾浅槽的疑问到这里已经说清。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 20,
+          "quote": "棚后两道印痕是同一辆手车往返留下的，夜移遗存的猜疑被排除了。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a22f-w01-route-07",
+          "a22f-w01-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a22f-w01-route-01",
+          "a22f-w01-route-02",
+          "a22f-w01-route-03"
+        ],
+        "ask_like_change_ids": [
+          "a22f-w01-route-05",
+          "a22f-w01-route-06"
+        ]
+      },
+      "no_evidence_modes": {
+        "a22f-w01-no-action-03": "not_stated",
+        "a22f-w01-no-action-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "郗弥川",
+        "薄映苓",
+        "段棠岑",
+        "麦恺寻",
+        "裴汀晏",
+        "谌溪允",
+        "邢漫荞",
+        "温奉苇"
+      ],
+      "aliases": [
+        {
+          "name": "郗弥川",
+          "alias": "川笛",
+          "chapter": 1,
+          "quote": "郗弥川在同事中叫川笛，那是他从学生时代带来的别名。"
+        },
+        {
+          "name": "薄映苓",
+          "alias": "苓弦",
+          "chapter": 2,
+          "quote": "薄映苓的别名是苓弦，熟悉她的人在无线电里这样称呼她。"
+        },
+        {
+          "name": "段棠岑",
+          "alias": "岑格",
+          "chapter": 3,
+          "quote": "段棠岑也叫岑格，园里的人已经习惯这个短一些的别名。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 11,
+          "quote": "菱耳匣正式转交谌溪允收管，郗弥川把提耳放进她手里。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 12,
+          "quote": "沉叶铃已经移到岩洄隔离区的值班台，不再放在旧兽舍外。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "薄映苓不再负责夜间巡看，温奉苇接下了夜间巡看负责人的工作。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 16,
+          "quote": "麦恺寻的右踝已经恢复，今天不用拐杖也能正常行走。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 15,
+          "quote": "折脊牌已从开放入口卸下，背面朝外存进封闭的器材间。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "谌溪允",
+          "predicate": "感知限制",
+          "chapter": 5,
+          "quote": "谌溪允分不清红色和绿色，核对标记时要靠标记的形状。"
+        },
+        {
+          "subject": "段棠岑",
+          "predicate": "停用决定",
+          "chapter": 6,
+          "quote": "段棠岑决定停用外门的自动闭合装置，修好之前只作手动锁定。"
+        },
+        {
+          "subject": "裴汀晏",
+          "predicate": "用药决定",
+          "chapter": 8,
+          "quote": "裴汀晏没有给灰狼新增镇静用药，这次迁护先维持原有安排。"
+        },
+        {
+          "subject": "郗弥川",
+          "predicate": "叫声所知",
+          "chapter": 10,
+          "quote": "郗弥川已经确认夜里的短叫来自内舍，不是围栏外的流浪犬。"
+        },
+        {
+          "subject": "错点秤",
+          "predicate": "保管人",
+          "chapter": 17,
+          "quote": "错点秤由温奉苇保管，她将秤放进自己的采购柜后上了锁。"
+        },
+        {
+          "subject": "荫阔保育园",
+          "predicate": "复展条件",
+          "chapter": 19,
+          "quote": "恢复参观必须等观察记录满两周，不能只凭一次安静的巡视决定。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 9,
+          "quote": "多出的铃声来自松动的挂环，换紧挂环后沉叶铃不再自行轻响。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "灰色纤维与旧遮帘断口吻合，门边灰团并不是外人留下的。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 18,
+          "quote": "旧表上的双线是换班分界，两个人当面确认后再没有删改的疑问。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 20,
+          "quote": "后窗亮点是经过的保洁车灯反光，夜灯倒影的来源终于查明。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a22f-w02-route-07",
+          "a22f-w02-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a22f-w02-route-01",
+          "a22f-w02-route-02",
+          "a22f-w02-route-03"
+        ],
+        "ask_like_change_ids": [
+          "a22f-w02-route-05",
+          "a22f-w02-route-06"
+        ]
+      },
+      "no_evidence_modes": {
+        "a22f-w02-no-action-03": "not_stated",
+        "a22f-w02-no-action-04": "contradicted"
+      }
+    }
+  },
+  "tasks": {
+    "a22f-w01-action-01": {
+      "why": "正文第五章明确交代识读反印封泥的能力，起始资料没有此项；别名有全名绑定，忘记章号不妨碍定位。",
+      "evidence_positions": [
+        {
+          "chapter": 5,
+          "han_position": 2654
+        }
+      ]
+    },
+    "a22f-w01-action-02": {
+      "why": "第六章从误触、皮肤反应和当事人说明写明松脂限制，资料缺失；请求绕开原句表达限制和处理要求。",
+      "evidence_positions": [
+        {
+          "chapter": 6,
+          "han_position": 2656
+        }
+      ]
+    },
+    "a22f-w01-action-03": {
+      "why": "第八章明确要求暂留铜片上的蓝色附着物，现有资料未记；请求以不要擦掉的日常说法新增同一安排。",
+      "evidence_positions": [
+        {
+          "chapter": 8,
+          "han_position": 2647
+        }
+      ]
+    },
+    "a22f-w01-action-04": {
+      "why": "两个并列请求分别由第十章的辨沟结论和第十七章的交接直接支持，均不在起始事实中；它们没有互相替代。",
+      "evidence_positions": [
+        {
+          "chapter": 10,
+          "han_position": 2619
+        },
+        {
+          "chapter": 17,
+          "han_position": 2671
+        }
+      ]
+    },
+    "a22f-w01-action-05": {
+      "why": "第十一章完成保管交接，起始资料仍指旧保管人；请求用别名和交接指向唯一事实，现保管人应据正文更正。",
+      "evidence_positions": [
+        {
+          "chapter": 11,
+          "han_position": 2653
+        }
+      ]
+    },
+    "a22f-w01-action-06": {
+      "why": "第十二章写明袋子移到北侧临时库，旧架位置失效；请求改的是位置，不是袋子外观或新的保管人。",
+      "evidence_positions": [
+        {
+          "chapter": 12,
+          "han_position": 2625
+        }
+      ]
+    },
+    "a22f-w01-action-07": {
+      "why": "第十三章只更换现场负责人，许珈岚的项目负责人身份仍保留；更正应局限于失效的现场职责。",
+      "evidence_positions": [
+        {
+          "chapter": 13,
+          "han_position": 2660
+        }
+      ]
+    },
+    "a22f-w01-action-08": {
+      "why": "第十六章的恢复与第十五章的断尺是两个独立变化，均有旧事实可改；断裂不否认尺尾旧墨仍可观察。",
+      "evidence_positions": [
+        {
+          "chapter": 16,
+          "han_position": 2674
+        },
+        {
+          "chapter": 15,
+          "han_position": 2648
+        }
+      ]
+    },
+    "a22f-w01-action-09": {
+      "why": "第九章给出砂粒来自垫袋的直接验证，起始伏笔还未回收；含糊章号仍有唯一对象，评分点只写状态和回收章。",
+      "evidence_positions": [
+        {
+          "chapter": 9,
+          "han_position": 2606
+        }
+      ]
+    },
+    "a22f-w01-action-10": {
+      "why": "第十四章通过实物边缘拼合查清缺角，伏笔仍列未结；题目只要求标回收，金标不强制补写回收经过。",
+      "evidence_positions": [
+        {
+          "chapter": 14,
+          "han_position": 2667
+        }
+      ]
+    },
+    "a22f-w01-action-11": {
+      "why": "第十八章将尺尾旧墨与旧测线直接对照，足以回收；口语落账表示收线，未要求把解释写成新的要点。",
+      "evidence_positions": [
+        {
+          "chapter": 18,
+          "han_position": 2684
+        }
+      ]
+    },
+    "a22f-w01-action-12": {
+      "why": "第二十章用同车往返的连续证据交代双印来路，原伏笔仍未标回收；只登记回收状态和该章。",
+      "evidence_positions": [
+        {
+          "chapter": 20,
+          "han_position": 2634
+        }
+      ]
+    },
+    "a22f-w01-no-action-01": {
+      "why": "起始事实已记录地层记录员身份，正文第一章与之相符；重复添加同一主体、谓词没有新信息。",
+      "evidence_positions": [
+        {
+          "chapter": 1,
+          "han_position": 252
+        }
+      ]
+    },
+    "a22f-w01-no-action-02": {
+      "why": "移动出土物前保留原位记录的规则已在起始事实，正文第一章也直接交代；无需重复添卡。",
+      "evidence_positions": [
+        {
+          "chapter": 1,
+          "han_position": 2351
+        }
+      ]
+    },
+    "a22f-w01-no-action-03": {
+      "why": "全书和起始资料均未交代该人物生日；用户自带日期不构成作品依据，不能新增生日事实。",
+      "evidence_positions": []
+    },
+    "a22f-w01-no-action-04": {
+      "why": "第十二章实际位置是北侧临时库而非市内展厅；虽然旧事实确实需改，也不能照错误目的地出卡。",
+      "evidence_positions": [
+        {
+          "chapter": 12,
+          "han_position": 2625
+        }
+      ]
+    },
+    "a22f-w01-no-action-05": {
+      "why": "请求只编辑共享草稿的句式和语气，没有添加、更正事实或回收伏笔的资料意图。",
+      "evidence_positions": []
+    },
+    "a22f-w01-no-action-06": {
+      "why": "明确要求删除已有身份事实；删除事实不在A2支持的三类动作中，不替用户改写成更正或新增。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-01": {
+      "why": "要求更正资料保管人，是口语改资料而非询问。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-02": {
+      "why": "要求补入正文已交代的能力，口语表达新增资料。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-03": {
+      "why": "要求改变已有伏笔状态，语气虽口语仍是操作请求。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-04": {
+      "why": "明确要求把事实旧状态改成后来变化。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-05": {
+      "why": "虽然涉及事实和保管人，但只问当前记录并明确不改。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-06": {
+      "why": "询问改资料所需的出处，句子没有授权修改。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-07": {
+      "why": "资料页无选段或检查结果，缺具体文本时按问作品处理。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-08": {
+      "why": "明确下笔前回顾已完成章节及未结事项。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-09": {
+      "why": "同句在写作页具有选中文本，指向选段与前文衔接检查。",
+      "evidence_positions": []
+    },
+    "a22f-w01-route-10": {
+      "why": "私人生活报修短信与作品无关。",
+      "evidence_positions": []
+    },
+    "a22f-w02-action-01": {
+      "why": "第五章交代红绿辨色限制及形状补偿，起始资料没有此项；虽未给章号，人物和能力限制指向明确。",
+      "evidence_positions": [
+        {
+          "chapter": 5,
+          "han_position": 2753
+        }
+      ]
+    },
+    "a22f-w02-action-02": {
+      "why": "第六章明确停用外门自闭装置并改人工锁闭，资料缺该现行安排；请求以日常描述转述设备状态。",
+      "evidence_positions": [
+        {
+          "chapter": 6,
+          "han_position": 2634
+        }
+      ]
+    },
+    "a22f-w02-action-03": {
+      "why": "第八章限定本次迁护没有新增镇静药，资料中没有这一安排；不把本次决定外推为永久禁药规则。",
+      "evidence_positions": [
+        {
+          "chapter": 8,
+          "han_position": 2740
+        }
+      ]
+    },
+    "a22f-w02-action-04": {
+      "why": "第十章确认声音来源，第十七章另交接秤的保管；两个缺失事实可各自引用，不能以外侧猜测替代内舍结论。",
+      "evidence_positions": [
+        {
+          "chapter": 10,
+          "han_position": 2682
+        },
+        {
+          "chapter": 17,
+          "han_position": 2677
+        }
+      ]
+    },
+    "a22f-w02-action-05": {
+      "why": "第十一章完成保管责任交接，旧事实仍在旧人名下；别名已有绑定，只改保管人而不改变匣的外观。",
+      "evidence_positions": [
+        {
+          "chapter": 11,
+          "han_position": 2686
+        }
+      ]
+    },
+    "a22f-w02-action-06": {
+      "why": "第十二章下午另行迁铃至新值班台，旧兽舍位置已失效；不能把狼迁入和铃迁移混作同一瞬间。",
+      "evidence_positions": [
+        {
+          "chapter": 12,
+          "han_position": 2683
+        }
+      ]
+    },
+    "a22f-w02-action-07": {
+      "why": "第十三章夜巡负责人交接明确，旧负责人记录需更正；薄映苓的饲养组协调身份并未随之失效。",
+      "evidence_positions": [
+        {
+          "chapter": 13,
+          "han_position": 2707
+        }
+      ]
+    },
+    "a22f-w02-action-08": {
+      "why": "第十六章确认踝伤恢复和不再用拐，第十五章入口牌已卸存；两个旧状态都需跟进，不要求新增身份。",
+      "evidence_positions": [
+        {
+          "chapter": 16,
+          "han_position": 2608
+        },
+        {
+          "chapter": 15,
+          "han_position": 2634
+        }
+      ]
+    },
+    "a22f-w02-action-09": {
+      "why": "第九章以挂环现象解释多响，伏笔仍未标回收；不知道章号不等于没有正文依据，评分只要求状态和回收章。",
+      "evidence_positions": [
+        {
+          "chapter": 9,
+          "han_position": 2730
+        }
+      ]
+    },
+    "a22f-w02-action-10": {
+      "why": "第十四章通过旧遮帘断口和搬运证词确定灰团来路；题目只要标回收，不额外要求写解释。",
+      "evidence_positions": [
+        {
+          "chapter": 14,
+          "han_position": 2612
+        }
+      ]
+    },
+    "a22f-w02-action-11": {
+      "why": "第十八章把旧表双线明确为换班界限，起始伏笔仍悬置；待查退出来是口语的回收指令。",
+      "evidence_positions": [
+        {
+          "chapter": 18,
+          "han_position": 2627
+        }
+      ]
+    },
+    "a22f-w02-action-12": {
+      "why": "第二十章直接复现并说明窗边亮点来源，原伏笔未回收；不将仍未解决的空白、低啸或便条也一起收掉。",
+      "evidence_positions": [
+        {
+          "chapter": 20,
+          "han_position": 2725
+        }
+      ]
+    },
+    "a22f-w02-no-action-01": {
+      "why": "起始事实已经登记教育活动员身份，第三章正文相符；日常讲解描述未改变同一身份信息。",
+      "evidence_positions": [
+        {
+          "chapter": 3,
+          "han_position": 960
+        }
+      ]
+    },
+    "a22f-w02-no-action-02": {
+      "why": "独自进入外侧工作通道也要报到的规则在起始资料已存在，第二章正文直接支持；请求没有新条件。",
+      "evidence_positions": [
+        {
+          "chapter": 2,
+          "han_position": 1499
+        }
+      ]
+    },
+    "a22f-w02-no-action-03": {
+      "why": "正文没有给出该人物出生年份，现有资料也没有；用户指定年份不是证据，不能据此出资料卡。",
+      "evidence_positions": []
+    },
+    "a22f-w02-no-action-04": {
+      "why": "第十二章迁铃终点是隔离区值班台，不是游客服务台抽屉；不能仅因位置旧而把错误新值接受为金标。",
+      "evidence_positions": [
+        {
+          "chapter": 12,
+          "han_position": 2683
+        }
+      ]
+    },
+    "a22f-w02-no-action-05": {
+      "why": "要求重写选段节奏和动作表达，不涉及资料变动；共享草稿不是自动形成新事实的来源。",
+      "evidence_positions": []
+    },
+    "a22f-w02-no-action-06": {
+      "why": "请求放弃仍未解的伏笔；A2只支持回收且正文并未解决此线，不将放弃伪装成已回收。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-01": {
+      "why": "口语要求按交接改保管记录。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-02": {
+      "why": "要求新增人物感知限制相关资料，不是问是否发生。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-03": {
+      "why": "要求将已解释的伏笔移出未结状态，属于改资料。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-04": {
+      "why": "以口语要求更正物件当前状态。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-05": {
+      "why": "只查资料中的保管者，明示暂不改动。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-06": {
+      "why": "询问夜巡职责变化的依据，没有提出执行更正。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-07": {
+      "why": "没有选段的资料页含糊询问，按默认问作品处理。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-08": {
+      "why": "作者在继续写前索要未结事项的回顾。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-09": {
+      "why": "写作页选段给出了这里所指，需要对照前文检查衔接。",
+      "evidence_positions": []
+    },
+    "a22f-w02-route-10": {
+      "why": "手机套餐选择属于作品外事务。",
+      "evidence_positions": []
+    }
+  }
+}

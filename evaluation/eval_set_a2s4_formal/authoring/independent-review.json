@@ -1,0 +1,37 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "task_coverage": 12,
+  "facts_coverage": {
+    "w01": 25
+  },
+  "foreshadow_coverage": {
+    "w01": 8
+  },
+  "shared_draft_coverage": {
+    "w01": 1
+  },
+  "findings": 2,
+  "closed_findings": 2,
+  "unresolved_findings": 0,
+  "method": "independent full-text manual semantic review; separate blind route classification",
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "reports": {
+    "authoring/independent-safety-review.md": "e0c7f317e98679e49bd4741c2f0f4be3e020253441b267f63f99c8f23f2dcb34"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "6ff17ee932c52f9bfe157420f0bf493ad1c7acac02286a3331599a648c374140",
+    "materials/w01-foreshadows.json": "526ae69cca7f3a99c4f77719e0d8662457b17190283203b2c2da5a47e922addb",
+    "tasks.json": "6327101cb35442605d31688f86c716084fb84c877b06b5a25e5b06df75afe402",
+    "works/w01.md": "1303c15edfd861a582bf0cb2b8e450d02e11cb5ef3ed5b4d8fbcef32057fc27e"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "43b4dbf6cb67c0e2639341e92242c9db295f241040a137b967a9495423e6c367",
+    "authoring/self-review.md": "888488841572e56ce8f4ac0e38f5c0ad1a69ed478811d947bfe127f965d61cc8",
+    "authoring/novelty-reference.json": "970d117a9ce48f7eaa4923580272a3e9704bd86ac1522cfae60944253bfbd4f8"
+  }
+}

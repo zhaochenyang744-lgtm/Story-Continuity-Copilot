@@ -1,0 +1,106 @@
+{
+  "predictions": [
+    {
+      "id": "a22f-w02-route-03",
+      "route": "change",
+      "reason": "要求将已经有结论的待查条目更新，意图是改资料。"
+    },
+    {
+      "id": "a22f-w02-route-01",
+      "route": "change",
+      "reason": "明确要求按交接更换现有资料中的保管人。"
+    },
+    {
+      "id": "a22f-w02-route-09",
+      "route": "check_passage",
+      "reason": "写作页有选段，询问该段是否与前文冲突。"
+    },
+    {
+      "id": "a22f-w02-route-04",
+      "route": "change",
+      "reason": "要求让资料跟上已写事件后的状态。"
+    },
+    {
+      "id": "a22f-w02-route-06",
+      "route": "ask",
+      "reason": "询问交接的章节依据，没有要求修改资料。"
+    },
+    {
+      "id": "a22f-w02-route-05",
+      "route": "ask",
+      "reason": "查询已有资料内容，并明确暂不改动。"
+    },
+    {
+      "id": "a22f-w01-route-03",
+      "route": "change",
+      "reason": "口语要求结束已有结论的待查线状态。"
+    },
+    {
+      "id": "a22f-w01-route-05",
+      "route": "ask",
+      "reason": "要求核对当前记录的归属，并明确不改。"
+    },
+    {
+      "id": "a22f-w01-route-04",
+      "route": "change",
+      "reason": "明确要求更新事实记录中的可用状态。"
+    },
+    {
+      "id": "a22f-w02-route-07",
+      "route": "ask",
+      "reason": "在资料页询问一致性，没有选段或检查结果，按问作品处理。"
+    },
+    {
+      "id": "a22f-w01-route-02",
+      "route": "change",
+      "reason": "要求把尚未记下的能力补入资料。"
+    },
+    {
+      "id": "a22f-w02-route-08",
+      "route": "recap",
+      "reason": "动笔前要求梳理收尾时尚未了结的前情。"
+    },
+    {
+      "id": "a22f-w01-route-01",
+      "route": "change",
+      "reason": "明确要求依照已写交接更新保管记录。"
+    },
+    {
+      "id": "a22f-w01-route-06",
+      "route": "ask",
+      "reason": "询问正文何处支持资料记载，意图是查证依据。"
+    },
+    {
+      "id": "a22f-w01-route-10",
+      "route": "out_of_scope",
+      "reason": "要求处理与作品无关的现实短信写作。"
+    },
+    {
+      "id": "a22f-w01-route-08",
+      "route": "recap",
+      "reason": "接写下一章前回顾既有悬而未决事项，并限定不纳入草稿新事。"
+    },
+    {
+      "id": "a22f-w02-route-02",
+      "route": "change",
+      "reason": "明确要求将已知内容加入作品资料。"
+    },
+    {
+      "id": "a22f-w01-route-07",
+      "route": "ask",
+      "reason": "资料页泛问说法是否相冲，没有可检查的选段，按问作品处理。"
+    },
+    {
+      "id": "a22f-w02-route-10",
+      "route": "out_of_scope",
+      "reason": "手机套餐选择不属于作品问题。"
+    },
+    {
+      "id": "a22f-w01-route-09",
+      "route": "check_passage",
+      "reason": "写作页提供原样选段，问题直接要求检查该段与前文是否相冲。"
+    }
+  ],
+  "read_scope": "id_input_context_only",
+  "total": 20
+}

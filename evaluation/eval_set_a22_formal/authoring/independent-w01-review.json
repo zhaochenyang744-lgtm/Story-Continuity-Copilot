@@ -1,0 +1,593 @@
+{
+  "status": "completed",
+  "role": "independent_source_and_task_reader",
+  "independent": true,
+  "reviewer_authored_this_work": false,
+  "reviewer_authored_other_work": "w02",
+  "scope": "w01全文、28题、共享草稿、起始资料、bible及作者自读记录；未审定w02题目",
+  "method": "按章全文实读后逐题对照；不以搜索命中、字数或检查器结果代替语义阅读。程序只用于读取、计数、哈希及保存审读记录。",
+  "chapters_read": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "shared_draft_read": true,
+  "source_sha256": "b8b902032371b2f36ecb83e2529feb4b5b2c4192ec0d8b012208b3e105d3bc12",
+  "tasks_sha256": "0b6d701932db23ca7b33a5118843eb2aabc20eb6ca43e9a2d8b503d390cfaed9",
+  "materials_sha256": {
+    "materials/w01-facts.json": "2dc1b935ee0efe6b28b10e73c4c1430a8411a5da3011f82f32a2f9253b5acd25",
+    "materials/w01-foreshadows.json": "4cf9f3b5c5bca3de9784d3ce3b0284188555a0f6d96b8b15f121774d3b452036"
+  },
+  "findings": [
+    {
+      "id": "R01",
+      "chapter": [
+        3,
+        13
+      ],
+      "task_id": "a22f-w01-action-07",
+      "field": "materials/w01-facts.json[9]",
+      "origin": "lead_raised_independently_verified",
+      "detail": "第9条原为static_canon／褚临禾／身份／现场副负责人。第三章确是副职，第十三章明确不是代几天而是接任现场负责人；按原写法，该条还会成为既定五条之外的第六条过时静态事实。",
+      "status": "resolved",
+      "resolution": "主控仅将此条改为event_timeline／第三章时职务／现场副负责人／chapter3，并同步bible。独立审读复核实际文件，确认历史限定成立，第三、十三章及28题均未修改，既定五条过时目标不变。未采用‘初到职务’，因第三章并未确认是到职当日。",
+      "before_material_sha256": "e222326c316a6aa22dbdffdafd1f63cbec4128cbb075507cd231034f00abd4c8",
+      "after_material_sha256": "2dc1b935ee0efe6b28b10e73c4c1430a8411a5da3011f82f32a2f9253b5acd25"
+    }
+  ],
+  "unresolved_findings": 0,
+  "chapter_reviews": [
+    {
+      "chapter": 1,
+      "read": "full",
+      "focus": "初到、原位记录、匣子与背包的保管；初伸手写成险些松开，与随后未移动陶沿一致；匣子夜查后仍回包，未提前断开落砂接触链。",
+      "prose": "现场阻止移动、棚中说明、夜间查看分开推进；具体动作承接规则，结尾留砂疑问。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 2,
+      "read": "full",
+      "focus": "左拇指夹伤而非右手；处置后仅右手参与照片指导，暂不能握支架；项目与现场职责起初同属许珈岚；袋在棚架。",
+      "prose": "事故、返棚、工作替代与生活不便构成变化，未靠同一动作拖至章末。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 3,
+      "read": "full",
+      "focus": "反复核拓纸适用范围；副职身份属本章历史状态；尺完整、三角槽与旧墨可辨；竹片不是钢针，别名绑定明确。",
+      "prose": "桌边准备、对话分工和观察旧记号交替；专业能力没有被写成无条件万能。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 4,
+      "read": "full",
+      "focus": "首次补给、缺页清单留待后查；饮水与洗器材水分开；已知北侧旧探沟不能提前成为第十章西沟答案；北界石朝向仍未知。",
+      "prose": "运送、查单、现场认地与棚中安排有转换；几条新增线索各有动作来源。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 5,
+      "read": "full",
+      "focus": "镜子及翻转照片是前段相近干扰；直接识读反印不等于补出缺字；铜片缺角自然出现，旁人家中生日未给于蓁洛生日。",
+      "prose": "印件观察与层位编号讨论、铜片及饭前后对话交替；末段明确能力来自当场表现。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 6,
+      "read": "full",
+      "focus": "双印所处泥地原先已潮湿，支持第二十章雨前车痕；清点无失物不能解印痕；松脂普通试片试验，摘手套后的刷柄误触解释皮疹。",
+      "prose": "早晨印痕、普通材料试验、误触与解释构成独立推进；并非只在桌边反复谈同一限制。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 7,
+      "read": "full",
+      "focus": "包装中找回缺页，既有已回收线不另算四条未标；空白木签是否覆字继续等检测；受伤摄影者没有提前恢复左手抓握。",
+      "prose": "补给包装、核清单、木签与日常协作交叉，旧线收束与新线开放有区分。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 8,
+      "read": "full",
+      "focus": "普通托盘蓝布映色与铜片蓝附着分别核查，反光影响纹样可见度不等于可擦除；暂留不被偷换为已证明珍贵来源。",
+      "prose": "支撑、摄影、项目展示需求与保护决定之间有具体冲突；各人对话推动范围收紧。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 9,
+      "read": "full",
+      "focus": "风停工下架细鸣初现但未解；环境红砂是同章干扰；破垫袋与包中空匣接触、换垫后三日复查使漏砂收束，匣仍属孟。",
+      "prose": "收遮布、棚内分工、拆包及跨日复查推进；声音线与落砂线没有混作同一结论。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 10,
+      "read": "full",
+      "focus": "西沟的排水解释、旧绳与照片朝向均需核；北侧已知旧探沟不是充分依据；旧图及工作照片最终支持旧探沟，延伸范围不被一并确认。",
+      "prose": "地面辨沟、棚内旧图、户外比认及对话形成多次观察转向。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 11,
+      "read": "full",
+      "focus": "早晨仅提出可能交接，钥匙未先给出；下午明确责任、台面与取用，再实际移交；空匣至此未曾实际装遗存，解释此前垫袋核查范围。",
+      "prose": "拥挤桌面引出交接，钥匙旧习回忆及双方协商形成情绪与动作递进；不只复述金标。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 12,
+      "read": "full",
+      "focus": "空箱试路、袋试提到转弯处后返回，再正式送北库；匣不参加搬迁，仍在于的驻地台；暂取不等于位置改回。",
+      "prose": "驻地步行、北库支撑、试摆与正式迁移场景清楚，生活通路给搬迁具体理由。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 13,
+      "read": "full",
+      "focus": "永久现场交接而非短代班；许仍统管整个项目，褚承担现场最后确认；R01经历史谓词修正后不多出一条静态过时。",
+      "prose": "桌上分纸、现场核沟、队员惯性转问与交接后执行相互印证，权责变化不只靠结尾宣告。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 14,
+      "read": "full",
+      "focus": "早段轮廓相近及另一薄屑不代表可接合；铜角有附土来源链，最终断边严密相合；缺角去处已清，永久固定仍未实施，蓝色照留。",
+      "prose": "原盘、摄影、午饭电话及支撑比较多场景；临时工从想立刻上手到能讲自己的工作，有前章积累。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 15,
+      "read": "full",
+      "focus": "上午尺还完整可用是同章旧态干扰；风中木盖压断中段，尾槽及旧墨保全；替代普通尺接现场任务，断件不能假装修好。",
+      "prose": "扶纸、事故经过、电话与重整门口使责任讨论有具体动作，不是单场景训话。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 16,
+      "read": "full",
+      "focus": "摘最后软布、动作迟疑是恢复中的相近信息；后段独自正常握紧拍摄才确认痊愈；不给全部额外搬运不等于未痊愈；左手左右未互换。",
+      "prose": "支架试用、接手者感受、沿路交接与正式摄影转换；替代者劳动被保留，恢复不是抹去此前。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 17,
+      "read": "full",
+      "focus": "初期陶筹在陶照看托板，梁硬盒尚空是干扰；按移交记录托回棚后才正式入梁硬盒；私人物盒不等于私人所有遗存；北界石仍未明。",
+      "prose": "发现、清盒、选台、北边核查、收回与扣盒都有实际空间转换。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 18,
+      "read": "full",
+      "focus": "首个代号与现用线相近是干扰；一组标记、废止记录和变更图相合才结案；断尺仍不能比对，读清旧墨不修复尺或解决北界石。",
+      "prose": "斜光辨读、临时工浅盘试用、饭后复印页与展示借图相接；对易讲的旧图也作角色内回应。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 19,
+      "read": "full",
+      "focus": "先填大概年代或缩小暂定字样是同章干扰；最终只标核实层位、疑年空白；全章内试讲，来客未入，三未结不编谜底。",
+      "prose": "路线、不同高度读图、模拟来客、饭间泄气与二次试讲递进；中心虽是准备展示，仍有不同任务和位置。",
+      "unresolved": 0
+    },
+    {
+      "chapter": 20,
+      "read": "full",
+      "focus": "连续短片记录雨前已有湿泥上运支杆及空返，原图、车轮与准备记录互证；新湿土试走仅辅助，未替换原始证据；四条未标均有正文结论，三条仍开。",
+      "prose": "偶见片段、问话、普通空地试验、饭间受误解者及队内说明连续推进；末段物件位置与草稿前夜接上。",
+      "unresolved": 0
+    }
+  ],
+  "tasks_read": [
+    "a22f-w01-action-01",
+    "a22f-w01-action-02",
+    "a22f-w01-action-03",
+    "a22f-w01-action-04",
+    "a22f-w01-action-05",
+    "a22f-w01-action-06",
+    "a22f-w01-action-07",
+    "a22f-w01-action-08",
+    "a22f-w01-action-09",
+    "a22f-w01-action-10",
+    "a22f-w01-action-11",
+    "a22f-w01-action-12",
+    "a22f-w01-no-action-01",
+    "a22f-w01-no-action-02",
+    "a22f-w01-no-action-03",
+    "a22f-w01-no-action-04",
+    "a22f-w01-no-action-05",
+    "a22f-w01-no-action-06",
+    "a22f-w01-route-01",
+    "a22f-w01-route-02",
+    "a22f-w01-route-03",
+    "a22f-w01-route-04",
+    "a22f-w01-route-05",
+    "a22f-w01-route-06",
+    "a22f-w01-route-07",
+    "a22f-w01-route-08",
+    "a22f-w01-route-09",
+    "a22f-w01-route-10"
+  ],
+  "task_reviews": [
+    {
+      "id": "a22f-w01-action-01",
+      "status": "consistent",
+      "detail": "别名绑定于蓁洛；第五章反印识读为起始资料所缺，未给章号仍可唯一定位；vague=true成立，未把能读清的部分外推为补缺字。"
+    },
+    {
+      "id": "a22f-w01-action-02",
+      "status": "consistent",
+      "detail": "第六章副手指当时褚临禾，忌讳及空手上为防护限制口语；两要点可从同句直读；不把第十三章后的职务倒推到此。"
+    },
+    {
+      "id": "a22f-w01-action-03",
+      "status": "consistent",
+      "detail": "留个底及先别擦掉是新增保护决定的口语，限定铜片蓝附着，不泛化为全部材料永不可清理。"
+    },
+    {
+      "id": "a22f-w01-action-04",
+      "status": "consistent",
+      "detail": "第十章西沟所知、第十七章梁收存陶筹分别为缺失事实；两个动作都直接有句支持，不靠跨事件推断。"
+    },
+    {
+      "id": "a22f-w01-action-05",
+      "status": "consistent",
+      "detail": "保管那格指事实1，原人别名有绑定；十一章已实际交接，目标及现保管人唯一。"
+    },
+    {
+      "id": "a22f-w01-action-06",
+      "status": "consistent",
+      "detail": "改那格是资料更正而非建议正文挪袋；十二章先试后移，现位置北库，外观穗线不变。"
+    },
+    {
+      "id": "a22f-w01-action-07",
+      "status": "consistent_after_R01",
+      "detail": "只更正现场负责人事实3，保留许的项目负责人身份；事实9改为第三章历史职务后不再漏改当前静态副职。"
+    },
+    {
+      "id": "a22f-w01-action-08",
+      "status": "consistent",
+      "detail": "恢复左拇指、尺中段断损两个目标都有旧条；能使劲口语与直接痊愈句对应，断尺不可比对不否定其可读旧墨。"
+    },
+    {
+      "id": "a22f-w01-action-09",
+      "status": "consistent",
+      "detail": "前半带吧不消除后半收线指令；漏砂唯一，忘章号属vague；after_points仅已回收及第9章。"
+    },
+    {
+      "id": "a22f-w01-action-10",
+      "status": "consistent",
+      "detail": "明确标已回收而未要求补内容；铜角接合在14章直读；after_points仅状态及第14章。"
+    },
+    {
+      "id": "a22f-w01-action-11",
+      "status": "consistent",
+      "detail": "落账在旧墨已讲清的语境要求回收；第18章废弃测线结论直读；after_points不强制另加解释。"
+    },
+    {
+      "id": "a22f-w01-action-12",
+      "status": "consistent",
+      "detail": "退到结清是回收状态口语；第20章明确同车往返排除夜移；after_points仅状态及第20章。"
+    },
+    {
+      "id": "a22f-w01-no-action-01",
+      "status": "consistent",
+      "detail": "地层记录身份已是事实6，同主体别名没有新事实，already_recorded。"
+    },
+    {
+      "id": "a22f-w01-no-action-02",
+      "status": "consistent",
+      "detail": "事实19已有先留原位再移的规则，没有新增条件，already_recorded。"
+    },
+    {
+      "id": "a22f-w01-no-action-03",
+      "status": "consistent",
+      "detail": "全20章、25事实、bible和共享草稿未交代于的生日；他人家庭生日与该人物不相干，用户给日期没有正文依据，no_evidence。"
+    },
+    {
+      "id": "a22f-w01-no-action-04",
+      "status": "consistent",
+      "detail": "正文迁袋至北库，非余灿市展厅；虽事实2确已过时，不能接受用户指定错误新值，no_evidence。"
+    },
+    {
+      "id": "a22f-w01-no-action-05",
+      "status": "consistent",
+      "detail": "所选句确在共享草稿，拆句与调语气只改正文，prose_edit。"
+    },
+    {
+      "id": "a22f-w01-no-action-06",
+      "status": "consistent",
+      "detail": "明确删除梁身份事实13，删除不属三类支持动作，unsupported_kind，不伪装成更正。"
+    },
+    {
+      "id": "a22f-w01-route-01",
+      "status": "consistent",
+      "detail": "换过来指资料保管人，change。"
+    },
+    {
+      "id": "a22f-w01-route-02",
+      "status": "consistent",
+      "detail": "添上能力是口语资料新增，change。"
+    },
+    {
+      "id": "a22f-w01-route-03",
+      "status": "consistent",
+      "detail": "别再挂待查要求改已有伏笔状态，change。"
+    },
+    {
+      "id": "a22f-w01-route-04",
+      "status": "consistent",
+      "detail": "直接要求改可用状态，change。"
+    },
+    {
+      "id": "a22f-w01-route-05",
+      "status": "consistent",
+      "detail": "先核对且别动记录限定询问，ask。"
+    },
+    {
+      "id": "a22f-w01-route-06",
+      "status": "consistent",
+      "detail": "问出处而未授权改资料，ask。"
+    },
+    {
+      "id": "a22f-w01-route-07",
+      "status": "consistent",
+      "detail": "资料页无具体选段，含糊这儿按问作品默认ask。"
+    },
+    {
+      "id": "a22f-w01-route-08",
+      "status": "consistent",
+      "detail": "下笔前回顾前20章未结，明确排除草稿新动静，recap。"
+    },
+    {
+      "id": "a22f-w01-route-09",
+      "status": "consistent",
+      "detail": "与07同输入但写作页选中真实草稿句，对照前文检查该段，check_passage。此处为已见金标复核，不冒充盲判。"
+    },
+    {
+      "id": "a22f-w01-route-10",
+      "status": "consistent",
+      "detail": "报修短信明确与作品无关，out_of_scope。"
+    }
+  ],
+  "design_review": {
+    "stale_fact_targets": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "stale_facts": 5,
+    "missing_facts": 6,
+    "resolved_unmarked_targets": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "resolved_unmarked": 4,
+    "genuinely_open_thread_targets": [
+      5,
+      6,
+      7
+    ],
+    "genuinely_open_threads": 3,
+    "previously_resolved_thread_targets": [
+      8
+    ],
+    "resolve_points_status_and_chapter_only": true,
+    "paraphrased_true": 8,
+    "vague_true": 2,
+    "multi_action_tasks": 2,
+    "chapter_deep_evidence_checks": 15,
+    "similar_front_section_distractors_observed": 15,
+    "gold_directly_supported": 14,
+    "support_count_unit": "expected_actions；12题中2题各含2动作，总计14动作",
+    "note": "四条回收后的正文状态与起始伏笔未标是设计差异，不作为无意矛盾；第8条早已回收，不计入本轮四条。"
+  },
+  "draft_continuity_review": {
+    "status": "consistent",
+    "issues": 0,
+    "detail": "第19章内部试讲、第20章展示前一日、第21章访客未到相接；20章收旧遮布并准备新布，21章已换上暗绿布；现场职责仍在褚，许侧重项目材料；范手已恢复；匣、袋、陶筹、断尺当前状态无反转。21章台下包装绳是新日常物件，未把木签、北界石或细鸣另行解答。"
+  },
+  "author_self_read_recheck": {
+    "author_finding_ids": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06",
+      "P01"
+    ],
+    "current_text_rechecked": true,
+    "detail": "逐章看到了险些松手、包内匣接触链、摘手套后误触、雨前潮泥、试提返回、陶筹托回棚和普通替代尺等当前消歧写法。作者旧版全文未获本次快照，不声称独立复原每次修改前字节。"
+  },
+  "prose_observations": [
+    {
+      "id": "O01",
+      "status": "observed_nonblocking",
+      "detail": "各章确有对话和实际位置/时段转换。第11章钥匙回忆、第14章临时工家中电话、第15章失误后的电话、第16章接手者感受、第19章读图高度试验及第20章受猜疑者的路线，都使工作结论以外存在具体人物反应。仍能读出重复节律：若干章以普通小物件引出停手或纠偏，再核查、于后段明确事实、结尾保留边界；‘不能因为…就…’式限制语较密。这是实际阅读的行文观察，不被字数、无重复句或结构PASS抵消；本次未发现足以认定单场景硬拖或机械替换模板的段落。没有据此要求改动已冻结源文，也不把未发生的润色记成修复。"
+    },
+    {
+      "id": "O02",
+      "status": "observed_nonblocking",
+      "detail": "与本人所写w02相比，w01的冲突来自断面、图纸、原位来路、文字释读和现场权责，并有贯穿多章的无名临时工学习线；w02围绕动物迁护、声音位置、设备与游客路线展开，物理行动和约束不同。两作均偏日常协作、谨慎求证和反思收尾，文风家族相近；因此只确认具体场景与实体因果有区分，不宣称两作文学风格完全独立。"
+    }
+  ],
+  "counts": {
+    "chapters_read": 20,
+    "tasks_read": 28,
+    "action_tasks": 12,
+    "expected_actions": 14,
+    "no_action_tasks": 6,
+    "route_tasks": 10,
+    "facts_read": 25,
+    "foreshadows_read": 8,
+    "findings": 1,
+    "resolved_findings": 1,
+    "unresolved_findings": 0,
+    "prose_observations": 2,
+    "source_edits_by_reviewer": 0,
+    "tasks_edits_by_reviewer": 0,
+    "materials_edits_by_reviewer": 0,
+    "chapter_han": {
+      "1": 2891,
+      "2": 2841,
+      "3": 2877,
+      "4": 2859,
+      "5": 2891,
+      "6": 2889,
+      "7": 2839,
+      "8": 2893,
+      "9": 2838,
+      "10": 2895,
+      "11": 2915,
+      "12": 2895,
+      "13": 2899,
+      "14": 2905,
+      "15": 2890,
+      "16": 2961,
+      "17": 2944,
+      "18": 2961,
+      "19": 2930,
+      "20": 3063
+    },
+    "total_han": 58076,
+    "min_han": 2838,
+    "max_han": 3063
+  },
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "limits": "独立人工语义审读，不是产品运行或模型效果评测；route题已见金标，只作一致性复核，盲判由另一个独立流程承担。",
+  "proof_verification": [
+    {
+      "task_id": "a22f-w01-action-01",
+      "kind": "add_fact",
+      "chapter": 5,
+      "occurrences": 1,
+      "han_position": 2654
+    },
+    {
+      "task_id": "a22f-w01-action-02",
+      "kind": "add_fact",
+      "chapter": 6,
+      "occurrences": 1,
+      "han_position": 2656
+    },
+    {
+      "task_id": "a22f-w01-action-03",
+      "kind": "add_fact",
+      "chapter": 8,
+      "occurrences": 1,
+      "han_position": 2647
+    },
+    {
+      "task_id": "a22f-w01-action-04",
+      "kind": "add_fact",
+      "chapter": 10,
+      "occurrences": 1,
+      "han_position": 2619
+    },
+    {
+      "task_id": "a22f-w01-action-04",
+      "kind": "add_fact",
+      "chapter": 17,
+      "occurrences": 1,
+      "han_position": 2671
+    },
+    {
+      "task_id": "a22f-w01-action-05",
+      "kind": "change_fact",
+      "chapter": 11,
+      "occurrences": 1,
+      "han_position": 2653
+    },
+    {
+      "task_id": "a22f-w01-action-06",
+      "kind": "change_fact",
+      "chapter": 12,
+      "occurrences": 1,
+      "han_position": 2625
+    },
+    {
+      "task_id": "a22f-w01-action-07",
+      "kind": "change_fact",
+      "chapter": 13,
+      "occurrences": 1,
+      "han_position": 2660
+    },
+    {
+      "task_id": "a22f-w01-action-08",
+      "kind": "change_fact",
+      "chapter": 16,
+      "occurrences": 1,
+      "han_position": 2674
+    },
+    {
+      "task_id": "a22f-w01-action-08",
+      "kind": "change_fact",
+      "chapter": 15,
+      "occurrences": 1,
+      "han_position": 2648
+    },
+    {
+      "task_id": "a22f-w01-action-09",
+      "kind": "resolve_thread",
+      "chapter": 9,
+      "occurrences": 1,
+      "han_position": 2606
+    },
+    {
+      "task_id": "a22f-w01-action-10",
+      "kind": "resolve_thread",
+      "chapter": 14,
+      "occurrences": 1,
+      "han_position": 2667
+    },
+    {
+      "task_id": "a22f-w01-action-11",
+      "kind": "resolve_thread",
+      "chapter": 18,
+      "occurrences": 1,
+      "han_position": 2684
+    },
+    {
+      "task_id": "a22f-w01-action-12",
+      "kind": "resolve_thread",
+      "chapter": 20,
+      "occurrences": 1,
+      "han_position": 2634
+    },
+    {
+      "design_target": "missing_facts/6",
+      "chapter": 19,
+      "occurrences": 1,
+      "han_position": 2651,
+      "asked_by_current_tasks": false
+    }
+  ],
+  "encoding": {
+    "utf8_without_bom": true,
+    "lf_only": true
+  }
+}

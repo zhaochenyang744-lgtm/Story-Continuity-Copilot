@@ -1,0 +1,134 @@
+{
+  "total": 20,
+  "initial_agreement": 20,
+  "final_agreement": 20,
+  "disagreements": [],
+  "unresolved": 0,
+  "blind_source_sha256": {
+    "authoring/blind-route-w01.json": "a4dee56001e6a3e78160b0b9bcb229d752f89232d9f987df35aa145bf1e093dc",
+    "authoring/blind-route-w02.json": "43035b68fcae5b294ba40adddb60b4bcb60bb73d82fa7faad76d3a9986d4ce30"
+  },
+  "items": [
+    {
+      "id": "a23f-w01-route-07",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-01",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-10",
+      "prediction": "out_of_scope",
+      "expected": "out_of_scope",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-05",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-08",
+      "prediction": "recap",
+      "expected": "recap",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-03",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-09",
+      "prediction": "check_passage",
+      "expected": "check_passage",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-06",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-02",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w01-route-04",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-09",
+      "prediction": "check_passage",
+      "expected": "check_passage",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-03",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-06",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-10",
+      "prediction": "out_of_scope",
+      "expected": "out_of_scope",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-02",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-07",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-04",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-01",
+      "prediction": "change",
+      "expected": "change",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-08",
+      "prediction": "recap",
+      "expected": "recap",
+      "agreement": true
+    },
+    {
+      "id": "a23f-w02-route-05",
+      "prediction": "ask",
+      "expected": "ask",
+      "agreement": true
+    }
+  ],
+  "gold_changes_after_blind": 0
+}

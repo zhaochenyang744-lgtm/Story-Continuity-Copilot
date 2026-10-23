@@ -242,7 +242,8 @@ class ToolTests(AssistantCase):
 
 
 class CleanUpTests(AssistantCase):
-    TABLES = ("assistant_tasks", "assistant_steps", "assistant_sources", "assistant_proposals", "assistant_feedback")
+    TABLES = ("assistant_tasks", "assistant_steps", "assistant_sources", "assistant_proposals", "assistant_feedback",
+              "assistant_changes", "assistant_change_events")
 
     def seed_proposal(self):
         task_id = self.rows("SELECT id FROM assistant_tasks")[0]["id"]
@@ -251,6 +252,14 @@ class CleanUpTests(AssistantCase):
                       (f"prop-{uuid.uuid4()}", task_id, 1, "edit", "draft", 11, "改前", "改后", "理由", None, None, "pending", None, "2026-10-10T00:00:00+00:00"))
             c.execute("INSERT INTO assistant_feedback(task_id,user_id,verdict,reasons_json,created_at,updated_at) VALUES(?,?,?,?,?,?)",
                       (task_id, self.user_id, "up", "[]", "2026-10-10T00:00:00+00:00", "2026-10-10T00:00:00+00:00"))
+            # v2.0: a change the author confirmed, and its record, belong to the work too.
+            project_id = c.execute("SELECT project_id FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()[0]
+            change_id = f"achange-{uuid.uuid4()}"
+            c.execute("INSERT INTO assistant_changes(id,task_id,project_id,ordinal,kind,target_id,before_json,after_json,display_json,evidence_json,status,created_at) "
+                      "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", (change_id, task_id, project_id, 1, "resolve_thread", "foreshadow-x", "{}", "{}", "{}", "[]",
+                                                         "applied", "2026-10-10T00:00:00+00:00"))
+            c.execute("INSERT INTO assistant_change_events(id,change_id,project_id,event,actor_user_id,detail_json,created_at) VALUES(?,?,?,?,?,?,?)",
+                      (f"achevent-{uuid.uuid4()}", change_id, project_id, "applied", self.user_id, "{}", "2026-10-10T00:00:00+00:00"))
 
     def counts(self):
         return {table: self.rows(f"SELECT COUNT(*) n FROM {table}")[0]["n"] for table in self.TABLES}

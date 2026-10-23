@@ -1,0 +1,114 @@
+{
+  "reviewer": "write_f2",
+  "stage": "initial_blind",
+  "input_sha256": "7a19c877b962b6778161e4552894556f87d4477af3497f14fec2b664ed7d92b3",
+  "total": 20,
+  "gold_seen": false,
+  "new_tasks_read": 0,
+  "case_drafts_read": 0,
+  "root_plans_read": 0,
+  "self_review_md_read": 0,
+  "ambiguous_ids": [],
+  "reviews": [
+    {
+      "id": "a2f-w02-route-06",
+      "route": "ask",
+      "reason": "当前只要求先查询资料旧值，未来可能修改的前提没有构成本次修改指令。"
+    },
+    {
+      "id": "a2f-w01-route-03",
+      "route": "change",
+      "reason": "在计划页要求把已解释的线索结束，属于更新伏笔记录的直接命令。"
+    },
+    {
+      "id": "a2f-w01-route-09",
+      "route": "check_passage",
+      "reason": "写作页提供了具体选段，输入要求核对这段与前文安排是否一致。"
+    },
+    {
+      "id": "a2f-w02-route-02",
+      "route": "change",
+      "reason": "明确要求持有人的旧资料随正文中的移交更新，属于改资料。"
+    },
+    {
+      "id": "a2f-w01-route-07",
+      "route": "ask",
+      "reason": "资料页没有选段或已打开的检查结果，当前是在询问资料相关情节是否协调；指代未明不改变问作品用法。"
+    },
+    {
+      "id": "a2f-w02-route-10",
+      "route": "out_of_scope",
+      "reason": "询问现实生活中的菜谱，与本作品及其写作资料无关。"
+    },
+    {
+      "id": "a2f-w01-route-01",
+      "route": "change",
+      "reason": "明确命令补全资料中尚缺的一项事实。"
+    },
+    {
+      "id": "a2f-w02-route-08",
+      "route": "recap",
+      "reason": "以续写下一章为目的，要求回顾此前章节需要承接的事项。"
+    },
+    {
+      "id": "a2f-w01-route-05",
+      "route": "ask",
+      "reason": "询问新增事实是否获得正文支持，没有要求本次就产生修改。"
+    },
+    {
+      "id": "a2f-w02-route-04",
+      "route": "change",
+      "reason": "命令把过时的资料状态跟随当前进展更新。"
+    },
+    {
+      "id": "a2f-w01-route-10",
+      "route": "out_of_scope",
+      "reason": "请求排查现实电脑外设，与作品无关。"
+    },
+    {
+      "id": "a2f-w01-route-02",
+      "route": "change",
+      "reason": "直接要求更新资料中的保管人字段。"
+    },
+    {
+      "id": "a2f-w02-route-09",
+      "route": "check_passage",
+      "reason": "写作页带原文选段，要求检查所选文字与此前状态是否衔接。"
+    },
+    {
+      "id": "a2f-w01-route-08",
+      "route": "recap",
+      "reason": "明确在下笔前要求梳理前文仍需记住的事项。"
+    },
+    {
+      "id": "a2f-w02-route-03",
+      "route": "change",
+      "reason": "在计划页要求结束已解释的伏笔记录，属于资料状态修改。"
+    },
+    {
+      "id": "a2f-w01-route-04",
+      "route": "change",
+      "reason": "要求人物认知资料字段跟随正文已发生的变化。"
+    },
+    {
+      "id": "a2f-w02-route-07",
+      "route": "ask",
+      "reason": "资料页未提供选段或检查结果，属于询问作品中资料与前文状态能否接上；不据此启动选段检查。"
+    },
+    {
+      "id": "a2f-w01-route-06",
+      "route": "ask",
+      "reason": "仅查询现有事实记录的字段值，没有修改命令。"
+    },
+    {
+      "id": "a2f-w02-route-05",
+      "route": "ask",
+      "reason": "当前要求寻找潜在新增事实的依据章节，属于作品查询。"
+    },
+    {
+      "id": "a2f-w02-route-01",
+      "route": "change",
+      "reason": "明确要求把缺漏事件填入人物资料。"
+    }
+  ]
+}

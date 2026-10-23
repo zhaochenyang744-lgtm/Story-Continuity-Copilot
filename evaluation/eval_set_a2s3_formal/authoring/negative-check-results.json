@@ -1,0 +1,347 @@
+{
+  "tests": [
+    {
+      "id": "N03",
+      "mutation": "injection_character",
+      "caught": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "errors": [
+        "a2s3-w01-injection-01:injection_match",
+        "injection:depth"
+      ],
+      "checker_output": {
+        "chapter_injection_positions": [
+          {
+            "chapter": 4,
+            "han_position": 2994,
+            "id": "a2s3-w01-injection-02"
+          },
+          {
+            "chapter": 5,
+            "han_position": 2871,
+            "id": "a2s3-w01-injection-03"
+          },
+          {
+            "chapter": 6,
+            "han_position": 3037,
+            "id": "a2s3-w01-injection-04"
+          },
+          {
+            "chapter": 7,
+            "han_position": 2869,
+            "id": "a2s3-w01-injection-05"
+          },
+          {
+            "chapter": 8,
+            "han_position": 2981,
+            "id": "a2s3-w01-injection-06"
+          }
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "a2s3-w01-injection-01:injection_match",
+          "injection:depth"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "chapter": 6,
+          "fact": 2,
+          "foreshadow": 2,
+          "selection": 2
+        },
+        "injection_targets": {
+          "abandon_thread": 3,
+          "add_fact": 1,
+          "change_fact": 2,
+          "delete_fact": 4,
+          "resolve_thread": 2
+        },
+        "model_calls": 0,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 529,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 3,
+          "change": 6,
+          "recap": 3
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "status": "FAIL",
+        "support_tasks": 0,
+        "tasks": 12,
+        "works": {
+          "w01": {
+            "aliases": 3,
+            "chapter_han_max": 3272,
+            "chapter_han_min": 3046,
+            "chapters": 12,
+            "characters": 8,
+            "draft_han": 762,
+            "evidence_after1500": 24,
+            "evidence_han_max": 2919,
+            "evidence_han_min": 2685,
+            "evidence_occurrences": 24,
+            "evidence_position_buckets": {
+              "1501_2500": 0,
+              "1_1500": 0,
+              "2501_plus": 24
+            },
+            "facts": 25,
+            "foreshadow_states": {
+              "developing": 3,
+              "planted": 4,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "names": 22,
+            "resolved_unmarked": 4,
+            "stale_facts": 5,
+            "total_han": 37940,
+            "unique_after1500": 18,
+            "unique_after2500": 18,
+            "unique_evidence": 18
+          }
+        }
+      },
+      "temporary_integrity_refreshed": true
+    },
+    {
+      "id": "N04",
+      "mutation": "target_allowed_overlap",
+      "caught": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "errors": [
+        "a2s3-w01-injection-01:target_allowed_overlap",
+        "a2s3-w01-injection-01:target_object_overlap"
+      ],
+      "checker_output": {
+        "chapter_injection_positions": [
+          {
+            "chapter": 3,
+            "han_position": 3052,
+            "id": "a2s3-w01-injection-01"
+          },
+          {
+            "chapter": 4,
+            "han_position": 2994,
+            "id": "a2s3-w01-injection-02"
+          },
+          {
+            "chapter": 5,
+            "han_position": 2871,
+            "id": "a2s3-w01-injection-03"
+          },
+          {
+            "chapter": 6,
+            "han_position": 3037,
+            "id": "a2s3-w01-injection-04"
+          },
+          {
+            "chapter": 7,
+            "han_position": 2869,
+            "id": "a2s3-w01-injection-05"
+          },
+          {
+            "chapter": 8,
+            "han_position": 2981,
+            "id": "a2s3-w01-injection-06"
+          }
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "a2s3-w01-injection-01:target_allowed_overlap",
+          "a2s3-w01-injection-01:target_object_overlap"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "chapter": 6,
+          "fact": 2,
+          "foreshadow": 2,
+          "selection": 2
+        },
+        "injection_targets": {
+          "abandon_thread": 3,
+          "add_fact": 2,
+          "change_fact": 2,
+          "delete_fact": 3,
+          "resolve_thread": 2
+        },
+        "model_calls": 0,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 529,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 3,
+          "change": 6,
+          "recap": 3
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "status": "FAIL",
+        "support_tasks": 0,
+        "tasks": 12,
+        "works": {
+          "w01": {
+            "aliases": 3,
+            "chapter_han_max": 3272,
+            "chapter_han_min": 3046,
+            "chapters": 12,
+            "characters": 8,
+            "draft_han": 762,
+            "evidence_after1500": 24,
+            "evidence_han_max": 2919,
+            "evidence_han_min": 2685,
+            "evidence_occurrences": 24,
+            "evidence_position_buckets": {
+              "1501_2500": 0,
+              "1_1500": 0,
+              "2501_plus": 24
+            },
+            "facts": 25,
+            "foreshadow_states": {
+              "developing": 3,
+              "planted": 4,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "names": 22,
+            "resolved_unmarked": 4,
+            "stale_facts": 5,
+            "total_han": 37940,
+            "unique_after1500": 18,
+            "unique_after2500": 18,
+            "unique_evidence": 18
+          }
+        }
+      },
+      "temporary_integrity_refreshed": true
+    },
+    {
+      "id": "N05",
+      "mutation": "source_character",
+      "caught": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "errors": [
+        "manifest:4:hash",
+        "independent:binding"
+      ],
+      "checker_output": {
+        "chapter_injection_positions": [
+          {
+            "chapter": 3,
+            "han_position": 3052,
+            "id": "a2s3-w01-injection-01"
+          },
+          {
+            "chapter": 4,
+            "han_position": 2994,
+            "id": "a2s3-w01-injection-02"
+          },
+          {
+            "chapter": 5,
+            "han_position": 2871,
+            "id": "a2s3-w01-injection-03"
+          },
+          {
+            "chapter": 6,
+            "han_position": 3037,
+            "id": "a2s3-w01-injection-04"
+          },
+          {
+            "chapter": 7,
+            "han_position": 2869,
+            "id": "a2s3-w01-injection-05"
+          },
+          {
+            "chapter": 8,
+            "han_position": 2981,
+            "id": "a2s3-w01-injection-06"
+          }
+        ],
+        "copy_errors": 0,
+        "errors": [
+          "manifest:4:hash",
+          "independent:binding"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "chapter": 6,
+          "fact": 2,
+          "foreshadow": 2,
+          "selection": 2
+        },
+        "injection_targets": {
+          "abandon_thread": 3,
+          "add_fact": 1,
+          "change_fact": 2,
+          "delete_fact": 4,
+          "resolve_thread": 2
+        },
+        "model_calls": 0,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 529,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 3,
+          "change": 6,
+          "recap": 3
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "status": "FAIL",
+        "support_tasks": 0,
+        "tasks": 12,
+        "works": {
+          "w01": {
+            "aliases": 3,
+            "chapter_han_max": 3272,
+            "chapter_han_min": 3046,
+            "chapters": 12,
+            "characters": 8,
+            "draft_han": 762,
+            "evidence_after1500": 24,
+            "evidence_han_max": 2919,
+            "evidence_han_min": 2685,
+            "evidence_occurrences": 24,
+            "evidence_position_buckets": {
+              "1501_2500": 0,
+              "1_1500": 0,
+              "2501_plus": 24
+            },
+            "facts": 25,
+            "foreshadow_states": {
+              "developing": 3,
+              "planted": 4,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "names": 22,
+            "resolved_unmarked": 4,
+            "stale_facts": 5,
+            "total_han": 37940,
+            "unique_after1500": 18,
+            "unique_after2500": 18,
+            "unique_evidence": 18
+          }
+        }
+      },
+      "temporary_integrity_refreshed": false
+    }
+  ],
+  "passed": 3,
+  "failed": 0,
+  "temporary_copy_count": 3,
+  "temporary_cleanup_required": false,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "temporary_copies_removed": 3,
+  "cleanup_method": "exact_files_then_empty_directories_nonrecursive"
+}

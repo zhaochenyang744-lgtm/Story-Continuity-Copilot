@@ -97,3 +97,23 @@
   .thread-planted .num { font-size: 32px; }
   .confirm-block { padding: 16px; }
 }
+
+/* 助手改动记录 */
+.assistant-mark { justify-self: start; margin-top: 4px; }
+.ledger { margin-top: 24px; padding: 20px; border: 2px solid var(--c-rule); background: var(--c-surface); }
+.ledger-list { margin-top: 4px; }
+.ledger-list li { display: grid; grid-template-columns: 150px minmax(0, 1fr) 200px; gap: 8px 24px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
+.ledger-list li.undone .ledger-flow { opacity: .65; }
+.ledger-time { padding-top: 3px; }
+.ledger-copy { display: grid; gap: 4px; min-width: 0; }
+.ledger-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.ledger-flow { font-size: 15px; }
+.ledger-side { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.ledger-state { font-size: 13px; font-weight: 700; }
+.ledger-conflict { margin: 8px 0 0; }
+.ledger-conflict-text { display: grid; flex: 1 1 300px; gap: 4px; }
+.ledger-conflict-text ul { display: grid; gap: 2px; padding-left: 18px; list-style: disc; }
+@media (max-width: 720px) {
+  .ledger { padding: 14px; }
+  .ledger-list li { grid-template-columns: minmax(0, 1fr); }
+}

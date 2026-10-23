@@ -1,0 +1,45 @@
+{
+  "findings": [
+    {
+      "id": "R01",
+      "origin": "lead_and_independent-w01-review",
+      "status": "resolved",
+      "field": "facts[9]",
+      "resolution": "主控发现，独立审读者核对第三、十三章确认。只把副职记录改为第三章时职务的历史事件，避免将接任前身份误当当前静态设定；五个既定过时目标、全部源文和题目保持不变。",
+      "changes": [
+        {
+          "path": "materials/w01-facts.json",
+          "before_sha256": "e222326c316a6aa22dbdffdafd1f63cbec4128cbb075507cd231034f00abd4c8",
+          "after_sha256": "2dc1b935ee0efe6b28b10e73c4c1430a8411a5da3011f82f32a2f9253b5acd25"
+        }
+      ],
+      "independent_recheck": {
+        "record": "authoring/independent-w01-review.json",
+        "sha256": "7a91a27faf0803d073b86a744a23b9af76ea8c16c0beff8506225b8694b542b4"
+      }
+    },
+    {
+      "id": "F01",
+      "origin": "independent-w02-review",
+      "status": "resolved",
+      "field": "foreshadows[4].description",
+      "resolution": "独立全文审读指出资料把多次夜间观察扩大成每晚必现；仅将频率收紧为夜间曾出现，与第六、二十章可观察的范围一致，不改源文、状态或金标。",
+      "changes": [
+        {
+          "path": "materials/w02-foreshadows.json",
+          "before_sha256": "3757ce455ba51428e1183ca3d0ba97530598db5df5e484b290557c8b3fd8e851",
+          "after_sha256": "6aa022604725363df46ce52cd9f8accac9926f7ce3f76086783fe8b5515cbf3d"
+        },
+        {
+          "path": "authoring/w02-bible.json",
+          "before_sha256": "d449714c225c77feac732a18acf68f68443814dbca2415254716a06b53f65957",
+          "after_sha256": "5616f693f817bf2cd6a1847303f153902d7515ce521f411065c52ccc22f042fc"
+        }
+      ],
+      "independent_recheck": {
+        "record": "authoring/independent-w02-review.json",
+        "sha256": "c19e76f5ff323a92a03f13d547ac6411bf0029f8e0bd53b888d1cd08f06e417b"
+      }
+    }
+  ]
+}

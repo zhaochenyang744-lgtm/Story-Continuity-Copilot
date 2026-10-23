@@ -1,0 +1,523 @@
+[
+  {
+    "id": "a2f-w02-action-01",
+    "work": "w02",
+    "suite": "action",
+    "request": "开小艇那位后来伤着肩膀了，人物卡把这件事补进去，在哪一章我记不准。",
+    "context": {
+      "page": "overview"
+    },
+    "why": "停机事故造成驾驶员右肩伤及右臂抬举受限，正文明确且起始资料未收；需从描述找人物和章节。",
+    "paraphrased": true,
+    "vague": true,
+    "expected_actions": [
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "寇绚芜",
+          "predicate": "右肩伤情"
+        },
+        "after_points": [
+          "停机事故伤及右肩",
+          "右臂无法抬举"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-02",
+    "work": "w02",
+    "suite": "action",
+    "request": "那个靠掌心听群落的见证人，后来能分清大小两群了吧？把这项本领存进资料，章节帮我查。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "第八章确立对母幼两群振频的区分能力，不是起始听振方式的重复；请求虽有反问仍明确要求存资料。",
+    "paraphrased": true,
+    "vague": true,
+    "expected_actions": [
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "仇籁宜",
+          "predicate": "振频听辨"
+        },
+        "after_points": [
+          "可辨母群与幼群振频"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-03",
+    "work": "w02",
+    "suite": "action",
+    "request": "船长延后开船、医者查出消毒用品伤膜，这两项分别入资料，照十一章和十三章的结果。",
+    "context": {
+      "page": "chapters",
+      "chapter_number": 13
+    },
+    "why": "延航与首次发现含铜用品损伤表膜分别是两处资料缺项；前者须保留原定与改后时间，后者不是泛化禁用全部消毒液。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "逯纭夷",
+          "predicate": "离航调整"
+        },
+        "after_points": [
+          "主动延航一天",
+          "开航由二十一昼期改至二十二"
+        ]
+      },
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "邴呈苒",
+          "predicate": "表膜消毒限制发现"
+        },
+        "after_points": [
+          "发现含铜残留会损伤表膜",
+          "含铜消毒液不可接触活膜"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-04",
+    "work": "w02",
+    "suite": "action",
+    "request": "缈签留下自己的设备供大家见证，仉砚溯也决定以个人名义递申请，这两条别漏在人物事实外。",
+    "context": {
+      "page": "plan",
+      "chapter_number": 21
+    },
+    "why": "第十七章设备的公开见证用途及第十九章个人申请身份各是新事实；并不公开未授权私信，也不代表已获许可。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "佘昼缈",
+          "predicate": "私人通讯器处置"
+        },
+        "after_points": [
+          "将私用通讯器留作公开见证",
+          "保存范围须由各方同意"
+        ]
+      },
+      {
+        "kind": "add_fact",
+        "target": {
+          "subject": "仉砚溯",
+          "predicate": "驻留申请身份"
+        },
+        "after_points": [
+          "以个人而非舰队成员名义申请"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-05",
+    "work": "w02",
+    "suite": "action",
+    "request": "皱鳞核不能还挂在联络员名下了，第十章交出去那次，把持有人的事实跟过去。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "第十章正式移交改变事实1；硬壳袋仍由人类留着不等于核也仍归人类。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "change_fact",
+        "target": 1,
+        "after_points": [
+          "现由庹穆缇持有"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-06",
+    "work": "w02",
+    "suite": "action",
+    "request": "仉砚溯手腕那一栏别停在戴红环的旧时候了，按十二章复核以后的状态换掉。",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21
+    },
+    "why": "医疗复核后解除隔离、摘环交医者，事实6过时；后文行政旧页残留不能覆盖身体实际状态。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "change_fact",
+        "target": 6,
+        "after_points": [
+          "隔离已结束",
+          "红环摘下交医者保管"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-07",
+    "work": "w02",
+    "suite": "action",
+    "request": "螺针现在怎么放，资料改成十四章新办法，别还照旧收干盒。",
+    "context": {
+      "page": "chapters",
+      "chapter_number": 14
+    },
+    "why": "新保存方式为浸养液，直接更新事实11，不能只补一条而保留相冲旧值。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "change_fact",
+        "target": 11,
+        "after_points": [
+          "改用养液浸存",
+          "不再干盒保存"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-08",
+    "work": "w02",
+    "suite": "action",
+    "request": "泠弧终于听懂那种停顿了，庭里也重新收申请了，两处旧状态都替我修正。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "第十六章认知改变与第十八章恢复受理要分别更新事实16和21；恢复受理仍不是发放长期许可。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "change_fact",
+        "target": 16,
+        "after_points": [
+          "已懂问句后的长停顿为拒绝"
+        ]
+      },
+      {
+        "kind": "change_fact",
+        "target": 21,
+        "after_points": [
+          "长期申请已恢复受理"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-09",
+    "work": "w02",
+    "suite": "action",
+    "request": "第三条暗脉纹的原因在十章已经揭开，那条伏笔给它收掉。",
+    "context": {
+      "page": "plan",
+      "chapter_number": 21
+    },
+    "why": "幼群主动闭合通路拒绝被代言已解释暗纹，伏笔1仍planted，应回收。",
+    "paraphrased": false,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "resolve_thread",
+        "target": 1,
+        "after_points": [
+          "幼群为拒绝他者代言而闭合通路"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-10",
+    "work": "w02",
+    "suite": "action",
+    "request": "红环那两下光没在说感染，十二章把缘故查清了，悬着的线不用再挂着。",
+    "context": {
+      "page": "chapters",
+      "chapter_number": 12
+    },
+    "why": "对照查出设备测量回流而非感染，伏笔2应回收；并非证明所有健康风险永久不存在。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "resolve_thread",
+        "target": 2,
+        "after_points": [
+          "两次闪亮由测量回流导致",
+          "与感染信号无关"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-11",
+    "work": "w02",
+    "suite": "action",
+    "request": "针碰湿膜就歪的谜底讲完了，把那条伏笔标回收，别理解成它不愿碰。",
+    "context": {
+      "page": "plan"
+    },
+    "why": "第十四章明确干存破坏养液中的中性浮力，伏笔3获得因果解释。",
+    "paraphrased": false,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "resolve_thread",
+        "target": 3,
+        "after_points": [
+          "干存使螺针失去中性浮力",
+          "须在养液中维持该状态"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-action-12",
+    "work": "w02",
+    "suite": "action",
+    "request": "问完以后大家久不出声的含义已经说破，给这条线做个结案。",
+    "context": {
+      "page": "materials",
+      "chapter_number": 16
+    },
+    "why": "第十六章解释特定问句后的群落收束静默为拒绝，伏笔4应回收，不能扩大成所有安静。",
+    "paraphrased": true,
+    "vague": false,
+    "expected_actions": [
+      {
+        "kind": "resolve_thread",
+        "target": 4,
+        "after_points": [
+          "问句后的长静默是拒绝请求",
+          "并非等待翻译或增补条件"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a2f-w02-no-action-01",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "泠弧就是颛绪泠，把这个别名关系补记一遍。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "事实2已保存同一别名关系，不能重复新增。",
+    "no_action_type": "already_recorded",
+    "request_targets": {
+      "facts": [
+        2
+      ],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-no-action-02",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "船长管撤离但不投驻留的票，这个分工也给她存一条。",
+    "context": {
+      "page": "overview"
+    },
+    "why": "请求内容完整对应事实14，已记录，无需重复出卡。",
+    "no_action_type": "already_recorded",
+    "request_targets": {
+      "facts": [
+        14
+      ],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-no-action-03",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "寇绚芜的生日在九月，人物卡加上这个月份。",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21
+    },
+    "why": "二十章和起始资料均未说明出生月份，题面断言本身不能充当正文依据。",
+    "no_action_type": "no_evidence",
+    "request_targets": {
+      "facts": [],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-no-action-04",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "苒灯习惯给异种用镇静药省事，把这条医疗习惯记进去。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "正文及事实19明说不以镇静剂压制异种动作，请求与证据相反。",
+    "no_action_type": "no_evidence",
+    "request_targets": {
+      "facts": [
+        19
+      ],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-no-action-05",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "草稿里捡漏下食物那一段帮我写得紧凑些，别拖太多动作。",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21
+    },
+    "why": "仅要求编辑草稿文字，不属于三种资料卡。",
+    "no_action_type": "prose_edit",
+    "request_targets": {
+      "facts": [],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-no-action-06",
+    "work": "w02",
+    "suite": "no_action",
+    "request": "庭内不能开推进器那条事实删掉吧，我以后不打算用了。",
+    "context": {
+      "page": "materials"
+    },
+    "why": "删除事实为不支持动作，请求指向事实9也不能用其他合法卡代替。",
+    "no_action_type": "unsupported_kind",
+    "request_targets": {
+      "facts": [
+        9
+      ],
+      "foreshadows": []
+    }
+  },
+  {
+    "id": "a2f-w02-route-01",
+    "work": "w02",
+    "suite": "route",
+    "input": "肩膀那场伤人物卡还空着，给驾驶员填上。",
+    "context": {
+      "page": "overview"
+    },
+    "expected_route": "change",
+    "why": "填入人物卡是明确的补资料要求，未使用动作术语。"
+  },
+  {
+    "id": "a2f-w02-route-02",
+    "work": "w02",
+    "suite": "route",
+    "input": "东西已经交到异种代理那里，持有人的旧资料也得搬家。",
+    "context": {
+      "page": "materials"
+    },
+    "expected_route": "change",
+    "why": "旧资料搬家表达更正持有人，不是在问谁持有。"
+  },
+  {
+    "id": "a2f-w02-route-03",
+    "work": "w02",
+    "suite": "route",
+    "input": "两下光的误会都解开了，那条伏笔替我画个句号。",
+    "context": {
+      "page": "plan"
+    },
+    "expected_route": "change",
+    "why": "给伏笔画句号是要求修改伏笔状态。"
+  },
+  {
+    "id": "a2f-w02-route-04",
+    "work": "w02",
+    "suite": "route",
+    "input": "别再把申请状态留在暂停了，跟上现在能递交的进度。",
+    "context": {
+      "page": "chapters",
+      "chapter_number": 18
+    },
+    "expected_route": "change",
+    "why": "要求把现有资料状态更新为已恢复受理。"
+  },
+  {
+    "id": "a2f-w02-route-05",
+    "work": "w02",
+    "suite": "route",
+    "input": "若要把私用设备留下这事记成事实，有哪章能作根据？",
+    "context": {
+      "page": "materials"
+    },
+    "expected_route": "ask",
+    "why": "条件式提及记事实，但实际在询问依据，没有要求立即变更。"
+  },
+  {
+    "id": "a2f-w02-route-06",
+    "work": "w02",
+    "suite": "route",
+    "input": "改螺针那条保存资料之前，我想先知道旧值究竟写了什么？",
+    "context": {
+      "page": "materials"
+    },
+    "expected_route": "ask",
+    "why": "只询问当前旧值，实际修改尚未授权。"
+  },
+  {
+    "id": "a2f-w02-route-07",
+    "work": "w02",
+    "suite": "route",
+    "input": "这里写的，跟之前的状况能接得上吗？",
+    "context": {
+      "page": "materials"
+    },
+    "expected_route": "ask",
+    "why": "没有草稿选段的材料页，对作品现有说法提出一般问答。"
+  },
+  {
+    "id": "a2f-w02-route-08",
+    "work": "w02",
+    "suite": "route",
+    "input": "我要接着写二十一章，先帮我回头清一遍前二十章该带着走的事情。",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21
+    },
+    "expected_route": "recap",
+    "why": "明确请求写前综合回顾前二十章。"
+  },
+  {
+    "id": "a2f-w02-route-09",
+    "work": "w02",
+    "suite": "route",
+    "input": "这里写的，跟之前的状况能接得上吗？",
+    "context": {
+      "page": "writing",
+      "chapter_number": 21,
+      "selection": "仉砚溯跟着坐下，却坐得过急，整个人顺着膜褶滑了一小段。"
+    },
+    "expected_route": "check_passage",
+    "why": "同句输入在写作页带完整草稿选句，明确要求核查选段与前情衔接。"
+  },
+  {
+    "id": "a2f-w02-route-10",
+    "work": "w02",
+    "suite": "route",
+    "input": "今晚现实里剩下米饭和鸡蛋，有什么十分钟能做好的菜？",
+    "context": {
+      "page": "overview"
+    },
+    "expected_route": "out_of_scope",
+    "why": "现实做饭建议不涉及作品内容或写作工具。"
+  }
+]

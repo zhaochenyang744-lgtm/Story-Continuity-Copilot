@@ -1,0 +1,10 @@
+[
+  {"title":"楔蓝盘外壳的白点","description":"盘壳上的白点暂时查不出出处，需要分清外观痕迹与盘内数据的关系。","status":"planted","planted_chapter":1},
+  {"title":"自助区午夜的两次短鸣","description":"午夜听到的两声短鸣间有停顿，是否对应两笔付款还需要核对设备过程。","status":"developing","planted_chapter":2},
+  {"title":"七孔袋缺掉的蓝线","description":"封样时看见少了一截蓝线，不能仅凭线少了便断言样本袋曾被事后打开。","status":"planted","planted_chapter":3},
+  {"title":"回执背面的倒序数字","description":"空白回执背后留下倒着排列的数字，写下它们的人和用途都待进一步核对。","status":"developing","planted_chapter":4},
+  {"title":"未署名的申诉附页","description":"申诉材料中多出一张没有署名的附页，写页者至今没有主动说明来历。","status":"planted","planted_chapter":5},
+  {"title":"封存柜另一把钥匙的去向","description":"封存柜还有另一把钥匙，但目前没有足够材料确定它究竟落在谁手里。","status":"developing","planted_chapter":6},
+  {"title":"旧柜台底下的三角痕","description":"旧柜台底下有一道三角形痕迹，形状能看清而留下的原因仍不清楚。","status":"planted","planted_chapter":6},
+  {"title":"误投的餐费收条","description":"餐费收条已查明属于隔壁办公区员工，误投原因确认后已经交还给对方。","status":"resolved","planted_chapter":2,"resolved_chapter":4}
+]

@@ -496,7 +496,7 @@ export type SourceChangeSet = { id:string; project_id:string; base_source_revisi
 // The built-in assistant (v1.8.0): what GET/POST /projects/{id}/assistant/tasks answer with.
 export type AssistantPage = "writing" | "chapters" | "materials" | "plan" | "overview";
 /** The uses the input box can tell apart (`POST /assistant/route`), and what it answers. */
-export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "out_of_scope";
+export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "change" | "out_of_scope";
 export type AssistantRouting = { route: AssistantRoute; source: "rule" | "model"; unsure: boolean };
 export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection" };
 /** `say` is the model's one line before it works; `tool` an action (grouped with the others of its round in `group`); `repair` a re-written
@@ -564,9 +564,36 @@ export type AssistantProposal = {
   decided_at: string | null;
   recheck: ProposalRecheck | null;
 };
+/** 改资料 (v2.0): one item of a change card, and of the ledger of what the assistant changed. `before` and `after` are already words. */
+export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact";
+export type AssistantChange = {
+  id: string;
+  label: string;
+  task_id: string;
+  kind: AssistantChangeKind;
+  /** A thread by its id; a fact by its lasting id and the record it is now (null when it is not in the current version). */
+  target: { kind: "foreshadow"; id: string } | { kind: "fact"; id: string; record_id: string | null };
+  title: string;
+  before: string;
+  after: string;
+  editable: boolean;
+  /** Only a fact item: the wording the author may change before confirming. */
+  value: string | null;
+  evidence: { chapter_number: number; chapter_title: string | null; start: number | null; end: number | null; text: string }[];
+  /** A few words of the author's own sentence that name the record the change is about (null on an item made before they were asked for). */
+  request_words: string | null;
+  status: "proposed" | "applied" | "rejected" | "undone";
+  edited_by_author: boolean;
+  /** The materials no longer hold what this item expects, so a confirm or a plain undo would be refused (null for a rejected item). */
+  changed_since: boolean | null;
+  created_at: string;
+  decided_at: string | null;
+  applied_at: string | null;
+  undone_at: string | null;
+};
 export type AssistantTask = {
   id: string;
-  kind: "ask" | "recap" | "fix_issue";
+  kind: "ask" | "recap" | "fix_issue" | "change";
   status: "queued" | "running" | "completed" | "failed" | "cancelled";
   /** Null for a 写前回顾, and for a 帮我改这一处 asked without a request. */
   question: string | null;
@@ -600,4 +627,6 @@ export type AssistantTask = {
   completed_at: string | null;
   /** Only on a fix_issue task. */
   proposals?: AssistantProposal[];
+  /** Only on a change task: the card, in order. */
+  changes?: AssistantChange[];
 };

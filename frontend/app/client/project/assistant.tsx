@@ -5,7 +5,8 @@
 // advises; nothing here writes to the draft or the materials except through the editor, one change at a time,
 // when the author says so. The same AssistantThread is used in three places: the writing page's right
 // column (and its phone pane), and a drawer opened from the top bar on the other pages. A pop-up bar over
-// selected text brings a passage into a question. Four uses live in it: 问作品, 写前回顾, 帮我改这一处 and 查前文矛盾; the box's
+// selected text brings a passage into a question. Five uses live in it: 问作品, 写前回顾, 帮我改这一处, 查前文矛盾 and 改资料 (v2.0: the
+// assistant proposes changes to the materials, which the author confirms); the box's
 // 自动 mode (the default) judges which one a sentence asks for, and the task it starts says so and can be changed.
 import {
   createContext,
@@ -23,6 +24,7 @@ import type { AssistantContextInput, AssistantPage, AssistantSource, AssistantTa
 import { qaLayerLabel, qaStanceLabel, qaStatusLabel, readableKeys, stageLabel, timeLabel } from "../labels";
 import { type CheckUsage, clip, formatCount, Menu, useFocusTrap, useScrollLock, writtenChars } from "../ui";
 import { regenerateTask } from "./assistant-answer";
+import { mergeChanges } from "./assistant-change";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
@@ -45,11 +47,14 @@ export type Command =
   | { nonce: number; kind: "check"; text: string };
 type Bridge = {
   setAnchor: (anchor: AssistantAnchor | null) => void;
-  openDrawer: (incoming?: Omit<Incoming, "nonce">) => void;
+  /** Opens the drawer; with `focusTask` it scrolls to that task of the conversation once the conversation is read. */
+  openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => void;
   usageChanged: () => void;
+  /** The assistant wrote to the materials (or took a change back): the page reads facts and threads again. */
+  materialsChanged: () => void;
 };
 /** The app provides it; pages tell it where the author is, and ask it to open the drawer. */
-export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined });
+export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined });
 
 /** A page registers where the author is for as long as it is shown; the top bar's 助手 button follows it. */
 export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter_number?: number; character_id?: string; character_name?: string } = {}) {
@@ -67,6 +72,7 @@ const ASK_PLACEHOLDER = "问这部作品里的人、事、物……";
 const REFINE_PLACEHOLDER = "对改法有什么要求？比如：保留苏岑的视角";
 const RECAP_PLACEHOLDER = "不用写字，直接发送：回顾上一章停在哪、有哪些线还没收";
 const CHECK_PLACEHOLDER = "在正文里选中要查的一段";
+const CHANGE_PLACEHOLDER = "说要改资料里的什么：比如把第 12 章她左腕受伤记进事实";
 const PRIVACY_SEEN = "story-continuity:assistant-privacy-seen";
 
 /** A task is being followed while it runs, and while one of its changes is being rechecked. */
@@ -82,6 +88,8 @@ export type ThreadProps = {
   incoming?: Incoming | null;
   /** A task the page starts for the author. */
   command?: Command | null;
+  /** A task of the conversation to bring into view (the materials page's 看对话). */
+  focus?: { taskId: string; nonce: number } | null;
   /** The passage that is selected in the text right now (null once nothing is). In 查前文矛盾 it becomes the box's 「选中」 tag by itself. */
   picked?: Incoming | null;
   /** The writing page's draft and findings: what makes a change adoptable. Missing in the drawer. */
@@ -115,7 +123,7 @@ const followable = (task: AssistantTask) =>
   task.kind === "ask" && task.status === "completed" && task.context.intent !== "check_selection" && Boolean(task.answer) && !isRecap(task.answer)
   && (task.answer as { status?: string }).status !== "out_of_scope" && (task.follow_up_depth ?? 0) < 2;
 
-export function AssistantThread({ project, anchor, usage, visitor, go, incoming, command, picked, writing, material = NO_MATERIAL, top, topKey, onNavigate, variant }: ThreadProps) {
+export function AssistantThread({ project, anchor, usage, visitor, go, incoming, command, focus, picked, writing, material = NO_MATERIAL, top, topKey, onNavigate, variant }: ThreadProps) {
   const projectId = project.id;
   const bridge = useContext(AssistantBridge);
   const [tasks, setTasks] = useState<AssistantTask[] | null>(null);
@@ -161,6 +169,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const quiet = useRef(0);
   const handled = useRef(0);
   const handledCommand = useRef(0);
+  const handledFocus = useRef(0);
   const announced = useRef(new Set<string>());
   const signature = useRef("");
 
@@ -265,7 +274,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const onWriting = variant === "column" && Boolean(writing);
   const chapterNumber = anchor.page === "writing" ? anchor.chapter_number : undefined;
   const recapReason = chapterNumber != null && chapterNumber <= 1 ? "第一章前面没有内容可以回顾" : writing?.draft.dirty ? "等草稿保存后再回顾" : "";
-  const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap"] : ["auto", "ask", "recap", "check"]) : ["auto", "ask"];
+  const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap", "change"] : ["auto", "ask", "recap", "check", "change"]) : ["auto", "ask", "change"];
   const activeMode: Mode = modes.includes(mode) ? mode : "auto";
   const asking = activeMode === "auto" || activeMode === "ask";
   // The latest answer is followed on its own (the tag is on the box) while it can be, unless the author took the tag off, or the box
@@ -363,6 +372,12 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       if (await post({ kind: "ask", question: CHECK_QUESTION, context: { ...contextFor(selection), intent: "check_selection" } })) afterSend();
       return;
     }
+    if (activeMode === "change") {
+      const question = text.trim();
+      if (!question) return;
+      if (await post({ kind: "change", question, context: contextFor(selection) })) afterSend();
+      return;
+    }
     if (activeMode === "auto" && !refine?.manual) { await sendAuto(); return; }
     const question = text.trim();
     if (!question) return;
@@ -411,6 +426,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       if (onWriting && !recapReason && chapterNumber != null && chapterNumber > 1) uses.push("recap");
       if (onWriting && !visitor && task.context.selection) uses.push("check_passage");
       if (onWriting && task.context.issue_id) uses.push("fix_issue");
+      if ((task.routed_input ?? task.question ?? "").trim()) uses.push("change");
       return uses;
     },
     change: (task, use) => void changeUse(task, use),
@@ -482,6 +498,19 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     });
   }, [command]);
 
+  // 看对话: the task asked for is brought to the top of the conversation once the conversation has been read.
+  useEffect(() => {
+    if (!focus || !tasks || focus.nonce === handledFocus.current) return;
+    handledFocus.current = focus.nonce;
+    stick.current = false; pinned.current = null;
+    const box = thread.current;
+    const target = box?.querySelector<HTMLElement>(`[data-task="${focus.taskId}"]`);
+    if (box && target) {
+      quiet.current = performance.now() + 300;
+      box.scrollTop += target.getBoundingClientRect().top - box.getBoundingClientRect().top - 8;
+    }
+  }, [focus, tasks]);
+
   const openChapter = (number: number) => {
     onNavigate?.();
     const path = `/projects/${projectId}/sources`;
@@ -550,13 +579,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     onSelectHint: () => setTip("在正文里选中一段文字，再点浮出来的「问助手」，它就会带进这次提问。"),
   };
 
-  const placeholder = activeMode === "recap" ? RECAP_PLACEHOLDER : activeMode === "check" ? CHECK_PLACEHOLDER : refine ? REFINE_PLACEHOLDER : ASK_PLACEHOLDER;
+  const placeholder = activeMode === "recap" ? RECAP_PLACEHOLDER : activeMode === "check" ? CHECK_PLACEHOLDER : activeMode === "change" ? CHANGE_PLACEHOLDER : refine ? REFINE_PLACEHOLDER : ASK_PLACEHOLDER;
   const hint = busy && !routing ? RUNNING_NOW
     : activeMode === "check" ? `约 ${formatCount(TASK_CHARS + writtenChars(selection))} 字`
       : activeMode === "recap" && recapReason ? recapReason : cost;
-  const hintMore = busy || !asking ? "" : costMore;
+  const hintMore = busy || !(asking || activeMode === "change") ? "" : costMore;
   // In 自动 a picked passage alone is enough to send (it is checked); a sentence is needed for anything else.
-  const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "recap" ? !recapReason : Boolean(selection));
+  const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "change" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
   const modeText = activeMode !== "auto" || refine?.manual ? undefined : routing ? "判断中…" : routedAs ? `自动 · ${routedAs}` : undefined;
   const changeMode = (next: Mode) => { setMode(next); setRoutedAs(""); };
   const edited = (next: string) => { setText(next); setRoutedAs(""); };
@@ -568,6 +597,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const groups = arrange(tasks ?? []);
   const handlers: AskHandlers = {
     projectId, visitor, stopping, stop: (task) => void stop(task), retry, openChapter, locate, replace, blocked, readOnly: archived, asked,
+    merge: (items) => mergeChanges(setTasks, items),
+    written: bridge.materialsChanged,
+    goMaterials: () => { onNavigate?.(); go(`/projects/${projectId}/memory`); },
     followUp: (task) => { setFollowUp(task); setRefine(null); changeMode("auto"); field.current?.focus(); },
     regenerate: (task) => void regenerate(task),
     resend,

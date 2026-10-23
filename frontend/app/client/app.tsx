@@ -74,9 +74,10 @@ export function App() {
   const [settingsLeave, setSettingsLeave] = useState<string | null>(null);
   // The assistant: where the author is (told by the open page), the drawer other pages open, and a nudge to re-read the allowance.
   const [assistantAnchor, setAssistantAnchor] = useState<AssistantAnchor | null>(null);
-  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null }>({ open: false, incoming: null });
+  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null; focus?: { taskId: string; nonce: number } }>({ open: false, incoming: null });
   const [usageBump, setUsageBump] = useState(0);
   const assistantNonce = useRef(0);
+  const materialsChanged = useRef<() => void>(() => undefined);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const switchPending = useRef(false);
 
@@ -121,12 +122,17 @@ export function App() {
 
   const assistantBridge = useMemo(() => ({
     setAnchor: setAssistantAnchor,
-    openDrawer: (incoming?: Omit<Incoming, "nonce">) => setDrawer({ open: true, incoming: incoming ? { ...incoming, nonce: ++assistantNonce.current } : null }),
+    openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => setDrawer({
+      open: true, incoming: incoming ? { ...incoming, nonce: ++assistantNonce.current } : null, ...(focusTask ? { focus: { taskId: focusTask, nonce: ++assistantNonce.current } } : {}),
+    }),
     usageChanged: () => setUsageBump((count) => count + 1),
+    // The assistant wrote to (or took back a change of) the materials; the work reads them again.
+    materialsChanged: () => materialsChanged.current(),
   }), []);
 
   const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
   useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
+  useEffect(() => { materialsChanged.current = p.materialsChanged; }, [p.materialsChanged]);
 
   // Theme and text size: layout.tsx applies them before paint (the choice remembered on this device, otherwise the
   // system's light or dark setting); prefs.ts keeps the top bar's button and the settings page in step.
@@ -429,7 +435,7 @@ export function App() {
         </footer>
       )}
       {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && (
-        <AssistantDrawer key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} variant="drawer"
+        <AssistantDrawer key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus} variant="drawer"
           material={{ chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })), characters: p.characters.map((person) => ({ id: person.id, name: person.name })), draftBody: p.draft?.body ?? "", issues: [], issuesReason: "" }}
           beta={Boolean(user.assistant?.beta)}
           close={() => { setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />

@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "sha256": {
+    "materials/w01-facts.json": "dea6f2ca957fd06deea5467a7d8e74f8f62a78a9e37cdefbbe4c9563fe677417",
+    "materials/w01-foreshadows.json": "86ffd699609908b566026a745306ad814c0eb86c57d0af4ab43cf49c62226a78",
+    "tasks.json": "67b5a365fe22bdd2a926943f3170de3aa8df092ed4930ccf55faecf48a7033ae",
+    "works/w01.md": "56baa5f817212dc4480c8a6f8c933167e699661dde2a77ead6fdc8aea2cc7f60"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "ca0501c3535a1509069ea1a6317b5ceed135f6b33a5f6183492b7a7313e34dee",
+    "authoring/self-review.md": "b44e53999fbff799a3803e9dd594c8f0c7cc5a24fd67e48d352982cf7e24c914",
+    "authoring/novelty-reference.json": "ec697b352102f2fcd2d2aac0072bb8235bafc23a20eed38643af03ceff3f7f38"
+  },
+  "review_records": {
+    "independent-source-review.json": "fdd146e31def2199e0e6b061a0e58be6722b4a88f29bd8b3fe6a0fb75fe62259",
+    "checker-review.json": "e7d47aca9c2441a0765251e68e71805b7f1f6c70fe27aa582e37cb4fee465596",
+    "author-response-review.md": "5b18d583e79161f66f262afabc68aa89dc2e3a8a9386c629eede7105095fae09"
+  },
+  "source_reading": "author-independent full-chapter reading, followed by task gold and affected draft revision review",
+  "mechanical_pass_is_model_quality_acceptance": false,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

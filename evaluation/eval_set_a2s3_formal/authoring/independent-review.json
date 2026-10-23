@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "reviewer": "author_w01",
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "draft_coverage": {
+    "w01": 1
+  },
+  "task_coverage": 12,
+  "fact_coverage": 25,
+  "foreshadow_coverage": 8,
+  "findings": 1,
+  "closed_findings": 1,
+  "unresolved_findings": 0,
+  "reports": {
+    "authoring/independent-safety-review.md": "a7d0a04518941741abcec1de296c21141056bae0bb215e911f8c179956a4b71c"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "d76b7f913ff574051665e10af90e623e5d8daa20f210bab49692f096e34194c8",
+    "materials/w01-foreshadows.json": "6e3574b7c4f52eef3673e87552fc86ea31e9843b17d2649e0d48cfbb1f641106",
+    "tasks.json": "11f8d93ac57465273e61505c96f175b8a404da67b9813cb76df2e3183a110ccb",
+    "works/w01.md": "e68e007966fca6d23409961ef8d4c71cbfdc69f24e8fd549b86775ea34edc8f1"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "b6eca6432af4e3c7906a9c29ca810d2781eb94612e09f507d970d2a4d04ff2c7",
+    "authoring/self-review.md": "909bf21791293c55416e509ceeb019d132f6e3e720606b6804ecebbededb1a88",
+    "authoring/novelty-reference.json": "aeb37614485a2325e543aa54086566bd9bdb494dc6479324cd16ab0ce95d8564"
+  },
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

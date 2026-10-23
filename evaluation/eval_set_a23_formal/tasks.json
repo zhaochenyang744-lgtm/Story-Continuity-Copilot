@@ -1,0 +1,1329 @@
+{
+  "version": "a2-1",
+  "set_id": "a23-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "到账之前",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "酆聿衡",
+        "祁苒颂",
+        "邵星芒",
+        "巫迟雁",
+        "蔺闻瓷",
+        "应迢夏",
+        "杭疏岑",
+        "倪序葵",
+        "衡隼",
+        "颂钮",
+        "芒灯",
+        "青灼市",
+        "栎证银行",
+        "岫棱支行",
+        "潮弧路",
+        "潮弧路自助区",
+        "楔蓝盘",
+        "七孔袋",
+        "岔尾钳",
+        "灰翅筹",
+        "双瓣钥"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 还要逐笔核对",
+        "body": "十月二十一日的早晨，岫棱支行门外还没有排起长队。酆聿衡先到受理桌，翻开昨天留下的回告安排。最上面那位顾客只能在上工前接电话，留给他们的时间很短。他将对应的处理进展重新核过，没因为有限结论已经呈交，就沿用昨晚那句尚待后续处理。\n\n祁苒颂从自己的保管位置取出楔蓝盘，放到核验台上。她等另一名核验人坐定，才开始当天的对读。窗边光线比往常亮，盘壳上的旧封条纤维仍在原处，不妨碍她认清已经确认的外观，也不替今天的数据核验省去一步。\n\n邵星芒用右臂取下高架上的表册，动作已经没有停顿。她找到昨日改约的那一栏，把真正需要接续的时段交给柜员，没有为了整齐将未到场的人划掉。柜口第一盏灯亮起，外面有人隔着玻璃问是否可以进来，她转身请对方稍等开门。\n\n倪序葵先核自己收存的本次待用灰翅筹，再看已回收的部分，仍没有混用。今天不必凭筹决定谁有权得到费用免除，他只需按柜面已经确认的安排提供需要的纸。那一张折过角的旧筹仍放在已回收处，没有为了显得崭新而换掉。\n\n大厅里电话响了。酆聿衡接通，先问对方是否方便，听见熟悉的催人声音便将说明说短，约好下一次可以完整核对的时段。他没有替顾客宣布钱已经回来，也没让一通来不及讲完的电话变成顾客自己放弃了回告。\n\n杭疏岑到场后先看昨夜未完的款项清单，再听这一通联系的结果。她把仍需核实的步骤留在今天的首轮安排，有限结论放在旁边，既不推翻它，也不拿它盖住尚未完成的事。酆聿衡将电话副本递给她，回到另一端继续确认实际记录。\n\n应迢夏从门边走来，问柜面今天是否都知道本案核验费的安排。巫迟雁把需要特别说明的几位顾客列给她，两人逐项确认，不让人因为第一次来就再走一遍过去的收费疑问。玻璃门外那人终于等到开门，手里的受理副本已折得很软。\n\n蔺闻瓷看清通道提示的轮廓，向柜口示意可以接续迎客。巫迟雁请来人坐下，先听他今天最想确认什么。新的工作日并没有带来一个自动完成的结尾，桌上的每一项仍要对应到具体的人，他们于是从这一个问句开始。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "重量不能替人认罪",
+      "language": "zh",
+      "source_file": "works/w02.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "仇照缄",
+        "任绯棘",
+        "乌岑弥",
+        "纪烛绫",
+        "蓝契野",
+        "伍燃缇",
+        "宋织宵",
+        "柯沉芷",
+        "缄砝",
+        "绯签",
+        "弥秤",
+        "砝羽城",
+        "钧衡庭",
+        "坠石厅",
+        "悬缆桥",
+        "珀坠核",
+        "棱脊箱",
+        "岐臂衡",
+        "双齿筹",
+        "绒缠扣"
+      ],
+      "materials": {
+        "facts": "materials/w02-facts.json",
+        "foreshadows": "materials/w02-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 不替旧秤作答",
+        "body": "第二十一日清早，坠石厅门外的积水还没干。柯沉芷把今日要听取的异议抄在新页上，旧页仍按原来的顺序放着。门口有人问，事情既然已经有了结论，为什么还要到场。她先请对方擦去鞋底的泥，再说结论覆盖哪些动作，与接下来尚须办理什么，应当分开问清。\n\n任绯棘没有让人替自己去取封存物。她回到铺内侧石台，看过封套边沿，才让等在门边的见证者进来。包裹仍在那里，封口没有打开。她今天来说明的是下一步怎样在场，不是独自放回重量。帮工抬起空篮要让出通道，她伸手止住，等另一人把脚边滚动的小石片拾走。\n\n厅里，伍燃缇站在窗旁整理昨日留存的测量纸。矮凳没有被扔掉，只挪到不妨碍出入的一侧；脚踝好了，也不必用别人不能坐来证明自己能站。他找出一处被水晕开的箭头，请柯沉芷暂时别照着描。他记得大致朝向，却不愿让今天画得清楚的线冒充昨日原来就那样清楚。\n\n仇照缄听见这话，将自己夹在两页间的说明抽出来。他原想把那一段誊得顺些，读过两遍，还是决定让旁边的更正留在旁边。第一次怎样看、后来凭什么改口，都不该为了一页整齐的纸藏起来。乌岑弥在对面腾出地方，问他准备从哪个动作讲起，没有抢着替他给出一个省事的开头。\n\n宋织宵送来的热食放在外间。她等人吃完再收碗，顺手将压在门槛边的干布提开。那只无人认领的空核座仍不能随便搬去抵门，暗渠边的紫色石屑也没有因为审理继续就多出一个来处。她望了望里面，想问扣上的旧字，话到嘴边又停住，决定等真能看清的人到场再说。\n\n蓝契野站在平地上查看新摆的操作台，先试了试脚边有没有晃动。他没有去碰停用的岐臂衡，替代的两架秤分开留着。他问今日是否还要搬动那只箱，柯沉芷说先听完各人的在场安排；若须从内柜取出，仍按开箱原有的见证条件办理，不能因为熟人都在就省略。\n\n廊下有人把伞靠在了门边，水慢慢流到昨日粉笔留下的短线上。伍燃缇拿布吸去水，没有顺势延长那条线。任绯棘回来时，众人都把还没讲完的话留在原处。她放下湿伞，拉开一张凳子，请第一位要补说明的人先坐。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a23f-w01-action-01",
+      "work": "w01",
+      "suite": "action",
+      "request": "巫迟雁看得懂旧流水缩写，蔺闻瓷辨警示靠形状，给这两项各添一条资料。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 6
+      },
+      "why": "第5章本人说明旧缩写识读能力，第6章本人说明不辨红绿及形状判断限制，两项均未入资料。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "巫迟雁",
+            "predicate": "识读能力"
+          },
+          "after_points": [
+            "能读旧磁条缩写",
+            "须先辨纸型"
+          ],
+          "evidence_chapters": [
+            "第5章 旧纸上的窄门"
+          ],
+          "evidence_quotes": [
+            "早期磁条流水的缩写我能读，但每一代纸型仍要先分清。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "蔺闻瓷",
+            "predicate": "警示识别限制"
+          },
+          "after_points": [
+            "红绿难辨",
+            "凭轮廓判警示"
+          ],
+          "evidence_chapters": [
+            "第6章 灯的轮廓"
+          ],
+          "evidence_quotes": [
+            "我分不清红色和绿色，判断警示必须看形状，不能只听灯色。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-02",
+      "work": "w01",
+      "suite": "action",
+      "request": "颂钮那晚决定留下本案的失败回执，给这项决定留个底。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 8
+      },
+      "why": "第8章明确保留本案失败回执且当晚不销毁，原资料没有这项决定。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "祁苒颂",
+            "predicate": "回执保留决定"
+          },
+          "after_points": [
+            "本案失败回执全留",
+            "当晚不销毁"
+          ],
+          "evidence_chapters": [
+            "第8章 失败也有纸面"
+          ],
+          "evidence_quotes": [
+            "重复扣账相关的失败回执全部保留，今晚不销毁。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-03",
+      "work": "w01",
+      "suite": "action",
+      "request": "午夜重号最后查出的缘由，往资料里添一笔，我不想再翻半天。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "请求只给重号成因这一宽泛线索，须回查第10章的旧测试任务结论，不能扩大为实际损失归责。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "酆聿衡",
+            "predicate": "重号成因所知"
+          },
+          "after_points": [
+            "源自旧测试任务",
+            "不是顾客再刷"
+          ],
+          "evidence_chapters": [
+            "第10章 没有人站过的位置"
+          ],
+          "evidence_quotes": [
+            "我已经确认，午夜重号来自旧测试任务，不是顾客重复刷卡。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-04",
+      "work": "w01",
+      "suite": "action",
+      "request": "灰翅筹剩余归倪序葵、本案顾客免核验费，这两件分别记进事实。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      },
+      "why": "第17章交接本次待用和回收筹，第18章免除本案受影响顾客核验费，两项均是资料缺项。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "灰翅筹",
+            "predicate": "本次保管人"
+          },
+          "after_points": [
+            "未发出筹由倪序葵收存",
+            "回收筹也交倪序葵"
+          ],
+          "evidence_chapters": [
+            "第17章 不是领款的号"
+          ],
+          "evidence_quotes": [
+            "本次未发出及已经回收的灰翅筹交由倪序葵收存。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "栎证银行",
+            "predicate": "本案核验收费"
+          },
+          "after_points": [
+            "本案受影响者免核验费"
+          ],
+          "evidence_chapters": [
+            "第18章 不该再添的一笔"
+          ],
+          "evidence_quotes": [
+            "栎证银行决定免除本次重复扣账案所有受影响顾客的人工核验费。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-05",
+      "work": "w01",
+      "suite": "action",
+      "request": "楔蓝盘该归颂钮收着了，七孔袋也进了封存柜，资料两处旧说法一块儿跟上。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 12
+      },
+      "why": "第11章完成盘的保管交接，第12章完成袋的移存，事实1和2仍是旧值。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "现由祁苒颂保管"
+          ],
+          "evidence_chapters": [
+            "第11章 空出的那把椅子"
+          ],
+          "evidence_quotes": [
+            "楔蓝盘正式交由祁苒颂保管，酆聿衡不再担任保管人。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "存于岫棱支行封存柜"
+          ],
+          "evidence_chapters": [
+            "第12章 抽屉以外"
+          ],
+          "evidence_quotes": [
+            "七孔袋已从核验室下层抽屉转入岫棱支行封存柜。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-06",
+      "work": "w01",
+      "suite": "action",
+      "request": "调查牵头已经换成杭疏岑，把应迢夏还挂在那里的事实改一下。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "why": "第13章正式交接调查牵头，经理身份不变，只更新事实3的本案负责人。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "改由杭疏岑牵头"
+          ],
+          "evidence_chapters": [
+            "第13章 她自己的签字"
+          ],
+          "evidence_quotes": [
+            "应迢夏仍任岫棱支行经理，重复扣账调查的牵头工作正式交由杭疏岑接任。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-07",
+      "work": "w01",
+      "suite": "action",
+      "request": "芒灯的肩后来不是好了吗，资料还写不能举，给跟上吧。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "请求没有指定恢复章节，须定位第16章痊愈及举臂动作，更新事实4而不改职业。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "右肩康复",
+            "右臂可过肩"
+          ],
+          "evidence_chapters": [
+            "第16章 高处那一格"
+          ],
+          "evidence_quotes": [
+            "邵星芒右肩已经痊愈，她用右臂举过肩，稳稳取下高架上的旧表。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-08",
+      "work": "w01",
+      "suite": "action",
+      "request": "那把岔尾钳现在裂了，资料还把它算能用的，替我换成后来的情况。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "第15章钳口开裂并停用，事实5的完好可用状态已经过时。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "钳嘴开裂",
+            "停止使用"
+          ],
+          "evidence_chapters": [
+            "第15章 停在合口之前"
+          ],
+          "evidence_quotes": [
+            "岔尾钳的钳口已经开裂，从现在起停用，不再用于封口。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-09",
+      "work": "w01",
+      "suite": "action",
+      "request": "白点那条在第7章说清了，把这条伏笔标成已回收。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 7
+      },
+      "why": "第7章直接解释盘壳白点来自旧封条纤维，伏笔1尚为planted。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第7章"
+          ],
+          "evidence_chapters": [
+            "第7章 白点没有长大"
+          ],
+          "evidence_quotes": [
+            "楔蓝盘外壳的白点是旧封条纤维，不是盘内数据损坏。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-10",
+      "work": "w01",
+      "suite": "action",
+      "request": "两声短鸣第9章就交代清楚了，去伏笔页给这根线落个结尾。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 9
+      },
+      "why": "第9章区分两台设备轮流自检与付款行为，伏笔2可以登记回收而不是新增支付事实。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第9章"
+          ],
+          "evidence_chapters": [
+            "第9章 两个方向"
+          ],
+          "evidence_quotes": [
+            "自助区午夜两次短鸣来自两台设备轮流自检，不是两笔付款。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-11",
+      "work": "w01",
+      "suite": "action",
+      "request": "缺蓝线那根线第14章结清了，资料里别让它一直悬着。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 14
+      },
+      "why": "第14章发现旧夹中的断线并用原照片排除事后拆封，伏笔3已经实际收束。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 夹口里的蓝色"
+          ],
+          "evidence_quotes": [
+            "七孔袋缺失的蓝线夹在旧检修夹里，封样当天照片证明它在封口前已断开。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-action-12",
+      "work": "w01",
+      "suite": "action",
+      "request": "倒序数的来路第19章已经弄明白，给对应伏笔标成已回收。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "第19章用对应工作底稿确认维护排查次序，伏笔4可回收，不能连带收掉三条长期未知线。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第19章"
+          ],
+          "evidence_chapters": [
+            "第19章 数字不再倒着走"
+          ],
+          "evidence_quotes": [
+            "空白回执背面的倒序数字是倪序葵的排查次序，已经找到逐项对应的工作底稿。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w01-no-action-01",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "给衡隼补一条惯用手：平常拿笔用左手。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "事实19已经记录惯用左手，别名指向同一人，重复添加无必要。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          19
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w01-no-action-02",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "灰翅筹不能抵付款，只能约人工核验，这个用途也加一条。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "事实15已完整覆盖预约用途及不是付款凭证，无需再出卡片。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          15
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w01-no-action-03",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "我印象里杭疏岑小时候练过拳，替我添到她的经历里。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      },
+      "why": "全书没有交代童年练拳经历，作者的不确定回忆不能替代正文依据。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w01-no-action-04",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "衡隼其实一直用右手，现有惯用手那条给我改回来。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "第1章及后文动作支持惯用左手，请求所称右手与正文冲突，不能据此改事实19。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          19
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w01-no-action-05",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "第20章最后一句绕得有点长，帮我拆短，读起来别那么费劲。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 20
+      },
+      "why": "请求编辑的是章节正文句子，不是起始事实或伏笔状态，不应出资料变更卡。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w01-no-action-06",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "柜台下面那个三角痕我不打算追了，把那条伏笔标成放弃。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      },
+      "why": "作者要求放弃伏笔7，属于当前不支持的abandon_thread，不能伪装成已回收。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "a23f-w01-route-01",
+      "work": "w01",
+      "suite": "route",
+      "input": "盘都交给颂钮了，资料那边也换人呗。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "陈述交接后明确要求资料同步，是口语更新请求。"
+    },
+    {
+      "id": "a23f-w01-route-02",
+      "work": "w01",
+      "suite": "route",
+      "input": "那回午夜重号的来由，帮我往事实页上留一笔。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "change",
+      "why": "口语要求新增成因事实，需查原文后给资料变更。"
+    },
+    {
+      "id": "a23f-w01-route-03",
+      "work": "w01",
+      "suite": "route",
+      "input": "七孔袋已经进封存柜，把旧位置替换掉。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 12
+      },
+      "expected_route": "change",
+      "why": "明确替换资料中的旧存放位置。"
+    },
+    {
+      "id": "a23f-w01-route-04",
+      "work": "w01",
+      "suite": "route",
+      "input": "白点那根线结了，伏笔页给它落个收束章。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "change",
+      "why": "明确要求把已收束的伏笔状态与章号更新。"
+    },
+    {
+      "id": "a23f-w01-route-05",
+      "work": "w01",
+      "suite": "route",
+      "input": "楔蓝盘那项保管人，现在资料里仍写着最开始那位吗？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "问资料目前写法，没有命令修改或确认新的值。"
+    },
+    {
+      "id": "a23f-w01-route-06",
+      "work": "w01",
+      "suite": "route",
+      "input": "我想补免核验费这件事，现有事实会不会已经记过？",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "询问是否已记录以决定之后是否添加，当前没有授权添加。"
+    },
+    {
+      "id": "a23f-w01-route-07",
+      "work": "w01",
+      "suite": "route",
+      "input": "这处说法照着前文核一遍，有没有互相顶着的？",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "没有选区、草稿定位或已有issue，泛指一致性询问，按默认问答处理。"
+    },
+    {
+      "id": "a23f-w01-route-08",
+      "work": "w01",
+      "suite": "route",
+      "input": "接着写第二十一章前，盘、袋、人手三头的现状给我捋顺。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_route": "recap",
+      "why": "要继续写作前的多项现状回顾。"
+    },
+    {
+      "id": "a23f-w01-route-09",
+      "work": "w01",
+      "suite": "route",
+      "input": "这处说法照着前文核一遍，有没有互相顶着的？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "邵星芒用右臂取下高架上的表册，动作已经没有停顿。"
+      },
+      "expected_route": "check_passage",
+      "why": "同句在写作页带草稿完整选句，明确对该片段做连续性检查。"
+    },
+    {
+      "id": "a23f-w01-route-10",
+      "work": "w01",
+      "suite": "route",
+      "input": "跟这本没关系，教我折一个能站在桌上的纸支架。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "与作品无关的折纸操作请求。"
+    },
+    {
+      "id": "a23f-w02-action-01",
+      "work": "w02",
+      "suite": "action",
+      "request": "食铺那位能读反刻，封核师上高处会发怵，给两人各补一条资料。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "须先解析角色身份，再分别找到第5章反刻识读与第6章怕高及实地操作限制，两个键均未记录。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "宋织宵",
+            "predicate": "识读能力"
+          },
+          "after_points": [
+            "会辨反刻衡纹",
+            "按刻制方向核读"
+          ],
+          "evidence_chapters": [
+            "第5章 翻过来的字"
+          ],
+          "evidence_quotes": [
+            "宋织宵能读懂反刻衡纹，辨认时须按刻制方向逐笔核对。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "蓝契野",
+            "predicate": "悬空测试限制"
+          },
+          "after_points": [
+            "惧高",
+            "试验须在实地操作"
+          ],
+          "evidence_chapters": [
+            "第6章 脚下的空处"
+          ],
+          "evidence_quotes": [
+            "蓝契野怕高，参与悬空试验时必须站在实心地面上操作。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-02",
+      "work": "w02",
+      "suite": "action",
+      "request": "绯签把废蜡模留下了，不再往炉里送，这个决定给她留在资料中。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 8
+      },
+      "why": "第8章保留作废蜡模而不熔回，资料中没有这项决定。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "任绯棘",
+            "predicate": "蜡模保留决定"
+          },
+          "after_points": [
+            "留住作废蜡模",
+            "不熔回"
+          ],
+          "evidence_chapters": [
+            "第8章 炉边留下的东西"
+          ],
+          "evidence_quotes": [
+            "任绯棘决定保留作废的封核蜡模，不再把它回炉熔掉。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-03",
+      "work": "w02",
+      "suite": "action",
+      "request": "桥上那回偏重的最后解释，添到资料里，别让我再翻整段。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      },
+      "why": "请求只指偏重解释，须回查第10章两批载货相叠的验证，不能将它直接等同核的身份判定。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "悬缆桥",
+            "predicate": "偏重成因"
+          },
+          "after_points": [
+            "两拨货一道上桥",
+            "并非重核漏重"
+          ],
+          "evidence_chapters": [
+            "第10章 谁还没有下桥"
+          ],
+          "evidence_quotes": [
+            "桥上的两次偏重源于两批载货同时上桥，并非珀坠核泄重。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-04",
+      "work": "w02",
+      "suite": "action",
+      "request": "双齿筹交伍燃缇收了，本轮证人也可留在实地，两项都补到事实页。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "第17章轮次筹交接和第18章本轮见证选择均未入事实，需要两张独立合法卡片。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "双齿筹",
+            "predicate": "本次保管人"
+          },
+          "after_points": [
+            "交伍燃缇收存"
+          ],
+          "evidence_chapters": [
+            "第17章 筹不是答案"
+          ],
+          "evidence_quotes": [
+            "双齿筹由乌岑弥正式交给伍燃缇收存，今后由伍燃缇保管本案轮次筹。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "钧衡庭",
+            "predicate": "本轮见证安排"
+          },
+          "after_points": [
+            "本轮证人可自选实地见证"
+          ],
+          "evidence_chapters": [
+            "第18章 见证的位置"
+          ],
+          "evidence_quotes": [
+            "钧衡庭决定本轮称量允许证人自行选择站在实心地面见证，不强迫登上悬台。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-05",
+      "work": "w02",
+      "suite": "action",
+      "request": "任绯棘接回珀坠核，棱脊箱在坠石厅内柜了，这两项存量资料一并同步。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 12
+      },
+      "why": "第11章核已另行封存交任，第12章移的是原箱，分别更新事实1和2，不能说核仍在箱里。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "保管者为任绯棘"
+          ],
+          "evidence_chapters": [
+            "第11章 交到谁手里"
+          ],
+          "evidence_quotes": [
+            "珀坠核正式交给任绯棘保管，封存未解除，不得私自试放重量。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "现放坠石厅内柜"
+          ],
+          "evidence_chapters": [
+            "第12章 搬动空箱"
+          ],
+          "evidence_quotes": [
+            "棱脊箱已从钧衡庭东侧架迁入坠石厅内柜，此后在这里存放。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-06",
+      "work": "w02",
+      "suite": "action",
+      "request": "主持这案子的已经是柯沉芷，事实里那条还挂纪烛绫，给我改掉。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "why": "第13章经权限安排及双方同意后由柯临时接任，事实3过时，不能改掉乌的代诉身份。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "柯沉芷临时主持本案"
+          ],
+          "evidence_chapters": [
+            "第13章 让开那张椅子"
+          ],
+          "evidence_quotes": [
+            "纪烛绫因须作为直接证人回避主持，本案改由柯沉芷获准临时主持。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-07",
+      "work": "w02",
+      "suite": "action",
+      "request": "测量员那只脚后来康复了吧，资料怎么还是旧伤，替我跟上。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "请求未给章号或原句，须定位第16章左踝恢复并可久站的进展，更新事实4。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "左踝康复",
+            "可久站"
+          ],
+          "evidence_chapters": [
+            "第16章 站定以后"
+          ],
+          "evidence_quotes": [
+            "伍燃缇的左踝已经康复，现可持续站立并稳定完成测量。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-08",
+      "work": "w02",
+      "suite": "action",
+      "request": "岐臂衡横梁都歪了，资料别再当它能比重，换成如今的状态。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "第15章横梁弯折导致停用，事实5不再成立，替代称量办法不等于旧衡器恢复。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "横梁弯折",
+            "停用不再比对"
+          ],
+          "evidence_chapters": [
+            "第15章 弯下去的横梁"
+          ],
+          "evidence_quotes": [
+            "岐臂衡的横梁已经弯折，从即日起停用，不再作为比对依据。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-09",
+      "work": "w02",
+      "suite": "action",
+      "request": "核颈白丝在第7章有了着落，把相关伏笔记为已回收。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 7
+      },
+      "why": "第7章白丝逐股对应旧核座衬线，伏笔1可登记回收，不表示核身份已完全验真。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第7章"
+          ],
+          "evidence_chapters": [
+            "第7章 线的一端"
+          ],
+          "evidence_quotes": [
+            "珀坠核颈部的白丝来自旧核座的衬线，并非核体裂纹。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-10",
+      "work": "w02",
+      "suite": "action",
+      "request": "第三锤第9章就解释完了，伏笔栏给它补个收束章吧。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 9
+      },
+      "why": "第9章第三声是换盘校准而非第三次寄重，伏笔2的正文收线与资料状态不同步。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第9章"
+          ],
+          "evidence_chapters": [
+            "第9章 多出来的一声"
+          ],
+          "evidence_quotes": [
+            "坠石厅重复的第三次击锤，是换盘后重做空盘校准，并非第三次实际寄重。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-11",
+      "work": "w02",
+      "suite": "action",
+      "request": "第14章已经查出箱角小孔怎么来的，那条别再挂着没结局了。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 14
+      },
+      "why": "第14章原制作资料与旧漆层共同确认排蜡孔，足以收束伏笔3。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 孔通向哪里"
+          ],
+          "evidence_quotes": [
+            "棱脊箱边角的细孔原是制作时留下的排蜡孔，与本次重核调包无关。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-action-12",
+      "work": "w02",
+      "suite": "action",
+      "request": "尾页那七个痕第19章说透了，把对应伏笔标成已回收。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "第19章旧衡器校零次序解释契约尾页刻痕，伏笔4已经收束，三条真正未知线仍开放。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第19章"
+          ],
+          "evidence_chapters": [
+            "第19章 两件同重的东西"
+          ],
+          "evidence_quotes": [
+            "契约尾页的七点刻痕对应旧衡器校零顺序，并非暗中密约。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a23f-w02-no-action-01",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "缄砝平时用右手，给他添上惯用手这一项。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "事实19已记录仇照缄惯用右手，别名不产生另一人，无需重复添加。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          19
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-no-action-02",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "轮次那种双齿筹不管谁拥有石头，这个用途限制再存一条吧。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 20
+      },
+      "why": "事实24已记录只示轮次且不是所有权凭证，与本请求语义相同。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          24
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-no-action-03",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "给蓝契野添段旧经历吧，我记得他以前在军中当过斥候。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      },
+      "why": "全书未交代从军或斥候经历，不能把作者不确定的记忆当成原文依据。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-no-action-04",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "重核明明能封活人的重量，把资料里那个限制改回来。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "第2章明确术法仅作用于无生命物件，事实15正确，请求与固定规则相反。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          15
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-no-action-05",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "第20章结尾那一句太硬，替我换个柔和些的写法。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "作者要润色既有正文措辞，没有要求事实更新或伏笔回收。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-no-action-06",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "双齿筹的用途那条我不想留在资料里了，直接删掉。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      },
+      "why": "请求删除事实24，delete_fact不在首批支持的三种动作内。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [
+          24
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a23f-w02-route-01",
+      "work": "w02",
+      "suite": "route",
+      "input": "核已经还给任绯棘了，资料那一格别再留旧名字。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "口语命令更新保管人资料。"
+    },
+    {
+      "id": "a23f-w02-route-02",
+      "work": "w02",
+      "suite": "route",
+      "input": "宋织宵那手认反刻的本领，也给事实页留一条呗。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "change",
+      "why": "口语要求新增人物能力事实。"
+    },
+    {
+      "id": "a23f-w02-route-03",
+      "work": "w02",
+      "suite": "route",
+      "input": "棱脊箱现在得去坠石厅内柜找，把资料的地点换过来。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 12
+      },
+      "expected_route": "change",
+      "why": "要求用当前地点替换旧资料。"
+    },
+    {
+      "id": "a23f-w02-route-04",
+      "work": "w02",
+      "suite": "route",
+      "input": "第三锤的疑问已经结清，去伏笔页把结局补齐。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "change",
+      "why": "要求更新伏笔收束资料，而非仅口头解释。"
+    },
+    {
+      "id": "a23f-w02-route-05",
+      "work": "w02",
+      "suite": "route",
+      "input": "我若把左踝康复补一条，和旧事实会不会撞上？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "条件式询问新增与旧资料是否冲突，不是实际新增命令。"
+    },
+    {
+      "id": "a23f-w02-route-06",
+      "work": "w02",
+      "suite": "route",
+      "input": "棱脊箱的地点在资料里已经改过了吗？",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "询问修改是否已经发生，当前没有发出修改请求。"
+    },
+    {
+      "id": "a23f-w02-route-07",
+      "work": "w02",
+      "suite": "route",
+      "input": "这儿和前面能不能同时说通，替我比一比。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "无选区及问题卡定位，泛指比较一致性的问答。"
+    },
+    {
+      "id": "a23f-w02-route-08",
+      "work": "w02",
+      "suite": "route",
+      "input": "第21章还没动笔，把核、箱、伤势和没收的线先给我理一遍。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_route": "recap",
+      "why": "需要多对象及开放线索的写作前回顾。"
+    },
+    {
+      "id": "a23f-w02-route-09",
+      "work": "w02",
+      "suite": "route",
+      "input": "这儿和前面能不能同时说通，替我比一比。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "厅里，伍燃缇站在窗旁整理昨日留存的测量纸。"
+      },
+      "expected_route": "check_passage",
+      "why": "相同输入在写作页带完整草稿选句，检查对象明确。"
+    },
+    {
+      "id": "a23f-w02-route-10",
+      "work": "w02",
+      "suite": "route",
+      "input": "先不聊这本，给我讲讲保温杯盖为什么总拧不开。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "与作品无关的日常物理问题。"
+    }
+  ]
+}

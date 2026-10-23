@@ -1,0 +1,12 @@
+{
+  "candidate_names": 41,
+  "scanned_text_files": 455,
+  "matched_name_file_pairs": 0,
+  "matched_names": 0,
+  "candidate_names_sha256": "4d4f2a10aff52189be111f9db44f85d268bd2ffc7dc74b60c8d9af7f9eb12276",
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_v13_authoring"
+  ]
+}

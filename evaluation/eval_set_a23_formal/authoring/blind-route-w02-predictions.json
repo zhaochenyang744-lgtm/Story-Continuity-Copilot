@@ -1,0 +1,56 @@
+{
+  "source_sha256": "43035b68fcae5b294ba40adddb60b4bcb60bb73d82fa7faad76d3a9986d4ce30",
+  "reviewer": "independent-route-reviewer",
+  "predictions": [
+    {
+      "id": "a23f-w02-route-09",
+      "route": "check_passage",
+      "reason": "写作页提供选段，请求把这处与前文比较是否相容，属于检查选中段落。"
+    },
+    {
+      "id": "a23f-w02-route-03",
+      "route": "change",
+      "reason": "明确要求将资料中的旧地点替换为已变化后的地点，属于修改事实。"
+    },
+    {
+      "id": "a23f-w02-route-06",
+      "route": "ask",
+      "reason": "只询问资料中的地点是否已更新，正确意图是查询当前记录，没有要求动手修改。"
+    },
+    {
+      "id": "a23f-w02-route-10",
+      "route": "out_of_scope",
+      "reason": "明确暂停谈作品，询问现实保温杯盖的原理，与本书无关。"
+    },
+    {
+      "id": "a23f-w02-route-02",
+      "route": "change",
+      "reason": "要求将人物已有的能力留到事实页，属于新增事实的口语请求。"
+    },
+    {
+      "id": "a23f-w02-route-07",
+      "route": "ask",
+      "reason": "请求比较说法与前文，但overview没有提供选段或已打开的检查结果，按问作品回答。"
+    },
+    {
+      "id": "a23f-w02-route-04",
+      "route": "change",
+      "reason": "要求在伏笔页补充已结束线索的结局，属于将伏笔标为已回收。"
+    },
+    {
+      "id": "a23f-w02-route-01",
+      "route": "change",
+      "reason": "要求资料中的物件保管人不再保留旧名字，意图是更新事实记录。"
+    },
+    {
+      "id": "a23f-w02-route-08",
+      "route": "recap",
+      "reason": "明确在下一章尚未动笔时整理物件、人物状态及未收线索，属于写前回顾。"
+    },
+    {
+      "id": "a23f-w02-route-05",
+      "route": "ask",
+      "reason": "以假设新增的口吻询问是否会与旧事实冲突，当前要的是核实回答，并未授权实际新增。"
+    }
+  ]
+}

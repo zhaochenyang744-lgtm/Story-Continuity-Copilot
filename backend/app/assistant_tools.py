@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 from .passages import Passage, PassageIndex, FactKey, split_passages
+from .memory_contract import PREDICATE_LABELS
 from .review_screening import fact_text
 from .text_content import visible_draft_text
 
@@ -46,9 +47,51 @@ ERROR_TEXTS = {
     "chapter_out_of_scope": "这一章不在可查范围内",
     "citation_validation_failed": "引用没对上，重新整理回答",
     "proposal_after_failed_check": "这句改后的话检查时仍有矛盾",
+    "change_target_invalid": "要改的资料没对上",
+    "change_evidence_invalid": "依据不是读到过的正文段落",
+    "change_evidence_before_planted": "依据在伏笔埋下之前",
+    "change_thread_not_open": "这条伏笔已经不是待回收的状态",
+    "change_duplicate": "这条资料已经提出过改动",
+    "change_limit_reached": "一张卡片最多 5 条改动",
+    "change_value_invalid": "改后的内容不合要求",
+    "change_no_difference": "资料里已经是这样",
+    "change_fields_invalid": "事实的类型或属性不在可选范围内",
+    "change_fact_already_recorded": "资料里已经有这条事实",
+    "change_check_existing": "先查一遍资料里已有的事实",
+    "change_value_not_in_evidence": "改后内容里的数字在依据段落里没有",
+    "change_give_up_not_resolve": "作者要的是放弃或删除，这一版不支持",
+    "change_read_only": "作者只说要看这条资料，没有说要改",
+    "change_prose_not_fact": "作者要改的是正文的句子，不是资料",
+    "change_fact_not_thread": "作者说的是事实，不是伏笔",
+    "change_held_back": "还有改动没有放进卡片，先处理它",
+    "change_not_requested": "作者的话里没有提到这条资料",
+    "change_request_words_taken": "作者这几个字已经对应了另一条改动",
 }
 # What the model is told besides the code, when the code alone would not tell it what to do.
-ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。"}
+ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。",
+               "change_target_invalid": "target 要填这次查到的那条资料的编号：伏笔用 list_threads 返回的编号，事实用 lookup_facts 返回的编号。",
+               "change_value_invalid": "value 要写成一句不超过 200 字的内容（subject 不超过 60 字），只写正文里写着的，不写编号。",
+               "change_no_difference": "资料里这条事实已经是这样，不用改；在回答里引用那条事实告诉作者。",
+               "change_fields_invalid": "memory_type 和 predicate 只能用工具说明里列出的值。",
+               "change_fact_already_recorded": "资料里已经有这条事实，不用再加；在回答里引用那条事实告诉作者。",
+               "change_request_words_taken": "作者这几个字已经对应了卡片上的另一条改动：一处要求只做一条改动。作者这句话里没有别的字指到这条资料，就不要提出。",
+               "change_not_requested": "request_words 要原样摘抄作者这句话里指到这条资料的字（至少两个字）。作者的话里摘不出指到它的字，"
+                                       "就是作者没要改它：不要提出，用 answer 回答作者真正问的事。",
+               "change_check_existing": "资料里已经有关于这个人或物的事实，这次还没有查过：先用 lookup_facts 按 subject 里的全名查一遍（不是别名），"
+                                        "资料里已有意思相同的事实就不加，在回答里引用那条事实告诉作者；确实没有再提出。",
+               "change_value_not_in_evidence": "改后的内容里有依据段落里没有的数字或日期：只写依据段落里写着的；正文里没有写到，就不提出，在回答里告诉作者正文没有写。",
+               "change_give_up_not_resolve": "作者要的是放弃这条伏笔或删除资料，这一版做不到，不能用标成已回收代替：不提出，"
+                                             "note 写「我不能直接修改这类资料，可以在资料页自己改。」。",
+               "change_prose_not_fact": "事实记的是故事里的人和事，不记正文的某一句、某一段：作者要改写正文时不提出改动，"
+                                        "note 写「我不能直接修改正文，可以让我给改法。」。",
+               "change_read_only": "作者对这条资料只说了读、看或核对，没有说要改：不要提出改动，把读到的内容写进回答。",
+               "change_fact_not_thread": "作者这几个字说的是事实（旧说法、状态、那一栏），不是伏笔：用 lookup_facts 找到那条事实，用 change_fact 改它。",
+               "change_held_back": "这一轮有改动还没有放进卡片（见它的结果）：先决定它，要就原样再提出一次，不要就不提；然后再用 answer 收尾。",
+               "change_evidence_invalid": "evidence 要填一到两个正文段落的编号（search_text 或 read_chapter 返回的），不能是事实、伏笔或草稿。",
+               "change_evidence_before_planted": "依据段落在这条伏笔埋下的那章之前，不能证明它已经收了。",
+               "change_thread_not_open": "这条伏笔的记录已经是已回收或已放弃，不用再改；在回答里告诉作者记录里已经是这样。",
+               "change_duplicate": "这条资料已经提出过改动，不要重复提出。",
+               "change_limit_reached": "一张卡片最多 5 条改动，不要再提出了，用 answer 收尾。"}
 GENERIC_ERROR_TEXT = "这一步没成功"
 
 
@@ -127,6 +170,11 @@ class ToolContext:
     # A fix: what `check_passage` found (the text, and the sentences it found a conflict in), and the proposals it withdrew.
     checks: list[dict[str, Any]] = field(default_factory=list)
     withdrawn: list[dict[str, str]] = field(default_factory=list)  # {label: "P1", after: the withdrawn sentence}
+    # A change: whether this round is the last the task may call tools in, and the items already held back once for a second look.
+    forced: bool = False
+    second_looks: set[str] = field(default_factory=set)
+    held_now: int = 0  # items held back for a second look in this round
+    last: bool = False  # no round after this one (the last round, or the budget or time is spent)
     _spans: list[dict[str, Any]] | None = field(default=None, repr=False)
     _memory: list[dict[str, Any]] | None = field(default=None, repr=False)
     _index: PassageIndex | None = field(default=None, repr=False)
@@ -242,6 +290,10 @@ class Tool:
         return {"type": "function", "function": {"name": self.name, "description": self.description, "parameters": self.parameters}}
 
 
+# A change task (v2.0) reads the written text, the facts and the foreshadowing like a question; it never sees the draft.
+CHANGE_READING = ("ask", "recap", "fix_issue", "change")
+
+
 def _wrap(**content: Any) -> dict[str, Any]:
     return {"content_kind": CONTENT_KIND, **content}
 
@@ -288,6 +340,28 @@ def run_search_text(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
 
 
 # --- lookup_facts ----------------------------------------------------------------------------------------------------
+def _own_words(predicate: Any) -> str:
+    """A fact's property when it is written in words of its own, not one of the product's keys ("status", "holder"), which
+    say nothing a reader needs; empty otherwise."""
+    value = str(predicate or "").strip()
+    return "" if not value or value in PREDICATE_LABELS or value.isascii() else value
+def fact_items(ctx: ToolContext, facts: list[dict[str, Any]], chapter_of_span: dict[str, int] | None = None) -> list[dict[str, Any]]:
+    """Facts as a tool result lists them, each registered as a source the answer can cite and a change can target."""
+    if chapter_of_span is None:
+        with ctx.db.connection() as c:
+            chapter_of_span = {row["id"]: row["chapter_number"] for row in c.execute(
+                "SELECT s.id,ch.chapter_number FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=?",
+                (ctx.project_id,))}
+    items = []
+    for fact in facts:
+        chapter = chapter_of_span.get(fact.get("source_span_id"))
+        own = _own_words(fact.get("predicate"))
+        text = f"{fact['subject']}（{own}）：{fact['value']}" if own else f"{fact['subject']}：{fact['value']}"
+        ref = ctx.registry.register("fact", fact["id"], chapter, ctx.title(chapter) if chapter else None, None, None, text)
+        items.append({"ref": ref, "chapter": chapter, "chapter_title": ctx.title(chapter) if chapter else None, "text": text})
+    return items
+
+
 def run_lookup_facts(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     name = _text_arg(args, "name", NAME_MAX_CHARS)
     names = [name]
@@ -301,7 +375,9 @@ def run_lookup_facts(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
         chapter_of_span = {row["id"]: row["chapter_number"] for row in c.execute(
             "SELECT s.id,ch.chapter_number FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=?", (ctx.project_id,))}
     chapter_to = _int_arg(args, "chapter_to", minimum=1)
-    matches = [fact for fact in ctx.memory() if any(n in f"{fact['subject']}\n{fact['value']}" for n in names)]
+    # A property written in words of its own (an imported work's "盟议发言资格") is searched too: the thing a fact is about is
+    # sometimes named only there (A2 first formal run, w01-action-08: "槐誓庭 / 盟议发言资格 / 只准世袭者发言").
+    matches = [fact for fact in ctx.memory() if any(n in f"{fact['subject']}\n{fact['value']}\n{_own_words(fact.get('predicate'))}" for n in names)]
     if ctx.task["kind"] == "recap":
         matches = [f for f in matches if chapter_of_span.get(f.get("source_span_id"), ctx.max_chapter + 1) <= ctx.max_chapter]
 
@@ -318,12 +394,7 @@ def run_lookup_facts(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     room = max(FACTS_MAX - len(about), 0)
     chosen = about[-FACTS_MAX:] + (mentions[-room:] if room else [])
     chosen.sort(key=chapter_key)
-    items = []
-    for fact in chosen:
-        chapter = chapter_of_span.get(fact.get("source_span_id"))
-        text = f"{fact['subject']}：{fact['value']}"
-        ref = ctx.registry.register("fact", fact["id"], chapter, ctx.title(chapter) if chapter else None, None, None, text)
-        items.append({"ref": ref, "chapter": chapter, "chapter_title": ctx.title(chapter) if chapter else None, "text": text})
+    items = fact_items(ctx, chosen, chapter_of_span)
     result = _wrap(name=name, total_matched=len(matches), earlier_not_listed=len(matches) - len(chosen), facts=items)
     shown = {"name": name}
     if chapter_to is not None:
@@ -527,28 +598,28 @@ TOOLS: dict[str, Tool] = {tool.name: tool for tool in (
          {"type": "object", "properties": {"query": {"type": "string", "maxLength": QUERY_MAX_CHARS, "description": "检索词，如人名、物件名或一句话的要点"},
                                           "chapter_from": {"type": "integer", "minimum": 1, "description": "起始章，可选"},
                                           "chapter_to": {"type": "integer", "minimum": 1, "description": "结束章，可选"}}, "required": ["query"]},
-         run_search_text, _search_summary),
+         run_search_text, _search_summary, kinds=CHANGE_READING),
     Tool("lookup_facts", "按人名、别名、地名或物名查作者已确认的事实。返回的是章节最晚的 12 条（以这个名字为主语的事实优先），按章节从早到晚排列；"
          "total_matched 是一共匹配到的条数，earlier_not_listed 是没有列出的条数（章节更早的，或只是在正文里提到这个名字的）。想看更早的，用 chapter_to 只查到某一章为止。",
          {"type": "object", "properties": {"name": {"type": "string", "maxLength": NAME_MAX_CHARS, "description": "人名、别名、地名或物名"},
                                           "chapter_to": {"type": "integer", "minimum": 1, "description": "只查截至这一章的事实，可选；用来往前翻更早的事实"}}, "required": ["name"]},
-         run_lookup_facts, _facts_summary),
+         run_lookup_facts, _facts_summary, kinds=CHANGE_READING),
     Tool("read_chapter", "读某一章的一个窗口（按段落，一次最多 2000 字）。用 from_char 接着往后读。",
          {"type": "object", "properties": {"chapter_number": {"type": "integer", "minimum": 1}, "from_char": {"type": "integer", "minimum": 0, "description": "从第几个字开始，默认 0"},
                                           "max_chars": {"type": "integer", "minimum": 1, "maximum": READ_DEFAULT_CHARS}}, "required": ["chapter_number"]},
-         run_read_chapter, _read_chapter_summary),
+         run_read_chapter, _read_chapter_summary, kinds=CHANGE_READING),
     Tool("read_draft", "读作者当前正在写的这一章草稿的一个窗口（一次最多 2000 字）。只在写作页的任务里可用。",
          {"type": "object", "properties": {"from_char": {"type": "integer", "minimum": 0}, "max_chars": {"type": "integer", "minimum": 1, "maximum": READ_DEFAULT_CHARS}}},
          run_read_draft, lambda args, outcome: "读本章草稿", needs_draft=True),
     Tool("get_plans", "读作者的情节计划（带目标章）和伏笔记录（含埋设章、状态），最多 10 条。可限定某一章。",
          {"type": "object", "properties": {"chapter_number": {"type": "integer", "minimum": 1, "description": "只看这一章的，可选"}}},
-         run_get_plans, lambda args, outcome: "看计划和伏笔"),
+         run_get_plans, lambda args, outcome: "看计划和伏笔", kinds=CHANGE_READING),
     Tool("get_issues", "读本章草稿最近一次连续性检查的结果和每条的依据片段（最多 10 条）。只在写作页的任务里可用。",
          {"type": "object", "properties": {"issue_id": {"type": "string", "description": "只看某一条，填它的序号（issue_number），可选"}}},
          run_get_issues, lambda args, outcome: "读检查结果", needs_draft=True),
     Tool("answer", "收尾：给出最终回答。每句结论都要带出处编号（只能用工具返回过的编号）。查不到就用 not_found 并在 note 里说明查过哪些地方。"
          "问题和这部作品无关时用 out_of_scope，不写句子。",
-         ANSWER_SCHEMA, None, lambda args, outcome: "给出回答", kinds=("ask", "fix_issue")),
+         ANSWER_SCHEMA, None, lambda args, outcome: "给出回答", kinds=("ask", "fix_issue", "change")),
 )}
 
 
@@ -575,10 +646,49 @@ TOOLS["check_passage"] = Tool("check_passage", "按正式连续性规则检查�
     _check, lambda args, outcome: "定点检查这一段", kinds=("ask", "fix_issue"))
 
 
+def _list_threads(ctx, args):
+    from .assistant_actions import run_list_threads
+    return run_list_threads(ctx, args)
+
+
+def _propose_change(ctx, args):
+    from .assistant_actions import run_propose_change
+    return run_propose_change(ctx, args)
+
+
+TOOLS["list_threads"] = Tool("list_threads", "列出这部作品的全部伏笔记录（标题、状态、埋下和回收的章、说明），最多 30 条。要改伏笔时先用它找到那条记录的编号。",
+    {"type": "object", "properties": {}}, _list_threads, lambda args, outcome: "看伏笔记录", kinds=("change",))
+TOOLS["propose_change"] = Tool("propose_change", "向作者提出一条资料改动，放进变更卡片，作者确认后才会执行。每条改动调用一次，最多 5 条。"
+    "evidence 都填一到两个正文段落的编号（search_text 或 read_chapter 返回的），段落里要直接写到这件事。"
+    "resolve_thread：把一条伏笔标成已回收；target 填 list_threads 返回的那条伏笔的编号。"
+    "change_fact：改一条已确认事实的内容；target 填 lookup_facts 返回的那条事实的编号，value 填改后的内容。"
+    "add_fact：加一条资料里没有的事实；不填 target，填 memory_type、subject（人名或物名）、predicate 和 value。",
+    {"type": "object", "properties": {"action": {"type": "string", "enum": ["resolve_thread", "change_fact", "add_fact"]},
+     "target": {"type": "string", "description": "要改的那条资料的编号，如 R3（add_fact 不填）"},
+     "evidence": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "string"}, "description": "依据的正文段落编号"},
+     "request_words": {"type": "string", "maxLength": 40, "description": "作者这句话里指到这条资料的那几个字，原样摘抄（至少两个字）"},
+     "value": {"type": "string", "maxLength": 200, "description": "事实的内容（change_fact、add_fact）"},
+     "author_value": {"type": "string", "maxLength": 40, "description": "作者这句话里自己说的新状态，原样摘抄（如「改成服务台后面的抽屉」里的「服务台后面的抽屉」）；作者没说改成什么就填空字符串"},
+     "subject": {"type": "string", "maxLength": 60, "description": "事实说的是谁或什么（add_fact）"},
+     "memory_type": {"type": "string", "enum": ["static_canon", "dynamic_state", "event_timeline", "character_knowledge", "open_thread"],
+                     "description": "add_fact：static_canon 固定设定，dynamic_state 当前状态，event_timeline 事件，character_knowledge 人物知道什么，open_thread 未了结的线"},
+     "predicate": {"type": "string", "enum": ["identity", "relationship", "affiliation", "location", "status", "rule", "possession", "event_occurred", "knowledge"],
+                   "description": "add_fact：identity 身份，relationship 关系，affiliation 所属，location 所在位置，status 状态，rule 规则，possession 持有，"
+                                  "event_occurred 发生的事件，knowledge 角色所知"}},
+     "required": ["action", "evidence", "request_words"]},
+    _propose_change, lambda args, outcome: "提出资料改动" + ("，先对照资料里已有的" if outcome is not None and outcome.result.get("status") == "second_look" else ""),
+    kinds=("change",))
+
+
 def register_recap_tool():
     from .assistant_recap import RECAP_SCHEMA
     TOOLS["recap"] = Tool("recap", "按四栏给出写前回顾；每条一句概括并引用出处。", RECAP_SCHEMA, None,
                          lambda args, outcome: "给出写前回顾", kinds=("recap",))
+
+
+# What a task may still call once it must close. A change task's last step is often the proposal itself, which reads
+# nothing (A2 dev round 2: a7 had read its evidence and could only answer, so its card stayed empty).
+CLOSING = {"recap": ("recap",), "change": ("propose_change", "answer")}
 
 
 def tools_for(kind: str, scope: dict[str, Any], *, answer_only: bool = False) -> list[dict[str, Any]]:
@@ -589,7 +699,7 @@ def tools_for(kind: str, scope: dict[str, Any], *, answer_only: bool = False) ->
               and not (tool.name == "check_passage" and scope.get("visitor"))
               and not (tool.name == "propose_edit" and scope.get("issue_nature") == "state_change")]
     if answer_only:
-        chosen = [tool for tool in chosen if tool.name == ("recap" if kind == "recap" else "answer")]
+        chosen = [tool for tool in chosen if tool.name in CLOSING.get(kind, ("answer",))]
     schemas = [tool.schema() for tool in chosen]
     if kind != "ask":  # only a question about the work can be out of scope
         for schema in schemas:

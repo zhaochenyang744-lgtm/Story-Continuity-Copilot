@@ -1,0 +1,286 @@
+{
+  "status": "completed",
+  "role": "source_author_self_read",
+  "independent": false,
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "shared_draft_read": true,
+  "source_sha256": "b8b902032371b2f36ecb83e2529feb4b5b2c4192ec0d8b012208b3e105d3bc12",
+  "draft_sha256": "9b88a970416aa372c129d42f081e003269fec7b2d209ffc4ba80941c57daab54",
+  "semantic_findings": [
+    {
+      "id": "A01",
+      "chapters": [
+        1
+      ],
+      "status": "fixed",
+      "detail": "起手动作改为险些松开，使后续保持陶沿位置与别松指令一致。"
+    },
+    {
+      "id": "A02",
+      "chapters": [
+        1,
+        4,
+        9,
+        11
+      ],
+      "status": "fixed",
+      "detail": "明确匣子连背包入床头格，夜查后仍回背包，保留包底破垫袋持续落砂的接触链，交接后移出台面另放。"
+    },
+    {
+      "id": "A03",
+      "chapters": [
+        6
+      ],
+      "status": "fixed",
+      "detail": "误触松脂刷柄前明确露天清理后已摘手套；手套复戴前先清理，皮疹不再依赖隔着手套接触的歧义。"
+    },
+    {
+      "id": "A04",
+      "chapters": [
+        6,
+        20
+      ],
+      "status": "fixed",
+      "detail": "明确雨前已经有湿泥，短片直接显示轮子印痕形成；傍晚改用天色尚明，避免读成黎明。"
+    },
+    {
+      "id": "A05",
+      "chapters": [
+        12
+      ],
+      "status": "fixed",
+      "detail": "试提在驻地棚口起步，走到转弯处即回，之后才正式交接送北库，消除尚未取袋却已装袋的跳接。"
+    },
+    {
+      "id": "A06",
+      "chapters": [
+        17
+      ],
+      "status": "fixed",
+      "detail": "下午原件由保护员在清理区边固定桌照看，核查结束明确按移交记录托回棚，再入盒，补上托板来源及移动链。"
+    }
+  ],
+  "prose_findings": [
+    {
+      "id": "P01",
+      "chapters": [
+        15
+      ],
+      "status": "fixed",
+      "detail": "移除普通测尺前的未命名措辞，避免作者元数据口吻进入叙事。"
+    }
+  ],
+  "finding_counts": {
+    "semantic": 6,
+    "prose": 1,
+    "fixed": 7,
+    "unresolved": 0
+  },
+  "preserved_conditions": {
+    "stale_facts": 5,
+    "missing_facts": 6,
+    "resolved_unmarked": 4,
+    "open_threads": 3,
+    "aliases": 3,
+    "characters": 8
+  },
+  "counts": {
+    "chapters": 20,
+    "chapter_han": {
+      "1": 2891,
+      "2": 2841,
+      "3": 2877,
+      "4": 2859,
+      "5": 2891,
+      "6": 2889,
+      "7": 2839,
+      "8": 2893,
+      "9": 2838,
+      "10": 2895,
+      "11": 2915,
+      "12": 2895,
+      "13": 2899,
+      "14": 2905,
+      "15": 2890,
+      "16": 2961,
+      "17": 2944,
+      "18": 2961,
+      "19": 2930,
+      "20": 3063
+    },
+    "total_han": 58076,
+    "min_han": 2838,
+    "max_han": 3063
+  },
+  "proof_positions": [
+    {
+      "family": "stale_facts",
+      "index": 1,
+      "chapter": 11,
+      "occurrences": 1,
+      "han_position": 2653
+    },
+    {
+      "family": "stale_facts",
+      "index": 2,
+      "chapter": 12,
+      "occurrences": 1,
+      "han_position": 2625
+    },
+    {
+      "family": "stale_facts",
+      "index": 3,
+      "chapter": 13,
+      "occurrences": 1,
+      "han_position": 2660
+    },
+    {
+      "family": "stale_facts",
+      "index": 4,
+      "chapter": 16,
+      "occurrences": 1,
+      "han_position": 2674
+    },
+    {
+      "family": "stale_facts",
+      "index": 5,
+      "chapter": 15,
+      "occurrences": 1,
+      "han_position": 2648
+    },
+    {
+      "family": "missing_facts",
+      "index": 1,
+      "chapter": 5,
+      "occurrences": 1,
+      "han_position": 2654
+    },
+    {
+      "family": "missing_facts",
+      "index": 2,
+      "chapter": 6,
+      "occurrences": 1,
+      "han_position": 2656
+    },
+    {
+      "family": "missing_facts",
+      "index": 3,
+      "chapter": 8,
+      "occurrences": 1,
+      "han_position": 2647
+    },
+    {
+      "family": "missing_facts",
+      "index": 4,
+      "chapter": 10,
+      "occurrences": 1,
+      "han_position": 2619
+    },
+    {
+      "family": "missing_facts",
+      "index": 5,
+      "chapter": 17,
+      "occurrences": 1,
+      "han_position": 2671
+    },
+    {
+      "family": "missing_facts",
+      "index": 6,
+      "chapter": 19,
+      "occurrences": 1,
+      "han_position": 2651
+    },
+    {
+      "family": "resolved_unmarked",
+      "index": 1,
+      "chapter": 9,
+      "occurrences": 1,
+      "han_position": 2606
+    },
+    {
+      "family": "resolved_unmarked",
+      "index": 2,
+      "chapter": 14,
+      "occurrences": 1,
+      "han_position": 2667
+    },
+    {
+      "family": "resolved_unmarked",
+      "index": 3,
+      "chapter": 18,
+      "occurrences": 1,
+      "han_position": 2684
+    },
+    {
+      "family": "resolved_unmarked",
+      "index": 4,
+      "chapter": 20,
+      "occurrences": 1,
+      "han_position": 2634
+    },
+    {
+      "family": "aliases",
+      "index": 1,
+      "chapter": 1,
+      "occurrences": 1,
+      "han_position": 2458
+    },
+    {
+      "family": "aliases",
+      "index": 2,
+      "chapter": 2,
+      "occurrences": 1,
+      "han_position": 754
+    },
+    {
+      "family": "aliases",
+      "index": 3,
+      "chapter": 3,
+      "occurrences": 1,
+      "han_position": 175
+    }
+  ],
+  "draft_continuity": {
+    "status": "consistent",
+    "issues": 0,
+    "notes": [
+      "展示首批来客在第21章尚未到场，19章内部试讲及20章前夜准备未提前举行。",
+      "旧布20章撤下，新布21章已换上；说明纸、职务、手伤与物件当前状态均相接。"
+    ]
+  },
+  "encoding": {
+    "utf8_without_bom": true,
+    "lf_only": true
+  },
+  "canonical_source": "works/w01.md",
+  "chapter_copies": 0,
+  "reserved_unknown_preserved": [
+    "于蓁洛年龄",
+    "于蓁洛出生年月",
+    "于蓁洛生日"
+  ],
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

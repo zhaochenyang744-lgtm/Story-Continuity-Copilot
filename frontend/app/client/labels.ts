@@ -102,7 +102,12 @@ export const predicateLabel = (value: unknown) =>
     possession: "持有",
     event_occurred: "发生的事",
     knowledge: "知道的事",
-  } as Record<string, string>)[String(value)] ?? "其他";
+  } as Record<string, string>)[String(value)] ?? ownPredicate(value);
+/** A property written in the author's own words ("旧誓附页认知") is its own label; an unknown key is "其他". */
+const ownPredicate = (value: unknown) => {
+  const text = String(value ?? "").trim();
+  return text && !/^[\x00-\x7f]*$/.test(text) ? text : "其他";
+};
 /** Server labels such as "温岚 · does_not_know" end in a raw key; show the author wording instead. */
 export const readableKeys = (text: string) => text.replace(/ · ([a-z][a-z_]*)(?=）|\)|$)/g, (_, key: string) => ` · ${predicateLabel(key)}`);
 

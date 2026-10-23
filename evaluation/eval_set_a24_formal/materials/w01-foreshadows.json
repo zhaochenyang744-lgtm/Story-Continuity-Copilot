@@ -1,0 +1,10 @@
+[
+  {"title":"门边的铅笔短线","description":"门边留着一道压得很重的铅笔短线，姐妹都不知道何时画下，也还没有说明它的用途。","status":"planted","planted_chapter":1},
+  {"title":"厨房的两声轻响","description":"厨房偶尔传来两声轻响，听见的人无法当场确定来源，需要在之后的日常使用中找到原因。","status":"developing","planted_chapter":2},
+  {"title":"迟到的明信片","description":"家人收到一张比预想晚到的明信片，母亲寄出后发生了什么还没有被解释清楚。","status":"planted","planted_chapter":3},
+  {"title":"窗台上的空花盆","description":"窗台一直留着一只空花盆，家人尚不明白父亲为何没有把它收走，暂时保留原样。","status":"developing","planted_chapter":4},
+  {"title":"屋顶旁未开的小门","description":"屋顶旁那扇较小的门一直没有打开，姐妹尚未知道门后的情况，暂时也没有处理它。","status":"planted","planted_chapter":4},
+  {"title":"未寄的生日邀请","description":"父亲留着一份没有寄出的生日邀请，收件人仍未明确，家人没有擅自替它找一个去处。","status":"planted","planted_chapter":3},
+  {"title":"母亲想再学的乐器","description":"母亲提起想再学一件乐器，却还没有说出具体是什么，姐妹也没有追着她当场决定。","status":"developing","planted_chapter":2},
+  {"title":"玄关灰布的用途","description":"玄关的灰布已经揭开用途，是盖住待修坐凳，父亲担心换鞋的人误坐，所以一直搭着。","status":"resolved","planted_chapter":1,"resolved_chapter":4}
+]

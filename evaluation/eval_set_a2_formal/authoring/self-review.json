@@ -1,0 +1,275 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "甄宿微",
+        "郦衡朔",
+        "鄂闻绡",
+        "谯映砚",
+        "麴承荫",
+        "斛令筠",
+        "郗定弦",
+        "郜逢阑"
+      ],
+      "aliases": [
+        {
+          "name": "甄宿微",
+          "alias": "宿鸢",
+          "chapter": 1,
+          "quote": "有人认出她，低低叫了一声宿鸢。这是甄宿微在军中行走时的别名，到了礼院仍有人这样叫。"
+        },
+        {
+          "name": "郦衡朔",
+          "alias": "瘦烛",
+          "chapter": 2,
+          "quote": "他身材细长，铠甲穿在身上总像大了半指，门军背后叫他瘦烛。"
+        },
+        {
+          "name": "鄂闻绡",
+          "alias": "绡判",
+          "chapter": 3,
+          "quote": "绡判是鄂闻绡的别名，原本是旧同僚笑她辨字像裁绡，一丝也不肯扯歪。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 10,
+          "quote": "缺齿圭自今日起正式交由甄宿微保管，不再由郜逢阑持有。"
+        },
+        {
+          "fact": 6,
+          "changed_chapter": 12,
+          "quote": "郦衡朔卸去钤午门守将之职，改任护证使，专责证人往返安全。"
+        },
+        {
+          "fact": 11,
+          "changed_chapter": 14,
+          "quote": "鄂闻绡在众人面前拆开了烬纹令的封套，封边第一次完整分离。"
+        },
+        {
+          "fact": 16,
+          "changed_chapter": 16,
+          "quote": "麴承荫亲自读到了伤兵旧誓附页，知道其中准许伤兵作证。"
+        },
+        {
+          "fact": 21,
+          "changed_chapter": 18,
+          "quote": "自今日起，槐誓庭的盟议允许非世袭证人发言，不再只限世袭者。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "甄宿微",
+          "predicate": "左耳听力",
+          "chapter": 6,
+          "quote": "甄宿微的左耳受了伤，如今只能听见近处的声音。"
+        },
+        {
+          "subject": "郗定弦",
+          "predicate": "传讯方式",
+          "chapter": 8,
+          "quote": "郗定弦用指节敲出的节奏，向随从传递了撤离信号。"
+        },
+        {
+          "subject": "谯映砚",
+          "predicate": "继位顺位处置",
+          "chapter": 11,
+          "quote": "谯映砚将自己的继位顺位交由公开复议，不再按原定次序直接即位。"
+        },
+        {
+          "subject": "斛令筠",
+          "predicate": "失声药辨识",
+          "chapter": 13,
+          "quote": "斛令筠从药粉里认出了会使人暂时失声的灰籽。"
+        },
+        {
+          "subject": "鄂闻绡",
+          "predicate": "证人担保身份",
+          "chapter": 17,
+          "quote": "鄂闻绡主动担任了这名无籍证人的担保人，承担继续核验其身份来处的责任。"
+        },
+        {
+          "subject": "郦衡朔",
+          "predicate": "个人佩剑处置",
+          "chapter": 19,
+          "quote": "郦衡朔把个人佩剑交还门军公库，作为自己不再统军的凭证。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "缺齿圭断口里的粉色纤维，来自当年包护断角的证词布。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "钤午门夜里空留第三道闸，是旧掌礼令为无籍伤兵留出的救援缝。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "烬纹令的双层蜡影源于封存旧盟豁免原件，并不是伪造的封印。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 16,
+          "quote": "旧誓被缝住的一角藏着伤兵可以作证的旧条款，这条线索终于读明。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a2f-w01-route-07",
+          "a2f-w01-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a2f-w01-route-01",
+          "a2f-w01-route-02",
+          "a2f-w01-route-03",
+          "a2f-w01-route-04"
+        ],
+        "ask_like_change_ids": [
+          "a2f-w01-route-05",
+          "a2f-w01-route-06"
+        ]
+      },
+      "no_evidence_modes": {
+        "a2f-w01-no-action-03": "not_stated",
+        "a2f-w01-no-action-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "颛绪泠",
+        "佘昼缈",
+        "邴呈苒",
+        "仉砚溯",
+        "仇籁宜",
+        "逯纭夷",
+        "庹穆缇",
+        "寇绚芜"
+      ],
+      "aliases": [
+        {
+          "name": "颛绪泠",
+          "alias": "泠弧",
+          "chapter": 1,
+          "quote": "颛绪泠别名泠弧，舰上同僚在不便高声报全名的时候都这样唤她。"
+        },
+        {
+          "name": "佘昼缈",
+          "alias": "缈签",
+          "chapter": 2,
+          "quote": "佘昼缈别名缈签，起因是他总能在换班前补齐被别人漏掉的交接。"
+        },
+        {
+          "name": "邴呈苒",
+          "alias": "苒灯",
+          "chapter": 3,
+          "quote": "邴呈苒别名苒灯，是同行者在漫长航行中对她的称呼。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 10,
+          "quote": "佘昼缈亲手打开袋锁，取出皱鳞核，正式移交给庹穆缇保管。"
+        },
+        {
+          "fact": 6,
+          "changed_chapter": 12,
+          "quote": "医疗复核确认可以结束隔离，仉砚溯摘下红色隔离环，交给邴呈苒保存。"
+        },
+        {
+          "fact": 11,
+          "changed_chapter": 14,
+          "quote": "邴呈苒把零相螺针改为浸在养液中保存，不再放回干燥盒。"
+        },
+        {
+          "fact": 16,
+          "changed_chapter": 16,
+          "quote": "颛绪泠这时真正懂得群落的长停顿是在拒绝，不再把它记为尚未收到回答。"
+        },
+        {
+          "fact": 21,
+          "changed_chapter": 18,
+          "quote": "苔冠庭重新受理长期驻留申请，先前暂停接收请求的状态就此结束。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "寇绚芜",
+          "predicate": "右肩伤情",
+          "chapter": 6,
+          "quote": "寇绚芜在停机事故中伤了右肩，整条右臂疼得无法抬起。"
+        },
+        {
+          "subject": "仇籁宜",
+          "predicate": "振频听辨",
+          "chapter": 8,
+          "quote": "仇籁宜能够区分母群与幼群的振频，不再把两个来源记成同一声部。"
+        },
+        {
+          "subject": "逯纭夷",
+          "predicate": "离航调整",
+          "chapter": 11,
+          "quote": "逯纭夷主动将离航推迟一昼期，原定第二十一昼期开端改为第二十二昼期开端。"
+        },
+        {
+          "subject": "邴呈苒",
+          "predicate": "表膜消毒限制发现",
+          "chapter": 13,
+          "quote": "邴呈苒发现群落表膜不能接触含铜消毒液，今天的紧缩正由擦拭布上的含铜残留引起。"
+        },
+        {
+          "subject": "佘昼缈",
+          "predicate": "私人通讯器处置",
+          "chapter": 17,
+          "quote": "佘昼缈同意把私人通讯器留在地面作公开见证，只保存各方确认愿意留下的交谈。"
+        },
+        {
+          "subject": "仉砚溯",
+          "predicate": "驻留申请身份",
+          "chapter": 19,
+          "quote": "仉砚溯选择以个人身份申请长期驻留，而不以舰队成员的身份提出这次请求。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "皱鳞核的第三条脉纹总暗，是幼群拒绝被代言时主动闭合了对应通路。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "隔离环离庭后的两次亮光来自测量回流，并非感染信号，离庭位置改变时回接点也随之移位。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "零相螺针轻触湿膜就侧转，是因干燥保存破坏了它在养液中应有的中性浮力。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 16,
+          "quote": "问句之后那段长静默表示群落拒绝了请求，不是在等人类继续翻译或补充条件。"
+        }
+      ],
+      "same_input_groups": [
+        ["a2f-w02-route-07", "a2f-w02-route-09"]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": ["a2f-w02-route-01", "a2f-w02-route-02", "a2f-w02-route-03", "a2f-w02-route-04"],
+        "ask_like_change_ids": ["a2f-w02-route-05", "a2f-w02-route-06"]
+      },
+      "no_evidence_modes": {
+        "a2f-w02-no-action-03": "not_stated",
+        "a2f-w02-no-action-04": "contradicted"
+      }
+    }
+  }
+}

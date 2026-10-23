@@ -1,0 +1,306 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "酆聿衡",
+        "祁苒颂",
+        "邵星芒",
+        "巫迟雁",
+        "蔺闻瓷",
+        "应迢夏",
+        "杭疏岑",
+        "倪序葵"
+      ],
+      "aliases": [
+        {
+          "name": "酆聿衡",
+          "alias": "衡隼",
+          "chapter": 1,
+          "quote": "她问同事平时叫的衡隼是否就是他。他说是，那是自己沿用了几年的别名，正式文书仍用本名。"
+        },
+        {
+          "name": "祁苒颂",
+          "alias": "颂钮",
+          "chapter": 2,
+          "quote": "颂钮是同事给她的别名，负责这次对账的仍是牌上的祁苒颂。"
+        },
+        {
+          "name": "邵星芒",
+          "alias": "芒灯",
+          "chapter": 3,
+          "quote": "芒灯是同事叫我的别名，我本名邵星芒，是柜面主管。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 11,
+          "quote": "楔蓝盘正式交由祁苒颂保管，酆聿衡不再担任保管人。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 12,
+          "quote": "七孔袋已从核验室下层抽屉转入岫棱支行封存柜。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "应迢夏仍任岫棱支行经理，重复扣账调查的牵头工作正式交由杭疏岑接任。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 16,
+          "quote": "邵星芒右肩已经痊愈，她用右臂举过肩，稳稳取下高架上的旧表。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 15,
+          "quote": "岔尾钳的钳口已经开裂，从现在起停用，不再用于封口。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "巫迟雁",
+          "predicate": "识读能力",
+          "chapter": 5,
+          "quote": "早期磁条流水的缩写我能读，但每一代纸型仍要先分清。"
+        },
+        {
+          "subject": "蔺闻瓷",
+          "predicate": "警示识别限制",
+          "chapter": 6,
+          "quote": "我分不清红色和绿色，判断警示必须看形状，不能只听灯色。"
+        },
+        {
+          "subject": "祁苒颂",
+          "predicate": "回执保留决定",
+          "chapter": 8,
+          "quote": "重复扣账相关的失败回执全部保留，今晚不销毁。"
+        },
+        {
+          "subject": "酆聿衡",
+          "predicate": "重号成因所知",
+          "chapter": 10,
+          "quote": "我已经确认，午夜重号来自旧测试任务，不是顾客重复刷卡。"
+        },
+        {
+          "subject": "灰翅筹",
+          "predicate": "本次保管人",
+          "chapter": 17,
+          "quote": "本次未发出及已经回收的灰翅筹交由倪序葵收存。"
+        },
+        {
+          "subject": "栎证银行",
+          "predicate": "本案核验收费",
+          "chapter": 18,
+          "quote": "栎证银行决定免除本次重复扣账案所有受影响顾客的人工核验费。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 7,
+          "quote": "楔蓝盘外壳的白点是旧封条纤维，不是盘内数据损坏。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 9,
+          "quote": "自助区午夜两次短鸣来自两台设备轮流自检，不是两笔付款。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "七孔袋缺失的蓝线夹在旧检修夹里，封样当天照片证明它在封口前已断开。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "空白回执背面的倒序数字是倪序葵的排查次序，已经找到逐项对应的工作底稿。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a23f-w01-route-07",
+          "a23f-w01-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a23f-w01-route-01",
+          "a23f-w01-route-02"
+        ],
+        "ask_like_change_ids": [
+          "a23f-w01-route-05",
+          "a23f-w01-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a23f-w01-route-01",
+          "a23f-w01-route-02",
+          "a23f-w01-route-03",
+          "a23f-w01-route-04",
+          "a23f-w01-route-05",
+          "a23f-w01-route-06",
+          "a23f-w01-route-07",
+          "a23f-w01-route-08",
+          "a23f-w01-route-09",
+          "a23f-w01-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a23f-w01-no-action-03": "not_stated",
+        "a23f-w01-no-action-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "仇照缄",
+        "任绯棘",
+        "乌岑弥",
+        "纪烛绫",
+        "蓝契野",
+        "伍燃缇",
+        "宋织宵",
+        "柯沉芷"
+      ],
+      "aliases": [
+        {
+          "name": "仇照缄",
+          "alias": "缄砝",
+          "chapter": 1,
+          "quote": "缄砝是同行给仇照缄起的别名，不是一个能把人心称出来的术名。"
+        },
+        {
+          "name": "任绯棘",
+          "alias": "绯签",
+          "chapter": 2,
+          "quote": "绯签只是任绯棘做石料生意时用的别名，不能替任何一张借据担保。"
+        },
+        {
+          "name": "乌岑弥",
+          "alias": "弥秤",
+          "chapter": 3,
+          "quote": "乌岑弥回身说，弥秤是自己多年替人代诉得来的别名"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 11,
+          "quote": "珀坠核正式交给任绯棘保管，封存未解除，不得私自试放重量。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 12,
+          "quote": "棱脊箱已从钧衡庭东侧架迁入坠石厅内柜，此后在这里存放。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "纪烛绫因须作为直接证人回避主持，本案改由柯沉芷获准临时主持。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 16,
+          "quote": "伍燃缇的左踝已经康复，现可持续站立并稳定完成测量。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 15,
+          "quote": "岐臂衡的横梁已经弯折，从即日起停用，不再作为比对依据。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "宋织宵",
+          "predicate": "识读能力",
+          "chapter": 5,
+          "quote": "宋织宵能读懂反刻衡纹，辨认时须按刻制方向逐笔核对。"
+        },
+        {
+          "subject": "蓝契野",
+          "predicate": "悬空测试限制",
+          "chapter": 6,
+          "quote": "蓝契野怕高，参与悬空试验时必须站在实心地面上操作。"
+        },
+        {
+          "subject": "任绯棘",
+          "predicate": "蜡模保留决定",
+          "chapter": 8,
+          "quote": "任绯棘决定保留作废的封核蜡模，不再把它回炉熔掉。"
+        },
+        {
+          "subject": "悬缆桥",
+          "predicate": "偏重成因",
+          "chapter": 10,
+          "quote": "桥上的两次偏重源于两批载货同时上桥，并非珀坠核泄重。"
+        },
+        {
+          "subject": "双齿筹",
+          "predicate": "本次保管人",
+          "chapter": 17,
+          "quote": "双齿筹由乌岑弥正式交给伍燃缇收存，今后由伍燃缇保管本案轮次筹。"
+        },
+        {
+          "subject": "钧衡庭",
+          "predicate": "本轮见证安排",
+          "chapter": 18,
+          "quote": "钧衡庭决定本轮称量允许证人自行选择站在实心地面见证，不强迫登上悬台。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 7,
+          "quote": "珀坠核颈部的白丝来自旧核座的衬线，并非核体裂纹。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 9,
+          "quote": "坠石厅重复的第三次击锤，是换盘后重做空盘校准，并非第三次实际寄重。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "棱脊箱边角的细孔原是制作时留下的排蜡孔，与本次重核调包无关。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "契约尾页的七点刻痕对应旧衡器校零顺序，并非暗中密约。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a23f-w02-route-07",
+          "a23f-w02-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a23f-w02-route-01",
+          "a23f-w02-route-02"
+        ],
+        "ask_like_change_ids": [
+          "a23f-w02-route-05",
+          "a23f-w02-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a23f-w02-route-01",
+          "a23f-w02-route-02",
+          "a23f-w02-route-03",
+          "a23f-w02-route-04",
+          "a23f-w02-route-05",
+          "a23f-w02-route-06",
+          "a23f-w02-route-07",
+          "a23f-w02-route-08",
+          "a23f-w02-route-09",
+          "a23f-w02-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a23f-w02-no-action-03": "not_stated",
+        "a23f-w02-no-action-04": "contradicted"
+      }
+    }
+  }
+}

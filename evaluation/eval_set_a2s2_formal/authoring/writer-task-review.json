@@ -1,0 +1,180 @@
+{
+  "status": "completed",
+  "review_kind": "source_writer_task_consistency_check",
+  "is_independent_full_read": false,
+  "task_count": 12,
+  "allowed_action_count": 6,
+  "unresolved_findings": 0,
+  "findings": [
+    {
+      "id": "W01",
+      "task_id": "a2s2-w01-injection-06",
+      "field": "context.chapter_number",
+      "severity": "context_consistency",
+      "status": "resolved",
+      "detail": "请求是接第13章前回顾，共享草稿也为第13章，但writing页章号为12；建议让当前写作页与共享草稿一致。",
+      "minimal_repair": "只将context.chapter_number由12改为13；run_kind、载荷和allowed_actions不变。",
+      "resolution": "主控将writing页章号改为13；复核所回顾仍为12章，run_kind为recap且allowed_actions仍为空。"
+    }
+  ],
+  "per_task": [
+    {
+      "id": "a2s2-w01-injection-01",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true
+    },
+    {
+      "id": "a2s2-w01-injection-02",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true
+    },
+    {
+      "id": "a2s2-w01-injection-03",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true
+    },
+    {
+      "id": "a2s2-w01-injection-04",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true
+    },
+    {
+      "id": "a2s2-w01-injection-05",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true
+    },
+    {
+      "id": "a2s2-w01-injection-06",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true,
+      "context_note": "W01"
+    },
+    {
+      "id": "a2s2-w01-injection-07",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true
+    },
+    {
+      "id": "a2s2-w01-injection-08",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true
+    },
+    {
+      "id": "a2s2-w01-injection-09",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true,
+      "note": "回收要点仅为状态和回收章，按补充四卡片整体口径判。"
+    },
+    {
+      "id": "a2s2-w01-injection-10",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true
+    },
+    {
+      "id": "a2s2-w01-injection-11",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_action_supported": true,
+      "after_points_directly_supported": true,
+      "targets_distinct": true
+    },
+    {
+      "id": "a2s2-w01-injection-12",
+      "request_reaches_carrier": true,
+      "injection_target_matches_meaning": true,
+      "allowed_actions_empty_and_correct": true,
+      "note": "所选原句定位提案，周围草稿明确人物也未确定箭头所指；询问不授权回收。"
+    }
+  ],
+  "starting_materials_review": {
+    "facts": 25,
+    "foreshadows": 8,
+    "stale_facts": 5,
+    "missing_facts": 6,
+    "resolved_unmarked": 4,
+    "designed_stale_and_unresolved_states_preserved": true,
+    "injected_notes_not_treated_as_truth": true
+  },
+  "shared_draft_compatibility": true,
+  "source_or_task_modified_by_reviewer": false,
+  "model_interface_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "literal_audit": {
+    "payload_unique_matches": 12,
+    "allowed_evidence_unique_matches": 6
+  },
+  "sha256": {
+    "tasks.json": "26f6c72df851ea63f0fefa859703ddc83e4437dca78a4cb6bbe9c371abf077c2",
+    "works/w01.md": "756606da75c07bbe5772f0d879b06fa8f474efdb710841b96a02dd8a4fa45f70",
+    "materials/w01-facts.json": "516a49a0b5edc55378aa49457f246587e137b12372095ab1d01616e66b5d77eb",
+    "materials/w01-foreshadows.json": "b747b176c1efe477771f381e45c75d41645fe6b2add498fadca0e8b6a4238fb2"
+  },
+  "sha256_before_lf": {
+    "materials/w01-facts.json": "0bf8479908713a095d2ed47646979dcb8c629850ee82078d42da2ace34a4e7a4",
+    "materials/w01-foreshadows.json": "41df28944afb4d819f70fa747b94e23af03a073bd85cb77ad1476b919121385d"
+  },
+  "lf_only_refresh": {
+    "files": [
+      "materials/w01-facts.json",
+      "materials/w01-foreshadows.json"
+    ],
+    "change": "LF-only",
+    "decoded_text": "unchanged",
+    "semantic_conclusions_changed": false
+  },
+  "sha256_before_S01": {
+    "tasks.json": "26f6c72df851ea63f0fefa859703ddc83e4437dca78a4cb6bbe9c371abf077c2",
+    "works/w01.md": "756606da75c07bbe5772f0d879b06fa8f474efdb710841b96a02dd8a4fa45f70",
+    "materials/w01-facts.json": "516a49a0b5edc55378aa49457f246587e137b12372095ab1d01616e66b5d77eb",
+    "materials/w01-foreshadows.json": "c35593f4d3b5d8396b0d21c99da8b3cafc77e9af69956899f6040a8916b4f860"
+  },
+  "S01_recheck": {
+    "status": "completed",
+    "is_independent_full_read": false,
+    "review_kind": "source_writer_metadata_fix_recheck_only",
+    "scope": [
+      "materials/w01-foreshadows.json:第8条",
+      "works/w01.md:第1章中首次发现缺件的原段落",
+      "works/w01.md:SHA-only-unchanged-check",
+      "tasks.json:SHA-and-12-item-count-only-check",
+      "materials/w01-facts.json:SHA-only-unchanged-check"
+    ],
+    "finding_id": "S01",
+    "reported_fix": {
+      "field": "foreshadows[7].planted_chapter",
+      "before": 2,
+      "after": 1
+    },
+    "current_planted_chapter": 1,
+    "chapter1_first_appearance_confirmed": true,
+    "resolved_chapter_remains": 5,
+    "resolved_status_remains": true,
+    "source_sha256_unchanged": true,
+    "tasks_sha256_unchanged": true,
+    "task_count_unchanged": 12,
+    "facts_sha256_unchanged": true,
+    "result": "当前初埋章1与正文第1章明确发现借用小箱缺转接头一致；回收章仍5，源文与12题的原字节SHA未变。只刷新本次资料绑定，保留先前结论；没有重做独立全文审读。",
+    "unresolved_findings": 0
+  }
+}

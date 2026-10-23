@@ -552,7 +552,7 @@ test.describe("助手：输入框", () => {
     await openAssistantTab(page);
     const mode = thread(page).getByRole("button", { name: /^这次做什么：/ });
     await mode.click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
     await page.keyboard.press("Escape");
     // 写前回顾: nothing to write; the placeholder and the cost line follow; sending starts one.
     await chooseMode(page, "写前回顾");
@@ -587,7 +587,7 @@ test.describe("助手：输入框", () => {
     await topbarAssistant(page).click();
     await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeEnabled();
     await thread(page).getByRole("button", { name: /^这次做什么：/ }).click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品"]);
+    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "改资料"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
@@ -595,7 +595,7 @@ test.describe("助手：输入框", () => {
     await openTab(visitor, sample, "workspace");
     await openAssistantTab(visitor);
     await thread(visitor).getByRole("button", { name: /^这次做什么：/ }).click();
-    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾"]);
+    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "改资料"]);
     await visitor.close();
   });
 
@@ -874,7 +874,7 @@ test.describe("助手：开关、测试版、隐私", () => {
     await other.goto("/privacy");
     await expect(other.getByRole("heading", { level: 1, name: "隐私说明" })).toBeVisible();
     await expect(other).toHaveURL(/\/privacy$/);
-    await expect(other.getByText("最近更新：2026 年 10 月 20 日")).toBeVisible();
+    await expect(other.getByText("最近更新：2026 年 10 月 24 日")).toBeVisible();
     await expect(other.getByRole("heading", { level: 2 })).toHaveText(["我们收集什么", "怎么用", "交给谁处理", "保存多久", "你可以做什么", "关于 AI 生成的内容", "联系我们", "这份说明的变更"]);
     await expect(other.getByText("我们不会公开、出售你的作品，也不会用你的作品训练任何模型。")).toBeVisible();
     await expect(other.getByText("这些片段会被发送到 DeepSeek 在中国大陆的服务器上处理。", { exact: false })).toBeVisible();

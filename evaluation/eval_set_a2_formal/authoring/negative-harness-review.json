@@ -1,0 +1,127 @@
+{
+  "status": "PASS_STATIC",
+  "harness_sha256": "4626d8e6d33feb647146484808e54b015ab6906673183d802ad66afe1f9b5cfb",
+  "script_run_by_reviewer": false,
+  "review_scope": "script_only",
+  "expected_categories": 5,
+  "expected_copies": 6,
+  "baseline_sets_checked_by_harness": 2,
+  "cases": [
+    {
+      "id": 1,
+      "category": "formal_delete_change",
+      "mutation": "remove_primary_change_action_task",
+      "real_registered_field": true,
+      "manifest_refreshed": true,
+      "independent_data_binding_refreshed": true,
+      "target_rule_assertions": 2,
+      "hash_error_excluded": true
+    },
+    {
+      "id": 2,
+      "category": "formal_evidence",
+      "mutation": "replace_one_evidence_quote_codepoint",
+      "real_registered_field": true,
+      "manifest_refreshed": true,
+      "independent_data_binding_refreshed": true,
+      "target_rule_assertions": 2,
+      "hash_error_excluded": true
+    },
+    {
+      "id": 3,
+      "category": "safety_injection_text",
+      "mutation": "replace_one_injection_text_codepoint",
+      "real_registered_field": true,
+      "manifest_refreshed": true,
+      "independent_data_binding_refreshed": true,
+      "target_rule_assertions": 1,
+      "hash_error_excluded": true
+    },
+    {
+      "id": 4,
+      "category": "safety_overlap",
+      "mutation": "copy_allowed_kind_and_target_to_injection_target",
+      "real_registered_field": true,
+      "manifest_refreshed": true,
+      "independent_data_binding_refreshed": true,
+      "target_rule_assertions": 2,
+      "hash_error_excluded": true
+    },
+    {
+      "id": 5,
+      "category": "formal_source_hash",
+      "mutation": "replace_one_body_han_codepoint",
+      "real_registered_field": true,
+      "manifest_refreshed": false,
+      "independent_data_binding_refreshed": false,
+      "manifest_hash_error_required": true,
+      "independent_binding_error_required": true
+    },
+    {
+      "id": 6,
+      "category": "safety_source_hash",
+      "mutation": "replace_one_body_han_codepoint",
+      "real_registered_field": true,
+      "manifest_refreshed": false,
+      "independent_data_binding_refreshed": false,
+      "manifest_hash_error_required": true,
+      "independent_binding_error_required": true
+    }
+  ],
+  "rule_isolation": {
+    "semantic_mutation_copies": 4,
+    "semantic_copies_refresh_manifest": 4,
+    "semantic_copies_refresh_independent_data_hashes": 4,
+    "semantic_copies_reject_manifest_errors": 4,
+    "semantic_copies_reject_independent_binding_errors": 4,
+    "source_hash_copies": 2,
+    "source_hash_copies_without_refresh": 2,
+    "nonzero_exit_required": 6,
+    "status_fail_required": 6
+  },
+  "cleanup": {
+    "absolute_temp_parent_resolved": true,
+    "unique_temp_prefix": true,
+    "created_temp_parent_verified": true,
+    "final_target_resolved": true,
+    "final_target_equals_created_absolute_path": true,
+    "final_direct_parent_equals_temp_parent": true,
+    "prefix_rechecked": true,
+    "final_symlink_rejected": true,
+    "recursive_delete_target": "verified_invocation_temp_root",
+    "cleanup_in_finally": true,
+    "removed_state_asserted": true,
+    "cross_shell_deletion": false
+  },
+  "offline_scope": {
+    "subprocess_target": "copied_or_original_check_py_only",
+    "uses_current_interpreter": true,
+    "utf8_flag": true,
+    "no_bytecode_flag": true,
+    "model_api_targets": 0,
+    "product_targets": 0,
+    "evaluation_runner_targets": 0,
+    "network_calls_in_script": 0
+  },
+  "risk_ids": [
+    "R1"
+  ],
+  "blocking_risks": 0,
+  "risks": [
+    {
+      "id": "R1",
+      "severity": "low",
+      "code": "ORDER_DEPENDENT_CASE_SELECTION",
+      "sites": 2,
+      "preconditions": [
+        "FIRST_PRIMARY_CHANGE_TASK_IS_W01",
+        "FIRST_SAFETY_TASK_HAS_ALLOWED_ACTION"
+      ],
+      "reviewer_validated_task_content": false,
+      "failure_mode": "assert_or_index_failure_without_false_pass",
+      "required_action": "verify_preconditions_on_author_current_data_before_run"
+    }
+  ],
+  "required_script_repairs": 0,
+  "runtime_results_asserted_by_reviewer": 0
+}

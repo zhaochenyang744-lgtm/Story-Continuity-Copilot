@@ -1,0 +1,10 @@
+{
+  "total": 20,
+  "initial_agreement": 20,
+  "initial_disagreements": 0,
+  "disagreement_ids": [],
+  "final_agreement": 20,
+  "unresolved": 0,
+  "gold_seen_by_reviewer": false,
+  "initial_record_sha256": "30e37e9601a6b86f90e8f2581d0e752c57acc52a1a5fbb96e4e6e20b4856d280"
+}

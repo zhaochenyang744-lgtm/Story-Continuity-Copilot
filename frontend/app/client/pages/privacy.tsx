@@ -5,7 +5,7 @@
 // the day they were last changed.
 import { Button } from "../ui";
 
-export const PRIVACY_UPDATED = "2026 年 10 月 20 日";
+export const PRIVACY_UPDATED = "2026 年 10 月 24 日";
 export const PRIVACY_CONTACT = "zcy4711@gmail.com";
 const DEEPSEEK_POLICY = "https://cdn.deepseek.com/policies/zh-CN/deepseek-privacy-policy.html";
 
@@ -22,6 +22,7 @@ export function PrivacyPage({ go, signedIn }: { go: (href: string) => void; sign
         <li><strong>账号信息</strong>：登录账号、密码（只保存加密后的结果，任何人都看不到原文）、显示名称和一句简介。</li>
         <li><strong>恢复邮箱</strong>（可选）：只用来找回密码和发送必要的安全通知。</li>
         <li><strong>你的作品</strong>：章节正文、草稿、你确认的事实、计划和伏笔记录，以及检查结果和助手的对话。</li>
+        <li><strong>助手改动记录</strong>：你确认过的每一次资料改动的改前和改后、依据的章节位置，以及确认、撤销的时间。</li>
         <li><strong>用量记录</strong>：每次检查和助手任务用了多少字，用来计算每天的额度。</li>
         <li><strong>反馈</strong>：你对助手回答点的「有用 / 没用」和原因，不包含回答内容。</li>
       </ul>
@@ -40,7 +41,7 @@ export function PrivacyPage({ go, signedIn }: { go: (href: string) => void; sign
 
       <h2>保存多久</h2>
       <ul>
-        <li><strong>作品和对话</strong>：一直保存，直到你删除。删除作品会同时删除它的章节、草稿、检查结果和助手对话。</li>
+        <li><strong>作品和对话</strong>：一直保存，直到你删除。删除作品会同时删除它的章节、草稿、检查结果、助手对话和助手改动记录。</li>
         <li><strong>访客空间</strong>：到期后连同其中的作品一起删除。</li>
         <li><strong>运行日志</strong>：只记录请求是否成功、耗时这类信息，不记录作品正文，保留 30 天。</li>
         <li><strong>账号</strong>：目前还不能在页面上自行删除账号。如需删除账号及全部数据，请发邮件联系我们，我们会在 7 天内处理完毕并回复你。</li>
@@ -53,7 +54,7 @@ export function PrivacyPage({ go, signedIn }: { go: (href: string) => void; sign
       </ul>
 
       <h2>关于 AI 生成的内容</h2>
-      <p>检查结果和助手的回答由 AI 生成，可能有错漏，仅供参考。助手的每句话都附有出处，请点开核对。助手只提建议，不会自己改动你的正文；你采用的改法会成为你自己的文字。</p>
+      <p>检查结果和助手的回答由 AI 生成，可能有错漏，仅供参考。助手的每句话都附有出处，请点开核对。助手不会自己改动你的正文；你采用的改法会成为你自己的文字。助手可以提出对事实和伏笔记录的改动，只有你点确认后才会执行，执行后可以撤销。</p>
 
       <h2>联系我们</h2>
       <p>对这份说明或你的数据有任何问题、投诉或要求，请发邮件到 <a href={`mailto:${PRIVACY_CONTACT}`}>{PRIVACY_CONTACT}</a>。</p>

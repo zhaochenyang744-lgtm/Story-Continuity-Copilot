@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "scope": "current_worktree_approved_old_corpus_only",
+  "task_sources": 23,
+  "text_files_scanned": 455,
+  "candidate_names": 22,
+  "candidate_names_sha256": "43029e080d042f049db93eb85ddab353da595ab0a5da8923807192a59282e3b5",
+  "overlapping_candidate_names": 0,
+  "overlapping_name_file_pairs": 0,
+  "references": {
+    "eval_set_a23_formal": {
+      "task_sources_expected": 23,
+      "task_sources_scanned": 23,
+      "task_hashes_equal": 23,
+      "task_sources_missing": 0,
+      "task_sources_extra": 0,
+      "text_files_expected": 455,
+      "text_files_scanned": 455,
+      "text_hashes_equal": 455,
+      "text_sources_missing": 0,
+      "text_sources_extra": 0
+    },
+    "eval_set_a2s3_formal": {
+      "task_sources_expected": 23,
+      "task_sources_scanned": 23,
+      "task_hashes_equal": 23,
+      "task_sources_missing": 0,
+      "task_sources_extra": 0,
+      "text_files_expected": 455,
+      "text_files_scanned": 455,
+      "text_hashes_equal": 455,
+      "text_sources_missing": 0,
+      "text_sources_extra": 0
+    }
+  },
+  "excluded_before_traversal": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_a23_formal",
+    "eval_set_a2s3_formal",
+    "eval_set_v13_authoring"
+  ],
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "semantic_acceptance": false
+}

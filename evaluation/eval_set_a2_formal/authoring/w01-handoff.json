@@ -1,0 +1,413 @@
+{
+  "batch": "1-20",
+  "chapters": {
+    "1": 2804,
+    "2": 2766,
+    "3": 2901,
+    "4": 2878,
+    "5": 2936,
+    "6": 2769,
+    "7": 2995,
+    "8": 3147,
+    "9": 2968,
+    "10": 3157,
+    "11": 2997,
+    "12": 3120,
+    "13": 3130,
+    "14": 3050,
+    "15": 2915,
+    "16": 3067,
+    "17": 2949,
+    "18": 3021,
+    "19": 2911,
+    "20": 3136
+  },
+  "evidence": [
+    {
+      "key": 1,
+      "chapter": 1,
+      "quote": "缺齿圭由郜逢阑保管，平日连清灰也要由他亲手做。",
+      "han_position": 1007
+    },
+    {
+      "key": 2,
+      "chapter": 1,
+      "quote": "这是甄宿微在军中行走时的别名，到了礼院仍有人这样叫。",
+      "han_position": 374
+    },
+    {
+      "key": 3,
+      "chapter": 1,
+      "quote": "燧阙都禁止夜间响礼钟。",
+      "han_position": 134
+    },
+    {
+      "key": 4,
+      "chapter": 1,
+      "quote": "谯映砚尚未举行继位礼，此刻谁也不能把一句传言当作完成的礼。",
+      "han_position": 527
+    },
+    {
+      "key": 5,
+      "chapter": 1,
+      "quote": "鄂闻绡能读旧盟倒行文字，她沿斜线读完两段，没有替任何一句添上今人的解释。",
+      "han_position": 1400
+    },
+    {
+      "key": 6,
+      "chapter": 2,
+      "quote": "郦衡朔现任钤午门守将，这道门的开闭都由他担着。",
+      "han_position": 271
+    },
+    {
+      "key": 7,
+      "chapter": 2,
+      "quote": "他身材细长，铠甲穿在身上总像大了半指，门军背后叫他瘦烛。",
+      "han_position": 292
+    },
+    {
+      "key": 8,
+      "chapter": 2,
+      "quote": "他右膝的旧伤一遇冷便发痛，今日霜气钻进护膝，疼得膝下像多了一块石头。",
+      "han_position": 580
+    },
+    {
+      "key": 9,
+      "chapter": 2,
+      "quote": "斛令筠是宫医，平日出入内殿，身上却没有熏香。",
+      "han_position": 664
+    },
+    {
+      "key": 10,
+      "chapter": 2,
+      "quote": "说明外盟代表不得携兵进入雩阶殿，哪一方来了都一样。",
+      "han_position": 479
+    },
+    {
+      "key": 11,
+      "chapter": 3,
+      "quote": "烬纹令的封套尚未拆开，封口上的旧蜡连一道完整的指痕也没有。",
+      "han_position": 833
+    },
+    {
+      "key": 12,
+      "chapter": 3,
+      "quote": "绡判是鄂闻绡的别名，原本是旧同僚笑她辨字像裁绡，一丝也不肯扯歪。",
+      "han_position": 549
+    },
+    {
+      "key": 13,
+      "chapter": 3,
+      "quote": "他代表外盟出席此次盟议，带来的人却比一支送葬的队伍还少。",
+      "han_position": 132
+    },
+    {
+      "key": 14,
+      "chapter": 3,
+      "quote": "槐誓庭的地面有九级凹阶，雨从上一级溢到下一级，最后积在庭心，映出一小块颠倒的天空。",
+      "han_position": 9
+    },
+    {
+      "key": 15,
+      "chapter": 3,
+      "quote": "双脊匣只能由两人同时按栓开启，单按任何一边都会锁死。",
+      "han_position": 789
+    },
+    {
+      "key": 16,
+      "chapter": 4,
+      "quote": "此时麴承荫仍不知道伤兵旧誓另有附页，更不知道那页藏在何处。",
+      "han_position": 1313
+    },
+    {
+      "key": 17,
+      "chapter": 4,
+      "quote": "她不持兵符，也无权调军闭门，不能凭礼议使的身份替一段来历不明的话变成命令。",
+      "han_position": 751
+    },
+    {
+      "key": 18,
+      "chapter": 4,
+      "quote": "郜逢阑主持日间礼序，每一回入席、行礼和退席都要由他定次。",
+      "han_position": 539
+    },
+    {
+      "key": 19,
+      "chapter": 4,
+      "quote": "郗定弦当面拒绝了私下换盟，没有收下对方递来的新词。",
+      "han_position": 1517
+    },
+    {
+      "key": 20,
+      "chapter": 4,
+      "quote": "第四日，雩阶殿正门朝西的那一面先被风吹亮。",
+      "han_position": 1
+    },
+    {
+      "key": "thread-1",
+      "chapter": 1,
+      "quote": "灯光斜斜穿过断角，照出一缕极细的粉色纤维。",
+      "han_position": 2592
+    },
+    {
+      "key": "thread-2",
+      "chapter": 2,
+      "quote": "第二道紧跟着压下，门洞里的风被挤得尖细。她等第三声，等到守卒收起长钩，也没有再响。",
+      "han_position": 2569
+    },
+    {
+      "key": "thread-3",
+      "chapter": 3,
+      "quote": "烬纹令的封套内映着两层蜡影，外层平直，内层却向左错出半指。",
+      "han_position": 2600
+    },
+    {
+      "key": "thread-4",
+      "chapter": 4,
+      "quote": "鄂闻绡把其他纸拨开，露出一角褪色的布，布上有极细的针线，将两层册页牢牢缝在一起。",
+      "han_position": 2443
+    },
+    {
+      "key": "thread-8",
+      "chapter": 3,
+      "quote": "甄宿微留意到匣外侧有三点浅痕，排得不像花纹，便问是不是历年验封留下的。",
+      "han_position": 1025
+    },
+    {
+      "key": 21,
+      "chapter": 5,
+      "quote": "盟议目前只准世袭者发言，旁听的人不能自有一席。",
+      "han_position": 131
+    },
+    {
+      "key": 22,
+      "chapter": 5,
+      "quote": "谯映砚会用左手刻蜡，这事甄宿微从前并不知道。",
+      "han_position": 511
+    },
+    {
+      "key": 23,
+      "chapter": 5,
+      "quote": "斛令筠带药箱赶来，箱口用白绳束着，湿了以后绳结更紧。",
+      "han_position": 1074
+    },
+    {
+      "key": 24,
+      "chapter": 5,
+      "quote": "鄂闻绡当众拒读删改的盟词，卷子就摊在她面前，她没有再念一个字。",
+      "han_position": 1526
+    },
+    {
+      "key": 25,
+      "chapter": 5,
+      "quote": "钤午门门洞内确有三道落闸，第三道并非废槽，铁齿上还有新油。",
+      "han_position": 2241
+    },
+    {
+      "key": "thread-5",
+      "chapter": 5,
+      "quote": "才注意到雩阶殿西墙有一处空龛。龛底比周围浅，顶端留着两枚断钩，像曾经托住很沉的东西。",
+      "han_position": 1818
+    },
+    {
+      "key": "resolved-8",
+      "chapter": 5,
+      "quote": "双脊匣外侧的三点浅痕只是防倒置的标记，并不是传话的暗号。",
+      "han_position": 2689
+    },
+    {
+      "key": "missing-1",
+      "chapter": 6,
+      "quote": "甄宿微的左耳受了伤，如今只能听见近处的声音。",
+      "han_position": 2546
+    },
+    {
+      "key": "thread-6",
+      "chapter": 6,
+      "quote": "她说看见旧君如今不戴冠，但没有听见他说明缘由。",
+      "han_position": 411
+    },
+    {
+      "key": "thread-7",
+      "chapter": 7,
+      "quote": "那是郗定弦一直带在身边、从未投递的一封家信。",
+      "han_position": 1945
+    },
+    {
+      "key": "missing-2",
+      "chapter": 8,
+      "quote": "郗定弦用指节敲出的节奏，向随从传递了撤离信号。",
+      "han_position": 2684
+    },
+    {
+      "key": "resolved-1",
+      "chapter": 10,
+      "quote": "缺齿圭断口里的粉色纤维，来自当年包护断角的证词布。",
+      "han_position": 2529
+    },
+    {
+      "key": "changed-1",
+      "chapter": 10,
+      "quote": "缺齿圭自今日起正式交由甄宿微保管，不再由郜逢阑持有。",
+      "han_position": 2652
+    },
+    {
+      "key": "missing-3",
+      "chapter": 11,
+      "quote": "谯映砚将自己的继位顺位交由公开复议，不再按原定次序直接即位。",
+      "han_position": 2614
+    },
+    {
+      "key": "resolved-2",
+      "chapter": 12,
+      "quote": "钤午门夜里空留第三道闸，是旧掌礼令为无籍伤兵留出的救援缝。",
+      "han_position": 2678
+    },
+    {
+      "key": "changed-6",
+      "chapter": 12,
+      "quote": "郦衡朔卸去钤午门守将之职，改任护证使，专责证人往返安全。",
+      "han_position": 2904
+    },
+    {
+      "key": "missing-4",
+      "chapter": 13,
+      "quote": "斛令筠从药粉里认出了会使人暂时失声的灰籽。",
+      "han_position": 2758
+    },
+    {
+      "key": "changed-11",
+      "chapter": 14,
+      "quote": "鄂闻绡在众人面前拆开了烬纹令的封套，封边第一次完整分离。",
+      "han_position": 2554
+    },
+    {
+      "key": "resolved-3",
+      "chapter": 14,
+      "quote": "烬纹令的双层蜡影源于封存旧盟豁免原件，并不是伪造的封印。",
+      "han_position": 2693
+    },
+    {
+      "key": "changed-16",
+      "chapter": 16,
+      "quote": "麴承荫亲自读到了伤兵旧誓附页，知道其中准许伤兵作证。",
+      "han_position": 2610
+    },
+    {
+      "key": "resolved-4",
+      "chapter": 16,
+      "quote": "旧誓被缝住的一角藏着伤兵可以作证的旧条款，这条线索终于读明。",
+      "han_position": 2708
+    },
+    {
+      "key": "missing-5",
+      "chapter": 17,
+      "quote": "鄂闻绡主动担任了这名无籍证人的担保人，承担继续核验其身份来处的责任。",
+      "han_position": 2548
+    },
+    {
+      "key": "changed-21",
+      "chapter": 18,
+      "quote": "自今日起，槐誓庭的盟议允许非世袭证人发言，不再只限世袭者。",
+      "han_position": 2641
+    },
+    {
+      "key": "missing-6",
+      "chapter": 19,
+      "quote": "郦衡朔把个人佩剑交还门军公库，作为自己不再统军的凭证。",
+      "han_position": 2508
+    }
+  ],
+  "new_names": [],
+  "new_named_objects": [],
+  "days": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "lead_accepted_batches": [
+    "1-4",
+    "5-8",
+    "9-12-with-gate-clarification",
+    "13-16-with-chapter-8-correction"
+  ],
+  "chapter_12_gate_clarification": {
+    "added_han": 102,
+    "new_passage": false,
+    "gates": 3,
+    "low_doors": 2,
+    "key_control": "duty_guard",
+    "third_gate_has_low_door": false
+  },
+  "protected_additional_states": [
+    {
+      "subject": "鄂闻绡",
+      "state": "第8章挡人后肩部肿痛，13–16章仍保护，不提重物、不强行悬臂操作。",
+      "chapter": 8
+    }
+  ],
+  "corrections": [
+    {
+      "chapter": 8,
+      "first_finding": "lead reread",
+      "issue": "unintended implication of unrelated hand injury",
+      "repair": "replaced hand injury implication with careful movement",
+      "han_delta": -3,
+      "missing_2_position": 2684
+    }
+  ],
+  "completion": {
+    "source_chapters": 20,
+    "source_han": 59617,
+    "chapter_han_min": 2766,
+    "chapter_han_max": 3157,
+    "designed_stale_facts_changed": [
+      1,
+      6,
+      11,
+      16,
+      21
+    ],
+    "missing_facts_written": 6,
+    "resolved_unmarked_written": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "already_resolved_thread": 8,
+    "unresolved_threads": [
+      5,
+      6,
+      7
+    ],
+    "unintended_conflict_independent_review": "not_yet",
+    "succession_ritual_held": false,
+    "anonymous_attacker_mastermind_revealed": false,
+    "next_chapter_day": 21,
+    "next_chapter_activity": "first_public_name_call_preparation"
+  },
+  "author_audit": {
+    "selected_quotes": 49,
+    "quote_errors": 0,
+    "cross_chapter_exact_sentences_han_ge20": 0,
+    "ascii_letters_in_source_bodies": 0
+  }
+}

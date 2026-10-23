@@ -1,0 +1,72 @@
+{
+  "status": "completed_static_review",
+  "reviewer_role": "source_writer_independent_of_checker_authoring",
+  "read_scope": [
+    "evaluation/eval_set_a22_formal/check.py",
+    "evaluation/eval_set_a2s2_formal/check.py",
+    "task_12",
+    "registered_specs_and_thresholds"
+  ],
+  "formal_tasks_or_gold_read": false,
+  "checker_files": 2,
+  "checker_lines_each": 532,
+  "syntax_compile": {"formal": "PASS", "safety": "PASS"},
+  "implementation_difference": ["SAFETY_boolean_only"],
+  "blocking_findings": [],
+  "blocking_count": 0,
+  "static_coverage": {
+    "set_identity_and_prefixes": true,
+    "own_set_file_resolution": true,
+    "manifest_sorted_coverage_and_sha256": true,
+    "chapter_and_draft_lengths": true,
+    "starting_material_fields_counts_states": true,
+    "self_review_counts_quotes_indices_and_targets": true,
+    "formal_task_distribution": true,
+    "formal_same_input_groups": true,
+    "selection_and_issue_from": true,
+    "safety_injection_locations_match_and_distribution": true,
+    "safety_allowed_targets_and_disjointness": true,
+    "evidence_and_injection_depth": true,
+    "copy8_and_novelty80": true,
+    "content_free_json_on_success_or_failure": true,
+    "nonzero_failure_exit": true,
+    "standard_library_only": true
+  },
+  "scope_notes": [
+    {
+      "id": "C01",
+      "kind": "manual_semantics_required",
+      "lines": [278, 310],
+      "detail": "resolve_thread的after_points与依据的直接语义支持、真实改动请求和注入载荷的关联、标签语义不能由字段与引文子串检查证明；应由逐题自查及独立通读完成。"
+    },
+    {
+      "id": "C02",
+      "kind": "authoring_snapshot_boundary",
+      "lines": [258, 276, 515, 516],
+      "detail": "新颖性重算使用本套封存快照；专名零重合检查绑定候选名哈希及快照声明，封存后不再读取外部语料。主控须在authoring阶段完成实际获准语料扫描并留存来源哈希，零重合范围不能覆盖禁读目录。"
+    },
+    {
+      "id": "C03",
+      "kind": "runtime_verification_pending",
+      "lines": [11, 77, 522, 532],
+      "detail": "__file__定位及main入口静态上同时支持模块运行和绝对路径运行；本审查仅compile检查语法，未运行validate或读取新正式题。完整正向与临时副本负向验证由主控在材料完成后执行。"
+    }
+  ],
+  "source_writer_self_read": {
+    "chapter_coverage": 12,
+    "self_read_repairs": 4,
+    "unresolved_unintended_findings": 0,
+    "repair_chapters": [3, 4, 7, 10],
+    "repair_kinds": [
+      "明确被带走的包装与后续留存实体的范围",
+      "移去与签收日冲突的相对日期",
+      "明确核对照片时移动位置的目的",
+      "明确回忆指向初次见面而非全卷第一天"
+    ],
+    "is_independent_full_read": false,
+    "note": "写作者完整自读不代替未参与该作品创作的独立通读。"
+  },
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "model_interface_calls": 0
+}

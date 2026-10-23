@@ -3,10 +3,9 @@ sentences about what the text says; a process line reporting a finding is not sh
 sentences saying the thing is still unknown."""
 from __future__ import annotations
 
-import json
 import unittest
 
-from app.assistant import SYSTEM_PROMPT, say_matches_calls
+from app.assistant import SYSTEM_PROMPT
 from app.assistant_coverage import looked_places
 from tests.assistant_case import AssistantCase
 from tests.scripted_chat import answer_call, call, ref_of_chapter, turn
@@ -26,14 +25,6 @@ class WithoutStoryTests(unittest.TestCase):
         self.assertEqual(looked_places("查过第7、14章正文，匿名音频的事实与伏笔记录（第7章埋设，未标回收）；没有找到问题问到的内容。"),
                          "查过第7、14章正文，匿名音频的事实与伏笔记录。没有找到问题问到的内容。")  # the bracket says what the record holds
         self.assertIsNone(looked_places(None))
-
-
-class FindingLineTests(unittest.TestCase):
-    def test_a_line_reporting_a_finding_is_not_shown(self):
-        made = [{"name": "lookup_facts", "arguments": json.dumps({"name": "罗叙霖"})}]
-        self.assertFalse(say_matches_calls("第六章正文已找到主灯操作者，我再核对相关人物的事实记录。", made))
-        self.assertFalse(say_matches_calls("第二十四章正文已明确写到归还的是使用许可，我再核对事实记录。", made))
-        self.assertTrue(say_matches_calls("我再核对相关人物的事实记录。", made))
 
 
 class NoteIsCleanedInTheTaskTests(AssistantCase):
@@ -63,10 +54,6 @@ class P17Tests(unittest.TestCase):
 
     def test_a_reported_conflict_goes(self):
         self.assertEqual(looked_places("查过第8、26章正文和事实记录；两处出生地说法相反。"), "查过第8、26章正文和事实记录。")
-        made = [{"name": "read_chapter", "arguments": json.dumps({"chapter_number": 8})}]
-        self.assertFalse(say_matches_calls("第8章和第26章对出生地的说法相反，我再读第8章。", made))
-        self.assertTrue(say_matches_calls("我再读第8章。", made))
-        self.assertTrue(say_matches_calls("我先检查改后的这句和前文有没有矛盾。", [{"name": "check_passage", "arguments": "{}"}]))
 
     def test_a_refusal_stays_but_a_suggestion_goes(self):
         # p26: the rewrite suggestion is no longer written into the note.

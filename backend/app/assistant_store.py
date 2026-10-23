@@ -13,7 +13,8 @@ from typing import Any
 
 from .assistant_tools import OUT_OF_SCOPE_TEXT, error_text
 
-TABLES = ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps", "assistant_tasks")
+TABLES = ("assistant_change_events", "assistant_changes", "assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps",
+          "assistant_tasks")
 FEEDBACK_VERDICTS = ("up", "down")
 FEEDBACK_REASONS = ("wrong", "verbose", "not_found", "bad_source")
 # Columns added after v1.8.0 first shipped to developers; an older database gets them in `initialize()`.
@@ -25,7 +26,7 @@ ADDED_COLUMNS = {
 }
 # How much of a fact's source passage the page gets to find it by.
 ANCHOR_CHARS = 120
-TASK_KINDS = ("ask", "recap", "fix_issue")
+TASK_KINDS = ("ask", "recap", "fix_issue", "change")
 ACTIVE_STATUSES = ("queued", "running")
 
 SCHEMA = """
@@ -68,6 +69,16 @@ CREATE TABLE IF NOT EXISTS assistant_feedback(
   verdict TEXT NOT NULL, reasons_json TEXT NOT NULL DEFAULT '[]',
   created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
   PRIMARY KEY(task_id, user_id));
+CREATE TABLE IF NOT EXISTS assistant_changes(
+  id TEXT PRIMARY KEY, task_id TEXT NOT NULL REFERENCES assistant_tasks(id), project_id TEXT NOT NULL REFERENCES v2_projects(id),
+  ordinal INTEGER NOT NULL, kind TEXT NOT NULL, target_id TEXT NOT NULL,
+  before_json TEXT NOT NULL, after_json TEXT NOT NULL, display_json TEXT NOT NULL, evidence_json TEXT NOT NULL,
+  status TEXT NOT NULL, edited_by_author INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL, decided_at TEXT, applied_at TEXT, undone_at TEXT);
+CREATE INDEX IF NOT EXISTS assistant_changes_by_target ON assistant_changes(project_id,target_id,status);
+CREATE TABLE IF NOT EXISTS assistant_change_events(
+  id TEXT PRIMARY KEY, change_id TEXT NOT NULL REFERENCES assistant_changes(id), project_id TEXT NOT NULL REFERENCES v2_projects(id),
+  event TEXT NOT NULL, actor_user_id TEXT NOT NULL, detail_json TEXT NOT NULL, created_at TEXT NOT NULL);
 """
 
 
@@ -85,6 +96,10 @@ def purge(c: sqlite3.Connection, project_id: str) -> None:
     if "assistant_tasks" not in existing:
         return
     ids = "SELECT id FROM assistant_tasks WHERE project_id=?"
+    # The change ledger goes with the work (v2.0): its events, then its items.
+    for table in ("assistant_change_events", "assistant_changes"):
+        if table in existing:
+            c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
     for table in ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps"):
         if table in existing:
             c.execute(f"DELETE FROM {table} WHERE task_id IN ({ids})", (project_id,))
@@ -255,6 +270,7 @@ class AssistantStore:
         return found
 
     def view(self, c: sqlite3.Connection, row: sqlite3.Row, viewer_id: str | None = None) -> dict[str, Any]:
+        from .assistant_actions import task_changes as change_views
         task_input = json.loads(row["input_json"])
         answer = json.loads(row["answer_json"]) if row["answer_json"] else None
         items = list((answer or {}).get("sentences") or [])
@@ -289,7 +305,8 @@ class AssistantStore:
                 "feedback": {"verdict": feedback["verdict"], "reasons": json.loads(feedback["reasons_json"])} if feedback else None,
                 "error_code": row["error_code"], "created_at": row["created_at"], "started_at": row["started_at"], "completed_at": row["completed_at"],
                 **({"proposals": [self.proposal_view(p) for p in c.execute("SELECT * FROM assistant_proposals WHERE task_id=? ORDER BY ordinal", (row["id"],))]}
-                   if row["kind"] == "fix_issue" else {})}
+                   if row["kind"] == "fix_issue" else {}),
+                **({"changes": change_views(c, self.db, row["id"])} if row["kind"] == "change" else {})}
 
     def visible_tasks(self, c: sqlite3.Connection, project_id: str, limit: int, viewer_id: str | None = None) -> list[dict[str, Any]]:
         """The latest `limit` tasks that were not cleared, oldest first."""

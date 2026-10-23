@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, MouseEvent as ReactMouseEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { Chapter, CharacterAliasSnapshot, ForeshadowCandidate, ForeshadowRecord, ForeshadowSnapshot, Memory, MemoryDelta, MemoryInitialization, WritingAnalysisRun } from "../../model";
 import { experienceSimulation } from "../env";
@@ -20,7 +20,8 @@ import {
   worldTypeLabel,
 } from "../labels";
 import { bareChapterTitle, Button, Chips, Num, PageHead, pad2, SectionHead, Tabs, Tag } from "../ui";
-import { useAssistantAnchor } from "./assistant";
+import { AssistantBridge, useAssistantAnchor } from "./assistant";
+import { AssistantMark, ChangeLedger, type Marks, marksOf, useLedger } from "./change-ledger";
 import type { PageProps } from "./frame";
 import { BULK_REVIEW_THRESHOLD, type Character, type ProjectState, type WorldEntry } from "./use-project";
 
@@ -36,7 +37,7 @@ const factTone: Record<string, "line" | "solid" | "state" | "gap" | "mid"> = { s
 const current = (records: Memory[]) => records.filter((record) => record.valid_to == null && record.review_status === "author_confirmed");
 
 /** 资料: only what is already written into the story, each item traceable to its chapter. */
-export function MaterialsPage({ p, initialView, go, notices }: PageProps & { initialView: "people" | "settings" | null }) {
+export function MaterialsPage({ p, user, initialView, go, notices }: PageProps & { initialView: "people" | "settings" | null }) {
   const project = p.project!;
   const [view, setView] = useState<View>(() => {
     if (initialView) return initialView;
@@ -55,7 +56,13 @@ export function MaterialsPage({ p, initialView, go, notices }: PageProps & { ini
     let live = true;
     request<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows`).then((r) => { if (live) setThreadCount(r.records.filter((item) => !item.archived_at && item.status !== "resolved" && item.status !== "abandoned").length); }).catch(() => undefined);
     return () => { live = false; };
-  }, [project.id, view]);
+  }, [project.id, view, p.materialsStamp]);
+  // 助手改动记录: what the assistant changed with the author's word (a list of its own, opened from the head) and the tags on the facts and threads it wrote.
+  const bridge = useContext(AssistantBridge);
+  const ledger = useLedger(project.id, p.materialsStamp);
+  const [ledgerOpen, setLedgerOpen] = useState(false);
+  const marks = marksOf(ledger.items);
+  const assistantOffered = Boolean(user.assistant?.available);
   const choose = (next: View) => {
     setView(next);
     try { window.history.replaceState(window.history.state, "", `/projects/${project.id}/memory${next === "facts" ? "" : `?view=${next}`}`); } catch { /* the view still switches */ }
@@ -63,7 +70,12 @@ export function MaterialsPage({ p, initialView, go, notices }: PageProps & { ini
   return (
     <section className="page materials">
       {notices}
-      <PageHead title="资料" lede="只放已经写进正文的内容，每一条都能查到出自哪一章。还没写的打算放在「计划」。" rule={false} />
+      <PageHead title="资料" lede="只放已经写进正文的内容，每一条都能查到出自哪一章。还没写的打算放在「计划」。" rule={false}
+        aside={(assistantOffered || Boolean(ledger.items?.length)) && <Button kind="small" expanded={ledgerOpen} onClick={() => setLedgerOpen((open) => !open)}>助手改动记录</Button>} />
+      {ledgerOpen && (
+        <ChangeLedger projectId={project.id} ledger={ledger} written={bridge.materialsChanged} readOnly={p.readOnly}
+          openTask={assistantOffered ? (taskId) => bridge.openDrawer(undefined, taskId) : null} />
+      )}
       <Tabs<View>
         label="资料分类"
         value={view}
@@ -75,15 +87,15 @@ export function MaterialsPage({ p, initialView, go, notices }: PageProps & { ini
           { id: "threads", label: "伏笔", count: threadCount ?? "" },
         ]}
       />
-      {view === "facts" && <FactsView p={p} go={go} />}
+      {view === "facts" && <FactsView p={p} go={go} marks={marks} />}
       {view === "people" && <PeopleView p={p} openId={openCharacter} setOpenId={setOpenCharacter} />}
       {view === "settings" && <SettingsView p={p} />}
-      {view === "threads" && <ThreadsView p={p} go={go} />}
+      {view === "threads" && <ThreadsView p={p} go={go} marks={marks} />}
     </section>
   );
 }
 
-function FactsView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
+function FactsView({ p, go, marks }: { p: ProjectState; go: (href: string) => void; marks: Marks }) {
   const project = p.project!;
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
@@ -117,6 +129,7 @@ function FactsView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
                     <strong>{record.subject}</strong>
                     <span className="fact-value">{predicateLabel(record.predicate) !== "其他" && <span className="fact-key">{predicateLabel(record.predicate)} · </span>}{record.value}</span>
                     {(record.valid_to != null || record.requires_source_review) && <span className="label">{record.valid_to != null ? "已被后来的内容取代" : "出处改过，待复核"}</span>}
+                    <AssistantMark text={marks.facts.get(record.id)} />
                   </span>
                   <Tag tone={factTone[record.memory_type] ?? "line"}>{memoryTypeLabel(record.memory_type)}</Tag>
                 </li>
@@ -546,7 +559,7 @@ function ChapterRefSelect({ label, value, setValue, chapters, disabled }: { labe
 }
 
 /** 伏笔: threads planted in the text, how long they have run, and when they are resolved. */
-function ThreadsView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
+function ThreadsView({ p, go, marks }: { p: ProjectState; go: (href: string) => void; marks: Marks }) {
   const projectId = p.project!.id;
   const [snapshot, setSnapshot] = useState<ForeshadowSnapshot | null>(null);
   const [scans, setScans] = useState<WritingAnalysisRun[]>([]);
@@ -565,7 +578,7 @@ function ThreadsView({ p, go }: { p: ProjectState; go: (href: string) => void })
     ]);
     setSnapshot(records); setScans(scan.runs ?? []);
   }, [projectId]);
-  useEffect(() => { void Promise.resolve().then(refresh).catch((cause) => setNotice(labelError(cause))); }, [refresh, p.draft?.revision]);
+  useEffect(() => { void Promise.resolve().then(refresh).catch((cause) => setNotice(labelError(cause))); }, [refresh, p.draft?.revision, p.materialsStamp]);
   const scanning = scans.find(activeAnalysis);
   useEffect(() => {
     if (!scanning) return;
@@ -633,6 +646,7 @@ function ThreadsView({ p, go }: { p: ProjectState; go: (href: string) => void })
       <span className="thread-planted"><span className="label">埋于</span><Num>{record.planted ? pad2(record.planted.chapter_number) : "—"}</Num></span>
       <span className="thread-copy">
         <strong>{record.title}</strong>
+        <AssistantMark text={marks.threads.get(record.id)} />
         <span>{record.description}</span>
         <span className="thread-links">
           {record.planted && <a href={record.planted.source_path} onClick={link(record.planted.source_path)}>埋下：第 {record.planted.chapter_number} 章{record.planted.source_label ? ` · ${record.planted.source_label}` : ""}</a>}

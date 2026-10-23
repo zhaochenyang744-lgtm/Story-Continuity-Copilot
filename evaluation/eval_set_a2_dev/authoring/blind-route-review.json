@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "reviewer_role": "checker_reviewer",
+  "reviewer_not_task_author": true,
+  "visible_fields": ["id", "input", "context"],
+  "source": "authoring/blind-route-inputs.json",
+  "read_story": false,
+  "read_gold": false,
+  "distribution_used_to_infer_answers": false,
+  "predictions": [
+    {
+      "id": "a2d-route-01",
+      "predicted_route": "change",
+      "reason": "前半句要求查时间，后半句明确要求把查到的结果写入人物资料，整体目标是新增资料。"
+    },
+    {
+      "id": "a2d-route-02",
+      "predicted_route": "change",
+      "reason": "明确要求将资料中的计时器状态换成损坏后的状态，属于改事实。"
+    },
+    {
+      "id": "a2d-route-03",
+      "predicted_route": "change",
+      "reason": "要求把已经解释清楚的旧孔线索从悬而未决改为回收，属于标伏笔已回收。"
+    },
+    {
+      "id": "a2d-route-04",
+      "predicted_route": "change",
+      "reason": "直接要求另立事实并引用正文，目标是新增资料条目。"
+    },
+    {
+      "id": "a2d-route-05",
+      "predicted_route": "ask",
+      "reason": "只查询资料当前记载的工作安排，没有要求写入、替换或删除资料。"
+    },
+    {
+      "id": "a2d-route-06",
+      "predicted_route": "ask",
+      "reason": "要求确认第十四章是否发生损坏，虽然提到资料旧值，仍是核实作品事实的问句，没有修改指令。"
+    },
+    {
+      "id": "a2d-route-07",
+      "predicted_route": "ask",
+      "reason": "材料页没有草稿选区或已打开的检查结果；这句泛指的前后核对请求按问作品处理。"
+    },
+    {
+      "id": "a2d-route-08",
+      "predicted_route": "recap",
+      "reason": "明确表示续写前需要梳理当前已落定和未解决的进展，符合写前回顾。"
+    },
+    {
+      "id": "a2d-route-09",
+      "predicted_route": "check_passage",
+      "reason": "写作页给出了草稿原句选区，询问该部分是否和前文一致，应检查选中的段落。"
+    },
+    {
+      "id": "a2d-route-10",
+      "predicted_route": "out_of_scope",
+      "reason": "要求撰写作者向现实主管提交的请假邮件，没有作品内的写作对象。"
+    }
+  ]
+}

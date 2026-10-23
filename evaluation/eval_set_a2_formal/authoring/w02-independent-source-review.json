@@ -1,0 +1,568 @@
+{
+  "reviewer": "write_f1_independent_w02_reader",
+  "independence": "authored formal w01 only; did not author formal w02 source/materials/draft",
+  "method": "full consecutive reading of all 20 chapters in five four-chapter groups; compared both materials, central bible, metadata shared draft and 15 self-review targets; author handoff not used as verdict",
+  "status": "source_review_completed",
+  "task_gold_review": "completed_in_separate_report",
+  "chapter_coverage": [
+    {
+      "chapter": 1,
+      "read_mode": "full_chapter",
+      "han": 2915,
+      "conclusion": "初次落地、核归联络员、第三暗纹、周期、临时许可及不能发人类语均建立，未知与真值区分。",
+      "findings": []
+    },
+    {
+      "chapter": 2,
+      "read_mode": "full_chapter",
+      "han": 2900,
+      "conclusion": "隔离环、别名、小艇及推进器禁令明确；回接闪光只埋疑，取水路线不等于长期许可。",
+      "findings": []
+    },
+    {
+      "chapter": 3,
+      "read_mode": "full_chapter",
+      "han": 2904,
+      "conclusion": "第3昼期实际闭合；通信支架吞没且接头保留；螺针干盒与侧转、囊纹埋疑；船长不表决、可口头撤回均明确。",
+      "findings": []
+    },
+    {
+      "chapter": 4,
+      "read_mode": "full_chapter",
+      "han": 2998,
+      "conclusion": "退役出生舰与未补担保明确；四支撑肢与细丝区分；静默被误当等待；医疗原则与两固定座位明确。",
+      "findings": []
+    },
+    {
+      "chapter": 5,
+      "read_mode": "full_chapter",
+      "han": 2903,
+      "conclusion": "公开原定21昼期开端离航；暂停受理；两层过滤、右手膜套、不识旗码明确；囊纹已收、低频回声未解。",
+      "findings": []
+    },
+    {
+      "chapter": 6,
+      "read_mode": "full_chapter",
+      "han": 2962,
+      "conclusion": "第6昼期闭合；小艇由人抬出庭界才自检停机，故不违反庭内禁令；事故伤右肩，未确定骨折与期限；空孔未解释。",
+      "findings": []
+    },
+    {
+      "chapter": 7,
+      "read_mode": "full_chapter",
+      "han": 2921,
+      "conclusion": "右臂固定、左手操作；事故经过继续核查；较大接驳艇与两座小艇分开，无主茧未解释。",
+      "findings": []
+    },
+    {
+      "chapter": 8,
+      "read_mode": "full_chapter",
+      "han": 2933,
+      "conclusion": "伤肩未恢复驾驶；小艇只地面检修；母群/幼群来源经位置变换盲核辨清，不扩成已懂所有语义。",
+      "findings": []
+    },
+    {
+      "chapter": 9,
+      "read_mode": "full_chapter",
+      "han": 2922,
+      "conclusion": "第9昼期闭合；右肩仍支具保护，小艇庭外由维修员短离地；核仍归联络员；茧未被移作样本。",
+      "findings": []
+    },
+    {
+      "chapter": 10,
+      "read_mode": "full_chapter",
+      "han": 2997,
+      "conclusion": "第三暗纹为幼群自主关闭通路；正式移交核给代理，空袋由人类留存；联络员右手指间轻擦伤。",
+      "findings": []
+    },
+    {
+      "chapter": 11,
+      "read_mode": "full_chapter",
+      "han": 2942,
+      "conclusion": "驾驶员乘接驳回舰并返地，不自行驾驶；核不重归人类；安全余量核清后延21到22，不构成船长参与驻留表决。",
+      "findings": []
+    },
+    {
+      "chapter": 12,
+      "read_mode": "full_chapter",
+      "han": 2939,
+      "conclusion": "第12昼期闭合；空环/人体采样分开核对，测量回流非感染；明确解除隔离摘环交医者，皮肤印痕未立刻消失。",
+      "findings": []
+    },
+    {
+      "chapter": 13,
+      "read_mode": "full_chapter",
+      "han": 2934,
+      "conclusion": "首次查明铜残留损表膜，未在新活膜复做；局部受损仍养护；未否认人类自身必要医疗物资。",
+      "findings": []
+    },
+    {
+      "chapter": 14,
+      "read_mode": "full_chapter",
+      "han": 2970,
+      "conclusion": "液体流动与螺针吸湿、两面对照支持侧转解释及浸养新保存；物件不再返干盒，留代理认可处。",
+      "findings": []
+    },
+    {
+      "chapter": 15,
+      "read_mode": "full_chapter",
+      "han": 2964,
+      "conclusion": "第15昼期闭合；静默误作等待促成人类设备准备负重；设备仍庭外未获接收，承认未知非提前懂拒绝。",
+      "findings": []
+    },
+    {
+      "chapter": 16,
+      "read_mode": "full_chapter",
+      "han": 2995,
+      "conclusion": "限问句后收束静默辨为拒绝，不把设备断续等所有无声合并；改旧记录、撤本次旁听准备，不提前恢复长期申请。",
+      "findings": []
+    },
+    {
+      "chapter": 17,
+      "read_mode": "full_chapter",
+      "han": 2921,
+      "conclusion": "私用设备旧往来先转存；试录/停录/改词与再确认有实际操作，只留各方愿留段落，不自动回传。",
+      "findings": []
+    },
+    {
+      "chapter": 18,
+      "read_mode": "full_chapter",
+      "han": 2921,
+      "conclusion": "第18昼期闭合；申请重新受理但非批准，仍仅临时许可；驾驶员仍未准驾驶；留地设备按确认随硬面移放。",
+      "findings": []
+    },
+    {
+      "chapter": 19,
+      "read_mode": "full_chapter",
+      "han": 2915,
+      "conclusion": "个人申请由本人决定，不强行弃舰籍、旧标带与协助；接收非获准，未预写后续结局。",
+      "findings": []
+    },
+    {
+      "chapter": 20,
+      "read_mode": "full_chapter",
+      "han": 2921,
+      "conclusion": "第20夜八主要来客仍地面；21闭合和22开端离航未提前；两伤保护、三未收未解，衔接21章晨间接触自然。",
+      "findings": []
+    }
+  ],
+  "initial_facts": [
+    {
+      "fact": 1,
+      "chapter": 1,
+      "quote": "皱鳞核由佘昼缈持有，连落地后的临时检查也没有交给别人。",
+      "han_position": 356,
+      "initial_support": "supported",
+      "subsequent_state": "designed_stale"
+    },
+    {
+      "fact": 2,
+      "chapter": 1,
+      "quote": "颛绪泠别名泠弧，舰上同僚在不便高声报全名的时候都这样唤她。",
+      "han_position": 828,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 3,
+      "chapter": 1,
+      "quote": "迭眠原每三昼期闭合表层一次，来客必须在闭合前离开裸露接缝。",
+      "han_position": 2429,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 4,
+      "chapter": 1,
+      "quote": "现阶段，人类只获临时停留许可，长期驻留的请求尚没有得到答复。",
+      "han_position": 2813,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 5,
+      "chapter": 1,
+      "quote": "庹穆缇不能用发声器说人类语，它与人类的交谈必须经过接触与转译。",
+      "han_position": 2733,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 6,
+      "chapter": 2,
+      "quote": "仉砚溯佩戴红色隔离环，入庭和离庭时都必须让环面露在外面。",
+      "han_position": 220,
+      "initial_support": "supported",
+      "subsequent_state": "designed_stale"
+    },
+    {
+      "fact": 7,
+      "chapter": 2,
+      "quote": "佘昼缈别名缈签，起因是他总能在换班前补齐被别人漏掉的交接。",
+      "han_position": 423,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 8,
+      "chapter": 2,
+      "quote": "寇绚芜驾驶小型艇，接送任务都由她自己判断能否执行。",
+      "han_position": 1346,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 9,
+      "chapter": 2,
+      "quote": "瓣屿庭内不许开推进器，哪怕只为挪开一块挡路的金属也不例外。",
+      "han_position": 1287,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 10,
+      "chapter": 2,
+      "quote": "仇籁宜用手掌接触膜面听振动，耳朵听到的风声并不是她的依据。",
+      "han_position": 883,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 11,
+      "chapter": 3,
+      "quote": "零相螺针储存在干燥盒中，邴呈苒每次用过都照原先的约定收回。",
+      "han_position": 1433,
+      "initial_support": "supported",
+      "subsequent_state": "designed_stale"
+    },
+    {
+      "fact": 12,
+      "chapter": 3,
+      "quote": "邴呈苒别名苒灯，是同行者在漫长航行中对她的称呼。",
+      "han_position": 495,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 13,
+      "chapter": 3,
+      "quote": "斑息囊遇强光收缩，光越直，它的表层褶皱就收得越紧。",
+      "han_position": 605,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 14,
+      "chapter": 3,
+      "quote": "逯纭夷只负责撤离，不参加驻留听证的表决。",
+      "han_position": 1247,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 15,
+      "chapter": 3,
+      "quote": "苔冠庭接纳口头撤回证词，不要求见证人先交出一份写好的更正文书。",
+      "han_position": 2421,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 16,
+      "chapter": 4,
+      "quote": "颛绪泠还不明白群落长久停顿的意思，只把它当作译读需要继续等待的空档。",
+      "han_position": 1246,
+      "initial_support": "supported",
+      "subsequent_state": "designed_stale"
+    },
+    {
+      "fact": 17,
+      "chapter": 4,
+      "quote": "庹穆缇有四条支撑肢，靠近腹面的细丝不能当作另一些腿来计数。",
+      "han_position": 958,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 18,
+      "chapter": 4,
+      "quote": "仉砚溯的出生舰已经退役，原来负责接收他身份来往的舰籍机构不复存在。",
+      "han_position": 148,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 19,
+      "chapter": 4,
+      "quote": "邴呈苒不用镇静剂压制异种动作，不把人类嫌吵或嫌挤当成医疗理由。",
+      "han_position": 1597,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 20,
+      "chapter": 4,
+      "quote": "寇绚芜的艇只有两个固定座位，不能把运送货物的空处都算作能够载人的座位。",
+      "han_position": 2396,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 21,
+      "chapter": 5,
+      "quote": "苔冠庭暂停受理长期驻留申请，要求来客先说明谁能够代表请求中的每一个人。",
+      "han_position": 1944,
+      "initial_support": "supported",
+      "subsequent_state": "designed_stale"
+    },
+    {
+      "fact": 22,
+      "chapter": 5,
+      "quote": "颛绪泠读译时右手戴薄膜套，不让掌上的温度与汗液直接混进接触信号。",
+      "han_position": 418,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 23,
+      "chapter": 5,
+      "quote": "仇籁宜不识舰队旗码，不能从旗面的开合判断人类的撤离安排。",
+      "han_position": 941,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 24,
+      "chapter": 5,
+      "quote": "佘昼缈当众公开舰队撤离期限：运输舰原定在第二十一昼期开端离航。",
+      "han_position": 1210,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    },
+    {
+      "fact": 25,
+      "chapter": 5,
+      "quote": "瓣屿庭的饮水必须经过两层滤膜，撤掉任何一层都不能算完成过滤。",
+      "han_position": 719,
+      "initial_support": "supported",
+      "subsequent_state": "supported_not_reversed"
+    }
+  ],
+  "self_review_targets": [
+    {
+      "group": "stale_facts",
+      "index": 1,
+      "chapter": 10,
+      "quote": "佘昼缈亲手打开袋锁，取出皱鳞核，正式移交给庹穆缇保管。",
+      "han_position": 2747,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "stale_facts",
+      "index": 2,
+      "chapter": 12,
+      "quote": "医疗复核确认可以结束隔离，仉砚溯摘下红色隔离环，交给邴呈苒保存。",
+      "han_position": 2683,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "stale_facts",
+      "index": 3,
+      "chapter": 14,
+      "quote": "邴呈苒把零相螺针改为浸在养液中保存，不再放回干燥盒。",
+      "han_position": 2696,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "stale_facts",
+      "index": 4,
+      "chapter": 16,
+      "quote": "颛绪泠这时真正懂得群落的长停顿是在拒绝，不再把它记为尚未收到回答。",
+      "han_position": 2739,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "stale_facts",
+      "index": 5,
+      "chapter": 18,
+      "quote": "苔冠庭重新受理长期驻留申请，先前暂停接收请求的状态就此结束。",
+      "han_position": 2555,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 1,
+      "chapter": 6,
+      "quote": "寇绚芜在停机事故中伤了右肩，整条右臂疼得无法抬起。",
+      "han_position": 2723,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 2,
+      "chapter": 8,
+      "quote": "仇籁宜能够区分母群与幼群的振频，不再把两个来源记成同一声部。",
+      "han_position": 2583,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 3,
+      "chapter": 11,
+      "quote": "逯纭夷主动将离航推迟一昼期，原定第二十一昼期开端改为第二十二昼期开端。",
+      "han_position": 2636,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 4,
+      "chapter": 13,
+      "quote": "邴呈苒发现群落表膜不能接触含铜消毒液，今天的紧缩正由擦拭布上的含铜残留引起。",
+      "han_position": 2621,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 5,
+      "chapter": 17,
+      "quote": "佘昼缈同意把私人通讯器留在地面作公开见证，只保存各方确认愿意留下的交谈。",
+      "han_position": 2546,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "missing_facts",
+      "index": 6,
+      "chapter": 19,
+      "quote": "仉砚溯选择以个人身份申请长期驻留，而不以舰队成员的身份提出这次请求。",
+      "han_position": 2560,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "resolved_unmarked",
+      "index": 1,
+      "chapter": 10,
+      "quote": "皱鳞核的第三条脉纹总暗，是幼群拒绝被代言时主动闭合了对应通路。",
+      "han_position": 2622,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "resolved_unmarked",
+      "index": 2,
+      "chapter": 12,
+      "quote": "隔离环离庭后的两次亮光来自测量回流，并非感染信号，离庭位置改变时回接点也随之移位。",
+      "han_position": 2572,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "resolved_unmarked",
+      "index": 3,
+      "chapter": 14,
+      "quote": "零相螺针轻触湿膜就侧转，是因干燥保存破坏了它在养液中应有的中性浮力。",
+      "han_position": 2559,
+      "semantic_support": "supported_after_full_reading"
+    },
+    {
+      "group": "resolved_unmarked",
+      "index": 4,
+      "chapter": 16,
+      "quote": "问句之后那段长静默表示群落拒绝了请求，不是在等人类继续翻译或补充条件。",
+      "han_position": 2636,
+      "semantic_support": "supported_after_full_reading"
+    }
+  ],
+  "foreshadows": [
+    {
+      "index": 1,
+      "source_resolution_chapter": 10,
+      "verdict": "supported"
+    },
+    {
+      "index": 2,
+      "source_resolution_chapter": 12,
+      "verdict": "supported"
+    },
+    {
+      "index": 3,
+      "source_resolution_chapter": 14,
+      "verdict": "supported"
+    },
+    {
+      "index": 4,
+      "source_resolution_chapter": 16,
+      "verdict": "supported"
+    },
+    {
+      "index": 5,
+      "source_resolution_chapter": null,
+      "verdict": "supported"
+    },
+    {
+      "index": 6,
+      "source_resolution_chapter": null,
+      "verdict": "supported"
+    },
+    {
+      "index": 7,
+      "source_resolution_chapter": null,
+      "verdict": "supported"
+    },
+    {
+      "index": 8,
+      "source_resolution_chapter": 5,
+      "verdict": "supported"
+    }
+  ],
+  "continuity_checks": {
+    "closure_days": [
+      3,
+      6,
+      9,
+      12,
+      15,
+      18
+    ],
+    "next_closure_day": 21,
+    "old_departure_day": 21,
+    "current_departure_day": 22,
+    "departure_time": "day_start",
+    "shoulder_injury_day": 6,
+    "driving_resume_confirmed": false,
+    "right_hand_abrasion_day": 10,
+    "ring_removed_day": 12,
+    "temporary_permission_not_long_term_approval": true,
+    "unresolved_threads_preserved": [
+      5,
+      6,
+      7
+    ],
+    "shared_draft_day": 21,
+    "shared_draft_continuity": "supported"
+  },
+  "findings": [],
+  "unresolved_findings": 0,
+  "counts": {
+    "chapters": 20,
+    "han": 58777,
+    "chapter_han_min": 2900,
+    "chapter_han_max": 2998,
+    "facts_supported": 25,
+    "stale_supported": 5,
+    "missing_supported": 6,
+    "resolved_unmarked_supported": 4,
+    "unresolved_preserved": 3,
+    "shared_draft_reviewed": 1,
+    "source_findings": 0
+  },
+  "source_hashes": {
+    "works/w02.md": "2af3a78c61d7461840f2380559fe2b4208d4f20191fe4c32fdb43c85dea1a93a",
+    "materials/w02-facts.json": "c936d92ac102d84da5d6a214d75c9b51678ecafea892aeccbd8b80e245e3fadb",
+    "materials/w02-foreshadows.json": "eb8bce1cb54422cf4e87843e00584b6f69631cfc4358bc6a773877bc47f989f6",
+    "authoring/work-metadata.json": "d4c59a29440b5f12dcd27477e813854efb34cde845db3d951ff61becfacb63a4",
+    "authoring/story-bible.md": "a5318c089fcc8af5a273d4db58b46d6b601dabad51da97023f32cc58190965e9",
+    "authoring/self-review.json": "61f43c144a545916d2539961a8eb904c68e86ec61eef79d34ec1076e3293715b"
+  },
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "task_gold_review_report": "authoring/w02-independent-task-review.json"
+}

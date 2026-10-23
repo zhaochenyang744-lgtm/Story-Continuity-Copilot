@@ -1,0 +1,115 @@
+{
+  "status": "PASS",
+  "scope": "reference_sources_and_candidate_names_only",
+  "reviewer": "write_f2",
+  "blind_route_eligible": true,
+  "new_heldout_tasks_read": 0,
+  "new_case_drafts_read": 0,
+  "new_root_plans_read": 0,
+  "new_self_review_md_read": 0,
+  "protected_directories_read": 0,
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_v13_authoring"
+  ],
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "original_reference_counts": {
+    "source_files": 18,
+    "normalized_inputs": 370,
+    "names_text_files": 272
+  },
+  "original_reference_sha256": {
+    "formal": "efa609799cae5669174d0ef7e5fac1e209e185656432df4cae54ee66240f4bac",
+    "safety": "0dc7847205d830e8405a8f1f05b68f443da310cd698136c12304092fcc8a71f5"
+  },
+  "old_source_validation": {
+    "source_files": 18,
+    "source_hash_mismatches": 0,
+    "normalized_group_mismatches": 0,
+    "raw_input_fields": 384,
+    "unique_normalized_inputs": 370,
+    "name_text_files": 272,
+    "name_text_hash_mismatches": 0,
+    "name_corpus_missing_paths": 0,
+    "name_corpus_extra_paths": 0,
+    "name_overlap_count": 0,
+    "name_overlap_files": 0
+  },
+  "candidate_names": {
+    "formal_count": 36,
+    "safety_count": 19,
+    "total": 55,
+    "unique": 55,
+    "cross_set_overlap": 0,
+    "formal_sha256": "2e02d4637d6f63f3a0f956857d71a13888e34eebaf1e87d2b3095ca45f569cb2",
+    "safety_sha256": "2bd3b825dc5f98914b41763a5addf5c7d4654f4e2315dc95a1d852a2e6aa3d88",
+    "metadata_sha256": {
+      "formal": "1afc527b33b2698780cd3a51221973da435a9aab98ed3826f894bcce5029e87d",
+      "safety": "e00abca115b62d1a6bffa4122581799fb624f7bfb3b1c368451cbe916afdd3ca"
+    }
+  },
+  "development_increment": {
+    "ref": "eval/a2-dev-authoring",
+    "commit": "c1bb6b89eacb03e50c795f039fc99e8784dd2385",
+    "task_path": "evaluation/eval_set_a2_dev/tasks.json",
+    "task_sha256": "b54f8e76e3ed4f377753df3f86172a9e6af25c95b403ac02a80fedcc4c25913d",
+    "tasks": 28,
+    "raw_input_fields": 28,
+    "unique_normalized_inputs": 27,
+    "duplicate_normalized_inputs": 1,
+    "old_input_exact_overlaps": 0,
+    "name_text_files": 22,
+    "name_overlap_count": 0,
+    "source_hashes": {
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/tasks.json": "b54f8e76e3ed4f377753df3f86172a9e6af25c95b403ac02a80fedcc4c25913d"
+    },
+    "names_corpus_sha256": {
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/README.md": "b2740c20eff05b34a0a6005a044fe79efa660aa5123ea851e62c7fc748463423",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/audit-results.json": "190a6af5cbba67904e1abc88dfa95a299e34adbdfeb69962a2be45cd74dce849",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/audit.py": "b5b6d2b397a55aad5337d9cd23135b2e52daa01fb76d3a0a9d3228d5152c174c",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/blind-route-inputs.json": "b0cd1676055b4302f8a12a1815fff24c072482bc1f8464e90fe6fe4d53c8cd42",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/blind-route-review.json": "5e19d0f1b054449abcf050c2ff188d780176e609260037ae3b401f6af524d484",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/build-data.py": "99b44770c204686d9805825a23da6f0e0542171e0f277f8a0253421095daf033",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/check-output-absolute.json": "980a129ba08b67150d5bac4e562333cedadb4fddb9f5d19efb4504b665e465e6",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/check-output-module.json": "980a129ba08b67150d5bac4e562333cedadb4fddb9f5d19efb4504b665e465e6",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/handoff-01-05.md": "c3033b5571ab8eb910d45f0adfc3ba8f13ae9877ee1e9fe125b51fbbc9422177",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/handoff-06-10.md": "5315d5e57300064c1725f778fbcabc3e6c4393876deaa6e360da626b6656b267",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/independent-review.json": "de2685319fea387104ca3e21eeda562dab8627fae90e3b3823412184bcb83d09",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/negative-test-results.json": "930eeef7bf823916d3955f0ab30068b4dbd6e14e9b5c6bda0e3eecafb4923fdc",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/negative-tests.py": "17f365ac4e8ec9e29f2d27d3bd3d5684a45f6f38ab4f30c08078183472659e55",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/self-review.json": "83645c801f9b9f44ca5d47ef9d02d5d0de0a3752646b7429966b9bd84c197723",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/self-review.md": "1766b161297ce1f01392f7cb1b7aa48ce196c1b52c51bb250dad272bc8400715",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/shared-draft.json": "a4bac77e384a33d209face2e292e06ab5cc51667fa2538e993888884ecf04e5b",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/authoring/story-bible.md": "891d46379710e5a45ebdf6af2e82b87f0eeaf6053675cb14776eacf966c7c094",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/check.py": "ae165426a717d76fb4a49ba014e698d1149f1b1171c12a9c0e0a46bf3fb7a628",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/materials/w01-facts.json": "a33a95431d196cda57493be368bdde1ab88a649a84332af4b28bdc4538dafedc",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/materials/w01-foreshadows.json": "5af935049b39a95b4ce506d409e597a1a3d4d9036515b7bb473d612b7754d997",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/tasks.json": "b54f8e76e3ed4f377753df3f86172a9e6af25c95b403ac02a80fedcc4c25913d",
+      "git:c1bb6b89eacb03e50c795f039fc99e8784dd2385:evaluation/eval_set_a2_dev/works/w01.md": "46d17210f1e59e64005e417fddda5ec9901a3a636b3bdb6227776f068d08e036"
+    }
+  },
+  "drift": {
+    "observed": true,
+    "before": "task_file_absent",
+    "after": "task_file_present",
+    "updated_with_parent_authorization": true,
+    "ref_changed_during_audit": false
+  },
+  "updated_reference_counts": {
+    "source_files": 19,
+    "normalized_inputs": 397,
+    "names_text_files": 294
+  },
+  "updated_reference_sha256": {
+    "formal": "285ba5b2d82c2207923f3964ef3a587aadc78de15e2b70c2097f7807efcc97f2",
+    "safety": "ec697b352102f2fcd2d2aac0072bb8235bafc23a20eed38643af03ceff3f7f38"
+  },
+  "group_union_matches": true,
+  "group_deduplication_matches": true,
+  "hash_binding_matches": true,
+  "new_heldout_input_novelty_compared": false,
+  "errors": []
+}

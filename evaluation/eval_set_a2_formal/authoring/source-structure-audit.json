@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "works": {
+    "eval_set_a2_formal/w01.md": {
+      "chapters": 20,
+      "chapter_han": [
+        2804,
+        2766,
+        2901,
+        2878,
+        2936,
+        2769,
+        2995,
+        3147,
+        2968,
+        3157,
+        2997,
+        3120,
+        3130,
+        3050,
+        2915,
+        3067,
+        2949,
+        3021,
+        2911,
+        3136
+      ],
+      "total_han": 59617,
+      "min": 2766,
+      "max": 3157,
+      "sha256": "070a30a534376c61e8d652573a3e4cee6662e29bf24fa13ee1c3795e8dc4c5e3"
+    },
+    "eval_set_a2_formal/w02.md": {
+      "chapters": 20,
+      "chapter_han": [
+        2915,
+        2900,
+        2904,
+        2998,
+        2903,
+        2962,
+        2921,
+        2933,
+        2922,
+        2997,
+        2942,
+        2939,
+        2934,
+        2970,
+        2964,
+        2995,
+        2921,
+        2921,
+        2915,
+        2921
+      ],
+      "total_han": 58777,
+      "min": 2900,
+      "max": 2998,
+      "sha256": "2af3a78c61d7461840f2380559fe2b4208d4f20191fe4c32fdb43c85dea1a93a"
+    },
+    "eval_set_a2s_formal/w01.md": {
+      "chapters": 12,
+      "chapter_han": [
+        2899,
+        2851,
+        2874,
+        2885,
+        2954,
+        2986,
+        3051,
+        3103,
+        3090,
+        3146,
+        3023,
+        3066
+      ],
+      "total_han": 35928,
+      "min": 2851,
+      "max": 3146,
+      "sha256": "56baa5f817212dc4480c8a6f8c933167e699661dde2a77ead6fdc8aea2cc7f60"
+    }
+  },
+  "duplicate_paragraph_groups_min40han": 0,
+  "duplicate_sentence_groups_min40han": 0,
+  "note": "Repetition counts are a mechanical audit; full source semantics are independently read.",
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

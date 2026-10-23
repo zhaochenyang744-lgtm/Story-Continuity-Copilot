@@ -1,0 +1,181 @@
+{
+  "stale_facts": [
+    {
+      "fact": 1,
+      "changed_chapter": 11,
+      "quote": "池澍宁把橘点卡夹交给贺谨棠，原件从此由贺谨棠保管。"
+    },
+    {
+      "fact": 2,
+      "changed_chapter": 12,
+      "quote": "临时照护空间改设在二层内侧空房，七层东侧小会议室不再作为试办场地。"
+    },
+    {
+      "fact": 3,
+      "changed_chapter": 13,
+      "quote": "周五散场后的收尾协调改由邵闻葭负责，池澍宁不再承担这一时段的协调。"
+    },
+    {
+      "fact": 4,
+      "changed_chapter": 14,
+      "quote": "灰耳计时器的蜂鸣已经失灵，屏幕倒数仍然正常。"
+    },
+    {
+      "fact": 5,
+      "changed_chapter": 16,
+      "quote": "程以硕获准每周四下午五点离楼，余下整理改为远程完成，其他日子不变。"
+    }
+  ],
+  "missing_facts": [
+    {
+      "subject": "汤越晴",
+      "predicate": "纸质变更单收取时段",
+      "chapter": 6,
+      "quote": "汤越晴只在周二午休接收纸质接送变更单，其他时段不收纸单。"
+    },
+    {
+      "subject": "陆纭珊",
+      "predicate": "饮食限制",
+      "chapter": 7,
+      "quote": "陆纭珊不吃花生，试办点心单已排除所有花生类点心。"
+    },
+    {
+      "subject": "双岔门牌",
+      "predicate": "备用箭头保管人",
+      "chapter": 8,
+      "quote": "范秉遥保管双岔门牌的备用箭头，借出和归还都由他登记。"
+    },
+    {
+      "subject": "奚慕白",
+      "predicate": "试办清洁工时支付",
+      "chapter": 9,
+      "quote": "奚慕白为试办安排的清洁工时从试办预算单独支付，不占原有保洁工时。"
+    },
+    {
+      "subject": "龚序南",
+      "predicate": "故障截图要求",
+      "chapter": 10,
+      "quote": "龚序南只接收遮去儿童姓名的故障截图，不收露出姓名的原图。"
+    },
+    {
+      "subject": "衡杉大厦",
+      "predicate": "每日参与上限",
+      "chapter": 15,
+      "quote": "池澍宁将每日参与上限定为六个家庭，临时来访也不能突破这个数。"
+    }
+  ],
+  "resolved_unmarked": [
+    {
+      "foreshadow": 1,
+      "chapter": 15,
+      "quote": "门牌背面的旧孔是旧打印夹的定位孔，并不对应第二个房号。"
+    },
+    {
+      "foreshadow": 2,
+      "chapter": 16,
+      "quote": "预算里的两笔押金其实是同一笔先后显示，重复列项已撤回。"
+    },
+    {
+      "foreshadow": 3,
+      "chapter": 17,
+      "quote": "三下声响是自动遮光帘回位敲到窗框造成的，并非屋内有人敲击。"
+    },
+    {
+      "foreshadow": 4,
+      "chapter": 18,
+      "quote": "那张空白页是汤越晴给临时改签者预留的背页，并非漏掉了一个家庭。"
+    }
+  ],
+  "same_input_groups": [
+    [
+      "a2d-route-07",
+      "a2d-route-09"
+    ]
+  ],
+  "characters": [
+    {
+      "name": "池澍宁",
+      "aliases": [
+        "池秒"
+      ]
+    },
+    {
+      "name": "邵闻葭",
+      "aliases": [
+        "葭姐"
+      ]
+    },
+    {
+      "name": "程以硕",
+      "aliases": [
+        "程扣"
+      ]
+    },
+    {
+      "name": "贺谨棠",
+      "aliases": []
+    },
+    {
+      "name": "陆纭珊",
+      "aliases": []
+    },
+    {
+      "name": "龚序南",
+      "aliases": []
+    },
+    {
+      "name": "汤越晴",
+      "aliases": []
+    },
+    {
+      "name": "范秉遥",
+      "aliases": []
+    },
+    {
+      "name": "奚慕白",
+      "aliases": []
+    }
+  ],
+  "route_blind_review": {
+    "status": "completed",
+    "total": 10,
+    "agreements": 10,
+    "agreement_rate": 1.0,
+    "disagreements": [],
+    "first_round": true,
+    "reviewer_not_task_author": true,
+    "visible_fields": [
+      "id",
+      "input",
+      "context"
+    ],
+    "read_story_during_blind_review": false,
+    "read_gold_during_blind_review": false,
+    "inputs_sha256": "b0cd1676055b4302f8a12a1815fff24c072482bc1f8464e90fe6fe4d53c8cd42",
+    "review_sha256": "5e19d0f1b054449abcf050c2ff188d780176e609260037ae3b401f6af524d484"
+  },
+  "independent_review": {
+    "record": "authoring/independent-review.json",
+    "status": "completed",
+    "reviewer_not_author": true,
+    "coverage": {
+      "chapters": 20,
+      "tasks": 28,
+      "facts": 30,
+      "foreshadows": 8,
+      "shared_draft": true,
+      "self_review_json": true,
+      "self_review_md": true
+    },
+    "findings": 1,
+    "closed_findings": 1,
+    "unresolved_count": 0,
+    "bindings": {
+      "works/w01.md": "46d17210f1e59e64005e417fddda5ec9901a3a636b3bdb6227776f068d08e036",
+      "tasks.json": "b54f8e76e3ed4f377753df3f86172a9e6af25c95b403ac02a80fedcc4c25913d",
+      "materials/w01-facts.json": "a33a95431d196cda57493be368bdde1ab88a649a84332af4b28bdc4538dafedc",
+      "materials/w01-foreshadows.json": "5af935049b39a95b4ce506d409e597a1a3d4d9036515b7bb473d612b7754d997"
+    },
+    "record_sha256": "de2685319fea387104ca3e21eeda562dab8627fae90e3b3823412184bcb83d09"
+  }
+}

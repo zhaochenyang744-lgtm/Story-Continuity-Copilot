@@ -1,0 +1,56 @@
+{
+  "source_sha256": "a4dee56001e6a3e78160b0b9bcb229d752f89232d9f987df35aa145bf1e093dc",
+  "reviewer": "independent-route-reviewer",
+  "predictions": [
+    {
+      "id": "a23f-w01-route-07",
+      "route": "ask",
+      "reason": "请求核对某处说法与前文是否矛盾，但overview情境没有给出选段或已打开的检查结果，按问作品处理。"
+    },
+    {
+      "id": "a23f-w01-route-01",
+      "route": "change",
+      "reason": "明确要求把资料中已交接物件的保管人同步换掉，属于修改事实资料的口语请求。"
+    },
+    {
+      "id": "a23f-w01-route-10",
+      "route": "out_of_scope",
+      "reason": "明确表示与本书无关，要求教授现实中的纸支架折法。"
+    },
+    {
+      "id": "a23f-w01-route-05",
+      "route": "ask",
+      "reason": "询问资料里目前如何记录保管人，只求确认现有记录，没有要求改写。"
+    },
+    {
+      "id": "a23f-w01-route-08",
+      "route": "recap",
+      "reason": "明确在续写下一章前整理前文各对象的现状，属于写前回顾。"
+    },
+    {
+      "id": "a23f-w01-route-03",
+      "route": "change",
+      "reason": "要求把物件已变化的存放位置替换进旧记录，属于改事实。"
+    },
+    {
+      "id": "a23f-w01-route-09",
+      "route": "check_passage",
+      "reason": "写作页提供了具体选段，并要求核对该处与前文是否冲突，属于检查选中段落。"
+    },
+    {
+      "id": "a23f-w01-route-06",
+      "route": "ask",
+      "reason": "虽然提到想补事实，但当前实际问题是现有资料是否已经记录，需先查询回答，未发出执行补记的要求。"
+    },
+    {
+      "id": "a23f-w01-route-02",
+      "route": "change",
+      "reason": "要求把已发生事件的来由留到事实页，属于口语形式的新增事实请求。"
+    },
+    {
+      "id": "a23f-w01-route-04",
+      "route": "change",
+      "reason": "要求在伏笔页记录该线索已结束及其收束章节，属于标伏笔已回收。"
+    }
+  ]
+}

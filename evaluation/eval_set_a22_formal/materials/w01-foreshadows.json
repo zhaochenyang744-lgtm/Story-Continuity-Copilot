@@ -1,0 +1,51 @@
+[
+  {
+    "title": "匣盖细砂",
+    "description": "盖缝出现颜色不同的细砂，尚未查明是否来自发掘区还是驻地外面的风沙。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "铜片缺角",
+    "description": "弧纹铜片缺了一角，需要寻找能够严密接合且层位可信的残片。",
+    "status": "developing",
+    "planted_chapter": 5
+  },
+  {
+    "title": "尺尾浅槽",
+    "description": "璺齿尺尾端浅槽里留着旧墨，需要核实那组旧记号所指的测量边界。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "棚后双印",
+    "description": "瓦翳棚后泥地出现重叠的两道印痕，不知是否有人夜里挪动过遗存。",
+    "status": "developing",
+    "planted_chapter": 6
+  },
+  {
+    "title": "北界石",
+    "description": "台地北端界石朝向还没有核实，与现用方格网是否一致仍待查证。",
+    "status": "planted",
+    "planted_chapter": 4
+  },
+  {
+    "title": "空白木签",
+    "description": "整理出来的木签背面空白，原来是否另有覆字要等后续检测再判断。",
+    "status": "planned",
+    "planted_chapter": 7
+  },
+  {
+    "title": "风后细鸣",
+    "description": "停工时器材架传来细鸣，来源尚未找到，暂时只保留听见的时间。",
+    "status": "developing",
+    "planted_chapter": 9
+  },
+  {
+    "title": "缺页清单",
+    "description": "补给清单少去的一页已经找到，夹在未拆开的包装纸内，缺页原因已查明。",
+    "status": "resolved",
+    "planted_chapter": 4,
+    "resolved_chapter": 7
+  }
+]

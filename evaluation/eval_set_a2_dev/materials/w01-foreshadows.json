@@ -1,0 +1,10 @@
+[
+  {"title":"门牌背面的旧孔","description":"双岔门牌背面除现用固定孔外，还多出一枚边缘磨亮的旧孔，最初不知道它原先作什么用。","status":"planted","planted_chapter":2},
+  {"title":"费用表里同额的押金","description":"预算草表和补入页面各显示一行相同押金，暂不清楚是两笔还是重复列出，保留原状等待核单。","status":"developing","planted_chapter":3},
+  {"title":"傍晚空房里的三下响声","description":"七层空房傍晚从窗边传来三下间隔相近的轻响，计时器当时已关，现场未能解释声音来源。","status":"planted","planted_chapter":4},
+  {"title":"报名表多出一页空白","description":"试印报名表分拣后多出一张带装订孔的空白页，池澍宁原样留在末尾，尚待确认用途。","status":"developing","planted_chapter":5},
+  {"title":"匿名纸条与下一年度费用","description":"有人不署名询问下一年度的费用由谁承担，现阶段试办安排不能回答来年的问题，纸条作者也未确定。","status":"planted","planted_chapter":6},
+  {"title":"周末是否另开照护时段","description":"家长提到周末使用的意向，但工作日的筹备不能自动覆盖周末，是否另开仍须讨论人员与资源。","status":"developing","planted_chapter":7},
+  {"title":"父女尚未谈妥的新接送方式","description":"程以硕想与女儿讨论新的接送办法，大人的工作时间调整不代表女儿已经同意，正式谈话仍待安排。","status":"planted","planted_chapter":8},
+  {"title":"最初少掉的一只水杯","description":"筹备之初活动物料箱里少了一只水杯，后来在折叠桌下找到并归还，数量疑问已经消除。","status":"resolved","planted_chapter":1,"resolved_chapter":9}
+]

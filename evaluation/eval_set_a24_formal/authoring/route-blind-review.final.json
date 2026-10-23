@@ -1,0 +1,26 @@
+{
+  "method": "统一更名后的第二次逐题人工复判；本次只读当前 route-blind-input.json 的 id、input、context，未读 gold 或正式 tasks。",
+  "count": 20,
+  "reviews": [
+    {"id":"a24f-w02-route-03","route":"change","理由":"明确要求把遗漏的工作安排补入事实。"},
+    {"id":"a24f-w02-route-01","route":"change","理由":"请求将旧保管记录更新为后来的交接结果。"},
+    {"id":"a24f-w02-route-09","route":"recap","理由":"续写下一晚之前，要求梳理前文人物现状。"},
+    {"id":"a24f-w02-route-04","route":"change","理由":"要变更已经揭晓的线索状态，属于资料操作。"},
+    {"id":"a24f-w02-route-06","route":"ask","理由":"询问是否已经有固定夜班，没有要求落笔改资料。"},
+    {"id":"a24f-w02-route-05","route":"ask","理由":"询问资料和后文中的持有人是否变化，只需查答。"},
+    {"id":"a24f-w01-route-03","route":"change","理由":"明确要求按最新正文重填手伤记录。"},
+    {"id":"a24f-w01-route-05","route":"ask","理由":"查询现有资料中的保管人，没有授权改动。"},
+    {"id":"a24f-w01-route-04","route":"change","理由":"要求为未记录的费用分法新增资料。"},
+    {"id":"a24f-w02-route-07","route":"ask","理由":"泛指核对但无选段和检查结果，且不在写作页；对象不明时默认问作品。"},
+    {"id":"a24f-w01-route-02","route":"change","理由":"要求随物件交接改变保管人那行记录。"},
+    {"id":"a24f-w02-route-08","route":"check_passage","理由":"写作页有具体选中句，输入用指代要求核对它与前文。"},
+    {"id":"a24f-w01-route-01","route":"change","理由":"要求同步钥匙盒的后续交接，明确修改旧资料。"},
+    {"id":"a24f-w01-route-06","route":"ask","理由":"问伤势与旧记录是否仍过时，尚未提出更新要求。"},
+    {"id":"a24f-w01-route-10","route":"out_of_scope","理由":"现实通勤设备选购，并明确排除作品。"},
+    {"id":"a24f-w01-route-08","route":"check_passage","理由":"有写作页选段，要求检查这一处与前文是否冲突。"},
+    {"id":"a24f-w02-route-02","route":"change","理由":"要资料停止沿用旧持有人，是更新事实的口语说法。"},
+    {"id":"a24f-w01-route-07","route":"ask","理由":"资料页没有可检查的选段，也无issue_from；含混的这处按问作品处理。"},
+    {"id":"a24f-w02-route-10","route":"out_of_scope","理由":"现实电脑备份指导，与作品无关。"},
+    {"id":"a24f-w01-route-09","route":"recap","理由":"准备接着写下一章，先回顾可衔接的人物和物件现状。"}
+  ]
+}

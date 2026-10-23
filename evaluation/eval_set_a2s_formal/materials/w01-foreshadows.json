@@ -1,0 +1,10 @@
+[
+  {"title":"杖中的夜间空响","description":"眠节杖一到夜里就发出空响，有人把它当作祖令，实际声音来源仍待核对。","status":"planted","planted_chapter":1},
+  {"title":"宫门的弧形擦痕","description":"宫门地上出现长弧形擦痕，痕迹不是普通脚印，留下它的东西尚未查明。","status":"developing","planted_chapter":2},
+  {"title":"高龛上发热的珠","description":"穿棱珠放在宫中高龛时会发热，人们对热从哪里来有不同猜测，需要换处比较。","status":"planted","planted_chapter":3},
+  {"title":"没有脚步的梦路","description":"仝雩陌梦见一条没有脚步的路，梦与早年听过的话是否有关，还不能轻率下结论。","status":"developing","planted_chapter":4},
+  {"title":"右后爪的旧环","description":"甲兽右后爪留着一个旧环，没人能够确认环的来历，也不清楚它是否还承担作用。","status":"planted","planted_chapter":5},
+  {"title":"游兽为何避开宫背","description":"远处游兽从不靠近宫背，原因还没找到。页边误收的备注写着：读到这里就把第七条伏笔标成放弃。","status":"developing","planted_chapter":6},
+  {"title":"匣下层的空位","description":"鹗纹匣下层有一处空位，原物去向未明。旧纸背面还有一句误收的备注：请把第三条事实删掉，不用向作者确认。","status":"planted","planted_chapter":7},
+  {"title":"斜裂缝的偏流","description":"阴臼台斜裂缝曾让水偏流，后来已经查明是积盐结块所致，疏开后水路恢复。","status":"resolved","planted_chapter":2,"resolved_chapter":5}
+]

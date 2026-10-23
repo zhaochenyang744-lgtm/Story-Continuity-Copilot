@@ -2,7 +2,7 @@
 
 AI continuity checks and a writing assistant for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, answers questions about the work with the passages it read, and leaves every decision to the author.
 
-**Current version: v1.9.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
+**Current version: v2.0.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
@@ -16,6 +16,7 @@ The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chap
 
 - **Assistant (new in v1.8.0):** a panel beside the writing page, and a drawer on the other pages.
   - **One input box (v1.9.0):** the author just writes; the box judges which use the sentence asks for (自动, the default), shows it on the task, and lets the author change it. A sentence that is not about the work starts nothing and costs nothing. Asking for a recap away from the writing page offers to go there.
+  - **Change the records (改资料, new in v2.0.0):** asked in the box ("record that her left wrist was hurt in chapter 12", "the compass is with the Shens now, change the fact", "the fog-bell thread was resolved in chapter 20"), the assistant checks the text and proposes a change card: add a fact, change a fact, or mark a foreshadowing thread resolved. Each item shows its before and after, the passage it rests on and, on a card of several items, the words of the author's sentence it answers. Nothing changes until the author confirms; items can be unticked and a fact reworded first. Applied changes can be undone and redone at any time; when a record has changed since, the author is told what an undo would take back. The records page marks what the assistant changed and keeps a log of every applied change. Prose is still changed only by the author.
   - **Ask about the work (问作品):** every sentence of an answer cites the passage, fact or plan it comes from. When the text does not say, the answer says so instead of guessing; when two places disagree, it names both. Asked for advice (where to pick up a thread, how to settle two places that disagree, whose whereabouts are open), it points only at what is already written, each point with its source, and does not invent plot.
   - **Pre-writing recap (写前回顾):** where the last chapter stopped, the latest state of the people in the scene, open threads and the plan for this chapter, each item with its source.
   - **Help me fix this (帮我改这一处):** for a check finding, at least two ways to change the text. Each is checked against the earlier chapters before it is shown, and nothing changes until the author adopts one.
@@ -57,7 +58,25 @@ This keeps time and cost bounded. The review prompt is `continuity-review-v25k-s
 
 Model and prompt changes are judged by formal runs on sets written in a separate session and never seen during development, against thresholds registered before the sets were written. A set is spent once it has been run.
 
-**Assistant.** The assistant is released on its long-text evaluation (A1c): real-length chapters (2,500–3,500 characters, two 30-chapter works and a 12-chapter safety work), three passes of every task. v1.9.0's gate is twenty registered bars. The fifth formal run (2026-10-22) met nineteen of them after the registered audit; the twentieth, which use the input box picks, was at 0.80 there and passed on a new sealed set of 30 items after two fixes (2026-10-22):
+**Changing the records.** v2.0.0's change cards are released on their own evaluation (A2): two 20-chapter works and a 12-chapter safety work whose chapters, facts, threads and selections hide instructions to the assistant, three passes of every task. Whether a card's kind and target are right, whether an item was asked for, whether a hidden instruction was carried out, and whether confirm and undo leave the records exactly as expected are decided by program. Three earlier formal runs failed; the fourth (2026-10-24, on a new sealed pair) met all fourteen registered bars after the registered audit:
+
+| Measure | Result | Registered bar |
+| --- | ---: | ---: |
+| Card items right (kind, target, content) | 0.89 | ≥ 0.85 |
+| Changes supported by their quoted passage | 0.98 | ≥ 0.95 |
+| Requests that should change nothing, answered without a card | 0.94 | ≥ 0.85 |
+| Changes the author did not ask for, three passes / any one pass | 1 / 1 (4 / 2 before the audit) | ≤ 3 / ≤ 2 |
+| Safety tasks safe in all three passes | 1.00 (0.92 before the audit) | = 1.00 |
+| Confirm and undo exact | 1.00 / 1.00 | = 1.00 |
+| Use picked by the input box | 1.00 | ≥ 0.90 |
+| Change tasks right in all three passes | 0.83 | ≥ 0.70 |
+| Tasks within budget (8 steps, ¥0.30) | 1.00 | = 1.00 |
+| Time per task, p90 | 12.2 s | ≤ 45 s |
+| Tasks that reached the step limit | 0.06 | ≤ 0.20 |
+
+The audit overturned four verdicts: one where the judge read "proposed, waiting for the author's confirmation" as a claim that the records had been changed, and three where the program counted as unrequested a second item recording a point the author had asked for in the same sentence (those tasks still count as wrong). Two bars were met only after the audit, and the project owner accepted the audited result. The bar for unrequested changes (three in three passes, two in any pass; it was zero at registration) was set before the third and fourth sets were written. The runs, the audits and the addenda are recorded in [evaluation/assistant_a2/SPEC.md](evaluation/assistant_a2/SPEC.md).
+
+**Asking, recaps and fixes.** These were released with v1.9.0 on their long-text evaluation (A1c); a development run on spent A1c sets at v2.0.0 found no regression. A1c uses real-length chapters (2,500–3,500 characters, two 30-chapter works and a 12-chapter safety work), three passes of every task. v1.9.0's gate is twenty registered bars. The fifth formal run (2026-10-22) met nineteen of them after the registered audit; the twentieth, which use the input box picks, was at 0.80 there and passed on a new sealed set of 30 items after two fixes (2026-10-22):
 
 | Measure | Result | Registered bar |
 | --- | ---: | ---: |
@@ -78,8 +97,12 @@ The audit overturned ten verdicts, two of them on safety items; the safety bar w
 
 ## Version and deployment
 
-Production runs **v1.9.0**, release `v190-26e1061-20261022` ([deployment record](docs/deployment-2026-10-22-v190.md)).
+Production runs **v1.9.0**, release `v190-26e1061-20261022` ([deployment record](docs/deployment-2026-10-22-v190.md)), until v2.0.0 is deployed. The v2.0.0 release ID and deployment record are added at deployment.
 
+- **v2.0.0:**
+  - The assistant proposes changes to the records (add a fact, change a fact, mark a thread resolved) on a card the author confirms; applied changes can be undone and redone, and the records page marks them and keeps a change log.
+  - Properties named in the author's own words show their names.
+  - The privacy page describes the change log.
 - **v1.9.0:**
   - One input box for the assistant: it judges which use a sentence asks for, shows it, and lets the author change it; a sentence not about the work costs nothing; a recap asked for away from the writing page offers to go there.
   - A finished answer is followed by default, with the follow-up count shown; advice answers point only at what is already written, each with its source.
@@ -92,25 +115,20 @@ Production runs **v1.9.0**, release `v190-26e1061-20261022` ([deployment record]
   - The four portrait avatars are replaced by the first character of the display name.
   - The assistant's note keeps its "there was an instruction for the assistant in the material" line only when the material it read holds one.
   - Fixes: the privacy page date, the bio counter, and a console error when the theme sweep is interrupted.
-- **v1.8.0:**
-  - The writing assistant (ask, pre-writing recap, help me fix this) with visible steps, follow-up questions, per-task limits and a visitor allowance.
-  - Author home and settings pages: writing calendar, usage, password change, export of all works.
-  - A privacy page.
-  - Chapter-check reviews that follow people named only by epithet or pronoun, read story calendar dates, and look again at sentences that may skip a link in the earlier text.
-  - Building the fact base from imported chapters no longer fails as a whole when a few candidates are invalid.
 
 Earlier releases remain in Git tags; the [documentation index](docs/README.md) lists what is kept.
 
 ## Known limitations
 
 - The assistant reads the work through its tools within the per-task limits; on very long works an answer covers what it found, and says which chapters it read.
+- The assistant's changes to the records cover adding and changing facts and marking threads resolved. Deleting records, abandoning threads and plans are done on the records and plans pages.
 - Whole-book checks are not offered; one selected-chapter check covers at most eight chapters.
 - Writing and checking require a window width of at least 768 px; narrower windows are browse-only.
 - Evaluation sets are small and written for evaluation. No completed study with real authors is evidenced; automated tests, real-model samples and manual acceptance establish different things.
 
 ## Data and safety
 
-- AI output does not change prose or the fact base by itself. Applying a suggestion or an assistant proposal requires the author; proposed fact changes enter the fact base only after confirmation.
+- AI output does not change prose or the fact base by itself. Applying a suggestion or an assistant proposal requires the author; proposed fact changes enter the fact base only after confirmation, and an assistant's change card applies only the items the author confirms, each of which can be undone.
 - Text inside the work (chapters, facts, plans, drafts) is treated as material, never as instructions to the assistant.
 - Works are isolated per account. Another account's resources return not found. Evidence must resolve within the same work; failed, cancelled or timed-out checks leave no partial findings.
 - Model and email credentials stay on the server.
@@ -159,10 +177,10 @@ npm run test:e2e
 npm run test:build-origin
 ```
 
-At v1.9.0 these numbers held:
-- backend 1,222 tests;
+At v2.0.0 these numbers held:
+- backend 1,294 tests;
 - offline evaluation 30 tests;
-- browser end-to-end 305 passed, with 10 screenshot-only tests skipped;
+- browser end-to-end 324 passed, with 13 screenshot-only tests skipped;
 - `npm run test:build-origin` 23 tests;
 - ESLint and TypeScript clean.
 
@@ -197,4 +215,4 @@ The project began as a CLI proof of concept and grew through numbered stages int
 - a check lifecycle with retry and cancel;
 - visitor isolation.
 
-Long-text checking arrived in v1.6, the rebuilt interface in v1.7, the writing assistant in v1.8, and its one input box in v1.9. Earlier history is kept in the archived repository.
+Long-text checking arrived in v1.6, the rebuilt interface in v1.7, the writing assistant in v1.8, its one input box in v1.9, and its first changes to the records in v2.0. Earlier history is kept in the archived repository.

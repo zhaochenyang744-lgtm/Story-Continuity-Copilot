@@ -1,0 +1,33 @@
+{
+  "works": {
+    "w01": {
+      "characters": ["莫翎铎","谈霁梢","侯汀珞","严洄苇","叶瑾瞳","夏闻霓","赵照蘅","段析珉"],
+      "aliases": [
+        {"name":"莫翎铎","alias":"铎齿","chapter":1,"quote":"大家把莫翎铎叫作铎齿，因为他核验时总盯住别人嫌细的小缺口。"},
+        {"name":"谈霁梢","alias":"梢秒","chapter":2,"quote":"梢秒是谈霁梢的别名，不是另一个等着接班的人。"},
+        {"name":"侯汀珞","alias":"珞轴","chapter":3,"quote":"侯汀珞担任芒穹游乐园值班主管，大家叫她珞轴。"}
+      ],
+      "stale_facts": [
+        {"fact":1,"changed_chapter":7,"quote":"锯月盘已由莫翎铎正式交给谈霁梢保管，莫翎铎不再担任保管人。"},
+        {"fact":2,"changed_chapter":8,"quote":"缀孔盒已从棱白控室北架转移到砾弧测试坪的锁柜。"},
+        {"fact":3,"changed_chapter":9,"quote":"停转事件的调查协调工作从今天起改由赵照蘅负责，段析珉不再担任调查协调人。"},
+        {"fact":4,"changed_chapter":10,"quote":"侯汀珞的值班权限已恢复完整，除日班外也包含晚班，值班主管岗位不变。"},
+        {"fact":5,"changed_chapter":11,"quote":"扇脊尺的一只支脚已经断裂，不能再用于外壳位置对照，现场停止使用。"}
+      ],
+      "missing_facts": [
+        {"subject":"叶瑾瞳","predicate":"报码识读能力","chapter":3,"quote":"叶瑾瞳能读懂旧式停转报码，辨认时不需要把旧字形先转换成新式写法。"},
+        {"subject":"严洄苇","predicate":"测试照明限制","chapter":4,"quote":"严洄苇遇到闪烁光会眩晕，参加测试时需要固定照明。"},
+        {"subject":"谈霁梢","predicate":"演练包保留决定","chapter":5,"quote":"谈霁梢决定完整保留这份失败的演练包，不把失败版本清理掉。"},
+        {"subject":"莫翎铎","predicate":"回退成因所知","chapter":6,"quote":"莫翎铎确认，这次自动回退由预演定时任务触发，并非乘客按键造成。"},
+        {"subject":"曲芽签","predicate":"本次保管人","chapter":11,"quote":"曲芽签已由侯汀珞交给段析珉保管，侯汀珞不再保管这些纸签。"},
+        {"subject":"芒穹游乐园","predicate":"本轮复测条件","chapter":12,"quote":"芒穹游乐园本轮复测只接受空舱，不安排乘客参与。"}
+      ],
+      "resolved_unmarked": [
+        {"foreshadow":1,"chapter":6,"quote":"锯月盘封面半圈白印来自旧夹具的软垫。"},
+        {"foreshadow":2,"chapter":8,"quote":"控室夜里连响的三次短铃来自三条预演计时消息，不是设备重启。"},
+        {"foreshadow":3,"chapter":10,"quote":"缀孔盒底部的红纤维来自夏闻霓磨损的袖衬，不是乘客的衣物。"},
+        {"foreshadow":4,"chapter":12,"quote":"轮次表缺掉的第七码是预演占位码，不计入实体测试轮次，原说明页已找回。"}
+      ]
+    }
+  }
+}

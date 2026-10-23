@@ -1,0 +1,11 @@
+{
+  "total": 20,
+  "first_agreement": 20,
+  "first_disagreements": [],
+  "final_agreement": 20,
+  "unresolved": 0,
+  "predictions_sha256": "fe8b2c646e612dd96712bbaa1068d376f554ce4eebf5d634393f9bcac46f29cf",
+  "blind_input_sha256": "dde5da6478cf3569f1c77b21889e80a626c1147ca4117db87191072b0e9da263",
+  "read_scope": "id_input_context_only",
+  "revisions": []
+}

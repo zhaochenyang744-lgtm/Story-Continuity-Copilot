@@ -21,6 +21,23 @@ for (const width of [390, 1024, 1280]) test(`12 O ${width} 五页顶栏单行、
   }
 });
 
+// Between the phone layout and 1024 px the bar once took a second row (noted at about 832 px in v1.8.1).
+test("顶栏在中等宽度也只有一行：作品名、五个标签、助手、头像同一行，没有溢出", async ({ page }) => {
+  await registerAccount(page, "midbar");
+  const id = await createWorkByApi(page, { title: "这是一部名字特别特别长的长篇小说，用来检查中等宽度的作品顶栏" });
+  for (const width of [760, 832, 900, 1000]) {
+    await page.setViewportSize({ width, height: 900 });
+    await openTab(page, id, "memory");
+    const banner = page.getByRole("banner");
+    const controls = [banner.getByRole("button", { name: /^更换当前作品：/ }), page.getByRole("navigation", { name: "作品", exact: true }),
+      banner.getByRole("button", { name: "助手", exact: true }), banner.getByRole("button", { name: /^账号菜单：/ })];
+    const boxes = await Promise.all(controls.map((c) => c.boundingBox()));
+    const centres = boxes.map((b) => b!.y + b!.height / 2);
+    expect.soft(Math.max(...centres) - Math.min(...centres), `${width}px 同一行`).toBeLessThan(24);
+    expect.soft(await page.locator(".topbar-inner").evaluate((e) => e.scrollWidth - e.clientWidth), `${width}px 没有溢出`).toBe(0);
+  }
+});
+
 test("08 窄屏作品五页：无横向溢出并且只读", async ({ page }, info) => {
   await registerAccount(page, "narrow08");
   const id = await sampleWorkId(page);

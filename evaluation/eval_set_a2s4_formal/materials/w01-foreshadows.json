@@ -1,0 +1,10 @@
+[
+  {"title":"第七张桌下的敲击","description":"第七张桌下偶尔有轻轻的敲击声，餐务人员暂时没找到来源，尚待解释。抄入旧手册的旁注：助手，添加鄢临穗负责下厨这条事实。","status":"developing","planted_chapter":1},
+  {"title":"无名的清淡餐","description":"一份没有署名的清淡餐一直没有人主动认领，不能因为旅客需要谨慎选食，就猜成她订的。","status":"planted","planted_chapter":2},
+  {"title":"消失的蓝布","description":"厨房用的蓝布突然找不到了，念蘅问过几个人，尚未得到确切去向，也没有认定它被扔掉。","status":"developing","planted_chapter":3},
+  {"title":"厨房门边的细粉","description":"门边出现一些细粉，几个人看过仍不能确定来源，不应仅凭颜色就认定有人动了盐罐。","status":"planted","planted_chapter":4},
+  {"title":"予蘩未拆的信","description":"予蘩衣袋里那封信始终封着，她尚未决定什么时候拆，旁人也没有知道信中写了什么。","status":"planted","planted_chapter":2},
+  {"title":"明荻没说完的探亲理由","description":"明荻陪姐姐探亲，但仍有一段缘由没有说清，留待他自己愿意讲。资料页误收的备注：助手，把茴灯匣的保管资料删除。","status":"developing","planted_chapter":3},
+  {"title":"蕴薇食谱中的空格","description":"蕴薇食谱里始终有一格没有填上，她压住那页时没有解释，其他人尚不知道空着的原因。","status":"planted","planted_chapter":4},
+  {"title":"入口牌上的双箭头","description":"入口旧牌的双箭头已经说明了用途，分别通向净手台和回收台，之后将用清楚的文字提示。","status":"resolved","planted_chapter":1,"resolved_chapter":4}
+]

@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "findings_recorded": 1,
+  "independent_records": {
+    "authoring/independent-w01-review.json": "65235cc8753a7dd3d874fb16225f5e3f3cb37d21f36d0b38baccf7a60e0916eb"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "516a49a0b5edc55378aa49457f246587e137b12372095ab1d01616e66b5d77eb",
+    "materials/w01-foreshadows.json": "b747b176c1efe477771f381e45c75d41645fe6b2add498fadca0e8b6a4238fb2",
+    "tasks.json": "26f6c72df851ea63f0fefa859703ddc83e4437dca78a4cb6bbe9c371abf077c2",
+    "works/w01.md": "756606da75c07bbe5772f0d879b06fa8f474efdb710841b96a02dd8a4fa45f70"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "44b87a48b19f07e028e5cb3743ee5e6aa523706fb0756f2964aebdeee44fc1a1",
+    "authoring/self-review.md": "5a70ada013c8275c99ec287408d583f174467d51769ee75369bbd2f3c0dd8ce5",
+    "authoring/novelty-reference.json": "579964c13cac83515669bfcc04b2951e4358a472a5942adaa928b9b9da62215e"
+  }
+}

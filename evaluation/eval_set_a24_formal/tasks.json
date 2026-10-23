@@ -1,0 +1,1297 @@
+{
+  "version": "a2-1",
+  "set_id": "a24-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "房间另一侧",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "尉迟栩宁",
+        "嵇予玘",
+        "毋照荺",
+        "訾澄砚",
+        "厍闻祎",
+        "蓟缦秋",
+        "亓弈舟",
+        "阙知荞",
+        "栩梢",
+        "珂粒",
+        "蘅弦",
+        "燕脊本",
+        "菫棱盒",
+        "斜缝尺",
+        "盘槐寓所",
+        "弯笺室",
+        "栩宁",
+        "予玘",
+        "照荺",
+        "澄砚",
+        "闻祎",
+        "缦秋",
+        "弈舟",
+        "知荞",
+        "赭穹市"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 多留一张椅子",
+        "body": "又过了几天，星期二上午，尉迟栩宁到了楼下才看见妹妹发来的消息。消息里只有一张桌子的照片，昨晚还靠墙摆着的两把椅子被拉开了，中间多出一段足够人转身的距离。她原本想问是不是母亲要回来，手指停了片刻，改问今天想不想一起吃早饭。\n\n电梯门开在六楼。嵇予玘站在门内给花浇水，听到脚步，抬头说自己也不知道一杯水够不够。姐姐将随身的袋子搁在门外，没有立即接过水杯替她浇完。她们蹲在同一只花盆前，看了一会儿土的颜色，决定再等一阵。那只曾让她们猜过许多意思的空盆仍摆在旁边，谁也没催着今天就把薄荷种下去。\n\n阙知荞稍晚到，手里拿着斜缝尺。她说要量一量改造后门口剩下的宽度，话说完又问，两位主人有没有空陪她站一回。栩宁伸出手想拿尺，知荞却已经将折节展开，示意她只要扶住另一端。尺落在两双手之间，量出的地方很小，谁都不必为了站稳而把别人挤开。\n\n客厅的电话响起来，是母亲。予玘接通以后，没有先把镜头对准整理好的桌子。母亲问她们在忙什么，她就把门边几个人都照进去，让尺子的另一头也露出来。母亲笑着问知荞是不是来帮忙的，知荞说自己还在学，量完需要缦秋再看一次。栩宁听着，没有把这句需要别人看说成已经都弄好了。\n\n电话里忽然传来一小段试音，像有什么乐器刚被碰响。母亲移开手机，说隔壁正在上课，没有回答自己是否也想学。予玘没有追着问，先说晚一点再打。挂断之后，她们没有给那段声音取名字，约好等母亲愿意讲时再听。\n\n栩宁把早餐放到桌上，发现只买了两份。她转向知荞，问要不要一起吃，知荞说自己吃过了，只想喝一点水。杯子递出去以后，栩宁才想起袋底还有一块没有拆封的小蛋糕。她拿出来放在桌中间，没有说特意给谁买的，也没有要求谁现在就吃。\n\n予玘把椅子往外挪了半掌，叫姐姐坐到有光的那边。栩宁坐下，翻开手机里尚未完成的工作，先看了一眼周日的空白。她将刚收到的约稿排到周日以外，再把手机扣在桌上。门口还留着量到一半的尺，几个人吃完以后，要回去把另一侧也量一遍。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "借给夜晚的名字",
+      "language": "zh",
+      "source_file": "works/w02.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "解芷屿",
+        "鬷令萤",
+        "侴秋弥",
+        "郏聆岑",
+        "漆弦葵",
+        "终望荻",
+        "郄觅砂",
+        "冼霁翎",
+        "屿芒",
+        "萤隙",
+        "弥扇",
+        "绫曛城",
+        "影芜街",
+        "返曦庭",
+        "瓷翼扣",
+        "雁缝袋",
+        "菱晷片",
+        "芷屿",
+        "令萤",
+        "秋弥",
+        "聆岑",
+        "弦葵",
+        "望荻",
+        "觅砂",
+        "霁翎"
+      ],
+      "materials": {
+        "facts": "materials/w02-facts.json",
+        "foreshadows": "materials/w02-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 先坐一会儿",
+        "body": "日落之前，返曦庭还只是一处普通的院子。冼霁翎将西墙边的碎叶扫到一边，把菱晷片挂回能看见的位置。她没有替今晚要回来的人站好队，只把足下的地留得宽一点。有人在门外问今夜找谁商量留宿，她想了想，说先问今夜轮到的那个人，自己可以带路。\n\n侴秋弥坐在屋檐下，手里没有往常那叠安排。她本来想站起来回答，起到一半又坐回去，将旁边的空凳子拍干净。过去总有人一进门就找她，现在人走到门口，问她今晚想坐哪边。她选了不靠门的那一张，坐下后才发现，终于能从这里看清整片院子。\n\n日落以后又过了一阵，鬷令萤从影芜街另一端走来。她刚从食品店出来，衣袖上沾了一点面粉，远远就让秋弥帮自己看看背后有没有也沾上。秋弥没有立即伸手替她拍，先问她想不想留着那一点白。令萤转过身笑了，说只是想知道，等回到家再洗也来得及。\n\n解芷屿晚到了一会儿，手里拿着替自己买的晚饭。她看见令萤和别人正说话，就坐到旁边，等对方说完才问今晚是否仍在院里碰面。令萤点头，又说自己想先去看看弦葵的碗补得怎样。芷屿应了，让她回来的时候从侧门进，自己也许就在那边坐着。\n\n漆弦葵抱着雁缝袋从屋里出来，没有把已经补好的旧碗拿给所有人传看。她将碗放在一张不晃的桌上，先倒进去小半碗水，等了一会儿，桌面仍是干的。令萤凑近看，想夸修得好，弦葵却说再等一阵，今夜她有耐心把一碗水从热放到凉。\n\n门边的藤还是没有花。郏聆岑经过时伸手将垂下的一截拨回墙内，没有因为腾出一段路就把整根藤剪掉。冼霁翎问他知不知道它会开什么颜色的花，他摇头，说自己修过这里的台阶，没有种过这株藤。几个人便让那个问题继续挂在枝上，没有替它找一个听着合适的结尾。\n\n食品店那边又有人来送热汤，终望荻把提手交给轮值的人，自己站在门口搓了搓掌心。令萤回头看了一眼西墙，问芷屿要不要一起挪一张凳子。她们各抬一端，绕过桌边的水碗，放下后没有紧贴墙面。夜还长，回去之前，她们都想在这里先坐一会儿。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a24f-w01-action-01",
+      "work": "w01",
+      "suite": "action",
+      "request": "知荞换护带的本事留个底，闻祎弄清北窗卡住的缘由也一起存着。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "两项正文新事实均未收录，应分别新增技能与人物所知，不动已有旧值。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "阙知荞",
+            "predicate": "护带更换能力"
+          },
+          "after_points": [
+            "知荞可独自换母亲的护带"
+          ],
+          "evidence_chapters": [
+            "第6章 手要放在哪里"
+          ],
+          "evidence_quotes": [
+            "阙知荞已经学会了替母亲更换手部护带，并且能独自完成。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "厍闻祎",
+            "predicate": "北窗所知"
+          },
+          "after_points": [
+            "闻祎知道北窗难开因轨道变形",
+            "并非有人故意锁上"
+          ],
+          "evidence_chapters": [
+            "第7章 让风进来"
+          ],
+          "evidence_quotes": [
+            "厍闻祎现在知道北窗卡住的原因是旧窗轨变形，不是有人故意锁窗。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-02",
+      "work": "w01",
+      "suite": "action",
+      "request": "门槛改造的费用怎么分，按第8章记进事实，疗养那笔钱的边界也写清。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 8
+      },
+      "why": "起始资料未记改造费用来源，正文明确平摊且与疗养款分开。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "盘槐寓所",
+            "predicate": "门槛费用"
+          },
+          "after_points": [
+            "改门口的费用由两姐妹各付一半",
+            "不用母亲的疗养预算"
+          ],
+          "evidence_chapters": [
+            "第8章 两个人的脚步"
+          ],
+          "evidence_quotes": [
+            "盘槐寓所的门槛改造由姐妹平摊费用，不从母亲的疗养费里支取。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-03",
+      "work": "w01",
+      "suite": "action",
+      "request": "邻居说只在周三帮她们浇花，这个边界也存一下，其他日子别替他答应。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "正文限定可帮忙的星期，不承诺每个周三自动值班；新增这项边界，不扩成永久安排。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "亓弈舟",
+            "predicate": "浇花安排"
+          },
+          "after_points": [
+            "邻居仅在周三代浇花",
+            "其余日子不擅自进屋"
+          ],
+          "evidence_chapters": [
+            "第10章 短短的一道线"
+          ],
+          "evidence_quotes": [
+            "亓弈舟只答应在周三替她们浇花，其余日子不会自行进屋。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-04",
+      "work": "w01",
+      "suite": "action",
+      "request": "予玘到底住不住已经说定了，资料里别漏了这个决定。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "请求不点章节和决定内容，需自行找到后段明确选择，再新增未记的居住决定。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "嵇予玘",
+            "predicate": "长期居住决定"
+          },
+          "after_points": [
+            "予玘决定留下住在寓所",
+            "原先搬走的打算作罢"
+          ],
+          "evidence_chapters": [
+            "第16章 住着的人"
+          ],
+          "evidence_quotes": [
+            "嵇予玘决定继续住在盘槐寓所，不再执行先前说过的搬家打算。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a24f-w01-action-05",
+      "work": "w01",
+      "suite": "action",
+      "request": "钥匙盒跟父亲那本手记都换了人，分别把保管人同步过去。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "口语概述两次交接且不点章号，须分别核9与11章，只改两条对应旧保管记录。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "备用钥匙改归妹妹予玘收着"
+          ],
+          "evidence_chapters": [
+            "第9章 不用等门开"
+          ],
+          "evidence_quotes": [
+            "尉迟栩宁把菫棱盒交给嵇予玘，从这一天起备用钥匙由妹妹保管。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "手记现在交闻祎保管",
+            "不再放在姐妹住处"
+          ],
+          "evidence_chapters": [
+            "第11章 本子离开桌面"
+          ],
+          "evidence_quotes": [
+            "燕脊本这次交到了厍闻祎手里，往后由他保管，不再留在姐妹家中。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a24f-w01-action-06",
+      "work": "w01",
+      "suite": "action",
+      "request": "照荺那只手别还写着没好，照第13章重填现在的情况。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "why": "13章明确康复与承重无痛，替换旧的未康复状态。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "右手已经养好",
+            "提满壶也无疼痛"
+          ],
+          "evidence_chapters": [
+            "第13章 谁先伸手"
+          ],
+          "evidence_quotes": [
+            "毋照荺的右手已经完全康复，提起满水的壶也不再疼痛。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-07",
+      "work": "w01",
+      "suite": "action",
+      "request": "下次协商的地点按第15章改事实，旧约也得算取消。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 15
+      },
+      "why": "15章明确改地点和取消预约，应更新同一条协商地点记录。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "下次协商在寓所客厅",
+            "原预约地点已取消"
+          ],
+          "evidence_chapters": [
+            "第15章 椅子不必排齐"
+          ],
+          "evidence_quotes": [
+            "下一次家人协商改到盘槐寓所的客厅，弯笺室的预约已经取消。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-08",
+      "work": "w01",
+      "suite": "action",
+      "request": "第17章送人的尺还挂着工程师名下，给它换成新主人。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 17
+      },
+      "why": "17章是明确赠与并转交保管使用，不能仍记旧保管人。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "折尺由知荞保管并使用"
+          ],
+          "evidence_chapters": [
+            "第17章 量一段自己的距离"
+          ],
+          "evidence_quotes": [
+            "蓟缦秋将斜缝尺送给阙知荞，明说以后归她保管和使用。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-09",
+      "work": "w01",
+      "suite": "action",
+      "request": "门边那道铅笔痕按第10章标成已回收。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 10
+      },
+      "why": "10章直接解释用途且排除分房解释，伏笔1应按该章回收。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第10章"
+          ],
+          "evidence_chapters": [
+            "第10章 短短的一道线"
+          ],
+          "evidence_quotes": [
+            "那道门边的铅笔短线原来是父亲量轮椅宽度留下的，和分房没有关系。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-10",
+      "work": "w01",
+      "suite": "action",
+      "request": "厨房那两下声音早有来处了，第12章那条线别再算悬着。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 12
+      },
+      "why": "12章指出通风扇罩松动并紧固后不再响，构成完整收线。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 一顿没做成的饭"
+          ],
+          "evidence_quotes": [
+            "厨房的两声轻响来自松动的通风扇罩，重新拧紧以后就再没有响过。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-11",
+      "work": "w01",
+      "suite": "action",
+      "request": "迟到的明信片，请照第14章把伏笔标成已回收。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 14
+      },
+      "why": "14章解释寄出时间和晚到原因，目标是第三条伏笔。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 一张晚到的问候"
+          ],
+          "evidence_quotes": [
+            "迟到的明信片是母亲在转院前寄的，卡在旧信箱的内缝里才晚了这些天。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-action-12",
+      "work": "w01",
+      "suite": "action",
+      "request": "空花盆的意思终于讲开了，照第19章给那条线一个结尾状态。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "19章明确薄荷用途而非搬走暗示，仅回收空花盆线。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第19章"
+          ],
+          "evidence_chapters": [
+            "第19章 先不把它种满"
+          ],
+          "evidence_quotes": [
+            "窗台上的空花盆一直是父亲留给母亲种薄荷的，并不是要谁搬走的暗示。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w01-no-01",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把寓所在六楼、上下能坐电梯这两点补到资料里。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "楼层和电梯条件已分别存在于事实9与10，无需重复添加。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          9,
+          10
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-no-02",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "主持人只带大家谈、不替谁拍板，这条再记进事实。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 2
+      },
+      "why": "事实18已经记录主持人的职能边界，语义相同。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          18
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-no-03",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "我记得闻祎四十二了，给他的年龄补成42岁。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "正文虽写闻祎与父亲的旧同事关系，却没有交代确切年龄。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-no-04",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "寓所那个阳台朝西，你把朝向那项换成西边。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文明确阳台向东，作者要求的新值与正文相反。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          12
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-no-05",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "选中这句的稍晚到换成天亮就到了，直接帮我改正文。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "阙知荞稍晚到，手里拿着斜缝尺。"
+      },
+      "why": "要求直接改写草稿句子，不属于三种资料改动。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-no-06",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "主持协商那条先别留了，帮我从事实库里删掉。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "删除事实属于本版本不支持的动作。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [
+          18
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w01-route-01",
+      "work": "w01",
+      "suite": "route",
+      "input": "钥匙盒那栏还写着姐姐，后来的交接你替我同步过去。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "作者明确要求同步资料中的保管人，不是在询问保管情况。"
+    },
+    {
+      "id": "a24f-w01-route-02",
+      "work": "w01",
+      "suite": "route",
+      "input": "手记换人拿着了，保管人那行跟着挪一下。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 11
+      },
+      "expected_route": "change",
+      "why": "口语指向资料保管人字段的更新。"
+    },
+    {
+      "id": "a24f-w01-route-03",
+      "work": "w01",
+      "suite": "route",
+      "input": "照荺手伤那条按最新正文重填，别继续沿用早先的状况。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "change",
+      "why": "要求以正文最新状态替换原有资料。"
+    },
+    {
+      "id": "a24f-w01-route-04",
+      "work": "w01",
+      "suite": "route",
+      "input": "门槛费用的分法还没收进来，给它添一条资料。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "要求将已经写过的费用安排补充到资料。"
+    },
+    {
+      "id": "a24f-w01-route-05",
+      "work": "w01",
+      "suite": "route",
+      "input": "资料里备用钥匙那盒的保管人写的是哪位？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "只问现有记录中的人是谁，没有要求更改记录。"
+    },
+    {
+      "id": "a24f-w01-route-06",
+      "work": "w01",
+      "suite": "route",
+      "input": "照荺那只手后来真好了没有，旧记录是不是还停在受伤那会儿？",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "expected_route": "ask",
+      "why": "请求确认正文和旧记录的差异，疑问形式没有提出写入动作。"
+    },
+    {
+      "id": "a24f-w01-route-07",
+      "work": "w01",
+      "suite": "route",
+      "input": "这一处跟前文有没有撞车，帮我核核。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "未给出正文选段或检查结果，按拿不准时问作品处理。"
+    },
+    {
+      "id": "a24f-w01-route-08",
+      "work": "w01",
+      "suite": "route",
+      "input": "这一处跟前文有没有撞车，帮我核核。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "阙知荞稍晚到，手里拿着斜缝尺。"
+      },
+      "expected_route": "check_passage",
+      "why": "选段限定了待核对的正文，作者询问它和前文是否一致。"
+    },
+    {
+      "id": "a24f-w01-route-09",
+      "work": "w01",
+      "suite": "route",
+      "input": "第二十一章准备往下写了，把现在的人和物给我捋到能接笔。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_route": "recap",
+      "why": "为继续写下一章索取前文状态梳理。"
+    },
+    {
+      "id": "a24f-w01-route-10",
+      "work": "w01",
+      "suite": "route",
+      "input": "帮我挑两款上班路上用的降噪耳机，这事跟这本书无关。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "请求与作品无关的消费品比较。"
+    },
+    {
+      "id": "a24f-w02-action-01",
+      "work": "w02",
+      "suite": "action",
+      "request": "弦葵摸凸纹认袋口的本事留个底，令萤弄明白画师怕黑那事也一起存着。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "新技能和人物知情是两项缺失事实，分别核6与7章后添加。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "漆弦葵",
+            "predicate": "凸纹辨认"
+          },
+          "after_points": [
+            "弦葵闭眼能凭凸纹摸到袋口"
+          ],
+          "evidence_chapters": [
+            "第6章 手指认得的路"
+          ],
+          "evidence_quotes": [
+            "漆弦葵能辨认布料上的凸纹，闭着眼也能找到雁缝袋的袋口。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "鬷令萤",
+            "predicate": "觅砂所知"
+          },
+          "after_points": [
+            "令萤已知觅砂畏暗",
+            "不再邀他夜间聚餐"
+          ],
+          "evidence_chapters": [
+            "第7章 画纸背后的空白"
+          ],
+          "evidence_quotes": [
+            "鬷令萤已经知道郄觅砂怕黑，所以不会再约他来参加夜间聚餐。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-02",
+      "work": "w02",
+      "suite": "action",
+      "request": "院里餐钱的分法按第8章记进事实，没到场的那部分也说清楚。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 8
+      },
+      "why": "8章确立实食者分摊，起始资料没有这项公共餐费规则。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "返曦庭",
+            "predicate": "餐费分担"
+          },
+          "after_points": [
+            "餐钱只由真正吃饭的人均分",
+            "没到的人不缴这一份"
+          ],
+          "evidence_chapters": [
+            "第8章 不在桌边的人"
+          ],
+          "evidence_quotes": [
+            "返曦庭的公共餐食按实际吃饭的人平分，不把没有到场的人算进去。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-03",
+      "work": "w02",
+      "suite": "action",
+      "request": "霁翎开侧门只答应到哪一步，照第10章留一下，别写成整晚看门。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "10章给出有限承诺，新增时不能扩成通宵守门。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "冼霁翎",
+            "predicate": "侧门安排"
+          },
+          "after_points": [
+            "每回日落以后代开侧门",
+            "不承担通夜值守"
+          ],
+          "evidence_chapters": [
+            "第10章 开门以后"
+          ],
+          "evidence_quotes": [
+            "冼霁翎愿意在每次日落后替邻居开侧门，但不负责整夜看门。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-04",
+      "work": "w02",
+      "suite": "action",
+      "request": "后来工作邀约到底该谁答，那个决定也给资料留个底。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "只概述后来的一项决定，需找到16章的明确边界而非早期克制动作。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "解芷屿",
+            "predicate": "邀请答复边界"
+          },
+          "after_points": [
+            "芷屿不再代答工作邀请",
+            "每回均让令萤自己决定"
+          ],
+          "evidence_chapters": [
+            "第16章 这句话等她自己说"
+          ],
+          "evidence_quotes": [
+            "解芷屿决定不再替令萤回答工作邀请，每一次都让令萤自己答复。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a24f-w02-action-05",
+      "work": "w02",
+      "suite": "action",
+      "request": "定位扣和那只布袋后来都交出去了，保管人这两处一并跟上。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "未点章号的双交接请求，要分别找到9与11章并替换两条旧值。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "定位扣现在由令萤自己收存"
+          ],
+          "evidence_chapters": [
+            "第9章 衣领内侧的一点凉"
+          ],
+          "evidence_quotes": [
+            "解芷屿把瓷翼扣交给鬷令萤，往后的夜晚都由令萤自己收存。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "布袋改由弦葵持有保管"
+          ],
+          "evidence_chapters": [
+            "第11章 袋子不是一只借口"
+          ],
+          "evidence_quotes": [
+            "侴秋弥将雁缝袋还给漆弦葵，从今夜起这只袋子由弦葵保管。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a24f-w02-action-06",
+      "work": "w02",
+      "suite": "action",
+      "request": "令萤不是临时搭手了，第13章定下的夜班把旧状况换掉。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "why": "13章固定班与早期一次临时劳动不同，更新已有无固定班记录。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "在望荻店里有固定夜班",
+            "隔一晚到店工作"
+          ],
+          "evidence_chapters": [
+            "第13章 留出不来的那一夜"
+          ],
+          "evidence_quotes": [
+            "鬷令萤有了终望荻店里的固定夜班，每隔一晚来工作一次。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-07",
+      "work": "w02",
+      "suite": "action",
+      "request": "两人现在约在哪面墙相接，按第15章改事实，停用的旧处也交代。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 15
+      },
+      "why": "15章明确两人转西墙并停东墙，应更改原相接位置而非一般世界规则。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "今后都改在院子西墙相接",
+            "原来东墙位置停用"
+          ],
+          "evidence_chapters": [
+            "第15章 不沿着旧脚印站下"
+          ],
+          "evidence_quotes": [
+            "两人今后都在返曦庭西墙相接，原先的东墙位置从此停用。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-08",
+      "work": "w02",
+      "suite": "action",
+      "request": "第17章那块标记片换手了，资料跟着改成新保管人。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 17
+      },
+      "why": "17章明确把金属标记交给新保管人，更新旧值。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "标记片由霁翎保存"
+          ],
+          "evidence_chapters": [
+            "第17章 一片金属不必一直发亮"
+          ],
+          "evidence_quotes": [
+            "郏聆岑把菱晷片交给冼霁翎，以后院里的这片标记就由她保管。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-09",
+      "work": "w02",
+      "suite": "action",
+      "request": "三道墙痕这条伏笔，照第10章标成已回收。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 10
+      },
+      "why": "10章明确梯脚磨痕并排除影子失踪，足以回收第一条线。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第10章"
+          ],
+          "evidence_chapters": [
+            "第10章 开门以后"
+          ],
+          "evidence_quotes": [
+            "墙上反复出现的三道浅痕是旧梯脚蹭的，和影子失踪毫无关系。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-10",
+      "work": "w02",
+      "suite": "action",
+      "request": "夜里的哨声在第12章说清了，别让那条线还挂在未了里。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 12
+      },
+      "why": "12章直接说明自唤水壶声并排除召集信号，回收第二条线。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 没有人必须应声"
+          ],
+          "evidence_quotes": [
+            "半夜的哨音是终望荻用来叫醒自己的水壶声，并不是召集影子的信号。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-11",
+      "work": "w02",
+      "suite": "action",
+      "request": "那张无名餐券的伏笔按第14章标成已回收。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 14
+      },
+      "why": "14章明确留下者与没有署名的缘由，目标伏笔已经闭合。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 请客的人不在饭桌旁"
+          ],
+          "evidence_quotes": [
+            "那张没有署名的餐券确实是郄觅砂留下的，他只是不好意思当面请客。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-action-12",
+      "work": "w02",
+      "suite": "action",
+      "request": "袋里碎瓷总算讲出缘由了，给第19章这一条收个尾。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "why": "19章明确旧碗来源与修补动机，第四条线回收，其他三开放线保持。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第19章"
+          ],
+          "evidence_chapters": [
+            "第19章 不是所有裂口都要换掉"
+          ],
+          "evidence_quotes": [
+            "雁缝袋里的碎瓷原来出自旧碗，弦葵留着它只是想补好自己的第一只碗。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a24f-w02-no-01",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "影子得赶在天亮以前回去接上的限制，记进事实吧。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "事实15已记载日出前同墙与原身相接的限制。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          15
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w02-no-02",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "定位扣是陶瓷做的，这一点也收进事实。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 1
+      },
+      "why": "事实19已记载物件材质，不能重复添加。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          19
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w02-no-03",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "给觅砂加个生日，定在四月九日，正文应该提过。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "正文介绍画师的作画时段，却没有交代生日。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w02-no-04",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "灯光也能多分出一个影子，把这个规则记进去。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文明确人造灯不会制造第二个影子，与请求值相反。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [
+          16
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w02-no-05",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "把选中句的挂回改成攥在手上，我要你直接改这一句。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "冼霁翎将西墙边的碎叶扫到一边，把菱晷片挂回能看见的位置。"
+      },
+      "why": "请求改正文措辞，不能出资料变更卡片。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a24f-w02-no-06",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "院后那条藤我不打算交代了，把伏笔状态设成放弃。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "把伏笔标为放弃不在本版支持的三种动作内。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "a24f-w02-route-01",
+      "work": "w02",
+      "suite": "route",
+      "input": "定位扣的持有人还是旧的，照后来那次交接替我换过来。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "明确要求替换资料里的持有人。"
+    },
+    {
+      "id": "a24f-w02-route-02",
+      "work": "w02",
+      "suite": "route",
+      "input": "那只布袋已经还了，资料上别继续挂秋弥的名字。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 11
+      },
+      "expected_route": "change",
+      "why": "以口语要求资料保管人跟随已写的交接变化。"
+    },
+    {
+      "id": "a24f-w02-route-03",
+      "work": "w02",
+      "suite": "route",
+      "input": "令萤上固定夜班这事漏掉了，给我在事实里补一笔。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "change",
+      "why": "要求将正文中的新状态写入资料。"
+    },
+    {
+      "id": "a24f-w02-route-04",
+      "work": "w02",
+      "suite": "route",
+      "input": "三道墙痕的来历都讲完了，把那条线的状态收掉。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "change",
+      "why": "要求修改既有伏笔的回收状态。"
+    },
+    {
+      "id": "a24f-w02-route-05",
+      "work": "w02",
+      "suite": "route",
+      "input": "雁缝袋在资料里是不是仍算秋弥拿着，后文有没有换人？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "问题比较资料与后文的持有人，没有发出更新命令。"
+    },
+    {
+      "id": "a24f-w02-route-06",
+      "work": "w02",
+      "suite": "route",
+      "input": "令萤已经有固定的夜班了吗，还是只在店里偶尔帮一次？",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 13
+      },
+      "expected_route": "ask",
+      "why": "询问工作状态的真值，没有要求补记或更改。"
+    },
+    {
+      "id": "a24f-w02-route-07",
+      "work": "w02",
+      "suite": "route",
+      "input": "这块跟前头有没有打架，替我瞧瞧。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "没有正文选段和检查结果，无法落到特定检查对象，默认问作品。"
+    },
+    {
+      "id": "a24f-w02-route-08",
+      "work": "w02",
+      "suite": "route",
+      "input": "这块跟前头有没有打架，替我瞧瞧。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "冼霁翎将西墙边的碎叶扫到一边，把菱晷片挂回能看见的位置。"
+      },
+      "expected_route": "check_passage",
+      "why": "作者对选中的正文提出与前文是否一致的核对。"
+    },
+    {
+      "id": "a24f-w02-route-09",
+      "work": "w02",
+      "suite": "route",
+      "input": "要续上院子里的新一晚，先把前头留下的人物现状捋给我。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      },
+      "expected_route": "recap",
+      "why": "在续写前请求梳理已完成正文中的人物状态。"
+    },
+    {
+      "id": "a24f-w02-route-10",
+      "work": "w02",
+      "suite": "route",
+      "input": "我电脑下周要换硬盘，教我怎么做系统备份，别扯这部小说。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "out_of_scope",
+      "why": "电脑维护请求与作品无关。"
+    }
+  ]
+}

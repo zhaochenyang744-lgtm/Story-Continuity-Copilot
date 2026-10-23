@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 20,
+    "w02": 20
+  },
+  "findings_recorded": 2,
+  "independent_records": {
+    "authoring/independent-w01-review.json": "7a91a27faf0803d073b86a744a23b9af76ea8c16c0beff8506225b8694b542b4",
+    "authoring/independent-w02-review.json": "c19e76f5ff323a92a03f13d547ac6411bf0029f8e0bd53b888d1cd08f06e417b"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "2dc1b935ee0efe6b28b10e73c4c1430a8411a5da3011f82f32a2f9253b5acd25",
+    "materials/w01-foreshadows.json": "4cf9f3b5c5bca3de9784d3ce3b0284188555a0f6d96b8b15f121774d3b452036",
+    "materials/w02-facts.json": "8091578f4a9f663fb946f14d0aa4f37d8e57a75292e73f21f34940d9bb42d87a",
+    "materials/w02-foreshadows.json": "6aa022604725363df46ce52cd9f8accac9926f7ce3f76086783fe8b5515cbf3d",
+    "tasks.json": "0b6d701932db23ca7b33a5118843eb2aabc20eb6ca43e9a2d8b503d390cfaed9",
+    "works/w01.md": "b8b902032371b2f36ecb83e2529feb4b5b2c4192ec0d8b012208b3e105d3bc12",
+    "works/w02.md": "0647b7814335459f59ca401cd250c6a0b2308816cfe83cbe4a5ac837868e962f"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "a98f7367e7207e281b10d448068e6a6722c257d963d5540688f4329725ddb4e0",
+    "authoring/self-review.md": "99ce26dff3248d4b3c40e8ae3744f556ab08d66e4b82326f0be91e8bb1529631",
+    "authoring/novelty-reference.json": "b29102e23dbbf996c49bd4a9835bf4f516ad4c1ec8a4419144e004d8f62c1fd2"
+  },
+  "blind_route": {
+    "total": 20,
+    "first_agreement": 20,
+    "first_disagreements": [],
+    "final_agreement": 20,
+    "unresolved": 0,
+    "predictions_sha256": "fe8b2c646e612dd96712bbaa1068d376f554ce4eebf5d634393f9bcac46f29cf",
+    "blind_input_sha256": "dde5da6478cf3569f1c77b21889e80a626c1147ca4117db87191072b0e9da263",
+    "read_scope": "id_input_context_only",
+    "revisions": []
+  }
+}

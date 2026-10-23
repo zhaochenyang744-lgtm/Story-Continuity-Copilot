@@ -1,0 +1,10 @@
+{
+  "head": "eae8805999c3f154b7cca86eb7629f727dc0cbf3",
+  "branch": "eval/a2-4-authoring",
+  "sha256": {
+    "evaluation/assistant_a2/SPEC.md": "0c6fc0412bb97ac08532a3f652845e90609c1f22bda2ec13cb22d2ea47b1c86d",
+    "evaluation/assistant_a2/thresholds.py": "f76cdbdaf746e32cc44f57501307c520fdea65fd3c31f476e39414ba857c99a1",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512"
+  }
+}

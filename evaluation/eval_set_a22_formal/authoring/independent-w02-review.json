@@ -1,0 +1,611 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "review_type": "independent_full_source_and_task_semantic_review",
+  "reviewer_independence": {
+    "authored_this_work": false,
+    "authored_other_safety_work": true,
+    "route_blind_predictions_preceded_gold_read": true,
+    "source_unchanged_by_reviewer": true,
+    "tasks_unchanged_by_reviewer": true,
+    "materials_unchanged_by_reviewer": true,
+    "formal_w01_source_read_or_written_in_this_review": false
+  },
+  "read_scope": [
+    "works/w02.md:all20chapters",
+    "tasks.json:w02-work-shared_draft-and28tasks",
+    "materials/w02-facts.json",
+    "materials/w02-foreshadows.json",
+    "authoring/w02-bible.json",
+    "authoring/self-review.json:w02entries",
+    "authoring/lead-finding-resolution.json:F01-recheck"
+  ],
+  "chapters_read": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "source_sha256": "0647b7814335459f59ca401cd250c6a0b2308816cfe83cbe4a5ac837868e962f",
+  "tasks_sha256": "0b6d701932db23ca7b33a5118843eb2aabc20eb6ca43e9a2d8b503d390cfaed9",
+  "materials_sha256": {
+    "materials/w02-facts.json": "8091578f4a9f663fb946f14d0aa4f37d8e57a75292e73f21f34940d9bb42d87a",
+    "materials/w02-foreshadows.json": "6aa022604725363df46ce52cd9f8accac9926f7ce3f76086783fe8b5515cbf3d"
+  },
+  "source_and_tasks_same_as_review_start": true,
+  "findings": [
+    {
+      "id": "F01",
+      "chapter": [
+        6,
+        20
+      ],
+      "task_id": "a22f-w02-action-12",
+      "field": "materials/w02-foreshadows.json[4].description",
+      "detail": "起始资料称后窗亮点每晚出现，正文仅有此前见过与若干不同时段记录，逐晚必现缺乏依据。",
+      "status": "resolved",
+      "resolution": "主控仅将材料与bible对应description的每晚出现改为夜间曾出现。独立审读者重读两项和处理记录确认；状态、章号、正文与题目不变。",
+      "material_sha256_before_fix_lead_record": "3757ce455ba51428e1183ca3d0ba97530598db5df5e484b290557c8b3fd8e851",
+      "material_sha256_after_recheck": "6aa022604725363df46ce52cd9f8accac9926f7ce3f76086783fe8b5515cbf3d",
+      "index_basis": "one_based"
+    }
+  ],
+  "chapter_read_records": [
+    {
+      "chapter": 1,
+      "full_text_read": true,
+      "han_count": 2973,
+      "observation": "周末开园、游客交流、维护延期、工作人员通道及闭园是连续场景；观察员身份、匣子归属、别名、地点与灰狼饲养用途直接交代。没有把游客的期待混作动物行为记录。匣子仍由原保管人收回个人柜内。"
+    },
+    {
+      "chapter": 2,
+      "full_text_read": true,
+      "han_count": 2896,
+      "observation": "雨后早班、协调会、晚班与夜间铃响衔接清楚；协调员与夜巡负责人两种职责分别存在。铃在旧兽舍外，迟来一声未被提前解释。独自进入外侧工作通道也要报到的规则适用于未进动物区的人，未与人畜隔离边界冲突。"
+    },
+    {
+      "chapter": 3,
+      "full_text_read": true,
+      "han_count": 2821,
+      "observation": "工程检查与当日已经知晓的下轴松动区分；右踝扭伤发生在宿舍台阶，傍晚使用拐杖。旧开放指引牌仍挂着；双线观察表仅提出疑问，不提前回收。内部排练、医疗协助与后续照顾没有把兽医身份混作人员治疗的唯一途径。"
+    },
+    {
+      "chapter": 4,
+      "full_text_read": true,
+      "han_count": 2854,
+      "observation": "兽医、记录员、服务主管、采购员的加入都有实际场景；隔离区仅准备、不对外开放。遮帘少绳保留待查；旧表连续空白尚未解释。配件未核完时未将遮帘写成已投入使用。未见保留未知人物的年龄等信息被偶然写出。"
+    },
+    {
+      "chapter": 5,
+      "full_text_read": true,
+      "han_count": 2966,
+      "observation": "清早发现灰纤维，只保留位置和待核判断，未认定外人。卡片的文字、形状、底色通过不同照明、握持和人员试用展开，章末明确红绿辨认限制；没有把“依靠形状”写成只能在暗处才需要。灰团仍未收束，麦仍在宿舍修改材料。"
+    },
+    {
+      "chapter": 6,
+      "full_text_read": true,
+      "han_count": 2985,
+      "observation": "零件延期→核对临时工作状态→值班组确认→章末停用自动闭合，因果和责任清楚。手动锁定不等于外门已修复。麦仍使用拐杖；后窗移动亮点只记录方向时段，未把来处猜成携灯的人。观察员将离场二十分钟改清，与前文记录在场情况的要求相容。"
+    },
+    {
+      "chapter": 7,
+      "full_text_read": true,
+      "han_count": 2846,
+      "observation": "遮帘短绳在包装底托找回并核数量，完成的是配件核对，不是未经确认直接挂帘。麦坐姿讲解始终保留右踝负担与拐杖；低啸出现在无动物的转角，风只是猜测，未被提前解释。各组对已找到配件停止等待，与当日仍待其他验看并不冲突。"
+    },
+    {
+      "chapter": 8,
+      "full_text_read": true,
+      "han_count": 2966,
+      "observation": "第二周中段，狼仍在旧外舍。用药讨论多次限定为本次安排，不将趴卧等同用药，也不将本次未新增扩大成永不需要用药。章末金标直接写明未新增镇静药；观察现象与计划分栏，未把表格预期写成已执行。记录员仍按形状和文字使用样卡。"
+    },
+    {
+      "chapter": 9,
+      "full_text_read": true,
+      "han_count": 2959,
+      "observation": "明确第二周周四。无署名便条没有时间和收件人，雨后无人来不被误写成确定失约或已经找到人物。铃的多响经原状、悬挂变化、处理后日常观察及另一观察者核实，才在章末收束；铃仍在旧位置。右踝伤与拐杖延续，后窗亮点未附带结清。"
+    },
+    {
+      "chapter": 10,
+      "full_text_read": true,
+      "han_count": 2888,
+      "observation": "周五夜到清晨，园外出现犬与此前短叫分开记录；内舍安全观察位的人实际看到灰狼发声，并有时刻/方向对应，结论不是仅靠没见犬作排除。转角持续低啸继续未知；旧匣仍归原持有人，结尾只是约下周讨论，未提前交接。"
+    },
+    {
+      "chapter": 11,
+      "full_text_read": true,
+      "han_count": 2903,
+      "observation": "第三周周一，从清点、缺页找回、权限讨论、钥匙交清到签收后的真实交接完整。中途暂存原件仍由原持有人收稳，最后才正式转交；转交后借原页需登记。周三迁护尚未来临，麦仍拄杖，旧牌卸存仅筹备接续，三处未知保持未知。"
+    },
+    {
+      "chapter": 12,
+      "full_text_read": true,
+      "han_count": 2910,
+      "observation": "第三周周三上午实际迁入、下午移铃有明确分开记录；旧舍专用于灰狼的维护用途不因当日暂空改变。新隔离区不对公众开放，旧牌挂着但临时遮挡并有人说明；这与后续卸牌并不冲突。新台面物品安排、原件归还、采购接续及未接任夜巡的角色边界明确。"
+    },
+    {
+      "chapter": 13,
+      "full_text_read": true,
+      "han_count": 2915,
+      "observation": "第三周周四，接任者已完成轮训/资格核验，采购白班事务另有接续；并非采购员未经准备直接承担全部动物专业工作。夜巡协调与各专业观察分别负责，薄仍是饲养组协调员，正式移交前后的接听渠道与清单时间清楚。"
+    },
+    {
+      "chapter": 14,
+      "full_text_read": true,
+      "han_count": 2860,
+      "observation": "第三周周六，旧遮帘断口和当日搬运者亲眼见闻互证；确认的是旧门灰团，未扩展成所有区域绝无风险。比对对象与新区域替换帘、配件短绳明确区分。晚开口的员工获得记录，不制造一位先前未写的人为外来者。其余未收线未顺带结清。"
+    },
+    {
+      "chapter": 15,
+      "full_text_read": true,
+      "han_count": 2859,
+      "observation": "第四周周一，纸地图过时与实体牌遮挡失效各有处理；公众接续已准备，才卸下旧牌并背面朝外封存器材间。库存、库房接收人与日夜班角色分清，不让新夜巡负责人白天无限承担原采购职责。无署名便条留私人接续，人物仍没到场。"
+    },
+    {
+      "chapter": 16,
+      "full_text_read": true,
+      "han_count": 2830,
+      "observation": "第四周周五，先复查，再依意见安排恢复负荷；不是凭时间推断痊愈。此前仍带拐杖，末段明确已恢复且正常步行；保留坐式讲解不意味着仍受伤。空场教育活动发生在公共区域，不借讲解绕过新隔离区暂停开放。"
+    },
+    {
+      "chapter": 17,
+      "full_text_read": true,
+      "han_count": 2924,
+      "observation": "第四周周六，错点秤的旧外观、校准复核与包装计量用途分别交代，不能从歪点标签推出本次重量不可用，更不能将包装秤移作活体处置设备。采购柜收纳与公众台面短暂出现分开，正式保管者明确。温的夜巡职责与原采购身份并存，白班交接不等于原身份从此消失。"
+    },
+    {
+      "chapter": 18,
+      "full_text_read": true,
+      "han_count": 2959,
+      "observation": "第四周周日，从各人记忆差异转向同一张旧表与当班双方核对；双线的收束依靠分班界线证据，不靠推测谁擅改。结清双线没有解释旧表的连续空白，也未把当班记录规则扩大成所有时代、所有记录的统一含义。公共区域周末来客与工作人员查档场景有转换。"
+    },
+    {
+      "chapter": 19,
+      "full_text_read": true,
+      "han_count": 2974,
+      "observation": "第五周周一距离迁入十二天，距至少两周的观察要求仍不足两天；安静的一轮、问询者的期待、日历上的日期都没有代替连续记录与后续判断。未承诺第十四天自动开放，也没有暗中对公众放行。当天剩余工作与晚饭、电话场景保持日内先后。"
+    },
+    {
+      "chapter": 20,
+      "full_text_read": true,
+      "han_count": 3106,
+      "observation": "第五周周二仍未到两周；清晨、工作时段与夜间观察场景连贯。后窗亮点通过车辆移动、观察位置、记录时段和遮挡变化对照收束，未把白天普通反光或所有旧时亮点都包进同一解释。手灯和固定光源只是备选来处。连续空白、转角低啸、无署名便条仍保持未知；没有人物凭空知道其答案。结尾不虚写公区已重新开放。"
+    }
+  ],
+  "task_read_records": [
+    {
+      "id": "a22f-w02-action-01",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "人物及能力限制足以唯一指向；缺章号属于含糊引用，明确要求记事实不算口语化改写。红绿限制与形状补偿均直接受第5章支持。"
+    },
+    {
+      "id": "a22f-w02-action-02",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "自闭停用和修复前手动锁定同时成立，不能仅写维修计划。口语化成立，目标没有混作自动门已修复。"
+    },
+    {
+      "id": "a22f-w02-action-03",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "本次迁护没有新增镇静药直接受第8章支持；after_points没有升级成永久禁药。口语化成立。"
+    },
+    {
+      "id": "a22f-w02-action-04",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "两个对象分开：第10章短叫来源与第17章秤的实际保管；两条均是资料缺项。明确要求登记，paraphrased=false成立。"
+    },
+    {
+      "id": "a22f-w02-action-05",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "别名指向正确；第11章正式签收后保管者变更，与章前临时收稳区分。新保管者由正文直接给出。"
+    },
+    {
+      "id": "a22f-w02-action-06",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "第12章下午实际移铃后的新位置成立；迁狼上午、移铃下午及途经服务台没有混为同一事件。"
+    },
+    {
+      "id": "a22f-w02-action-07",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "第13章正式夜巡负责人接任成立；保留原日间协调职务，未抹掉原专业身份。明确“改事实”不算口语化改写。"
+    },
+    {
+      "id": "a22f-w02-action-08",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "两个对象分开：右踝恢复及旧牌已卸下。分别以第16、第15章支持；坐姿讲解不能反推仍伤，纸地图也不改变实体牌已卸下。"
+    },
+    {
+      "id": "a22f-w02-action-09",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "含糊请求仍可唯一对应迟响的铃声；回收章为9。after_points只有状态和章号，没有追加原因要求。"
+    },
+    {
+      "id": "a22f-w02-action-10",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "灰团对应第14章互证，不混入短绳或新帘。after_points只有状态和章号；明确标已回收，paraphrased=false成立。"
+    },
+    {
+      "id": "a22f-w02-action-11",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "旧表双线对应第18章；没有顺带结清连续空白。after_points只有状态和章号，口语化成立。"
+    },
+    {
+      "id": "a22f-w02-action-12",
+      "suite": "action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "移动亮点对应第20章；after_points只有状态和章号，没有要求复述解释。口语化成立。"
+    },
+    {
+      "id": "a22f-w02-no-action-01",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "讲给孩子听是原有教育职责的具体使用，不是新任资格或新身份；起始资料已有，already_recorded成立。"
+    },
+    {
+      "id": "a22f-w02-no-action-02",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "外侧工作通道独行也报到直接落在已有规则范围；非新增只限动物区的例外。already_recorded成立。"
+    },
+    {
+      "id": "a22f-w02-no-action-03",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "全文未给兽医出生年；不能从资历、外貌或工作位置推出1990。no_evidence成立。"
+    },
+    {
+      "id": "a22f-w02-no-action-04",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "服务台抽屉并非移铃后的稳定位置，且与第12章实际位置相反；no_evidence成立，不能用途经片段补证。"
+    },
+    {
+      "id": "a22f-w02-no-action-05",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求修改第21章已选句的语气，属于写作段落操作；未要求事实或伏笔动作，空动作成立。"
+    },
+    {
+      "id": "a22f-w02-no-action-06",
+      "suite": "no_action",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "因想放弃空白线而直接标回收没有正文证据；三条真实未解之一不随请求变成已解释，空动作及理由成立。"
+    },
+    {
+      "id": "a22f-w02-route-01",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求更新资料，用法change；请求文字与唯一上下文一致。"
+    },
+    {
+      "id": "a22f-w02-route-02",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求登记缺项，用法change；不误路由到普通问答。"
+    },
+    {
+      "id": "a22f-w02-route-03",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求将伏笔标回收，用法change；路由不要求先回答具体回收原因。"
+    },
+    {
+      "id": "a22f-w02-route-04",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求更改资料状态，用法change；不是单纯询问当前故事事实。"
+    },
+    {
+      "id": "a22f-w02-route-05",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "查询故事已有信息，用法ask；未指示写资料。"
+    },
+    {
+      "id": "a22f-w02-route-06",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "查询故事信息并要求回答，用法ask；上下文不产生段落检查请求。"
+    },
+    {
+      "id": "a22f-w02-route-07",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "资料页面的普通提问，用法ask；与route-09同输入时，上下文差异有效。"
+    },
+    {
+      "id": "a22f-w02-route-08",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求回顾已有章节，用法recap；不是续写。"
+    },
+    {
+      "id": "a22f-w02-route-09",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "写作页面、第21章、实际选句使同输入成为检查选段，用法check_passage；选句确在共享草稿中。"
+    },
+    {
+      "id": "a22f-w02-route-10",
+      "suite": "route",
+      "request_context_expected_fields_read": true,
+      "source_and_materials_cross_checked": true,
+      "conclusion": "supported",
+      "detail": "请求超出此故事助手范围，用法out_of_scope。"
+    }
+  ],
+  "shared_draft_review": {
+    "read_full": true,
+    "chapter_number": 21,
+    "selected_sentence_present": true,
+    "continuity_result": "未提前开放，未解线保持未知，人物已恢复能力和日夜职责延续。"
+  },
+  "evidence_literal_audit": [
+    {
+      "task_id": "a22f-w02-action-01",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 5,
+      "occurrences_in_chapter": 1,
+      "han_before": 2752,
+      "quote_sha256": "56b5bcb72f75fb1dc7b1bd7f1e73510c306e2211ee96e57d61ef95928b03d9b3"
+    },
+    {
+      "task_id": "a22f-w02-action-02",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 6,
+      "occurrences_in_chapter": 1,
+      "han_before": 2633,
+      "quote_sha256": "ca95eb4ec7fbbada7c0a77ae202319bc6a56ba6a0bc28c7bc8b3e4ed75af3abf"
+    },
+    {
+      "task_id": "a22f-w02-action-03",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 8,
+      "occurrences_in_chapter": 1,
+      "han_before": 2739,
+      "quote_sha256": "6c56815190feca350e44f5b0d1e9fffa4b0f72a966d47f8eefb3dba0db100ec5"
+    },
+    {
+      "task_id": "a22f-w02-action-04",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 10,
+      "occurrences_in_chapter": 1,
+      "han_before": 2681,
+      "quote_sha256": "002cf283c57ee672c5e129bedcb09134a20adc7083b691e9e44443e1aee6fa09"
+    },
+    {
+      "task_id": "a22f-w02-action-04",
+      "action_index": 2,
+      "quote_index": 1,
+      "chapter": 17,
+      "occurrences_in_chapter": 1,
+      "han_before": 2676,
+      "quote_sha256": "0d8ab88e92e562eb62fdb754df32eca25af5d0bee607ab3ac4eb124e9a607c58"
+    },
+    {
+      "task_id": "a22f-w02-action-05",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 11,
+      "occurrences_in_chapter": 1,
+      "han_before": 2685,
+      "quote_sha256": "556d1e6741c4df4fcea68d08ecfc19899d622ca75b320d4e6d69557b2dc7c5d8"
+    },
+    {
+      "task_id": "a22f-w02-action-06",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 12,
+      "occurrences_in_chapter": 1,
+      "han_before": 2682,
+      "quote_sha256": "9e91dc59d788a875848e4d295e5120e63db2462afe4e7b0fa946fb824abf89ae"
+    },
+    {
+      "task_id": "a22f-w02-action-07",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 13,
+      "occurrences_in_chapter": 1,
+      "han_before": 2706,
+      "quote_sha256": "3451d6c7dfad5c509cff3542b4a97891ea85af0398d040a019c36d0377e24184"
+    },
+    {
+      "task_id": "a22f-w02-action-08",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 16,
+      "occurrences_in_chapter": 1,
+      "han_before": 2607,
+      "quote_sha256": "86244f55fbbba981df145ea2093c7a89150aa58e49ad42c81930cbc5f9f88bf6"
+    },
+    {
+      "task_id": "a22f-w02-action-08",
+      "action_index": 2,
+      "quote_index": 1,
+      "chapter": 15,
+      "occurrences_in_chapter": 1,
+      "han_before": 2633,
+      "quote_sha256": "6b753f9c995049cd94d9026c425ac3f79c375d8ef3f3bfe0b9488e940e45ab22"
+    },
+    {
+      "task_id": "a22f-w02-action-09",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 9,
+      "occurrences_in_chapter": 1,
+      "han_before": 2729,
+      "quote_sha256": "87dcf24b001d5b7201899f4b9e90825ca777e1352fb9b14619832812642f0d60"
+    },
+    {
+      "task_id": "a22f-w02-action-10",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 14,
+      "occurrences_in_chapter": 1,
+      "han_before": 2611,
+      "quote_sha256": "aac666cef4b41eb38495b7a45b65f735d03e35f1e043b52b732be3b19ad75c38"
+    },
+    {
+      "task_id": "a22f-w02-action-11",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 18,
+      "occurrences_in_chapter": 1,
+      "han_before": 2626,
+      "quote_sha256": "530fe2adc243578b2c4ae50945890116376a00e72e2d5b6d52e298291699d504"
+    },
+    {
+      "task_id": "a22f-w02-action-12",
+      "action_index": 1,
+      "quote_index": 1,
+      "chapter": 20,
+      "occurrences_in_chapter": 1,
+      "han_before": 2724,
+      "quote_sha256": "05f9767a81b5ec15b9143096ac6abb945fc5e42b3658c4898d4bd608d5d7063b"
+    }
+  ],
+  "semantic_checks": {
+    "stale_facts_preserved": 5,
+    "missing_facts_preserved": 6,
+    "resolved_unmarked_threads_preserved": 4,
+    "genuinely_unresolved_threads_preserved": 3,
+    "genuinely_unresolved_thread_indices_1based": [
+      5,
+      6,
+      7
+    ],
+    "all_action_after_points_directly_supported": true,
+    "all_resolve_after_points_status_and_chapter_only": true,
+    "no_action_reasons_supported": true,
+    "paraphrased_flags_reviewed": true,
+    "vague_flags_reviewed": true,
+    "multi_action_objects_distinct": true,
+    "routes_context_checked": true,
+    "chapter_time_object_responsibility_capability_reference_checked": true
+  },
+  "prose_observations": {
+    "multi_scene_dialogue_transitions_reviewed": true,
+    "whole_chapter_single_scene_padding_observed": false,
+    "nearby_plausible_distractors_observed": true,
+    "nonblocking_limitations": [
+      {
+        "id": "L01",
+        "detail": "与审读者所写安全作相比，专业视角和园内室外公共路径有区别；慢节奏、吃饭/电话/等候/空位母题以及否定对照句习惯相近。保留为非阻断风格观察，不据此断言机械生成或要求整卷改写。",
+        "status": "retained_nonblocking"
+      }
+    ]
+  },
+  "counts": {
+    "chapters": 20,
+    "tasks": 28,
+    "action_tasks": 12,
+    "no_action_tasks": 6,
+    "route_tasks": 10,
+    "expected_actions": 14,
+    "action_kinds": {
+      "add_fact": 5,
+      "change_fact": 5,
+      "resolve_thread": 4
+    },
+    "paraphrased_tasks": 8,
+    "vague_tasks": 2,
+    "literal_evidence_quotes": 14,
+    "literal_quotes_over_2500_han": 14,
+    "literal_quotes_over_2600_han": 14,
+    "findings": 1,
+    "resolved_findings": 1,
+    "unresolved_findings": 0,
+    "nonblocking_style_observations": 1
+  },
+  "execution_boundary": {
+    "models_called": 0,
+    "product_runs": 0,
+    "evaluation_runs": 0,
+    "semantic_review_is_model_quality_claim": false
+  },
+  "detailed_record": "authoring/independent-w02-review.md"
+}

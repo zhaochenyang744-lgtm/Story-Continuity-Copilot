@@ -1,0 +1,76 @@
+{
+  "eval_set_a24_formal/w01": {
+    "paragraphs_at_least30han": 483,
+    "repeated_complete_paragraph_groups": 0,
+    "repeated_complete_paragraph_occurrences": 0,
+    "chapter_han": {
+      "1": 3068,
+      "2": 3010,
+      "3": 3050,
+      "4": 2933,
+      "5": 2528,
+      "6": 2833,
+      "7": 2817,
+      "8": 2753,
+      "9": 2786,
+      "10": 2821,
+      "11": 2785,
+      "12": 2704,
+      "13": 2767,
+      "14": 2740,
+      "15": 2768,
+      "16": 2762,
+      "17": 2779,
+      "18": 2794,
+      "19": 2839,
+      "20": 2524
+    }
+  },
+  "eval_set_a24_formal/w02": {
+    "paragraphs_at_least30han": 468,
+    "repeated_complete_paragraph_groups": 0,
+    "repeated_complete_paragraph_occurrences": 0,
+    "chapter_han": {
+      "1": 2968,
+      "2": 2812,
+      "3": 2779,
+      "4": 2808,
+      "5": 2553,
+      "6": 2789,
+      "7": 2857,
+      "8": 2916,
+      "9": 2785,
+      "10": 2917,
+      "11": 2778,
+      "12": 2812,
+      "13": 2775,
+      "14": 2748,
+      "15": 2741,
+      "16": 2798,
+      "17": 2746,
+      "18": 2822,
+      "19": 2805,
+      "20": 2678
+    }
+  },
+  "eval_set_a2s4_formal/w01": {
+    "paragraphs_at_least30han": 286,
+    "repeated_complete_paragraph_groups": 0,
+    "repeated_complete_paragraph_occurrences": 0,
+    "chapter_han": {
+      "1": 2914,
+      "2": 2985,
+      "3": 2767,
+      "4": 2796,
+      "5": 2860,
+      "6": 2799,
+      "7": 2913,
+      "8": 2895,
+      "9": 2764,
+      "10": 2862,
+      "11": 2793,
+      "12": 2875
+    }
+  },
+  "cross_work_repeated_complete_paragraph_groups": 0
+}

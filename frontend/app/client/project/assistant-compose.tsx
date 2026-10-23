@@ -1,7 +1,7 @@
 "use client";
 
 // The box the author writes in: one frame with the context tags inside at the top, the text, and a bar below it.
-// The bar has 「＋」 (add a chapter, a person or a finding to this question) and the mode (自动 / 问作品 / 写前回顾 / 查前文矛盾;
+// The bar has 「＋」 (add a chapter, a person or a finding to this question) and the mode (自动 / 问作品 / 写前回顾 / 查前文矛盾 / 改资料;
 // 自动 lets the assistant judge which one the sentence asks for) on the left, the cost and one send square on the right; while the assistant works the square is a stop button.
 import { type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { chapterHeading } from "../ui";
@@ -16,8 +16,8 @@ export type ComposeChip = {
   note?: string;
   drop: () => void;
 };
-export type Mode = "auto" | "ask" | "recap" | "check";
-export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾" };
+export type Mode = "auto" | "ask" | "recap" | "check" | "change";
+export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料" };
 
 /** What the 「＋」 menu can add, and what choosing each does. */
 export type PlusPick = {

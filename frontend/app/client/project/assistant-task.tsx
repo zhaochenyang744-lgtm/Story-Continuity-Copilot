@@ -4,9 +4,10 @@
 // steps, the answer with its sources and the row of actions under it. Answers asked for again fold the older ones into
 // 「之前的回答」; a question that was reworded folds the old question and its answers into 「已改问」.
 import { type CSSProperties, type ReactNode, useRef, useState } from "react";
-import type { AssistantSource, AssistantTask } from "../../model";
+import type { AssistantChange, AssistantSource, AssistantTask } from "../../model";
 import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
+import { ChangeCard } from "./assistant-change";
 import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
 import { RoutedLine } from "./assistant-route";
@@ -57,6 +58,10 @@ type Handlers = {
   readOnly: boolean;
   /** The tasks asked while this view was open: their question bubbles rise into place. */
   asked: string[];
+  /** 改资料: items the server sent back go into the conversation; the materials were written (the page reads them again); the way to the materials page. */
+  merge: (items: AssistantChange[]) => void;
+  written: () => void;
+  goMaterials: () => void;
 };
 
 /** The author's question; pointing at it shows 「改」, which turns it into a box to reword and send again. */
@@ -100,6 +105,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   const state = running ? { text: "正在查", tone: "quiet" }
     : task.status === "cancelled" ? { text: "已停止", tone: "quiet" }
       : task.status === "failed" ? { text: "没有完成", tone: "quiet" }
+        : task.kind === "change" && task.changes?.some((item) => item.status === "proposed") ? { text: "等你确认", tone: "blue" }
         : answer?.status === "answered" ? { text: "有答案", tone: "blue" }
           : answer?.status === "not_found" ? { text: "正文里找不到", tone: "quiet" }
             : answer?.status === "inconsistent" ? { text: "前后不一致", tone: "quiet" } : { text: "", tone: "quiet" };
@@ -108,7 +114,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
     <article className="a-task" aria-live="off" data-answer={task.id}>
       {showQuestion && <Question task={task} handlers={handlers} />}
       <div className="a-head">
-        <span className="a-kind">{task.context.intent === "check_selection" ? "查前文矛盾" : "问作品"}</span>
+        <span className="a-kind">{task.kind === "change" ? "改资料" : task.context.intent === "check_selection" ? "查前文矛盾" : "问作品"}</span>
         {state.text && <span className={`a-state ${state.tone}`}>{state.text}</span>}
         {running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}
       </div>
@@ -124,6 +130,10 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
         {!offTopic && <SourceList task={task} locate={handlers.locate} />}
         {!offTopic && <CoverLine task={task} />}
+        {task.kind === "change" && task.status === "completed" && (
+          <ChangeCard task={task} projectId={handlers.projectId} readOnly={handlers.readOnly} replace={handlers.replace} merge={handlers.merge} locate={handlers.locate}
+            written={handlers.written} goMaterials={handlers.goMaterials} />
+        )}
         <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} answer={offTopic ? null : answerBox}
           followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace} />
       </div>
@@ -149,9 +159,9 @@ export function AskGroup({ group, handlers }: { group: Group; handlers: Handlers
     </>
   );
   // `data-task` marks the whole entry (question and answers): the thread scrolls to it and the tests find it by it.
-  if (!group.reworded) return <div className="a-group" data-task={latest.id} data-status={latest.status} data-kind="ask">{body}</div>;
+  if (!group.reworded) return <div className="a-group" data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>{body}</div>;
   return (
-    <details className="a-group a-reworded" data-task={latest.id} data-status={latest.status} data-kind="ask">
+    <details className="a-group a-reworded" data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>
       <summary>已改问 · {clip(latest.question ?? "", 24)}</summary>
       <div className="a-fold-body">{body}</div>
     </details>
