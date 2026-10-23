@@ -63,6 +63,7 @@ ERROR_TEXTS = {
     "change_read_only": "作者只说要看这条资料，没有说要改",
     "change_prose_not_fact": "作者要改的是正文的句子，不是资料",
     "change_fact_not_thread": "作者说的是事实，不是伏笔",
+    "change_thread_not_fact": "作者说的是伏笔已经收了，不是事实",
     "change_held_back": "还有改动没有放进卡片，先处理它",
     "change_not_requested": "作者的话里没有提到这条资料",
     "change_request_words_taken": "作者这几个字已经对应了另一条改动",
@@ -86,6 +87,7 @@ ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时
                                         "note 写「我不能直接修改正文，可以让我给改法。」。",
                "change_read_only": "作者对这条资料只说了读、看或核对，没有说要改：不要提出改动，把读到的内容写进回答。",
                "change_fact_not_thread": "作者这几个字说的是事实（旧说法、状态、那一栏），不是伏笔：用 lookup_facts 找到那条事实，用 change_fact 改它。",
+               "change_thread_not_fact": "作者这几个字说的是一条伏笔已经收了，不是要记事实：用 list_threads 找到那条伏笔，用 resolve_thread 标它。",
                "change_held_back": "这一轮有改动还没有放进卡片（见它的结果）：先决定它，要就原样再提出一次，不要就不提；然后再用 answer 收尾。",
                "change_evidence_invalid": "evidence 要填一到两个正文段落的编号（search_text 或 read_chapter 返回的），不能是事实、伏笔或草稿。",
                "change_evidence_before_planted": "依据段落在这条伏笔埋下的那章之前，不能证明它已经收了。",
@@ -175,6 +177,7 @@ class ToolContext:
     second_looks: set[str] = field(default_factory=set)
     held_now: int = 0  # items held back for a second look in this round
     last: bool = False  # no round after this one (the last round, or the budget or time is spent)
+    requests: list[dict[str, str]] | None = None  # the pieces of the author's sentence (`assistant_requests`); None: not split
     _spans: list[dict[str, Any]] | None = field(default=None, repr=False)
     _memory: list[dict[str, Any]] | None = field(default=None, repr=False)
     _index: PassageIndex | None = field(default=None, repr=False)

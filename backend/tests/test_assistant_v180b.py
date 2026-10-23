@@ -40,7 +40,7 @@ class SayTests(AssistantCase):
         self.register()
 
     def test_the_prompt_asks_for_a_line_and_is_version_p5(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p44")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p45")
         self.assertIn("content 里写一句话说明这一步具体要做什么", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词；只说打算，不下结论", SYSTEM_PROMPT)
         self.assertIn("不要只写文字", SYSTEM_PROMPT)
@@ -48,7 +48,7 @@ class SayTests(AssistantCase):
         self.assertIn("note 只列出查过哪些地方", SYSTEM_PROMPT)
         self.assertIn("不写 R 编号", SYSTEM_PROMPT)
         task = self.run_ask(read(9), cite(9))
-        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p44")
+        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p45")
         self.assertEqual(task["status"], "completed")
 
     def test_a_tool_round_keeps_its_line_before_its_steps_and_the_closing_round_keeps_none(self):
@@ -151,7 +151,8 @@ class StepDetailTests(AssistantCase):
             "change_fields_invalid": "事实的类型或属性不在可选范围内", "change_fact_already_recorded": "资料里已经有这条事实",
             "change_check_existing": "先查一遍资料里已有的事实", "change_value_not_in_evidence": "改后内容里的数字在依据段落里没有",
             "change_give_up_not_resolve": "作者要的是放弃或删除，这一版不支持",
-            "change_read_only": "作者只说要看这条资料，没有说要改", "change_prose_not_fact": "作者要改的是正文的句子，不是资料", "change_fact_not_thread": "作者说的是事实，不是伏笔", "change_held_back": "还有改动没有放进卡片，先处理它",
+            "change_read_only": "作者只说要看这条资料，没有说要改", "change_prose_not_fact": "作者要改的是正文的句子，不是资料", "change_fact_not_thread": "作者说的是事实，不是伏笔",
+            "change_thread_not_fact": "作者说的是伏笔已经收了，不是事实", "change_held_back": "还有改动没有放进卡片，先处理它",
             "change_not_requested": "作者的话里没有提到这条资料",
             "change_request_words_taken": "作者这几个字已经对应了另一条改动"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")

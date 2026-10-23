@@ -23,10 +23,10 @@ from .assistant_tools import (CLOSING, ERROR_HINTS, INTERNAL_ID, NAME_MAX_CHARS,
 from .database import DomainError
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
-from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions
+from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p44"
+ASSISTANT_PROMPT_VERSION = "assistant-p45"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -661,6 +661,16 @@ class AssistantEngine:
             except Exception:
                 pass
 
+    def _request_list(self, row: Any) -> tuple[list[dict[str, str]] | None, Any]:
+        """The pieces of the author's sentence a change task may act on (`assistant_requests`), read before anything of the
+        work, and the call's result for the task's usage; no list when the call fails, and the word lists decide instead."""
+        question = json.loads(row["input_json"]).get("question") or ""
+        try:
+            result = assistant_requests.call_model(self.provider, question)
+        except Exception:  # a failed split never fails the task
+            return None, None
+        return assistant_requests.parse((result.message or {}).get("content"), question), result
+
     def _cost(self, result: Any) -> float:
         if isinstance(result.cost_cny, (int, float)) and not isinstance(result.cost_cny, bool):
             return float(result.cost_cny)
@@ -755,6 +765,12 @@ class AssistantEngine:
             return assistant_edits.check(ctx, text, meter)
 
         ctx.check = checked
+        if kind == "change":
+            ctx.requests, result = self._request_list(row)
+            if result is not None:
+                input_tokens += result.input_tokens or 0
+                output_tokens += result.output_tokens or 0
+                cost += self._cost(result)
         for round_ in range(1, rounds + 1):
             if self.store.status(task_id) == "cancelled":
                 self._settle(task_id)

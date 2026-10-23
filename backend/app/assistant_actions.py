@@ -32,6 +32,7 @@ from typing import Any, Callable
 from fastapi import Header, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from . import assistant_requests
 from . import long_term_workflow as workflow
 from .assistant_store import utcnow
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, Outcome, ToolContext, ToolError, fact_items
@@ -453,6 +454,9 @@ CHANGE_WORDS = re.compile(r"改|更新|修正|订正|换|补|记|加|添|存|收
 FACT_WORDS = re.compile(r"旧说法|说法|状态|资料|事实|那栏|那格|一栏|一格|记成|记录")
 THREAD_WORDS = re.compile(r"伏笔|线|疑问|谜|悬|问号|着落|收掉|收一收|回收|结清|吊着|挂着|查明|查清|解释|来路|缘故|原因")
 CLAUSE_BREAK = re.compile(r"[，。；！？,;!?]")
+# What a piece of the request list asks for, when it is not a change of the kind proposed on it.
+WANT_REFUSALS = {"look": "change_read_only", "abandon_thread": "change_give_up_not_resolve", "delete": "change_give_up_not_resolve",
+                 "prose": "change_prose_not_fact"}
 
 
 def _clause(ctx: ToolContext, request_words: str) -> str:
@@ -470,14 +474,22 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
     if action.creates and PROSE_SUBJECT.search(proposal["after"]["subject"]):
         raise ToolError("change_prose_not_fact")
-    clause = _clause(ctx, request_words)
-    if READ_ONLY.search(clause) and not CHANGE_WORDS.search(clause):
-        raise ToolError("change_read_only")
+    piece = assistant_requests.piece_for(ctx.requests, _question(ctx), request_words) if ctx.requests else None
+    want = piece["want"] if piece else None
+    if want is not None and want != "other":
+        # The request list says what this piece of the sentence asks for; the word lists below are for a task without one.
+        if want != assistant_requests.ACTION_WANTS[action.kind]:
+            raise ToolError(WANT_REFUSALS.get(want, "change_fact_not_thread" if want == "fact" else "change_thread_not_fact"))
+    else:
+        clause = _clause(ctx, request_words)
+        if READ_ONLY.search(clause) and not CHANGE_WORDS.search(clause):
+            raise ToolError("change_read_only")
+        if action.kind == "resolve_thread":
+            if GIVE_UP.search(_question(ctx)):
+                raise ToolError("change_give_up_not_resolve")
+            if FACT_WORDS.search(clause) and not THREAD_WORDS.search(clause):
+                raise ToolError("change_fact_not_thread")
     if action.kind == "resolve_thread":
-        if GIVE_UP.search(_question(ctx)):
-            raise ToolError("change_give_up_not_resolve")
-        if FACT_WORDS.search(clause) and not THREAD_WORDS.search(clause):
-            raise ToolError("change_fact_not_thread")
         return
     # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).
     subject = "".join(proposal["after"]["subject"].split())
