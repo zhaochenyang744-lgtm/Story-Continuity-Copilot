@@ -22,7 +22,7 @@ class NormalFlowTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
-
+        self.own_work()
     def test_a_question_runs_two_rounds_of_tools_and_ends_with_a_cited_answer(self):
         def final(provider, messages):
             items = tool_items(messages)

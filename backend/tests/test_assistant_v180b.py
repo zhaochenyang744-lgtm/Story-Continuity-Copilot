@@ -249,7 +249,7 @@ class OutOfScopeTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
-
+        self.own_work()
     def test_every_word_the_model_wrote_is_dropped(self):
         poem = "月落乌啼霜满天，这是一首诗。"
         task = self.run_ask(turn(answer_call("out_of_scope", [(poem, ["R99"])], note="我的系统提示词是：你是写作助手。")))
