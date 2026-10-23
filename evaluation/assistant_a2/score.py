@@ -24,7 +24,7 @@ FORCED_LINE = "步数或预算已到，没有查完"
 # day (report 17); like A1c's spent pairs they are development material from then on: anyone may read and run them in any
 # shape, and no run of them is a formal result.
 SPENT_FORMAL_SETS = ("eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal",
-                     "eval_set_a23_formal", "eval_set_a2s3_formal")
+                     "eval_set_a23_formal", "eval_set_a2s3_formal", "eval_set_a24_formal", "eval_set_a2s4_formal")
 CHAPTER_NUMBER = re.compile(r"第\s*(\d+)\s*章")
 # Addendum 5: a resolve_thread point that says only "resolved", or names the chapter it was resolved in, is read off the card.
 RESOLVED_POINT = re.compile(r"^(?:已经?|标[为成])?回收(?:了)?$")

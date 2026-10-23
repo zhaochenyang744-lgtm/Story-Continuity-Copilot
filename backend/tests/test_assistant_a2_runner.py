@@ -208,7 +208,18 @@ class SetTests(unittest.TestCase):
                 run.set_names(bad)
         self.assertTrue(all(run.readable(name) for name in ("eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal")))
         self.assertTrue(run.readable("eval_set_a23_formal") and run.readable("eval_set_a2s3_formal"))
-        self.assertEqual(run.FORMAL_SETS, ("eval_set_a24_formal", "eval_set_a2s4_formal"))  # the fourth pair (addendum 6)
+        # The fourth pair ran its formal run on 2026-10-24 and is development material since; no pair waits for a formal run.
+        self.assertTrue(run.readable("eval_set_a24_formal") and run.readable("eval_set_a2s4_formal"))
+        self.assertEqual(run.FORMAL_SETS, ())
+
+    def test_the_regression_switches_name_guards_that_exist(self):
+        from app import assistant_actions
+        from evaluation import regress
+        targets = {"prose_subject": "PROSE_SUBJECT", "read_only": "READ_ONLY", "give_up": "GIVE_UP", "fact_not_thread": "FACT_WORDS",
+                   "value_numbers": "numbers_in", "author_value": "_author_value_missing", "second_look": "_second_look"}
+        self.assertEqual(set(regress.ABLATIONS), set(targets))
+        self.assertTrue(all(hasattr(assistant_actions, name) for name in targets.values()))
+        self.assertEqual(run.set_names(regress.SETS), regress.SETS.split(","))
 
     def test_a_run_of_the_spent_pair_is_never_a_formal_result(self):
         report = {"records": [], "card_checks": [], "sets": ["eval_set_a2_formal", "eval_set_a2s_formal"], "runs": 3, "complete": True,
