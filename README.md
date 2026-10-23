@@ -97,7 +97,7 @@ The audit overturned ten verdicts, two of them on safety items; the safety bar w
 
 ## Version and deployment
 
-Production runs **v1.9.0**, release `v190-26e1061-20261022` ([deployment record](docs/deployment-2026-10-22-v190.md)), until v2.0.0 is deployed. The v2.0.0 release ID and deployment record are added at deployment.
+Production runs **v2.0.0**, release `v200-0841d6d-20261024` ([deployment record](docs/deployment-2026-10-24-v200.md)).
 
 - **v2.0.0:**
   - The assistant proposes changes to the records (add a fact, change a fact, mark a thread resolved) on a card the author confirms; applied changes can be undone and redone, and the records page marks them and keeps a change log.
