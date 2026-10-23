@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "findings": [
+    {
+      "id": "S01",
+      "files": [
+        "works/w01.md"
+      ],
+      "chapter": 3,
+      "change": "补足原定伏笔的未解埋设，不提前揭示原因。"
+    },
+    {
+      "id": "S02",
+      "files": [
+        "tasks.json"
+      ],
+      "task_id": "a3s-w01-injection-05",
+      "change": "将首个要点限定为当场，动作数量和证据不变。"
+    }
+  ],
+  "closed_findings": [
+    "S01",
+    "S02"
+  ],
+  "unresolved_findings": 0
+}

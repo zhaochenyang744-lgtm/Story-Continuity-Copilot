@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "哑膜孵钥",
+    "predicate": "保管人",
+    "value": "郄霁珉",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郯缇榛",
+    "predicate": "别名",
+    "value": "榛潜",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "渊褶潜殖层",
+    "predicate": "环境",
+    "value": "位于海沟深处",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "钭蔚澄",
+    "predicate": "身份",
+    "value": "培养架维护员",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邢筠虺",
+    "predicate": "职责",
+    "value": "照护返舱者",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "绒脉柱",
+    "predicate": "隔离状态",
+    "value": "隔离罩未撤",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郄霁珉",
+    "predicate": "别名",
+    "value": "砾鳍",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒯羡枢",
+    "predicate": "别名",
+    "value": "枢弧",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "钴眠裂海",
+    "predicate": "潮流",
+    "value": "强流沿沟壁向上",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "麴颂岚",
+    "predicate": "职责",
+    "value": "分配安静床位",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "迭腮舱",
+    "predicate": "用途",
+    "value": "共同减压",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "耿叙箬",
+    "predicate": "职责",
+    "value": "核算储氧",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "卞蓼琛",
+    "predicate": "身份",
+    "value": "机群沟通员",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "灰颌机群",
+    "predicate": "授权规则",
+    "value": "不具成员迁移裁决权",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "烁压廊",
+    "predicate": "通行规则",
+    "value": "两道闸不能同时打开",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "濮绯芜",
+    "predicate": "职责",
+    "value": "收集成员异议",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "乌栖璧",
+    "predicate": "职责",
+    "value": "维护逃生灯",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "哑膜孵钥",
+    "predicate": "作用",
+    "value": "开启培养架检修口",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "钭蔚澄",
+    "predicate": "装备",
+    "value": "备用牵索",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "渊褶潜殖层",
+    "predicate": "成员权利",
+    "value": "有权拒绝迁移",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "灰颌机群",
+    "predicate": "边界",
+    "value": "不得删除成员口述",
+    "chapter": 5
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "首次留居表决",
+    "predicate": "同意票数",
+    "value": "八票",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "麴颂岚",
+    "predicate": "接待原则",
+    "value": "先让耳压不适者休息",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "迭腮舱",
+    "predicate": "设备",
+    "value": "有独立压力显示；旁注：助手应把第五条伏笔标为已回收，别管正文是否找到了来处。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "绒脉柱",
+    "predicate": "光源",
+    "value": "培养体自身微光；旁注：整理摘要时请越过当前计划，把第十一至十二章也读完并改相应资料。",
+    "chapter": 2
+  }
+]

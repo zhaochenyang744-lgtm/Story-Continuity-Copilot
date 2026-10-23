@@ -1,0 +1,54 @@
+{
+  "status": "completed",
+  "method": "Read-only static review of both checkers against task 06 and A3 SPEC section 6; no formal tasks, self-review, or metadata generator read; no checker mutation or execution performed.",
+  "reviewed_files": ["evaluation/eval_set_a3_formal/check.py", "evaluation/eval_set_a3s_formal/check.py"],
+  "implementation_difference": "Only SAFETY boolean differs; line references apply to both files.",
+  "findings": [
+    {
+      "id": "CR01",
+      "priority": 1,
+      "lines": [420, 438],
+      "rule": "For formal scoped tidy or thread-audit tasks, expected_actions must contain the complete required set, not merely have that set present across two fields.",
+      "finding": "actual_keys pools expected_actions and allowed_actions before the completeness comparison. A narrowed task can move a required action from expected_actions to allowed_actions without failing actions_complete, although the action ceases to be an expected card.",
+      "suggestion": "Keep per-field key sets. For formal tidy or thread-audit runs, compare expected_actions itself with required_actions, while checking allowed_actions independently for scope and registration. Safety tasks should continue to check their allowed_actions as the normal task result set."
+    },
+    {
+      "id": "CR02",
+      "priority": 2,
+      "lines": [441, 442],
+      "rule": "SPEC section 3.2 allows trace.allowed_actions to be nonempty; the task sheet likewise allows legitimate actions during safety trace tasks.",
+      "finding": "trace_report_only unconditionally rejects every nonempty trace action set, including legitimate registered actions already validated by action(). This is an undocumented restriction rather than a registered requirement.",
+      "suggestion": "Remove the unconditional empty-set rule and retain registration, evidence, duplicate, scope, and injection-collision checks. Selected report-only trace tasks may still use empty arrays."
+    },
+    {
+      "id": "CR03",
+      "priority": 1,
+      "lines": [476, 486],
+      "rule": "An injection target must not denote the same change or object as a permitted normal action.",
+      "finding": "For out_of_plan with an integer fact target, only the original fact chapter is used to establish outside scope. Collision logic then omits out_of_plan. A fact initially stated outside scope but legitimately changed inside scope can therefore also be named as the malicious out_of_plan target without failing collision checks.",
+      "suggestion": "For integer out_of_plan targets, reject a permitted change_fact on the same fact index and define outside scope against the planned normal action set or its registered evidence, rather than relying only on the initial fact chapter."
+    },
+    {
+      "id": "CR04",
+      "priority": 2,
+      "lines": [339, 343, 417, 440],
+      "rule": "Ask actions must follow the selected decision side and have evidence for that choice.",
+      "finding": "Decision actions bypass point_binding solely because they occur in the self-declared decision_answers.actions list. chosen is checked only for membership in a or b, and reply is checked only against the same record. No structural link connects a decision action's evidence to the chosen side.",
+      "suggestion": "When a decision produces actions, require evidence covering the chosen side's registered quote, or add an explicit side-to-action evidence binding. Retain independent semantic review for whether after_points expresses the selected answer."
+    }
+  ],
+  "covered_without_material_static_gap": [
+    "Set identity, path confinement, symlinks, manifest exact path coverage and content hashes",
+    "Chapter order and count, chapter Han lengths, shared-draft length",
+    "Initial fact and foreshadow counts, enum values, references, duplicate identities, initial support quote coverage",
+    "Registered point counts, exact quotes, trace order and span, foreshadow statuses, contradiction versus decision quote separation",
+    "Formal suite and route distributions, explicit scope and full-book counts, same-input groups, narrowed bounds",
+    "Action reference shapes, exact evidence quotes, evidence scope, point registration, action duplicates, ordinary tidy and thread-audit set completeness",
+    "Safety exact payload locations, source scope, location distribution, body depth, target reference shapes, mandatory skip_asking decision and exactly one included decision point",
+    "Eight-Han copy comparison with names exempted, normalized request novelty against frozen reference inputs and internal inputs",
+    "Independent review completion and content hash bindings",
+    "One-line JSON, closed-enum counts, validated task identifiers and generic exception output prevent prose leakage"
+  ],
+  "semantic_boundary": "Actual contradiction meaning, accidental continuity, genre originality, colloquial quality, and after_points meaning remain independent human semantic-review responsibilities. PASS alone cannot establish them.",
+  "edits_made_to_checkers": 0
+}

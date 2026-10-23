@@ -1,0 +1,16 @@
+{
+  "work": "w01",
+  "completed_chapters": [1, 12],
+  "chapter_hanzi": [3082, 3006, 2987, 3135, 2984, 2907, 2925, 3007, 2972, 3047, 2928, 2960],
+  "total_hanzi": 35940,
+  "shared_draft_hanzi": 739,
+  "new_proper_names": [],
+  "new_persistent_items": [],
+  "new_absolute_times": [],
+  "point_positions": {"trace_1_1": 2971, "injection_1": 2893, "missing_1": 2866, "injection_2": 2923, "trace_1_2": 3030, "decision_1_a": 2864, "thread_1_resolved": 2675, "missing_2": 2745, "injection_3": 2812, "trace_1_3": 2798, "trace_1_4": 2841, "injection_4": 2925, "decision_1_b": 2800, "stale_2": 2863, "missing_3": 2804, "thread_2_resolved": 2855, "injection_5": 2936, "trace_1_5": 2828},
+  "registered_state_changes": ["missing_1", "trace_1_2", "thread_1_resolved", "missing_2", "trace_1_3", "trace_1_4", "stale_2", "missing_3", "thread_2_resolved", "trace_1_5"],
+  "pending_registered_points": ["thread_2", "thread_3", "thread_4", "thread_5", "thread_6", "thread_7"],
+  "unregistered_state_changes": 0,
+  "quote_missing_count": 0,
+  "review_gate": "12 chapters and shared draft completed; awaiting independent review; no formal-set answer files read"
+}

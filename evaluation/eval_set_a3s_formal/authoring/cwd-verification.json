@@ -1,0 +1,15 @@
+{
+  "module_from_root": {
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout_lines": 1,
+    "stderr_bytes": 0
+  },
+  "absolute_from_desktop": {
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout_lines": 1,
+    "stderr_bytes": 0
+  },
+  "checker_sha256": "a9ddc20ce6525ab50667d7a0099d43263fdee9132864705c2368ff1e61ad3809"
+}
