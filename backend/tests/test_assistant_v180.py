@@ -334,6 +334,10 @@ class FixTests(Task04Case):
 
 
 class PassageTests(Task04Case):
+    def setUp(self):
+        super().setUp()
+        self.own_work()
+
     def test_spends_extra_once_and_counts_review_usage(self):
         text = "苏岑手里的黄铜罗盘仍带着月牙裂纹。"
         task = self.run_ask(turn(call("check_passage", text=text)), turn(call("check_passage", text=text)), FINAL)
@@ -413,6 +417,10 @@ class PassageTests(Task04Case):
 
 
 class ProposalActionTests(Task04Case):
+    def setUp(self):
+        super().setUp()
+        self.own_work()
+
     def adopted(self):
         task = self.fix(self.proposals_turn(), FINAL)
         self.assertEqual(task["status"], "completed", task)
@@ -606,6 +614,10 @@ class CheckSelectionIntentTests(Task04Case):
     """Task 05b: the selection bar's 查前文矛盾 is an ask about picked text that carries `intent: check_selection`."""
     LINE = "作者要你检查选中的这段文字和前文有没有矛盾：先用 check_passage 检查这段文字，再根据结果回答；没有发现问题也要说明查了什么。"
     PICKED = "苏岑的黄铜罗盘在温岚手里。"
+
+    def setUp(self):
+        super().setUp()
+        self.own_work()
 
     def post_raw(self, kind, context, question="这段和前文有没有矛盾？"):
         body = {"kind": kind, "context": context}

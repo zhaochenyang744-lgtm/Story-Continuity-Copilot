@@ -24,7 +24,7 @@ import {
   stageLabel,
   timeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, isSampleWork, SAMPLE_FREE, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
 import { AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, type WritingLink } from "./assistant";
 import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
@@ -220,7 +220,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     const id = (target as HTMLElement | null)?.closest?.("[data-finding]")?.getAttribute("data-finding") ?? null;
     if (id !== hovered) setHovered(id);
   };
-  const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : chars > usage.check_chars_remaining) : false;
+  const sample = isSampleWork(project);
+  const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : !sample && chars > usage.check_chars_remaining) : false;
   // A visitor's check is refused above the per-check limit, so the button says so up front.
   const visitorLimit = usage?.account_type === "visitor" && chars > usage.check_chars_per_check ? usage.check_chars_per_check : null;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
@@ -337,7 +338,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
               </Menu>
               {primary}
             </div>
-            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次${over ? "。这一章超过了上限，删减后才能检查，或者注册账号" : ""}` : usageShort(usage)}</p>}
+            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次${over ? "。这一章超过了上限，删减后才能检查，或者注册账号" : ""}` : sample ? SAMPLE_FREE : usageShort(usage)}</p>}
           </div>
         )}
       </header>
@@ -393,7 +394,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
             )}
             {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)}
               onSelect={(text) => setPicked((current) => (text === null ? (current === null ? current : null) : current?.text === text ? current : { text, quick: false, nonce: ++incomingNonce.current }))}
-              check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : null }} />}
+              check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" && !sample ? usage.check_chars_remaining : null, free: sample }} />}
           </div>
         </article>
 

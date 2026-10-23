@@ -83,7 +83,13 @@ class ChapterCheckTests(unittest.TestCase):
         self.assertTrue(all(item["chapter_number"] < 2 for row in report["chapters"][0]["issues"] for item in row["evidence"]))
         self.assertEqual(report["issue_count"], sum(len(row["issues"]) for row in report["chapters"]))
 
+    def test_a_check_on_the_sample_work_spends_nothing(self):
+        self.assertEqual(self.start([2, 9]).status_code, 202)
+        self.assertEqual(self.client.get("/api/account/usage").json()["data"]["check_chars_used"], 0)
+
     def test_a_check_spends_the_chosen_chapters_characters(self):
+        with self.app.state.database.connection() as c:
+            c.execute("UPDATE v2_projects SET data_origin='v1_migrated' WHERE id=?", (self.project_id,))
         self.assertEqual(self.start([2, 9]).status_code, 202)
         usage = self.client.get("/api/account/usage").json()["data"]
         self.assertEqual(usage["check_chars_used"], written_chars(self.span_text[2]) + written_chars(self.span_text[9]))

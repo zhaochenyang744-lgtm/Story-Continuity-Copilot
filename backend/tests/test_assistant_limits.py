@@ -135,7 +135,7 @@ class CancelTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
-
+        self.own_work()
     def test_cancelling_a_running_task_stops_it_before_the_next_round_and_keeps_the_characters(self):
         def cancel_meanwhile(provider, messages):
             task_id = self.rows("SELECT id FROM assistant_tasks")[0]["id"]
@@ -208,6 +208,7 @@ class QuotaTests(AssistantCase):
     def test_a_task_costs_five_hundred_characters_and_one_workflow_and_settles_to_the_real_cost(self):
         self.start()
         self.register()
+        self.own_work()
         before = self.usage()
         self.assertEqual((before["check_chars_remaining"], before["assistant_task_chars"]), (60_000, 500))
         reserved = []
@@ -224,6 +225,7 @@ class QuotaTests(AssistantCase):
     def test_too_few_characters_refuse_the_task_before_anything_is_created(self):
         self.start(registered_check_chars=1000)
         self.register()
+        self.own_work()
         for _ in range(2):
             self.run_ask(read(9), cite(9))
         self.provider.script()
@@ -237,6 +239,7 @@ class QuotaTests(AssistantCase):
     def test_the_model_not_being_configured_is_a_503(self):
         self.start()
         self.register()
+        self.own_work()
         self.provider.available = False
         error = self.ask(expect=503).json()["error"]
         self.assertEqual(error["code"], "provider_unavailable")
@@ -245,6 +248,7 @@ class QuotaTests(AssistantCase):
     def test_only_one_task_runs_per_work(self):
         self.start()
         self.register()
+        self.own_work()
         seen = []
 
         def second_question(provider, messages):
@@ -259,6 +263,7 @@ class QuotaTests(AssistantCase):
     def test_the_project_token_guard_is_apart_from_the_run_guard(self):
         self.start(assistant_project_token_limit=1000)
         self.register()
+        self.own_work()
         self.run_ask(read(9, input_tokens=700, output_tokens=600), cite(9))
         self.assertEqual(self.rows("SELECT COUNT(*) n FROM v2_runs WHERE run_type='continuity' AND result_origin!='demo_preset'")[0]["n"], 0)
         self.assertFalse(self.db.session_budget_exhausted(self.project_id))  # the assistant's tokens are not v2_runs tokens

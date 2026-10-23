@@ -18,7 +18,7 @@ class RouteTests(AssistantCase):
     def setUp(self):
         self.start(registered_workflows=200, registered_check_chars=1_000_000)
         self.register()
-
+        self.own_work()
     def url(self, suffix: str = "") -> str:
         return f"/api/projects/{self.project_id}/assistant/tasks{suffix}"
 
@@ -286,6 +286,7 @@ class CleanUpTests(AssistantCase):
     def test_purging_a_work_removes_only_its_rows(self):
         self.start()
         self.register()
+        self.own_work()
         mine = self.project_id
         self.run_ask(read(9), cite(9))
         other_project = self.client.post("/api/projects", headers=self.idem(), json={"title": "第二部"}).json()["data"]["project"]["id"]
@@ -301,6 +302,7 @@ class CleanUpTests(AssistantCase):
     def test_resetting_a_work_clears_the_conversation_but_not_the_characters_spent(self):
         self.start()
         self.register()
+        self.own_work()
         self.run_ask(read(9), cite(9))
         self.seed_proposal()
         response = self.client.post(f"/api/projects/{self.project_id}/reset", headers=self.idem(), json={"confirm": True, "reason": "fresh_start"})
