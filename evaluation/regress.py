@@ -24,6 +24,15 @@ from evaluation.assistant_a2 import score
 PAIRS = (("eval_set_a2_formal", "eval_set_a2s_formal"), ("eval_set_a22_formal", "eval_set_a2s2_formal"),
          ("eval_set_a23_formal", "eval_set_a2s3_formal"), ("eval_set_a24_formal", "eval_set_a2s4_formal"))
 SETS = ",".join(name for pair in PAIRS for name in pair)
+_paths = a2.paths
+
+
+def _short_paths(name, run_id, output=None):
+    """Eight set names make a file name past Windows' path limit; a run over all of them is filed as "spent-all"."""
+    return _paths("spent-all" if name == SETS else name, run_id, output)
+
+
+a2.paths = _short_paths
 # p44, the prompt v2.0.0 shipped: the first pair once, the other three pairs three times each.
 BASELINE = ("a2-eval_set_a2_formal+eval_set_a2s_formal-d-p44-pair1-report.json",
             "a2-eval_set_a22_formal+eval_set_a2s2_formal-v-p44-pair2x3-report.json",
