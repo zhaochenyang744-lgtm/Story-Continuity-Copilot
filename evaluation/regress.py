@@ -86,7 +86,9 @@ def checks_of(report, run_number):
     return [c for c in report.get("card_checks", []) if c.get("run_number", 1) == run_number]
 
 
-def compare(new, baseline_dir):
+def compare(new, baseline_dir, controls=()):
+    """The new pass against every pass of the baseline prompt: the recorded runs, and any later run of it over all four pairs
+    (`controls`, best run at the same time as the new one, since one pass of the same prompt moves more than three show)."""
     reports = [json.loads((baseline_dir / name).read_text(encoding="utf-8")) for name in BASELINE]
     base = [values(p) for p in passes(reports)]
     for n, p in enumerate(base, 1):
@@ -94,9 +96,10 @@ def compare(new, baseline_dir):
         if exact:
             p["confirm_exact_rate"] = sum(c["confirm_exact"] for c in exact) / len(exact)
             p["undo_exact_rate"] = sum(c["undo_exact"] for c in exact) / len(exact)
+    base += [control["metrics"] for control in controls]
     now = new["metrics"]
     lines = [f"开发回归：{new['run_id']}（提示词 {new['environment']['prompt_version']}，关掉的护栏：{', '.join(new.get('ablations') or []) or '无'}）", "",
-             "| 项 | 基线每遍（p44） | 这次 | 判断 |", "|---|---|---|---|"]
+             f"| 项 | 基线每遍（p44{'，最后 ' + str(len(controls)) + ' 遍是对照' if controls else ''}） | 这次 | 判断 |", "|---|---|---|---|"]
     worse = []
     for key, label, better in MEASURES:
         seen = [p[key] for p in base if p.get(key) is not None]
@@ -128,6 +131,7 @@ def main():
     p.add_argument("--only", nargs="*")
     p.add_argument("--compare", help="a finished report to compare with the baseline, instead of running")
     p.add_argument("--baseline-dir", default=str(ROOT / "evaluation/results"))
+    p.add_argument("--control", nargs="*", default=[], help="reports of later runs of the baseline prompt over all four pairs")
     args = p.parse_args()
     baseline_dir = pathlib.Path(args.baseline_dir)
     if args.compare:
@@ -151,7 +155,8 @@ def main():
         if not report["complete"]:
             print(json.dumps({"complete": False, "cost_cny": ledger.spent, "stop_reason": report.get("stop_reason")}))
             return 2
-    text, worse = compare(report, baseline_dir)
+    controls = [json.loads(pathlib.Path(path).read_text(encoding="utf-8")) for path in args.control]
+    text, worse = compare(report, baseline_dir, controls)
     print(text)
     if not args.compare:
         (pathlib.Path(a2.paths(SETS, args.run_id)["report"]).with_name(f"regress-{args.run_id}.md")).write_text(text + "\n", encoding="utf-8")
