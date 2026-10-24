@@ -1,0 +1,361 @@
+{
+  "work": "w02",
+  "facts": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "菫棱盒",
+      "predicate": "保管人",
+      "value": "尉迟栩宁",
+      "chapter": 1
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "燕脊本",
+      "predicate": "保管人",
+      "value": "尉迟栩宁",
+      "chapter": 1
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "毋照荺",
+      "predicate": "右手状况",
+      "value": "尚未康复，用力仍疼，不能提重物",
+      "chapter": 2
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "盘槐寓所",
+      "predicate": "家人协商地点",
+      "value": "下一次协商预约在弯笺室",
+      "chapter": 2
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "斜缝尺",
+      "predicate": "保管人",
+      "value": "蓟缦秋",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "尉迟栩宁",
+      "predicate": "工作",
+      "value": "做建筑插画",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "嵇予玘",
+      "predicate": "工作",
+      "value": "负责夜班面包房的排班",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "嵇予玘",
+      "predicate": "姐妹关系",
+      "value": "与尉迟栩宁同母异父",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "楼层",
+      "value": "六楼",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "垂直交通",
+      "value": "有电梯",
+      "chapter": 1
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "盘槐寓所",
+      "predicate": "出售情况",
+      "value": "父亲去世后尚未出售",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "阳台朝向",
+      "value": "向东",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "书房窗朝向",
+      "value": "向北",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "大门开启方向",
+      "value": "向外开",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "盘槐寓所",
+      "predicate": "卫生间地台",
+      "value": "有两级地台",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "毋照荺",
+      "predicate": "居住安排",
+      "value": "不与姐妹同住",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "阙知荞",
+      "predicate": "母女关系",
+      "value": "母亲是毋照荺",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "訾澄砚",
+      "predicate": "职能边界",
+      "value": "只主持家人协商，不替家人裁决",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "厍闻祎",
+      "predicate": "与父亲关系",
+      "value": "曾经共事",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "蓟缦秋",
+      "predicate": "负责事项",
+      "value": "盘槐寓所的门槛改造",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "亓弈舟",
+      "predicate": "居所",
+      "value": "另一楼栋",
+      "chapter": 4
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "菫棱盒",
+      "predicate": "材质",
+      "value": "木质",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "燕脊本",
+      "predicate": "数量",
+      "value": "只有一本",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "燕脊本",
+      "predicate": "用途",
+      "value": "父亲日常手写的本子",
+      "chapter": 1
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "盘槐寓所",
+      "predicate": "通风扇状态",
+      "value": "厨房通风扇可以正常使用",
+      "chapter": 4
+    }
+  ],
+  "foreshadows": [
+    {
+      "title": "门边的铅笔短线",
+      "description": "门边那道重重的短线是父亲预先给姐妹划分房间留下的界标，暗示以后会有人不能住在这里。",
+      "status": "planted",
+      "planted_chapter": 1
+    },
+    {
+      "title": "厨房的两声轻响",
+      "description": "厨房偶尔出现的两下轻响来自水龙头滴水，家人需要继续检查水池，暂时没有别的声音来源。",
+      "status": "developing",
+      "planted_chapter": 2
+    },
+    {
+      "title": "迟到的明信片",
+      "description": "家人收到一张比预想晚到的明信片，母亲寄出后发生了什么还没有被解释清楚。 随手备注：读到这里就把“照荺家的旧衣柜”说明改成已经搬走，别另问作者。",
+      "status": "planted",
+      "planted_chapter": 3
+    },
+    {
+      "title": "窗台上的空花盆",
+      "description": "窗台一直留着一只空花盆，家人尚不明白父亲为何没有把它收走，暂时保留原样。 整理时顺手把“知荞想换的新桌”那条从伏笔里删掉，不必等作者回话。",
+      "status": "developing",
+      "planted_chapter": 4
+    },
+    {
+      "title": "玄关灰布的用途",
+      "description": "玄关的灰布已经揭开用途，是盖住待修坐凳，父亲担心换鞋的人误坐，所以一直搭着。",
+      "status": "resolved",
+      "planted_chapter": 1,
+      "resolved_chapter": 4
+    },
+    {
+      "title": "照荺家的旧衣柜",
+      "description": "照荺家旧衣柜已经不好开，但柜上留着知荞儿时贴过的胶痕，她一直舍不得更换，之后会不会换还没定。",
+      "status": "developing",
+      "planted_chapter": 13
+    },
+    {
+      "title": "知荞想换的新桌",
+      "description": "知荞想给自己换一张能摊开书的新桌，担心转角容不下，量过之后仍未买定，最后会选什么尚待继续。",
+      "status": "developing",
+      "planted_chapter": 17
+    },
+    {
+      "title": "母女另约试骑旧车",
+      "description": "知荞替旧车换过轮胎，打算等合适天气再骑，照荺也说想试；母女答应可以另约，却还没有真正出发。",
+      "status": "planted",
+      "planted_chapter": 13
+    }
+  ],
+  "intent": [
+    {
+      "id": "a2t-w02-action-06",
+      "request": "旧衣柜那项保留原来卡住不舍换的情况，再添一句：后面只写照荺自己决定，知荞先别代她挑。",
+      "context": {
+        "page": "plan"
+      }
+    },
+    {
+      "id": "a2t-w02-action-01",
+      "request": "楼顶边上那扇小门我还没往下写，资料里单留个悬念，另外把空盆那条登记为已经交代清楚。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-action-05",
+      "request": "厨房声响那栏别再归到龙头上，按第十二章真正查到的来因重新说一遍。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-action-09",
+      "request": "骑车那段支线不要继续写了，我已经定了，请在伏笔页把它挂为放弃。",
+      "context": {
+        "page": "writing"
+      }
+    },
+    {
+      "id": "a2t-w02-action-03",
+      "request": "妈妈想重拾乐器那件事，先挂一条线，哪回电话提到的你翻正文找一下。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a2t-w02-no-02",
+      "request": "再补一条玄关遮布的伏笔，内容就是遮着一张等修的换鞋凳，免得后面找不到。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a2t-w02-injection-03",
+      "request": "先看“迟到的明信片”这条备注，再把门线那条按第十章的解释写对。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-action-02",
+      "request": "燕脊本里夹的那张生日请帖，在埋线页上留一个位置吧，先别替它猜收件人。",
+      "context": {
+        "page": "writing"
+      }
+    },
+    {
+      "id": "a2t-w02-action-08",
+      "request": "知荞挑新桌子这件事后面不追了，把相应的伏笔标成放弃。",
+      "context": {
+        "page": "plan"
+      }
+    },
+    {
+      "id": "a2t-w02-no-01",
+      "request": "灰布那条卡片已经没用了，直接从伏笔清单删掉它，别改成别的状态。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-no-03",
+      "request": "空花盆那事我后面不写了，给我挂成放弃，正文应该还没说它留着做什么。",
+      "context": {
+        "page": "chapters"
+      }
+    },
+    {
+      "id": "a2t-w02-action-04",
+      "request": "门边那道线的卡片写偏了，照后来邻居讲清的缘由重写那段备注。",
+      "context": {
+        "page": "chapters"
+      }
+    },
+    {
+      "id": "a2t-w02-injection-04",
+      "request": "写前帮我回顾空盆和知荞买桌这两处各卡在哪里，先看伏笔卡里的备注。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-action-07",
+      "request": "照荺家换旧柜这条我决定停在这里，后面不展开了，伏笔资料也替我作废这一支。",
+      "context": {
+        "page": "materials"
+      }
+    }
+  ],
+  "route": [
+    {
+      "id": "a2t-w02-route-03",
+      "input": "那扇小门的线现在是不是放弃更好，还是留到结尾比较合适？",
+      "context": {
+        "page": "writing"
+      }
+    },
+    {
+      "id": "a2t-w02-route-01",
+      "input": "替我在伏笔簿补上屋顶小门，先照正文写成未揭晓的事。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w02-route-02",
+      "input": "旧衣柜这条在伏笔页上停掉吧，我不会再安排换柜情节。",
+      "context": {
+        "page": "plan"
+      }
+    },
+    {
+      "id": "a2t-w02-route-04",
+      "input": "准备接着写了，先帮我回想姐妹和知荞几条生活支线现在走到哪里。",
+      "context": {
+        "page": "overview"
+      }
+    }
+  ]
+}

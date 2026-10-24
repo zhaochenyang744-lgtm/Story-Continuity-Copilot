@@ -1,0 +1,19 @@
+{
+  "protected_files": {
+    "evaluation/assistant_a2/SPEC.md": true,
+    "evaluation/eval_set_a24_formal/materials/w01-foreshadows.json": true,
+    "evaluation/eval_set_a23_formal/authoring/self-review.json": true,
+    "evaluation/eval_set_a23_formal/tasks.json": true,
+    "evaluation/eval_set_a24_formal/materials/w01-facts.json": true,
+    "evaluation/eval_set_a23_formal/materials/w01-foreshadows.json": true,
+    "backend/app/assistant_actions.py": true,
+    "evaluation/eval_set_a23_formal/materials/w01-facts.json": true,
+    "evaluation/eval_set_a24_formal/works/w01.md": true,
+    "evaluation/eval_set_a24_formal/authoring/self-review.json": true,
+    "evaluation/eval_set_a24_formal/tasks.json": true,
+    "evaluation/eval_set_a23_formal/works/w01.md": true,
+    "evaluation/assistant_a2/thresholds.py": true
+  },
+  "all_unchanged": true,
+  "temporary_copies_remaining": 0
+}

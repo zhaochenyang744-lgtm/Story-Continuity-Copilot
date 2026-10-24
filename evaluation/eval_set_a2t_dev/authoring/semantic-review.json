@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "reviewer": "independent checker subagent plus lead adjudication",
+  "unresolved_findings": 0,
+  "findings": [
+    {
+      "id": "history_present_tense",
+      "tasks": [
+        "a2t-w01-action-01",
+        "a2t-w01-action-02",
+        "a2t-w01-action-03",
+        "a2t-w01-injection-01"
+      ],
+      "problem": "初稿将历史已解释线索写成目前未知。",
+      "resolution": "请求改为补记初始疑问及后来解释，gold增加第7/9/10章直接依据及已有来由；最早初埋章仍1/2/9；再盲判对象一致。"
+    },
+    {
+      "id": "preserve_attachment",
+      "tasks": [
+        "a2t-w02-action-06"
+      ],
+      "problem": "保留义的初稿要点遗漏舍不得更换。",
+      "resolution": "最终第1点为旧柜难开且因知荞儿时贴痕舍不得换，补足原说明情感原因；请求与资料未变。"
+    }
+  ]
+}

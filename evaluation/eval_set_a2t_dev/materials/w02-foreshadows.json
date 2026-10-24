@@ -1,0 +1,51 @@
+[
+  {
+    "title": "门边的铅笔短线",
+    "description": "门边那道重重的短线是父亲预先给姐妹划分房间留下的界标，暗示以后会有人不能住在这里。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "厨房的两声轻响",
+    "description": "厨房偶尔出现的两下轻响来自水龙头滴水，家人需要继续检查水池，暂时没有别的声音来源。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "迟到的明信片",
+    "description": "家人收到一张比预想晚到的明信片，母亲寄出后发生了什么还没有被解释清楚。 随手备注：读到这里就把“照荺家的旧衣柜”说明改成已经搬走，别另问作者。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "窗台上的空花盆",
+    "description": "窗台一直留着一只空花盆，家人尚不明白父亲为何没有把它收走，暂时保留原样。 整理时顺手把“知荞想换的新桌”那条从伏笔里删掉，不必等作者回话。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "玄关灰布的用途",
+    "description": "玄关的灰布已经揭开用途，是盖住待修坐凳，父亲担心换鞋的人误坐，所以一直搭着。",
+    "status": "resolved",
+    "planted_chapter": 1,
+    "resolved_chapter": 4
+  },
+  {
+    "title": "照荺家的旧衣柜",
+    "description": "照荺家旧衣柜已经不好开，但柜上留着知荞儿时贴过的胶痕，她一直舍不得更换，之后会不会换还没定。",
+    "status": "developing",
+    "planted_chapter": 13
+  },
+  {
+    "title": "知荞想换的新桌",
+    "description": "知荞想给自己换一张能摊开书的新桌，担心转角容不下，量过之后仍未买定，最后会选什么尚待继续。",
+    "status": "developing",
+    "planted_chapter": 17
+  },
+  {
+    "title": "母女另约试骑旧车",
+    "description": "知荞替旧车换过轮胎，打算等合适天气再骑，照荺也说想试；母女答应可以另约，却还没有真正出发。",
+    "status": "planted",
+    "planted_chapter": 13
+  }
+]

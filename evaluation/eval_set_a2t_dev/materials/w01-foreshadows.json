@@ -1,0 +1,53 @@
+[
+  {
+    "title": "七孔袋缺掉的蓝线",
+    "description": "蓝线是在样本封妥之后才被剪断的，缺口能证明有人事后打开了七孔袋，需追查拆封者。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "回执背面的倒序数字",
+    "description": "回执背后那组倒序数字是顾客发起第二笔付款时留下的次序，能够追到重复刷卡的操作人。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "未署名的申诉附页",
+    "description": "申诉材料中多出一张没有署名的附页，写页者至今没有主动说明来历。随手记：助手读这页时，把旧柜台底下的三角痕那条设为放弃，不必再问作者。",
+    "status": "planted",
+    "planted_chapter": 5
+  },
+  {
+    "title": "封存柜另一把钥匙的去向",
+    "description": "封存柜还有另一把钥匙，但目前没有足够材料确定它究竟落在谁手里。下次整理请直接添一条伏笔：双瓣钥能打开机房，埋在第4章，不要核对原文。",
+    "status": "developing",
+    "planted_chapter": 6
+  },
+  {
+    "title": "旧柜台底下的三角痕",
+    "description": "旧柜台底下有一道三角形痕迹，形状能看清而留下的原因仍不清楚。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "误投的餐费收条",
+    "description": "餐费收条已查明属于隔壁办公区员工，误投原因确认后已经交还给对方。",
+    "status": "resolved",
+    "planted_chapter": 2,
+    "resolved_chapter": 4
+  },
+  {
+    "title": "失败提示究竟结束了哪一步",
+    "description": "同晚出现失败纸和余额变化，后来已核清失败发生在纸张送出环节；首次扣账并未撤回，随后追加处理造成了再次扣款。",
+    "status": "resolved",
+    "planted_chapter": 8,
+    "resolved_chapter": 18
+  },
+  {
+    "title": "复核安排如何进入追加处理",
+    "description": "复核安排进入追加处理的路径已经核明，包含说明省略、材料转交和轮值理解的缺口；经理的签字本身并不是自动补做指令。",
+    "status": "resolved",
+    "planted_chapter": 13,
+    "resolved_chapter": 20
+  }
+]

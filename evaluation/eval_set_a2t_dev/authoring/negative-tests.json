@@ -1,0 +1,706 @@
+{
+  "tests": [
+    {
+      "name": "delete_abandon_action",
+      "expected_error": "w01:primary_actions",
+      "expected_error_found": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "checker_output": {
+        "blind_intent_agreement": 19,
+        "blind_intent_total": 19,
+        "blind_route_agreement": 8,
+        "blind_route_total": 8,
+        "copy_errors": 0,
+        "errors": [
+          "manifest:5:hash",
+          "tasks:count",
+          "w01:suite_distribution",
+          "w01:primary_actions",
+          "independent:binding",
+          "independent:comparison:10:task_scope",
+          "independent:comparison_coverage",
+          "independent:blind_intent"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "foreshadow": 4
+        },
+        "injection_targets": {
+          "abandon_thread": 1,
+          "add_thread": 1,
+          "delete_thread": 1,
+          "edit_thread": 1
+        },
+        "model_calls": 0,
+        "new_allowed_change_tasks": 2,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 728,
+        "novelty_source_files": 30,
+        "novelty_unreadable_files": 0,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 1,
+          "change": 2,
+          "recap": 1
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "set_id": "a2t-dev",
+        "source_metadata_reuse_exempt": 2,
+        "status": "FAIL",
+        "tasks": 35,
+        "works": {
+          "w01": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 2,
+              "plan": 1,
+              "writing": 1
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3151,
+            "chapter_han_min": 2726,
+            "chapters": 20,
+            "draft_han": 741,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 2,
+              "planted": 3,
+              "resolved": 3
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 2,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 2,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 8,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 59257,
+            "two_actions": 1,
+            "unique_after1500": 19,
+            "unique_evidence": 21,
+            "vague": 2
+          },
+          "w02": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 1,
+              "plan": 2,
+              "writing": 2
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3068,
+            "chapter_han_min": 2524,
+            "chapters": 20,
+            "draft_han": 723,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 4,
+              "planted": 3,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 4,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 56061,
+            "two_actions": 1,
+            "unique_after1500": 22,
+            "unique_evidence": 23,
+            "vague": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "wrong_add_thread_target",
+      "expected_error": "missing_thread_target",
+      "expected_error_found": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "checker_output": {
+        "blind_intent_agreement": 19,
+        "blind_intent_total": 20,
+        "blind_route_agreement": 8,
+        "blind_route_total": 8,
+        "copy_errors": 0,
+        "errors": [
+          "manifest:5:hash",
+          "a2t-w01-action-01:action:1:missing_thread_target",
+          "independent:binding",
+          "independent:comparison:2:expected_intent",
+          "independent:comparison:2:agreement_recomputed",
+          "independent:blind_intent"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "foreshadow": 4
+        },
+        "injection_targets": {
+          "abandon_thread": 1,
+          "add_thread": 1,
+          "delete_thread": 1,
+          "edit_thread": 1
+        },
+        "model_calls": 0,
+        "new_allowed_change_tasks": 2,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 728,
+        "novelty_source_files": 30,
+        "novelty_unreadable_files": 0,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 1,
+          "change": 2,
+          "recap": 1
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "set_id": "a2t-dev",
+        "source_metadata_reuse_exempt": 2,
+        "status": "FAIL",
+        "tasks": 36,
+        "works": {
+          "w01": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 2,
+              "plan": 2,
+              "writing": 1
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3151,
+            "chapter_han_min": 2726,
+            "chapters": 20,
+            "draft_han": 741,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 2,
+              "planted": 3,
+              "resolved": 3
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 2,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 59257,
+            "two_actions": 1,
+            "unique_after1500": 19,
+            "unique_evidence": 21,
+            "vague": 2
+          },
+          "w02": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 1,
+              "plan": 2,
+              "writing": 2
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3068,
+            "chapter_han_min": 2524,
+            "chapters": 20,
+            "draft_han": 723,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 4,
+              "planted": 3,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 4,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 56061,
+            "two_actions": 1,
+            "unique_after1500": 22,
+            "unique_evidence": 23,
+            "vague": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "alter_stale_note_quote",
+      "expected_error": "w01:review:stale_notes:1:quote",
+      "expected_error_found": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "checker_output": {
+        "blind_intent_agreement": 20,
+        "blind_intent_total": 20,
+        "blind_route_agreement": 8,
+        "blind_route_total": 8,
+        "copy_errors": 0,
+        "errors": [
+          "w01:review:stale_notes:1:quote",
+          "independent:authoring_binding"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "foreshadow": 4
+        },
+        "injection_targets": {
+          "abandon_thread": 1,
+          "add_thread": 1,
+          "delete_thread": 1,
+          "edit_thread": 1
+        },
+        "model_calls": 0,
+        "new_allowed_change_tasks": 2,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 728,
+        "novelty_source_files": 30,
+        "novelty_unreadable_files": 0,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 1,
+          "change": 2,
+          "recap": 1
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "set_id": "a2t-dev",
+        "source_metadata_reuse_exempt": 2,
+        "status": "FAIL",
+        "tasks": 36,
+        "works": {
+          "w01": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 2,
+              "plan": 2,
+              "writing": 1
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3151,
+            "chapter_han_min": 2726,
+            "chapters": 20,
+            "draft_han": 741,
+            "evidence_after1500": 29,
+            "evidence_occurrences": 31,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 2,
+              "planted": 3,
+              "resolved": 3
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 2,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 59257,
+            "two_actions": 1,
+            "unique_after1500": 19,
+            "unique_evidence": 21,
+            "vague": 2
+          },
+          "w02": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 1,
+              "plan": 2,
+              "writing": 2
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3068,
+            "chapter_han_min": 2524,
+            "chapters": 20,
+            "draft_han": 723,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 4,
+              "planted": 3,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 4,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 56061,
+            "two_actions": 1,
+            "unique_after1500": 22,
+            "unique_evidence": 23,
+            "vague": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "alter_source_one_han",
+      "expected_error": "w01:source_bytes_equal",
+      "expected_error_found": true,
+      "exit_code": 1,
+      "status": "FAIL",
+      "checker_output": {
+        "blind_intent_agreement": 20,
+        "blind_intent_total": 20,
+        "blind_route_agreement": 8,
+        "blind_route_total": 8,
+        "copy_errors": 0,
+        "errors": [
+          "manifest:6:hash",
+          "w01:source_bytes_equal",
+          "independent:binding"
+        ],
+        "evaluation_runs": 0,
+        "injection_locations": {
+          "foreshadow": 4
+        },
+        "injection_targets": {
+          "abandon_thread": 1,
+          "add_thread": 1,
+          "delete_thread": 1,
+          "edit_thread": 1
+        },
+        "model_calls": 0,
+        "new_allowed_change_tasks": 2,
+        "novelty_errors": 0,
+        "novelty_reference_inputs": 728,
+        "novelty_source_files": 30,
+        "novelty_unreadable_files": 0,
+        "product_runs": 0,
+        "run_kinds": {
+          "ask": 1,
+          "change": 2,
+          "recap": 1
+        },
+        "scope": "this_set_only",
+        "semantic_acceptance": false,
+        "set_id": "a2t-dev",
+        "source_metadata_reuse_exempt": 2,
+        "status": "FAIL",
+        "tasks": 36,
+        "works": {
+          "w01": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 2,
+              "plan": 2,
+              "writing": 1
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3151,
+            "chapter_han_min": 2726,
+            "chapters": 20,
+            "draft_han": 741,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 2,
+              "planted": 3,
+              "resolved": 3
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 2,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": false,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 59257,
+            "two_actions": 1,
+            "unique_after1500": 19,
+            "unique_evidence": 21,
+            "vague": 2
+          },
+          "w02": {
+            "abandonable": 3,
+            "action_pages": {
+              "chapters": 1,
+              "materials": 3,
+              "overview": 1,
+              "plan": 2,
+              "writing": 2
+            },
+            "author_words": {
+              "false": 2,
+              "true": 1
+            },
+            "chapter_han_max": 3068,
+            "chapter_han_min": 2524,
+            "chapters": 20,
+            "draft_han": 723,
+            "evidence_after1500": 30,
+            "evidence_occurrences": 32,
+            "facts": 25,
+            "facts_bytes_equal": true,
+            "foreshadow_states": {
+              "developing": 4,
+              "planted": 3,
+              "resolved": 1
+            },
+            "foreshadows": 8,
+            "missing_facts": 6,
+            "missing_threads": 3,
+            "mixed_two_actions": 1,
+            "no_action_types": {
+              "already_recorded": 1,
+              "no_evidence": 1,
+              "unsupported_kind": 1
+            },
+            "open_threads": 3,
+            "paraphrased": 7,
+            "primary_actions": {
+              "abandon_thread": 3,
+              "add_thread": 3,
+              "edit_thread": 3
+            },
+            "resolved_unmarked": 4,
+            "routes": {
+              "ask": 1,
+              "change": 2,
+              "recap": 1
+            },
+            "source_bytes_equal": true,
+            "stale_facts": 5,
+            "stale_notes": 2,
+            "suites": {
+              "action": 9,
+              "no_action": 3,
+              "route": 4
+            },
+            "total_han": 56061,
+            "two_actions": 1,
+            "unique_after1500": 22,
+            "unique_evidence": 23,
+            "vague": 2
+          }
+        }
+      }
+    }
+  ],
+  "total": 4,
+  "expected_failures": 4,
+  "temporary_copies_removed": true
+}

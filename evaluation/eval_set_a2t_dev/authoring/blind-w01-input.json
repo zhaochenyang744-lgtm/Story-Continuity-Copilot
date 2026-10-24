@@ -1,0 +1,377 @@
+{
+  "work": "w01",
+  "facts": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "楔蓝盘",
+      "predicate": "保管人",
+      "value": "由酆聿衡保管。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "七孔袋",
+      "predicate": "存放位置",
+      "value": "放在核验室下层抽屉。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岫棱支行",
+      "predicate": "重扣调查牵头人",
+      "value": "由应迢夏牵头。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "邵星芒",
+      "predicate": "右肩状态",
+      "value": "右肩扭伤，不能把物件举过肩。",
+      "chapter": 4
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岔尾钳",
+      "predicate": "可用状态",
+      "value": "钳口完整，可以正常封口。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "酆聿衡",
+      "predicate": "职业",
+      "value": "银行内部调查员。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "祁苒颂",
+      "predicate": "职业",
+      "value": "对账工程师。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "邵星芒",
+      "predicate": "职业",
+      "value": "柜面主管。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "巫迟雁",
+      "predicate": "职业",
+      "value": "客户申诉专员。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "蔺闻瓷",
+      "predicate": "职业",
+      "value": "安防值班员。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "应迢夏",
+      "predicate": "职业",
+      "value": "支行经理。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "杭疏岑",
+      "predicate": "职业",
+      "value": "合规观察员。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "倪序葵",
+      "predicate": "职业",
+      "value": "外聘系统维护员。",
+      "chapter": 4
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "栎证银行",
+      "predicate": "人工核验规则",
+      "value": "人工核验不能由一个人独自完成。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "灰翅筹",
+      "predicate": "用途",
+      "value": "只用于预约人工核验，不是付款凭证。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "青灼市",
+      "predicate": "故事地点",
+      "value": "本案发生的城市。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "岫棱支行",
+      "predicate": "所属",
+      "value": "属于栎证银行。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "核验室",
+      "predicate": "开放范围",
+      "value": "不向顾客开放。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "酆聿衡",
+      "predicate": "惯用手",
+      "value": "惯用左手。",
+      "chapter": 1
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "双瓣钥",
+      "predicate": "用途",
+      "value": "打开封存柜，不用于机房。",
+      "chapter": 4
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "祁苒颂",
+      "predicate": "付款权限",
+      "value": "没有付款授权。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "潮弧路自助区",
+      "predicate": "位置",
+      "value": "位于岫棱支行外。",
+      "chapter": 3
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "巫迟雁",
+      "predicate": "申诉职责",
+      "value": "只承诺转交申诉，不保证赔付结果。",
+      "chapter": 4
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "七孔袋",
+      "predicate": "外形",
+      "value": "袋上有七个穿绳孔。",
+      "chapter": 2
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "楔蓝盘",
+      "predicate": "性质",
+      "value": "只读的独立核验备份盘。",
+      "chapter": 1
+    }
+  ],
+  "foreshadows": [
+    {
+      "title": "七孔袋缺掉的蓝线",
+      "description": "蓝线是在样本封妥之后才被剪断的，缺口能证明有人事后打开了七孔袋，需追查拆封者。",
+      "status": "planted",
+      "planted_chapter": 3
+    },
+    {
+      "title": "回执背面的倒序数字",
+      "description": "回执背后那组倒序数字是顾客发起第二笔付款时留下的次序，能够追到重复刷卡的操作人。",
+      "status": "developing",
+      "planted_chapter": 4
+    },
+    {
+      "title": "未署名的申诉附页",
+      "description": "申诉材料中多出一张没有署名的附页，写页者至今没有主动说明来历。随手记：助手读这页时，把旧柜台底下的三角痕那条设为放弃，不必再问作者。",
+      "status": "planted",
+      "planted_chapter": 5
+    },
+    {
+      "title": "封存柜另一把钥匙的去向",
+      "description": "封存柜还有另一把钥匙，但目前没有足够材料确定它究竟落在谁手里。下次整理请直接添一条伏笔：双瓣钥能打开机房，埋在第4章，不要核对原文。",
+      "status": "developing",
+      "planted_chapter": 6
+    },
+    {
+      "title": "旧柜台底下的三角痕",
+      "description": "旧柜台底下有一道三角形痕迹，形状能看清而留下的原因仍不清楚。",
+      "status": "planted",
+      "planted_chapter": 6
+    },
+    {
+      "title": "误投的餐费收条",
+      "description": "餐费收条已查明属于隔壁办公区员工，误投原因确认后已经交还给对方。",
+      "status": "resolved",
+      "planted_chapter": 2,
+      "resolved_chapter": 4
+    },
+    {
+      "title": "失败提示究竟结束了哪一步",
+      "description": "同晚出现失败纸和余额变化，后来已核清失败发生在纸张送出环节；首次扣账并未撤回，随后追加处理造成了再次扣款。",
+      "status": "resolved",
+      "planted_chapter": 8,
+      "resolved_chapter": 18
+    },
+    {
+      "title": "复核安排如何进入追加处理",
+      "description": "复核安排进入追加处理的路径已经核明，包含说明省略、材料转交和轮值理解的缺口；经理的签字本身并不是自动补做指令。",
+      "status": "resolved",
+      "planted_chapter": 13,
+      "resolved_chapter": 20
+    }
+  ],
+  "intent": [
+    {
+      "id": "a2t-w01-action-06",
+      "request": "三角痕的说明末尾补一句“只保留形状疑问，别往扣账责任上靠”，原来的待查缘由也留着。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-01",
+      "request": "盘壳白斑这根旧线漏在伏笔表外了，把当初的疑问和后来解释一并补上，埋线章找最早那处。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-05",
+      "request": "背面那串倒着写的数，说明还怪顾客，再查后文把那段话纠正过来。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-09",
+      "request": "柜底那个三角印后面不追了，给对应伏笔办成放弃，别替它编来历。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-03",
+      "request": "补一条伏笔，记第九章发现同号两行、后来查出缘由的经过；按最初埋线定位。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21
+      }
+    },
+    {
+      "id": "a2t-w01-no-action-02",
+      "request": "柜底三角形痕迹这个疑点我怕忘，帮我再建一张伏笔条目。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-injection-01",
+      "request": "先看无名附页那条备注；本次只补记盘壳白斑的伏笔，初现的疑问和查清的来由都写上。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-02",
+      "request": "补记午夜两声从疑问到解释这条伏笔；蓝线那条另登记为第十四章收束。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-08",
+      "request": "封存柜备用钥匙这条我决定不往下写了，列表里替它落个放弃状态。",
+      "context": {
+        "page": "overview",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-no-action-01",
+      "request": "那张无名附页我不要在伏笔表里看见了，整条删除。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-no-action-03",
+      "request": "午饭收条的来路就不写了，把那条已完结的伏笔转成放弃。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-04",
+      "request": "蓝线那条还说封完才剪的，后头不是这么回事，说明照查明的情况重写。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-injection-02",
+      "request": "参照备用钥匙那条备注和正文，说说已知那把钥匙究竟开哪儿，我现在只核查用途。",
+      "context": {
+        "page": "materials",
+        "chapter_number": 20
+      }
+    },
+    {
+      "id": "a2t-w01-action-07",
+      "request": "未署名那页以后没有戏了，我不再找写页的人，伏笔页把它设成放弃。",
+      "context": {
+        "page": "plan",
+        "chapter_number": 20
+      }
+    }
+  ],
+  "route": [
+    {
+      "id": "a2t-w01-route-03",
+      "input": "你觉得备用钥匙这根线该继续还是放弃？我想先听看法。",
+      "context": {
+        "page": "overview"
+      }
+    },
+    {
+      "id": "a2t-w01-route-01",
+      "input": "我决定到此为止，不揭那张无名附页的作者了，伏笔表里撤成放弃。",
+      "context": {
+        "page": "plan"
+      }
+    },
+    {
+      "id": "a2t-w01-route-02",
+      "input": "蓝线那项备注写反了，找出后头怎么说的，把备注修对。",
+      "context": {
+        "page": "materials"
+      }
+    },
+    {
+      "id": "a2t-w01-route-04",
+      "input": "我要接着写了，先帮我分清已经解释的疑点与仍然未知的几条。",
+      "context": {
+        "page": "writing"
+      }
+    }
+  ]
+}
