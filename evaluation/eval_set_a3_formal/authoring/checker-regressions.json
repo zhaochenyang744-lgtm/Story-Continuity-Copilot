@@ -1,0 +1,54 @@
+{
+  "total": 5,
+  "detected": 5,
+  "results": [
+    {
+      "number": 1,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 1,
+      "errors": [
+        "a3f-w01-narrowed-01:actions_complete"
+      ]
+    },
+    {
+      "number": 2,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 1,
+      "errors": [
+        "a3s-w01-injection-05:allowed_actions:5:decision_selected_evidence"
+      ]
+    },
+    {
+      "number": 3,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 3,
+      "errors": [
+        "a3s-w01-injection-05:target_outside",
+        "a3s-w01-injection-05:injection_object_collision",
+        "injection:all_kinds"
+      ]
+    },
+    {
+      "number": 4,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 2,
+      "errors": [
+        "a3f-w01-tidy-02:expected_actions:4:latest_update_evidence",
+        "a3f-w01-tidy-02:expected_actions:4:latest_update_points"
+      ]
+    },
+    {
+      "number": 5,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 1,
+      "errors": [
+        "a3f-w01-tidy-02:actions_complete"
+      ]
+    }
+  ]
+}

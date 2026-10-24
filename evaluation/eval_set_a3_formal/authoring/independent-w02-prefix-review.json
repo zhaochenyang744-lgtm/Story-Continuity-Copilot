@@ -1,0 +1,109 @@
+{
+  "review_kind": "independent_prefix_semantic_review",
+  "reviewer_participated_in_w02_authoring": false,
+  "work": "w02",
+  "status": "PREFIX_CHANGES_REQUIRED",
+  "final_full_work_review": false,
+  "method": "逐句完整阅读当前正文第1—18章、w02-bible.json全部内容，并完整阅读w02-shared-draft.txt作为未来相容性参考；未以引用存在或静态检查替代语义通读。本次只读正文并写本记录，未修改其他文件、未提交、未跑产品/评测/模型接口。最终30章完成后仍须另行从第1章完整复读，本次前缀检查不能替代。",
+  "coverage": {
+    "chapters_read_in_full": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    "initial_facts_checked": 30,
+    "shared_draft_read": true,
+    "shared_draft_chapter": 31,
+    "bible_read_in_full": true,
+    "tail_chapters_not_reviewed": [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  },
+  "findings": [
+    {
+      "id": "W02P01",
+      "severity": "P2",
+      "category": "trace_carrier_location_ambiguity",
+      "chapter": 2,
+      "short_quotes": ["桌上的硬套碰到木沿", "有人立即看向他胸口", "阚蔚烬按住胸前的硬套，隙纹赎牌仍在他身上。"],
+      "finding": "第2章扶担架挪桌场景写‘桌上的硬套’，前后却把唯一已引入的赎牌硬套放在阚蔚烬胸前，并让旁人因该碰响看向其胸口。本段没有取下硬套到桌上、重新佩回或另有一只硬套的交代，造成追踪对象容器位置的额外歧义。它不是设计的原铸孔形矛盾，而像方位词笔误。",
+      "suggested_resolution": "将碰响处限定为‘胸前的硬套碰到木沿’或等义动作，维持物件一直随身、不增加一次临时转存。若确想写桌上另一只硬套，需明确另一物件，但不建议为一句引入额外道具。",
+      "affected_registered_points": ["trace_objects/1/states/1"],
+      "designed_points_to_preserve": "第7章原铸方孔陈述和以后设计的相反断言不能解释为改凿或修掉。"
+    }
+  ],
+  "finding_count": 1,
+  "chapter_reviews": [
+    {"chapter": 1, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "断旗绳作为未明事件埋入，未认定暗割；赎牌章末明写由阚蔚烬胸前硬套独管，地形、代表、读两军文字与赤辙同人别名均有场景支持。"},
+    {"chapter": 2, "result": "W02P01", "basis": "隘口不能并行与双方错时核看有实际动作；两别名、医者身份、未拆水玺与夜间第二旗影均按设定。硬套碰响处出现桌上/胸前位置歧义，详见唯一发现。"},
+    {"chapter": 3, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "亲属仍在杆外，归俘代表出营口听话不等于提前开放入内。水桶按到达次序、守泉中立、夜间禁吊均实际说明；名册反复计数相差一人且未解。水玺旧封仍完整，祁琮黛隔封套托住。"},
+    {"chapter": 4, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "寻亲接待、传旗仅停行、濮无独改赎价权、短剑无锋仍解佩、未识字者口述本人意思均直接支持。另一送俘队过期未到且未判原因；使函仍由夔伽蔓腰带夹层带入。"},
+    {"chapter": 5, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "五条初始事实逐项出现，原名/军名已有问法但并未提前解名册差额；红屑发现后没有靠像桶屑或像药直接认原因，疑水下药也未被证明。亲属相认仍隔杆，未越过第18章资格变化。"},
+    {"chapter": 6, "result": "DESIGNED_DECISION_A_PRESERVED", "basis": "断绳旧磨痕对帐钉完整收束，与资料9已resolved相符；旧井是否通外实际埋入。旗语、死者赎钱拒收、病帐背风、井沿不搁武器、可自行离席均有实际场景。原约第三日正午作为决定点a保留。"},
+    {"chapter": 7, "result": "DESIGNED_CONTRADICTION_A_PRESERVED", "basis": "幼俘不肯说来处实际出现，未被亲属强认。赎牌此前胸前到如今见证交濮有交接；原铸方孔是同次首次交牌的确定叙述，不能改成看错或传闻。"},
+    {"chapter": 8, "result": "DESIGNED_CONTRADICTION_A_PRESERVED", "basis": "水玺由旧封到第一次当众拆开有全场见证，原有四凸脉确定陈述保留。旧王欠赎另议且未作不追决定，不能提前算第20章弃线。夜井仍只白日吊桶。"},
+    {"chapter": 9, "result": "DESIGNED_CONTRADICTION_A_PRESERVED", "basis": "家书丢失经查车仍未找回，身份未核明也没有假认。使函从腰带交扈核验的转移明确；第一次核验原刻边钩朝左确定陈述保留。濮腰边带赎牌承接第7章。"},
+    {"chapter": 10, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "右肩中箭是清收试弓事故，施害经过与流箭称呼相容，不是停战反悔。受伤前尚可帮搬垫轮、布角，受伤后只左手指车，未再抬右臂。旗交祝传、医者托右臂安排明确。"},
+    {"chapter": 11, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "肩伤持续，只左手拿碗、压纸、掀帘且旁人接手。第二旗影经原灯、原站位、重复移回对照回收，未和已解断绳混同。双语识读decoy等价于初始事实5，不是新能力。"},
+    {"chapter": 12, "result": "DESIGNED_DECISION_B_PRESERVED", "basis": "全章多次明说夜里取白日已吊起的存水，禁夜吊桶照旧，因此小门权限不构成井禁矛盾；范围仅病者，未放亲属入内。肩伤全程右臂托稳、左手动作。第四日正午原约作为决定点b，无重议倒改过渡，不能自行选定。"},
+    {"chapter": 13, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "赎牌在两军与归俘见证下暂存共同帐、离开濮随身位置，有记录和容器说明。濮用左手取牌，右肩无负重。原约保管仍未定，不和后来第22章接职责混同；亲属入内资格仍未改。"},
+    {"chapter": 14, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "漏桶停作饮用并撤白布改系好桶，未把用途改变当水已安全保证。水玺先共同案端再经双方见证搬医帐高架，避水有实际动线。濮右肩持续限制，原约职责仍待议；归俘拒用减价换沉默不是新增去向选择。"},
+    {"chapter": 15, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "误印有误沾前后说明，不变成归俘同意。使函经见证入医帐干箱封口，原约/家书没有被顺带存入；濮只左手接还记录，没有举右臂。仍明确夜井不吊、使用白日存水。"},
+    {"chapter": 16, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "先见亲属后自主选的条件从真实见面与听消息发展而来；会面在杆旁约定位置、担架抬外，不是提前让亲属入营见证。伤者仍托右臂，不扶担架，仅左掌近案。幼俘与失期队伍未解。"},
+    {"chapter": 17, "result": "NO_OTHER_PREFIX_ISSUE", "basis": "原名/军名重复造成一册多算，以本人、记名者、押送见证对照并交换重数后合并，名册差额查清成立。原来较小册‘少一人’系相对重复计数的较大册，正文说明真身只有本人，不是发现真正失踪者。重伤优先decoy等价于初始事实23。伤者右臂未动。"},
+    {"chapter": 18, "result": "DESIGNED_DECISION_A_PRESERVED", "basis": "全章在正式议定前不先放亲属入内，末段才取消军方独占，支持事实11过时。新增见证仍不得代本人选，和第16章条件相容。初建十二席指过去事件，和今日加席分离，作为第二决定点a保留。井夜禁与病者存水小门继续分开，濮肩伤未恢复。"}
+  ],
+  "initial_fact_support": [
+    {"indices": [1, 2, 3, 4, 5], "chapter": 1, "result": "SUPPORTED", "basis": "独管赎牌、同人别名、两干河地形、归俘推举代表、双语识读都有明文并进入场景。"},
+    {"indices": [6, 7, 8, 9, 10], "chapter": 2, "result": "SUPPORTED", "basis": "水玺未拆、两别名、隘口马车错时、随俘医者不领军职均直接说清。"},
+    {"indices": [11, 12, 13, 14, 15], "chapter": 3, "result": "SUPPORTED", "basis": "军方入内见证限制、按到达添水、守井安全不作军保、使函身份用途不能抵赎价、夜禁吊桶均实际说明。"},
+    {"indices": [16, 17, 18, 19, 20], "chapter": 4, "result": "SUPPORTED", "basis": "先坐水后问姓名、旗只传停行、赎价双方见证、无锋剑仍解佩、本人不识字可口述不代按印均逐项出现。"},
+    {"indices": [21, 22, 23, 24, 25], "chapter": 5, "result": "SUPPORTED", "basis": "禁亲属抵押、核原名再军名、重伤先看不按军服、白布桶区分洗马桶、炭木片雨前收均直接支持。"},
+    {"indices": [26, 27, 28, 29, 30], "chapter": 6, "result": "SUPPORTED", "basis": "旗横摆两次暂候、拒代死者收赎钱、病者背风、井沿不搁武器、交谈自行离席均直接支持。"}
+  ],
+  "foreshadow_prefix_review": [
+    {"index": 1, "planted_chapter": 2, "resolved_chapter": 11, "result": "SUPPORTED_RESOLVED_UNMARKED", "basis": "夜间多一道旗影实际埋入，经同灯同站位对照解为破帘映灯。"},
+    {"index": 2, "planted_chapter": 3, "resolved_chapter": 17, "result": "SUPPORTED_RESOLVED_UNMARKED", "basis": "名册差一人的疑问持续追查，最终同人原名军名重复计数合并，未靠猜或强迫认名结清。"},
+    {"index": 3, "planted_chapter": 5, "result": "SUPPORTED_STILL_OPEN_WITHIN_PREFIX", "basis": "红屑未知，尚未揭示桶漆；不能将第5章另有木屑像桶掉落当成已查清红屑来处。预定第23章回收未评。"},
+    {"index": 4, "planted_chapter": 4, "result": "SUPPORTED_STILL_OPEN_WITHIN_PREFIX", "basis": "送俘队逾期且无改期信，后来远车影被明确限定，未当找到；第18章仍未知。"},
+    {"index": 5, "planted_chapter": 6, "result": "SUPPORTED_STILL_OPEN_WITHIN_PREFIX", "basis": "旧封井是否通外明写未查，没有把封死等同井底无路。"},
+    {"index": 6, "planted_chapter": 7, "result": "SUPPORTED_STILL_OPEN_WITHIN_PREFIX", "basis": "幼俘沉默与不明来处实际展开，给水/收粮/停步都不被代解为姓名或认亲。"},
+    {"index": 7, "planted_chapter": 9, "result": "SUPPORTED_STILL_OPEN_WITHIN_PREFIX", "basis": "家书确实未找到、已查与未查路径分开；第15章存使函明写不是找到家书。"},
+    {"index": 8, "planted_chapter": 8, "result": "SUPPORTED_NOT_YET_ABANDONED", "basis": "旧王欠赎是否追讨另议，未在第8章自行撤项；预定第20章不追尚未评。"},
+    {"index": 9, "planted_chapter": 1, "resolved_chapter": 6, "result": "SUPPORTED_ALREADY_RESOLVED", "basis": "断绳从疑暗割到磨痕对钉口查明；初始状态已resolved，不应再算未标回收。"},
+    {"index": 10, "planted_chapter": 28, "result": "FUTURE_POINT_NOT_ASSESSED", "basis": "前18章未到预定计划埋设章，不对缺失或最终状态作结论。"}
+  ],
+  "trace_prefix_review": [
+    {"object_index": 1, "state_chapters_reviewed": [2, 7, 13], "contradiction_a_chapter": 7, "result": "SUPPORTED_EXCEPT_W02P01", "basis": "胸前随身、见证交濮、共帐暂存顺序明确。第2章中段硬套位置词歧义需修；第7章原铸方孔是有意矛盾a。19章从共帐取给代表的后续过渡尚未评。"},
+    {"object_index": 2, "state_chapters_reviewed": [3, 8, 14], "contradiction_a_chapter": 8, "result": "SUPPORTED", "basis": "旧封、首拆、医帐高架各有实际过渡，四条凸脉是有意矛盾a，不能改磨损解释。后半未评。"},
+    {"object_index": 3, "state_chapters_reviewed": [4, 9, 15], "contradiction_a_chapter": 9, "result": "SUPPORTED", "basis": "腰带带入、交扈核验、医帐干箱封存各有实际交接，原刻边钩左是有意矛盾a，不能改补刻解释。后半未评。"}
+  ],
+  "other_registered_prefix_points": {
+    "stale": [
+      {"fact": 1, "chapter": 7, "result": "SUPPORTED", "basis": "双方当众从原保管人交濮，已与事实独管人不符；第13章再暂存有明确变化，前缀内无无声取回。"},
+      {"fact": 6, "chapter": 8, "result": "SUPPORTED", "basis": "第一次正式拆封有见证，未拆旧值过时。"},
+      {"fact": 11, "chapter": 18, "result": "SUPPORTED", "basis": "资格修改在全部议定后才落地，亲属能依本人意愿在相应问话处入内见证。"}
+    ],
+    "missing": [
+      {"index": 1, "chapter": 10, "result": "SUPPORTED", "basis": "右肩箭伤为初始资料无记录的新动态状态；10章后各章只左手动作、右臂托稳，身体限制连续。"},
+      {"index": 2, "chapter": 12, "result": "SUPPORTED", "basis": "给病者日落后开小门的临时权限为两军新同意；所取为白日储水，未改井夜禁。"},
+      {"index": 3, "chapter": 16, "result": "SUPPORTED", "basis": "先见亲属后由本人自主选择为新交还条件，非原本口述意愿习惯的换词重复。"},
+      {"indices": [4, 5, 6], "chapters": [22, 24, 29], "result": "FUTURE_POINTS_NOT_ASSESSED"}
+    ],
+    "decoys": [
+      {"fact": 5, "chapter": 11, "result": "SUPPORTED_DUPLICATE_MEANING", "basis": "两边文字都读懂、无需另请译者，与初始双语识读等义，不新增永久能力。"},
+      {"fact": 23, "chapter": 17, "result": "SUPPORTED_DUPLICATE_MEANING", "basis": "重伤优先不因军服换次序，与初始不按所属哪军决定敷药先后等义。"},
+      {"fact": 30, "chapter": 23, "result": "FUTURE_POINT_NOT_ASSESSED"}
+    ],
+    "decision_points": [
+      {"index": 1, "chapters_reviewed": [6, 12], "result": "SUPPORTED_PRESERVE_BOTH_SIDES", "basis": "两处都指最初旧约、当日未修订，第三/第四日不靠今日新水路解释，确需作者择意图；不与三物固有属性矛盾重复。"},
+      {"index": 2, "chapters_reviewed": [18], "result": "A_SIDE_ONLY_FUTURE_B_NOT_ASSESSED", "basis": "初建十二席明确回看旧记，不把今日增亲属见证席写回过去。第24章另一侧未评，不作最终决定点验收。"}
+    ]
+  },
+  "shared_draft_future_compatibility": {
+    "status": "NO_PREFIX_CONFLICT_OBSERVED_NOT_FINAL",
+    "basis": "第31章仍是濮右臂束带、左手移动近处凳子，符合前缀持续伤势；日光照井后吊水不触夜禁，病帐背风相容。共同取水、使者旧物存放和后续最终线索状态依赖19—30章，本次不作通过结论。"
+  },
+  "binding": {
+    "algorithm": "SHA256",
+    "prefix_definition": "读取UTF-8正文后按行首# 第N章分章，将第1—18章完整片段原序拼接，再以UTF-8编码求SHA256；不含作者同时追加的19—30章。整文件哈希仅作检查当时快照，不声明后续追加保持该值。",
+    "prefix_chapters_1_through_18_text": "987f3fcc197ea1cfcefe0a54fa4620a6ea53922394b39250b3f70b3e581af6b0",
+    "works/w02.md_snapshot_only": "6867a24a1dfa5049d7e911e880c51a38fdb1492fcd4d9377faa16ad55e20e0b0",
+    "authoring/w02-bible.json": "efb85f7d8feb76d8e78145aa03ddfd211a7ad2abaa732c06678c4eba8ff67fb9",
+    "authoring/w02-shared-draft.txt": "5bf34838f2166d15a5ae9028582ab724ab89ca174e9a73618d9137eab24932f3"
+  }
+}

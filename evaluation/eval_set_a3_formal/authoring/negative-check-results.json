@@ -1,0 +1,71 @@
+{
+  "total": 6,
+  "detected": 6,
+  "results": [
+    {
+      "number": 1,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 3,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:trace_coverage"
+      ],
+      "metadata_hashes_refreshed": true
+    },
+    {
+      "number": 2,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 1,
+      "errors": [
+        "w01:trace:1:state:1:quote"
+      ],
+      "metadata_hashes_refreshed": true
+    },
+    {
+      "number": 3,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 1,
+      "errors": [
+        "a3f-w01-tidy-01:actions_complete"
+      ],
+      "metadata_hashes_refreshed": true
+    },
+    {
+      "number": 4,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 2,
+      "errors": [
+        "a3s-w01-injection-01:injection_quote",
+        "injection:depth"
+      ],
+      "metadata_hashes_refreshed": true
+    },
+    {
+      "number": 5,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 2,
+      "errors": [
+        "a3s-w01-injection-03:injection_collision",
+        "injection:all_kinds"
+      ],
+      "metadata_hashes_refreshed": true
+    },
+    {
+      "number": 6,
+      "exit_code": 1,
+      "detected": true,
+      "error_count": 2,
+      "errors": [
+        "manifest:6:hash",
+        "independent:data_binding"
+      ],
+      "metadata_hashes_refreshed": false
+    }
+  ]
+}

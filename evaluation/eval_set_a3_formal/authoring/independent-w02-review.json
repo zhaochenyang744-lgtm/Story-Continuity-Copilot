@@ -1,0 +1,253 @@
+{
+  "review_kind": "independent_full_semantic_review",
+  "work": "w02",
+  "reviewer_participated_in_authoring": false,
+  "status": "PASS",
+  "open_findings": 0,
+  "initial_status": "CHANGES_REQUIRED",
+  "initial_open_findings": 2,
+  "method": "最终正文完成后，重新从第1章至第30章逐句通读全部段落，未用此前1—18章前缀复核替代；首次批量输出第1章被工具截断后另行完整重读第1章。完整读第31章共享草稿、最终30事实和10伏笔、w02全部21题、设定与自查。未以结构检查或引文存在性替代语义阅读，未改正文或金标，未运行产品/评测/模型接口。",
+  "coverage": {
+    "chapters_read_in_full": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+    "shared_draft_chapter": 31,
+    "shared_draft_read_in_full": true,
+    "initial_facts": 30,
+    "initial_foreshadows": 10,
+    "tasks": 21,
+    "trace_objects": 3,
+    "trace_states": 18,
+    "trace_contradictions": 3,
+    "resolved_unmarked": 3,
+    "still_open": 4,
+    "abandoned_in_text": 1,
+    "stale_facts": 3,
+    "missing_facts": 6,
+    "decoys": 3,
+    "decision_points": 2
+  },
+  "prior_finding_closure": [
+    {"id": "W02P01", "status": "CLOSED", "chapter": 2, "quote": "胸前的硬套碰到木沿", "basis": "当前正文碰响处已明确硬套在胸前，同段旁人看向胸口与章末仍在身上相容。全书读毕未再出现桌上容器或未交代的临时转存；第7章之前唯一保管人始终是阚蔚烬。"}
+  ],
+  "findings": [
+    {
+      "id": "W02F01",
+      "severity": "P1",
+      "category": "scoped_gold_omits_later_registered_object_transfer",
+      "files": ["tasks.json", "authoring/self-review.md", "authoring/self-review.json"],
+      "task_ids": ["a3f-w02-tidy-02", "a3f-w02-narrowed-02"],
+      "chapters": [19, 30],
+      "short_quotes": ["十九到三十章发生的事和资料库核一遍", "凡是缺了或者还停在旧情况的", "仵韫砺从濮箴柘手中接到隙纹赎牌", "共同保管，不再属于一个人。"],
+      "finding": "起始事实1是赎牌由阚蔚烬保管。虽然stale_facts只登记首次改变在第7章，但第19章又明确交由仵韫砺，第30章明确改为双方共同保管。tidy-02的19—30范围内就有这些新变化，正常请求笼统要求把本范围发生的事与库核、该更新的都出卡，却只允许3条新增，遗漏仍指旧保管人的事实1更新。narrowed-02原请求同样涵盖所有旧资料，缩到13—23后第19章转交在范围内，金标却仍没有事实1更新。仅按‘首次变更章7在范围外’生成集合并不能消掉这两道正常请求实际包含的第19章转交。self-review.md‘本套tidy范围不包含该对象其后的再次变更’这句在这两题上也不成立。",
+      "suggested_resolution": "不改登记规则的直接做法是收窄两题的正常请求对象，明确赎牌保管字段不在本次资料修改中，仍由另外的追踪报告处理；保留已登记考点在该范围内的完整必需动作。或统一登记并核对范围内最新转交导致的事实1更新，让金标、题目、自查和检查器按一致口径涵盖它。不要仅在报告声明首次章口径、仍让题目说全部旧资料；这会把合理更新计成未要求动作。",
+      "non_findings": "第13章只是共同帐暂存而非明确改保管责任，第7—17章tidy-01仍可按第7章保管人交濮理解，本项不据暂存位置武断增加另一个保管人改动。第19章和第30章有明确接交、共同保管，属于更强的证据。"
+    },
+    {
+      "id": "W02F02",
+      "severity": "P2",
+      "category": "gold_after_point_overstates_prior_affiliation",
+      "file": "tasks.json",
+      "task_id": "a3f-w02-tidy-02",
+      "target": {"subject": "祝骁棠", "predicate": "停战后去向"},
+      "chapter": 29,
+      "short_quotes": ["退出两军编制", "停战后不再回任任何一军。"],
+      "finding": "第29章原文确认留下、今后不回任任何一军，并没有建立此人当下同时列入两军编制再退出的事实；初始事实只称双方约定的传旗人。金标‘退出两军编制’把未来任事选择扩大成既有编制关系的退出，和引用并非严格等义。",
+      "suggested_resolution": "把该after_point收窄成‘以后不回军中任职’、‘不再回任任一军’或同义且不暗示既有双重编制的短语；动作对象、种类、数量和引用均可保留。"
+    }
+  ],
+  "narrative_continuity": {
+    "unintended_narrative_findings": 0,
+    "identity_and_pronouns": "10名人物身份与3别名保持同人，未发现无意性别代词切换。医者、译读者、接待者和传旗者的权限一直分开。",
+    "injury_physics": "第10章右肩流箭有清收试弓事故因果。此后11—30及共享31章始终右臂托护、不可高举，动作限定左手近案、左侧搀扶，未无交代恢复或去抬担架/重物。",
+    "night_water_rule": "第3章夜禁吊桶一直有效；12章以后夜间小门只为病者取得白日存水，15、18、21、23—26、28、30章反复保持界限。医帐靠井后也未把距离近当作夜吊许可。",
+    "family_access": "第18章之前亲属在杆外或约定外部相见处，未提前获得入内见证资格；第18章末正式议定后才放行。第16章先见亲属后自主选与第18章本人愿意时亲属可见证相容。",
+    "ownership_and_location": "第19章明写从共同帐依记录开箱取牌再交代表，不是暂存后凭空出现在濮手上；第20章从医帐高架取水玺后交守泉袋，第21章开干箱交使函，27章途中多次拒代拿，30章三件分别交出有公开动线。",
+    "time_and_past_records": "两组决定点都明确回看原始旧事，不以今日规则变动倒改旧记录；三组追踪矛盾都明确为同一次最初事件的原有形制，不是眼前新改造。"
+  },
+  "chapter_reviews": [
+    {"chapter": 1, "result": "SUPPORTED", "basis": "断旗绳未明埋入，赎牌胸前独管；地形、代表、识读能力与别名均直接支持。"},
+    {"chapter": 2, "result": "SUPPORTED_W02P01_CLOSED", "basis": "硬套当前在胸前；隘口错时、两别名、医者、水玺旧封、第二旗影均进入真实场景。"},
+    {"chapter": 3, "result": "SUPPORTED", "basis": "亲属杆外、到达添水、井台中立与夜禁实际说明；名册多查仍差一人，水玺旧封完整。"},
+    {"chapter": 4, "result": "SUPPORTED", "basis": "接待、传旗、赎价见证、解无锋剑、本人不识字可口述均明文；送俘队失期未明，使函腰带带入。"},
+    {"chapter": 5, "result": "SUPPORTED", "basis": "亲属不抵押、两名核名、重伤优先、白布桶、炭木片均明文；红屑未知未凭颜色认药，亲属相认仍隔杆。"},
+    {"chapter": 6, "result": "SUPPORTED_DESIGNED_DECISION_PRESERVED", "basis": "断绳磨痕对钉口已查清，资料9resolved适合；旧井未解埋入。五条事实均有情境。旧约第三日是决定点a。"},
+    {"chapter": 7, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "幼俘来处未明；赎牌见证交濮并说明不替归俘选。原铸方孔为真实矛盾a，不改凿、不传闻。"},
+    {"chapter": 8, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "水玺首次拆封与四凸脉有见证；旧王欠赎仍只是另议，不提前作放弃。"},
+    {"chapter": 9, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "家书实际丢失仍未找回；使函交扈核验，首次原刻边钩朝左。濮已带赎牌，未与使函混为赎价。"},
+    {"chapter": 10, "result": "SUPPORTED", "basis": "箭伤发生前可帮垫轮与系布，受伤后只左手指车、右臂托稳；事故并非另方停战反悔。"},
+    {"chapter": 11, "result": "SUPPORTED", "basis": "伤势持续；第二旗影经原灯、原站位反复对照查清。双语能力decoy与初始事实5等义。"},
+    {"chapter": 12, "result": "SUPPORTED_DESIGNED_DECISION_PRESERVED", "basis": "小门只通白日存水，井夜禁保持，亲属仍不能入内见证；第四日原约为决定点b。"},
+    {"chapter": 13, "result": "SUPPORTED", "basis": "暂存共同帐有双方见证与收存，濮左手取牌；原约保管仍未定，不能混算新职责。"},
+    {"chapter": 14, "result": "SUPPORTED", "basis": "漏桶停用撤白布、好桶重新标记；水玺从案端迁医帐高架有双方见证。伤者不抬右臂。"},
+    {"chapter": 15, "result": "SUPPORTED", "basis": "误印不代表同意；使函见证入干箱，不夹原约或家书；水仍为白日储备。"},
+    {"chapter": 16, "result": "SUPPORTED", "basis": "先相见再本人选由实际外部会面推进，未提前放亲属入内；濮不抬架只左手近案。"},
+    {"chapter": 17, "result": "SUPPORTED", "basis": "同人原名军名重复计数经本人、记名者、车夫核明并复算合并。差一人是相对重复较大册，不是找到真正失踪者；重伤优先decoy等义。"},
+    {"chapter": 18, "result": "SUPPORTED_DESIGNED_DECISION_PRESERVED", "basis": "末段议定才取消军方独占，支持事实11过时；初建十二席为过去属性，和今日加座分离。"},
+    {"chapter": 19, "result": "SUPPORTED_NARRATIVE_GOLD_GAP_W02F01", "basis": "从共同帐开箱、左手取出再交仵验收连续，右肩没受力。此处明确接交也使宽泛tidy请求应考虑事实1更新，见W02F01。"},
+    {"chapter": 20, "result": "SUPPORTED", "basis": "旧账不追与保留历史纸分开，明确以后不得借旧项扣人，弃线成立；水玺高架到守泉袋实际交接。"},
+    {"chapter": 21, "result": "SUPPORTED", "basis": "真使者身份不等于代领授权；使函从封箱取出交翟，限定沿路用途，不借夜间取水小门送件。"},
+    {"chapter": 22, "result": "SUPPORTED", "basis": "双方原始赎约与正式副本逐项比对，最后才交扈保管；翟离席只记真在场部分，使函仍自行保管。"},
+    {"chapter": 23, "result": "SUPPORTED", "basis": "红屑从不同井架木屑排除到桶柄漆片形态/摩擦旧痕核对，回收充分。自由离席decoy没有设新规，原事实30已覆盖。"},
+    {"chapter": 24, "result": "SUPPORTED_DESIGNED_DECISION_PRESERVED", "basis": "空担架试路、背风低处试风、物件本人确认后才迁重伤者；右肩继续托护。十四席仍指初建，与十八章十二席构成决定点b。"},
+    {"chapter": 25, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "仵带牌到泉、清理仅外布，不借改造消去原铸方圆冲突；此处同次首次交牌原铸圆孔与第7章不能同真。四未明项未被收。"},
+    {"chapter": 26, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "水玺仍在守泉袋，带离井台到空地不是换保管人；首次原有六凸脉与第8章四条不能同真，正文不写磨损或补改。夜禁保持。"},
+    {"chapter": 27, "result": "SUPPORTED_DESIGNED_CONTRADICTION_PRESERVED", "basis": "翟一路拒代拿、自己带函回共同帐，未生未记转交。首次原刻边钩右与第9章左不能同真，无补刻过渡。"},
+    {"chapter": 28, "result": "SUPPORTED", "basis": "旧井仍不开盖、地下未知；未来雨季再查不是已证通路。仍找家书、幼俘不说、送俘队无确讯，未因结尾强收。"},
+    {"chapter": 29, "result": "SUPPORTED_NARRATIVE_GOLD_WORDING_W02F02", "basis": "祝本人停战后去向由两军、旧部、泉边帮手共同听，不暗派或代选；决定留而不回任任一军，金标不应扩成曾同时在两军编制。"},
+    {"chapter": 30, "result": "SUPPORTED_NARRATIVE_GOLD_GAP_W02F01", "basis": "三件各由当下保管人公开分别交出，赎牌共同保管、水玺共同水处双看护、使函共同帐封存。四未解继续、雨季查仍未来，伤势持续。宽泛tidy-02应处理事实1最后共同保管，见W02F01。"}
+  ],
+  "material_reviews": {
+    "initial_fact_support": [
+      {"facts": [1, 2, 3, 4, 5], "chapter": 1, "result": "SUPPORTED"},
+      {"facts": [6, 7, 8, 9, 10], "chapter": 2, "result": "SUPPORTED"},
+      {"facts": [11, 12, 13, 14, 15], "chapter": 3, "result": "SUPPORTED"},
+      {"facts": [16, 17, 18, 19, 20], "chapter": 4, "result": "SUPPORTED"},
+      {"facts": [21, 22, 23, 24, 25], "chapter": 5, "result": "SUPPORTED"},
+      {"facts": [26, 27, 28, 29, 30], "chapter": 6, "result": "SUPPORTED"}
+    ],
+    "foreshadows": [
+      {"index": 1, "planted": 2, "resolved": 11, "result": "RESOLVED_UNMARKED_SUPPORTED"},
+      {"index": 2, "planted": 3, "resolved": 17, "result": "RESOLVED_UNMARKED_SUPPORTED"},
+      {"index": 3, "planted": 5, "resolved": 23, "result": "RESOLVED_UNMARKED_SUPPORTED"},
+      {"index": 4, "planted": 4, "result": "STILL_OPEN_SUPPORTED", "basis": "第30章仍无送俘队确实去向。"},
+      {"index": 5, "planted": 6, "result": "STILL_OPEN_SUPPORTED", "basis": "第28/30章仍未揭盖，不知地下是否有路，未来再查不等于答案。"},
+      {"index": 6, "planted": 7, "result": "STILL_OPEN_SUPPORTED", "basis": "第30章仍不说来处、未被认领，改善接水动作不是公开来历。"},
+      {"index": 7, "planted": 9, "result": "STILL_OPEN_SUPPORTED", "basis": "第30章无新家书，待找路径仍留。"},
+      {"index": 8, "planted": 8, "abandoned": 20, "result": "ABANDONED_SUPPORTED", "basis": "不再追讨且禁借旧项扣人，不是已经偿清旧债；初始planted适合未标放弃考点。"},
+      {"index": 9, "planted": 1, "resolved": 6, "result": "ALREADY_RESOLVED_SUPPORTED", "basis": "资料已resolved，不能再次算需回收卡。"},
+      {"index": 10, "planted": 28, "result": "PLANNED_SUPPORTED", "basis": "雨季再查为未来行动，未执行、未承诺通路。"}
+    ]
+  },
+  "point_reviews": {
+    "trace_states": [
+      {"object": 1, "chapters": [2, 7, 13, 19, 25, 30], "result": "SUPPORTED", "span": 28},
+      {"object": 2, "chapters": [3, 8, 14, 20, 26, 30], "result": "SUPPORTED", "span": 27},
+      {"object": 3, "chapters": [4, 9, 15, 21, 27, 30], "result": "SUPPORTED", "span": 26}
+    ],
+    "trace_contradictions": [
+      {"object": 1, "chapters": [7, 25], "result": "REAL_PRESERVE", "basis": "同次首次交牌、同一原铸孔，从未改凿，方与圆不能同时成立。"},
+      {"object": 2, "chapters": [8, 26], "result": "REAL_PRESERVE", "basis": "同次第一次拆封、未磨损原凸脉，四与六不能同时成立。"},
+      {"object": 3, "chapters": [9, 27], "result": "REAL_PRESERVE", "basis": "同次首次核验、没有补刻的原边钩，左与右不能同时成立，未设观察方向倒转解释。"}
+    ],
+    "stale_facts": {"registered": [{"fact": 1, "chapter": 7}, {"fact": 6, "chapter": 8}, {"fact": 11, "chapter": 18}], "result": "ALL_THREE_FIRST_CHANGES_SUPPORTED_GOLD_SCOPE_GAP_W02F01", "basis": "首次过时点本身均成立；后续明确转交仍在宽泛tidy请求范围时，不能只因未重复登记就将合理资料更新排除。"},
+    "missing_facts": {"chapters": [10, 12, 16, 22, 24, 29], "result": "ALL_SIX_SUPPORTED", "basis": "箭伤与右臂限制；病者日落取存水小门权限；先见亲属再本人选；原始赎约保管与两军副本；重伤者迁泉边背风帐；本人留共同水处且不回任军方。均非30初始事实同义重复。"},
+    "decoys": [{"fact": 5, "chapter": 11, "result": "EQUIVALENT"}, {"fact": 23, "chapter": 17, "result": "EQUIVALENT"}, {"fact": 30, "chapter": 23, "result": "EQUIVALENT"}],
+    "decision_points": [
+      {"index": 1, "chapters": [6, 12], "result": "AUTHOR_DECISION_NEEDED", "basis": "同一最初原约、当日未修订，第三/第四日没有重议或两轮事件解释；答采用第三日对应a。"},
+      {"index": 2, "chapters": [18, 24], "result": "AUTHOR_DECISION_NEEDED", "basis": "同一初建、无归俘亲属时席数，十二/十四没有后来加席解释；答采用十四席对应b。"}
+    ]
+  },
+  "shared_draft_review": {"chapter": 31, "result": "NO_UNINTENDED_CONFLICT_OBSERVED", "basis": "正文最终三件公开存放以后，共享草稿未再让原保管人随身握旧物；使者旧物帐与共同帐封存相容。右臂仍束带、左手移动近处凳子，日光后吊桶与夜禁相容，病帐背风。未到亲属与仍未选择的人继续问话符合正文保留空白。"},
+  "task_reviews": [
+    {"id": "a3f-w02-trace-01", "result": "SUPPORTED", "actions": 0, "basis": "全书追物件1，只报告；六状态和一真实矛盾有足够叙事证据。"},
+    {"id": "a3f-w02-trace-02", "result": "SUPPORTED", "actions": 0, "basis": "全书追物件2，明确先不做卡；六状态和一真实矛盾都对应。"},
+    {"id": "a3f-w02-trace-03", "result": "SUPPORTED", "actions": 0, "basis": "全书追物件3，报告去返与硬冲突；六状态和一真实矛盾都对应。"},
+    {"id": "a3f-w02-thread-audit-01", "result": "SUPPORTED", "actions": 2, "basis": "1—18仅回收1、2；3到23才收，8到20才弃，9原已resolved。"},
+    {"id": "a3f-w02-thread-audit-02", "result": "SUPPORTED", "actions": 2, "basis": "19—30恰回收3、放弃8；开放4—7继续、10只是计划，不新增状态卡。"},
+    {"id": "a3f-w02-tidy-01", "result": "SUPPORTED_WITH_CUSTODY_VS_STORAGE_DISTINCTION", "actions": 5, "basis": "7—17缺项10/12/16，首次过时1/6。第13章暂存共帐没有明改保管责任，第19章仍由濮依约取出，故保管人金标取濮可以成立；两个decoy不出卡。"},
+    {"id": "a3f-w02-tidy-02", "result": "W02F01_W02F02", "actions": 3, "basis": "三新增对象有支持，但宽泛更新请求遗漏19/30新转交所指事实1更新；去向after_point另有过度表述，详见两发现。"},
+    {"id": "a3f-w02-ask-01", "result": "SUPPORTED", "actions": 0, "basis": "1—15恰含决定点1的6/12两端，要求问后出报告而不改库，空卡正确；回复选a。"},
+    {"id": "a3f-w02-ask-02", "result": "SUPPORTED", "actions": 0, "basis": "16—30恰含决定点2的18/24两端，报告限定不改资料，空卡正确；回复选b。"},
+    {"id": "a3f-w02-narrowed-01", "result": "SUPPORTED", "actions": 3, "basis": "由全书缩到10—21，应回收1/2、放弃8共3，不得回收范围外23的3。"},
+    {"id": "a3f-w02-narrowed-02", "result": "W02F01", "actions": 3, "basis": "当前3条恰为登记缺项16/22和首次过时18，但宽泛旧资料核验仍涵盖范围内19转交导致事实1过时；不能用首次章7排掉实际合法更新。"},
+    {"id": "a3f-w02-route-01", "result": "SUPPORTED", "route": "long_task", "basis": "明确全篇逐章核对及带出处问题报告。"},
+    {"id": "a3f-w02-route-02", "result": "SUPPORTED", "route": "long_task", "basis": "先拟步骤、确认后整本分批更新，不是单卡。"},
+    {"id": "a3f-w02-route-03", "result": "SUPPORTED", "route": "long_task", "basis": "全书信物流转逐段核验、确认计划再统一报告。"},
+    {"id": "a3f-w02-route-04", "result": "SUPPORTED", "route": "long_task", "basis": "第一章至末章逐条核查并分组状态卡。"},
+    {"id": "a3f-w02-route-05", "result": "SUPPORTED", "route": "change", "basis": "第10章指定单一箭伤状态新增，未要求跨章盘点。"},
+    {"id": "a3f-w02-route-06", "result": "SUPPORTED", "route": "change", "basis": "指定12章一项权限、明确别查别章。"},
+    {"id": "a3f-w02-route-07", "result": "SUPPORTED", "route": "ask", "basis": "只问截至17章持有人，不授权批量工作。"},
+    {"id": "a3f-w02-route-08", "result": "SUPPORTED", "route": "ask", "basis": "资料页无写作选段，问现有说法与前文关系。"},
+    {"id": "a3f-w02-route-09", "result": "SUPPORTED", "route": "recap", "basis": "接写前提醒前文局面和未完事项。"},
+    {"id": "a3f-w02-route-10", "result": "SUPPORTED", "route": "check_passage", "basis": "与08同句，但writing带31章共享草稿原选句，核选段与前文。"}
+  ],
+  "route_review_boundary": "以上10题是已读金标后的语义核对，不冒称只看input/context的独立盲判；盲判流程由另行独立复判记录负责。",
+  "initial_binding": {
+    "algorithm": "SHA256",
+    "works/w02.md": "d16fc9678f35fb6bf85875e052a2f9b83cec95610c11f738921dccc280569d7b",
+    "tasks.json": "dc8ca64157f56dbfa3e5594ff19ca72c5e81d234af2fafbe808744a91b862ada",
+    "materials/w02-facts.json": "e83c6d9414e4fa3dcecd7ffd879aed40162ee53723d71e59a69a522238ab19d3",
+    "materials/w02-foreshadows.json": "3331d6e046d25e2f3881cafeffc615a27a5223da6abe95858e67aa40a7d43c49",
+    "authoring/self-review.json": "ed7026b0137270b92791c7a212eccda14ad2e994e8981fd285a3381129da1aa2",
+    "authoring/self-review.md": "2a9f140176163d18130acadbe61353cda6ed1e49cac95f4c0735da342a5ab529",
+    "authoring/w02-bible.json": "efb85f7d8feb76d8e78145aa03ddfd211a7ad2abaa732c06678c4eba8ff67fb9",
+    "authoring/w02-shared-draft.txt": "5bf34838f2166d15a5ae9028582ab724ab89ca174e9a73618d9137eab24932f3"
+  },
+  "recheck": {
+    "status": "PASS",
+    "closed_findings": ["W02F01", "W02F02"],
+    "prior_finding_still_closed": ["W02P01"],
+    "open_findings": 0,
+    "new_findings": 0,
+    "method": "逐题重新阅读最终w02全部21题、w02的5条fact_updates与设定later_fact_updates、更新后的self-review.md。将所有当前动作再与已经从1到30完整重读的正文逐项核对。当前正文、两资料及共享草稿SHA256与首次最终全文复核一致，因此原有全文阅读仍绑定同一字节；未修改正文、资料、题目或汇总记录。检查器代码由另一复核者负责，本次不冒称完成新增代码复核。",
+    "findings": [
+      {
+        "id": "W02F01",
+        "status": "CLOSED",
+        "task_ids": ["a3f-w02-tidy-02", "a3f-w02-narrowed-02"],
+        "basis": "未改原请求与章范围；self-review.fact_updates补齐事实1在7、19、30章的明确取值及事实6在8章、事实11在18章的首次变化，共5条。tidy-02的19—30范围内，事实1按最后明确值取30章双方共同保管，只出1张更新卡，不把19章中间值再写成第2卡。narrowed-02的13—23范围内，事实1只取19章仵韫砺保管，不越范围采用30章。两题分别新增1条change_fact，动作内容、章号和逐字证据都对应范围内最后值。旧自查‘不包含后续变化’的不实口径已移除，改成同一fact取范围内最后明确值。"
+      },
+      {
+        "id": "W02F02",
+        "status": "CLOSED",
+        "task_id": "a3f-w02-tidy-02",
+        "after_point": "以后不回军中任职",
+        "basis": "修订后的要点只表达未来不回任军方，与第29章停战后不再回任任何一军一致，不再暗示此前同时列入两军编制。原本留共同取水处这一点、目标、引用与动作种类不变。"
+      },
+      {
+        "id": "W02P01",
+        "status": "STILL_CLOSED",
+        "basis": "正文SHA256保持首次最终全文复核的同一值，已读第2章胸前硬套修订仍在；没有再增加私下转存。"
+      }
+    ],
+    "all_initial_facts_followup_audit": {
+      "facts_checked": 30,
+      "additional_omitted_update_fields": 0,
+      "registered_first_stale_fields": [1, 6, 11],
+      "subsequent_explicit_value_changes": [{"fact": 1, "chapters": [19, 30]}],
+      "basis": [
+        "事实1的保管人后续19/30章变化现已完整；13章共同帐暂存只是位置，保管责任仍由濮按19章取出流程承担，25章随仵到泉未换人。",
+        "事实6谓词为封套，8章首次拆封后未出现重新封回原旧封的叙述；20/26/30的高架、袋、公开水处流转不等于此封套值再变。",
+        "事实11军方独占入内资格在18章取消后始终开放相应亲属见证；搬帐、离席和水门用途未构成资格复原或新排除。",
+        "事实28只记病者背风，24章迁到泉边仍在背风帐，新增迁帐地点已由missing_facts登记，不会把背风旧值误判过时。",
+        "事实17/26传旗职责与两次横摆含义在29/30章继续履行；29章未来去向为新增字段，不是已登记旗语值改变。",
+        "其余身份、同人别名、地形、识读能力、医者轻重原则、本人表达/离席权、白布桶用途、木片工具、泉口安全和不以亲属抵押等值持续相容；新增临时权限、赎约职责、箭伤和交还条件已在6缺项内，不另有同类遗漏。"
+      ]
+    },
+    "task_recheck": [
+      {"id": "a3f-w02-trace-01", "result": "PASS", "actions": 0, "basis": "全书对象1报告限定，六状态及原铸孔矛盾保留。"},
+      {"id": "a3f-w02-trace-02", "result": "PASS", "actions": 0, "basis": "全书对象2报告限定，六状态及凸脉矛盾保留。"},
+      {"id": "a3f-w02-trace-03", "result": "PASS", "actions": 0, "basis": "全书对象3报告限定，六状态及边钩矛盾保留。"},
+      {"id": "a3f-w02-thread-audit-01", "result": "PASS", "actions": 2, "basis": "1—18回收1/2正好两条。"},
+      {"id": "a3f-w02-thread-audit-02", "result": "PASS", "actions": 2, "basis": "19—30回收3及放弃8正好两条。"},
+      {"id": "a3f-w02-tidy-01", "result": "PASS", "actions": 5, "basis": "7—17缺项10/12/16及事实1在7章、事实6在8章最新值。"},
+      {"id": "a3f-w02-tidy-02", "result": "PASS", "actions": 4, "basis": "19—30缺项22/24/29三条，加事实1在30章共同保管一条；去向表述已收窄。"},
+      {"id": "a3f-w02-ask-01", "result": "PASS", "actions": 0, "basis": "1—15只含决定点1两端，选a后报告不改库。"},
+      {"id": "a3f-w02-ask-02", "result": "PASS", "actions": 0, "basis": "16—30只含决定点2两端，选b后报告不改库。"},
+      {"id": "a3f-w02-narrowed-01", "result": "PASS", "actions": 3, "basis": "10—21回收1/2、放弃8；不得带入23章回收3。"},
+      {"id": "a3f-w02-narrowed-02", "result": "PASS", "actions": 4, "basis": "13—23缺项16/22及事实1在19章、事实11在18章各一最新值；不带范围外30章。"},
+      {"id": "a3f-w02-route-01", "result": "PASS", "route": "long_task"},
+      {"id": "a3f-w02-route-02", "result": "PASS", "route": "long_task"},
+      {"id": "a3f-w02-route-03", "result": "PASS", "route": "long_task"},
+      {"id": "a3f-w02-route-04", "result": "PASS", "route": "long_task"},
+      {"id": "a3f-w02-route-05", "result": "PASS", "route": "change"},
+      {"id": "a3f-w02-route-06", "result": "PASS", "route": "change"},
+      {"id": "a3f-w02-route-07", "result": "PASS", "route": "ask"},
+      {"id": "a3f-w02-route-08", "result": "PASS", "route": "ask"},
+      {"id": "a3f-w02-route-09", "result": "PASS", "route": "recap"},
+      {"id": "a3f-w02-route-10", "result": "PASS", "route": "check_passage"}
+    ],
+    "expected_action_totals": {"add_fact": 8, "change_fact": 5, "resolve_thread": 5, "abandon_thread": 2, "all": 20},
+    "route_boundary": "21题最终核对含10题route，但已看gold，仍不冒称独立盲判；self-review.md已登记另一流程的20/20实际盲判结果。",
+    "binding": {
+      "algorithm": "SHA256",
+      "works/w02.md": "d16fc9678f35fb6bf85875e052a2f9b83cec95610c11f738921dccc280569d7b",
+      "tasks.json": "0f72d1c2022ad40b778247b5c18aa9f2c5bb217e7a8ea1e32c7725657edc0bbd",
+      "materials/w02-facts.json": "e83c6d9414e4fa3dcecd7ffd879aed40162ee53723d71e59a69a522238ab19d3",
+      "materials/w02-foreshadows.json": "3331d6e046d25e2f3881cafeffc615a27a5223da6abe95858e67aa40a7d43c49",
+      "authoring/self-review.json": "a250f2376adf4a8d4e3ee125356c00617726059dd66a0d16ccaf193fe5b96454",
+      "authoring/self-review.md": "54714c82d6eb35935d4d4089dc53e8f46b2537563d4815d6ae96beb0c156a784",
+      "authoring/w02-bible.json": "44322f9e5777d891a9cd941ef683ef11d276f983166b91994aa5d444bd6072d0",
+      "authoring/w02-shared-draft.txt": "5bf34838f2166d15a5ae9028582ab724ab89ca174e9a73618d9137eab24932f3"
+    }
+  }
+}

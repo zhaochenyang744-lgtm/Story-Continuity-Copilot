@@ -1,0 +1,379 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "shared_draft_read": true,
+  "facts_read": 30,
+  "foreshadows_read": 10,
+  "tasks_read": 21,
+  "findings": [
+    {
+      "id": "W01G01",
+      "category": "gold_scope_completeness",
+      "severity": "major",
+      "tasks": [
+        "a3f-w01-tidy-02",
+        "a3f-w01-narrowed-02"
+      ],
+      "material_fact": 1,
+      "chapters": [
+        19,
+        30
+      ],
+      "issue": "起始事实1是骨环持有人。第19章明确再次换手，第30章改归公共处，均与起始值不同；tidy-02覆盖19–30但没有此条更新，narrowed-02覆盖13–23也包含第19章而没有此条更新。现有检查器只按stale_facts首次登记变更章7计算，掩盖了范围内后续明确变化；自然请求并未排除物件交接更新。建议明确这两道请求排除物件交接卡，或调整起始事实/考点与gold及对应检查器，使助手不会因正确指出范围内后续更新而受罚。",
+      "evidence": [
+        "弓岫莼从訾霁岑手里接过凹齿骨环，套上骨杖。",
+        "弓岫莼把凹齿骨环卸下，放到公共见证处供众人共用。"
+      ],
+      "status": "closed",
+      "resolution": "已补充5条fact_updates，含首次3条与后续2条；后段tidy按第30章最终公共放置状态出1卡，narrowed tidy按范围内第19章最新交接状态出1卡。二者请求和范围未改，gold与当前正文相符。"
+    },
+    {
+      "id": "W01G02",
+      "category": "after_point_qualification",
+      "severity": "major",
+      "tasks": [
+        "a3f-w01-tidy-01",
+        "a3f-w01-narrowed-02"
+      ],
+      "chapter": 16,
+      "issue": "救生约定after_points写成落隙先抛拖架，遗漏空的限定，可能把载人/载物拖架也概括为先抛，超出依据。建议保留空架限制，例如落隙先舍空架。",
+      "evidence": [
+        "落隙先抛拖架",
+        "荀嵬芦立了新约，落隙的人先抛空拖架，再等同伴接绳。"
+      ],
+      "status": "closed",
+      "resolution": "两处动作要点均改为落隙先舍空架，空架限定与第16章依据一致。"
+    },
+    {
+      "id": "W01F01",
+      "category": "temporal_reference",
+      "severity": "minor",
+      "chapter": 23,
+      "issue": "当年返程者指第5章前几日的返程事件，正文前后均为本次迁徙连续进程，突然用当年会造成非设计时间跳跃。建议改为当时返程者。",
+      "evidence": [
+        "那两位当年返程者中的一人也在场"
+      ],
+      "status": "closed",
+      "resolution": "第23章已改为当时，连续迁徙中的相对时间指代一致。"
+    },
+    {
+      "id": "W01F02",
+      "category": "sentence_clarity",
+      "severity": "minor",
+      "chapter": 27,
+      "issue": "不许具体自己还不能肯定的时刻语法不通，应是不能许诺具体时刻。建议改为不许诺自己还不能肯定的具体时刻。",
+      "evidence": [
+        "她说一轮接应后，不许具体自己还不能肯定的时刻。"
+      ],
+      "status": "closed",
+      "resolution": "第27章已改为不许诺自己还不能肯定的具体时刻，语法及意思清楚。"
+    },
+    {
+      "id": "W01F03",
+      "category": "authoring_meta_residue",
+      "severity": "minor",
+      "chapter": 19,
+      "issue": "人物没有新名字被众人传叫这一句露出避免新增专名的写作约束，不是自然的故事叙事。建议删除这半句，保留大家让他走到能听清两边的位置的动作。",
+      "evidence": [
+        "那人没有新名字被众人传叫，大家只让他走到能听清两边的位置"
+      ],
+      "status": "closed",
+      "resolution": "第19章已删除元叙述半句，保留同行者走到可听清双方的位置的实际动作。"
+    }
+  ],
+  "findings_total": 5,
+  "unresolved_findings": 0,
+  "sha256": {
+    "works/w01.md": "68739d57fe50971e7b569b29be243835d48890e6085d8af481a41c25b79c8672",
+    "materials/w01-facts.json": "902c0a819ee45f74d38bfca329fb03be39204c9e44a841e26d6b358e753bb786",
+    "materials/w01-foreshadows.json": "9c261ba1af6b233d8a93d78387604e0d7eb419a078b25659b575cbd499be91bf",
+    "tasks.json": "0f72d1c2022ad40b778247b5c18aa9f2c5bb217e7a8ea1e32c7725657edc0bbd",
+    "authoring/self-review.json": "a250f2376adf4a8d4e3ee125356c00617726059dd66a0d16ccaf193fe5b96454",
+    "authoring/self-review.md": "54714c82d6eb35935d4d4089dc53e8f46b2537563d4815d6ae96beb0c156a784",
+    "check.py": "ed50015ac507b76e91e6997d3d2d9a99f80e63ed58a9ef4682ed05d7de9a3fab"
+  },
+  "initial_review": {
+    "status": "changes_requested",
+    "findings_total": 5,
+    "major": 2,
+    "minor": 3,
+    "sha256": {
+      "works/w01.md": "0a84b8a67c344886af08882a6609afff68ea5fc46e39e259553c02f296501c46",
+      "materials/w01-facts.json": "902c0a819ee45f74d38bfca329fb03be39204c9e44a841e26d6b358e753bb786",
+      "materials/w01-foreshadows.json": "9c261ba1af6b233d8a93d78387604e0d7eb419a078b25659b575cbd499be91bf",
+      "tasks.json": "dc8ca64157f56dbfa3e5594ff19ca72c5e81d234af2fafbe808744a91b862ada",
+      "authoring/self-review.json": "ed7026b0137270b92791c7a212eccda14ad2e994e8981fd285a3381129da1aa2",
+      "authoring/self-review.md": "2a9f140176163d18130acadbe61353cda6ed1e49cac95f4c0735da342a5ab529"
+    }
+  },
+  "result": "PASS",
+  "closed_findings": 5,
+  "w01_tasks_sha256": "ad84d8b2f61d46a8ff6d3729ea258ade9bc2d8d5acc538356aa1228fdc483ba4",
+  "first_pass_chapters_read": 30,
+  "recheck": {
+    "status": "PASS",
+    "chapters_reread": [
+      19,
+      23,
+      27
+    ],
+    "all_w01_tasks_reread": 21,
+    "materials_unchanged_verified": true,
+    "fact_updates_reviewed": 5,
+    "new_findings": 0,
+    "unresolved_findings": 0,
+    "sha256": {
+      "works/w01.md": "68739d57fe50971e7b569b29be243835d48890e6085d8af481a41c25b79c8672",
+      "materials/w01-facts.json": "902c0a819ee45f74d38bfca329fb03be39204c9e44a841e26d6b358e753bb786",
+      "materials/w01-foreshadows.json": "9c261ba1af6b233d8a93d78387604e0d7eb419a078b25659b575cbd499be91bf",
+      "tasks.json": "0f72d1c2022ad40b778247b5c18aa9f2c5bb217e7a8ea1e32c7725657edc0bbd",
+      "authoring/self-review.json": "a250f2376adf4a8d4e3ee125356c00617726059dd66a0d16ccaf193fe5b96454",
+      "authoring/self-review.md": "54714c82d6eb35935d4d4089dc53e8f46b2537563d4815d6ae96beb0c156a784",
+      "check.py": "ed50015ac507b76e91e6997d3d2d9a99f80e63ed58a9ef4682ed05d7de9a3fab"
+    }
+  },
+  "semantic_checks": {
+    "full_original_read": {
+      "status": "PASS",
+      "chapters": 30
+    },
+    "draft_continuity": {
+      "status": "PASS",
+      "chapter": 31
+    },
+    "initial_materials": {
+      "status": "PASS",
+      "facts": 30,
+      "foreshadows": 10
+    },
+    "characters_aliases": {
+      "status": "PASS",
+      "characters": 10,
+      "aliases": 3
+    },
+    "trace_transitions": {
+      "status": "PASS",
+      "objects": 3,
+      "states": 18
+    },
+    "designed_contradictions": {
+      "status": "PASS",
+      "contradictions": 3,
+      "unbridged_same_event_assertions": 3
+    },
+    "resolved_unmarked": {
+      "status": "PASS",
+      "points": 3
+    },
+    "still_open": {
+      "status": "PASS",
+      "points": 4,
+      "still_open_at_30": 4
+    },
+    "abandoned_in_text": {
+      "status": "PASS",
+      "points": 1,
+      "not_reopened": 1
+    },
+    "stale_facts": {
+      "status": "PASS",
+      "initial_changes": 3,
+      "later_updates": 2,
+      "registered_updates": 5
+    },
+    "missing_facts": {
+      "status": "PASS",
+      "points": 6
+    },
+    "decoys": {
+      "status": "PASS",
+      "points": 3
+    },
+    "decision_points": {
+      "status": "PASS",
+      "points": 2,
+      "disjoint_from_trace_contradictions": 2
+    },
+    "injury_persistence": {
+      "status": "PASS",
+      "from_chapter": 10,
+      "through_shared_draft": 31
+    },
+    "ending_transfers": {
+      "status": "PASS",
+      "objects": 3
+    },
+    "task_gold_scope_completeness": {
+      "status": "PASS",
+      "tasks": 21
+    },
+    "after_point_qualifications": {
+      "status": "PASS",
+      "all_actions_reviewed": true
+    }
+  },
+  "task_review": [
+    {
+      "id": "a3f-w01-trace-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-trace-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-trace-03",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-thread-audit-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-thread-audit-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-tidy-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-tidy-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-ask-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-ask-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-narrowed-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-narrowed-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-01",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-02",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-03",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-04",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-05",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-06",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-07",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-08",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-09",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    },
+    {
+      "id": "a3f-w01-route-10",
+      "status": "PASS",
+      "scope_and_gold_reviewed": true
+    }
+  ],
+  "checker_static_review": {
+    "status": "PASS",
+    "supplement": "fact_updates_latest_state",
+    "reviewed_sections": [
+      "fact_updates chronology and first-event binding",
+      "required action target set from every in-scope update",
+      "latest_update_evidence",
+      "latest_update_points"
+    ],
+    "checks": 8,
+    "open_findings": 0,
+    "notes": "后续变更来源仍须独立语义复核；静态检查器严格绑定已登记的更新表，不声称能自动判断全部叙事语义。",
+    "paired_checker_bytes_equal_except_safety": true,
+    "checker_sha256": {
+      "formal": "ed50015ac507b76e91e6997d3d2d9a99f80e63ed58a9ef4682ed05d7de9a3fab",
+      "safety": "a9ddc20ce6525ab50667d7a0099d43263fdee9132864705c2368ff1e61ad3809"
+    },
+    "prior_review_rechecks": {
+      "CR01": "closed",
+      "CR02": "closed",
+      "CR03": "closed",
+      "CR04": "closed"
+    },
+    "prior_open_findings": 0
+  }
+}

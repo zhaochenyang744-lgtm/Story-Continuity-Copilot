@@ -1,0 +1,212 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "凹齿骨环",
+    "predicate": "持有人",
+    "value": "厍纫白",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "訾霁岑",
+    "predicate": "别名",
+    "value": "冻弦",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "穹砾冰盖",
+    "predicate": "环境",
+    "value": "一年中有漫长极夜",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郏泊荑",
+    "predicate": "亲属",
+    "value": "冉砾珂的姐姐",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "弓岫莼",
+    "predicate": "能力",
+    "value": "会辨薄冰的裂声",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "三棱脂囊",
+    "predicate": "封口状态",
+    "value": "从未打开",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "厍纫白",
+    "predicate": "别名",
+    "value": "白燧",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "宓蘅隼",
+    "predicate": "别名",
+    "value": "隼衣",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "噪雪脊",
+    "predicate": "地形",
+    "value": "南面陡北面缓",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "隗弥稞",
+    "predicate": "饮食",
+    "value": "不能吃生脂",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "荧穴坡",
+    "predicate": "居住安排",
+    "value": "只准无幼儿的人先入",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "晏珂靳",
+    "predicate": "职责",
+    "value": "夜间接替守火",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "缪栎葭",
+    "predicate": "能力",
+    "value": "会用骨哨召回散队",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褐纹颌骨",
+    "predicate": "用途",
+    "value": "共同见证时握持",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "琥蚀冰门",
+    "predicate": "通行条件",
+    "value": "必须两人先探雪桥",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "荀嵬芦",
+    "predicate": "能力",
+    "value": "能缝密兽皮接缝",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "冉砾珂",
+    "predicate": "惯用手",
+    "value": "左手",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "訾霁岑",
+    "predicate": "家庭",
+    "value": "没有同行的血亲",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "宓蘅隼",
+    "predicate": "能力",
+    "value": "会辨远处兽群回声",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郏泊荑",
+    "predicate": "职责",
+    "value": "照看幼儿睡处",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "厍纫白",
+    "predicate": "选择",
+    "value": "不独占猎物",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "弓岫莼",
+    "predicate": "装备",
+    "value": "用无刃骨杖探冰",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "荀嵬芦",
+    "predicate": "职责",
+    "value": "分配干皮垫",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "晏珂靳",
+    "predicate": "习惯",
+    "value": "先试烟道再添脂",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "缪栎葭",
+    "predicate": "携物",
+    "value": "随身带两只骨哨",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "隗弥稞",
+    "predicate": "承诺",
+    "value": "不单独穿越暗隙",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "冉砾珂",
+    "predicate": "工具",
+    "value": "拖架绑绳用皮带",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "荧穴坡",
+    "predicate": "热源",
+    "value": "岩隙透出的地热",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郏泊荑",
+    "predicate": "分食原则",
+    "value": "缺食者先领",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "穹砾冰盖",
+    "predicate": "行走规矩",
+    "value": "暴风时两人相系",
+    "chapter": 6
+  }
+]

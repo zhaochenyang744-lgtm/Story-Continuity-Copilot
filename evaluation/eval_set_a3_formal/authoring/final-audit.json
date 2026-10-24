@@ -1,0 +1,13 @@
+{
+  "cross_work_names_overlap": 0,
+  "new_names_and_titles_prior_overlap": 0,
+  "cross_set_input_similarity_conflicts": 0,
+  "source_chapters": 72,
+  "repeated_80han_windows": 0,
+  "repeated_passage_pairs": 0,
+  "byte_files": 66,
+  "byte_errors": 0,
+  "protected_files": 2,
+  "protected_hash_errors": 0,
+  "dev_branch_tasks_present": true
+}

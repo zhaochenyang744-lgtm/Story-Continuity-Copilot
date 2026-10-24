@@ -1,0 +1,28 @@
+{
+  "source_file": "authoring/route-blind-input.json",
+  "source_sha256": "540a25063ef1210ed3ecf94ce83867d9e15e28ee12405626eb0fb77f69e6f44c",
+  "round": 1,
+  "blind_declaration": "本轮仅依据乱序输入包中的 id、input、context 逐条判断，并查阅公开用法定义。未参与正式集题目编写，未读取正式集 tasks.json、self-review、build_metadata.py、bibles 或任何金标，未按预期题目分布倒推标签。保留第一轮独立判断。",
+  "items": [
+    {"id": "a3f-w02-route-05", "predicted_route": "change", "reason": "请求把指定章的一项已定位状态单独存入人物资料，是单项资料修改。"},
+    {"id": "a3f-w02-route-02", "predicted_route": "long_task", "reason": "要求先拟步骤并获准，再跨整本分批更新资料，具有明确的计划和多步执行意图。"},
+    {"id": "a3f-w02-route-07", "predicted_route": "ask", "reason": "只询问截至指定章的持有人，明确只要一个事实答案，没有跨章执行或资料修改要求。"},
+    {"id": "a3f-w02-route-08", "predicted_route": "ask", "reason": "在资料页泛问当前说法是否吻合前文，未提供选段或多步任务要求，按问作品处理。"},
+    {"id": "a3f-w01-route-07", "predicted_route": "ask", "reason": "明确限定直接回答截至指定章的保管人，属于作品事实问答。"},
+    {"id": "a3f-w01-route-08", "predicted_route": "ask", "reason": "界面处于资料页且没有选段，当前意图是询问一处记法与前文是否一致。"},
+    {"id": "a3f-w01-route-05", "predicted_route": "change", "reason": "要求将指定章已指明的一件事给资料增加一条，不需要先计划或遍查全书。"},
+    {"id": "a3f-w02-route-10", "predicted_route": "check_passage", "reason": "写作页已选中草稿句子，询问该处与前文是否吻合，满足检查选段的界面和意图条件。"},
+    {"id": "a3f-w01-route-02", "predicted_route": "long_task", "reason": "要求从头到尾检查并先交分步计划，确认后继续，属于跨全书的多步任务。"},
+    {"id": "a3f-w02-route-04", "predicted_route": "long_task", "reason": "要从首章查到末章并按结果分组交状态卡，需要跨章审计和批量产出。"},
+    {"id": "a3f-w02-route-01", "predicted_route": "long_task", "reason": "要求逐章核对全篇交接记录并交带出处的问题报告，范围和产出都体现长任务。"},
+    {"id": "a3f-w02-route-06", "predicted_route": "change", "reason": "明确只存指定章的一项权限并禁止查看其他章，是边界清楚的单项资料操作。"},
+    {"id": "a3f-w02-route-03", "predicted_route": "long_task", "reason": "要求跨全书逐段核验多件信物，先确认计划再统一交报告，属于多步执行。"},
+    {"id": "a3f-w01-route-09", "predicted_route": "recap", "reason": "准备继续写下一章，要求提醒上一段收尾留下的局面，属于下笔前回顾。"},
+    {"id": "a3f-w01-route-04", "predicted_route": "long_task", "reason": "希望资料追上整本书，要求按章节分批核查后交改动单，属于跨书资料整理任务。"},
+    {"id": "a3f-w01-route-01", "predicted_route": "long_task", "reason": "要求完整检查三十章中相关的换手和伤势，并带出处报告，需要跨章追踪。"},
+    {"id": "a3f-w01-route-10", "predicted_route": "check_passage", "reason": "写作页有明确的草稿选段，要求检查这一处与前文能否对上，应检查选中段落。"},
+    {"id": "a3f-w01-route-03", "predicted_route": "long_task", "reason": "要求逐章核过全书伏线并将需要处理的成组交付，是跨章伏笔审计。"},
+    {"id": "a3f-w01-route-06", "predicted_route": "change", "reason": "请求只把指定章的一项差事补入资料，属于单项新增事实操作。"},
+    {"id": "a3f-w02-route-09", "predicted_route": "recap", "reason": "准备写下一章，要求先提醒上一段局面和悬而未决事项，属于写前回顾。"}
+  ]
+}

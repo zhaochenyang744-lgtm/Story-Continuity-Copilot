@@ -1,0 +1,43 @@
+{
+  "status": "prefix_review_completed",
+  "work": "w01",
+  "scope": {"chapters": [1, 18], "full_book_review": false},
+  "reviewer_participated_in_work_authoring": false,
+  "method": "Read every paragraph of chapters 1-18, then checked narrative continuity against the approved work bible. A separate standard-library audit checked literal registered quote presence and counted chapter Han characters. No model API, product, or evaluation run was used.",
+  "bindings": {
+    "prefix_sha256_normalized_lf": "1ad2bd3ea9547e16347ec2bf4d406d01acdd201ee7bbfaa0d2100a677bc3e409",
+    "prefix_definition": "UTF-8 encoding of the text returned by read_text, starting at chapter 1 heading and ending immediately before chapter 19 heading; universal-newline normalization applies.",
+    "bible_sha256": "8c0d4d953dded04c88ac5328ed6fd7d23146c7d741f83c425a81fee88b3edde5"
+  },
+  "coverage": {
+    "chapters_read_in_full": 18,
+    "initial_fact_supports": 30,
+    "registered_trace_states_due": 9,
+    "registered_contradiction_a_sides": 3,
+    "stale_fact_changes_due": 3,
+    "missing_fact_changes_due": 3,
+    "decoys_due": 2,
+    "resolved_unmarked_due": 2,
+    "already_resolved_thread_due": 1,
+    "foreshadow_plantings_due": 9,
+    "decision_quotes_due": 3,
+    "registered_quote_occurrences_checked": 56,
+    "missing_registered_quote_occurrences": 0,
+    "chapter_hanzi": [2865, 2890, 2869, 2800, 2841, 3000, 2832, 2811, 2842, 2858, 2937, 2919, 2540, 2558, 2559, 2520, 2611, 2576]
+  },
+  "semantic_checks": [
+    {"id": "PC01", "check": "Initial supports and alias identities", "result": "No missing initial support or accidental identity conflict found."},
+    {"id": "PC02", "check": "Three trace objects through their third registered states", "result": "Possession, opening state, carrying position, and storage transitions remain compatible through chapter 18. Later registered states and contradiction b sides are outside this review."},
+    {"id": "PC03", "check": "Foreseeable foreshadow plantings and two due unmarked resolutions", "result": "All nine plantings due before or at chapter 18 are narratively present. The two due unmarked resolutions have concrete causal explanation, and the other planted mysteries remain open or pending as designed."},
+    {"id": "PC04", "check": "Three due missing facts and three due stale changes", "result": "Each due change occurs in an event or an explicit decision and is compatible with earlier narrative state."},
+    {"id": "PC05", "check": "Injured-palm action limits after chapter 10", "result": "Subsequent passages consistently use the uninjured hand, delegation, or light non-gripping actions. No unannounced recovery or forceful injured-hand action found."},
+    {"id": "PC06", "check": "Camp movement, stored object, and planned later retrieval", "result": "The object deliberately left behind remains explicitly identified as left behind after the group moves. No silent reappearance found in the reviewed prefix."},
+    {"id": "PC07", "check": "Accidental contradictions versus registered decision points", "result": "The already-present designed difference is preserved without explanatory cancellation; later counterpart assertions remain outside this prefix review. No additional accidental conflict found."}
+  ],
+  "findings": [],
+  "finding_count": 0,
+  "unresolved_findings": 0,
+  "final_review_required": "After all 30 chapters are complete, an independent reviewer must reread the entire work, including chapters 1-18, and check all later states, contradictions, decisions, and ending continuity. This prefix check cannot substitute for final full-book review or final freeze bindings.",
+  "edits_made_to_body": 0,
+  "shared_draft_read": false
+}

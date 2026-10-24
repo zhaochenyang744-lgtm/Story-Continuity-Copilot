@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 30,
+    "w02": 30
+  },
+  "shared_draft_coverage": {
+    "w01": 31,
+    "w02": 31
+  },
+  "task_coverage": 42,
+  "findings_total": 8,
+  "findings_closed": 8,
+  "new_findings_after_recheck": 0,
+  "review_records": [
+    "authoring/independent-w01-review.json",
+    "authoring/independent-w01-review.md",
+    "authoring/independent-w02-review.json",
+    "authoring/independent-w02-review.md"
+  ],
+  "review_record_sha256": {
+    "authoring/independent-w01-review.json": "faa9b5d6659672d61c04daab3c36b7e37e952e84194a1d8676fbd573d06f403c",
+    "authoring/independent-w01-review.md": "4130682309cf8cea962ff46c9e6d2b90a7504b2026fca685ac0c9da2957240f8",
+    "authoring/independent-w02-review.json": "f43b49aac76bf5c93d180a962d098fdb0652cc0a5bd2ed945b0b8e87d19ec4d4",
+    "authoring/independent-w02-review.md": "46d13e12d153fa224f1a011a9edb79c4280f6bce6a7ef6bf4b570316bacce06a"
+  },
+  "checker_static_review": {
+    "previous_findings_closed": 4,
+    "additional_checks_passed": 4,
+    "unresolved": 0
+  },
+  "blind_route": {
+    "total": 20,
+    "first_agreement": 20,
+    "first_agreement_rate": 1.0,
+    "first_disagreements": 0,
+    "disagreed_ids": [],
+    "revised_ids": [],
+    "final_agreement": 20,
+    "unresolved": 0,
+    "source_sha256": "540a25063ef1210ed3ecf94ce83867d9e15e28ee12405626eb0fb77f69e6f44c"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "902c0a819ee45f74d38bfca329fb03be39204c9e44a841e26d6b358e753bb786",
+    "materials/w01-foreshadows.json": "9c261ba1af6b233d8a93d78387604e0d7eb419a078b25659b575cbd499be91bf",
+    "materials/w02-facts.json": "e83c6d9414e4fa3dcecd7ffd879aed40162ee53723d71e59a69a522238ab19d3",
+    "materials/w02-foreshadows.json": "3331d6e046d25e2f3881cafeffc615a27a5223da6abe95858e67aa40a7d43c49",
+    "tasks.json": "0f72d1c2022ad40b778247b5c18aa9f2c5bb217e7a8ea1e32c7725657edc0bbd",
+    "works/w01.md": "68739d57fe50971e7b569b29be243835d48890e6085d8af481a41c25b79c8672",
+    "works/w02.md": "d16fc9678f35fb6bf85875e052a2f9b83cec95610c11f738921dccc280569d7b"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "a250f2376adf4a8d4e3ee125356c00617726059dd66a0d16ccaf193fe5b96454",
+    "authoring/self-review.md": "54714c82d6eb35935d4d4089dc53e8f46b2537563d4815d6ae96beb0c156a784",
+    "authoring/novelty-reference.json": "ca60f85289f2028f7517d4b81b98b15f273d9f427a3224befe7bcfd7f5e64ac9"
+  }
+}

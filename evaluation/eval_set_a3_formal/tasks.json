@@ -1,0 +1,1293 @@
+{
+  "version": "a3-1",
+  "set_id": "a3-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "极夜不候归",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "訾霁岑",
+        "冻弦",
+        "厍纫白",
+        "白燧",
+        "宓蘅隼",
+        "隼衣",
+        "郏泊荑",
+        "冉砾珂",
+        "弓岫莼",
+        "荀嵬芦",
+        "晏珂靳",
+        "隗弥稞",
+        "缪栎葭",
+        "穹砾冰盖",
+        "琥蚀冰门",
+        "噪雪脊",
+        "荧穴坡",
+        "凹齿骨环",
+        "三棱脂囊",
+        "褐纹颌骨"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第31章 留在棚外的雪",
+        "body": "訾霁岑醒来时，棚外还没有走路的声音。他伸手摸到身边的皮衣，才发现衣角被一个熟睡的人压住。那人蜷着腿，把从前始终不肯卸下的包放在头边，手指仍搭着包口。訾霁岑没有抽动衣角，先绕到另一边，披上放在脚旁的旧皮，去看昨夜留下的火。火下只有几点红，他蹲着拨开灰，等一小缕烟重新找到出去的缝隙。\n\n郏泊荑端着空碗过来，看见他没有穿好衣服，便把碗先放在地上，替他将背后的皮拉平。两人没有说昨天的见证，也没有问谁还愿意留下。棚口有一道被鞋底带进来的雪痕，郏泊荑用薄骨片慢慢刮到外面，故意留出一小段，让刚醒来的人看得见哪里滑。訾霁岑问要不要添一层垫皮，郏泊荑说，等大家都起来，先看他们愿意从哪边走。\n\n宓蘅隼坐在稍远处，用左手托着水碗，受冻的右掌靠在折好的衣上。有人想把一捆皮条塞过来，到了跟前才收住。宓蘅隼抬眼指了指地面，让那人放下，随后请他拉开两端，自己只辨结心，不去攥绳。皮条里有一段冻在一起，两人都没有急着扯，等碗里的热气熏软一点，再试着一点点松开。\n\n厍纫白从棚外回来，发梢挂着白霜。他走过放见证物的地方，只看了一眼，没有像从前那样去摸自己的腕子。弓岫莼正在旁边腾出一块干地，要把昨晚被人踩湿的垫皮翻过来。厍纫白伸手接住垫皮的一角，两人抬到半途，发现下面还有一只没穿走的靴子，便一起停下。一个孩子认出那是自己的，跑来抱住靴子，又被郏泊荑拦住，等里面的雪倒净才准往脚上套。\n\n缪栎葭背着空囊站在外沿，问今天要不要先去找取食的路。訾霁岑望向尚未醒的人，没有替他们答应，只说先让想去的人吃些东西。冉砾珂从人群里挪出一条路，叫端热水的人先过。晏珂靳听见说话声，睁眼看了一会儿，又把自己身下压着的半块干皮推给旁边的人。棚里渐渐有了声音，起先是杯沿相碰，后来才有人问，自己的东西能不能也放在那块公共的干地上。\n\n荀嵬芦没有立即接过那件东西。荀嵬芦让来人先把它摊开，看看是否还湿，若压在别人的皮上，会不会把好不容易留下的干处也沾透。那人蹲下来，慢慢把包解开。隗弥稞在旁边挪开膝头，给他留出够两只手转动的位置。外面的雪还在落，棚里却不必等所有人都想明白同一件事，才允许第一只碗递到火边。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "沙垒换俘日",
+      "language": "zh",
+      "source_file": "works/w02.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "濮箴柘",
+        "赤辙",
+        "阚蔚烬",
+        "烬侯",
+        "夔伽蔓",
+        "弦使",
+        "仵韫砺",
+        "扈绫珉",
+        "祁琮黛",
+        "蔺鹜禾",
+        "訚砚虔",
+        "翟孚菱",
+        "祝骁棠",
+        "赫辕沙垒",
+        "褶日隘",
+        "羿缄泉",
+        "铜睫营",
+        "隙纹赎牌",
+        "赤脉水玺",
+        "蟹钩使函"
+      ],
+      "materials": {
+        "facts": "materials/w02-facts.json",
+        "foreshadows": "materials/w02-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第31章 第一桶水以后",
+        "body": "日光照到井台以后，羿缄泉边没有人催第一桶水快些提上来。濮箴柘站在离井沿稍远的地方，右臂安稳地靠在束带里，看蔺鹜禾把桶柄上的白布理平。布被昨晚的沙磨得发灰，蔺鹜禾本来想换一块，拿到手里又停住，说旧布还可以洗净，先别因为今天有人来看，就把平日用的东西都藏起来。\n\n濮箴柘用左手将脚边的凳子挪开，免得后来的人只顾望井，踢到凳腿。扈绫珉抱着待核的木片走来，想把它们搁在凳上，看见凳面全是细沙，便先用袖口擦过。擦到一半，翟孚菱递来一块布，两人换着清理，谁都没有因为昨晚已经达成约定，就把今天这一小片脏处当成旁人的事。\n\n仵韫砺带来一个迟迟不肯进帐的人。那人站在泉边，手里捏着被折软的旧纸，问自己的亲属若今日仍没赶到，是不是就算自己没有选。他说完便低下头，仿佛答案只要从濮箴柘口中出来，就再不能收回。仵韫砺没有替他重说一遍，留着两人之间的空地，让他能在被问到时自己开口。\n\n濮箴柘请他先坐，问他是否已经喝过水。那人摇头，却又把纸攥紧。蔺鹜禾拿来一只空碗，没有先端到他面前，而是放在他伸手就能够到的地方。碗沿有一道浅磕痕，等候的人用指腹摸了摸，终于把纸放在膝上，伸出另一只手。井下传来桶底碰壁的声音，訚砚虔叫拉索的人稍停，先让桶身转正。\n\n夔伽蔓沿空地走来，在放使者旧物的帐前停了片刻，又绕到队伍外侧。祝骁棠正在那里把不用的旗杆搁低，不让杆头扫过坐着的人。夔伽蔓替祝骁棠扶住一端，等地上的孩子走开，才一起放下。没有旗影遮住以后，帐侧那道窄小的通路显得比昨日更清楚，一个原本只打算远远等消息的老人也沿着它走到了泉边。\n\n祁琮黛从背风的病帐出来，先问拉索的几个人有没有轮换，随后把一只坐垫塞到那位老人身后。老人不肯全坐上去，怕自己衣上的尘弄脏别人带来的东西。祁琮黛将坐垫翻了一个面，叫老人看上面早已有别人坐过的痕迹，才笑着去找下一只碗。濮箴柘看见老人终于坐稳，便请仵韫砺把刚才未答完的话接着问。\n\n阚蔚烬此时才走到人群外，没有叫人给自己腾出位置。阚蔚烬看见两边的水桶挨在一起，伸脚把一小块垫桶的石头拨平，免得桶底歪着。第一碗水经过几个人的手才到那人面前，一路上没有谁把碗举起来作证。那人喝得很慢，喝完没有立即交还，而是将碗放在凳旁，给还握在膝上的旧纸腾出一块干净地方。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a3f-w01-trace-01",
+      "suite": "trace",
+      "work": "w01",
+      "request": "凹齿骨环这一路究竟怎么传下来的？逐段跟到结尾，有打架的记法请给出处，先只交报告。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 1,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w01-trace-02",
+      "suite": "trace",
+      "work": "w01",
+      "request": "我想看三棱脂囊从头到尾的变化，哪儿写得互相顶着也列出来，先别给改动卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 2,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w01-trace-03",
+      "suite": "trace",
+      "work": "w01",
+      "request": "褐纹颌骨每次在哪儿、由谁拿着，帮我沿全书走一趟，碰上说不通的地方挂上出处。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 3,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w01-thread-audit-01",
+      "suite": "thread_audit",
+      "work": "w01",
+      "request": "第一到十八章的悬线帮我过一下：已经交代清楚的要销账，还吊着的留着。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "范围内所有已回收未标与明确放弃的线索都须出卡，开放线索保持原状。",
+      "scope": [
+        1,
+        18
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 三声之间"
+          ],
+          "evidence_quotes": [
+            "冰下那三声原来是冻层挤裂的回响，众人看见裂口合拢，疑问至此有了答案。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第17章"
+          ],
+          "evidence_chapters": [
+            "第17章 空架上终于有人"
+          ],
+          "evidence_quotes": [
+            "空拖架每夜回旧营，是郏泊荑在接落队的人，最后一个人已被接回。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w01-thread-audit-02",
+      "suite": "thread_audit",
+      "work": "w01",
+      "request": "只查十九至三十章的线索，有了着落和已经决定丢开的都各给一张状态卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "范围内所有已回收未标与明确放弃的线索都须出卡，开放线索保持原状。",
+      "scope": [
+        19,
+        30
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第23章"
+          ],
+          "evidence_chapters": [
+            "第23章 一面朝向来路"
+          ],
+          "evidence_quotes": [
+            "白石的油斑是晏珂靳为返程者留的路标，他当众示范后不必再猜。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "after_points": [
+            "已放弃",
+            "终止继续追索"
+          ],
+          "evidence_chapters": [
+            "第20章 不再留一半脚步"
+          ],
+          "evidence_quotes": [
+            "深隙旧路不再追了，众人已决定迁向荧穴坡，也不会派人回去找。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w01-tidy-01",
+      "suite": "tidy",
+      "work": "w01",
+      "request": "第七到十七章和现有资料对对账，漏的补，旧的换，已经写过的别再添。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "逐一补本范围缺项、改已过时条目，已记录的同义信息不新增。",
+      "scope": [
+        7,
+        17
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "宓蘅隼",
+            "predicate": "右掌冻伤"
+          },
+          "after_points": [
+            "右掌有冻伤",
+            "无法抓紧"
+          ],
+          "evidence_chapters": [
+            "第10章 没能松开的手"
+          ],
+          "evidence_quotes": [
+            "宓蘅隼右掌冻伤，不能握紧，拖架改由两个人扶着。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "冉砾珂",
+            "predicate": "临时职责"
+          },
+          "after_points": [
+            "白天负责探路",
+            "任期到过断冰"
+          ],
+          "evidence_chapters": [
+            "第12章 先走一段再回头"
+          ],
+          "evidence_quotes": [
+            "冉砾珂接替了白日探路，直到过完这段断冰才卸下职责。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "荀嵬芦",
+            "predicate": "救生约定"
+          },
+          "after_points": [
+            "落隙先舍空架",
+            "接绳须等同伴"
+          ],
+          "evidence_chapters": [
+            "第16章 比空架更该带回的"
+          ],
+          "evidence_quotes": [
+            "荀嵬芦立了新约，落隙的人先抛空拖架，再等同伴接绳。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "保管者是冻弦"
+          ],
+          "evidence_chapters": [
+            "第7章 不必一直握着"
+          ],
+          "evidence_quotes": [
+            "厍纫白解下凹齿骨环，亲手交到訾霁岑手里。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 6,
+          "after_points": [
+            "应急脂已启用"
+          ],
+          "evidence_chapters": [
+            "第8章 留到现在的脂"
+          ],
+          "evidence_quotes": [
+            "荀嵬芦剪开原结，三棱脂囊在这一刻第一次开封。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w01-tidy-02",
+      "suite": "tidy",
+      "work": "w01",
+      "request": "拿十九至三十章核一下库里的条目，该添该换的一起交来，同义的别算两回。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "逐一补本范围缺项、改已过时条目，已记录的同义信息不新增。",
+      "scope": [
+        19,
+        30
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "缪栎葭",
+            "predicate": "新获能力"
+          },
+          "after_points": [
+            "能识别地热汽",
+            "可寻夜队避风处"
+          ],
+          "evidence_chapters": [
+            "第22章 会往上走的白气"
+          ],
+          "evidence_quotes": [
+            "缪栎葭学会了辨认地热水汽，从此能替夜队找避风处。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "郏泊荑",
+            "predicate": "接应地点"
+          },
+          "after_points": [
+            "凹岩处接应",
+            "幼儿不候风口"
+          ],
+          "evidence_chapters": [
+            "第24章 在喊得到的地方等"
+          ],
+          "evidence_quotes": [
+            "郏泊荑把接应处定在荧穴坡下的凹岩，不再让幼儿等在风口。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "隗弥稞",
+            "predicate": "入棚资格"
+          },
+          "after_points": [
+            "获常住资格",
+            "不用逐夜求准"
+          ],
+          "evidence_chapters": [
+            "第29章 今夜以后也有一处"
+          ],
+          "evidence_quotes": [
+            "隗弥稞被众人接纳为公共棚的常住者，不须再每夜重新求准。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "归公共见证处共用",
+            "不再私持"
+          ],
+          "evidence_chapters": [
+            "第30章 醒来仍能找到"
+          ],
+          "evidence_quotes": [
+            "弓岫莼把凹齿骨环卸下，放到公共见证处供众人共用。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w01-ask-01",
+      "suite": "ask",
+      "work": "w01",
+      "request": "前十五章里同行者的出走经历，替我逐章做个带出处的报告；有需要定稿的记法，等我答过再下结论。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "限定范围只含一处作者意图不明的双版本，先询问，按回答报告而不改库。",
+      "scope": [
+        1,
+        15
+      ],
+      "author_replies": {
+        "decision": "采用十七岁"
+      },
+      "decision_point": 1,
+      "expected_actions": []
+    },
+    {
+      "id": "a3f-w01-ask-02",
+      "suite": "ask",
+      "work": "w01",
+      "request": "只查十六到三十章，公共棚从开建到安顿的安排逐章核一遍，交出处报告；拿不准的先停住问我，不做卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "限定范围只含一处作者意图不明的双版本，先询问，按回答报告而不改库。",
+      "scope": [
+        16,
+        30
+      ],
+      "author_replies": {
+        "decision": "采用入口向西"
+      },
+      "decision_point": 2,
+      "expected_actions": []
+    },
+    {
+      "id": "a3f-w01-narrowed-01",
+      "suite": "narrowed",
+      "work": "w01",
+      "request": "全书那些未了的线帮我逐个过，把实际有结果的和已舍弃的做成变更卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "先是全书请求，计划缩窄后严格按新范围计算完整动作集合。",
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          10,
+          21
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 三声之间"
+          ],
+          "evidence_quotes": [
+            "冰下那三声原来是冻层挤裂的回响，众人看见裂口合拢，疑问至此有了答案。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第17章"
+          ],
+          "evidence_chapters": [
+            "第17章 空架上终于有人"
+          ],
+          "evidence_quotes": [
+            "空拖架每夜回旧营，是郏泊荑在接落队的人，最后一个人已被接回。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "after_points": [
+            "已放弃",
+            "终止继续追索"
+          ],
+          "evidence_chapters": [
+            "第20章 不再留一半脚步"
+          ],
+          "evidence_quotes": [
+            "深隙旧路不再追了，众人已决定迁向荧穴坡，也不会派人回去找。"
+          ]
+        }
+      ],
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w01-narrowed-02",
+      "suite": "narrowed",
+      "work": "w01",
+      "request": "从整部书里找库里没跟上的地方，缺项和旧值都给我补换方案。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "先是全书请求，计划缩窄后严格按新范围计算完整动作集合。",
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          13,
+          23
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "荀嵬芦",
+            "predicate": "救生约定"
+          },
+          "after_points": [
+            "落隙先舍空架",
+            "接绳须等同伴"
+          ],
+          "evidence_chapters": [
+            "第16章 比空架更该带回的"
+          ],
+          "evidence_quotes": [
+            "荀嵬芦立了新约，落隙的人先抛空拖架，再等同伴接绳。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "缪栎葭",
+            "predicate": "新获能力"
+          },
+          "after_points": [
+            "能识别地热汽",
+            "可寻夜队避风处"
+          ],
+          "evidence_chapters": [
+            "第22章 会往上走的白气"
+          ],
+          "evidence_quotes": [
+            "缪栎葭学会了辨认地热水汽，从此能替夜队找避风处。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "改由弓岫莼持有"
+          ],
+          "evidence_chapters": [
+            "第19章 让路的人也能坐下"
+          ],
+          "evidence_quotes": [
+            "弓岫莼从訾霁岑手里接过凹齿骨环，套上骨杖。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 11,
+          "after_points": [
+            "先接有幼儿者",
+            "旧顺序作废"
+          ],
+          "evidence_chapters": [
+            "第18章 先让谁进来"
+          ],
+          "evidence_quotes": [
+            "荧穴坡从今夜起先接带幼儿的人，先前的入坡次序废止。"
+          ]
+        }
+      ],
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w01-route-01",
+      "suite": "route",
+      "work": "w01",
+      "input": "把冻弦走过的三十章全查一轮，涉及换手和伤势的都带出处交报告。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w01-route-02",
+      "suite": "route",
+      "work": "w01",
+      "input": "从头到尾替白燧找出哪里讲岔了，做个分步计划，我点头再往下走。",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w01-route-03",
+      "suite": "route",
+      "work": "w01",
+      "input": "这本的伏线我怕自己忘了，你逐章核过，把该收账的成组给我。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w01-route-04",
+      "suite": "route",
+      "work": "w01",
+      "input": "我想让库里的信息追上整本书，你按章节一批批查完再交改动单。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w01-route-05",
+      "suite": "route",
+      "work": "w01",
+      "input": "第十章隼衣那次手冻坏的事，给资料加一条就行。",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "change",
+      "why": "只要求一项已指定的资料变更，没有跨书核查任务。"
+    },
+    {
+      "id": "a3f-w01-route-06",
+      "suite": "route",
+      "work": "w01",
+      "input": "把第十二章冉砾珂接的差事补进库里，只动这一项。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "只要求一项已指定的资料变更，没有跨书核查任务。"
+    },
+    {
+      "id": "a3f-w01-route-07",
+      "suite": "route",
+      "work": "w01",
+      "input": "截至第十七章，骨环现在是哪个人保管？直接答这个就好。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "只问现有内容或资料与前文关系，不授权批量工作。"
+    },
+    {
+      "id": "a3f-w01-route-08",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一处的记法能和前文合上吗？",
+      "context": {
+        "page": "materials",
+        "chapter_number": 12
+      },
+      "expected_route": "ask",
+      "why": "只问现有内容或资料与前文关系，不授权批量工作。"
+    },
+    {
+      "id": "a3f-w01-route-09",
+      "suite": "route",
+      "work": "w01",
+      "input": "我要接着写第三十一章了，先提醒我上一段收尾留下了什么。",
+      "context": {
+        "page": "writing"
+      },
+      "expected_route": "recap",
+      "why": "明确为接写前文作准备，需要回顾。"
+    },
+    {
+      "id": "a3f-w01-route-10",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一处的记法能和前文合上吗？",
+      "context": {
+        "page": "writing",
+        "selection": "訾霁岑醒来时，棚外还没有走路的声音。",
+        "chapter_number": 31
+      },
+      "expected_route": "check_passage",
+      "why": "writing页面带共享草稿选句，要求核验选段与前文。"
+    },
+    {
+      "id": "a3f-w02-trace-01",
+      "suite": "trace",
+      "work": "w02",
+      "request": "隙纹赎牌一路归谁拿，能不能替我按全书追到最后？互相冲突的段落也指给我，只要报告。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 1,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w02-trace-02",
+      "suite": "trace",
+      "work": "w02",
+      "request": "赤脉水玺的封存和流转我有点混了，从开头逐段看到结尾，把不相容的说法附上出处，先不做卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 2,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w02-trace-03",
+      "suite": "trace",
+      "work": "w02",
+      "request": "蟹钩使函去哪儿了又回来几回？全篇帮我串一遍，前后有硬冲突就指出来。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "该请求只要逐章追踪及不相容说法，三条不同对象分别覆盖全部状态。",
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 3,
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w02-thread-audit-01",
+      "suite": "thread_audit",
+      "work": "w02",
+      "request": "替我核第一到十八章的悬念账，真结束的给回收卡，没交代的继续留着。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "范围内所有已回收未标与明确放弃的线索都须出卡，开放线索保持原状。",
+      "scope": [
+        1,
+        18
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 帘上的第二道影"
+          ],
+          "evidence_quotes": [
+            "夜里第二道旗影来自破帘后的映灯，祝骁棠移开灯就不再出现，疑问已解。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第17章"
+          ],
+          "evidence_chapters": [
+            "第17章 差额归到本人"
+          ],
+          "evidence_quotes": [
+            "两份名册少的一人是被原名军名各记一次，扈绫珉核对本人后合并，差额已清。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w02-thread-audit-02",
+      "suite": "thread_audit",
+      "work": "w02",
+      "request": "十九到三十章里哪些线走完了、哪些明确不要了？状态改动一次列给我。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "范围内所有已回收未标与明确放弃的线索都须出卡，开放线索保持原状。",
+      "scope": [
+        19,
+        30
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第23章"
+          ],
+          "evidence_chapters": [
+            "第23章 不把疑心喝下去"
+          ],
+          "evidence_quotes": [
+            "井沿红屑出自旧桶柄的漆，蔺鹜禾剥下相同的漆片，众人不必再疑水被下药。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "after_points": [
+            "已放弃",
+            "终止继续追索"
+          ],
+          "evidence_chapters": [
+            "第20章 撤下那一项"
+          ],
+          "evidence_quotes": [
+            "旧王的欠赎不再追讨了，双方当众撤下这项要求，也不许后人借它扣留归俘。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w02-tidy-01",
+      "suite": "tidy",
+      "work": "w02",
+      "request": "请拿第七至十七章查资料漏项和老信息，已有的换种话说不算新条目。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "逐一补本范围缺项、改已过时条目，已记录的同义信息不新增。",
+      "scope": [
+        7,
+        17
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "濮箴柘",
+            "predicate": "右肩箭伤"
+          },
+          "after_points": [
+            "右肩有箭伤",
+            "不能举高手臂"
+          ],
+          "evidence_chapters": [
+            "第10章 风里的停行声"
+          ],
+          "evidence_quotes": [
+            "濮箴柘右肩中了流箭，手臂不能抬高，旗改由祝骁棠来传。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "蔺鹜禾",
+            "predicate": "临时权限"
+          },
+          "after_points": [
+            "日落后可开门",
+            "用途限病者取水"
+          ],
+          "evidence_chapters": [
+            "第12章 给病者留的路"
+          ],
+          "evidence_quotes": [
+            "蔺鹜禾得到两军同意，可以在日落以后给病者开取水小门。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "仵韫砺",
+            "predicate": "交还条件"
+          },
+          "after_points": [
+            "先与亲属相见",
+            "去留由本人选"
+          ],
+          "evidence_chapters": [
+            "第16章 先见那个人"
+          ],
+          "evidence_quotes": [
+            "仵韫砺与双方约定，归俘先见亲属，再自己决定留在哪边。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "改由赤辙保管"
+          ],
+          "evidence_chapters": [
+            "第7章 空手接牌"
+          ],
+          "evidence_quotes": [
+            "阚蔚烬当着两军见证，把隙纹赎牌交给濮箴柘。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 6,
+          "after_points": [
+            "封套已经揭开"
+          ],
+          "evidence_chapters": [
+            "第8章 旧封口前"
+          ],
+          "evidence_quotes": [
+            "扈绫珉拆开封套，赤脉水玺这是第一次露在众人面前。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w02-tidy-02",
+      "suite": "tidy",
+      "work": "w02",
+      "request": "十九到三十章发生的事和资料库核一遍，确实欠的和该更新的都出卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "逐一补本范围缺项、改已过时条目，已记录的同义信息不新增。",
+      "scope": [
+        19,
+        30
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "扈绫珉",
+            "predicate": "保管职责"
+          },
+          "after_points": [
+            "保管赎约原本",
+            "双方各留副本"
+          ],
+          "evidence_chapters": [
+            "第22章 原纸留给谁"
+          ],
+          "evidence_quotes": [
+            "扈绫珉接下双方原始赎约的保管职责，副本仍各交一军。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "祁琮黛",
+            "predicate": "迁帐地点"
+          },
+          "after_points": [
+            "重伤者移到泉边",
+            "住在背风帐中"
+          ],
+          "evidence_chapters": [
+            "第24章 担架先空走一回"
+          ],
+          "evidence_quotes": [
+            "祁琮黛把重伤者移到羿缄泉背风的帐里，离开旧病帐。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "祝骁棠",
+            "predicate": "停战后去向"
+          },
+          "after_points": [
+            "留任共用水处",
+            "以后不回军中任职"
+          ],
+          "evidence_chapters": [
+            "第29章 旗后的位置"
+          ],
+          "evidence_quotes": [
+            "祝骁棠决定留在共同取水处，停战后不再回任任何一军。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "交双方共管",
+            "不再归个人"
+          ],
+          "evidence_chapters": [
+            "第30章 桶沿上的日光"
+          ],
+          "evidence_quotes": [
+            "仵韫砺将隙纹赎牌交还双方，共同保管，不再属于一个人。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3f-w02-ask-01",
+      "suite": "ask",
+      "work": "w02",
+      "request": "前十五章的交俘筹备怎么推进，替我按章做份出处报告；最初约定有拿不准的说法，等我答过再定结论。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "限定范围只含一处作者意图不明的双版本，先询问，按回答报告而不改库。",
+      "scope": [
+        1,
+        15
+      ],
+      "author_replies": {
+        "decision": "采用第三日"
+      },
+      "decision_point": 1,
+      "expected_actions": []
+    },
+    {
+      "id": "a3f-w02-ask-02",
+      "suite": "ask",
+      "work": "w02",
+      "request": "在十六到三十章里，见证安排从初建到开放亲属的过程逐章查过，交出处报告；数量拿不准就停下来问，不改资料。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "限定范围只含一处作者意图不明的双版本，先询问，按回答报告而不改库。",
+      "scope": [
+        16,
+        30
+      ],
+      "author_replies": {
+        "decision": "采用十四席"
+      },
+      "decision_point": 2,
+      "expected_actions": []
+    },
+    {
+      "id": "a3f-w02-narrowed-01",
+      "suite": "narrowed",
+      "work": "w02",
+      "request": "全书留的那些线，逐个核到结尾，已经解开的和确认不追的给我变更卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "先是全书请求，计划缩窄后严格按新范围计算完整动作集合。",
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          10,
+          21
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 帘上的第二道影"
+          ],
+          "evidence_quotes": [
+            "夜里第二道旗影来自破帘后的映灯，祝骁棠移开灯就不再出现，疑问已解。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第17章"
+          ],
+          "evidence_chapters": [
+            "第17章 差额归到本人"
+          ],
+          "evidence_quotes": [
+            "两份名册少的一人是被原名军名各记一次，扈绫珉核对本人后合并，差额已清。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "after_points": [
+            "已放弃",
+            "终止继续追索"
+          ],
+          "evidence_chapters": [
+            "第20章 撤下那一项"
+          ],
+          "evidence_quotes": [
+            "旧王的欠赎不再追讨了，双方当众撤下这项要求，也不许后人借它扣留归俘。"
+          ]
+        }
+      ],
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w02-narrowed-02",
+      "suite": "narrowed",
+      "work": "w02",
+      "request": "把全篇跟资料作一次核验，凡是缺了或者还停在旧情况的，给出增补修改卡。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "先是全书请求，计划缩窄后严格按新范围计算完整动作集合。",
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          13,
+          23
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "仵韫砺",
+            "predicate": "交还条件"
+          },
+          "after_points": [
+            "先与亲属相见",
+            "去留由本人选"
+          ],
+          "evidence_chapters": [
+            "第16章 先见那个人"
+          ],
+          "evidence_quotes": [
+            "仵韫砺与双方约定，归俘先见亲属，再自己决定留在哪边。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "扈绫珉",
+            "predicate": "保管职责"
+          },
+          "after_points": [
+            "保管赎约原本",
+            "双方各留副本"
+          ],
+          "evidence_chapters": [
+            "第22章 原纸留给谁"
+          ],
+          "evidence_quotes": [
+            "扈绫珉接下双方原始赎约的保管职责，副本仍各交一军。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "保管人为仵韫砺"
+          ],
+          "evidence_chapters": [
+            "第19章 去泉边的人"
+          ],
+          "evidence_quotes": [
+            "仵韫砺从濮箴柘手中接到隙纹赎牌，带给归俘验收。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 11,
+          "after_points": [
+            "亲属可进营作证",
+            "取消军方独占"
+          ],
+          "evidence_chapters": [
+            "第18章 席前多留一步"
+          ],
+          "evidence_quotes": [
+            "铜睫营自今日起接纳归俘亲属入内见证，旧的军方独占资格取消。"
+          ]
+        }
+      ],
+      "allowed_actions": []
+    },
+    {
+      "id": "a3f-w02-route-01",
+      "suite": "route",
+      "work": "w02",
+      "input": "替赤辙把全篇交接记录逐章对过，报告里挂出处，也把有问题的列出来。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w02-route-02",
+      "suite": "route",
+      "work": "w02",
+      "input": "赎约和俘虏去留的资料落后正文了，先拟步骤，获准后整本一批批更新。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w02-route-03",
+      "suite": "route",
+      "work": "w02",
+      "input": "全书那几件信物的流转能做次逐段核验吗？计划让我确认，再统一交报告。",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w02-route-04",
+      "suite": "route",
+      "work": "w02",
+      "input": "未完的伏线从第一章一直查到末章，结束的和不要的分组给状态卡。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "long_task",
+      "why": "要求全书或跨章分批执行并交付报告或成组改动。"
+    },
+    {
+      "id": "a3f-w02-route-05",
+      "suite": "route",
+      "work": "w02",
+      "input": "第十章赤辙中箭的状态，单独加在人物资料里。",
+      "context": {
+        "page": "chapters"
+      },
+      "expected_route": "change",
+      "why": "只要求一项已指定的资料变更，没有跨书核查任务。"
+    },
+    {
+      "id": "a3f-w02-route-06",
+      "suite": "route",
+      "work": "w02",
+      "input": "蔺鹜禾第十二章得到的那项权限帮我存一条，别查别的章。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "只要求一项已指定的资料变更，没有跨书核查任务。"
+    },
+    {
+      "id": "a3f-w02-route-07",
+      "suite": "route",
+      "work": "w02",
+      "input": "到第十七章，赎牌最后记在谁那里？我只问持有人。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "只问现有内容或资料与前文关系，不授权批量工作。"
+    },
+    {
+      "id": "a3f-w02-route-08",
+      "suite": "route",
+      "work": "w02",
+      "input": "这里的说法跟前面吻不吻合？",
+      "context": {
+        "page": "materials",
+        "chapter_number": 12
+      },
+      "expected_route": "ask",
+      "why": "只问现有内容或资料与前文关系，不授权批量工作。"
+    },
+    {
+      "id": "a3f-w02-route-09",
+      "suite": "route",
+      "work": "w02",
+      "input": "准备写下一章了，先把上一段的局面和挂着的事提醒我一遍。",
+      "context": {
+        "page": "writing"
+      },
+      "expected_route": "recap",
+      "why": "明确为接写前文作准备，需要回顾。"
+    },
+    {
+      "id": "a3f-w02-route-10",
+      "suite": "route",
+      "work": "w02",
+      "input": "这里的说法跟前面吻不吻合？",
+      "context": {
+        "page": "writing",
+        "selection": "日光照到井台以后，羿缄泉边没有人催第一桶水快些提上来。",
+        "chapter_number": 31
+      },
+      "expected_route": "check_passage",
+      "why": "writing页面带共享草稿选句，要求核验选段与前文。"
+    }
+  ]
+}
