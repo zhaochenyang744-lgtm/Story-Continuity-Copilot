@@ -10,7 +10,9 @@ import type { AssistantChange, AssistantChangeKind, AssistantSource, AssistantTa
 import { Button } from "../ui";
 import { SourceItem } from "./assistant-parts";
 
-export const KIND_LABEL: Record<AssistantChangeKind, string> = { add_fact: "加事实", change_fact: "改事实", resolve_thread: "标伏笔已回收" };
+export const KIND_LABEL: Record<AssistantChangeKind, string> = {
+  add_fact: "加事实", change_fact: "改事实", resolve_thread: "标伏笔已回收", add_thread: "加伏笔", edit_thread: "改伏笔说明", abandon_thread: "伏笔标放弃",
+};
 const VALUE_MAX = 200;
 
 /** What a change was written to: the page asks for it again once the materials have moved. */
@@ -183,8 +185,11 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
   const local = ops.local(item.id);
   const proposed = item.status === "proposed";
   const reworded = proposed && item.editable && typed !== undefined && typed.trim() !== (item.value ?? "").trim();
-  const base = (item.value ?? "").replace(VALUE_END, "");
-  const shownAfter = reworded && item.value !== null && item.after.startsWith(base) ? typed!.trim().replace(VALUE_END, "") + item.after.slice(base.length) : item.after;
+  // A thread's note is shown as the author wrote it (the server leaves no full stop off it); a fact's value loses its closing stop before the chapter.
+  const trim = (text: string) => (item.kind === "add_thread" || item.kind === "edit_thread" ? text : text.replace(VALUE_END, ""));
+  const base = trim(item.value ?? "");
+  const at = item.after.indexOf(base);
+  const shownAfter = reworded && item.value !== null && base && at >= 0 ? item.after.slice(0, at) + trim(typed!.trim()) + item.after.slice(at + base.length) : item.after;
   const name = `${item.label} ${item.title}`;
   return (
     <section className={`a-opt a-chg${item.status === "rejected" ? " dismissed" : ""}`} aria-label={name} data-change={item.id} data-label={item.label} data-kind={item.kind} data-status={item.status}>
@@ -202,8 +207,12 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
         {(reworded || (!proposed && item.edited_by_author)) && <span className="a-edited">你改过</span>}
         {item.status !== "proposed" && <span className={`a-state ${item.status === "applied" ? "blue" : "quiet"}`}>{STATE_TEXT[item.status]}</span>}
       </div>
+      {item.kind === "abandon_thread" && proposed && <p className="a-why a-chg-note">作者确认后这条伏笔不再提醒</p>}
       <Flow before={item.before} after={shownAfter} />
-      {item.request_words && !alone && <p className="a-why a-chg-asked"><span className="sr-only">对应你说的</span>「{item.request_words}」</p>}
+      {/* No passage to stand on (the author's word is the ground): their words take the place of the evidence. */}
+      {!item.evidence.length && item.request_words
+        ? <p className="a-why a-chg-asked">依据：你说的「{item.request_words}」</p>
+        : item.request_words && !alone && <p className="a-why a-chg-asked"><span className="sr-only">对应你说的</span>「{item.request_words}」</p>}
       {proposed && item.editable && editing && (
         <textarea className="a-edit" aria-label={`改后的内容：${item.title}`} value={typed ?? item.value ?? ""} rows={3} maxLength={VALUE_MAX}
           aria-invalid={!(typed ?? item.value ?? "").trim() || undefined} onChange={(event) => setTyped(event.target.value)} />
