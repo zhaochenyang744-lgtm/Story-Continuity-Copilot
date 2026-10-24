@@ -1,0 +1,29 @@
+{
+  "open_names_overlap": [
+    0,
+    0
+  ],
+  "sealed_names_overlap": [
+    0,
+    0
+  ],
+  "open_novelty_errors": [
+    0,
+    0
+  ],
+  "sealed_novelty_errors": [
+    0,
+    0
+  ],
+  "cross_set_novelty_errors": 0,
+  "open_reference_counts": {
+    "source_files": 28,
+    "normalized_inputs": 678,
+    "names_text_files": 498
+  },
+  "sealed_reference_counts": {
+    "source_files": 2,
+    "normalized_inputs": 50,
+    "names_text_files": 79
+  }
+}

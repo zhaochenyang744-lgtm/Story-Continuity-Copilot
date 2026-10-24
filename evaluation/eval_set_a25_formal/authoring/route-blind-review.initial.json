@@ -1,0 +1,26 @@
+{
+  "input_sha256": "d31c587897da7bf0345c97cc17949de2228de767171b5003d684f078a99201b0",
+  "judgments": [
+    {"id": "a25f-w02-route-06", "route": "ask", "reason": "询问是否应当放弃，仍在征求判断，未明确授权改状态。"},
+    {"id": "a25f-w01-route-05", "route": "ask", "reason": "总览页提出衔接疑问，没有选中片段或直接改资料指令。"},
+    {"id": "a25f-w02-route-08", "route": "check_passage", "reason": "写作页有选中正文，作者明确要检查该段与已有情节是否冲突。"},
+    {"id": "a25f-w01-route-10", "route": "out_of_scope", "reason": "请求配置现实中的游戏电脑，与作品写作及资料无关。"},
+    {"id": "a25f-w01-route-09", "route": "recap", "reason": "续写前索要人物现状与未收线索，意在回顾已有内容。"},
+    {"id": "a25f-w02-route-09", "route": "recap", "reason": "下一场开写前梳理当前分工和未解事项，属于前情回顾。"},
+    {"id": "a25f-w01-route-04", "route": "change", "reason": "作者明确不再追写，直接要求将指定线索标放弃。"},
+    {"id": "a25f-w02-route-02", "route": "change", "reason": "要求将许可与禁限写入资料，口语措辞仍是明确增记请求。"},
+    {"id": "a25f-w01-route-01", "route": "change", "reason": "陈述保管人已变更并要求资料同步更新。"},
+    {"id": "a25f-w02-route-01", "route": "change", "reason": "指定新的原件保管人，要求同步改现有资料。"},
+    {"id": "a25f-w01-route-03", "route": "change", "reason": "要求将特定未解人物行为单独登记为悬念。"},
+    {"id": "a25f-w01-route-06", "route": "ask", "reason": "是否该放弃是询问创作判断，没有作出放弃决定。"},
+    {"id": "a25f-w02-route-07", "route": "ask", "reason": "先问资料当前所记的人，再问有无必要换人，尚未下达修改。"},
+    {"id": "a25f-w02-route-10", "route": "out_of_scope", "reason": "询问现实露营装备搭配，未指向当前作品。"},
+    {"id": "a25f-w01-route-02", "route": "change", "reason": "明确要求增记公开许可边界，避免误以为整包信可发。"},
+    {"id": "a25f-w02-route-05", "route": "ask", "reason": "章节页没有选中片段，泛指一段的衔接疑问应先按询问处理。"},
+    {"id": "a25f-w01-route-07", "route": "ask", "reason": "查询事实当前记载并征求是否换人的意见，不等于决定改动。"},
+    {"id": "a25f-w01-route-08", "route": "check_passage", "reason": "写作页选中了一句草稿，问题针对该处与前文的连续性检查。"},
+    {"id": "a25f-w02-route-03", "route": "change", "reason": "要求把光标相关的空对白悬念单独建线。"},
+    {"id": "a25f-w02-route-04", "route": "change", "reason": "明确决定不展开后事并要求将对应线索标放弃。"}
+  ],
+  "status": "completed"
+}

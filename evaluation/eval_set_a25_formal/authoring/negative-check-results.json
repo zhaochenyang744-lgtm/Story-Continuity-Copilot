@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "total": 8,
+  "detected": 8,
+  "temporary_copies_remaining": 0,
+  "results": [
+    {
+      "case": 1,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 3,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:primary_actions"
+      ]
+    },
+    {
+      "case": 2,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 4,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:primary_actions",
+        "independent:new_action_blind"
+      ]
+    },
+    {
+      "case": 3,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "a25f-w01-action-01:action:1:evidence:1:quote"
+      ]
+    },
+    {
+      "case": 4,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "a25f-w01-action-13:action:1:target"
+      ]
+    },
+    {
+      "case": 5,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 2,
+      "errors": [
+        "a2s5-w01-injection-01:injection_match",
+        "injection:depth"
+      ]
+    },
+    {
+      "case": 6,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 4,
+      "errors": [
+        "a2s5-w01-injection-02:allowed:1:target",
+        "a2s5-w01-injection-02:target_allowed_overlap",
+        "a2s5-w01-injection-02:target_object_overlap",
+        "independent:new_action_blind"
+      ]
+    },
+    {
+      "case": 7,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 3,
+      "errors": [
+        "manifest:6:hash",
+        "sealed:candidate_binding",
+        "independent:binding"
+      ]
+    },
+    {
+      "case": 8,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "w01:review:resolved_unmarked:registered_states"
+      ]
+    }
+  ]
+}

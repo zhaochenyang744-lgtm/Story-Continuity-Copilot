@@ -1,0 +1,63 @@
+[
+  {
+    "title": "录音尾端的三声敲击",
+    "description": "录音结束前有三下敲击，像有人在门外催促开门，需要找出催门的人以及他当时站的位置。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "证词边上的铅笔圈",
+    "description": "屈绍荻的旧证词旁留着一个铅笔圈，他一直绕开圈住的那一句，圈记的用意尚未说明。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "没有寄出的道歉",
+    "description": "蒯令皎准备了却没有寄出一封道歉，收信人与她之间的误解还没有被当面说清。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "缺一角的通行登记",
+    "description": "一张后台通行登记缺了一角，留下的部分不能确定缺失内容，需追查那一角去了哪里。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "被撤下的第二份陈述",
+    "description": "封南缬为保住自己的职位撤下第二份陈述，陈述所含的信息与撤下决定的后果仍有待揭开。",
+    "status": "developing",
+    "planted_chapter": 5
+  },
+  {
+    "title": "西侧空座留给谁",
+    "description": "旁听席西侧留着一张空座，有人似乎在等一位没有到场的来客，尚未证实来客的身份。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "宓书冽的未拆来信",
+    "description": "宓书冽留着一封尚未拆开的私人来信，信与当下复核有什么关系以及他是否愿意拆开仍未交代。",
+    "status": "planted",
+    "planted_chapter": 7
+  },
+  {
+    "title": "毕见岚记不起的窗外口哨",
+    "description": "毕见岚提过窗外的一段口哨却记不完整，将来是否能认出声音以及它有无意义尚待处理。",
+    "status": "planned",
+    "planted_chapter": 8
+  },
+  {
+    "title": "会谈室的假故障",
+    "description": "会谈室桌灯突然不亮引出猜测，后来查明只是清洁时插头被拔掉，与暗中监听无关，疑问已解决。",
+    "status": "resolved",
+    "planted_chapter": 1,
+    "resolved_chapter": 4
+  },
+  {
+    "title": "附在旧票根后的号码",
+    "description": "旧票根背面附着一串号码，相关的人已明说停止追找，这一旁支不再继续展开。",
+    "status": "abandoned",
+    "planted_chapter": 5
+  }
+]

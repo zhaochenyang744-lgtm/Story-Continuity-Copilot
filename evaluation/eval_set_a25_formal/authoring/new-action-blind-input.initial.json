@@ -1,0 +1,550 @@
+{
+  "tasks": [
+    {
+      "id": "a25f-w01-action-17",
+      "work": "w01",
+      "request": "第二份陈述的内容我不打算再展开了，这条线就放下，记作放弃。"
+    },
+    {
+      "id": "a25f-w01-action-18",
+      "work": "w01",
+      "request": "西边空座等谁这条我不写了，直接标成放弃，别删记录。"
+    },
+    {
+      "id": "a25f-w01-action-14",
+      "work": "w01",
+      "request": "给柚翎那张扣着没读的信末附页加一条伏笔，半个名字的意思还没揭。"
+    },
+    {
+      "id": "a25f-w01-action-16",
+      "work": "w01",
+      "request": "第二份陈述为什么撤下，说明里记错了。按后来的正文修正缘由，内文未知这层保留。"
+    },
+    {
+      "id": "a25f-w01-action-15",
+      "work": "w01",
+      "request": "未拆来信的说明补一句：宓书冽想等姐姐回家才拆。原先没说清的内容别删。"
+    },
+    {
+      "id": "a25f-w02-action-13",
+      "work": "w02",
+      "request": "空对白结束后那个老停在原处的光标，给它单挂一根待追的线。"
+    },
+    {
+      "id": "a25f-w02-action-17",
+      "work": "w02",
+      "request": "撤回独白的具体内容我不再追写了，这条线记为放弃就行。"
+    },
+    {
+      "id": "a25f-w02-action-15",
+      "work": "w02",
+      "request": "离线测试的说明补一句：冀照玄想等休假结束再让大家看。原来的悬念别丢。"
+    },
+    {
+      "id": "a25f-w01-action-13",
+      "work": "w01",
+      "request": "末排那位总挪座又留空杯的人，替我单独挂个待追的线头。"
+    },
+    {
+      "id": "a25f-w02-action-16",
+      "work": "w02",
+      "request": "独白为何被撤走那段说明，照后来正文改一改，全文没公开的状态别替人补完。"
+    },
+    {
+      "id": "a25f-w02-action-14",
+      "work": "w02",
+      "request": "给绯榫留着的另一种句尾补一条伏笔，差别他还没拿出来讲。"
+    },
+    {
+      "id": "a25f-w02-action-18",
+      "work": "w02",
+      "request": "外语区那块还没填字的地方名我不想补了，相关伏笔标成放弃。"
+    }
+  ],
+  "materials": {
+    "w01": {
+      "facts": [
+        {
+          "memory_type": "dynamic_state",
+          "subject": "衔序夹",
+          "predicate": "保管人",
+          "value": "由简迭微保管原件。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "岬纹笔",
+          "predicate": "持有人",
+          "value": "由屈绍荻持有。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "段泊循",
+          "predicate": "发言职责",
+          "value": "只做调查，不出庭陈述。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "再审会谈",
+          "predicate": "固定地点",
+          "value": "在南穗辩护所举行。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "叠槭牌",
+          "predicate": "保管人",
+          "value": "由封南缬保管并使用。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "简迭微",
+          "predicate": "身份",
+          "value": "本案辩护人。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "段泊循",
+          "predicate": "身份",
+          "value": "调查助理。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "毕见岚",
+          "predicate": "案件地位",
+          "value": "申诉人。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "屈绍荻",
+          "predicate": "职业",
+          "value": "灯光师。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "符砚杭",
+          "predicate": "职业",
+          "value": "声音鉴定人。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "宓书冽",
+          "predicate": "职责",
+          "value": "复核新证据的检察人员。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "封南缬",
+          "predicate": "职业",
+          "value": "剧院排练统筹。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "蒯令皎",
+          "predicate": "关系",
+          "value": "受伤的剧院服装工的姐姐。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "简迭微",
+          "predicate": "别名",
+          "value": "别名是绛穗。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "段泊循",
+          "predicate": "别名",
+          "value": "别名是苔隅。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "毕见岚",
+          "predicate": "别名",
+          "value": "别名是柚翎。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "衔序夹",
+          "predicate": "外观",
+          "value": "深绿硬封，内有三层纸袋。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "岬纹笔",
+          "predicate": "外观",
+          "value": "笔杆上有斜刻的浅线。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "叠槭牌",
+          "predicate": "用途",
+          "value": "只能开排练后台门，不能开储物间。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "折榆庭",
+          "predicate": "位置",
+          "value": "在芥衡市东区。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "南穗辩护所",
+          "predicate": "设施",
+          "value": "有一间不带录音设备的小会谈室。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "毕见岚",
+          "predicate": "旧判所依据",
+          "value": "旧录音中的一个撞击声。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "character_knowledge",
+          "subject": "屈绍荻",
+          "predicate": "原证词范围",
+          "value": "只说自己听见响声，没有亲眼见到袭击。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "蒯令皎",
+          "predicate": "称呼要求",
+          "value": "要求完整称呼受伤的弟弟，不接受只叫案中人。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "符砚杭",
+          "predicate": "工作边界",
+          "value": "只判断声音的可区分性，不判断谁有罪。",
+          "chapter": 4
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "录音尾端的三声敲击",
+          "description": "录音结束前有三下敲击，像有人在门外催促开门，需要找出催门的人以及他当时站的位置。",
+          "status": "planted",
+          "planted_chapter": 1
+        },
+        {
+          "title": "证词边上的铅笔圈",
+          "description": "屈绍荻的旧证词旁留着一个铅笔圈，他一直绕开圈住的那一句，圈记的用意尚未说明。",
+          "status": "developing",
+          "planted_chapter": 2
+        },
+        {
+          "title": "没有寄出的道歉",
+          "description": "蒯令皎准备了却没有寄出一封道歉，收信人与她之间的误解还没有被当面说清。",
+          "status": "planted",
+          "planted_chapter": 3
+        },
+        {
+          "title": "缺一角的通行登记",
+          "description": "一张后台通行登记缺了一角，留下的部分不能确定缺失内容，需追查那一角去了哪里。",
+          "status": "developing",
+          "planted_chapter": 4
+        },
+        {
+          "title": "被撤下的第二份陈述",
+          "description": "封南缬为保住自己的职位撤下第二份陈述，陈述所含的信息与撤下决定的后果仍有待揭开。",
+          "status": "developing",
+          "planted_chapter": 5
+        },
+        {
+          "title": "西侧空座留给谁",
+          "description": "旁听席西侧留着一张空座，有人似乎在等一位没有到场的来客，尚未证实来客的身份。",
+          "status": "planted",
+          "planted_chapter": 6
+        },
+        {
+          "title": "宓书冽的未拆来信",
+          "description": "宓书冽留着一封尚未拆开的私人来信，信与当下复核有什么关系以及他是否愿意拆开仍未交代。",
+          "status": "planted",
+          "planted_chapter": 7
+        },
+        {
+          "title": "毕见岚记不起的窗外口哨",
+          "description": "毕见岚提过窗外的一段口哨却记不完整，将来是否能认出声音以及它有无意义尚待处理。",
+          "status": "planned",
+          "planted_chapter": 8
+        },
+        {
+          "title": "会谈室的假故障",
+          "description": "会谈室桌灯突然不亮引出猜测，后来查明只是清洁时插头被拔掉，与暗中监听无关，疑问已解决。",
+          "status": "resolved",
+          "planted_chapter": 1,
+          "resolved_chapter": 4
+        },
+        {
+          "title": "附在旧票根后的号码",
+          "description": "旧票根背面附着一串号码，相关的人已明说停止追找，这一旁支不再继续展开。",
+          "status": "abandoned",
+          "planted_chapter": 5
+        }
+      ]
+    },
+    "w02": {
+      "facts": [
+        {
+          "memory_type": "dynamic_state",
+          "subject": "瑟页盘",
+          "predicate": "保管人",
+          "value": "由嵇映璜保管获准语音。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "斛星笔",
+          "predicate": "持有人",
+          "value": "由慎珑序持有。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "禄青宓",
+          "predicate": "答复权限",
+          "value": "只能转交意见，不能独立发布答复。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "语言包试用",
+          "predicate": "范围",
+          "value": "只限公司内部人员。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "釉棱麦",
+          "predicate": "保管人",
+          "value": "由嵇映璜保管。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "慎珑序",
+          "predicate": "身份",
+          "value": "文字统筹。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "嵇映璜",
+          "predicate": "身份",
+          "value": "配音统筹。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "饶旻弈",
+          "predicate": "身份",
+          "value": "外包译者。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "邰颂微",
+          "predicate": "身份",
+          "value": "质量核对。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "覃蘅执",
+          "predicate": "身份",
+          "value": "发行负责人。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "邴绍棠",
+          "predicate": "身份",
+          "value": "无障碍测试员。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "禄青宓",
+          "predicate": "身份",
+          "value": "玩家联络。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "冀照玄",
+          "predicate": "身份",
+          "value": "程序负责人。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "慎珑序",
+          "predicate": "别名",
+          "value": "别名是珀弦。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "嵇映璜",
+          "predicate": "别名",
+          "value": "别名是筠赭。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "饶旻弈",
+          "predicate": "别名",
+          "value": "别名是绯榫。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "瑟页盘",
+          "predicate": "标识",
+          "value": "银色外壳背面有一块窄紫贴纸。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "斛星笔",
+          "predicate": "外观",
+          "value": "透明笔帽里夹着一小块绿纸。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "釉棱麦",
+          "predicate": "用途",
+          "value": "只录参考节奏，不用于正式成品声轨。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "芰序互动",
+          "predicate": "所在地",
+          "value": "蒲弧市。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "拾昼环",
+          "predicate": "叙事方式",
+          "value": "同场对话可从不同角色视点重读。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "邴绍棠",
+          "predicate": "测试方式",
+          "value": "关闭声音检查字幕能否让人理解。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "邰颂微",
+          "predicate": "核对边界",
+          "value": "可以退回文本，不能替译者署名。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "禄青宓",
+          "predicate": "意见处理",
+          "value": "保留玩家原文，不把讽刺改成赞扬。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "冀照玄",
+          "predicate": "版本限制",
+          "value": "文本和语音可分别更新，但编号须成对记录。",
+          "chapter": 4
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "演示里迟到的半句",
+          "description": "演示中的一句话迟了半拍，原说明把它归为声优漏读，需继续追问声优为什么省掉那半句。",
+          "status": "planted",
+          "planted_chapter": 1
+        },
+        {
+          "title": "署名页多出的空行",
+          "description": "署名页留着一整条没有名字的空行，人数是否核齐，以及这条空行属于谁，尚待说明。",
+          "status": "developing",
+          "planted_chapter": 2
+        },
+        {
+          "title": "一直没有播放的参考音",
+          "description": "嵇映璜留有一段没有在演示中播放的参考音，别人尚不知道里面的内容以及不播放的理由。",
+          "status": "planted",
+          "planted_chapter": 3
+        },
+        {
+          "title": "玩家留言里的方括号",
+          "description": "玩家留言反复出现方括号，几个人对那种写法的意义有不同猜测，仍需要玩家亲自说明。",
+          "status": "developing",
+          "planted_chapter": 4
+        },
+        {
+          "title": "被退回的独白版本",
+          "description": "发行方覃蘅执嫌独白太长而退回这个版本，独白的具体内容以及删减的影响仍未明确。",
+          "status": "developing",
+          "planted_chapter": 5
+        },
+        {
+          "title": "外语版里空着的地名格",
+          "description": "外语版有一处地名格始终空白，译者没有决定是保留空白还是补上文字，这条支线尚未展开。",
+          "status": "planted",
+          "planted_chapter": 6
+        },
+        {
+          "title": "冀照玄保留的离线测试",
+          "description": "冀照玄单独保留了一份离线测试，暂时没有向其他人展示，测试会牵动哪一段文字还未知。",
+          "status": "planted",
+          "planted_chapter": 7
+        },
+        {
+          "title": "禄青宓没有转交的语音留言",
+          "description": "禄青宓手里有一段暂未转交的语音留言，她是否会在征求说话人同意后转交仍未写明。",
+          "status": "planned",
+          "planted_chapter": 8
+        },
+        {
+          "title": "演示室失灵的静音键",
+          "description": "演示室静音键的异常已经查明是外接设备另有静音开关，与程序漏洞无关，这个疑问已经解决。",
+          "status": "resolved",
+          "planted_chapter": 1,
+          "resolved_chapter": 4
+        },
+        {
+          "title": "旧招募页的数字谜题",
+          "description": "旧招募页的一串数字曾引起猜测，参与者已经决定不再追查谜底，这条旁支被放下。",
+          "status": "abandoned",
+          "planted_chapter": 5
+        }
+      ]
+    }
+  }
+}
