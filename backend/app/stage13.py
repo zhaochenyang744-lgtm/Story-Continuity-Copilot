@@ -1059,5 +1059,5 @@ class UsageGuardProvider:
     def chat(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], tool_choice: Any, max_tokens: int) -> Any:
         return self._guarded(lambda: self._provider.chat(messages, tools, tool_choice, max_tokens))
 
-    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> Any:
-        return self._guarded(lambda: self._provider.route(messages, max_tokens, timeout_seconds))
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int, role: str = "route") -> Any:
+        return self._guarded(lambda: self._provider.route(messages, max_tokens, timeout_seconds, role=role))
