@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "reviewer_not_author": true,
+  "blind": true,
+  "received_only": [
+    "shuffled id/input/context",
+    "seven route definitions"
+  ],
+  "read_source_or_gold": false,
+  "shuffle": {
+    "method": "fixed manual permutation of route 1 through 10",
+    "order": [
+      8,
+      3,
+      10,
+      5,
+      1,
+      9,
+      4,
+      7,
+      2,
+      6
+    ]
+  },
+  "initial_results": [
+    {
+      "id": "a3d-route-08",
+      "route": "ask",
+      "reason": "材料页没有所选正文，无法确定“这一小段”的指代，需先询问具体片段。"
+    },
+    {
+      "id": "a3d-route-03",
+      "route": "long_task",
+      "reason": "明确要求逐处核对全书，并交付带出处的知情时间表。"
+    },
+    {
+      "id": "a3d-route-10",
+      "route": "recap",
+      "reason": "为写下一章回顾当前人物处境与未完事项。"
+    },
+    {
+      "id": "a3d-route-05",
+      "route": "change",
+      "reason": "修改范围已经界定，仅替换一条旧记录中的碰头时段。"
+    },
+    {
+      "id": "a3d-route-01",
+      "route": "long_task",
+      "reason": "要求通查整本，追踪物件交接并汇总矛盾点。"
+    },
+    {
+      "id": "a3d-route-09",
+      "route": "check_passage",
+      "reason": "写作页提供了明确的所选正文，要求核查该片段与前文的连续性。"
+    },
+    {
+      "id": "a3d-route-04",
+      "route": "long_task",
+      "reason": "明确要求启动全书资料核对任务，先确认计划，再按类型交付卡片。"
+    },
+    {
+      "id": "a3d-route-07",
+      "route": "ask",
+      "reason": "仅询问制作时间表的方法步骤，没有要求执行全书核对。"
+    },
+    {
+      "id": "a3d-route-02",
+      "route": "long_task",
+      "reason": "要求从头到尾审阅并分类全书线索，属于全书追踪任务。"
+    },
+    {
+      "id": "a3d-route-06",
+      "route": "change",
+      "reason": "针对一条明确伏笔补充结束状态，属于单项资料修改。"
+    }
+  ],
+  "initial_agreement": {
+    "matched": 10,
+    "total": 10,
+    "rate": 1,
+    "disagreements": []
+  },
+  "ambiguities": [
+    {
+      "id": "a3d-route-08",
+      "note": "措辞包含片段核查意图，但材料页没有所选正文，不能自行推定待查片段，故判为ask。"
+    }
+  ],
+  "revisions_after_blind": [],
+  "limits": "仅独立用法判别，不是产品运行或模型评测。"
+}
