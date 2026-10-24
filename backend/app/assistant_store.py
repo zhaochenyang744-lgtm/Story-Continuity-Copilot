@@ -20,7 +20,9 @@ FEEDBACK_REASONS = ("wrong", "verbose", "not_found", "bad_source")
 # Columns added after v1.8.0 first shipped to developers; an older database gets them in `initialize()`.
 ADDED_COLUMNS = {
     "assistant_tasks": (("phase", "TEXT"), ("phase_tool", "TEXT"), ("phase_chapter", "INTEGER"), ("phase_started_at", "TEXT"),
-                        ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT")),
+                        ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT"),
+                        # v2.1: what each run of a change task proposed and what the card kept (`assistant_consensus.merge`).
+                        ("consensus_json", "TEXT")),
     "assistant_steps": (("refs_json", "TEXT"),),
     # `undone_at` / `undone_after` (v2.1): when an adoption was undone and the sentence that had been adopted (the record is kept in the
     # change ledger, while the proposal itself goes back to `proposed` with its adoption fields cleared).
@@ -310,7 +312,8 @@ class AssistantStore:
                 "error_code": row["error_code"], "created_at": row["created_at"], "started_at": row["started_at"], "completed_at": row["completed_at"],
                 **({"proposals": [self.proposal_view(p) for p in c.execute("SELECT * FROM assistant_proposals WHERE task_id=? ORDER BY ordinal", (row["id"],))]}
                    if row["kind"] == "fix_issue" else {}),
-                **({"changes": change_views(c, self.db, row["id"])} if row["kind"] == "change" else {})}
+                **({"changes": change_views(c, self.db, row["id"]),
+                    "consensus": json.loads(row["consensus_json"]) if row["consensus_json"] else None} if row["kind"] == "change" else {})}
 
     def chain_of(self, c: sqlite3.Connection, row: sqlite3.Row, viewer_id: str | None = None) -> list[dict[str, Any]]:
         """The tasks a task is tied to by 接着问 that were not cleared: the ones it follows, then the ones that follow it, oldest first.

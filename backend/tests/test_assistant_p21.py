@@ -57,7 +57,7 @@ class UnsupportedPeopleTests(unittest.TestCase):
 
     def test_the_prompt_says_so_and_the_version_moves(self):
         self.assertIn("只引了事实、没引正文段落的句子，只写那条事实里出现的人", SYSTEM_PROMPT)
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p50")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p51")
 
 
 if __name__ == "__main__":

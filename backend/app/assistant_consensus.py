@@ -38,11 +38,13 @@ def item_key(row: Any) -> tuple[str, str]:
 def merge(c: sqlite3.Connection, task_id: str, other_ids: list[str]) -> bool:
     """Put on the author's task the items most of the runs proposed (the author's task and `other_ids`, each run that finished),
     in the order the author's run proposed them, then those it lacked. Returns whether the card differs from what the author's
-    run proposed. With fewer than three finished runs the author's run's card stands."""
-    if len(other_ids) + 1 < 3:
-        return False
+    run proposed. With fewer than three finished runs the author's run's card stands. What each run proposed and what the card
+    kept is recorded with the task (`consensus_json`), so a run of the evaluation shows what the majority dropped and added."""
     rows = {run: c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (run,)).fetchall()
             for run in [task_id, *other_ids]}
+    _record(c, task_id, rows)
+    if len(other_ids) + 1 < 3:
+        return False
     counts = Counter(key for run_rows in rows.values() for key in {item_key(row) for row in run_rows})
     agreed = {key for key, n in counts.items() if n >= MAJORITY_OF_THREE}
     own = {item_key(row): row for row in rows[task_id]}
@@ -59,6 +61,21 @@ def merge(c: sqlite3.Connection, task_id: str, other_ids: list[str]) -> bool:
     for ordinal, row in enumerate([*kept, *borrowed], 1):
         c.execute("UPDATE assistant_changes SET task_id=?,ordinal=? WHERE id=?", (task_id, ordinal, row["id"]))
     return set(own) != agreed
+
+
+def _record(c: sqlite3.Connection, task_id: str, rows: dict[str, list[Any]]) -> None:
+    """Each item any run proposed, which runs proposed it (0 is the author's run) and whether the card keeps it."""
+    runs = list(rows)
+    seen: dict[tuple[str, str], dict[str, Any]] = {}
+    for index, run in enumerate(runs):
+        for row in rows[run]:
+            entry = seen.setdefault(item_key(row), {"kind": row["kind"], "title": json.loads(row["display_json"]).get("title"),
+                                                    "after": json.loads(row["display_json"]).get("after"), "runs": []})
+            if index not in entry["runs"]:
+                entry["runs"].append(index)
+    majority = len(runs) >= 3
+    items = [{**entry, "kept": len(entry["runs"]) >= MAJORITY_OF_THREE if majority else 0 in entry["runs"]} for entry in seen.values()]
+    c.execute("UPDATE assistant_tasks SET consensus_json=? WHERE id=?", (json.dumps({"runs": len(runs), "items": items}, ensure_ascii=False), task_id))
 
 
 def discard(c: sqlite3.Connection, run_ids: list[str]) -> None:

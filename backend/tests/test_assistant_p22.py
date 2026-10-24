@@ -43,7 +43,7 @@ class RestatedQuestionTests(unittest.TestCase):
 
     def test_the_prompt_says_so_and_the_version_moves(self):
         self.assertIn("不要写「作者这次给出的新规则是……」「你说的……」这类带出处的句子", SYSTEM_PROMPT)
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p50")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p51")
         self.assertEqual(len(refusal_problems([self.RESTATED], SOURCES)), 1)
 
 

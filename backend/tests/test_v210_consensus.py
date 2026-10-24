@@ -27,6 +27,8 @@ class MergeTests(unittest.TestCase):
         self.c.row_factory = sqlite3.Row
         self.c.execute("CREATE TABLE assistant_changes(id TEXT PRIMARY KEY, task_id TEXT, project_id TEXT, ordinal INTEGER, kind TEXT, target_id TEXT, "
                        "before_json TEXT, after_json TEXT, display_json TEXT, evidence_json TEXT, status TEXT, created_at TEXT)")
+        self.c.execute("CREATE TABLE assistant_tasks(id TEXT PRIMARY KEY, consensus_json TEXT)")
+        self.c.execute("INSERT INTO assistant_tasks(id) VALUES('T')")
         self.assertIn("assistant_changes", SCHEMA)
 
     def put(self, *rows):
@@ -42,6 +44,10 @@ class MergeTests(unittest.TestCase):
                  item("S2", 1, "resolve_thread", "A"), item("S2", 2, "change_fact", "C"))
         self.assertTrue(assistant_consensus.merge(self.c, "T", ["S1", "S2"]))
         self.assertEqual(self.card(), [("resolve_thread", "A", 1)])
+        record = json.loads(self.c.execute("SELECT consensus_json FROM assistant_tasks WHERE id='T'").fetchone()[0])
+        self.assertEqual(record["runs"], 3)
+        self.assertEqual(sorted((item["kind"], item["runs"], item["kept"]) for item in record["items"]),
+                         [("change_fact", [0], False), ("change_fact", [2], False), ("resolve_thread", [0, 1, 2], True)])
 
     def test_an_item_the_other_two_proposed_is_added_after_the_authors(self):
         self.put(item("T", 1, "change_fact", "A"), item("S1", 1, "change_fact", "C"), item("S1", 2, "change_fact", "A"), item("S2", 1, "change_fact", "C"))
