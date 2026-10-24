@@ -227,7 +227,7 @@ class SetTests(unittest.TestCase):
         self.assertTrue(score.refresh(report)["gate_decision"].startswith("not_a_formal_run:"))
 
     def test_a_formal_run_needs_three_passes_and_no_selection(self):
-        provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash")
+        provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash", model_for=lambda role: "deepseek-flash")
         pair = ("eval_set_a2x_formal", "eval_set_a2sx_formal")
         with patch.object(run, "FORMAL_SETS", pair), tempfile.TemporaryDirectory() as folder:
             args = run.parser().parse_args(["--set", ",".join(pair), "--run-id", "t", "--assistant-rates", "1,2", "--judge-rates", "1,2"])

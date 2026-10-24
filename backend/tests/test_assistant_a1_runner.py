@@ -19,6 +19,8 @@ class FakeProvider:
     label = model_label = 'a1-offline'
     model = assistant_model = 'deepseek-flash'
 
+    def model_for(self, role): return self.assistant_model
+
     def __init__(self):
         self.miss = False
         self.chat_count = 0
