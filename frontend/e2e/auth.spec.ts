@@ -136,7 +136,7 @@ test("退出再登录：退出后 /projects 只看得到登录页，再登录作
 
   await page.goto("/projects");
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "作品管理" })).toHaveCount(0);
   await expect(page.getByText(title)).toHaveCount(0);
 
@@ -185,7 +185,7 @@ test("会话过期：清掉 cookie 后在应用里换页，回到登录页并说
   await context.clearCookies();
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
   await expect(page.locator("#auth-error")).toHaveText("登录已过期，请重新登录。");
   expect((await api(page).raw("GET", "/auth/session?optional=true")).body.data.user).toBeNull();
 });

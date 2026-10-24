@@ -137,7 +137,7 @@ test("08 axe 扫描：十一个页面的日间和夜间", async ({ page }, info)
     }
   };
   await page.goto("/login");
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
   await scan("登录");
   await registerAccount(page, "axe08");
   await scan("首页新用户");
