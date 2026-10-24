@@ -209,7 +209,7 @@ class Work(a1.Work):
             rows = c.execute("SELECT * FROM assistant_changes WHERE task_id=? ORDER BY ordinal", (task_id,)).fetchall()
         items = []
         for row in rows:
-            index = facts.get(row["target_id"]) if row["kind"] == "change_fact" else threads.get(row["target_id"]) if row["kind"] == "resolve_thread" else None
+            index = facts.get(row["target_id"]) if row["kind"] == "change_fact" else threads.get(row["target_id"]) if row["kind"] in THREAD_KINDS else None
             items.append({"id": row["id"], "label": f"C{row['ordinal']}", "kind": row["kind"], "target_id": row["target_id"], "index": index,
                           "before": json.loads(row["before_json"]), "after": json.loads(row["after_json"]), "display": json.loads(row["display_json"]),
                           "evidence": json.loads(row["evidence_json"]), "status": row["status"]})
@@ -225,12 +225,21 @@ def snapshot(db, project):
     return {"facts": facts, "threads": threads}
 
 
-def _expected_after(start, items):
-    """The materials a confirmed card should leave: the start with every item's new values."""
+# The thread actions (v2.1 adds giving a thread up, its note and a new thread to marking it resolved).
+THREAD_KINDS = ("resolve_thread", "abandon_thread", "edit_thread")
+
+
+def _expected_after(start, items, after):
+    """The materials a confirmed card should leave: the start with every item's new values. A new thread has an id and fields
+    the program gives it; it is expected as written when every field the item names is what the item says."""
     expected = json.loads(json.dumps(start))
     for item in items:
-        if item["kind"] == "resolve_thread":
-            expected["threads"][item["target_id"]].update(item["after"])
+        if item["kind"] in THREAD_KINDS:
+            expected["threads"][item["target_id"]].update({k: v for k, v in item["after"].items() if k in THREAD_FIELDS})
+        elif item["kind"] == "add_thread":
+            made = after["threads"].get(item["target_id"])
+            named = {k: v for k, v in item["after"].items() if k in THREAD_FIELDS}
+            expected["threads"][item["target_id"]] = made if made and all(made.get(k) == v for k, v in named.items()) else named
         else:
             expected["facts"][item["target_id"]] = {k: item["after"][k] for k in FACT_FIELDS}
     return expected
@@ -257,7 +266,7 @@ def check_card(work, row, provider):
             final = snapshot(app.state.database, work.project)
         finally:
             client.close()
-    confirm_exact = confirmed.status_code == 200 and after == _expected_after(start, items)
+    confirm_exact = confirmed.status_code == 200 and after == _expected_after(start, items, after)
     return {"run_number": row["run_number"], "set": row["set"], "task_id": row["task"]["id"], "items": len(items),
             "confirm_status": confirmed.status_code, "confirm_exact": confirm_exact, "undo_statuses": undone,
             "undo_exact": confirmed.status_code == 200 and all(code == 200 for code in undone) and final == start,
