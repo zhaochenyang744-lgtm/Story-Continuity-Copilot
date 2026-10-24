@@ -209,9 +209,11 @@ class SetTests(unittest.TestCase):
                 run.set_names(bad)
         self.assertTrue(all(run.readable(name) for name in ("eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal")))
         self.assertTrue(run.readable("eval_set_a23_formal") and run.readable("eval_set_a2s3_formal"))
-        # The fourth pair ran its formal run on 2026-10-24 and is development material since; no pair waits for a formal run.
+        # The fourth pair ran its formal run on 2026-10-24 and is development material since; the fifth pair (addendum 7) is
+        # sealed until its formal run.
         self.assertTrue(run.readable("eval_set_a24_formal") and run.readable("eval_set_a2s4_formal"))
-        self.assertEqual(run.FORMAL_SETS, ())
+        self.assertEqual(run.FORMAL_SETS, ("eval_set_a25_formal", "eval_set_a2s5_formal"))
+        self.assertFalse(run.readable("eval_set_a25_formal") or run.readable("eval_set_a2s5_formal"))
 
     def test_the_regression_switches_are_the_switchable_crutches_and_name_what_exists(self):
         from app import assistant_actions, assistant_requests
