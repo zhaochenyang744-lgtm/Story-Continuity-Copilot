@@ -640,7 +640,7 @@ test.describe("助手：输入框", () => {
     await expect(send(page)).toBeEnabled();
   });
 
-  test("输入框和全站的输入框是同一套：浅底、悬停出细边、聚焦变白加蓝边和淡蓝外光", async ({ page, browser }) => {
+  test("输入框和全站的输入框是同一套：浅底、悬停出细边、聚焦变白加蓝边和淡蓝外光", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     const frame = thread(page).locator("form.cx");
@@ -661,13 +661,12 @@ test.describe("助手：输入框", () => {
     expect(focused.border).toBe(tokens.blue);
     expect(focused.shadow).toContain(tokens.tint);
     expect(focused.radius).toBe(tokens.md);
-    // The same on a field of another page (the sign-in page): soft fill, white and blue when focused, 6px corners.
-    const other = await browser.newPage({ baseURL: process.env.E2E_BASE_URL });
-    await other.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
-    await other.goto("/register");
-    await other.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
-    const field = other.getByLabel("账号", { exact: true });
-    // (The page puts the cursor in this field when it opens; take it out to see the field at rest.)
+    // The same on an ordinary form field of another page (the account settings' password form): soft fill, white and blue when
+    // focused, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
+    await page.goto("/settings/account");
+    await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
+    await page.locator(".row").filter({ hasText: "密码" }).first().getByRole("button", { name: "修改密码", exact: true }).click();
+    const field = page.getByLabel("旧密码", { exact: true });
     await field.evaluate((node) => (node as HTMLInputElement).blur());
     const before = await field.evaluate(read);
     await field.focus();
@@ -677,7 +676,6 @@ test.describe("助手：输入框", () => {
     expect(after.background).toBe(tokens.surface);
     expect(after.border).toBe(tokens.blue);
     expect(after.shadow).toContain(tokens.tint);
-    await other.close();
   });
 });
 

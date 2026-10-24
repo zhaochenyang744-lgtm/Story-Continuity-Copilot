@@ -93,7 +93,7 @@ export async function logout(page: Page) {
   await openAccountMenu(page);
   await page.getByRole("menuitem", { name: "退出登录", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
 }
 
 /** Enter as a visitor from the login page. Done once the home page is showing. */

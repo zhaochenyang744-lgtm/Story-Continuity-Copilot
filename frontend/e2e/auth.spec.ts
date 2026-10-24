@@ -125,6 +125,25 @@ test("显示 / 隐藏密码：输入框类型来回切换，不会提交表单",
   expect(requests.filter((url) => !url.includes("/auth/session")), "toggling must not send the form").toEqual([]);
 });
 
+test("登录和注册页的输入框是下划线：没有底色和框，只有下边线，聚焦时下边线变粗变深", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+  await page.goto("/register");
+  await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
+  const field = page.getByLabel("账号", { exact: true });
+  const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, top: style.borderTopWidth, side: style.borderLeftWidth, bottom: style.borderBottomWidth, colour: style.borderBottomColor, radius: style.borderTopLeftRadius, shadow: style.boxShadow }; };
+  const tokens = await page.evaluate(() => { const colour = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `color: var(${name})`; document.body.append(probe); const value = getComputedStyle(probe).color; probe.remove(); return value; }; return { muted: colour("--c-muted"), ink: colour("--c-ink") }; });
+  // (The page puts the cursor in this field when it opens; take it out to see the field at rest.)
+  await field.evaluate((node) => (node as HTMLInputElement).blur());
+  const rest = await field.evaluate(read);
+  expect(rest).toEqual({ background: "rgba(0, 0, 0, 0)", top: "0px", side: "0px", bottom: "1px", colour: tokens.muted, radius: "0px", shadow: "none" });
+  await field.focus();
+  const focused = await field.evaluate(read);
+  expect(focused.background).toBe("rgba(0, 0, 0, 0)");
+  expect(focused.bottom).toBe("2px");
+  expect(focused.colour).toBe(tokens.ink);
+  expect(focused.shadow).toBe("none");
+});
+
 test("退出再登录：退出后 /projects 只看得到登录页，再登录作品还在", async ({ page }) => {
   const { account, password } = await registerAccount(page, "again");
   const title = "退出前建好的书";
@@ -136,7 +155,7 @@ test("退出再登录：退出后 /projects 只看得到登录页，再登录作
 
   await page.goto("/projects");
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "作品管理" })).toHaveCount(0);
   await expect(page.getByText(title)).toHaveCount(0);
 
@@ -185,7 +204,7 @@ test("会话过期：清掉 cookie 后在应用里换页，回到登录页并说
   await context.clearCookies();
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { level: 1, name: "登录", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "欢迎回来", exact: true })).toBeVisible();
   await expect(page.locator("#auth-error")).toHaveText("登录已过期，请重新登录。");
   expect((await api(page).raw("GET", "/auth/session?optional=true")).body.data.user).toBeNull();
 });

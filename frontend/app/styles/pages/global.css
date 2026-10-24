@@ -57,17 +57,44 @@
 .auth-points { display: grid; gap: 14px; max-width: 32em; }
 .auth-points li { display: flex; gap: 16px; align-items: baseline; padding-top: 14px; border-top: 1px solid var(--c-on-inverse-3); color: var(--c-on-inverse-2); font-size: 15px; }
 .auth-points .num { color: var(--c-on-inverse); font-size: 20px; }
-.auth-main { display: flex; flex-direction: column; justify-content: center; padding: 48px 56px; }
-.auth-main h1 { font-size: 56px; }
-.auth-lede { margin-top: 12px; color: var(--c-ink-2); }
-.auth-form { display: grid; gap: 18px; margin-top: 32px; }
-.password-field { display: flex; }
-.password-field input { flex: 1; }
-.password-toggle { min-width: 64px; border: 2px solid var(--c-rule); border-left: 0; background: var(--c-surface); font-size: 13px; cursor: pointer; }
-.password-toggle:hover:not(:disabled) { background: var(--c-ink); color: var(--c-ground); }
-.auth-submit { width: 100%; }
-.auth-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-.auth-visitor { display: grid; gap: 12px; margin-top: 16px; padding-top: 20px; border-top: 1px solid var(--c-rule); font-size: 14px; }
+/* The form side: plain surface, one narrow centred column (mark, large title, form), the switch line pinned to the foot. */
+.auth-main { display: flex; flex-direction: column; padding: 48px 56px 32px; background: var(--c-surface); }
+.auth-body { display: flex; flex-direction: column; flex: 1; justify-content: center; width: min(100%, 360px); margin: 0 auto; }
+.auth-mark { width: 36px; height: 36px; margin: 0 auto; color: var(--c-ink); }
+.auth-main h1 { margin-top: 40px; font-size: 44px; letter-spacing: -.02em; text-align: center; }
+.auth-lede { margin-top: 12px; color: var(--c-ink-2); font-size: 14px; text-align: center; }
+.auth-form { display: grid; gap: 8px; margin-top: 40px; }
+.auth-form .field-hint { margin-top: 8px; }
+.auth-foot { margin-top: 40px; color: var(--c-ink-2); font-size: 14px; text-align: center; }
+.auth-switch { padding: 0; border: 0; background: none; color: var(--c-ink); font-weight: 700; cursor: pointer; }
+.auth-switch:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Underline fields: no box, one rule; the label sits inside the field and rises when there is text or focus. */
+.line-field { position: relative; display: block; padding-top: 18px; }
+.line-field input { height: 48px; min-height: 0; padding: 14px 0 6px; border: 0; border-bottom: 1px solid var(--c-muted); background: transparent; font-size: var(--fs-16); }
+.line-field input:hover:not(:disabled):not(:focus) { border-bottom-color: var(--c-ink); }
+.line-field input:focus { padding-bottom: 5px; border-bottom: 2px solid var(--c-ink); background: transparent; box-shadow: none; }
+.line-field input[aria-invalid="true"] { border-bottom-color: var(--c-red-text); }
+.line-label { position: absolute; top: 34px; left: 0; color: var(--c-ink-2); font-size: var(--fs-16); pointer-events: none; transform-origin: left top; transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.line-field input:focus + .line-label,
+.line-field input:not(:placeholder-shown) + .line-label,
+.line-field input:not([placeholder=" "]) + .line-label { transform: translateY(-26px) scale(.8); color: var(--c-muted); }
+.line-field.has-toggle input { padding-right: 44px; }
+.password-eye { position: absolute; right: 0; bottom: 6px; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; background: transparent; color: var(--c-ink); cursor: pointer; }
+.password-eye:hover:not(:disabled) { background: var(--c-sunken); }
+.password-eye svg { display: block; }
+.auth-row { display: flex; justify-content: flex-end; margin-top: 4px; }
+.auth-quiet { padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-13); cursor: pointer; }
+.auth-quiet:hover:not(:disabled) { color: var(--c-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Two full-width pills: ink fill with page-coloured text (black on white by day, light on dark at night), then a quiet grey one. */
+.btn.auth-submit { width: 100%; min-height: 52px; margin-top: 24px; border: 0; background: var(--c-ink); color: var(--c-ground); font-size: var(--fs-16); }
+.btn.auth-submit:hover:not(:disabled) { background: var(--c-ink-2); color: var(--c-ground); }
+.auth-visitor { display: grid; gap: 12px; margin-top: 4px; }
+.btn.auth-second { width: 100%; min-height: 52px; border: 0; background: var(--c-sunken); color: var(--c-ink); font-size: var(--fs-16); }
+.btn.auth-second:hover:not(:disabled) { background: var(--c-line); color: var(--c-ink); }
+.auth-visitor p { color: var(--c-muted); font-size: var(--fs-12); line-height: 1.7; text-align: center; }
+.auth-visitor strong { color: var(--c-ink-2); }
 
 /* ── 404 / 导览结束 ── */
 /* 404 starts at the page's left margin like every other page; the finished-tour page keeps its centred column. */
@@ -91,7 +118,9 @@
   .auth { grid-template-columns: minmax(0, 1fr); }
   .auth-side { padding: 32px 24px; gap: 24px; }
   .auth-points { display: none; }
-  .auth-main { padding: 32px 24px 48px; }
+  .auth-main { padding: 40px 24px 32px; }
+  .auth-main h1 { margin-top: 28px; font-size: 36px; }
+  .auth-form { margin-top: 28px; }
 }
 
 /* ── 隐私说明: an article, set the way long text is set (one narrow column, rules over the headings) ── */
