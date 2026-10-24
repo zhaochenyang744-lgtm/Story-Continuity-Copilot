@@ -80,7 +80,7 @@ def call_model(provider: Any, question: str) -> Any:
     context = contextvars.copy_context()
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
     try:
-        future = pool.submit(context.run, provider.route, messages_for(question), REQUEST_MAX_TOKENS, REQUEST_TIMEOUT_SECONDS)
+        future = pool.submit(context.run, provider.route, messages_for(question), REQUEST_MAX_TOKENS, REQUEST_TIMEOUT_SECONDS, role="requests")
         return future.result(timeout=REQUEST_TIMEOUT_SECONDS)
     finally:
         pool.shutdown(wait=False)

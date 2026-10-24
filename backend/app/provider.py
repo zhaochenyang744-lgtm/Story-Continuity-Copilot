@@ -503,6 +503,8 @@ class ProviderPort(Protocol):
 
 
 CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
+# The assistant's model roles: the main loop, the input box's judgement, the splitting of a sentence into requests, and (v2.1 long tasks) planning.
+ASSISTANT_ROLES = ("loop", "route", "requests", "plan")
 # Thinking tokens count inside completion. Evidence for these limits (V9 held-out set):
 # - formal run: 4/36 answers truncated at 6,000 output tokens, 3/36 paused over an 8,000 run budget;
 # - diagnostic reruns: one answer filled 12,000 and later 16,000 tokens with thinking, and one repair
@@ -554,10 +556,12 @@ class DeepSeekProvider:
     _request_timeout = timeout_seconds
     # Parallel review batches share one instance; the attempt counters must not lose increments.
     _counter_lock = threading.Lock()
+    _role_models: dict[str, str] = {}
 
     def __init__(self, client_factory=None):
         self.model = os.getenv("CONTINUITY_MODEL", "")
         self._assistant_model = os.getenv("CONTINUITY_ASSISTANT_MODEL", "").strip()
+        self._role_models = {role: os.getenv(f"CONTINUITY_MODEL_{role.upper()}", "").strip() for role in ASSISTANT_ROLES}
         self.base_url = os.getenv("CONTINUITY_BASE_URL", "")
         self.api_key = os.getenv("CONTINUITY_API_KEY", "")
         self.enabled = os.getenv("CONTINUITY_PROVIDER", "").lower() == "deepseek"
@@ -697,26 +701,33 @@ class DeepSeekProvider:
             usage.get("cost_cny"),
         )
 
+    def model_for(self, role: str) -> str:
+        """The model of one assistant role: the role's own CONTINUITY_MODEL_<ROLE>, else CONTINUITY_ASSISTANT_MODEL, else the
+        model every other task uses. An unknown role is a programming error."""
+        if role not in ASSISTANT_ROLES:
+            raise ValueError(f"unknown assistant role: {role!r}")
+        return self._role_models.get(role) or getattr(self, "_assistant_model", "") or self.model
+
     @property
     def assistant_model(self) -> str:
-        """The assistant's model: CONTINUITY_ASSISTANT_MODEL when set, otherwise the one every other task uses."""
-        return getattr(self, "_assistant_model", "") or self.model
+        """The main loop's model (kept for the code that asks for the assistant's model as a whole)."""
+        return self.model_for("loop")
 
     def chat(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]], tool_choice: Any, max_tokens: int) -> ChatResult:
         """One tool-calling completion for the assistant: no response_format, thinking off, temperature 0."""
         if not self.available:
             raise ProviderUnavailable()
-        body = {"model": self.assistant_model, "messages": messages, "tools": tools, "tool_choice": tool_choice,
+        body = {"model": self.model_for("loop"), "messages": messages, "tools": tools, "tool_choice": tool_choice,
                 "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
         self._request_timeout = self._timeout_for(body)
         return self._dispatch(body, self._chat_result)
 
-    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> ChatResult:
-        """One small JSON-object completion for the assistant's input box (which use a sentence asks for): thinking off,
-        temperature 0, a single attempt that waits at most `timeout_seconds`."""
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int, role: str = "route") -> ChatResult:
+        """One small JSON-object completion for the assistant's input box (which use a sentence asks for) or for splitting the
+        author's sentence into requests (`role`): thinking off, temperature 0, a single attempt that waits at most `timeout_seconds`."""
         if not self.available:
             raise ProviderUnavailable()
-        body = {"model": self.assistant_model, "messages": messages, "response_format": {"type": "json_object"},
+        body = {"model": self.model_for(role), "messages": messages, "response_format": {"type": "json_object"},
                 "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
         return self._dispatch(body, self._chat_result, timeout_seconds=timeout_seconds, retries=0)
 

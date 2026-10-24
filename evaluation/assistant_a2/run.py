@@ -37,6 +37,7 @@ from app.config import AppPaths
 from app.main import create_app
 from app.v2_database import new_id
 
+from ..models import REGISTERED_MODELS
 from . import score
 from .judge import Judge
 from .thresholds import PRE_REGISTRATION
@@ -111,7 +112,8 @@ def preflight(args, provider, output=None):
             raise ValueError("formal_requires_three_runs")
         if git("status", "--porcelain", "--", "backend/app", "evaluation/assistant_a2", *[f"evaluation/{n}" for n in names]):
             raise ValueError("formal_dirty_code_forbidden")
-    if not provider.available or provider.assistant_model != "deepseek-flash" or provider.model != "deepseek-flash":
+    if (not provider.available or provider.model != "deepseek-flash"
+            or any(provider.model_for(role) != model for role, model in REGISTERED_MODELS.items())):
         raise ValueError("assistant_model_configuration_invalid")
     if args.judge_model != PRE_REGISTRATION["judging"]["judge_model"]:
         raise ValueError("judge_model_configuration_invalid")
@@ -324,6 +326,7 @@ def execute(args, datasets, provider, judge, ledger, out):
     tasks = [(name, t) for name in names for t in datasets[name]["tasks"] if not t.get("support") and (args.only is None or t["id"] in args.only)]
     fingerprint = {"sets": names, "runs": args.runs, "only": args.only, "git_commit": git("rev-parse", "HEAD"),
                    "prompt_version": ASSISTANT_PROMPT_VERSION, "assistant_model": provider.assistant_model, "model": provider.model,
+                   "models": {role: provider.model_for(role) for role in REGISTERED_MODELS},
                    "judge_model": args.judge_model, "assistant_rates": list(args.assistant_rates), "judge_rates": list(args.judge_rates),
                    "manifests": {n: datasets[n].get("manifest_sha256") for n in names},
                    "code_sha256": hashlib.sha256(b"".join(p.read_bytes() for directory in (ROOT / "backend/app", ROOT / "evaluation/assistant_a2")
@@ -439,7 +442,7 @@ def parser():
 def main():
     args = parser().parse_args()
     ledger = Ledger(args.max_cny, args.assistant_rates, args.judge_rates)
-    provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash") if args.dry_run else PricedProvider(ledger)
+    provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash", model_for=lambda role: "deepseek-flash") if args.dry_run else PricedProvider(ledger)
     out = preflight(args, provider)
     if args.dry_run:
         print("dry_run_ok")

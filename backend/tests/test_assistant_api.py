@@ -31,7 +31,7 @@ class RouteTests(AssistantCase):
         task = self.task(created["id"])
         self.assertEqual(task["status"], "completed")
         self.assertEqual(set(task), {"id", "kind", "status", "question", "context", "follow_up_of", "regenerated_from", "edited_from", "steps", "answer", "sources",
-                                       "follow_up_depth", "routed", "route_source", "routed_input", "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback",
+                                       "follow_up_depth", "routed", "route_source", "routed_input", "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback", "models",
                                        "error_code", "created_at", "started_at", "completed_at"})
         self.assertNotIn("cost", json.dumps(task))
         message = self.provider.calls[0]["messages"][-1]["content"]

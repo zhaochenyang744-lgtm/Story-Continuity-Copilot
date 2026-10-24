@@ -290,7 +290,7 @@ class BrowserTestProvider:
     ROUTE_MARKERS = (("E2E_ROUTE_OUT", "out_of_scope"), ("E2E_ROUTE_RECAP", "recap"), ("E2E_ROUTE_CHECK", "check_passage"),
                      ("E2E_ROUTE_CHANGE", "change"), ("E2E_ROUTE_FIX", "fix_issue"), ("E2E_ROUTE_ASK", "ask"))
 
-    def route(self, messages, max_tokens, timeout_seconds):
+    def route(self, messages, max_tokens, timeout_seconds, role=None):
         asked = messages[-1]["content"]
         self.route_log.append({"messages": messages, "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
         if "E2E_ROUTE_SLOW" in asked:
