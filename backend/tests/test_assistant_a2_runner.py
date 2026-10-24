@@ -1,6 +1,7 @@
 """A2 runner and scorer offline: the development set prepared for real, a scripted model, an invented judge; no network."""
 from __future__ import annotations
 
+import dataclasses
 import json
 import pathlib
 import tempfile
@@ -248,6 +249,10 @@ class WorkTests(unittest.TestCase):
         cls.provider = ScriptedChatProvider()
         cls.folder = tempfile.TemporaryDirectory(prefix="a2-test-")
         cls.work = run.Work(cls.source, len(run.chapters(cls.source["source"])), cls.provider, (1, 2), root=pathlib.Path(cls.folder.name) / "w")
+        engine = cls.work.app.state.assistant
+        # The runner keeps the product's three runs of a change task; a scripted model answers turns in order, so here one run.
+        assert engine.settings.assistant_change_runs == 3
+        engine.settings = dataclasses.replace(engine.settings, assistant_change_runs=1)
 
     @classmethod
     def tearDownClass(cls):
