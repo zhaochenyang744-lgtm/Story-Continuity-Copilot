@@ -67,6 +67,8 @@ ERROR_TEXTS = {
     "change_held_back": "还有改动没有放进卡片，先处理它",
     "change_not_requested": "作者的话里没有提到这条资料",
     "change_request_words_taken": "作者这几个字已经对应了另一条改动",
+    "change_thread_exists": "资料里已经有这条伏笔",
+    "change_not_this_kind": "作者要的不是这种改动",
 }
 # What the model is told besides the code, when the code alone would not tell it what to do.
 ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。",
@@ -93,7 +95,9 @@ ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时
                "change_evidence_before_planted": "依据段落在这条伏笔埋下的那章之前，不能证明它已经收了。",
                "change_thread_not_open": "这条伏笔的记录已经是已回收或已放弃，不用再改；在回答里告诉作者记录里已经是这样。",
                "change_duplicate": "这条资料已经提出过改动，不要重复提出。",
-               "change_limit_reached": "一张卡片最多 5 条改动，不要再提出了，用 answer 收尾。"}
+               "change_limit_reached": "一张卡片最多 5 条改动，不要再提出了，用 answer 收尾。",
+               "change_thread_exists": "资料里已经有同名的伏笔：用 list_threads 找到它；要改说明用 edit_thread，不要再加一条。",
+               "change_not_this_kind": "作者这几个字要的是另一种改动：按作者说的那种来提出，或者不提出。"}
 GENERIC_ERROR_TEXT = "这一步没成功"
 
 
@@ -662,15 +666,19 @@ def _propose_change(ctx, args):
 TOOLS["list_threads"] = Tool("list_threads", "列出这部作品的全部伏笔记录（标题、状态、埋下和回收的章、说明），最多 30 条。要改伏笔时先用它找到那条记录的编号。",
     {"type": "object", "properties": {}}, _list_threads, lambda args, outcome: "看伏笔记录", kinds=("change",))
 TOOLS["propose_change"] = Tool("propose_change", "向作者提出一条资料改动，放进变更卡片，作者确认后才会执行。每条改动调用一次，最多 5 条。"
-    "evidence 都填一到两个正文段落的编号（search_text 或 read_chapter 返回的），段落里要直接写到这件事。"
+    "evidence 都填一到两个正文段落的编号（search_text 或 read_chapter 返回的），段落里要直接写到这件事；edit_thread 和 abandon_thread 可以填空数组。"
     "resolve_thread：把一条伏笔标成已回收；target 填 list_threads 返回的那条伏笔的编号。"
     "change_fact：改一条已确认事实的内容；target 填 lookup_facts 返回的那条事实的编号，value 填改后的内容。"
-    "add_fact：加一条资料里没有的事实；不填 target，填 memory_type、subject（人名或物名）、predicate 和 value。",
-    {"type": "object", "properties": {"action": {"type": "string", "enum": ["resolve_thread", "change_fact", "add_fact"]},
-     "target": {"type": "string", "description": "要改的那条资料的编号，如 R3（add_fact 不填）"},
-     "evidence": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "string"}, "description": "依据的正文段落编号"},
+    "add_fact：加一条资料里没有的事实；不填 target，填 memory_type、subject（人名或物名）、predicate 和 value。"
+    "add_thread：加一条资料里没有的伏笔；不填 target，填 title（伏笔标题，不超过 30 字）和 value（伏笔说明），依据是最早写到它的段落。"
+    "edit_thread：改一条伏笔的说明；target 填 list_threads 返回的那条伏笔的编号，value 填改后的说明。"
+    "abandon_thread：把一条还没回收的伏笔标成放弃；target 填 list_threads 返回的那条伏笔的编号，作者明说这条线不写了才用。",
+    {"type": "object", "properties": {"action": {"type": "string", "enum": ["resolve_thread", "change_fact", "add_fact", "add_thread", "edit_thread", "abandon_thread"]},
+     "target": {"type": "string", "description": "要改的那条资料的编号，如 R3（add_fact、add_thread 不填）"},
+     "evidence": {"type": "array", "minItems": 0, "maxItems": 2, "items": {"type": "string"}, "description": "依据的正文段落编号"},
      "request_words": {"type": "string", "maxLength": 40, "description": "作者这句话里指到这条资料的那几个字，原样摘抄（至少两个字）"},
-     "value": {"type": "string", "maxLength": 200, "description": "事实的内容（change_fact、add_fact）"},
+     "value": {"type": "string", "maxLength": 200, "description": "事实的内容（change_fact、add_fact），或伏笔的说明（add_thread、edit_thread）"},
+     "title": {"type": "string", "maxLength": 30, "description": "伏笔的标题（add_thread）"},
      "author_value": {"type": "string", "maxLength": 40, "description": "作者这句话里自己说的新状态，原样摘抄（如「改成服务台后面的抽屉」里的「服务台后面的抽屉」）；作者没说改成什么就填空字符串"},
      "subject": {"type": "string", "maxLength": 60, "description": "事实说的是谁或什么（add_fact）"},
      "memory_type": {"type": "string", "enum": ["static_canon", "dynamic_state", "event_timeline", "character_knowledge", "open_thread"],

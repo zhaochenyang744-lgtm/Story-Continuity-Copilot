@@ -223,7 +223,7 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 .a-chg.dismissed { opacity: .6; }
 .a-chg.dismissed .chg-after { color: var(--c-muted); font-weight: 400; }
 .a-edited.warn { color: var(--c-red-text); }
-.a-chg-asked, .a-chg-same { margin-top: -3px; }
+.a-chg-asked, .a-chg-same, .a-chg-note { margin-top: -3px; }
 .a-chg-actions { margin-top: 2px; }
 .a-chg-conflict { display: grid; gap: 4px; padding: 8px 10px; border-left: 3px solid var(--c-yellow); background: var(--c-sunken); font-size: var(--fs-12); line-height: 1.7; overflow-wrap: anywhere; }
 .a-chg-conflict ul { display: grid; gap: 2px; padding-left: var(--s-3); list-style: disc; }

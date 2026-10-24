@@ -8,9 +8,18 @@ import { askView } from "./assistant-mock";
 //                      that is depends on the order the sample work's threads were stored in, so a test reads it from the card;
 //   E2E_CHANGE_FACT    changes the first fact it is shown about 温岚 to "（示意改后）正文最新的写法";
 //   E2E_ADD_FACT       adds the fact 苏岑 · 状态：（示意）左腕受了伤;
+//   E2E_ADD_THREAD     adds the thread 示意新伏笔：门后的叩响 on the first passage read (v2.1);
+//   E2E_EDIT_THREAD    rewords the note of the first thread to "（示意改后）这条伏笔的说明补了一句。", no evidence (v2.1);
+//   E2E_ABANDON_THREAD marks the first thread that is still open as given up, no evidence (v2.1);
 //   none of them       proposes nothing and ends in "not found".
 
 export const THREAD_ASK = "E2E_CHANGE_THREAD 那条还没收的伏笔最后一章已经收了";
+export const ADD_THREAD_ASK = "E2E_ADD_THREAD 最后一章埋了个悬念，加一条伏笔";
+export const EDIT_THREAD_ASK = "E2E_EDIT_THREAD 第一条伏笔的说明改一改";
+export const ABANDON_THREAD_ASK = "E2E_ABANDON_THREAD 那条还没收的伏笔我不追了";
+export const ADDED_THREAD_TITLE = "示意新伏笔：门后的叩响";
+export const ADDED_THREAD_NOTE = "（示意）门后传来三声叩响，没有人应。";
+export const EDITED_NOTE = "（示意改后）这条伏笔的说明补了一句。";
 export const FACT_ASK = "E2E_CHANGE_FACT 温岚那条事实过时了，按最后一章改一下";
 export const ADD_ASK = "E2E_ADD_FACT 苏岑左腕受伤的事记进事实";
 export const ADDED_VALUE = "（示意）左腕受了伤";
@@ -36,12 +45,22 @@ export async function lastChange(page: Page, id: string): Promise<Change> {
   return task.changes[0];
 }
 
+export type ThreadRecord = { id: string; title: string; description: string; status: string; version: number; archived_at: string | null; resolved: unknown };
+/** Every thread the materials hold, the archived ones too. */
+export const threadRecords = async (page: Page, id: string) => (await api(page).get(`/projects/${id}/foreshadows?include_archived=true`)).records as ThreadRecord[];
 /** A thread as the materials hold it. */
 export async function threadRecord(page: Page, id: string, threadId: string) {
-  const records = (await api(page).get(`/projects/${id}/foreshadows?include_archived=true`)).records as { id: string; title: string; status: string; version: number }[];
-  const found = records.find((record) => record.id === threadId);
+  const found = (await threadRecords(page, id)).find((record) => record.id === threadId);
   expect(found, `the thread ${threadId}`).toBeTruthy();
   return found!;
+}
+/** The threads view, with the closed ones shown when the thread is among them (it is open otherwise). */
+export async function threadsViewWith(page: Page, id: string, title: string) {
+  await threadsView(page, id);
+  if (!(await threadRow(page, title).count())) {
+    await page.getByRole("button", { name: /^已回收、放弃或归档的/ }).click();
+  }
+  return threadRow(page, title);
 }
 export const threadStatus = async (page: Page, id: string, threadId: string) => (await threadRecord(page, id, threadId)).status;
 /** The author edits that thread on their own (the page's own edit): it leaves the state a change expects. */
@@ -97,7 +116,7 @@ export function changeItem(over: Record<string, unknown> = {}) {
     id: "achange-mock-1", label: "C1", task_id: "atask-mock-change", kind: "resolve_thread", target: { kind: "foreshadow", id: "fs-mock" },
     title: "廊桥钥匙的指向", before: "已埋设", after: "已回收（第 10 章）", editable: false, value: null,
     evidence: [{ chapter_number: 10, chapter_title: "第十章 五点四十分", start: 120, end: 150, text: "温岚把那把铜钥匙放回了廊桥的石缝里，转身下了台阶。" }],
-    request_words: "廊桥钥匙那条伏笔", status: "proposed", edited_by_author: false, changed_since: false, created_at: ago(60), decided_at: null, applied_at: null, undone_at: null, ...over,
+    risk: "low", evidence_required: true, request_words: "廊桥钥匙那条伏笔", status: "proposed", edited_by_author: false, changed_since: false, created_at: ago(60), decided_at: null, applied_at: null, undone_at: null, ...over,
   };
 }
 export function changeView(items: unknown[], over: Record<string, unknown> = {}) {

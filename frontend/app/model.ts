@@ -567,7 +567,7 @@ export type AssistantProposal = {
   recheck: ProposalRecheck | null;
 };
 /** 改资料 (v2.0): one item of a change card, and of the ledger of what the assistant changed. `before` and `after` are already words. */
-export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact";
+export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact" | "add_thread" | "edit_thread" | "abandon_thread";
 export type AssistantChange = {
   /** Only in the ledger, where changes and adoptions are listed together. */
   entry?: "change";
@@ -581,8 +581,12 @@ export type AssistantChange = {
   before: string;
   after: string;
   editable: boolean;
-  /** Only a fact item: the wording the author may change before confirming. */
+  /** Only an item the author may reword (a fact, a thread's note): the wording they may change before confirming. */
   value: string | null;
+  /** How risky the kind of change is; a batch confirm will set the high ones apart. Not shown yet. */
+  risk: "low" | "high";
+  /** False when the change may stand on the author's words alone, so `evidence` can be empty. */
+  evidence_required: boolean;
   evidence: { chapter_number: number; chapter_title: string | null; start: number | null; end: number | null; text: string }[];
   /** A few words of the author's own sentence that name the record the change is about (null on an item made before they were asked for). */
   request_words: string | null;

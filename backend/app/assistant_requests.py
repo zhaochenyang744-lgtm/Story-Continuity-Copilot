@@ -22,9 +22,10 @@ REQUEST_TIMEOUT_SECONDS = 8
 REQUEST_MAX_TOKENS = 300
 REQUEST_ITEMS_MAX = 6
 PART_BREAK = re.compile(r"[，。；！？、,;!?…]+")
-WANTS = ("fact", "resolve_thread", "abandon_thread", "delete", "prose", "look", "other")
+WANTS = ("fact", "resolve_thread", "abandon_thread", "delete", "prose", "look", "other", "new_thread", "thread_note")
 # What each change the assistant can propose stands on; any other want is not a change of this version.
-ACTION_WANTS = {"add_fact": "fact", "change_fact": "fact", "resolve_thread": "resolve_thread"}
+ACTION_WANTS = {"add_fact": "fact", "change_fact": "fact", "resolve_thread": "resolve_thread", "add_thread": "new_thread",
+                "edit_thread": "thread_note", "abandon_thread": "abandon_thread"}
 UNSUPPORTED_TEXT = {
     "abandon_thread": "把伏笔标成不再追",
     "delete": "删除资料",

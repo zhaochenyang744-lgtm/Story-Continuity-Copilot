@@ -174,7 +174,8 @@ class BrowserTestProvider:
 
     # 改资料 (v2.0): the request is the sentence after 「作者的要求：」. Round 1 lists the threads and reads the last written chapter; then,
     # by the marker in the sentence: E2E_CHANGE_THREAD marks the first thread that is not resolved as resolved, on the first passage read;
-    # E2E_CHANGE_FACT looks up 温岚 (the sample work has a fact with her alone as its subject) and changes the first fact about her; E2E_ADD_FACT adds a fact; with none of them
+    # E2E_CHANGE_FACT looks up 温岚 (the sample work has a fact with her alone as its subject) and changes the first fact about her; E2E_ADD_FACT adds a fact; E2E_ADD_THREAD adds a thread on the first passage read;
+    # E2E_EDIT_THREAD rewords the note of the first thread; E2E_ABANDON_THREAD marks the first thread still open as given up, with no evidence; with none of them
     # nothing is proposed and the task ends in "not found". A proposal ends in an answer that cites the passage read.
     CHANGE_MARKER = "作者的要求："
 
@@ -235,6 +236,21 @@ class BrowserTestProvider:
                            and "（已回收" not in item["text"].split("——", 1)[0] and "（已放弃" not in item["text"].split("——", 1)[0]), None)
             if thread and rounds_done == 1:
                 return self._tool_turn([("propose_change", {"action": "resolve_thread", "target": thread, "evidence": [passage], "request_words": words})], fixed, say="这条伏笔在最后一章收了，提出改动。")
+        elif "E2E_ADD_THREAD" in request and passage:
+            if rounds_done == 1:  # a thread the text lays that the materials lack, planted on the first passage read
+                return self._tool_turn([("propose_change", {"action": "add_thread", "title": "示意新伏笔：门后的叩响", "value": "（示意）门后传来三声叩响，没有人应。",
+                                                            "evidence": [passage], "request_words": words})], fixed, say="资料里没有这条悬念，提出加一条伏笔。")
+        elif "E2E_EDIT_THREAD" in request:
+            thread = next((item["ref"] for item in items if item["text"].startswith("伏笔：")), None)
+            if thread and rounds_done == 1:  # the first thread, whatever its status; no evidence: the author's word is the ground
+                return self._tool_turn([("propose_change", {"action": "edit_thread", "target": thread, "value": "（示意改后）这条伏笔的说明补了一句。", "evidence": [],
+                                                            "request_words": words})], fixed, say="按作者的话改这条伏笔的说明。")
+        elif "E2E_ABANDON_THREAD" in request:
+            thread = next((item["ref"] for item in items if item["text"].startswith("伏笔：")
+                           and "（已回收" not in item["text"].split("——", 1)[0] and "（已放弃" not in item["text"].split("——", 1)[0]), None)
+            if thread and rounds_done == 1:  # the first thread still open; no evidence
+                return self._tool_turn([("propose_change", {"action": "abandon_thread", "target": thread, "evidence": [], "request_words": words})], fixed,
+                                       say="作者说这条线不追了，提出标成放弃。")
         elif "E2E_CHANGE_FACT" in request and passage:
             if rounds_done == 1:
                 return self._tool_turn([("lookup_facts", {"name": self.ASSISTANT_NAMES[1]})], fixed, say=f"查一下{self.ASSISTANT_NAMES[1]}的已确认事实。")

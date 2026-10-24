@@ -78,7 +78,7 @@ export function marksOf(items: LedgerEntry[] | null): Marks {
   for (const item of items ?? []) {
     if (isAdoption(item) || item.status !== "applied" || item.changed_since) continue;
     if (item.target.kind === "foreshadow") {
-      if (!marks.threads.has(item.target.id)) marks.threads.set(item.target.id, "助手按你的确认修改");
+      if (!marks.threads.has(item.target.id)) marks.threads.set(item.target.id, item.kind === "add_thread" ? "助手按你的确认添加" : "助手按你的确认修改");
     } else if (item.target.record_id && !marks.facts.has(item.target.record_id)) {
       marks.facts.set(item.target.record_id, item.kind === "add_fact" ? "助手按你的确认添加" : "助手按你的确认修改");
     }
