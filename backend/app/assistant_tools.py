@@ -59,7 +59,8 @@ ERROR_TEXTS = {
     "change_fact_already_recorded": "资料里已经有这条事实",
     "change_check_existing": "先查一遍资料里已有的事实",
     "change_value_not_in_evidence": "改后内容里的数字在依据段落里没有",
-    "change_give_up_not_resolve": "作者要的是放弃或删除，这一版不支持",
+    "change_give_up_not_resolve": "作者要的是放弃或删除，不是已回收",
+    "change_thread_limit_reached": "伏笔已经到上限，不能再加",
     "change_read_only": "作者只说要看这条资料，没有说要改",
     "change_prose_not_fact": "作者要改的是正文的句子，不是资料",
     "change_fact_not_thread": "作者说的是事实，不是伏笔",
@@ -83,8 +84,9 @@ ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时
                "change_check_existing": "资料里已经有关于这个人或物的事实，这次还没有查过：先用 lookup_facts 按 subject 里的全名查一遍（不是别名），"
                                         "资料里已有意思相同的事实就不加，在回答里引用那条事实告诉作者；确实没有再提出。",
                "change_value_not_in_evidence": "改后的内容里有依据段落里没有的数字或日期：只写依据段落里写着的；正文里没有写到，就不提出，在回答里告诉作者正文没有写。",
-               "change_give_up_not_resolve": "作者要的是放弃这条伏笔或删除资料，这一版做不到，不能用标成已回收代替：不提出，"
-                                             "note 写「我不能直接修改这类资料，可以在资料页自己改。」。",
+               "change_give_up_not_resolve": "作者要的是放弃这条伏笔或删除资料，不能用标成已回收代替：要放弃伏笔就用 abandon_thread 提出；"
+                                             "要删除资料这一版做不到，不提出，note 写「我不能直接删除资料，可以在资料页自己删。」。",
+               "change_thread_limit_reached": "资料里的伏笔已经到上限，不能再加：不提出，在回答里告诉作者可以先在资料页归档用不着的伏笔。",
                "change_prose_not_fact": "事实记的是故事里的人和事，不记正文的某一句、某一段：作者要改写正文时不提出改动，"
                                         "note 写「我不能直接修改正文，可以让我给改法。」。",
                "change_read_only": "作者对这条资料只说了读、看或核对，没有说要改：不要提出改动，把读到的内容写进回答。",

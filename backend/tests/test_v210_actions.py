@@ -407,7 +407,7 @@ class AddThreadTests(ThreadActionCase):
     def test_a_work_with_as_many_threads_as_it_may_hold_gets_no_more(self):
         with patch("app.assistant_actions.FORESHADOW_MAX_RECORDS", len(self.threads())):
             task = self.change_task(*self.adding(), question=self.ADD_ASK)
-        self.assertEqual(self.step_error(task), "change_limit_reached")
+        self.assertEqual(self.step_error(task), "change_thread_limit_reached")
         self.assertEqual(task["changes"], [])
 
     def test_two_threads_of_one_title_on_a_card_are_one(self):

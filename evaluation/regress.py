@@ -45,6 +45,10 @@ MEASURES = (("action_card_correct_rate", "卡片条目对", 1), ("action_evidenc
             ("route_accuracy", "判断用法", 1), ("budget_compliance_rate", "预算内", 1), ("forced_finish_rate", "到步数上限", -1),
             ("latency_p90_seconds", "p90 用时（秒）", -1))
 
+# No-action tasks of the spent pairs that ask for a thread to be given up, which v2.1 can do (`abandon_thread`).
+NOW_SUPPORTED = {("eval_set_a22_formal", "a22f-w02-no-action-06"), ("eval_set_a23_formal", "a23f-w01-no-action-06"),
+                 ("eval_set_a24_formal", "a24f-w02-no-06")}
+
 NEVER = re.compile(r"(?!)")
 
 
@@ -115,6 +119,13 @@ def compare(new, baseline_dir, controls=()):
             worse.append(label)
         fmt = (lambda v: f"{v:.3f}") if isinstance(value, float) and key != "latency_p90_seconds" else (lambda v: f"{v:g}")
         lines.append(f"| {label} | {' / '.join(fmt(v) for v in seen)} | {fmt(value)} | {verdict} |")
+    asked = [rec for rec in new["records"] if (rec["set"], rec["task"]["id"]) in NOW_SUPPORTED]
+    if asked:
+        # These were no-action tasks while a thread could not be given up (v2.0); from v2.1 the right card gives it up.
+        rest = values([rec for rec in new["records"] if (rec["set"], rec["task"]["id"]) not in NOW_SUPPORTED])
+        lines += ["", "作者要把伏笔标成放弃的 3 道（v2.0 时不该改，v2.1 起该出一条「伏笔标放弃」）："]
+        lines += [f"- {rec['task']['id']}：" + ("、".join(item["kind"] for item in rec.get("changes") or []) or "没出卡片") for rec in asked]
+        lines += [f"去掉这 3 道后：不该改时没出卡片 {rest['no_action_correct_rate']:.3f}，没要求的改动 {rest['unrequested_actions']} 处。"]
     lines += ["", f"费用 ¥{sum(r.get('assistant_cost_cny', 0) for r in new['records']):.2f}（助手）。"
               + ("更差：" + "、".join(worse) + "。" if worse else "没有一项落到基线每遍的范围之外。")]
     return "\n".join(lines), worse

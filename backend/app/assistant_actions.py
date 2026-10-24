@@ -292,7 +292,7 @@ def propose_add_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str,
         if _title_taken(c, ctx.db, ctx.project_id, title, ""):
             raise ToolError("change_thread_exists")
         if _threads_full(c, ctx.project_id):
-            raise ToolError("change_limit_reached")
+            raise ToolError("change_thread_limit_reached")
         # Two threads of a card with the same title would collide when the card is written.
         key = ctx.db._normalized_foreshadow_title(title)
         for row in c.execute("SELECT after_json FROM assistant_changes WHERE task_id=? AND kind='add_thread'", (ctx.task["id"],)):
