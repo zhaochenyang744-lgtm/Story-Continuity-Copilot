@@ -482,6 +482,19 @@ class AssistantEngine:
     def model_label(self) -> str:
         return str(getattr(self.provider, "assistant_model", None) or getattr(self.provider, "model_label", None) or "unconfigured")
 
+    def models_json(self, kind: str, routed: bool) -> str | None:
+        """The model each role of a task used: the main loop always, the request splitting of a change task, the input box's
+        judgement of a routed task. A provider that cannot say (a stand-in without `model_for`) leaves it unrecorded."""
+        model_for = getattr(self.provider, "model_for", None)
+        if not callable(model_for):
+            return None
+        models = {"loop": model_for("loop")}
+        if kind == "change":
+            models["requests"] = model_for("requests")
+        if routed:
+            models["route"] = model_for("route")
+        return json.dumps(models, ensure_ascii=False)
+
     def create(self, user_id: str, project_id: str, payload: dict[str, Any], key: str) -> tuple[dict[str, Any], int, bool]:
         """Create a queued task, reserve its quota and ceiling, all in one transaction; nothing is left behind on a refusal."""
         with self.db.connection() as c:
@@ -562,6 +575,7 @@ class AssistantEngine:
             "author_context_version": project["author_context_version"], "scope_json": json.dumps(scope),
             "chars_charged": charged, "reservation_id": reservation_id,
             "prompt_version": ASSISTANT_PROMPT_VERSION, "model_label": self.model_label(), "follow_up_of": follow_up,
+            "models_json": self.models_json(kind, bool(payload.get("routed"))),
             "regenerated_from": regenerated, "edited_from": edited, "created_at": store_module.utcnow()})
         return self.store.view(c, c.execute("SELECT * FROM assistant_tasks WHERE id=?", (task_id,)).fetchone())
 

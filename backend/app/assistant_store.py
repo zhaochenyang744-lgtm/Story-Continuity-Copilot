@@ -22,7 +22,9 @@ ADDED_COLUMNS = {
     "assistant_tasks": (("phase", "TEXT"), ("phase_tool", "TEXT"), ("phase_chapter", "INTEGER"), ("phase_started_at", "TEXT"),
                         ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT"),
                         # v2.1: what each run of a change task proposed and what the card kept (`assistant_consensus.merge`).
-                        ("consensus_json", "TEXT")),
+                        ("consensus_json", "TEXT"),
+                        # v2.1: the model each role used for the task, e.g. {"loop": ..., "requests": ...} (`provider.model_for`).
+                        ("models_json", "TEXT")),
     "assistant_steps": (("refs_json", "TEXT"),),
     # `undone_at` / `undone_after` (v2.1): when an adoption was undone and the sentence that had been adopted (the record is kept in the
     # change ledger, while the proposal itself goes back to `proposed` with its adoption fields cleared).
@@ -304,6 +306,7 @@ class AssistantStore:
                 "steps": steps, "answer": answer, "sources": sources,
                 "out_of_scope_text": OUT_OF_SCOPE_TEXT if answer and answer.get("status") == "out_of_scope" else None,
                 "coverage": json.loads(row["coverage_json"]) if row["coverage_json"] else None,
+                "models": json.loads(row["models_json"]) if row["models_json"] else None,
                 "usage": {"steps": row["steps_used"], "chars_charged": row["chars_charged"]},
                 "phase": row["phase"], "phase_tool": row["phase_tool"] if row["phase"] else None,
                 "phase_chapter": row["phase_chapter"] if row["phase"] == "tool" and row["phase_tool"] == "read_chapter" else None,
