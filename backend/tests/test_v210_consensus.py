@@ -14,11 +14,12 @@ from tests.scripted_chat import answer_call, call, tool_items, turn
 from tests.test_v200_changes import ChangeCase, change_call, refs
 
 
-def item(task_id, ordinal, kind, target="", subject=None):
+def item(task_id, ordinal, kind, target="", subject=None, words=None):
     after = {"subject": subject, "value": "x"} if subject is not None else {"status": "resolved"}
+    display = {"request_words": words} if words else {}
     return {"id": f"{task_id}-{ordinal}", "task_id": task_id, "project_id": "p", "ordinal": ordinal, "kind": kind, "target_id": target or f"new-{task_id}-{ordinal}",
-            "before_json": "null", "after_json": json.dumps(after, ensure_ascii=False), "display_json": "{}", "evidence_json": "[]",
-            "status": "proposed", "created_at": "t"}
+            "before_json": "null", "after_json": json.dumps(after, ensure_ascii=False), "display_json": json.dumps(display, ensure_ascii=False),
+            "evidence_json": "[]", "status": "proposed", "created_at": "t"}
 
 
 class MergeTests(unittest.TestCase):
@@ -27,8 +28,8 @@ class MergeTests(unittest.TestCase):
         self.c.row_factory = sqlite3.Row
         self.c.execute("CREATE TABLE assistant_changes(id TEXT PRIMARY KEY, task_id TEXT, project_id TEXT, ordinal INTEGER, kind TEXT, target_id TEXT, "
                        "before_json TEXT, after_json TEXT, display_json TEXT, evidence_json TEXT, status TEXT, created_at TEXT)")
-        self.c.execute("CREATE TABLE assistant_tasks(id TEXT PRIMARY KEY, consensus_json TEXT)")
-        self.c.execute("INSERT INTO assistant_tasks(id) VALUES('T')")
+        self.c.execute("CREATE TABLE assistant_tasks(id TEXT PRIMARY KEY, input_json TEXT, consensus_json TEXT)")
+        self.c.execute("INSERT INTO assistant_tasks(id,input_json) VALUES('T',?)", (json.dumps({"question": "第八章兽医说没另添镇静药，这个安排给她留一格"}, ensure_ascii=False),))
         self.assertIn("assistant_changes", SCHEMA)
 
     def put(self, *rows):
@@ -59,6 +60,21 @@ class MergeTests(unittest.TestCase):
         self.put(item("T", 1, "add_fact", subject="甄 宿微"), item("S1", 1, "add_fact", subject="甄宿微"), item("S2", 1, "add_fact", subject="谯映砚"))
         self.assertFalse(assistant_consensus.merge(self.c, "T", ["S1", "S2"]))
         self.assertEqual(len(self.card()), 1)
+
+    def test_new_facts_that_answer_the_same_words_are_one_change_whatever_name_they_are_filed_under(self):
+        # p51 gate run, a22f-w02-action-03: three runs, three names for one new fact, and the card came out empty.
+        self.put(item("T", 1, "add_fact", subject="灰狼迁护用药安排", words="兽医说没另添镇静药"), item("S1", 1, "add_fact", subject="灰狼", words="没另添镇静药"),
+                 item("S2", 1, "add_fact", subject="裴汀晏", words="这个安排"))
+        self.assertFalse(assistant_consensus.merge(self.c, "T", ["S1", "S2"]))
+        self.assertEqual([(kind, target) for kind, target, _ in self.card()], [("add_fact", "new-T-1")])
+
+    def test_nothing_is_added_when_the_authors_run_proposed_nothing(self):
+        # p51 gate run, a22f-w01-no-action-04: the author's run rightly changed nothing, and the other two added a change.
+        self.put(item("S1", 1, "change_fact", "C"), item("S2", 1, "change_fact", "C"))
+        self.assertFalse(assistant_consensus.merge(self.c, "T", ["S1", "S2"]))
+        self.assertEqual(self.card(), [])
+        record = json.loads(self.c.execute("SELECT consensus_json FROM assistant_tasks WHERE id='T'").fetchone()[0])
+        self.assertEqual([(item["runs"], item["kept"]) for item in record["items"]], [([1, 2], False)])
 
     def test_with_fewer_than_three_runs_the_authors_card_stands(self):
         self.put(item("T", 1, "change_fact", "B"), item("S1", 1, "change_fact", "A"))
