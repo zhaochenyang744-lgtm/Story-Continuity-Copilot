@@ -60,10 +60,7 @@ def _off(name, value):
 
 # Guards a development run may switch off. Word lists are swapped for a pattern that never matches; whole checks for a stub.
 ABLATIONS = {
-    "prose_subject": _off("PROSE_SUBJECT", NEVER),          # change_prose_not_fact
-    "read_only": _off("READ_ONLY", NEVER),                  # change_read_only
-    "give_up": _off("GIVE_UP", NEVER),                      # change_give_up_not_resolve
-    "fact_not_thread": _off("FACT_WORDS", NEVER),           # change_fact_not_thread
+    # The word lists (prose_subject, read_only, give_up, fact_not_thread) were switched off in g1 and taken out in v2.1 A.
     "value_numbers": _off("numbers_in", lambda text: set()),  # change_value_not_in_evidence
     "author_value": _off("_author_value_missing", lambda ctx, args, proposal: None),
     "second_look": _off("_second_look", lambda ctx, action, args, proposal, request_words: None),
