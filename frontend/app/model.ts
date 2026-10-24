@@ -562,11 +562,15 @@ export type AssistantProposal = {
   draft_revision: number;
   adopted_draft_revision: number | null;
   decided_at: string | null;
+  /** When the adoption was last undone (null while it stands, and after it was adopted again). */
+  undone_at?: string | null;
   recheck: ProposalRecheck | null;
 };
 /** 改资料 (v2.0): one item of a change card, and of the ledger of what the assistant changed. `before` and `after` are already words. */
 export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact";
 export type AssistantChange = {
+  /** Only in the ledger, where changes and adoptions are listed together. */
+  entry?: "change";
   id: string;
   label: string;
   task_id: string;
@@ -591,6 +595,23 @@ export type AssistantChange = {
   applied_at: string | null;
   undone_at: string | null;
 };
+/** 改动记录 (v2.1): a proposal of a fix_issue task that the author adopted (or adopted and then undid), listed beside the changes. Undoing an adoption
+    only records it; the draft is not touched. `after` is the sentence adopted, the author's own wording when they reworded it. */
+export type AssistantAdoption = {
+  entry: "adoption";
+  id: string;
+  label: string;
+  task_id: string;
+  kind: "edit_this" | "add_setup";
+  chapter_number: number | null;
+  before: string;
+  after: string;
+  edited_by_author: boolean;
+  status: "adopted" | "undone";
+  adopted_at: string | null;
+  undone_at: string | null;
+};
+export type LedgerEntry = AssistantChange | AssistantAdoption;
 export type AssistantTask = {
   id: string;
   kind: "ask" | "recap" | "fix_issue" | "change";

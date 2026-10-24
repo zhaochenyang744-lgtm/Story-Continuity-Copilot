@@ -74,8 +74,8 @@ export const findingsTab = (page: Page) => findings(page).getByRole("tab", { nam
 export const adoptRequest = (page: Page, action: string) => page.waitForRequest((request) => request.method() === "POST" && new RegExp(`/proposals/[^/]+/${action}$`).test(request.url()));
 
 /** A work whose latest check is a real one, with one finding on `body` (a sentence with E2E_SUGGEST in it). */
-export async function checkedWork(page: Page, body = SENTENCE) {
-  const id = await setup(page);
+export async function checkedWork(page: Page, body = SENTENCE, charged = false) {
+  const id = await setup(page, true, charged);
   await saveBody(page, id, body);
   const result = await finishCheck(page, id, await beginCheck(page, id));
   const issue = result.issues.find((item: any) => item.claim_text.includes("E2E_SUGGEST"));

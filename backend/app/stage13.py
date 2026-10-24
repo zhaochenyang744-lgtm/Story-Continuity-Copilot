@@ -17,7 +17,7 @@ from email.message import EmailMessage
 from typing import Any, Iterator, Protocol
 from urllib.parse import urlparse
 
-from .author_home import BIO_MAX
+from .author_home import BIO_MAX, SAMPLE_ORIGINS
 from .database import DomainError
 
 
@@ -812,6 +812,10 @@ class Stage13Service:
         if used + reservation > int(round(budget_limit * 1_000_000)):
             raise DomainError("server_budget_exceeded", 429, True)
         reservation_id = _new_id("usage")
+        # A sample work (the demo, the tutorial) costs the author no characters: the day's counts and the server budget above
+        # still stand, the character quota is neither checked nor spent. A visitor's per-check length limit stays.
+        if character_kind == "check" and not visitor and self._is_sample(c, project_id):
+            character_kind = None
         if character_kind is not None:
             self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff, reservation_id)
         c.execute(
@@ -819,6 +823,15 @@ class Stage13Service:
             (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
         )
         return reservation_id
+
+    @staticmethod
+    def _is_sample(c: Any, project_id: str | None) -> bool:
+        row = c.execute("SELECT data_origin FROM v2_projects WHERE id=?", (project_id,)).fetchone() if project_id else None
+        return bool(row) and row["data_origin"] in SAMPLE_ORIGINS
+
+    def is_sample_project(self, project_id: str | None) -> bool:
+        with self.database.connection() as c:
+            return self._is_sample(c, project_id)
 
     def reserve_route(self, user_id: str, project_id: str) -> str:
         """The usage record of one judgement call: no characters, no workflow count, a small ceiling in the day's budget."""
@@ -861,6 +874,8 @@ class Stage13Service:
             actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
             if not reservation or not actor or actor["account_type"] == "visitor":
                 raise DomainError("usage_context_invalid", 503)
+            if self._is_sample(c, project_id):
+                return
             if c.execute("SELECT 1 FROM v2_character_usage WHERE id=?", (f"chars-{reservation_id}-x1",)).fetchone():
                 raise DomainError("check_passage_limit_exceeded", 409)
             cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()

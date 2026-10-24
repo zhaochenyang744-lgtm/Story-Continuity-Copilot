@@ -77,6 +77,8 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
     case "assistant_issue_not_current": return "这条检查结果已经过时了。再检查一次后，再让助手给改法。";
     case "assistant_kind_unavailable": return "这个功能需要更新后的页面才能使用。";
     case "assistant_not_available": return "助手暂时还没有对你的账号开放。";
+    case "assistant_route_input_required": return "先写下想问或想改的话，再发送。";
+    case "invalid_request": return "这次的内容不完整，没有开始，也没有计字数。刷新页面后再试一次。";
     case "assistant_regenerate_invalid": return "这个回答不能重新回答了，换个问法再问一次。";
     case "assistant_edit_invalid": return "原来的问题已经不在了，直接重新提问吧。";
     case "assistant_task_not_completed": return "这个回答还没有结束。";

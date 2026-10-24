@@ -22,7 +22,7 @@ import {
 import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { AssistantContextInput, AssistantPage, AssistantSource, AssistantTask, Project, WritingAnalysisRun } from "../../model";
 import { qaLayerLabel, qaStanceLabel, qaStatusLabel, readableKeys, stageLabel, timeLabel } from "../labels";
-import { type CheckUsage, clip, formatCount, Menu, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { type CheckUsage, clip, formatCount, isSampleWork, Menu, SAMPLE_FREE, useFocusTrap, useScrollLock, writtenChars } from "../ui";
 import { regenerateTask } from "./assistant-answer";
 import { mergeChanges } from "./assistant-change";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
@@ -113,6 +113,12 @@ export type ThreadMaterial = {
 };
 const NO_MATERIAL: ThreadMaterial = { chapters: [], characters: [], draftBody: "", issues: [], issuesReason: "" };
 
+/** Tasks read on their own go into the conversation in the order they were asked, each once. */
+const withTasks = (current: AssistantTask[] | null, extra: AssistantTask[]): AssistantTask[] => {
+  const have = new Set((current ?? []).map((task) => task.id));
+  return [...(current ?? []), ...extra.filter((task) => !have.has(task.id))].sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
+};
+
 /** The tag 接着上一问 says which follow-up the next question would be, and how many are left. */
 const followLabel = (task: AssistantTask) => {
   const number = (task.follow_up_depth ?? 0) + 1;
@@ -128,6 +134,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const bridge = useContext(AssistantBridge);
   const [tasks, setTasks] = useState<AssistantTask[] | null>(null);
   const [loadError, setLoadError] = useState("");
+  const [clearedNonce, setClearedNonce] = useState(0);
   const [legacy, setLegacy] = useState<WritingAnalysisRun[]>([]);
   const [text, setText] = useState("");
   const [mode, setMode] = useState<Mode>("auto");
@@ -244,8 +251,10 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const archived = project.status === "archived";
   const runningId = tasks?.find(active)?.id ?? null;
   const busy = Boolean(runningId) || sending || routing;
-  const needed = usage?.account_type === "registered" ? usage.assistant_task_chars ?? TASK_CHARS : 0;
-  const shortOfChars = usage?.account_type === "registered" && usage.check_chars_remaining < needed;
+  // A sample work takes no characters: the box is never held back for the allowance there.
+  const sample = isSampleWork(project);
+  const needed = usage?.account_type === "registered" && !sample ? usage.assistant_task_chars ?? TASK_CHARS : 0;
+  const shortOfChars = usage?.account_type === "registered" && !sample && usage.check_chars_remaining < needed;
   const outOfTasks = usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0;
   // The box is used up for good (until the allowance comes back): it says why, inside itself.
   const off = archived ? "作品已归档，只能浏览。"
@@ -253,10 +262,10 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       : outOfTasks ? VISITOR_USED_UP
         : "";
   const blocked = off || (busy && !routing ? RUNNING_NOW : "");
-  const cost = usage?.account_type === "registered" ? `约 ${formatCount(needed)} 字`
+  const cost = usage?.account_type === "registered" ? (sample ? SAMPLE_FREE : `约 ${formatCount(needed)} 字`)
     : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `今天还可以问 ${usage.assistant_tasks_remaining} 次` : "";
   // What is left today goes after the cost when the line has room for it, and into its title when it has not.
-  const costMore = usage?.account_type === "registered" ? `今天还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
+  const costMore = usage?.account_type === "registered" && !sample ? `今天还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
 
   // The page hears whether a task is running (its 写前回顾 button waits for it) and which findings have an adopted change.
   const report = useRef(writing);
@@ -328,7 +337,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     // The send button has just gone grey; keep the keyboard where the author is writing.
     field.current?.focus();
   };
-  const checkShort = (picked: string) => usage?.account_type === "registered" && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS) + writtenChars(picked);
+  const checkShort = (picked: string) => usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS) + writtenChars(picked);
   const shortOfCheck = () => setRefusal(refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false));
   // 自动: ask the server which use the sentence asks for (the mode button says so meanwhile), then start the task that use is, at once.
   const sendAuto = async () => {
@@ -466,8 +475,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
 
   // A picked passage arrives: either it becomes the question's context, or it is asked about at once.
   // A command arrives: a 写前回顾, a fix for one finding, or a check of a passage starts, or says why it cannot.
-  const latest = useRef({ post, blocked, contextFor, usage });
-  useEffect(() => { latest.current = { post, blocked, contextFor, usage }; });
+  const latest = useRef({ post, blocked, contextFor, usage, sample });
+  useEffect(() => { latest.current = { post, blocked, contextFor, usage, sample }; });
   useEffect(() => {
     if (!incoming || incoming.nonce === handled.current) return;
     handled.current = incoming.nonce;
@@ -484,9 +493,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     if (!command || command.nonce === handledCommand.current) return;
     handledCommand.current = command.nonce;
     void Promise.resolve().then(() => {
-      const { post: start, blocked: reason, contextFor: build, usage: allowance } = latest.current;
-      // A check also pays for the picked words.
-      const short = command.kind === "check" && !reason && allowance?.account_type === "registered" && allowance.check_chars_remaining < (allowance.assistant_task_chars ?? TASK_CHARS) + writtenChars(command.text);
+      const { post: start, blocked: reason, contextFor: build, usage: allowance, sample: free } = latest.current;
+      // A check also pays for the picked words (not on a sample work).
+      const short = command.kind === "check" && !reason && !free && allowance?.account_type === "registered" && allowance.check_chars_remaining < (allowance.assistant_task_chars ?? TASK_CHARS) + writtenChars(command.text);
       if (reason || short) {
         setRefusal(reason || refusalText({ code: "character_quota_exceeded", details: { remaining: allowance?.account_type === "registered" ? allowance.check_chars_remaining : 0 } }, false));
         return;
@@ -498,18 +507,35 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     });
   }, [command]);
 
-  // 看对话: the task asked for is brought to the top of the conversation once the conversation has been read.
+  // 看对话: the task asked for is brought to the top of the conversation once the conversation has been read. A task older than the
+  // latest 30 the conversation holds is read on its own (with the questions it follows and those that follow it) and put in its place;
+  // one that was cleared is said to be.
   useEffect(() => {
     if (!focus || !tasks || focus.nonce === handledFocus.current) return;
     handledFocus.current = focus.nonce;
     stick.current = false; pinned.current = null;
+    const { taskId, nonce } = focus;
+    if (!tasks.some((task) => task.id === taskId)) {
+      request<AssistantTask & { chain?: AssistantTask[] }>(`/projects/${projectId}/assistant/tasks/${taskId}?chain=1`).then(({ chain, ...task }) => {
+        // The conversation's own scroll-to-task keeps the new entry in view (and does not call it a new answer).
+        pinned.current = taskId;
+        setTasks((current) => withTasks(current, [...(chain ?? []), task as AssistantTask]));
+      }, (cause) => {
+        if ((cause as ApiFailure).code === "resource_not_found") {
+          quiet.current = performance.now() + 300;
+          thread.current?.scrollTo({ top: 0 });
+          setClearedNonce(nonce);
+        } else setLoadError(labelError(cause));
+      });
+      return;
+    }
     const box = thread.current;
-    const target = box?.querySelector<HTMLElement>(`[data-task="${focus.taskId}"]`);
+    const target = box?.querySelector<HTMLElement>(`[data-task="${taskId}"]`);
     if (box && target) {
       quiet.current = performance.now() + 300;
       box.scrollTop += target.getBoundingClientRect().top - box.getBoundingClientRect().top - 8;
     }
-  }, [focus, tasks]);
+  }, [focus, tasks, projectId]);
 
   const openChapter = (number: number) => {
     onNavigate?.();
@@ -628,6 +654,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         {privacy && <p className="a-privacy">使用助手会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</p>}
         {legacy.length > 0 && <LegacyQuestions runs={legacy} go={(href) => { onNavigate?.(); go(href); }} />}
         {tasks === null && !loadError && <p className="a-quiet" role="status">正在读取对话…</p>}
+        {focus && clearedNonce === focus.nonce && <p className="a-quiet" role="status" data-testid="assistant-cleared">这次对话已经清除。</p>}
         {loadError && <p className="a-note" role="alert">{loadError}</p>}
         {starters && (
           <Starters intro="问这部作品里的人、事、物。助手会自己去查正文和已确认的事实，每句回答都带着出处。"
@@ -751,7 +778,7 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: 
   /** Told what is selected (text of 4–600 characters) as it is selected, and null when the selection is gone. */
   onSelect?: (text: string | null) => void;
   /** The third button; leave it out where it makes no sense (a visitor, a written chapter). `remaining` is the day's characters left, null when not counted. */
-  check?: { run: (text: string) => void; remaining: number | null };
+  check?: { run: (text: string) => void; remaining: number | null; free?: boolean };
 }) {
   const [shown, setShown] = useState<{ text: string; x: number; y: number; below: boolean } | null>(null);
   const bar = useRef<HTMLDivElement>(null);
@@ -828,9 +855,10 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: 
       {check && (() => {
         const cost = TASK_CHARS + writtenChars(shown.text);
         const short = check.remaining !== null && check.remaining < cost;
+        const label = check.free ? "查前文矛盾" : `查前文矛盾 · 约 ${formatCount(cost)} 字`;
         return (
           <button type="button" disabled={short} title={short ? "今天的可检查字数不够这次检查" : undefined}
-            aria-label={`查前文矛盾：检查这段和前文有没有矛盾，约 ${formatCount(cost)} 字`} onClick={() => { check.run(shown.text); setShown(null); }}>查前文矛盾 · 约 {formatCount(cost)} 字</button>
+            aria-label={`查前文矛盾：检查这段和前文有没有矛盾${check.free ? "，示例作品不计字数" : `，约 ${formatCount(cost)} 字`}`} onClick={() => { check.run(shown.text); setShown(null); }}>{label}</button>
         );
       })()}
     </div>

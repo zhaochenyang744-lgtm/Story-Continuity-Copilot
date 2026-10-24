@@ -271,7 +271,7 @@ test.describe("助手：回答", () => {
   });
 
   test("重新回答：只对已完成的问答，标「约 500 字」；新回答放在原位，旧的折进「之前的回答」", async ({ page }) => {
-    const id = await setup(page);
+    const id = await setup(page, true, true);
     await openAssistantTab(page);
     const before = await allowance(page);
     await ask(page, "E2E_FAIL 苏岑是谁？");
@@ -347,7 +347,7 @@ test.describe("助手：回答", () => {
   });
 
   test("作品以外：浅底的固定文案，不显示出处和「接着问」，计费同找不到", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const before = await allowance(page);
     await ask(page, "E2E_OFF 帮我写一首关于海港的诗");
@@ -600,7 +600,7 @@ test.describe("助手：输入框", () => {
   });
 
   test("发送键：没写字时灰、能发时蓝、助手在查时是黑底停止键；聚焦时先写「Enter 发送」，超过 250 字换成字数", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const square = thread(page).locator(".cx-send");
     const size = await square.boundingBox();

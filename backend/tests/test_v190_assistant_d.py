@@ -228,6 +228,10 @@ class LedgerTests(RouteCase):
 
 # ---- reroute ---------------------------------------------------------------------------------------------------------------
 class RerouteCase(Task04Case):
+    def setUp(self):
+        super().setUp()
+        self.own_work()
+
     def made(self, *, kind="ask", question="罗盘现在在谁手里", context=None, routed=True, source="model", input=None, status="queued"):
         """A task as the page makes it (not run: it waits in the queue, or is marked running)."""
         payload = {"kind": kind, "question": question, "context": context or {"page": "writing"}, "follow_up_of": None, "edited_from": None,
@@ -348,7 +352,7 @@ class FollowUpLimitTests(AssistantCase):
     def setUp(self):
         self.start(registered_workflows=200, registered_check_chars=1_000_000)
         self.register()
-
+        self.own_work()
     def asked(self, number, follow_up_of=None, expect=202):
         self.provider.script(read(9), cite(9, words="罗盘交给了温岚。"))
         response = self.ask(f"第{number}问", expect=expect, **({"follow_up_of": follow_up_of} if follow_up_of else {}))

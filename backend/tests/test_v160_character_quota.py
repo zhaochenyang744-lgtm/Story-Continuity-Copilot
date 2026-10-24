@@ -26,7 +26,7 @@ SENTENCE = "林默走进港务局，把航图摊在桌上。"
 
 
 class CharacterQuotaTests(unittest.TestCase):
-    def start(self, **overrides):
+    def start(self, sample=False, **overrides):
         root = pathlib.Path(tempfile.mkdtemp(prefix="v160-quota-"))
         settings = dataclasses.replace(Stage13Settings.for_test(), **overrides)
         self.provider = Poisoned(None)
@@ -38,6 +38,10 @@ class CharacterQuotaTests(unittest.TestCase):
             "account_name": f"chars{uuid.uuid4().hex[:8]}", "display_name": "Chars", "password": "valid-password-99",
             "recovery_email": f"{uuid.uuid4().hex[:8]}@example.test"}).json()["data"]
         self.project_id = registered["onboarding"]["tutorial"]["project_id"]
+        if not sample:
+            # The tutorial's work is a sample work and takes no characters (v2.1); these tests are about a work of the author's own.
+            with self.app.state.database.connection() as c:
+                c.execute("UPDATE v2_projects SET data_origin='v1_migrated' WHERE id=?", (self.project_id,))
 
     @staticmethod
     def idem():
@@ -69,6 +73,16 @@ class CharacterQuotaTests(unittest.TestCase):
         self.assertEqual(self.check(draft).status_code, 202)
         after = self.usage()
         self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (chars, 60_000 - chars))
+
+    def test_a_check_on_the_sample_work_spends_no_characters_and_ignores_the_allowance(self):
+        self.start(sample=True, registered_check_chars=1_000)
+        draft, chars = self.save(80)
+        self.assertGreater(chars, 1_000)
+        self.assertEqual(self.check(draft).status_code, 202)
+        after = self.usage()
+        self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (0, 1_000))
+        with self.app.state.database.connection() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM v2_usage_reservations WHERE project_id=?", (self.project_id,)).fetchone()[0], 1)
 
     def test_a_check_beyond_the_daily_characters_is_refused_before_any_dispatch(self):
         self.start(registered_check_chars=1_000)

@@ -104,7 +104,7 @@ class RegenerateTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
-
+        self.own_work()
     def url(self, task_id: str) -> str:
         return f"/api/projects/{self.project_id}/assistant/tasks/{task_id}/regenerate"
 
@@ -160,6 +160,7 @@ class RegenerateTests(AssistantCase):
     def test_the_new_task_is_refused_like_any_new_question_when_the_characters_run_out(self):
         self.start(registered_check_chars=700)
         self.register()
+        self.own_work()
         first = self.run_ask(read(9), cite(9))
         refused = self.regenerate(first["id"], expect=None)
         self.assertEqual((refused.status_code, refused.json()["error"]["code"]), (429, "character_quota_exceeded"))
@@ -179,7 +180,7 @@ class EditResendTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
-
+        self.own_work()
     def test_an_edited_question_is_a_new_task_that_points_back_and_leaves_the_old_one_alone(self):
         first = self.run_ask(read(9), cite(9, words="旧回答。"), question="苏岑知道罗盘被掉包了吗？")
         self.provider.script(read(9), cite(9, words="新回答。"))
@@ -214,6 +215,10 @@ class EditResendTests(AssistantCase):
 
 class AdoptEditTests(Task04Case):
     EDITED = "苏岑摸了摸空着的内袋，罗盘还锁在温岚的抽屉里。"
+
+    def setUp(self):
+        super().setUp()
+        self.own_work()
 
     def finished(self, *extra_calls):
         task = self.fix(turn(*self.proposals_turn()["calls"], *extra_calls), FINAL)

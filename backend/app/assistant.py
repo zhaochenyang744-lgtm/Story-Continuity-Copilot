@@ -20,6 +20,7 @@ from . import assistant_store as store_module
 from .assistant_store import AssistantStore
 from .assistant_tools import (CLOSING, ERROR_HINTS, INTERNAL_ID, NAME_MAX_CHARS, OUT_OF_SCOPE_TEXT, QUERY_MAX_CHARS, REF_FORMAT, SourceRegistry, ToolContext,
                               ToolError, _range_label as range_label, result_refs, run_tool, tool_result_text, tools_for, TOOLS)
+from .author_home import SAMPLE_ORIGINS
 from .database import DomainError
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
@@ -531,9 +532,11 @@ class AssistantEngine:
                 raise DomainError("assistant_issue_not_current", 422)
             scope.update(issue_run_id=run["id"], issue_nature=issue["nature"], issue_sentence=issue["sentence"])
         task_id = store_module.new_task_id()
+        # A task on a sample work (the demo, the tutorial) is counted and costed as any other, but takes no characters.
+        charged = 0 if visitor or project["data_origin"] in SAMPLE_ORIGINS else ASSISTANT_TASK_CHARS
         reservation_id = self.stage13.reserve_workflow(
             user_id, project_id, ASSISTANT_WORKFLOW_KIND, task_id,
-            characters=0 if visitor else ASSISTANT_TASK_CHARS, character_kind=None if visitor else "check",
+            characters=charged, character_kind=None if visitor else "check",
             reservation_microunits=int(round(settings.assistant_task_max_cny * 1_000_000)), connection=c)
         self.store.insert_task(c, {
             "id": task_id, "project_id": project_id, "user_id": user_id, "kind": payload["kind"], "status": "queued",
@@ -541,7 +544,7 @@ class AssistantEngine:
             "draft_id": draft["id"] if draft else None, "draft_revision": draft["revision"] if draft else None,
             "source_revision": project["source_revision"], "memory_version": project["current_memory_version"],
             "author_context_version": project["author_context_version"], "scope_json": json.dumps(scope),
-            "chars_charged": 0 if visitor else ASSISTANT_TASK_CHARS, "reservation_id": reservation_id,
+            "chars_charged": charged, "reservation_id": reservation_id,
             "prompt_version": ASSISTANT_PROMPT_VERSION, "model_label": self.model_label(), "follow_up_of": follow_up,
             "regenerated_from": regenerated, "edited_from": edited, "created_at": store_module.utcnow()})
         return self.store.view(c, c.execute("SELECT * FROM assistant_tasks WHERE id=?", (task_id,)).fetchone())
@@ -1167,13 +1170,16 @@ def register_routes(app: Any, db: Any, user: Callable, csrf: Callable, key: Call
             return ok(request, {"tasks": engine.store.visible_tasks(c, project_id, max(1, min(limit, ASSISTANT_LIST_LIMIT)), actor["id"])})
 
     @app.get(base + "/tasks/{task_id}")
-    def get_task(project_id: str, task_id: str, request: Request):
+    def get_task(project_id: str, task_id: str, request: Request, chain: bool = False):
+        """One task of the conversation; a task that was cleared is not found. With `chain` the tasks it follows and those that follow
+        it come with it (`chain`), for a task older than the page's list (the change ledger's 看对话)."""
         actor = owned(request, project_id)
         with db.connection() as c:
             row = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
             if not row:
                 raise DomainError("resource_not_found", 404)
-            return ok(request, engine.store.view(c, row, actor["id"]))
+            data = engine.store.view(c, row, actor["id"])
+            return ok(request, {**data, "chain": engine.store.chain_of(c, row, actor["id"])} if chain else data)
 
     def completed_task(c: Any, project_id: str, task_id: str) -> Any:
         row = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()

@@ -549,6 +549,15 @@ def spend_v180_check_characters(user_id: str, characters: int):
     return {"spent": characters}
 
 
+@app.post("/api/test/v210/projects/{project_id}/own-work")
+def make_v210_own_work(project_id: str):
+    """Turns a sample work into an ordinary work of the author's own. A sample work takes no characters (v2.1); the browser tests that
+    are about what a check or a question costs run on the sample's chapters made ordinary this way."""
+    with app.state.database.connection() as connection:
+        connection.execute("UPDATE v2_projects SET data_origin='v1_migrated' WHERE id=? AND data_origin IN ('demo_seed','tutorial_seed')", (project_id,))
+    return {"project_id": project_id}
+
+
 @app.post("/api/test/v180/users/{user_id}/writing-days")
 def add_v180_writing_day(user_id: str, payload: dict = Body(...)):
     """Puts writing on an earlier day (a Beijing-time YYYY-MM-DD) of one of the author's works, so the calendar has a past to show."""

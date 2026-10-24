@@ -325,6 +325,10 @@ export function useUsage(refreshKey: string) {
   }, [refreshKey]);
   return usage;
 }
+/** 示例作品 (the demo work and the tutorial's): a check or an assistant task on it takes no characters, whatever the allowance. */
+export const isSampleWork = (project: { data_origin?: string } | null | undefined) => project?.data_origin === "demo_seed" || project?.data_origin === "tutorial_seed";
+export const SAMPLE_FREE = "示例作品不计字数";
+
 export const usageShort = (usage: CheckUsage | null) =>
   !usage ? "" : usage.account_type === "visitor" ? `还可检查 ${usage.checks_remaining} 次` : `可检查 ${usage.check_chars_remaining.toLocaleString("en-US")} 字`;
 
