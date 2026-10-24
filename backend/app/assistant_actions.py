@@ -67,11 +67,6 @@ SECOND_LOOK_SAME = 0.5  # share of an existing fact's character pairs a new fact
 # 标示称量轮次，不是物件所有权凭证" in three passes of three (A2 third formal run, w02-no-action-02; 0.21 of its pairs). Over
 # every A2 run so far this holds 11 more of 404 new facts asked for, and 4 of the 5 same-subject duplicates.
 SECOND_LOOK_SAME_SUBJECT = 0.2
-# A fact is about the story, not about a sentence of it: an author's request to shorten the last sentence of a chapter came
-# back as a fact "第20章最后一句" holding the rewrite (A2 third formal run, w01-no-action-05, two passes of three). Over every
-# A2 run so far no new fact asked for has such a subject.
-PROSE_SUBJECT = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百]+\s*[章回节]|最后一句|第一句|这句|那句|这一句|那一句|这段|那段|"
-                           r"这一段|那一段|开头|结尾|正文|草稿|原句|句子|段落")
 SECOND_LOOK_FACTS = 10
 
 
@@ -596,19 +591,6 @@ def numbers_in(text: str) -> set[int]:
 # item back for a second look, once, and the model decides.
 AUTHOR_VALUE_MAX = 40
 AUTHOR_VALUE_FOUND = 0.5
-# An author who gives a thread up or wants a record gone asks for what this version cannot do; marking the thread resolved
-# is not that (A2 second formal run, w02-no-action-06: "把这条伏笔改为放弃" became a resolved thread).
-GIVE_UP = re.compile(r"放弃|不追|不要了|作废|删掉|删除|删了|去掉|撤掉|不打算用|不想留")
-# The piece of the author's sentence an item stands on (its clause) says what the author wants done with that record.
-# Asked only to read it ("那条请读全"), nothing is changed: the record that carried a hidden note was rewritten, note and all,
-# in three passes of three (A2 second pair, p41, injection-07). Asked about a fact in a fact's words ("改掉旧说法", "状态"),
-# the item is not a thread marked resolved (action-08). Over every card of every A2 run so far neither refuses an item that
-# was asked for (856 of them).
-READ_ONLY = re.compile(r"读全|读一遍|读完|看看|看一下|看一遍|看完|核对|核实|对一遍|说说|讲讲|查查|确认一下|回顾")
-CHANGE_WORDS = re.compile(r"改|更新|修正|订正|换|补|记|加|添|存|收|标|录|写|入|留|挪|移|填|调|结|销|退|删|放|去掉|跟上|撤|清|登|归|变成|别再|别停|别漏|别空")
-FACT_WORDS = re.compile(r"旧说法|说法|状态|资料|事实|那栏|那格|一栏|一格|记成|记录")
-THREAD_WORDS = re.compile(r"伏笔|线|疑问|谜|悬|问号|着落|收掉|收一收|回收|结清|吊着|挂着|查明|查清|解释|来路|缘故|原因")
-CLAUSE_BREAK = re.compile(r"[，。；！？,;!?]")
 # What a piece of the request list asks for, when it is not a change of the kind proposed on it.
 WANT_REFUSALS = {"look": "change_read_only", "delete": "change_give_up_not_resolve", "prose": "change_prose_not_fact"}
 
@@ -623,36 +605,18 @@ def _wrong_kind(want: str, action: Action) -> str:
     return "change_not_this_kind"
 
 
-def _clause(ctx: ToolContext, request_words: str) -> str:
-    """The clause of the author's sentence that holds the item's request words."""
-    question = _question(ctx)
-    start = question.find(request_words)
-    begin = max((m.end() for m in CLAUSE_BREAK.finditer(question, 0, start)), default=0)
-    end = next((m.start() for m in CLAUSE_BREAK.finditer(question, start + len(request_words))), len(question))
-    return question[begin:end]
-
-
 def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: dict[str, Any], request_words: str) -> None:
     """What an item says must come from its evidence, and from the author only what the evidence bears out; what the author
-    asked done with the record must be a change of this kind."""
+    asked done with the record must be a change of this kind, by the request list (`assistant_requests`).
+
+    Until v2.1 word lists guessed the second from the author's clause (a give-up word, a read-only word, a fact word without a
+    thread word, a subject that names a sentence of the text); the request list says it of every piece of the sentence, and
+    they were taken out (v2.1 A, after the list held on every spent A2 pair). Words the list does not hold, or a task whose
+    split failed, are not refused on their kind."""
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
-    if action.creates and action.record_kind == "fact" and PROSE_SUBJECT.search(proposal["after"]["subject"]):
-        raise ToolError("change_prose_not_fact")
-    if assistant_requests.decides(ctx.requests, _question(ctx), request_words):
-        # The request list says what this piece of the sentence asks for; the word lists below are for words it does not hold.
-        want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
-        if want is not None:
-            raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
-    else:
-        clause = _clause(ctx, request_words)
-        if READ_ONLY.search(clause) and not CHANGE_WORDS.search(clause):
-            raise ToolError("change_read_only")
-        if action.kind == "resolve_thread" and GIVE_UP.search(_question(ctx)):
-            raise ToolError("change_give_up_not_resolve")
-        if action.kind == "abandon_thread" and not GIVE_UP.search(clause):
-            raise ToolError("change_not_this_kind")  # giving a thread up needs the author's word for it, whichever words are left
-        if action.record_kind == "foreshadow" and FACT_WORDS.search(clause) and not THREAD_WORDS.search(clause):
-            raise ToolError("change_fact_not_thread")
+    want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+    if want is not None:
+        raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
     if action.record_kind == "foreshadow":
         return
     # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).

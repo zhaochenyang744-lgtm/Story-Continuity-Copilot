@@ -216,8 +216,7 @@ class SetTests(unittest.TestCase):
     def test_the_regression_switches_name_guards_that_exist(self):
         from app import assistant_actions
         from evaluation import regress
-        targets = {"prose_subject": "PROSE_SUBJECT", "read_only": "READ_ONLY", "give_up": "GIVE_UP", "fact_not_thread": "FACT_WORDS",
-                   "value_numbers": "numbers_in", "author_value": "_author_value_missing", "second_look": "_second_look"}
+        targets = {"value_numbers": "numbers_in", "author_value": "_author_value_missing", "second_look": "_second_look"}
         self.assertEqual(set(regress.ABLATIONS), set(targets))
         self.assertTrue(all(hasattr(assistant_actions, name) for name in targets.values()))
         self.assertEqual(run.set_names(regress.SETS), regress.SETS.split(","))

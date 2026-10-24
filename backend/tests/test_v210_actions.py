@@ -199,9 +199,11 @@ class AbandonThreadTests(ThreadActionCase):
         self.assertEqual(self.step_error(task), "change_not_this_kind")
         self.assertEqual(task["changes"], [])
 
-    def test_without_a_request_list_giving_up_needs_a_word_that_gives_up(self):
+    def test_giving_up_asks_for_a_piece_that_gives_up(self):
+        self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "怎么样了", "want": "look"}]})
         task = self.change_task(*self.abandoning(), question="罗盘那条线怎么样了")
-        self.assertEqual(self.step_error(task), "change_not_this_kind")
+        self.assertEqual(self.step_error(task), "change_read_only")
+        self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "这次放弃", "want": "abandon_thread"}]})
         task = self.change_task(*self.abandoning(), question="罗盘那条线这次放弃")
         self.assertEqual(len(task["changes"]), 1)
 
@@ -556,10 +558,10 @@ class WantTests(ThreadActionCase):
             ctx.requests = [self.piece("这样处理", want, "罗盘那条线")]
             self.assertEqual(self.outcome(ctx, self.arguments(kind, passage, thread, "罗盘那条线")), code, f"{want} / {kind}")
 
-    def test_a_piece_that_is_not_covered_leaves_it_to_the_word_lists(self):
+    def test_a_piece_that_names_nothing_is_not_refused_on_its_kind(self):
         ctx, passage, thread = self.setup_ctx("罗盘那条线请读全")
         ctx.requests = [self.piece("请读全", "other", "罗盘那条线")]
-        self.assertEqual(self.outcome(ctx, self.arguments("edit_thread", passage, thread, "罗盘那条线请读全")), "change_read_only")
+        self.assertEqual(self.outcome(ctx, self.arguments("edit_thread", passage, thread, "罗盘那条线请读全")), "C1")
 
     def test_a_thread_added_on_the_authors_wish_for_one_goes_on_the_card_and_a_fact_does_not(self):
         self.provider.script_route({"items": [{"about": "最后一章的悬念", "ask": "加一条伏笔", "want": "new_thread"}]})

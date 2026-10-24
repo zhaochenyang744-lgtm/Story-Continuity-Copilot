@@ -218,7 +218,7 @@ class FixTaskIsNotHeldToTheRule(Task04Case):
 
 class PromptTextTests(unittest.TestCase):
     def test_version(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p49")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p50")
 
     def test_a_search_that_finds_nothing_ends_in_not_found(self):
         self.assertIn("用两三种不同说法搜过、仍然没有，就用 not_found 收尾，不要一直搜下去", SYSTEM_PROMPT)

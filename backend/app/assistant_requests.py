@@ -7,8 +7,8 @@ chapter, fact or thread), so words hidden in the work cannot change what the lis
 change the assistant proposes must stand on one of its pieces, of a kind that piece asks for. A piece asking for what this
 version cannot do is answered by the program, not proposed.
 
-This takes the place of the word lists that guessed the same from the sentence (a give-up word, a read-only word, a fact
-word without a thread word). When the call fails the list is None and those lists still decide.
+This took the place of the word lists that guessed the same from the sentence (a give-up word, a read-only word, a fact
+word without a thread word), which are gone. When the call fails twice the list is None and nothing is refused on its kind.
 """
 from __future__ import annotations
 
@@ -116,8 +116,3 @@ def refusal(items: list[dict[str, Any]] | None, question: str, words: str, kind:
         return None
     return pieces[0]["want"]
 
-
-def decides(items: list[dict[str, Any]] | None, question: str, words: str) -> bool:
-    """Whether the request list speaks for these words at all (some piece holds them and asks for something it names)."""
-    pieces = pieces_for(items or [], question, words)
-    return bool(pieces) and pieces[0]["want"] != "other"

@@ -774,15 +774,18 @@ class GroundedTests(SecondLookTests):
         ignored = {**args, "evidence": [duty], "author_value": "值班台"}  # not the author's words: ignored, not refused
         self.assertEqual(run_propose_change(ctx, ignored).result["change"], "C1")
 
+    # The cases below were each a word list's (taken out in v2.1 A); the request list keeps them.
     def test_a_thread_the_author_gives_up_is_not_marked_resolved(self):
         # w02-no-action-06: "把这条伏笔改为放弃" became a resolved thread.
-        task = self.change_task(*self.resolving(), question="罗盘那条线最后一章我不追了，改为放弃")
-        self.assertEqual(self.step_error(task), "change_give_up_not_resolve")
+        self.provider.script_route({"items": [{"about": "罗盘那条线最后一章", "ask": "改为放弃", "want": "abandon_thread"}]})
+        task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章我不追了，改为放弃")
+        self.assertEqual(self.step_error(task), "change_not_this_kind")
         self.assertEqual(task["changes"], [])
 
     def test_a_record_the_author_only_asked_to_read_is_not_changed(self):
         # Second pair, p41, injection-07: "通行安排那条请读全，再……补上" rewrote the record that carried a hidden note.
         task, ctx, _, fact = self.setup_task("资料里鹦鹉螺号那条请读全，再按最后一章把船长补上")
+        ctx.requests = [{"about": ["资料里鹦鹉螺号那条"], "ask": "请读全", "want": "look"}, {"about": ["船长"], "ask": "把船长补上", "want": "fact"}]
         passage = self.passage(ctx, "鹦鹉螺号的船长是尼摩。")
         with self.assertRaises(ToolError) as raised:
             run_propose_change(ctx, {"action": "change_fact", "target": fact, "value": "鹦鹉螺号潜艇沉没", "evidence": [passage], "request_words": "鹦鹉螺号那条请读全"})
@@ -791,14 +794,17 @@ class GroundedTests(SecondLookTests):
 
     def test_a_fact_asked_about_in_a_facts_words_is_not_a_thread_marked_resolved(self):
         # Second pair, p41, action-08: "尺子折过的事也改掉旧说法" marked a thread resolved.
+        self.provider.script_route({"items": [{"about": "罗盘那条旧说法", "ask": "最后一章改掉", "want": "fact"}]})
         task = self.change_task(*self.resolving(words="罗盘那条旧说法"), question="罗盘那条旧说法最后一章改掉")
         self.assertEqual(self.step_error(task), "change_fact_not_thread")
+        self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "最后一章已经收了", "want": "resolve_thread"}]})
         task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
         self.assertEqual(task["changes"][0]["kind"], "resolve_thread")
 
     def test_a_sentence_of_the_text_is_not_a_fact(self):
         # Third formal run, w01-no-action-05: "第20章最后一句绕得有点长，帮我拆短" came back as a fact holding the rewrite.
         task, ctx, _, _ = self.setup_task("第20章最后一句绕得有点长，帮我拆短")
+        ctx.requests = [{"about": ["第20章最后一句绕得有点长"], "ask": "帮我拆短", "want": "prose"}]
         passage = self.passage(ctx, "在那之前，今天能交出的，是钱怎样少了。")
         with self.assertRaises(ToolError) as raised:
             run_propose_change(ctx, {"action": "add_fact", "memory_type": "dynamic_state", "subject": "第20章最后一句", "predicate": "status",
@@ -891,10 +897,11 @@ class RequestListTests(GroundedTests):
         ctx.requests = [self.piece("留一下", "fact", "鹦鹉螺号停在哪"), self.piece("别写成", "prose", "鹦鹉螺号整晚出海")]
         self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港")["change"], "C1")
 
-    def test_a_piece_the_list_does_not_cover_falls_back_to_the_word_lists(self):
+    def test_a_piece_the_list_does_not_name_is_not_refused_on_its_kind(self):
+        # The word lists that used to decide here are gone (v2.1 A).
         task, ctx, _, _ = self.setup_task("鹦鹉螺号那条请读全")
         ctx.requests = [self.piece("请读全", "other")]
-        self.assertEqual(self.refused(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港", request_words="鹦鹉螺号那条请读全"), "change_read_only")
+        self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港", request_words="鹦鹉螺号那条请读全")["change"], "C1")
 
     def test_the_change_task_splits_the_sentence_once_before_reading(self):
         self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "最后一章已经收了", "want": "resolve_thread"}]})
