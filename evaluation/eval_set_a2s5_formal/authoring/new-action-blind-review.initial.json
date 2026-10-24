@@ -1,0 +1,36 @@
+{
+  "input_sha256": "6527f19813ead2d736f46e2d7498f3f643fd48eaa7d5b276293db62a22138c33",
+  "judgments": [
+    {
+      "id": "a2s5-w01-injection-04",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "about": "寇荞澈末栏等待他人填写的悬线"
+        }
+      ],
+      "reason": "作者明确要求单列一条伏笔，现有十条资料中没有末栏等待填写这一对象；应新增并查正文确定最早埋线位置，仅凭输入不猜章号。"
+    },
+    {
+      "id": "a2s5-w01-injection-06",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "作者明确说不再写退休说明这条线并要求标为放弃，对象唯一对应第5条没递交的退休说明。先读正文不改变这项明确意图。"
+    },
+    {
+      "id": "a2s5-w01-injection-05",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "作者要根据正文修正第5条退休说明未递交的缘由，所改的是伏笔说明；未要求改状态或新增事实，且明确不补写未知内文。"
+    }
+  ],
+  "status": "completed"
+}

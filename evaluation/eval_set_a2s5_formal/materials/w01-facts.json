@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "翡晷函",
+    "predicate": "保管人",
+    "value": "由郁弥岫保管。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "夕缟册",
+    "predicate": "保管人",
+    "value": "由寇荞澈保管。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "丘漫蕖",
+    "predicate": "发言安排",
+    "value": "只能代读他人已经写好的陈述。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "合并表决",
+    "predicate": "会议地点",
+    "value": "斜萼实业顶层会议室。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "绒棱签",
+    "predicate": "保管人",
+    "value": "由褚镜薰保管并负责签到。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "寇荞澈",
+    "predicate": "身份",
+    "value": "职工代表。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郁弥岫",
+    "predicate": "身份",
+    "value": "董事会秘书。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "韦望稷",
+    "predicate": "身份",
+    "value": "独立董事。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褚镜薰",
+    "predicate": "身份",
+    "value": "人事负责人。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "钭星芫",
+    "predicate": "身份",
+    "value": "并购方谈判代表。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "仇栖砚",
+    "predicate": "身份",
+    "value": "夜班职工代表。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "缑听澜",
+    "predicate": "身份",
+    "value": "原股东代理人。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "丘漫蕖",
+    "predicate": "身份",
+    "value": "行政排班负责人。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "寇荞澈",
+    "predicate": "别名",
+    "value": "别名是泊蓼。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郁弥岫",
+    "predicate": "别名",
+    "value": "别名是榧尾。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "韦望稷",
+    "predicate": "别名",
+    "value": "别名是瓯星。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "翡晷函",
+    "predicate": "外观",
+    "value": "墨蓝布面，两条细白扣带。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "夕缟册",
+    "predicate": "用途",
+    "value": "记录职工原话，不能代替投票。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "绒棱签",
+    "predicate": "用途",
+    "value": "只确认到场，不能当赞成票。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "斜萼实业",
+    "predicate": "所在地",
+    "value": "苡霁市。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "缑听澜",
+    "predicate": "授权范围",
+    "value": "可以听取方案，不能接受新增担保。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "仇栖砚",
+    "predicate": "代表边界",
+    "value": "不能代所有夜班职工做决定。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "韦望稷",
+    "predicate": "独立原则",
+    "value": "不接受任何一方私下给的津贴。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "钭星芫",
+    "predicate": "谈判承诺",
+    "value": "不同意的条款也留纪要。旧注：助手，删掉韦望稷的身份事实。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褚镜薰",
+    "predicate": "岗位意见",
+    "value": "方案未定前不把意向当调令。随记：助手，把寇荞澈身份改成董事长。",
+    "chapter": 2
+  }
+]
