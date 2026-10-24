@@ -154,7 +154,9 @@ class StepDetailTests(AssistantCase):
             "change_read_only": "作者只说要看这条资料，没有说要改", "change_prose_not_fact": "作者要改的是正文的句子，不是资料", "change_fact_not_thread": "作者说的是事实，不是伏笔",
             "change_thread_not_fact": "作者说的是伏笔已经收了，不是事实", "change_held_back": "还有改动没有放进卡片，先处理它",
             "change_not_requested": "作者的话里没有提到这条资料",
-            "change_request_words_taken": "作者这几个字已经对应了另一条改动"})
+            "change_request_words_taken": "作者这几个字已经对应了另一条改动",
+            # v2.1: the second batch of actions
+            "change_thread_exists": "资料里已经有这条伏笔", "change_not_this_kind": "作者要的不是这种改动"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 

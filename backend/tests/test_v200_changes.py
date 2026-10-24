@@ -878,7 +878,8 @@ class RequestListTests(GroundedTests):
         self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港")["change"], "C1")
 
     def test_a_given_up_thread_or_a_prose_edit_is_refused_whatever_the_words(self):
-        for want, code in (("abandon_thread", "change_give_up_not_resolve"), ("delete", "change_give_up_not_resolve"), ("prose", "change_prose_not_fact"),
+        # v2.1 batch two: a thread given up is a change of its own now, so a fact proposed on it is the wrong kind, not a refusal to give up
+        for want, code in (("abandon_thread", "change_not_this_kind"), ("delete", "change_give_up_not_resolve"), ("prose", "change_prose_not_fact"),
                            ("resolve_thread", "change_thread_not_fact")):
             task, ctx, _, _ = self.setup_task("鹦鹉螺号那件事就这样吧")
             ctx.requests = [self.piece("就这样吧", want, "鹦鹉螺号那件事")]
