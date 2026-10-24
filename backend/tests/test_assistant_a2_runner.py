@@ -213,13 +213,26 @@ class SetTests(unittest.TestCase):
         self.assertTrue(run.readable("eval_set_a24_formal") and run.readable("eval_set_a2s4_formal"))
         self.assertEqual(run.FORMAL_SETS, ())
 
-    def test_the_regression_switches_name_guards_that_exist(self):
-        from app import assistant_actions
+    def test_the_regression_switches_are_the_switchable_crutches_and_name_what_exists(self):
+        from app import assistant_actions, assistant_requests
+        from app.assistant_crutches import CRUTCHES, SWITCHES
         from evaluation import regress
-        targets = {"value_numbers": "numbers_in", "author_value": "_author_value_missing", "second_look": "_second_look"}
-        self.assertEqual(set(regress.ABLATIONS), set(targets))
-        self.assertTrue(all(hasattr(assistant_actions, name) for name in targets.values()))
+        self.assertEqual(set(regress.ABLATIONS), set(SWITCHES))
+        self.assertEqual(len({crutch.name for crutch in CRUTCHES}), len(CRUTCHES))
+        self.assertTrue(all(crutch.weakness and crutch.origin and crutch.check for crutch in CRUTCHES))
+        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("numbers_in", "_author_value_missing", "_second_look")))
+        self.assertTrue(hasattr(assistant_requests, "call_model"))
         self.assertEqual(run.set_names(regress.SETS), regress.SETS.split(","))
+
+    def test_switching_off_the_majority_leaves_one_run_of_a_change_task(self):
+        from evaluation import regress
+        made = run.settings
+        try:
+            regress.ablate(["consensus"])
+            self.assertEqual(run.settings((1, 2)).assistant_change_runs, 1)
+        finally:
+            run.settings = made
+        self.assertEqual(run.settings((1, 2)).assistant_change_runs, 3)
 
     def test_a_run_of_the_spent_pair_is_never_a_formal_result(self):
         report = {"records": [], "card_checks": [], "sets": ["eval_set_a2_formal", "eval_set_a2s_formal"], "runs": 3, "complete": True,
