@@ -131,6 +131,8 @@ class ThreeRunTests(ChangeCase):
         self.assertEqual(reserve.call_args.kwargs["reservation_microunits"], round(3 * self.engine.settings.assistant_task_max_cny * 1_000_000))
         settled = self.rows("SELECT reserved_microunits FROM v2_usage_reservations WHERE id=(SELECT reservation_id FROM assistant_tasks WHERE id=?)", task["id"])
         self.assertEqual(settled[0]["reserved_microunits"], round(9 * 0.01 * 1_000_000))  # three runs of three turns each
+        # Each run's steps and cost, the author's first, kept for the evaluation's budget per run (A2 addendum 7).
+        self.assertEqual([(run["steps"], round(run["cost_cny"], 6)) for run in task["consensus"]["run_usage"]], [(3, 0.03)] * 3)
 
     def reject(self, task):
         r = self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/reject", headers=self.idem(), json={})

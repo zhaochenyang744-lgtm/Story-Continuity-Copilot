@@ -742,11 +742,15 @@ class AssistantEngine:
         self._shadows_done.difference_update(ids)
         with self.db.connection() as c:
             marks = ",".join("?" for _ in ids)
+            # What each run spent, the author's first (A2 addendum 7 holds the step and cost budget for each run).
+            usage = {row["id"]: {"steps": row["steps_used"], "cost_cny": row["cost_cny"]}
+                     for row in c.execute(f"SELECT id,steps_used,cost_cny FROM assistant_tasks WHERE id IN (?,{marks})", [task_id, *ids])}
             extra = c.execute(f"SELECT COALESCE(SUM(input_tokens),0) i,COALESCE(SUM(output_tokens),0) o,COALESCE(SUM(cost_cny),0) cost "
                               f"FROM assistant_tasks WHERE id IN ({marks})", ids).fetchone()
             c.execute("UPDATE assistant_tasks SET input_tokens=input_tokens+?,output_tokens=output_tokens+?,cost_cny=cost_cny+? WHERE id=?",
                       (extra["i"], extra["o"], extra["cost"], task_id))
             changed = answer is not None and assistant_consensus.merge(c, task_id, finished)
+            assistant_consensus.record_usage(c, task_id, [usage[run] for run in [task_id, *ids] if run in usage])
             assistant_consensus.discard(c, ids)
             left = c.execute("SELECT COUNT(*) FROM assistant_changes WHERE task_id=?", (task_id,)).fetchone()[0]
         if changed and left:  # an emptied card has its own line (`_no_card_line`)

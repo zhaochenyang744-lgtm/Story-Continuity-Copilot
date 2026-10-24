@@ -112,6 +112,13 @@ def _record(c: sqlite3.Connection, task_id: str, groups: list[dict[str, Any]], r
     c.execute("UPDATE assistant_tasks SET consensus_json=? WHERE id=?", (json.dumps({"runs": runs, "items": items}, ensure_ascii=False), task_id))
 
 
+def record_usage(c: sqlite3.Connection, task_id: str, runs: list[dict[str, Any]]) -> None:
+    """The steps and cost of each run, the author's run first, kept with the task's record (`consensus_json`, `run_usage`)."""
+    row = c.execute("SELECT consensus_json FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()
+    record = json.loads(row["consensus_json"]) if row and row["consensus_json"] else {}
+    c.execute("UPDATE assistant_tasks SET consensus_json=? WHERE id=?", (json.dumps({**record, "run_usage": runs}, ensure_ascii=False), task_id))
+
+
 def discard(c: sqlite3.Connection, run_ids: list[str]) -> None:
     """Delete hidden runs and all they left (steps, sources, items not taken onto the card)."""
     for run in run_ids:

@@ -42,7 +42,7 @@ from . import score
 from .judge import Judge
 from .thresholds import PRE_REGISTRATION
 
-DEV_SETS = ("eval_set_a2_dev",)
+DEV_SETS = ("eval_set_a2_dev", "eval_set_a2t_dev")  # the second: the thread actions' dev set (addendum 7)
 # Development material: the dev set, and the spent first formal pair (either set, alone or together, any selection).
 SPENT_SETS = score.SPENT_FORMAL_SETS
 # The registered formal pair that has not run yet (none until a new pair is registered).
@@ -59,7 +59,7 @@ def set_names(value):
     names = value.split(",")
     if len(names) != len(set(names)):
         raise ValueError("invalid_sets")
-    if names == list(DEV_SETS) or set(names) <= set(SPENT_SETS) or (FORMAL_SETS and sorted(names) == sorted(FORMAL_SETS)):
+    if (len(names) == 1 and names[0] in DEV_SETS) or set(names) <= set(SPENT_SETS) or (FORMAL_SETS and sorted(names) == sorted(FORMAL_SETS)):
         return names
     raise ValueError("invalid_sets")
 
