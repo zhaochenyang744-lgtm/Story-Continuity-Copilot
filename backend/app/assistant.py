@@ -6,9 +6,11 @@ checks the numbers, quotes the registered text itself, and works out what was an
 """
 from __future__ import annotations
 
+import contextvars
 import json
 import re
 import sqlite3
+import threading
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Any, Callable, Literal
@@ -25,9 +27,10 @@ from .database import DomainError
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
+from . import assistant_consensus
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p47"
+ASSISTANT_PROMPT_VERSION = "assistant-p48"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -461,6 +464,9 @@ class AssistantEngine:
         self.store, self.db, self.provider, self.stage13 = store, database, provider, stage13
         self.settings = stage13.settings
         self.clock = clock
+        # A change task's hidden runs (`assistant_consensus`): those still running, by the author's task, and those that finished.
+        self._shadows: dict[str, list[tuple[str, threading.Thread]]] = {}
+        self._shadows_done: set[str] = set()
 
     # -- creation ---------------------------------------------------------------------------------------------------
     def model_label(self) -> str:
@@ -537,7 +543,7 @@ class AssistantEngine:
         reservation_id = self.stage13.reserve_workflow(
             user_id, project_id, ASSISTANT_WORKFLOW_KIND, task_id,
             characters=charged, character_kind=None if visitor else "check",
-            reservation_microunits=int(round(settings.assistant_task_max_cny * 1_000_000)), connection=c)
+            reservation_microunits=int(round(settings.assistant_task_max_cny * self._runs(kind) * 1_000_000)), connection=c)
         self.store.insert_task(c, {
             "id": task_id, "project_id": project_id, "user_id": user_id, "kind": payload["kind"], "status": "queued",
             "input_json": json.dumps(self._task_input(payload, context), ensure_ascii=False),
@@ -648,6 +654,13 @@ class AssistantEngine:
             ids = [row["id"] for row in c.execute("SELECT id FROM assistant_tasks WHERE project_id=? AND status IN ('queued','running') AND created_at<?", (project_id, cutoff))]
         for task_id in ids:
             self._fail(task_id, "assistant_abandoned", limited=False)
+        with self.db.connection() as c:
+            # Hidden runs a crash left behind (their task was closed above, or long ago).
+            assistant_consensus.discard(c, [row["id"] for row in c.execute("SELECT id FROM assistant_tasks WHERE project_id=? AND status=? AND created_at<?",
+                                                                            (project_id, assistant_consensus.SHADOW_STATUS, cutoff))])
+
+    def _runs(self, kind: str) -> int:
+        return max(1, int(self.settings.assistant_change_runs)) if kind == "change" else 1
 
     # -- running --------------------------------------------------------------------------------------------------------
     def run(self, task_id: str) -> None:
@@ -656,13 +669,64 @@ class AssistantEngine:
             return
         try:
             with provider_usage(row["user_id"], row["reservation_id"]):
+                if self._runs(row["kind"]) > 1 and row["status"] == "queued":
+                    self._shadows[task_id] = self._start_shadows(row, self._runs(row["kind"]) - 1)
                 self._run(row)
+                if task_id in self._shadows:  # cancelled: the hidden runs stop with it, and go
+                    self._agree(task_id, None)
         except Exception as error:
             # Only the exception's type name is kept (never its message, which may quote the manuscript).
             try:
                 self._fail(task_id, "internal_error", limited=False, internal_error_type=type(error).__name__)
             except Exception:
                 pass
+
+    def _start_shadows(self, row: Any, count: int) -> list[tuple[str, threading.Thread]]:
+        """Start the hidden runs of a change task, each a copy of the task that runs the same loop at the same time; they keep no
+        answer and reserve nothing, and what they cost is added to the task's (see `assistant_consensus`)."""
+        started = []
+        for _ in range(count):
+            shadow_id = store_module.new_task_id()
+            with self.db.connection() as c:
+                self.store.insert_task(c, {**{key: row[key] for key in row.keys() if key not in ("id", "status", "reservation_id", "chars_charged", "hidden_at",
+                                                                                           "answer_json", "coverage_json", "started_at", "completed_at")},
+                                           "id": shadow_id, "status": assistant_consensus.SHADOW_STATUS, "reservation_id": None, "chars_charged": 0,
+                                           "hidden_at": store_module.utcnow()})
+            shadow = self.store.row(shadow_id)
+            context = contextvars.copy_context()
+            thread = threading.Thread(target=context.run, args=(self._run_shadow, shadow, row["id"]), daemon=True)
+            thread.start()
+            started.append((shadow_id, thread))
+        return started
+
+    def _run_shadow(self, row: Any, lead: str) -> None:
+        try:
+            self._run(row, lead=lead)
+        except Exception:  # a hidden run that breaks only leaves the card to the others
+            pass
+
+    def _agree(self, task_id: str, answer: dict[str, Any] | None) -> dict[str, Any] | None:
+        """Wait for the task's hidden runs, add what they cost to the task, put on its card what most runs proposed (when it
+        has an answer), and delete them. The answer says so when the card is not what the author's run proposed."""
+        shadows = self._shadows.pop(task_id, [])
+        if not shadows:
+            return answer
+        for _, thread in shadows:
+            thread.join(timeout=ASSISTANT_TASK_TIMEOUT_SECONDS + 30)
+        ids = [shadow_id for shadow_id, _ in shadows]
+        finished = [shadow_id for shadow_id in ids if shadow_id in self._shadows_done]
+        self._shadows_done.difference_update(ids)
+        with self.db.connection() as c:
+            marks = ",".join("?" for _ in ids)
+            extra = c.execute(f"SELECT COALESCE(SUM(input_tokens),0) i,COALESCE(SUM(output_tokens),0) o,COALESCE(SUM(cost_cny),0) cost "
+                              f"FROM assistant_tasks WHERE id IN ({marks})", ids).fetchone()
+            c.execute("UPDATE assistant_tasks SET input_tokens=input_tokens+?,output_tokens=output_tokens+?,cost_cny=cost_cny+? WHERE id=?",
+                      (extra["i"], extra["o"], extra["cost"], task_id))
+            changed = answer is not None and assistant_consensus.merge(c, task_id, finished)
+            assistant_consensus.discard(c, ids)
+        if changed:
+            answer = {**answer, "note": " ".join(part for part in (answer.get("note"), assistant_consensus.AGREED_NOTE) if part)}
+        return answer
 
     def _request_list(self, row: Any) -> tuple[list[dict[str, str]] | None, Any]:
         """The pieces of the author's sentence a change task may act on (`assistant_requests`), read before anything of the
@@ -722,9 +786,11 @@ class AssistantEngine:
         messages.append({"role": "user", "content": "\n".join(lines)})
         return messages
 
-    def _run(self, row: Any) -> None:
+    def _run(self, row: Any, lead: str | None = None) -> None:
+        """One run of the agent loop for a task. `lead` is the author's task when this is one of its hidden runs: the run
+        follows that task's cancel, and ends without an answer of its own."""
         task_id = row["id"]
-        if not self.store.mark_running(task_id):
+        if lead is None and not self.store.mark_running(task_id):
             self._settle(task_id)  # cancelled before it began
             return
         scope = json.loads(row["scope_json"])
@@ -775,7 +841,7 @@ class AssistantEngine:
                 output_tokens += result.output_tokens or 0
                 cost += self._cost(result)
         for round_ in range(1, rounds + 1):
-            if self.store.status(task_id) == "cancelled":
+            if self.store.status(lead or task_id) == "cancelled":
                 self._settle(task_id)
                 return
             spent = should_force_answer(cost, last_call_cost, force_cost) or self.clock() - started > ASSISTANT_TASK_TIMEOUT_SECONDS
@@ -984,14 +1050,19 @@ class AssistantEngine:
         return build_coverage(self.store.steps(task_id), json.loads(row["scope_json"]), limited)
 
     def _complete(self, task_id: str, answer: dict[str, Any], limited: bool) -> None:
+        if self.store.status(task_id) == assistant_consensus.SHADOW_STATUS:
+            self._shadows_done.add(task_id)
+            return
+        answer = self._agree(task_id, answer)
         self.store.finish(task_id, "completed", answer=answer, coverage=self._coverage(task_id, limited))
         self._settle(task_id)
 
     def _fail(self, task_id: str, code: str, *, limited: bool, internal_error_type: str | None = None) -> None:
         """End a task that gave no answer: its characters go back to the author. A task the author cancelled stays cancelled."""
         row = self.store.row(task_id)
-        if row is None:
+        if row is None or row["status"] == assistant_consensus.SHADOW_STATUS:
             return
+        self._agree(task_id, None)
         closed = self.store.finish(task_id, "failed", error_code=code, coverage=self._coverage(task_id, limited), internal_error_type=internal_error_type)
         if closed and row["reservation_id"]:
             self.stage13.refund_characters(row["user_id"], row["reservation_id"])
