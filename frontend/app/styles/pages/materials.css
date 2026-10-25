@@ -90,6 +90,11 @@
 .candidates { display: grid; gap: 8px; margin-bottom: 32px; padding: 20px; border: 2px dashed var(--c-rule); }
 
 @media (max-width: 720px) {
+  /* The category tabs are one row that slides sideways, never a 3 + 1 wrap (as the settings sub-navigation does). */
+  .materials .tabs nav { flex: 1 1 100%; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .materials .tabs nav::-webkit-scrollbar { display: none; }
+  .materials .tabs .tab { flex: none; padding: 0 16px; white-space: nowrap; }
+  .materials .tabs .tab:focus-visible { outline-offset: -3px; }
   .fact-list li { grid-template-columns: 52px minmax(0, 1fr); }
   .fact-list li .tag { grid-column: 2; }
   .thread-list li { grid-template-columns: 64px minmax(0, 1fr); }
