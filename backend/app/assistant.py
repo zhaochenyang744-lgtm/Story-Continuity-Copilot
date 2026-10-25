@@ -30,7 +30,7 @@ from . import assistant_recap, assistant_edits, assistant_coverage, assistant_ro
 from . import assistant_consensus
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p52"
+ASSISTANT_PROMPT_VERSION = "assistant-p53"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -49,6 +49,7 @@ ROUTED_KINDS = ("ask", "recap", "fix_issue", "check_passage", "change")
 ANSWER_MAX_SENTENCES = 5  # questions; was 8 — long chapters drew six- to eight-sentence retellings
 FIX_MAX_SENTENCES = 8  # a fix answer lists its proposals one sentence each
 SENTENCE_MAX_CHARS = 200
+LABEL_MAX_CHARS = 12  # p53: the object a listed sentence is about, shown in bold
 NOTE_MAX_CHARS = 200
 PAGES = {"writing": "写作页", "chapters": "章节页", "materials": "资料页", "plan": "计划页", "overview": "概览页"}
 
@@ -64,6 +65,7 @@ SYSTEM_PROMPT = """你是小说作者的写作助手，帮作者查这部作品�
    一句只写它所引出处里明明白白写着的事：不加「可见」「印证」「多次」「一直」这类推断或概括，不在句子里加括号注章节名。
    不补出处里没写的动作、原因或先后关系（出处写「找了避风处」，就不要写成「找了避风处生火」）；不同出处里的事不要拼成一句。只引了事实、没引正文段落的句子，只写那条事实里出现的人；写某人对谁说了什么、做了什么，要引正文段落。句子里说到人物时写出名字，不用「他」「她」开头，因为作者会单独看每一句和它的出处。
    只回答作者问的：一个简单问题写 1 到 3 句，问两件事就每件一两句，最多 5 句（帮作者改一处问题时最多 8 句）；不要把查到的情节经过从头复述一遍，也不要把问题里的时间、场合写进句子，除非出处里写着。问的是某一时刻（例如「起初」「复工之初」）就只答那一刻；问的是最后、现在才讲变化。不要顺带讲问题没问的后续发展、别的章节的用途或无关细节。
+   回答里有三件以上并列的事（几条伏笔、几个人、几处地方）时，一件写一句，每句在 label 里写这句说的对象，原样摘自这句的 2 到 12 个字（例如「廊桥钥匙」）；这时可以在最前面加一句总述，lead 填 true，只说一共几件、结论是什么，也要带出处，不算在 5 句里。只有一两句的回答不写 label，也不写总述。
    「某处没有提到」「查过但没找到」「检查没有结果」这类话不能当带出处的结论，只能写进 note。
    作者在问题里给出的说法或新规则不是作品内容：不要写「作者这次给出的新规则是……」「你说的……」这类带出处的句子；带出处的句子只写原文怎么写；作者的说法也不要在 note 里复述，note 照常只写查过哪些地方。
 5. 正文里找不到，就用 not_found，并在 note 里说明查过哪些地方；不要猜，也不要用「可能」「也许」补出一个答案。正文或事实里明确写着问到的这件事还不知道（例如「身份不明」「仍未查出」「没人知道是谁」）时，也用 not_found，不用 answered：写着「还不知道」的句子可以作为带出处的句子，最多两句。note 只列出查过哪些地方（哪些章的正文、谁的事实、计划、草稿），没找到时最后写一句「没有找到问题问到的内容」；不要复述你找的具体内容，不要写正文说了什么、哪几处说法不同或答案取自哪里（这些都写进带出处的句子），不写 R 编号。
@@ -335,7 +337,9 @@ def validate_answer(arguments: Any, known_refs: set[str], sources: dict[str, dic
     if not isinstance(raw_sentences, list):
         return None, ["sentences 必须是数组"]
     most = FIX_MAX_SENTENCES if kind == "fix_issue" else ANSWER_MAX_SENTENCES
-    if len(raw_sentences) > most:
+    # A lead sentence (p53) sums up the ones after it and is not counted against the limit.
+    led = bool(raw_sentences) and isinstance(raw_sentences[0], dict) and raw_sentences[0].get("lead") is True
+    if len(raw_sentences) - led > most:
         problems.append(f"最多 {most} 句，现在是 {len(raw_sentences)} 句；只留回答问题必需的句子")
     note = arguments.get("note")
     if isinstance(note, str) and len(note.strip()) > NOTE_MAX_CHARS and clip_note:
@@ -370,7 +374,22 @@ def validate_answer(arguments: Any, known_refs: set[str], sources: dict[str, dic
             problems.append(f"第 {number} 句里出现了内部标识；出处只写在 refs 里")
         if not refs and len(problems) == before:
             problems.append(f"第 {number} 句没有出处，每句都至少要带一个编号")
-        sentences.append({"text": text, "refs": refs})
+        entry: dict[str, Any] = {"text": text, "refs": refs}
+        # p53: a label the page sets in bold must be words of the sentence itself; a lead is the first sentence only. Once
+        # the one repair is spent (`clip_note`), a label or lead that does not hold is dropped rather than failing the answer.
+        label = item.get("label")
+        if isinstance(label, str) and label.strip():
+            label = label.strip()
+            if len(label) <= LABEL_MAX_CHARS and label in text and not INTERNAL_ID.search(label):
+                entry["label"] = label
+            elif not clip_note:
+                problems.append(f"第 {number} 句的 label「{label[:20]}」要原样出现在这句里，不超过 {LABEL_MAX_CHARS} 字")
+        if item.get("lead") is True:
+            if number == 1:
+                entry["lead"] = True
+            elif not clip_note:
+                problems.append(f"第 {number} 句标了 lead；只有第一句能是总述")
+        sentences.append(entry)
     if kind == "ask" and check_refusals:
         problems += refusal_problems(sentences, sources)
     if check_refusals:

@@ -572,9 +572,12 @@ def answer_schema(*, out_of_scope: bool = True) -> dict[str, Any]:
         "type": "object",
         "properties": {
             "status": {"type": "string", "enum": list(statuses), "description": "；".join(statuses.values())},
-            "sentences": {"type": "array", "maxItems": 8, "description": "逐句结论，每句都要带出处编号",
+            "sentences": {"type": "array", "maxItems": 9, "description": "逐句结论，每句都要带出处编号",
                           "items": {"type": "object", "properties": {"text": {"type": "string", "maxLength": 200, "description": "一句结论，写给作者看"},
-                                                                      "refs": {"type": "array", "items": {"type": "string"}, "description": "这句话依据的编号，如 R2"}},
+                                                                      "refs": {"type": "array", "items": {"type": "string"}, "description": "这句话依据的编号，如 R2"},
+                                                                      # v2.1 (p53): the page lists parallel sentences and sets their label in bold.
+                                                                      "label": {"type": "string", "maxLength": 12, "description": "可选；三件以上并列时写：这句说的对象，原样摘自这句的 2–12 个字"},
+                                                                      "lead": {"type": "boolean", "description": "可选；只用于第一句：总述，说一共几件、结论是什么"}},
                                    "required": ["text", "refs"]}},
             "note": {"type": "string", "maxLength": 200, "description": "可选；只写查过哪里、没找到什么，不写故事里的新内容"},
         },
