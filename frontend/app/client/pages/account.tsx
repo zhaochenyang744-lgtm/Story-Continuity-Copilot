@@ -69,8 +69,25 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
     });
     return [...totals];
   }, [calendar]);
-  // Newest days are on the right: start the row there when it is wider than the room.
-  useEffect(() => { if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth; }, [calendar]);
+  // Newest days are on the right: the row starts there when it is wider than the room, and stays there while the page settles
+  // (the side gutters and the fonts change the room after the first paint) until the reader slides it themselves.
+  const following = useRef(true);
+  useEffect(() => {
+    const row = scroller.current;
+    if (!row) return;
+    const toEnd = () => { if (following.current) row.scrollLeft = row.scrollWidth; };
+    // The reader's own hand (wheel, touch, a press on the bar) ends the following; the row's own scrolls do not, since by the time
+    // their scroll event arrives the room may already have changed again.
+    const release = () => { following.current = false; };
+    following.current = true;
+    toEnd();
+    const hands = ["wheel", "touchstart", "pointerdown"] as const;
+    for (const name of hands) row.addEventListener(name, release, { passive: true });
+    const observer = new ResizeObserver(toEnd);
+    observer.observe(row);
+    if (row.firstElementChild) observer.observe(row.firstElementChild);
+    return () => { for (const name of hands) row.removeEventListener(name, release); observer.disconnect(); };
+  }, [calendar]);
   const move = (event: KeyboardEvent<HTMLDivElement>) => {
     const steps: Record<string, number> = { ArrowRight: 7, ArrowLeft: -7, ArrowDown: 1, ArrowUp: -1 };
     let next: number | null = null;
