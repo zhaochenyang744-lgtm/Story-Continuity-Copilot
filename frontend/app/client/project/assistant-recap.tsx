@@ -8,7 +8,7 @@ import { formatCount } from "../ui";
 import { Feedback } from "./assistant-answer";
 import { active, CoverLine, failureText, isRecap, LimitLine, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
-import { RoutedLine } from "./assistant-route";
+import { ChosenLine, RerouteMenu } from "./assistant-route";
 
 const SECTIONS: { id: RecapSection; label: string }[] = [
   { id: "previous_ending", label: "上一章停在哪" },
@@ -44,9 +44,10 @@ function Item({ task, answer, section, item, openChapter }: {
       {shown.map((ref) => {
         const source = task.sources[ref];
         const open = wide.includes(ref);
+        // The quote is one line until it is opened to be read whole.
         return (
           <div key={ref} className="a-ri-src">
-            <button type="button" className={`a-text${open ? " wide" : ""}`} aria-expanded={open}
+            <button type="button" className={`a-text a-quote-line${open ? " wide" : ""}`} aria-expanded={open}
               onClick={() => setWide((current) => (open ? current.filter((value) => value !== ref) : [...current, ref]))}>{source.text}</button>
             {source.chapter_number != null
               ? <button type="button" className="a-from" onClick={() => openChapter(source.chapter_number!)}>{originOf(source, section, answer.chapter_number)}</button>
@@ -77,14 +78,9 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
   const charged = !visitor && task.usage.chars_charged > 0;
   return (
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="recap">
-      <div className="a-head">
-        <span className="a-kind">写前回顾{answer ? ` · 第 ${answer.chapter_number} 章` : ""}</span>
-        {answer && <span className="a-scope">只看第 1–{answer.chapter_number - 1} 章</span>}
-        {running && <span className="a-state quiet">正在查</span>}
-        {running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}
-      </div>
-      <RoutedLine task={task} />
-      <Steps task={task} />
+      <Steps task={task} lead={`写前回顾${answer ? ` · 第 ${answer.chapter_number} 章（只看第 1–${answer.chapter_number - 1} 章）` : ""}`}
+        end={running ? <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button> : <RerouteMenu task={task} />} />
+      <ChosenLine task={task} />
       <StoppedNote task={task} visitor={visitor} />
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={retry}>重试</button></>}</p>

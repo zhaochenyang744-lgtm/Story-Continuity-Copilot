@@ -4,9 +4,9 @@
 // ("查了 2 条事实：苏岑、黄铜罗盘", "搜了 2 处正文"), failed steps on their own line, and the step in progress with a three-square mark and
 // its seconds. Once the task is over the whole thing folds into one line, 「查了 N 处 · M 秒 ›」. The wording of an action is made here,
 // from the tool and the number of calls; nothing the model wrote reaches the author except its one line before each round of work.
-import { useEffect, useId, useState } from "react";
+import { type ReactNode, useEffect, useId, useState } from "react";
 import type { AssistantSource, AssistantStep, AssistantTask } from "../../model";
-import { active, whereLabel } from "./assistant-parts";
+import { active, Fold, whereLabel } from "./assistant-parts";
 
 /** At most this many characters of a passage are shown on either side of the word that turned it up (or at the start, when no word is known). */
 // About a line and a half in the 340px right column (07g found 40/80 ran to three lines there).
@@ -195,8 +195,10 @@ function NowLine({ task }: { task: AssistantTask }) {
   );
 }
 
-/** The steps of a task: listed as they happen, then folded into one line. An author who opens the fold keeps it open. */
-export function Steps({ task, locate }: { task: AssistantTask; locate?: (source: AssistantSource) => void }) {
+/** The line above an answer: what the task is (问作品, 改资料 …), what it looked at and how long it took, in one small grey line that opens to
+    the steps; `end` is what stands at its right end (改成 …, 停止). The steps are listed as they happen, then folded into the line. An author
+    who opens the fold keeps it open. */
+export function Steps({ task, locate, lead, end }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode }) {
   const running = active(task);
   const [manual, setManual] = useState<boolean | null>(null);
   // The list folds by itself when the task ends; seen while this view was open, that moment is told by two figures settling into place.
@@ -215,22 +217,25 @@ export function Steps({ task, locate }: { task: AssistantTask; locate?: (source:
     const timer = window.setTimeout(() => setFolding(false), 600);
     return () => window.clearTimeout(timer);
   }, [folding]);
-  if (!shownRows && !running) return null;
   const looked = lookedAt(task.steps);
   const began = Date.parse(task.started_at ?? task.created_at);
   const ended = task.completed_at ? Date.parse(task.completed_at) : NaN;
   const took = Number.isFinite(began) && Number.isFinite(ended) ? Math.max(1, Math.round((ended - began) / 1000)) : null;
-  const first = task.steps.find((step) => step.kind === "say")?.summary ?? "";
   const figure = (value: number, order: number) => <span className={justFolded ? "a-drop" : undefined} style={justFolded ? { animationDelay: `${order * 80}ms` } : undefined}>{value}</span>;
+  const tally = looked > 0 || took !== null;
   return (
     <div className="a-steps" role={running ? "status" : undefined}>
-      {!running && (
-        <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
-          <span className="tally">{looked > 0 ? <>查了 {figure(looked, 0)} 处</> : "过程"}{took !== null && <> · {figure(took, looked > 0 ? 1 : 0)} 秒</>}</span>
-          {first && <span className="first">{first.replace(/[。.]$/, "")}</span>}
-          <span aria-hidden="true">{open ? "⌃" : "›"}</span>
-        </button>
-      )}
+      <div className="a-process" data-testid="process-line">
+        {running ? <span className="a-fold static"><span className="lead">{lead}</span> · 正在查</span>
+          : shownRows ? (
+            <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
+              <span className="lead">{lead}</span>
+              {tally && <span className="tally"> · {looked > 0 ? <>查了 {figure(looked, 0)} 处</> : "过程"}{took !== null && <> · {figure(took, looked > 0 ? 1 : 0)} 秒</>}</span>}
+              <Fold open={open} />
+            </button>
+          ) : <span className="a-fold static"><span className="lead">{lead}</span>{took !== null && <span className="tally"> · {figure(took, 0)} 秒</span>}</span>}
+        {end && <span className="a-process-end">{end}</span>}
+      </div>
       {(open || folding) && (
         <div className={`a-proc-wrap${folding && !open ? " folding" : ""}${open && manual === true ? " unfolding" : ""}`}>
           <div className="a-proc-clip">

@@ -524,7 +524,9 @@ export type AssistantSource = {
   /** Facts only: the passage the fact was taken from (its first 120 characters) and that passage's chapter; null when it has none. */
   anchor?: { text: string; chapter_number: number } | null;
 };
-export type AssistantAnswer = { status: "answered" | "not_found" | "inconsistent" | "out_of_scope"; sentences: { text: string; refs: string[] }[]; note?: string | null };
+/** `label` (v2.1): the words of the sentence that name what it is about, set in bold when three or more sentences have one; `lead`: the first sentence sums the rest up. */
+export type AssistantSentence = { text: string; refs: string[]; label?: string | null; lead?: boolean };
+export type AssistantAnswer = { status: "answered" | "not_found" | "inconsistent" | "out_of_scope"; sentences: AssistantSentence[]; note?: string | null };
 export type AssistantFeedbackReason = "wrong" | "verbose" | "not_found" | "bad_source";
 /** The signed-in author's own verdict on a task. */
 export type AssistantFeedback = { verdict: "up" | "down"; reasons: AssistantFeedbackReason[] } | null;

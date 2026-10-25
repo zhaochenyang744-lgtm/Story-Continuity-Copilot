@@ -65,7 +65,7 @@ export function useLedger(projectId: string, stamp: number): Ledger {
   }, []);
   const settle = useCallback((proposal: AssistantProposal) => {
     setItems((current) => current && current.map((item) => (isAdoption(item) && item.id === proposal.id
-      ? { ...item, status: "undone" as const, adopted_at: null, undone_at: proposal.undone_at ?? new Date().toISOString() } : item)));
+      ? { ...item, status: "undone" as const, undone_at: proposal.undone_at ?? new Date().toISOString() } : item)));
   }, []);
   return { items, next, loadingMore, failure, reload, more, merge, settle };
 }
@@ -89,6 +89,16 @@ export function marksOf(items: LedgerEntry[] | null): Marks {
 /** The little tag a fact or thread carries when the assistant wrote it. */
 export function AssistantMark({ text }: { text: string | undefined }) {
   return text ? <span className="assistant-mark"><Tag tone="state">{text}</Tag></span> : null;
+}
+
+/** When the entry was written and, if it was taken back, when: both stay on the entry. */
+function Times({ at, atLabel, undone }: { at: string | null; atLabel: string; undone: string | null }) {
+  return (
+    <span className="ledger-time label">
+      {at && <span className="ledger-at">{atLabel} {timeLabel(at)}</span>}
+      {undone && <span className="ledger-at">撤销 {timeLabel(undone)}</span>}
+    </span>
+  );
 }
 
 export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }: {
@@ -135,7 +145,7 @@ export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }:
               const local = adoptions[item.id] ?? {};
               return (
                 <li key={`adoption:${item.id}`} data-adoption={item.id} data-label={item.label} data-kind={item.kind} data-status={item.status} className={item.status === "undone" ? "undone" : undefined}>
-                  <span className="ledger-time label">{timeLabel(item.undone_at ?? item.adopted_at)}</span>
+                  <Times at={item.adopted_at} atLabel="采用" undone={item.undone_at} />
                   <span className="ledger-copy">
                     <span className="ledger-head">
                       <Tag tone="line">采用改法</Tag>
@@ -160,7 +170,7 @@ export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }:
             const local = ops.local(item.id);
             return (
               <li key={item.id} data-change={item.id} data-label={item.label} data-kind={item.kind} data-status={item.status} className={item.status === "undone" ? "undone" : undefined}>
-                <span className="ledger-time label">{timeLabel(item.undone_at ?? item.applied_at)}</span>
+                <Times at={item.applied_at} atLabel="确认" undone={item.undone_at} />
                 <span className="ledger-copy">
                   <span className="ledger-head"><Tag tone="line">{KIND_LABEL[item.kind]}</Tag><strong>{item.title}</strong>{item.edited_by_author && <span className="label">你改过</span>}</span>
                   <Flow before={item.before} after={item.after} className="ledger-flow" />
@@ -172,8 +182,8 @@ export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }:
                 <span className="ledger-side">
                   <span className="ledger-state">{item.status === "applied" ? "已执行" : "已撤销"}</span>
                   <span className="actions">
-                    {!readOnly && item.status === "applied" && <Button kind="text" disabled={local.busy || Boolean(local.conflict)} onClick={() => ops.undo(item)}>撤销</Button>}
-                    {!readOnly && item.status === "undone" && <Button kind="text" disabled={local.busy} onClick={() => ops.redo(item)}>恢复</Button>}
+                    {!readOnly && item.status === "applied" && <Button kind="text" disabled={local.busy || Boolean(local.conflict)} onClick={() => void ops.undo(item)}>撤销</Button>}
+                    {!readOnly && item.status === "undone" && <Button kind="text" disabled={local.busy} onClick={() => void ops.redo(item)}>恢复</Button>}
                     {openTask && <Button kind="text" onClick={() => openTask(item.task_id)}>看对话</Button>}
                   </span>
                 </span>

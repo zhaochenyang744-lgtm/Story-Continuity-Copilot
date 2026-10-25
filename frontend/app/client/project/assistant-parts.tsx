@@ -2,10 +2,10 @@
 
 // What every kind of assistant task shares: how a refusal or a failure is worded, the numbered sources under an answer, and
 // the 查过 / 没查 line. The views for each kind (ask, 写前回顾, 帮我改这一处) are built from these.
-import { useState } from "react";
+import { useId, useState } from "react";
 import { labelError, type ApiFailure } from "../../api";
 import type { AssistantAnswer, AssistantSource, AssistantTask, RecapAnswer } from "../../model";
-import { bareChapterTitle, chapterHeading, formatCount } from "../ui";
+import { bareChapterTitle, type CheckUsage, chapterHeading, formatCount } from "../ui";
 
 /** The phrase the 查过 / 没查 line carries when a task was cut short; it is said as a line of its own above the answer. */
 export const LIMIT_MARK = "步数或预算已到";
@@ -40,6 +40,24 @@ export function locateTarget(source: AssistantSource): { chapter: number; text: 
 /** "第 9 章 仓道的高台", the way a screen reader gets it. */
 export const spokenWhere = (source: AssistantSource) =>
   source.chapter_number != null ? `第 ${source.chapter_number} 章${bareChapterTitle(source.chapter_title ?? "") ? ` ${bareChapterTitle(source.chapter_title ?? "")}` : ""}` : SOURCE_KIND[source.kind] ?? "资料";
+/** Why no new question can be asked at all (the day's allowance is used up), or empty: said inside the box, on the buttons that would ask, and in the bar over picked words. */
+export function quotaReason(usage: CheckUsage | null, sample: boolean): string {
+  if (usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS)) {
+    return `${refusalText({ code: "character_quota_exceeded", details: { remaining: usage.check_chars_remaining } }, false)}用掉的额度 24 小时后陆续返还。`;
+  }
+  if (usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0) return VISITOR_USED_UP;
+  return "";
+}
+
+/** The time on the line between two turns: 今天 21:40, or 10月25日 21:40 for another day. */
+export function turnTime(iso: string, now = new Date()): string {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return "";
+  const clock = at.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+  const same = at.getFullYear() === now.getFullYear() && at.getMonth() === now.getMonth() && at.getDate() === now.getDate();
+  return same ? `今天 ${clock}` : `${at.getMonth() + 1}月${at.getDate()}日 ${clock}`;
+}
+
 /** The refs a task's answer cites, in the order they first appear: their position is the number shown. `sources` holds every
     passage the task turned up, cited or not, so a source only counts here when the answer's sentences name it and it is marked cited. */
 export function citedRefs(task: AssistantTask): string[] {
@@ -108,41 +126,70 @@ export function failureText(task: AssistantTask, visitor: boolean): { text: stri
   }
 }
 
+/** The one line a source takes in the list under an answer (and in a change card's 依据): 第 3 章 · 章名. */
+export const sourceRow = (source: AssistantSource) => (source.kind === "fact" && source.chapter_number != null ? cardLabel(source) : whereLabel(source));
+
+/** A source in the list: its one line, which opens to the original words (in the serif face) and the way to them. */
 export function SourceItem({ id, n, source, locate }: { id: string; n: number; source: AssistantSource; locate: (source: AssistantSource) => void }) {
-  const [wide, setWide] = useState(false);
+  const [open, setOpen] = useState(false);
+  const panel = useId();
   return (
     <li id={id} tabIndex={-1} className="a-source">
       <b aria-hidden="true">{n}</b>
       <span>
-        {source.chapter_number != null
-          ? <button type="button" className="a-where" onClick={() => locate(source)}>{whereLabel(source)}</button>
-          : <span className="a-where">{whereLabel(source)}</span>}
-        <button type="button" className={`a-text${wide ? " wide" : ""}`} aria-expanded={wide} onClick={() => setWide((value) => !value)}><span className="q">{source.text}</span></button>
+        <button type="button" className="a-where" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>
+          {sourceRow(source)}<Fold open={open} />
+        </button>
+        {open && (
+          <span id={panel} className="a-source-body">
+            <span className="a-text q">{source.text}</span>
+            {source.chapter_number != null && <button type="button" className="a-go" onClick={() => locate(source)}>去原文 →</button>}
+          </span>
+        )}
       </span>
     </li>
   );
 }
 
-export function SourceList({ task, locate }: { task: AssistantTask; locate: (source: AssistantSource) => void }) {
-  const refs = citedRefs(task);
-  if (!refs.length) return null;
+/** The small › that turns to point down when its line is open. */
+export function Fold({ open }: { open: boolean }) {
+  return <svg className={`a-fold-mark${open ? " open" : ""}`} width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><path d="M2 1l3 3-3 3" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>;
+}
+
+/** What a source is, for telling two of them apart: the same chapter and words. */
+export const sourceKey = (source: { chapter_number?: number | null; text: string }) => `${source.chapter_number ?? ""}:${source.text}`;
+
+/** 出处 N 处 ›: folded to one line; opened, one line for each source. `skip` leaves out sources that something else on the screen already shows
+    (a change card's 依据); the numbers stay the ones the marks in the answer carry. */
+export function SourceList({ task, locate, skip }: { task: AssistantTask; locate: (source: AssistantSource) => void; skip?: Set<string> }) {
+  const [open, setOpen] = useState(false);
+  const panel = useId();
+  const shown = citedRefs(task).map((ref, index) => ({ ref, n: index + 1 })).filter(({ ref }) => !skip?.has(sourceKey(task.sources[ref])));
+  if (!shown.length) return null;
   return (
-    <ol className="a-sources" aria-label="出处">
-      {refs.map((ref, index) => <SourceItem key={ref} id={`a-src-${task.id}-${index + 1}`} n={index + 1} source={task.sources[ref]} locate={locate} />)}
-    </ol>
+    <div className="a-sources-wrap">
+      <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>出处 {shown.length} 处<Fold open={open} /></button>
+      {open && (
+        <ol id={panel} className="a-sources" aria-label="出处">
+          {shown.map(({ ref, n }) => <SourceItem key={ref} id={`a-src-${task.id}-${n}`} n={n} source={task.sources[ref]} locate={locate} />)}
+        </ol>
+      )}
+    </div>
   );
 }
 
-/** 查过 / 没查: what the task looked at and what it did not. */
-export function CoverLine({ task }: { task: AssistantTask }) {
+/** 查过……；没查：……: the program's one note on what the task looked at and what it did not. When nothing was found, only what it did not look at. */
+export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
   // 「步数或预算已到」 is said once, above the answer, as 「查到上限了」; it is not repeated here.
   const left = (task.coverage?.not_checked ?? []).filter((item) => !item.includes(LIMIT_MARK));
-  const done = task.coverage?.checked ?? [];
+  const done = onlyMissed ? [] : task.coverage?.checked ?? [];
   if (!done.length && !left.length) return null;
   return (
     <p className="a-cover">
-      {done.length > 0 && <>查过：{done.join("、")}。</>}
-      {left.length > 0 && <>没查：{left.join("、")}。</>}
+      {done.length > 0 && <>查过{done.join("、")}</>}
+      {done.length > 0 && left.length > 0 && "；"}
+      {left.length > 0 && <strong>没查：{left.join("、")}</strong>}
+      。
     </p>
   );
 }

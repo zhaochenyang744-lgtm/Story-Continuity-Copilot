@@ -78,6 +78,8 @@ export function App() {
   const [usageBump, setUsageBump] = useState(0);
   const assistantNonce = useRef(0);
   const materialsChanged = useRef<() => void>(() => undefined);
+  // The writing page has the assistant in its own column: the top bar's button goes there instead of opening the drawer.
+  const columnOpener = useRef<(() => void) | null>(null);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const switchPending = useRef(false);
 
@@ -128,6 +130,7 @@ export function App() {
     usageChanged: () => setUsageBump((count) => count + 1),
     // The assistant wrote to (or took back a change of) the materials; the work reads them again.
     materialsChanged: () => materialsChanged.current(),
+    setColumnOpener: (open: (() => void) | null) => { columnOpener.current = open; },
   }), []);
 
   const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
@@ -386,8 +389,10 @@ export function App() {
                     <button type="button" className="topbar-tab" aria-current={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品管理</button>
                   </>}
             </nav>
-            {projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && user.assistant?.available && (
-              <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => setDrawer({ open: true, incoming: null })}>助手</button>
+            {projectId && p.project && assistantAnchor && user.assistant?.available && (
+              assistantAnchor.page === "writing"
+                ? <button id="assistant-open" type="button" className="topbar-assistant" onClick={() => { if (columnOpener.current) columnOpener.current(); else setDrawer({ open: true, incoming: null }); }}>助手</button>
+                : <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => setDrawer({ open: true, incoming: null })}>助手</button>
             )}
             {usageShort(usage) && (
               <span className="topbar-quota">

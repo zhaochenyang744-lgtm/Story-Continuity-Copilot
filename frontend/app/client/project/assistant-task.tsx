@@ -8,9 +8,9 @@ import type { AssistantChange, AssistantSource, AssistantTask } from "../../mode
 import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { ChangeCard } from "./assistant-change";
-import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, StoppedNote } from "./assistant-parts";
+import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, sourceKey, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
-import { RoutedLine } from "./assistant-route";
+import { ChosenLine, RerouteMenu, routedLead } from "./assistant-route";
 
 /** One entry of the conversation: the answer shown now, the older answers to the same question, and whether the whole question was reworded since. */
 export type Group = { id: string; latest: AssistantTask; older: AssistantTask[]; reworded: boolean };
@@ -58,6 +58,10 @@ type Handlers = {
   readOnly: boolean;
   /** The tasks asked while this view was open: their question bubbles rise into place. */
   asked: string[];
+  /** The tasks that were started as a question because the judgement of their use did not come in time. */
+  timedOut: string[];
+  /** Why no new question can be asked at all (the allowance is used up), or empty. */
+  off: string;
   /** 改资料: items the server sent back go into the conversation; the materials were written (the page reads them again); the way to the materials page. */
   merge: (items: AssistantChange[]) => void;
   written: () => void;
@@ -95,31 +99,26 @@ function Question({ task, handlers, children }: { task: AssistantTask; handlers:
   );
 }
 
-/** One question's answer: steps, the answer, sources, the row of actions. */
+/** One question's answer: the line above it, the answer, what was and was not looked at, the sources, the row of actions. */
 function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask; handlers: Handlers; latest: boolean; showQuestion: boolean }) {
   const running = active(task);
   const fade = useJustFinished(task);
   const answerBox = useRef<HTMLDivElement>(null);
   const answer = task.answer && !("kind" in task.answer) ? task.answer : null;
   const offTopic = answer?.status === "out_of_scope";
-  const state = running ? { text: "正在查", tone: "quiet" }
-    : task.status === "cancelled" ? { text: "已停止", tone: "quiet" }
-      : task.status === "failed" ? { text: "没有完成", tone: "quiet" }
-        : task.kind === "change" && task.changes?.some((item) => item.status === "proposed") ? { text: "等你确认", tone: "blue" }
-        : answer?.status === "answered" ? { text: "有答案", tone: "blue" }
-          : answer?.status === "not_found" ? { text: "正文里找不到", tone: "quiet" }
-            : answer?.status === "inconsistent" ? { text: "前后不一致", tone: "quiet" } : { text: "", tone: "quiet" };
+  const notFound = answer?.status === "not_found";
   const failure = task.status === "failed" ? failureText(task, handlers.visitor) : null;
+  // What the line above says besides the use: only what the answer's own words do not (a card waiting to be decided, an answer that disagrees with itself).
+  const state = !running && task.kind === "change" && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
+  const lead = routedLead(task, handlers.timedOut.includes(task.id)) + state;
+  // The passages a change card already stands on are not listed again under the answer.
+  const cardHas = new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)));
   return (
     <article className="a-task" aria-live="off" data-answer={task.id}>
       {showQuestion && <Question task={task} handlers={handlers} />}
-      <div className="a-head">
-        <span className="a-kind">{task.kind === "change" ? "改资料" : task.context.intent === "check_selection" ? "查前文矛盾" : "问作品"}</span>
-        {state.text && <span className={`a-state ${state.tone}`}>{state.text}</span>}
-        {running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}
-      </div>
-      <RoutedLine task={task} />
-      <Steps task={task} locate={handlers.locate} />
+      <Steps task={task} locate={handlers.locate} lead={lead}
+        end={running ? <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button> : <RerouteMenu task={task} />} />
+      <ChosenLine task={task} />
       <StoppedNote task={task} visitor={handlers.visitor} />
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={() => handlers.retry(task)}>重试</button></>}</p>
@@ -128,13 +127,13 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
-        {!offTopic && <SourceList task={task} locate={handlers.locate} />}
-        {!offTopic && <CoverLine task={task} />}
+        {!offTopic && <CoverLine task={task} onlyMissed={notFound} />}
+        {!offTopic && <SourceList task={task} locate={handlers.locate} skip={cardHas} />}
         {task.kind === "change" && task.status === "completed" && (
           <ChangeCard task={task} projectId={handlers.projectId} readOnly={handlers.readOnly} replace={handlers.replace} merge={handlers.merge} locate={handlers.locate}
             written={handlers.written} goMaterials={handlers.goMaterials} />
         )}
-        <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} answer={offTopic ? null : answerBox}
+        <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} off={handlers.off} answer={offTopic ? null : answerBox}
           followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace} />
       </div>
     </article>
@@ -142,7 +141,8 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
 }
 
 /** An entry of the conversation: the question once, the latest answer, and the older answers to it folded under 「之前的回答」. */
-export function AskGroup({ group, handlers }: { group: Group; handlers: Handlers }) {
+/** `follow`: this question follows the one just above it, so it hangs from it (indented, with a line down its left) and has no line of its own between turns. */
+export function AskGroup({ group, handlers, follow = false }: { group: Group; handlers: Handlers; follow?: boolean }) {
   const { latest, older } = group;
   const body = (
     <>
@@ -159,9 +159,9 @@ export function AskGroup({ group, handlers }: { group: Group; handlers: Handlers
     </>
   );
   // `data-task` marks the whole entry (question and answers): the thread scrolls to it and the tests find it by it.
-  if (!group.reworded) return <div className="a-group" data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>{body}</div>;
+  if (!group.reworded) return <div className={`a-group${follow ? " a-follow" : ""}`} data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>{body}</div>;
   return (
-    <details className="a-group a-reworded" data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>
+    <details className={`a-group a-reworded${follow ? " a-follow" : ""}`} data-task={latest.id} data-status={latest.status} data-kind={latest.kind}>
       <summary>已改问 · {clip(latest.question ?? "", 24)}</summary>
       <div className="a-fold-body">{body}</div>
     </details>
