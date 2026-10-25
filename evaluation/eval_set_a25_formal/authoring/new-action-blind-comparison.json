@@ -1,0 +1,12 @@
+{
+  "total": 12,
+  "initial_agreement": 12,
+  "final_agreement": 12,
+  "initial_rate": 1.0,
+  "final_rate": 1.0,
+  "unresolved": 0,
+  "disagreement_ids": [],
+  "closed_ids": [],
+  "input_sha256": "86282792d718338197ae4d6f89f4538bf20531e58219dcb87dc95516ac418728",
+  "final_method": "unchanged blind input hash verified; original independent judgments retained"
+}

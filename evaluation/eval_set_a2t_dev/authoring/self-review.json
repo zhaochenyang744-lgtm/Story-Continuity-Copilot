@@ -1,0 +1,339 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "酆聿衡",
+        "祁苒颂",
+        "邵星芒",
+        "巫迟雁",
+        "蔺闻瓷",
+        "应迢夏",
+        "杭疏岑",
+        "倪序葵"
+      ],
+      "aliases": [
+        {
+          "name": "酆聿衡",
+          "alias": "衡隼",
+          "chapter": 1,
+          "quote": "她问同事平时叫的衡隼是否就是他。他说是，那是自己沿用了几年的别名，正式文书仍用本名。"
+        },
+        {
+          "name": "祁苒颂",
+          "alias": "颂钮",
+          "chapter": 2,
+          "quote": "颂钮是同事给她的别名，负责这次对账的仍是牌上的祁苒颂。"
+        },
+        {
+          "name": "邵星芒",
+          "alias": "芒灯",
+          "chapter": 3,
+          "quote": "芒灯是同事叫我的别名，我本名邵星芒，是柜面主管。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 11,
+          "quote": "楔蓝盘正式交由祁苒颂保管，酆聿衡不再担任保管人。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 12,
+          "quote": "七孔袋已从核验室下层抽屉转入岫棱支行封存柜。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "应迢夏仍任岫棱支行经理，重复扣账调查的牵头工作正式交由杭疏岑接任。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 16,
+          "quote": "邵星芒右肩已经痊愈，她用右臂举过肩，稳稳取下高架上的旧表。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 15,
+          "quote": "岔尾钳的钳口已经开裂，从现在起停用，不再用于封口。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "巫迟雁",
+          "predicate": "识读能力",
+          "chapter": 5,
+          "quote": "早期磁条流水的缩写我能读，但每一代纸型仍要先分清。"
+        },
+        {
+          "subject": "蔺闻瓷",
+          "predicate": "警示识别限制",
+          "chapter": 6,
+          "quote": "我分不清红色和绿色，判断警示必须看形状，不能只听灯色。"
+        },
+        {
+          "subject": "祁苒颂",
+          "predicate": "回执保留决定",
+          "chapter": 8,
+          "quote": "重复扣账相关的失败回执全部保留，今晚不销毁。"
+        },
+        {
+          "subject": "酆聿衡",
+          "predicate": "重号成因所知",
+          "chapter": 10,
+          "quote": "我已经确认，午夜重号来自旧测试任务，不是顾客重复刷卡。"
+        },
+        {
+          "subject": "灰翅筹",
+          "predicate": "本次保管人",
+          "chapter": 17,
+          "quote": "本次未发出及已经回收的灰翅筹交由倪序葵收存。"
+        },
+        {
+          "subject": "栎证银行",
+          "predicate": "本案核验收费",
+          "chapter": 18,
+          "quote": "栎证银行决定免除本次重复扣账案所有受影响顾客的人工核验费。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 14,
+          "quote": "七孔袋缺失的蓝线夹在旧检修夹里，封样当天照片证明它在封口前已断开。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 19,
+          "quote": "空白回执背面的倒序数字是倪序葵的排查次序，已经找到逐项对应的工作底稿。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 3,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 4,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 5,
+          "abandonable": true
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 14,
+          "quote": "七孔袋缺失的蓝线夹在旧检修夹里，封样当天照片证明它在封口前已断开。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 19,
+          "quote": "空白回执背面的倒序数字是倪序葵的排查次序，已经找到逐项对应的工作底稿。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "楔蓝盘白点的来历",
+          "planted_chapter": 1,
+          "quote": "白点没有随着反光一起移动，似乎是极细的东西贴在外面。"
+        },
+        {
+          "about": "午夜两次短鸣的来源",
+          "planted_chapter": 2,
+          "quote": "上面记着午夜前后有两次短鸣，间隔很短，值守的人当时没有看见顾客站在机器前。"
+        },
+        {
+          "about": "午夜相同编号记录的来路",
+          "planted_chapter": 9,
+          "quote": "祁苒颂忽然发现边上的两行编号相同。那不是发声标记，也不在两台设备检查的过程栏里"
+        }
+      ],
+      "route_semantics": {
+        "thread_change_ids": [
+          "a2t-w01-route-01",
+          "a2t-w01-route-02"
+        ],
+        "ask_like_thread_ids": [
+          "a2t-w01-route-03"
+        ]
+      }
+    },
+    "w02": {
+      "characters": [
+        "尉迟栩宁",
+        "嵇予玘",
+        "毋照荺",
+        "訾澄砚",
+        "厍闻祎",
+        "蓟缦秋",
+        "亓弈舟",
+        "阙知荞"
+      ],
+      "aliases": [
+        {
+          "name": "尉迟栩宁",
+          "alias": "栩梢",
+          "chapter": 1,
+          "quote": "父亲以前把尉迟栩宁叫作栩梢，妹妹后来也沿用了这个别名。"
+        },
+        {
+          "name": "嵇予玘",
+          "alias": "珂粒",
+          "chapter": 2,
+          "quote": "小时候家人叫嵇予玘为珂粒，这个别名如今仍由亲近的人使用。"
+        },
+        {
+          "name": "毋照荺",
+          "alias": "蘅弦",
+          "chapter": 3,
+          "quote": "朋友们把毋照荺叫作蘅弦，母亲也常用这个别名唤她。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 9,
+          "quote": "尉迟栩宁把菫棱盒交给嵇予玘，从这一天起备用钥匙由妹妹保管。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 11,
+          "quote": "燕脊本这次交到了厍闻祎手里，往后由他保管，不再留在姐妹家中。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "毋照荺的右手已经完全康复，提起满水的壶也不再疼痛。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "下一次家人协商改到盘槐寓所的客厅，弯笺室的预约已经取消。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "蓟缦秋将斜缝尺送给阙知荞，明说以后归她保管和使用。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "阙知荞",
+          "predicate": "护带更换能力",
+          "chapter": 6,
+          "quote": "阙知荞已经学会了替母亲更换手部护带，并且能独自完成。"
+        },
+        {
+          "subject": "厍闻祎",
+          "predicate": "北窗所知",
+          "chapter": 7,
+          "quote": "厍闻祎现在知道北窗卡住的原因是旧窗轨变形，不是有人故意锁窗。"
+        },
+        {
+          "subject": "盘槐寓所",
+          "predicate": "门槛费用",
+          "chapter": 8,
+          "quote": "盘槐寓所的门槛改造由姐妹平摊费用，不从母亲的疗养费里支取。"
+        },
+        {
+          "subject": "亓弈舟",
+          "predicate": "浇花安排",
+          "chapter": 10,
+          "quote": "亓弈舟只答应在周三替她们浇花，其余日子不会自行进屋。"
+        },
+        {
+          "subject": "嵇予玘",
+          "predicate": "长期居住决定",
+          "chapter": 16,
+          "quote": "嵇予玘决定继续住在盘槐寓所，不再执行先前说过的搬家打算。"
+        },
+        {
+          "subject": "尉迟栩宁",
+          "predicate": "周日约稿安排",
+          "chapter": 18,
+          "quote": "尉迟栩宁已把周日整天空出来，只用于陪伴母亲，不再接插画约稿。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "那道门边的铅笔短线原来是父亲量轮椅宽度留下的，和分房没有关系。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "厨房的两声轻响来自松动的通风扇罩，重新拧紧以后就再没有响过。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 14,
+          "quote": "迟到的明信片是母亲在转院前寄的，卡在旧信箱的内缝里才晚了这些天。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "窗台上的空花盆一直是父亲留给母亲种薄荷的，并不是要谁搬走的暗示。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": true
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 10,
+          "quote": "那道门边的铅笔短线原来是父亲量轮椅宽度留下的，和分房没有关系。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 12,
+          "quote": "厨房的两声轻响来自松动的通风扇罩，重新拧紧以后就再没有响过。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "屋顶旁小门的内部",
+          "planted_chapter": 4,
+          "quote": "他指向楼梯，说通往屋顶的那道门旁还有一扇很小的门，自己有一回上去看信号，见过，没有进去。"
+        },
+        {
+          "about": "未寄生日邀请的收件人",
+          "planted_chapter": 3,
+          "quote": "纸上写了相聚的时间，却没写收件人的名字，也看不见寄出的痕迹。"
+        },
+        {
+          "about": "母亲想重学哪种乐器",
+          "planted_chapter": 2,
+          "quote": "妹妹追问是哪一种，母亲没有回答，旁边有人招呼她去做检查，她只好先挂断。"
+        }
+      ],
+      "route_semantics": {
+        "thread_change_ids": [
+          "a2t-w02-route-01",
+          "a2t-w02-route-02"
+        ],
+        "ask_like_thread_ids": [
+          "a2t-w02-route-03"
+        ]
+      },
+      "no_evidence_modes": {
+        "a2t-w02-no-03": "contradicted"
+      }
+    }
+  }
+}

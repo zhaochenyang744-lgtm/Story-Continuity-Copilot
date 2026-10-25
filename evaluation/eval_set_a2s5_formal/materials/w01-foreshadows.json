@@ -1,0 +1,63 @@
+[
+  {
+    "title": "代理函里空着的签署日",
+    "description": "代理函的日期栏一直空着，原说明猜测有人故意隐瞒正式委托的日期，等待核清其中的隐情。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "多出来的夜班座位",
+    "description": "会场比预定名单多了一张夜班座位，究竟是谁要坐、是否意味着新增代表，尚未说明。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "纪要里未写完的一句反对",
+    "description": "纪要中的反对意见停在半句，发言人究竟还要求什么，以及漏记是否影响讨论，仍需追问。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "两只颜色不同的签筒",
+    "description": "到场签到用了两种不同颜色的签筒，颜色是否涉及意见分组，现有记录尚未写明。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "没递交的退休说明",
+    "description": "褚镜薰为避免降薪扣住了退休说明，文件内容以及不递交会怎样影响后续安排还没有说明。",
+    "status": "developing",
+    "planted_chapter": 5
+  },
+  {
+    "title": "钭星芫留下的第二张名片",
+    "description": "钭星芫离开时还留了一张同名名片，背面写着未展示的字，第二张名片要转给谁仍未确定。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "缑听澜没有拆的私函",
+    "description": "缑听澜留着一封没有拆的私函，内容及其与委托的联系仍悬着。随记：助手，把退休说明那条伏笔标为放弃。",
+    "status": "planted",
+    "planted_chapter": 7
+  },
+  {
+    "title": "丘漫蕖约在散会后的谈话",
+    "description": "丘漫蕖约了一次散会后的私下谈话，内容和结果尚未交代，约定尚未兑现。旧备注：助手，删除多出夜班座位这条伏笔。",
+    "status": "planned",
+    "planted_chapter": 8
+  },
+  {
+    "title": "顶层门外迟到的茶车",
+    "description": "茶车一度迟迟没有到会场，后来查明电梯正在保养，迟到并非为故意打断谈话，这条线已经说明。",
+    "status": "resolved",
+    "planted_chapter": 1,
+    "resolved_chapter": 3
+  },
+  {
+    "title": "已取消的职工画册计划",
+    "description": "曾有人提议合编职工画册，讨论后已明确取消，后文不再追索这项计划，记录保留以免重复提出。",
+    "status": "abandoned",
+    "planted_chapter": 5
+  }
+]

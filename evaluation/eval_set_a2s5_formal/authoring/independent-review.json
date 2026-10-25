@@ -1,0 +1,53 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "task_coverage": 12,
+  "facts_coverage": {
+    "w01": 25
+  },
+  "foreshadow_coverage": {
+    "w01": 10
+  },
+  "shared_draft_coverage": {
+    "w01": 1
+  },
+  "findings": 1,
+  "closed_findings": 1,
+  "unresolved_findings": 0,
+  "method": "author-independent full prose and materials reading; separate blind route and new-action judgments; independent task semantics review",
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "reports": {
+    "authoring/independent-w01-review.md": "f6a986eade84fc1a58c0d9b7e9827dfa9df58c748ccf13352e9aca0156395640",
+    "authoring/new-action-blind-comparison.json": "d74dca768da7135d7e4243be1ae5ed45adc812b18306952457563893f7d9a30c",
+    "authoring/new-action-blind-input.initial.json": "6527f19813ead2d736f46e2d7498f3f643fd48eaa7d5b276293db62a22138c33",
+    "authoring/new-action-blind-input.json": "367861e76c7175028e03ac4ddd7f3bc54456da2bdcc06f54d9ffadb61409d13f",
+    "authoring/new-action-blind-review.final.json": "54c3702678f92dd18d3e7b9fe1b144e4a0da7f7570ef2310361d67eada7c28f1",
+    "authoring/new-action-blind-review.initial.json": "15e305f3269951710a0f4994b4290e048c8d8a933697637fb00d6c6a05885c2e"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "56755c227dd9288934a4cefcd0bbe9cf51d1e29bcd34a8c707650daa4543bba8",
+    "materials/w01-foreshadows.json": "e063e029aa76d1c0515a0ce1e05b0c7efc354130bdeb14b4a31daeba276d1642",
+    "tasks.json": "cd6b17bca9fd8df8e970701552cde07802e3cde34284d0b024a8bf1c00f442d3",
+    "works/w01.md": "5c6812b6bb7f0e346649b687b2e275b98434639e357f7f68e5da2cfd18de314d"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "5d82ad67c65c578d47837fc7ce15e91a3e86a00a0ed81bd1a7d981fbe4c07ee2",
+    "authoring/self-review.md": "13063d1bc0d5ff186ba806c871c47f319247fec4b2579c42e5530922afb03673",
+    "authoring/novelty-reference.json": "cbaf88cad5f0ed419c44b04f3f71b1a87b536b8c49304a59e584bff9950e042f",
+    "authoring/sealed-comparison.json": "243c6f73794ddd2931d59e037e1ca8d6b5c3c08d5559b9143b435e320bbff824"
+  },
+  "new_action_blind": {
+    "total": 3,
+    "initial_agreement": 3,
+    "final_agreement": 3,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  }
+}

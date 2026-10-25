@@ -1,0 +1,126 @@
+{
+  "input_sha256": "86282792d718338197ae4d6f89f4538bf20531e58219dcb87dc95516ac418728",
+  "judgments": [
+    {
+      "id": "a25f-w01-action-17",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "明确停止展开第二份陈述内容，对应第5条开放线，要求改为放弃。"
+    },
+    {
+      "id": "a25f-w01-action-18",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target_index": 6
+        }
+      ],
+      "reason": "明确不写西侧空座等谁，且保留记录，故标放弃而非删除。"
+    },
+    {
+      "id": "a25f-w01-action-14",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "about": "毕见岚反扣的信末附页与未解释的半个名字"
+        }
+      ],
+      "reason": "现有伏笔没有此项，作者要求为附页和半名增加新伏笔。"
+    },
+    {
+      "id": "a25f-w01-action-16",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "要求按正文纠正第二份陈述撤下理由，并保留内容未知的悬念，不改状态。"
+    },
+    {
+      "id": "a25f-w01-action-15",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target_index": 7
+        }
+      ],
+      "reason": "作者直接提供关于未拆来信的新说明，同时要求原先未解内容保留。"
+    },
+    {
+      "id": "a25f-w02-action-13",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "about": "空对白结束后总停在原处的光标"
+        }
+      ],
+      "reason": "作者要求把既有资料未列的光标异常单独登记为未解线索。"
+    },
+    {
+      "id": "a25f-w02-action-17",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "明确不再写撤回独白的具体内容，对应第5条独白开放线并要求标放弃。"
+    },
+    {
+      "id": "a25f-w02-action-15",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target_index": 7
+        }
+      ],
+      "reason": "直接给第7条离线测试补写延后展示的说明，同时保留原悬念。"
+    },
+    {
+      "id": "a25f-w01-action-13",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "about": "末排反复换位并在身旁留空杯的旁听者"
+        }
+      ],
+      "reason": "要把现有伏笔未列的旁听者行为单挂待追线头，属于加伏笔。"
+    },
+    {
+      "id": "a25f-w02-action-16",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target_index": 5
+        }
+      ],
+      "reason": "要求据后续正文改独白被退回原因，仍保持具体内容未公开，对应第5条说明。"
+    },
+    {
+      "id": "a25f-w02-action-14",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "about": "饶旻弈保留而尚未说明差别的另一种句尾"
+        }
+      ],
+      "reason": "绯榫对应饶旻弈，现有伏笔未含另一句尾，作者明确要求新增。"
+    },
+    {
+      "id": "a25f-w02-action-18",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target_index": 6
+        }
+      ],
+      "reason": "明确不补外语版空白地名，对应第6条开放线并要求标放弃。"
+    }
+  ],
+  "status": "completed"
+}
