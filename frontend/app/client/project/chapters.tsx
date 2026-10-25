@@ -6,6 +6,7 @@ import type { Draft, Issue, SourceChangeSet } from "../../model";
 import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneLabel } from "../labels";
 import { bareChapterTitle, Button, fitVars, formatCount, isSampleWork, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
 import { AssistantBridge, SelectionToolbar, useAssistantAnchor } from "./assistant";
+import { quotaReason } from "./assistant-parts";
 import type { PageProps } from "./frame";
 import type { ProjectState } from "./use-project";
 import { CountUp, Odometer } from "../motion";
@@ -209,7 +210,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
           )}
         </div>
       </div>
-      {user.assistant?.available && <SelectionToolbar selector=".chapter-passages" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} />}
+      {user.assistant?.available && <SelectionToolbar selector=".chapter-passages" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} blocked={quotaReason(usage, isSampleWork(project))} />}
       {!written.length && <p className="empty">还没有已写的章节。在写作页写完一章后点「完成本章」，或者在下面追加。</p>}
 
       {canPick && written.length > 0 && (

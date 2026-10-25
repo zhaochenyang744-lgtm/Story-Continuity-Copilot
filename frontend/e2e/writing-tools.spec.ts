@@ -82,9 +82,10 @@ test("右栏的切换：只有「检查结果」「助手」两项；方向键�
   await expect.poll(() => page.evaluate(() => Boolean(document.activeElement?.closest("[role=tabpanel]")))).toBe(true);
 });
 
-test("右栏的切换：右栏不在视口里时，点页头按钮会滚到它", async ({ page }) => {
+test("右栏的切换：右栏不在视口里时（窄窗口里它在正文下面），点页头按钮会滚到它", async ({ page }) => {
   const id = await setup(page);
-  await page.setViewportSize({ width: 1440, height: 400 });
+  // (A wide window keeps the column on screen from the top bar down; in a narrower one it is a pane under the draft.)
+  await page.setViewportSize({ width: 900, height: 600 });
   const side = page.getByRole("complementary", { name: "检查与回顾", exact: true });
   await expect(side).not.toBeInViewport({ ratio: 0.2 });
   await analysis(page, id, "对照计划", "plan_alignment");

@@ -32,6 +32,8 @@
   --c-ink-2: #333333;
   --c-muted: #555555;
   --c-faint: #8a8a85;
+  /* The pale grey of small words that must still be read (4.5:1 on the page): the line above an answer, a citation mark at rest, the allowance. */
+  --c-faint-text: #6c6c67;
 
   /* Blue: actions, the draft, the future */
   --c-blue: #1f2bff;
@@ -177,6 +179,7 @@
   --c-ink-2: #d4d4cf;
   --c-muted: #a3a39e;
   --c-faint: #76766f;
+  --c-faint-text: #8a8a85;
   --c-blue: #4651ff;
   --c-blue-hover: #6069ff;
   --c-on-blue: #ffffff;

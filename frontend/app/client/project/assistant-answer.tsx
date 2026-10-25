@@ -2,9 +2,9 @@
 
 // An answer and what sits under it: the sentences (fading in once the answer has passed its checks), a card for each
 // citation, the row of actions (copy, answer again, follow up, useful / not useful) and the cost line.
-import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useRef, useState } from "react";
+import { type CSSProperties, Fragment, type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useRef, useState } from "react";
 import { json, labelError, request } from "../../api";
-import type { AssistantFeedbackReason, AssistantSource, AssistantTask } from "../../model";
+import type { AssistantFeedbackReason, AssistantSentence, AssistantSource, AssistantTask } from "../../model";
 import { clip, formatCount, writtenChars } from "../ui";
 import { active, cardLabel, citedRefs, FOLLOW_UP_LIMIT_TEXT, OUT_OF_SCOPE_TEXT, refusalText, sentencesOf, spokenWhere, TASK_CHARS, whereLabel } from "./assistant-parts";
 
@@ -18,9 +18,25 @@ export function useJustFinished(task: AssistantTask): boolean {
 
 const CARD_WIDTH = 270;
 
-/** A citation mark. Hovering or focusing it (a tap on a phone) opens a card with the chapter, the quoted words and a way to the original;
-    the card stays for 300 ms after the pointer leaves, so the pointer can get into it. */
-function Cite({ n, source, sourceId, locate }: { n: number; source: AssistantSource; /** The id of this mark's line in the list of sources under the answer. */ sourceId: string; locate: (source: AssistantSource) => void }) {
+type Mark = { n: number; source: AssistantSource; /** The id of this mark's line in the list of sources under the answer. */ sourceId: string };
+
+/** The numbers of the sources a sentence rests on as one mark: 3–4 for neighbours, 1–2、4 otherwise. */
+export function citeLabel(numbers: number[]): string {
+  const sorted = [...new Set(numbers)].sort((x, y) => x - y);
+  const runs: string[] = [];
+  for (let at = 0; at < sorted.length;) {
+    let end = at;
+    while (end + 1 < sorted.length && sorted[end + 1] === sorted[end] + 1) end += 1;
+    runs.push(end > at ? `${sorted[at]}–${sorted[end]}` : String(sorted[at]));
+    at = end + 1;
+  }
+  return runs.join("、");
+}
+
+/** A citation mark: one for a sentence, however many sources it rests on. Hovering or focusing it (a tap on a phone) opens a card with
+    the chapter, the quoted words and a way to the original for each source; the card stays for 300 ms after the pointer leaves, so the
+    pointer can get into it. */
+function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSource) => void }) {
   const [at, setAt] = useState<{ left: number; top?: number; bottom?: number } | null>(null);
   const button = useRef<HTMLButtonElement>(null);
   const mark = useRef<HTMLElement>(null);
@@ -34,13 +50,14 @@ function Cite({ n, source, sourceId, locate }: { n: number; source: AssistantSou
   // Putting focus back on the mark after Escape must not open the card again.
   const quiet = useRef(false);
   const shown = at !== null;
+  const ids = marks.map((item) => item.sourceId).join("|");
   // While the card is up, the quoted words in the list of sources are underlined (drawn from the left), so the mark and its source are tied together.
   useEffect(() => {
     if (!shown) return;
-    const line = document.getElementById(sourceId);
-    line?.classList.add("lit");
-    return () => line?.classList.remove("lit");
-  }, [shown, sourceId]);
+    const lines = ids.split("|").map((id) => document.getElementById(id));
+    lines.forEach((line) => line?.classList.add("lit"));
+    return () => lines.forEach((line) => line?.classList.remove("lit"));
+  }, [shown, ids]);
   const open = () => {
     window.clearTimeout(timer.current);
     const box = button.current?.getBoundingClientRect();
@@ -73,44 +90,78 @@ function Cite({ n, source, sourceId, locate }: { n: number; source: AssistantSou
     button.current?.focus();
     quiet.current = false;
   };
+  const text = citeLabel(marks.map((item) => item.n));
   return (
     <sup ref={mark} className="a-cite" onKeyDown={onKeyDown}>
-      <button ref={button} type="button" aria-label={`出处 ${n}：${spokenWhere(source)}`} aria-expanded={shown}
+      <button ref={button} type="button" aria-label={`出处 ${text}：${marks.map((item) => spokenWhere(item.source)).join("；")}`} aria-expanded={shown}
         onPointerEnter={pointer} onPointerDown={(event) => { pointer(event); wasOpen.current = shown; }}
         onMouseEnter={() => { if (!touch.current) open(); }} onMouseLeave={() => { if (!touch.current) closeSoon(); }}
         onFocus={() => { if (!quiet.current) open(); }} onBlur={closeSoon}
-        onClick={() => { if (touch.current && wasOpen.current) setAt(null); else open(); }}>{n}</button>
+        onClick={() => { if (touch.current && wasOpen.current) setAt(null); else open(); }}>{text}</button>
       {at && (
-        <span className="a-pop" role="group" aria-label={`出处 ${n}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH } as CSSProperties}
+        <span className="a-pop" role="group" aria-label={`出处 ${text}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH } as CSSProperties}
           onPointerEnter={pointer} onMouseEnter={keep} onMouseLeave={() => { if (!touch.current) closeSoon(); }} onFocus={keep} onBlur={closeSoon}>
-          <span className="w">{cardLabel(source)}</span>
-          <q>{clip(source.text, 150)}</q>
-          {(source.chapter_number != null || source.anchor) && <button type="button" className="go" onClick={() => { setAt(null); locate(source); }}>去原文 →</button>}
+          {marks.map((item) => (
+            <span key={item.n} className="a-pop-one">
+              <span className="w">{cardLabel(item.source)}</span>
+              <q>{clip(item.source.text, 150)}</q>
+              {(item.source.chapter_number != null || item.source.anchor) && <button type="button" className="go" onClick={() => { setAt(null); locate(item.source); }}>去原文 →</button>}
+            </span>
+          ))}
         </span>
       )}
     </sup>
   );
 }
 
-/** The answer's sentences with a citation mark after each source it rests on; an off-topic question gets its fixed reply instead. */
+/** What the program writes as the first line of an answer that found nothing; the model's own note goes under it. */
+export const NOT_FOUND_TEXT = "没有找到问题问到的内容。";
+/** A sentence whose label (the words the page sets in bold) really is in it. */
+const labelled = (sentence: AssistantSentence) => Boolean(sentence.label) && sentence.text.includes(sentence.label!);
+/** Points (one layer) when this many of the sentences after the lead name what they are about; otherwise a paragraph. */
+export const POINTS_FROM = 3;
+
+/** The answer: an opening line if the model gave one, then the sentences as points (each with its label in bold) when enough of them have a label,
+    otherwise as one paragraph; a mark after each sentence names the sources, and the model's note comes last. An answer that found nothing starts with
+    a line the program writes. An off-topic question gets its fixed reply instead. */
 export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantTask; fade: boolean; locate: (source: AssistantSource) => void; innerRef?: RefObject<HTMLDivElement | null> }) {
   const answer = sentencesOf(task);
   if (!answer) return null;
   if (answer.status === "out_of_scope") return <p className="a-fixed" data-testid="out-of-scope">{task.out_of_scope_text || OUT_OF_SCOPE_TEXT}</p>;
   const refs = citedRefs(task);
   const number = (ref: string) => refs.indexOf(ref) + 1;
+  const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
+  const rest = lead ? answer.sentences.slice(1) : answer.sentences;
+  const points = rest.filter(labelled).length >= POINTS_FROM;
+  let order = 0;
+  const sentenceOf = (sentence: AssistantSentence, bold: boolean) => {
+    const marks = sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => ({ n: number(ref), source: task.sources[ref], sourceId: `a-src-${task.id}-${number(ref)}` }));
+    const at = bold && labelled(sentence) ? sentence.text.indexOf(sentence.label!) : -1;
+    // The words as pieces (the label in bold), and the last two characters cut off them: they travel with the mark, so a mark never stands alone on a line.
+    const pieces = at < 0 ? [{ text: sentence.text, bold: false }] : [{ text: sentence.text.slice(0, at), bold: false }, { text: sentence.label!, bold: true }, { text: sentence.text.slice(at + sentence.label!.length), bold: false }];
+    let tail = "";
+    if (marks.length > 0) {
+      for (let at2 = pieces.length - 1; at2 >= 0 && Array.from(tail).length < 2; at2 -= 1) {
+        const chars = Array.from(pieces[at2].text);
+        const take = Math.min(chars.length, 2 - Array.from(tail).length);
+        tail = chars.slice(chars.length - take).join("") + tail;
+        pieces[at2] = { ...pieces[at2], text: chars.slice(0, chars.length - take).join("") };
+      }
+    }
+    return (
+      <span className="a-s" style={{ "--i": order++ } as CSSProperties}>
+        {pieces.map((piece, index) => (piece.text ? (piece.bold ? <b key={index}>{piece.text}</b> : <Fragment key={index}>{piece.text}</Fragment>) : null))}
+        {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} /></span>}
+      </span>
+    );
+  };
   return (
-    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`}>
-      {answer.sentences.length > 0 && (
-        <p>
-          {answer.sentences.map((sentence, index) => (
-            <span key={index} className="a-s" style={{ "--i": index } as CSSProperties}>
-              {sentence.text}
-              {sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => <Cite key={ref} n={number(ref)} source={task.sources[ref]} sourceId={`a-src-${task.id}-${number(ref)}`} locate={locate} />)}
-            </span>
-          ))}
-        </p>
-      )}
+    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={points ? "points" : "paragraph"}>
+      {answer.status === "not_found" && <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>}
+      {lead && <p className="a-lead">{sentenceOf(lead, false)}</p>}
+      {rest.length > 0 && (points
+        ? <ul className="a-points">{rest.map((sentence, index) => <li key={index}>{sentenceOf(sentence, true)}</li>)}</ul>
+        : <p className="a-body">{rest.map((sentence, index) => <Fragment key={index}>{sentenceOf(sentence, false)}</Fragment>)}</p>)}
       {answer.note && <p className="a-answer-note">{answer.note}</p>}
     </div>
   );
@@ -121,7 +172,11 @@ export function answerText(task: AssistantTask, withSources: boolean): string {
   const answer = sentencesOf(task);
   if (!answer) return "";
   const refs = citedRefs(task);
-  const body = answer.sentences.map((sentence) => `${sentence.text}${withSources ? sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => `[${refs.indexOf(ref) + 1}]`).join("") : ""}`).join("");
+  const line = (sentence: AssistantSentence) => `${sentence.text}${withSources ? sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => `[${refs.indexOf(ref) + 1}]`).join("") : ""}`;
+  const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
+  const rest = lead ? answer.sentences.slice(1) : answer.sentences;
+  // Points are copied one to a line, the way they are read.
+  const body = [answer.status === "not_found" ? NOT_FOUND_TEXT : "", lead ? line(lead) : "", rest.filter(labelled).length >= POINTS_FROM ? rest.map(line).join("\n") : rest.map(line).join("")].filter(Boolean).join("\n");
   const parts = [body, answer.note ?? ""].filter(Boolean);
   if (withSources && refs.length) parts.push(refs.map((ref, index) => `[${index + 1}] ${whereLabel(task.sources[ref])}`).join("\n"));
   return parts.join("\n\n");
@@ -190,12 +245,14 @@ export function Feedback({ task, projectId, replace }: { task: AssistantTask; pr
 }
 
 /** The row under a finished answer, and the cost line: 复制 · 重新回答 · 接着问 · 有用 / 没用, then 「计 500 字」 at the right (not for a visitor). */
-export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, followUpLimit = false, regenerate, replace }: {
+export function TaskFoot({ task, projectId, visitor, blocked, off = "", answer, followUp, followUpLimit = false, regenerate, replace }: {
   task: AssistantTask;
   projectId: string;
   visitor: boolean;
   /** Why a new task cannot start now, or empty. */
   blocked: string;
+  /** Why no new question can be asked at all (the allowance is used up), or empty: 重新回答 and 接着问 are greyed with it. */
+  off?: string;
   answer: RefObject<HTMLDivElement | null> | null;
   /** 接着问 (asks only, and not for an off-topic reply). */
   followUp: (() => void) | null;
@@ -232,7 +289,7 @@ export function TaskFoot({ task, projectId, visitor, blocked, answer, followUp, 
       )}
       {followUp && (followUpLimit
         ? <button type="button" className="a-link" disabled title={FOLLOW_UP_LIMIT_TEXT}>接着问</button>
-        : <button type="button" className="a-link" onClick={followUp}>接着问</button>)}
+        : <button type="button" className="a-link" disabled={Boolean(off)} title={off || undefined} onClick={followUp}>接着问</button>)}
       <Feedback task={task} projectId={projectId} replace={replace} />
       {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
     </div>

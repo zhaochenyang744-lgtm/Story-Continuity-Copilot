@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { api, createWorkByApi, expect, openTab, sampleWorkId, startVisitor, test } from "./support/app";
 import { adoptRequest, askForFix, box, checkedWork, finished, findingsTab, openAssistantTab, proposal, REWRITTEN, send, SENTENCE, tasks, thread } from "./support/assistant";
-import { ADD_ASK, changeItem, cardOf, confirmButton, confirmByApi, itemOf, ledgerOf, openLedger, proposeByApi, THREAD_ASK } from "./support/assistant-change";
+import { ADD_ASK, changeItem, cardOf, confirmButton, confirmByApi, itemOf, ledgerOf, openLedger, proposeByApi, THREAD_ASK, undoOf } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { beginCheck, draft, finishCheck, saveBody, setup } from "./support/writing";
 
@@ -302,7 +302,7 @@ test.describe("访客改资料", () => {
     await confirmButton(card).click();
     const item = itemOf(cardOf(page));
     await expect(item).toHaveAttribute("data-status", "applied");
-    await item.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(item).toHaveAttribute("data-status", "undone");
     await item.getByRole("button", { name: "恢复", exact: true }).click();
     await expect(item).toHaveAttribute("data-status", "applied");

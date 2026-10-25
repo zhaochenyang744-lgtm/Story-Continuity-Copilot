@@ -297,7 +297,7 @@ export function useMenuKeyboardMode() {
 }
 
 /** 更多: a small outlined button that opens a list of actions; dangerous ones sit below a rule. */
-export function Menu({ children, danger, label = "更多", buttonLabel }: { children: ReactNode; danger?: ReactNode; label?: string; buttonLabel?: string }) {
+export function Menu({ children, danger, label = "更多", buttonLabel, dots = false }: { children: ReactNode; danger?: ReactNode; label?: string; buttonLabel?: string; /** Just the label, no arrow: a small ⋯ at the end of a line. */ dots?: boolean }) {
   const menu = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const details = menu.current;
@@ -310,8 +310,8 @@ export function Menu({ children, danger, label = "更多", buttonLabel }: { chil
     return () => { details.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onPointer); };
   }, []);
   return (
-    <details className="menu" ref={menu}>
-      <summary aria-label={buttonLabel}>{label}<Chevron size={10} /></summary>
+    <details className={`menu${dots ? " menu-dots" : ""}`} ref={menu}>
+      <summary aria-label={buttonLabel}>{label}{!dots && <Chevron size={10} />}</summary>
       <div className="menu-list" role="menu" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>
         {children}
         {danger && <div className="menu-danger">{danger}</div>}

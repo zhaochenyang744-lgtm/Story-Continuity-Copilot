@@ -14,7 +14,7 @@ import { requestLocate } from "./assistant-locate";
 import { AnswerBlock, Feedback, useJustFinished } from "./assistant-answer";
 import { active, CoverLine, failureText, LimitLine, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
-import { RoutedLine } from "./assistant-route";
+import { ChosenLine, RerouteMenu } from "./assistant-route";
 import { FindingTag, findingHeadline } from "./findings";
 
 /** What the thread needs from the writing page's draft to apply, undo and wait for a save. */
@@ -442,19 +442,15 @@ export function FixView({ task, projectId, visitor, stopping, stop, retry, openC
   return (
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="fix_issue">
       {task.question && <div className={`a-ask${rise ? " rise" : ""}`}>{task.question}</div>}
-      <div className="a-head">
-        <span className="a-kind">{explaining ? "解释这一处" : "帮我改这一处"}</span>
-        {running && <span className="a-state quiet">正在查</span>}
-        {running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}
-      </div>
-      <RoutedLine task={task} />
+      <Steps task={task} locate={locate} lead={explaining ? "解释这一处" : "帮我改这一处"}
+        end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
+      <ChosenLine task={task} />
       {info ? (
         <div className="a-issue">
           <Num className="a-issue-num">{info.number}</Num>
           <span className="a-issue-text"><FindingTag issue={info.issue} long /><strong>{findingHeadline(info.issue)}</strong></span>
         </div>
       ) : fallback ? <p className="a-issue-fallback">{fallback.text}</p> : null}
-      <Steps task={task} locate={locate} />
       <StoppedNote task={task} visitor={visitor} />
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={retry}>重试</button></>}</p>

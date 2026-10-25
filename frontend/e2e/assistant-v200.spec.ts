@@ -2,12 +2,12 @@ import type { Locator, Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { api, expect, expectNoHorizontalOverflow, newPage, openTab, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
-import { box, chooseMode, finished, openAssistantTab, send, taskPost, tasks, thread, topbarAssistant } from "./support/assistant";
+import { box, chooseMode, finished, menuNames, openAssistantTab, send, taskPost, tasks, thread, topbarAssistant } from "./support/assistant";
 import { serveTasks } from "./support/assistant-mock";
 import {
-  ADD_ASK, ADDED_VALUE, cardOf, changeItem, changeView, closeDrawer, confirmButton, confirmByApi, confirmPost, editThread, factRecords, factRow, FACT_ASK, itemOf,
-  lastChange, LAST_CHAPTER, ledgerButton, ledgerOf, MODEL_VALUE, openCard, openDrawer, openLedger, proposeByApi, rejectByApi, THREAD_ASK, threadRow, threadsView,
-  threadStatus,
+  ADD_ASK, ADDED_VALUE, afterOf, basisOf, cardOf, changeItem, changeView, closeDrawer, confirmButton, confirmByApi, confirmPost, editThread, factRecords, factRow, FACT_ASK, itemOf,
+  lastChange, LAST_CHAPTER, ledgerButton, ledgerOf, MODEL_VALUE, openBasis, openCard, openDrawer, openLedger, proposeByApi, rejectByApi, THREAD_ASK, threadRow, threadsView,
+  threadStatus, undoOf,
 } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { setup } from "./support/writing";
@@ -20,15 +20,15 @@ import { setup } from "./support/writing";
 const modeButton = (page: Page, label: string) => thread(page).getByRole("button", { name: `这次做什么：${label}` });
 const routeUrl = /\/assistant\/route$/;
 const routePost = (page: Page) => page.waitForRequest((request) => request.method() === "POST" && routeUrl.test(request.url()));
-const stateOf = (item: Locator) => item.locator(".a-state");
+const stateOf = (item: Locator) => item.locator(".a-chg-state");
 
 /** The card of the latest change task and its first item, with what a pending card shows. */
 async function expectPending(card: Locator, title: string, kind: string) {
-  await expect(card.locator(".a-chg-head")).toContainText("确认后才会执行，之后可以撤销");
+  await expect(card.locator(".a-chg-head")).toContainText("确认后才会执行，可以撤销");
   const item = itemOf(card);
   await expect(item).toHaveAttribute("data-status", "proposed");
   await expect(item).toHaveAttribute("data-kind", kind);
-  await expect(item.locator(".a-opt-h strong")).toContainText(title);
+  await expect(item.locator(".a-chg-line strong")).toContainText(title);
   await expect(item.getByRole("checkbox")).toBeChecked();
   return item;
 }
@@ -38,19 +38,19 @@ test.describe("改资料：用法和菜单", () => {
     const id = await setup(page);
     await openAssistantTab(page);
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
     await page.keyboard.press("Escape");
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
     await openTab(visitor, await sampleWorkId(visitor), "workspace");
     await openAssistantTab(visitor);
     await modeButton(visitor, "自动").click();
-    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "改资料"]);
+    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料"]);
     await visitor.close();
 
     // 自动: the sentence is judged, and what the judgement names is what is started.
@@ -65,12 +65,14 @@ test.describe("改资料：用法和菜单", () => {
     expect((await created).postDataJSON()).toEqual({ kind: "change", question: sentence, context: { page: "writing", chapter_number: expect.any(Number) },
       routed: true, route_source: "model", routed_input: sentence });
     await finished(page);
-    await expect(modeButton(page, "自动 · 改资料")).toBeVisible();
-    const line = tasks(page).last().getByTestId("routed-line");
-    await expect(line).toContainText("按「改资料」处理");
+    await expect(modeButton(page, "自动")).toBeVisible();
+    const line = tasks(page).last().getByTestId("process-line");
+    await expect(line).toContainText("改资料");
     await line.locator("summary").click();
     await expect(line.getByRole("menuitem")).toContainText(["问作品"]);
     await expect(line.getByRole("menuitem", { name: "改资料" })).toHaveCount(0);
+    // The use the box judged is not repeated on a line of its own.
+    await expect(tasks(page).last().getByTestId("routed-line")).toHaveCount(0);
     await expect(tasks(page).last()).toHaveAttribute("data-kind", "change");
     await expect(cardOf(page)).toBeVisible();
   });
@@ -90,7 +92,7 @@ test.describe("改资料：用法和菜单", () => {
     await finished(page);
     expect(judged).toBe(0);
     const task = tasks(page).last();
-    await expect(task.locator(".a-kind")).toHaveText("改资料");
+    await expect(task.getByTestId("process-line")).toContainText("改资料");
     await expect(task.locator(".a-answer-note")).toContainText(`查过第 ${LAST_CHAPTER} 章正文，没有找到问题问到的内容。`);
     await expect(cardOf(page)).toHaveCount(0);
     await expect(modeButton(page, "自动")).toBeVisible();
@@ -113,11 +115,12 @@ test.describe("改资料：标伏笔已回收", () => {
     const card = cardOf(page);
     await expect(card.locator(".a-chg-head")).toContainText("资料改动 · 1 条");
     const item = await expectPending(card, change.title, "resolve_thread");
-    await expect(item.locator(".a-opt-h strong")).toHaveText(change.title);
-    await expect(item.locator(".a-opt-note")).toHaveText("标伏笔已回收");
+    await expect(item.locator(".a-chg-line strong")).toHaveText(change.title);
+    await expect(item.locator(".a-chg-kind")).toHaveText("标伏笔已回收");
     // The words of the author's sentence the change answers to.
     expect(change.request_words).toBeTruthy();
     expect(THREAD_ASK.replace(/\s/g, "")).toContain(change.request_words!.replace(/\s/g, ""));
+    await openBasis(item);
     await expect(item.locator(".a-chg-asked")).toHaveCount(0);  // the card's only item: the whole sentence is about it
     await expect(item.locator(".chg-before")).toContainText("已埋设");
     await expect(item.locator(".chg-after")).toContainText(`已回收（第 ${LAST_CHAPTER} 章）`);
@@ -125,7 +128,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await expect(evidence.getByRole("listitem")).toHaveCount(1);
     await expect(evidence).toContainText(`第 ${LAST_CHAPTER} 章`);
     await expect(item.getByRole("button", { name: "改内容" })).toHaveCount(0);
-    await expect(confirmButton(card)).toHaveText("确认（1 条）");
+    await expect(confirmButton(card)).toHaveText("确认 1 条");
     await expect(card.getByRole("button", { name: "不要", exact: true })).toBeVisible();
     // Nothing is written yet.
     expect(await threadStatus(page, id, change.target.id)).toBe("planted");
@@ -142,7 +145,8 @@ test.describe("改资料：标伏笔已回收", () => {
     await expect(done).toHaveAttribute("data-status", "applied");
     await expect(stateOf(done)).toHaveText("已执行");
     await expect(confirmButton(cardOf(page))).toHaveCount(0);
-    await expect(done.getByRole("button", { name: "撤销", exact: true })).toBeVisible();
+    await expect(cardOf(page).getByTestId("change-written")).toContainText("已写入资料");
+    await expect(undoOf(cardOf(page))).toBeVisible();
     expect(await threadStatus(page, id, change.target.id)).toBe("resolved");
 
     // The materials page: the thread is resolved, carries the assistant's tag, and the ledger has the item.
@@ -163,7 +167,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
     const again = itemOf(cardOf(page));
-    await again.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(again).toHaveAttribute("data-status", "undone");
     await expect(stateOf(again)).toHaveText("已撤销");
     expect(await threadStatus(page, id, change.target.id)).toBe("planted");
@@ -176,7 +180,9 @@ test.describe("改资料：标伏笔已回收", () => {
     const id = await setup(page);
     const { card } = await openCard(page, id, THREAD_ASK);
     await page.emulateMedia({ reducedMotion: "no-preference" });
+    await openBasis(itemOf(card));
     await itemOf(card).getByRole("list", { name: "依据" }).locator(".a-where").click();
+    await itemOf(card).getByRole("list", { name: "依据" }).getByRole("button", { name: "去原文 →" }).click();
     await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace\\?chapter=${LAST_CHAPTER}$`));
     await expect(page.getByRole("heading", { level: 1, name: new RegExp(`^第 ${LAST_CHAPTER} 章`) })).toBeAttached();
     const ring = page.locator("#chapter-body .mark-pulse");
@@ -226,7 +232,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await expect(item).toHaveAttribute("data-status", "proposed");
     await expect(item).toContainText("这条资料已经变了");
     await expect(item.getByRole("checkbox")).not.toBeChecked();
-    await expect(confirmButton(cardOf(page))).toHaveText("确认（0 条）");
+    await expect(confirmButton(cardOf(page))).toHaveText("确认 0 条");
     await expect(confirmButton(cardOf(page))).toBeDisabled();
     expect(await threadStatus(page, id, change.target.id)).toBe("developing");
     expect((await api(page).get(`/projects/${id}/assistant/changes`)).changes).toEqual([]);
@@ -242,7 +248,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await openAssistantTab(page);
     const item = itemOf(cardOf(page));
     await expect(stateOf(item)).toHaveText("已执行");
-    await item.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     const prompt = item.getByRole("alert").filter({ hasText: "撤销会把这些后来的修改一起退回。" });
     await expect(prompt).toContainText("你后来也改过这条资料。");
     await expect(prompt).not.toContainText("这条后来又被改过：");
@@ -250,7 +256,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await prompt.getByRole("button", { name: "算了", exact: true }).click();
     await expect(prompt).toHaveCount(0);
     await expect(item).toHaveAttribute("data-status", "applied");
-    await item.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await prompt.getByRole("button", { name: "仍然撤销", exact: true }).click();
     await expect(item).toHaveAttribute("data-status", "undone");
     await expect(prompt).toHaveCount(0);
@@ -269,7 +275,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await page.reload();
     await openAssistantTab(page);
     const item = itemOf(tasks(page).first().getByRole("region", { name: "资料改动" }));
-    await item.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(tasks(page).first().getByRole("region", { name: "资料改动" })).click();
     const prompt = item.getByRole("alert").filter({ hasText: "撤销会把这些后来的修改一起退回。" });
     await expect(prompt).toContainText("这条后来又被改过：");
     await expect(prompt).toContainText(`${first.changes[0].title}：已回收（第 ${LAST_CHAPTER} 章）`);
@@ -300,8 +306,8 @@ test.describe("改资料：改事实和加事实", () => {
     const id = await setup(page);
     const { task, card } = await openCard(page, id, FACT_ASK);
     const item = await expectPending(card, "温岚·", "change_fact");
-    await expect(item.locator(".a-opt-note")).toHaveText("改事实");
-    await expect(item.locator(".chg-after")).toContainText(`${MODEL_VALUE}（第 ${LAST_CHAPTER} 章）`);
+    await expect(item.locator(".a-chg-kind")).toHaveText("改事实");
+    await expect.poll(() => afterOf(item)).toContain(`${MODEL_VALUE}（第 ${LAST_CHAPTER} 章）`);
     await item.getByRole("button", { name: "改内容", exact: true }).click();
     const field = item.getByRole("textbox", { name: /^改后的内容/ });
     await expect(field).toHaveValue(MODEL_VALUE);
@@ -312,7 +318,7 @@ test.describe("改资料：改事实和加事实", () => {
     await expect(confirmButton(card)).toBeDisabled();
     await field.fill("作者自己的写法");
     await expect(item).toContainText("你改过");
-    await expect(item.locator(".chg-after")).toContainText(`作者自己的写法（第 ${LAST_CHAPTER} 章）`);
+    await expect.poll(() => afterOf(item)).toContain(`作者自己的写法（第 ${LAST_CHAPTER} 章）`);
     await item.getByRole("button", { name: "改好了", exact: true }).click();
     await expect(field).toHaveCount(0);
     await expect(item).toContainText("你改过");
@@ -329,7 +335,7 @@ test.describe("改资料：改事实和加事实", () => {
     // Undo puts the old wording back and the tag goes.
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     await expect.poll(async () => (await factRecords(page, id)).map((fact) => fact.value)).not.toContain("作者自己的写法");
     await openTab(page, id, "memory");
@@ -340,7 +346,7 @@ test.describe("改资料：改事实和加事实", () => {
     const id = await setup(page);
     const { card } = await openCard(page, id, ADD_ASK);
     const item = await expectPending(card, "苏岑·", "add_fact");
-    await expect(item.locator(".a-opt-note")).toHaveText("加事实");
+    await expect(item.locator(".a-chg-kind")).toHaveText("加事实");
     await expect(item.locator(".chg-before")).toContainText("资料里没有");
     await expect(item.locator(".chg-after")).toContainText(`${ADDED_VALUE}（第 ${LAST_CHAPTER} 章）`);
     await expect(item.getByRole("button", { name: "改内容", exact: true })).toBeVisible();
@@ -351,7 +357,7 @@ test.describe("改资料：改事实和加事实", () => {
     await expect(factRow(page, ADDED_VALUE)).toContainText("助手按你的确认添加");
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     await openTab(page, id, "memory");
     await expect(factRow(page, ADDED_VALUE)).toHaveCount(0);
@@ -368,7 +374,7 @@ test.describe("改资料：改事实和加事实", () => {
     const { card } = await openCard(page, id, ADD_ASK);
     const item = itemOf(card);
     await item.getByRole("checkbox").uncheck();
-    await expect(confirmButton(card)).toHaveText("确认（0 条）");
+    await expect(confirmButton(card)).toHaveText("确认 0 条");
     await expect(confirmButton(card)).toBeDisabled();
     await item.getByRole("checkbox").check();
     await expect(confirmButton(card)).toBeEnabled();
@@ -390,7 +396,7 @@ test.describe("改资料：资料页", () => {
     // The facts view is still the one on screen: its list moved without a reload.
     await expect(factRow(page, ADDED_VALUE)).toContainText("助手按你的确认添加");
     await openDrawer(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     await closeDrawer(page);
     await expect(factRow(page, ADDED_VALUE)).toHaveCount(0);
@@ -507,18 +513,20 @@ test.describe("改资料：版面", () => {
     await page.reload();
     await openAssistantTab(page);
     const card = cardOf(page);
+    // 依据 is one folded line for each item; opened, the words of the author's sentence it answers to, then its passages.
+    for (const label of ["C1", "C2", "C3"]) await openBasis(itemOf(card, label));
     await expect(itemOf(card, "C1").locator(".a-chg-asked")).toHaveText("对应你说的「廊桥钥匙那条伏笔」");  // the prefix is for screen readers only
     await expect(itemOf(card, "C2").locator(".a-chg-asked")).toContainText("「罗盘现在在温岚手里」");
     await expect(itemOf(card, "C1").getByRole("list", { name: "依据" })).toHaveCount(1);
     await expect(itemOf(card, "C2").getByRole("list", { name: "依据" })).toHaveCount(0);
-    await expect(itemOf(card, "C2").locator(".a-chg-same")).toHaveText("依据同 C1");
+    await expect(basisOf(itemOf(card, "C2"))).toHaveText("依据同 C1");
     await expect(itemOf(card, "C3").getByRole("list", { name: "依据" })).toHaveCount(1);  // passages of its own
-    await expect(itemOf(card, "C3").locator(".a-chg-same")).toHaveCount(0);
+    await expect(basisOf(itemOf(card, "C3"))).not.toContainText("依据同");
     // A rewording keeps the server's form: no full stop before the chapter.
     const second = itemOf(card, "C2");
     await second.getByRole("button", { name: "改内容", exact: true }).click();
     await second.getByRole("textbox", { name: /^改后的内容/ }).fill("由温岚随身保管。");
-    await expect(second.locator(".chg-after")).toContainText("由温岚随身保管（第 10 章）");
+    await expect.poll(() => afterOf(second)).toContain("由温岚随身保管（第 10 章）");
   });
 
   test("1280 宽，日间和夜间：卡片和改动记录不溢出", async ({ page }) => {
@@ -621,7 +629,7 @@ test.describe("改资料 截图", () => {
     await page.reload();
     await openAssistantTab(page);
     const item = itemOf(tasks(page).first().getByRole("region", { name: "资料改动" }));
-    await item.getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(tasks(page).first().getByRole("region", { name: "资料改动" })).click();
     await expect(item.locator(".a-chg-conflict")).toBeVisible();
     await both(page, (value) => snap(thread(page), "04-撤销冲突提示", value));
     await item.getByRole("button", { name: "算了", exact: true }).click();

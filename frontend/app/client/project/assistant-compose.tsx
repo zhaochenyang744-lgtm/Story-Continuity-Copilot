@@ -18,6 +18,14 @@ export type ComposeChip = {
 };
 export type Mode = "auto" | "ask" | "recap" | "check" | "change";
 export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料" };
+/** One line under each use in the menu: what choosing it does. */
+export const MODE_HINT: Record<Mode, string> = {
+  auto: "由助手判断这句话要做什么",
+  ask: "查正文和资料回答",
+  recap: "回顾上一章停在哪、哪些线没收",
+  check: "检查选中的一段和前文有没有矛盾",
+  change: "提出改动，你确认后才执行",
+};
 
 /** What the 「＋」 menu can add, and what choosing each does. */
 export type PlusPick = {
@@ -35,6 +43,7 @@ export type PlusPick = {
 
 const Cross = () => <svg viewBox="0 0 10 10" width="8" height="8" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 2l6 6M8 2 2 8" /></svg>;
 const Plus = () => <svg viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10" /></svg>;
+const Caret = () => <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 4l4 4 4-4" /></svg>;
 const Up = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" /></svg>;
 const Stop = () => <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" fill="currentColor" /></svg>;
 
@@ -152,7 +161,9 @@ function ModeMenu({ modes, mode, setMode, close, anchor }: { modes: Mode[]; mode
     <div ref={list} className="cx-menu mode" role="menu" aria-label="这次让助手做什么" onKeyDown={onKeyDown}>
       <span className="head" aria-hidden="true">这次让助手做什么</span>
       {modes.map((item) => (
-        <button key={item} type="button" role="menuitemradio" aria-checked={item === mode} onClick={() => { setMode(item); close(); }}>{MODE_LABEL[item]}</button>
+        <button key={item} type="button" role="menuitemradio" aria-label={MODE_LABEL[item]} aria-checked={item === mode} onClick={() => { setMode(item); close(); }}>
+          <span className="what"><span className="name">{MODE_LABEL[item]}</span><span className="d">{MODE_HINT[item]}</span></span>
+        </button>
       ))}
     </div>
   );
@@ -186,8 +197,6 @@ export type ComposerProps = {
   hintMore?: string;
   /** Set when the mode is not the author's choice (a fix for one finding): its name, shown in place of the mode, without a menu. */
   modeName?: string;
-  /** What the mode button says in 自动 while the sentence is judged ("判断中…") and after ("自动 · 写前回顾"); the menu is unchanged. */
-  modeText?: string;
   /** The text box cannot be typed in (查前文矛盾 asks about the picked words only). */
   fixed?: boolean;
   /** ↑ with an empty box. */
@@ -197,7 +206,7 @@ export type ComposerProps = {
 const STOP_GRACE_MS = 700;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, modeText, fixed, recall } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -236,7 +245,7 @@ export function Composer(props: ComposerProps) {
                 ))}
               </div>
             )}
-            <textarea ref={fieldRef} className="cx-text" value={text} maxLength={maxLength} rows={2} aria-label="向助手提问" placeholder={placeholder}
+            <textarea ref={fieldRef} className="cx-text" value={text} maxLength={maxLength} rows={1} aria-label="向助手提问" placeholder={placeholder}
               data-autofocus={autoFocus ? true : undefined} readOnly={fixed} aria-readonly={fixed || undefined}
               onChange={(event) => setText(event.target.value)} onKeyDown={onKeyDown} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
           </>
@@ -244,20 +253,13 @@ export function Composer(props: ComposerProps) {
         <div className="cx-bar">
           {!off && (
             <>
-              <button ref={plusButton} type="button" className="cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
-              <button ref={modeButton} type="button" className="cx-mode" aria-label={`这次做什么：${modeName ?? modeText ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
-                {modeName ?? modeText ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret" aria-hidden="true"> ▼</span>}
+              <button ref={plusButton} type="button" className="cx-ghost cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
+              <button ref={modeButton} type="button" className="cx-ghost cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
+                {modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret"><Caret /></span>}
               </button>
             </>
           )}
-          {/* One place for the counter, the key hint and the cost: the key hint takes the cost's place while the box has focus, so the bar never reflows. */}
-          {off ? <span className="cx-fill" /> : (
-            <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
-              {counting ? `${length} / ${maxLength}`
-                : focused && !running ? <span className="cx-keys">Enter 发送</span>
-                  : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
-            </span>
-          )}
+          <span className="cx-fill" />
           {running ? (
             <button type="button" className="cx-send stop" aria-label="停止" disabled={stopping} onClick={() => { if (performance.now() - stopArmedAt.current >= STOP_GRACE_MS) stop(); }}><Stop /></button>
           ) : (
@@ -267,7 +269,17 @@ export function Composer(props: ComposerProps) {
         {open === "plus" && <PlusMenu pick={pick} writing={writing} close={closePlus} anchor={frame} />}
         {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} />}
       </form>
-      <p className="a-ai-note">回答由 AI 生成，可能出错，请点出处核对。</p>
+      {/* Under the frame, at its right: one place for the counter, the key hint and the cost. The key hint takes the cost's place while the box has focus, so the line never reflows. */}
+      <div className="a-quota-row">
+        <p className="a-ai-note">回答由 AI 生成，可能出错，请点出处核对。</p>
+        {!off && (
+          <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
+            {counting ? `${length} / ${maxLength}`
+              : focused && !running ? <span className="cx-keys">Enter 发送</span>
+                : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

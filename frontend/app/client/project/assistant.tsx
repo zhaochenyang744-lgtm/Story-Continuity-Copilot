@@ -10,11 +10,13 @@
 // 自动 mode (the default) judges which one a sentence asks for, and the task it starts says so and can be changed.
 import {
   createContext,
+  Fragment,
   type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -26,9 +28,10 @@ import { type CheckUsage, clip, formatCount, isSampleWork, Menu, SAMPLE_FREE, us
 import { regenerateTask } from "./assistant-answer";
 import { mergeChanges } from "./assistant-change";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
+import { ThreeSquares } from "./assistant-process";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
-import { active, isRecap, locateTarget, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, VISITOR_USED_UP } from "./assistant-parts";
+import { active, isRecap, locateTarget, quotaReason, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, turnTime } from "./assistant-parts";
 import { RecapView } from "./assistant-recap";
 import { CHECK_QUESTION, type NewTask, OutOfScopeNote, RecapElsewhereNote, RerouteContext, type RerouteControl, routeInput, taskFor, type Use, USE_LABEL, wantRecapOnArrival } from "./assistant-route";
 import { Starters, starterQuestions } from "./assistant-start";
@@ -52,9 +55,11 @@ type Bridge = {
   usageChanged: () => void;
   /** The assistant wrote to the materials (or took a change back): the page reads facts and threads again. */
   materialsChanged: () => void;
+  /** The writing page says what the top bar's 助手 button does there (switch its column to the assistant); null when it leaves. Elsewhere the button opens the drawer. */
+  setColumnOpener: (open: (() => void) | null) => void;
 };
 /** The app provides it; pages tell it where the author is, and ask it to open the drawer. */
-export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined });
+export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined, setColumnOpener: () => undefined });
 
 /** A page registers where the author is for as long as it is shown; the top bar's 助手 button follows it. */
 export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter_number?: number; character_id?: string; character_name?: string } = {}) {
@@ -142,9 +147,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const [followUp, setFollowUp] = useState<AssistantTask | null>(null);
   // The task whose automatic 接着上一问 tag the author took off: that answer is not followed unless asked for with its 接着问 button.
   const [followDropped, setFollowDropped] = useState<string | null>(null);
-  // 自动: the sentence is being judged, and what the judgement was (kept on the mode button until the author changes the box).
+  // 自动: the sentence is being judged. The question is in the conversation at once (`pending`), with a line saying so, and the box is empty.
   const [routing, setRouting] = useState(false);
-  const [routedAs, setRoutedAs] = useState("");
+  const [pending, setPending] = useState<{ input: string; selection: string } | null>(null);
+  // The tasks that were started as a question because the judgement did not come in time (the line above their answer says so).
+  const [timedOut, setTimedOut] = useState<string[]>([]);
+  // The last send failed in a way that is worth trying again (the box still holds what was sent): the bar says so, with 重试.
+  const [again, setAgain] = useState<{ run: () => void } | null>(null);
   // A sentence the judgement took for not being about the work: a local note under the conversation, no task.
   const [offTopic, setOffTopic] = useState<{ input: string; context: AssistantContextInput } | null>(null);
   // A 写前回顾 asked for off the writing page: a local note with the way there, no task.
@@ -177,6 +186,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const handled = useRef(0);
   const handledCommand = useRef(0);
   const handledFocus = useRef(0);
+  // The id of the task the last post made, for the notes that are kept about it.
+  const lastCreated = useRef("");
   const announced = useRef(new Set<string>());
   const signature = useRef("");
 
@@ -222,7 +233,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   useEffect(() => {
     const box = thread.current;
     if (!box) return;
-    const now = (tasks ?? []).map((task) => `${task.id}:${task.status}:${task.steps.length}:${task.answer ? 1 : 0}`).join("|");
+    const now = (tasks ?? []).map((task) => `${task.id}:${task.status}:${task.steps.length}:${task.answer ? 1 : 0}`).join("|") + (pending ? "|pending" : "");
     const changed = now !== signature.current;
     signature.current = now;
     const id = pinned.current;
@@ -254,13 +265,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   // A sample work takes no characters: the box is never held back for the allowance there.
   const sample = isSampleWork(project);
   const needed = usage?.account_type === "registered" && !sample ? usage.assistant_task_chars ?? TASK_CHARS : 0;
-  const shortOfChars = usage?.account_type === "registered" && !sample && usage.check_chars_remaining < needed;
-  const outOfTasks = usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0;
   // The box is used up for good (until the allowance comes back): it says why, inside itself.
-  const off = archived ? "作品已归档，只能浏览。"
-    : shortOfChars ? `${refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false)}用掉的额度 24 小时后陆续返还。`
-      : outOfTasks ? VISITOR_USED_UP
-        : "";
+  const off = archived ? "作品已归档，只能浏览。" : quotaReason(usage, sample);
   const blocked = off || (busy && !routing ? RUNNING_NOW : "");
   const cost = usage?.account_type === "registered" ? (sample ? SAMPLE_FREE : `约 ${formatCount(needed)} 字`)
     : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `今天还可以问 ${usage.assistant_tasks_remaining} 次` : "";
@@ -310,7 +316,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   };
 
   const post = async (task: NewTask) => {
-    setSending(true); setRefusal("");
+    setSending(true); setRefusal(""); setAgain(null);
     try {
       const created = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks`, "POST", {
         kind: task.kind, ...(task.question ? { question: task.question } : {}), context: task.context,
@@ -319,8 +325,10 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       });
       stick.current = false;
       pinned.current = created.id;
+      lastCreated.current = created.id;
       setUnseen(false);
       setOffTopic(null); setElsewhere(null);
+      setPending(null);
       setTasks((current) => [...(current ?? []), created]);
       setAsked((current) => [...current, created.id]);
       // The note about where the words go has been on screen for a first question; this device now remembers it was seen.
@@ -328,48 +336,58 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       return true;
     } catch (cause) {
       setRefusal(refusalText(cause, visitor, task.kind));
+      // A request that did not get through (no network, too slow, the server said to try again) can be sent again as it is.
+      setAgain(!(cause as ApiFailure).code || (cause as ApiFailure).retryable ? { run: () => void post(task) } : null);
       return false;
     } finally { setSending(false); }
   };
   const afterSend = () => {
-    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setRoutedAs(""); setMode("auto");
+    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setMode("auto");
     setChosen({ chapter: null, character: null });
     // The send button has just gone grey; keep the keyboard where the author is writing.
     field.current?.focus();
   };
   const checkShort = (picked: string) => usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS) + writtenChars(picked);
   const shortOfCheck = () => setRefusal(refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false));
-  // 自动: ask the server which use the sentence asks for (the mode button says so meanwhile), then start the task that use is, at once.
+  // 自动: the question goes into the conversation and the box empties at once; the server is asked which use the sentence asks for (a line in the
+  // conversation says so meanwhile), then the task that use is starts. When nothing starts, the box gets its words back.
   const sendAuto = async () => {
     const input = text.trim();
     if (!input && !(selection && onWriting && !visitor)) return;
     const base: AssistantContextInput = { ...contextFor(selection), ...(refine ? { page: "writing" as const, issue_id: refine.issueId } : {}) };
-    setRouting(true); setRoutedAs(""); setRefusal("");
+    const kept = { text, selection, followUp, refine, chosen };
+    const putBack = () => { setText(kept.text); setSelection(kept.selection); setFollowUp(kept.followUp); setRefine(kept.refine); setChosen(kept.chosen); };
+    const abandon = (reason?: string) => { setPending(null); putBack(); if (reason) setRefusal(reason); };
+    stick.current = true; pinned.current = null; setUnseen(false);
+    setRouting(true); setRefusal(""); setAgain(null);
+    setPending({ input, selection });
+    afterSend();
     const verdict = await routeInput(projectId, input, base);
     setRouting(false);
     if (verdict.route === "out_of_scope") {
-      setOffTopic({ input, context: base }); setElsewhere(null);
-      afterSend();
-      setRoutedAs("与作品无关");
+      setOffTopic({ input, context: base }); setElsewhere(null); setPending(null);
       return;
     }
-    setRoutedAs(USE_LABEL[verdict.route]);
     if (verdict.route === "recap" && !onWriting) {
-      setElsewhere(input); setOffTopic(null);
-      afterSend();
-      setRoutedAs(USE_LABEL.recap);
+      setElsewhere(input); setOffTopic(null); setPending(null);
       return;
     }
-    if (verdict.route === "recap" && recapReason) { setRefusal(recapReason); return; }
-    if (verdict.route === "check_passage" && checkShort(selection)) { shortOfCheck(); return; }
-    const chosen = taskFor(verdict.route, input, base, verdict.route === "ask" ? following?.id : null);
-    const made = chosen ?? taskFor("ask", input, base, following?.id);
-    if (!made) { setRefusal("先写下想问的话，再发送。"); return; }
-    const label = USE_LABEL[chosen ? verdict.route : "ask"];
-    if (await post({ ...made, routed: { source: verdict.source, input } })) { afterSend(); setRoutedAs(label); }
+    if (verdict.route === "recap" && recapReason) { abandon(recapReason); return; }
+    if (verdict.route === "check_passage" && checkShort(kept.selection)) { abandon(); shortOfCheck(); return; }
+    const chosenUse = taskFor(verdict.route, input, base, verdict.route === "ask" ? following?.id : null);
+    const made = chosenUse ?? taskFor("ask", input, base, following?.id);
+    if (!made) { abandon("先写下想问的话，再发送。"); return; }
+    if (await post({ ...made, routed: { source: verdict.source, input } })) {
+      if (verdict.timedOut) { const id = lastCreated.current; setTimedOut((current) => [...current, id]); }
+    } else {
+      // The box has its words back, so sending again is sending the box.
+      setPending(null); putBack();
+      setAgain((current) => (current ? { run: () => void submitNow.current() } : null));
+    }
   };
+  const submitNow = useRef<() => Promise<void>>(async () => undefined);
   const submit = async () => {
-    if (blocked) return;
+    if (blocked || routing || sending) return;
     if (activeMode === "recap") {
       if (recapReason) { setRefusal(recapReason); return; }
       if (await post({ kind: "recap", context: { page: "writing" } })) { setMode("auto"); setRefusal(""); }
@@ -395,6 +413,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       : await post({ kind: "ask", question, context: contextFor(selection), followUpOf: following?.id ?? null });
     if (sent) afterSend();
   };
+  useEffect(() => { submitNow.current = submit; });
   // The sentence the box judged not to be about the work, sent as a question after all.
   const askAnyway = () => {
     if (blocked) { setRefusal(blocked); return; }
@@ -560,7 +579,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     go(`/projects/${projectId}/workspace?chapter=${target.chapter}`);
   };
   const startRefine = (issueId: string, number: number, manual = true) => {
-    setRefine({ issueId, number, manual }); setFollowUp(null); setSelection(""); setMode("auto"); setRoutedAs("");
+    setRefine({ issueId, number, manual }); setFollowUp(null); setSelection(""); setMode("auto");
     field.current?.focus();
   };
   const rerunRecap = () => {
@@ -612,9 +631,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const hintMore = busy || !(asking || activeMode === "change") ? "" : costMore;
   // In 自动 a picked passage alone is enough to send (it is checked); a sentence is needed for anything else.
   const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "change" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
-  const modeText = activeMode !== "auto" || refine?.manual ? undefined : routing ? "判断中…" : routedAs ? `自动 · ${routedAs}` : undefined;
-  const changeMode = (next: Mode) => { setMode(next); setRoutedAs(""); };
-  const edited = (next: string) => { setText(next); setRoutedAs(""); };
+  const changeMode = (next: Mode) => { setMode(next); };
+  const edited = (next: string) => { setText(next); };
   const starters = tasks?.length === 0 ? starterQuestions({
     lastChapter: project.current_draft.chapter_number > 1 ? project.current_draft.chapter_number - 1 : null,
     characters: material.characters,
@@ -622,7 +640,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   }) : null;
   const groups = arrange(tasks ?? []);
   const handlers: AskHandlers = {
-    projectId, visitor, stopping, stop: (task) => void stop(task), retry, openChapter, locate, replace, blocked, readOnly: archived, asked,
+    projectId, visitor, stopping, stop: (task) => void stop(task), retry, openChapter, locate, replace, blocked, off, readOnly: archived, asked, timedOut,
     merge: (items) => mergeChanges(setTasks, items),
     written: bridge.materialsChanged,
     goMaterials: () => { onNavigate?.(); go(`/projects/${projectId}/memory`); },
@@ -660,26 +678,43 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
           <Starters intro="问这部作品里的人、事、物。助手会自己去查正文和已确认的事实，每句回答都带着出处。"
             items={starters} ask={askStarter} recap={onWriting ? { run: rerunRecap, reason: blocked || recapReason } : null} />
         )}
-        {groups.map((group) => {
+        {groups.map((group, index) => {
           const task = group.latest;
-          if (task.kind === "recap") return <RecapView key={group.id} task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)} openChapter={openChapter} rerun={onWriting ? rerunRecap : null} replace={replace} />;
-          if (task.kind === "fix_issue") {
-            return <FixView key={group.id} task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)}
-              openChapter={openChapter} locate={locate} link={writing} actions={actions} refine={onWriting ? startRefine : null} replace={replace} rise={asked.includes(task.id)} />;
-          }
-          return <AskGroup key={group.id} group={group} handlers={handlers} />;
+          // A question that follows the one just above hangs from it; any other turn starts under a thin line with its time.
+          const above = index > 0 ? groups[index - 1] : null;
+          const follow = Boolean(task.follow_up_of && above && [above.latest, ...above.older].some((item) => item.id === task.follow_up_of));
+          const view = task.kind === "recap"
+            ? <RecapView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)} openChapter={openChapter} rerun={onWriting ? rerunRecap : null} replace={replace} />
+            : task.kind === "fix_issue"
+              ? <FixView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)}
+                openChapter={openChapter} locate={locate} link={writing} actions={actions} refine={onWriting ? startRefine : null} replace={replace} rise={asked.includes(task.id)} />
+              : <AskGroup group={group} handlers={handlers} follow={follow} />;
+          return (
+            <Fragment key={group.id}>
+              {above && !follow && <div className="a-turn-rule" role="separator"><time dateTime={task.created_at}>{turnTime(task.created_at)}</time></div>}
+              {view}
+            </Fragment>
+          );
         })}
+        {pending && (
+          <div className="a-group a-pending" data-testid="route-pending">
+            <div className="a-ask rise">{pending.selection && <span className="a-quote">{clip(pending.selection, 120)}</span>}{pending.input}</div>
+            <div className="a-process" role="status"><span className="a-fold static"><ThreeSquares /> 正在判断用法…</span></div>
+          </div>
+        )}
         {offTopic && <OutOfScopeNote input={offTopic.input} asAsk={askAnyway} blocked={blocked} />}
         {elsewhere !== null && <RecapElsewhereNote input={elsewhere} cost={cost} blocked={blocked} open={() => { wantRecapOnArrival(); go(`/projects/${projectId}/workspace`); }} />}
         {announce && <p className="sr-only">{announce}</p>}
       </div>
       {unseen && <button type="button" className="a-jump" onClick={jumpToLatest}><span className="d" aria-hidden="true" />新回答 ↓</button>}
       {tip && <p className="a-tip" role="status">{tip}</p>}
-      {refusal && refusal !== blocked && <p className="a-block a-refused" role="alert">{refusal}</p>}
+      {refusal && refusal !== blocked && (
+        <p className="a-block a-refused" role="alert">{refusal}{again && <> <button type="button" className="a-link a-retry" onClick={again.run}>重试</button></>}</p>
+      )}
       <Composer chips={chips} text={text} setText={edited} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={variant === "drawer"}
         mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId)} stopping={stopping}
         stop={() => { const running = tasks?.find(active); if (running) void stop(running); }}
-        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined} modeText={modeText}
+        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} />
       {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus(), 0); }} />}
     </div>
@@ -770,8 +805,10 @@ function selectedText(range: Range): string {
 }
 
 /** A small black bar over text picked with 4–600 characters: 问助手 carries it into a question, 前面怎么写的 asks at once,
-    and (where the text is the author's own draft) 查前文矛盾 has the passage checked against what came before. */
-export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: {
+    and (where the text is the author's own draft) 查前文矛盾 has the passage checked against what came before. The bar sits under the picked
+    words; it goes above them only when that is clear of the line above (it would cover words of the previous paragraph), and it never sticks out of the
+    text column's left edge. `blocked` is why no question can be asked now (the allowance is used up): the buttons are greyed and say so when pointed at. */
+export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check, blocked = "" }: {
   selector: string;
   onAsk: (text: string) => void;
   onQuick: (text: string) => void;
@@ -779,8 +816,10 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: 
   onSelect?: (text: string | null) => void;
   /** The third button; leave it out where it makes no sense (a visitor, a written chapter). `remaining` is the day's characters left, null when not counted. */
   check?: { run: (text: string) => void; remaining: number | null; free?: boolean };
+  blocked?: string;
 }) {
-  const [shown, setShown] = useState<{ text: string; x: number; y: number; below: boolean } | null>(null);
+  const [shown, setShown] = useState<{ text: string; x: number; y: number; above: boolean; edge: number } | null>(null);
+  const [width, setWidth] = useState(0);
   const bar = useRef<HTMLDivElement>(null);
   const told = useRef(onSelect);
   useEffect(() => { told.current = onSelect; });
@@ -810,12 +849,26 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: 
       const first = rects[0] ?? range.getBoundingClientRect();
       const last = rects[rects.length - 1] ?? first;
       const topbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 64;
-      // The bar sits above the words, never over the page's top bar or the editor's own tool row; where there is no room it goes below them.
-      const tools = document.querySelector(selector)?.closest(".draft")?.querySelector(".draft-tools")?.getBoundingClientRect();
+      // Above the words only if there is room under the page's top bar and the editor's own tool row, and nothing of the text lies where the bar would
+      // go (the line above, or the paragraph before); otherwise below, where the words end.
+      const column = document.querySelector(selector);
+      const tools = column?.closest(".draft")?.querySelector(".draft-tools")?.getBoundingClientRect();
       const ceiling = Math.max(topbar + 8, tools ? tools.bottom + 4 : 0);
-      const below = first.top - 8 - 32 < ceiling;
-      const x = Math.min(Math.max((first.left + last.right) / 2, 120), window.innerWidth - 120);
-      setShown({ text, x, y: below ? last.bottom + 8 : first.top - 8, below });
+      const barTop = first.top - 8 - 32;
+      const start = range.startContainer instanceof Element ? range.startContainer : range.startContainer.parentElement;
+      const startBlock = start?.closest("p, li, h1, h2, h3, h4, blockquote") ?? null;
+      const covered = column
+        ? Array.from(column.querySelectorAll("p, li, h1, h2, h3, h4, blockquote")).some((block) => {
+          const box = block.getBoundingClientRect();
+          if (box.height <= 0 || box.bottom <= barTop || box.top >= first.top - 8) return false;
+          // The paragraph the words are in only covers them when they are not on its first line.
+          if (startBlock && (block === startBlock || block.contains(startBlock))) return first.top - box.top > (parseFloat(getComputedStyle(block).lineHeight) || 30) * 0.9;
+          return true;
+        })
+        : false;
+      const above = barTop >= ceiling && !covered;
+      const edge = Math.max(8, column ? column.getBoundingClientRect().left : 8);
+      setShown({ text, x: (first.left + last.right) / 2, y: above ? first.top - 8 : last.bottom + 8, above, edge });
     };
     const schedule = () => { if (!frame) frame = window.requestAnimationFrame(evaluate); };
     const hide = () => setShown(null);
@@ -846,18 +899,21 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check }: 
       window.removeEventListener("scroll", hide, true);
     };
   }, [selector]);
+  // The bar is centred on the words, then kept inside the text column's left edge and the window's right.
+  useLayoutEffect(() => { if (shown && bar.current) setWidth(bar.current.offsetWidth); }, [shown]);
   if (!shown) return null;
+  const left = Math.max(shown.edge, Math.min(shown.x - width / 2, window.innerWidth - width - 8));
   return (
-    <div ref={bar} className={`a-selpop${shown.below ? " below" : ""}`} role="toolbar" aria-label="对选中的文字提问" style={{ left: shown.x, top: shown.y }}
+    <div ref={bar} className={`a-selpop${shown.above ? " above" : ""}`} role="toolbar" aria-label="对选中的文字提问" style={{ left, top: shown.y }}
       onMouseDown={(event) => event.preventDefault()}>
-      <button type="button" className="first" aria-label="问助手：把选中的文字带进提问" onClick={() => { onAsk(shown.text); setShown(null); }}>问助手</button>
-      <button type="button" aria-label="前面怎么写的：直接问这段前面怎么写的" onClick={() => { onQuick(shown.text); setShown(null); }}>前面怎么写的</button>
+      <button type="button" className="first" disabled={Boolean(blocked)} title={blocked || undefined} aria-label="问助手：把选中的文字带进提问" onClick={() => { onAsk(shown.text); setShown(null); }}>问助手</button>
+      <button type="button" disabled={Boolean(blocked)} title={blocked || undefined} aria-label="前面怎么写的：直接问这段前面怎么写的" onClick={() => { onQuick(shown.text); setShown(null); }}>前面怎么写的</button>
       {check && (() => {
         const cost = TASK_CHARS + writtenChars(shown.text);
         const short = check.remaining !== null && check.remaining < cost;
         const label = check.free ? "查前文矛盾" : `查前文矛盾 · 约 ${formatCount(cost)} 字`;
         return (
-          <button type="button" disabled={short} title={short ? "今天的可检查字数不够这次检查" : undefined}
+          <button type="button" disabled={short || Boolean(blocked)} title={blocked || (short ? "今天的可检查字数不够这次检查" : undefined)}
             aria-label={`查前文矛盾：检查这段和前文有没有矛盾${check.free ? "，示例作品不计字数" : `，约 ${formatCount(cost)} 字`}`} onClick={() => { check.run(shown.text); setShown(null); }}>{label}</button>
         );
       })()}

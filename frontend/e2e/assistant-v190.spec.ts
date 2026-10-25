@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { api, createWorkByApi, expect, newPage, openTab, registerAccount, sampleWorkId, shot, startVisitor, test } from "./support/app";
-import { allowance, box, checkedWork, chip, chooseMode, finished, openAssistantTab, openPlus, select, selectedWords, send, taskPost, tasks, thread, topbarAssistant } from "./support/assistant";
+import { allowance, box, checkedWork, chip, chooseMode, finished, menuNames, openAssistantTab, openPlus, select, selectedWords, send, taskPost, tasks, thread, topbarAssistant } from "./support/assistant";
 import { setup } from "./support/writing";
 
 // v1.9.0 stage D: the assistant's box judges which use a sentence asks for ("自动", the default), a task it started says so and can be
@@ -27,43 +27,48 @@ test.describe("助手输入框：自动判断用法", () => {
     await openAssistantTab(page);
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
     await expect(thread(page).getByRole("menuitemradio", { name: /^自动/ })).toHaveAttribute("aria-checked", "true");
     await page.keyboard.press("Escape");
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
     await openTab(visitor, await sampleWorkId(visitor), "workspace");
     await openAssistantTab(visitor);
     await modeButton(visitor, "自动").click();
-    await expect(thread(visitor).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "改资料"]);
+    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料"]);
     await visitor.close();
   });
 
-  test("自动：发送时先问判断接口（按钮写「判断中…」），再按判断出的用法建任务，按钮写「自动 · 问作品」", async ({ page }) => {
+  test("自动：发送时问题马上进对话、输入框马上清空，对话里写「正在判断用法…」；再按判断出的用法建任务，按钮一直是「自动」", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     await box(page).fill("E2E_ROUTE_SLOW 罗盘现在在谁手里？");
     const asked = routePost(page);
     const created = taskPost(page);
     await send(page).click();
-    // The sentence is being judged: the button says so (the model answers after 3 s), and nothing can be sent meanwhile.
-    await expect(modeButton(page, "判断中…")).toBeVisible();
+    // The sentence is being judged (the model answers after 3 s): it is in the conversation at once with a line saying so, the box is empty,
+    // and nothing can be sent meanwhile.
+    await expect(box(page)).toHaveValue("");
+    await expect(thread(page).getByTestId("route-pending")).toContainText("E2E_ROUTE_SLOW 罗盘现在在谁手里？");
+    await expect(thread(page).getByTestId("route-pending")).toContainText("正在判断用法…");
     await expect(send(page)).toBeDisabled();
     expect((await asked).postDataJSON()).toEqual({ input: "E2E_ROUTE_SLOW 罗盘现在在谁手里？", context: { page: "writing", chapter_number: expect.any(Number) } });
     const body = (await created).postDataJSON();
     expect(body).toEqual({ kind: "ask", question: "E2E_ROUTE_SLOW 罗盘现在在谁手里？", context: { page: "writing", chapter_number: expect.any(Number) },
       routed: true, route_source: "model", routed_input: "E2E_ROUTE_SLOW 罗盘现在在谁手里？" });
-    await expect(modeButton(page, "自动 · 问作品")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
     await finished(page);
-    // The box is back to an empty sentence, and the label stays until the author writes again.
+    // The box is back to an empty sentence, and the button says 自动: the use the box judged is on the line above the answer, not on the button.
     await expect(box(page)).toHaveValue("");
-    await expect(modeButton(page, "自动 · 问作品")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
+    await expect(thread(page).getByTestId("route-pending")).toHaveCount(0);
+    await expect(tasks(page).first().getByTestId("process-line")).toContainText("问作品");
     await box(page).fill("再问一句");
     await expect(modeButton(page, "自动")).toBeVisible();
   });
@@ -75,7 +80,7 @@ test.describe("助手输入框：自动判断用法", () => {
     let created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).toEqual({ kind: "recap", context: { page: "writing" }, routed: true, route_source: "model", routed_input: "E2E_ROUTE_RECAP 动笔前帮我理一下前面写到哪了" });
-    await expect(modeButton(page, "自动 · 写前回顾")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
     await finished(page);
     await expect(tasks(page).first()).toHaveAttribute("data-kind", "recap");
     // A passage selected in the text is brought into the box; with the sentence "E2E_ROUTE_CHECK" it is checked.
@@ -87,8 +92,9 @@ test.describe("助手输入框：自动判断用法", () => {
     created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ kind: "ask", question: "这段和前文有没有矛盾？", context: { page: "writing", selection: picked, intent: "check_selection" }, routed: true });
-    await expect(modeButton(page, "自动 · 查前文矛盾")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
     await finished(page, 2);
+    await expect(tasks(page).last().getByTestId("process-line")).toContainText("查前文矛盾");
   });
 
   test("自动：挂着选中的这段、没写字，发送就是检查这一段（规则，不问模型）", async ({ page }) => {
@@ -141,7 +147,7 @@ test.describe("助手输入框：自动判断用法", () => {
     const note = thread(page).getByTestId("route-out-of-scope");
     await expect(note).toContainText("这和作品无关，助手只回答这部作品里的事。");
     await expect(note).toContainText("E2E_ROUTE_OUT 帮我写一封请假邮件");
-    await expect(modeButton(page, "自动 · 与作品无关")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
     await expect(tasks(page)).toHaveCount(0);
     expect(posted).toBe(0);
     expect(await used(page)).toBe(before);
@@ -166,7 +172,7 @@ test.describe("助手输入框：自动判断用法", () => {
     const note = thread(page).getByTestId("route-recap-elsewhere");
     await expect(note).toContainText("写前回顾要在写作页里用");
     await expect(note).toContainText("E2E_ROUTE_RECAP 下笔前我得先记着哪些事");
-    await expect(modeButton(page, "自动 · 写前回顾")).toBeVisible();
+    await expect(modeButton(page, "自动")).toBeVisible();
     await expect(tasks(page)).toHaveCount(0);
     expect(posted).toBe(0);
     expect(await used(page)).toBe(before);
@@ -179,7 +185,7 @@ test.describe("助手输入框：自动判断用法", () => {
     expect(await used(page)).toBe(before + 500);
   });
 
-  test("判断拿不准，或 8 秒还没回来：按问作品发送", async ({ page }) => {
+  test("判断拿不准，或 15 秒还没回来：按问作品发送，过程行写「没等到判断，按问作品处理」", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     await box(page).fill("E2E_ROUTE_UNSURE E2E_ROUTE_RECAP 这一章接下来怎么办");
@@ -187,16 +193,18 @@ test.describe("助手输入框：自动判断用法", () => {
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ kind: "ask", routed: true, route_source: "model" });
     await finished(page);
-    // The answer never comes: the page gives up after 8 seconds and asks the question.
+    // The answer never comes: the page gives up after 15 seconds and asks the question.
     await page.route(routeUrl, () => undefined);
     await box(page).fill("罗盘还在温岚手里吗？");
     created = taskPost(page);
     const start = Date.now();
     await send(page).click();
-    await expect(modeButton(page, "判断中…")).toBeVisible();
+    await expect(thread(page).getByTestId("route-pending")).toContainText("正在判断用法…");
     const body = (await created).postDataJSON();
-    expect(Date.now() - start).toBeGreaterThanOrEqual(7_500);
+    expect(Date.now() - start).toBeGreaterThanOrEqual(14_500);
     expect(body).toMatchObject({ kind: "ask", question: "罗盘还在温岚手里吗？", routed: true, route_source: "model" });
+    await finished(page, 2);
+    await expect(tasks(page).last().getByTestId("process-line")).toContainText("没等到判断，按问作品处理");
     await page.unroute(routeUrl);
   });
 
@@ -228,8 +236,8 @@ test.describe("助手输入框：自动判断用法", () => {
     await send(page).click();
     const first = tasks(page).first();
     await expect(first).toHaveAttribute("data-status", /^(queued|running)$/);
-    const line = first.getByTestId("routed-line");
-    await expect(line).toContainText("按「问作品」处理");
+    const line = first.getByTestId("process-line");
+    await expect(line).toContainText("问作品");
     await expect(line.locator("summary")).toBeVisible();
     await expect.poll(() => used(page)).toBe(before + 500);
     await line.locator("summary").click();
@@ -256,8 +264,8 @@ test.describe("助手输入框：自动判断用法", () => {
     await send(page).click();
     await finished(page);
     const before = await used(page);
-    const line = tasks(page).first().getByTestId("routed-line");
-    await expect(line).toContainText("按「问作品」处理");
+    const line = tasks(page).first().getByTestId("process-line");
+    await expect(line).toContainText("问作品");
     await expect(line).toContainText("约 500 字");
     await line.locator("summary").click();
     const created = taskPost(page);
@@ -282,7 +290,7 @@ test.describe("助手输入框：自动判断用法", () => {
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ kind: "fix_issue", question: "这里怎么改比较顺", context: { page: "writing", issue_id: issue.id }, routed: true });
     await finished(page);
-    await expect(tasks(page).last().getByTestId("routed-line")).toContainText("按「帮我改这一处」处理");
+    await expect(tasks(page).last().getByTestId("process-line")).toContainText("帮我改这一处");
     // The same finding, but the sentence is a question about the work: 问作品, and the finding is still the task's context.
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某条检查结果/ }).click();
@@ -292,7 +300,7 @@ test.describe("助手输入框：自动判断用法", () => {
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ kind: "ask", question: "E2E_ROUTE_ASK 伏笔在哪收比较顺", context: { issue_id: issue.id }, routed: true });
     await finished(page, 2);
-    const line = tasks(page).last().getByTestId("routed-line");
+    const line = tasks(page).last().getByTestId("process-line");
     await line.locator("summary").click();
     await expect(line.getByRole("menuitem")).toContainText(["写前回顾", "帮我改这一处"]);
   });

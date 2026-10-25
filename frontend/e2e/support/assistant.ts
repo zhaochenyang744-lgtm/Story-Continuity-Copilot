@@ -18,6 +18,8 @@ export const taskPost = (page: Page) => page.waitForRequest((request) => request
 /** A context tag inside the box (its text is followed by the × that takes it off). */
 export const chip = (page: Page, text: string) => thread(page).locator(".a-chip").filter({ hasText: text });
 export const toolbar = (page: Page) => page.getByRole("toolbar", { name: "对选中的文字提问", exact: true });
+/** The uses the mode menu offers, by their names (each entry also carries a line saying what it does). */
+export const menuNames = (root: Locator) => root.getByRole("menuitemradio").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
 export const composeNote = "回答由 AI 生成，可能出错，请点出处核对。";
 
 export async function openAssistantTab(page: Page) {

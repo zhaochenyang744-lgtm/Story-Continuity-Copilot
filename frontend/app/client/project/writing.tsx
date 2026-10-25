@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
 import { countVisibleText, DraftWordCount, flashText, proofreadDraftText, replaceVisibleDraftText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
@@ -25,7 +25,8 @@ import {
   timeLabel,
 } from "../labels";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, isSampleWork, SAMPLE_FREE, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
-import { AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, type WritingLink } from "./assistant";
+import { AssistantBridge, AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
+import { quotaReason } from "./assistant-parts";
 import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
@@ -44,6 +45,18 @@ function pinPanes() {
   if (!panes) return;
   const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
   window.scrollTo({ top: Math.max(0, panes.getBoundingClientRect().top + window.scrollY - top) });
+  fitAssistantPane();
+}
+/** On a phone the 助手 pane is as high as what is left of the screen under the top bar, the pane switch and the space the page keeps between
+    the switch and the pane (measured once the pane is shown; 32px until then), so its last line (the box and what stands under it) is on screen. */
+function fitAssistantPane() {
+  const root = document.documentElement;
+  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
+  const switcher = document.querySelector<HTMLElement>(".mobile-panes");
+  const panel = document.getElementById("side-panel-assistant");
+  const visible = window.visualViewport?.height ?? window.innerHeight;
+  const gap = switcher && panel && panel.getClientRects().length > 0 ? Math.max(0, panel.getBoundingClientRect().top - switcher.getBoundingClientRect().bottom) : 32;
+  root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - (switcher?.offsetHeight ?? 0) - gap - 8))}px`);
 }
 
 export function WritingPage(props: PageProps) {
@@ -60,7 +73,7 @@ export function WritingPage(props: PageProps) {
     window.scrollTo({ top: 0 });
   };
   if (viewing !== null && p.chapters.some((chapter) => chapter.number === viewing))
-    return <ChapterDesk key={viewing} p={p} user={user} go={go} notices={notices} number={viewing} open={open} />;
+    return <ChapterDesk key={viewing} p={p} user={user} usage={props.usage} go={go} notices={notices} number={viewing} open={open} />;
   return <DraftDesk {...props} openChapter={open} />;
 }
 
@@ -97,12 +110,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
   useEffect(() => {
     const root = document.documentElement;
-    const measure = () => {
-      const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
-      const switcher = document.querySelector<HTMLElement>(".mobile-panes")?.offsetHeight ?? 0;
-      const visible = window.visualViewport?.height ?? window.innerHeight;
-      root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - switcher - 8))}px`);
-    };
+    const measure = fitAssistantPane;
     measure();
     window.addEventListener("resize", measure);
     window.visualViewport?.addEventListener("resize", measure);
@@ -114,6 +122,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   }, []);
   // Switching to the 助手 tab with the mouse or Enter puts the cursor in its box, so the author does not walk past the whole conversation.
   const focusAssistant = useRef(false);
+  const [focusBox, setFocusBox] = useState(0);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -158,7 +167,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     if (side !== "assistant" || !focusAssistant.current) return;
     focusAssistant.current = false;
     document.querySelector<HTMLTextAreaElement>('#side-panel-assistant textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true });
-  }, [side]);
+  }, [side, focusBox]);
   useEffect(() => {
     if (!revealSide) return;
     const column = document.getElementById("writing-side");
@@ -176,6 +185,25 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     setWantedSide(next);
     try { window.localStorage.setItem(sideKey, next === "assistant" ? "assistant" : "findings"); } catch { /* the choice lasts for this visit */ }
   };
+  // The top bar's 助手 button: the column switches to the assistant and the cursor goes into its box (a phone shows the assistant pane).
+  const bridge = useContext(AssistantBridge);
+  useAssistantAnchor("writing", { chapter_number: chapterNumber });
+  const openColumn = useRef<() => void>(() => undefined);
+  useEffect(() => {
+    openColumn.current = () => {
+      if (!assistantOn) return;
+      chooseSide("assistant");
+      setMobilePane("assistant");
+      window.requestAnimationFrame(pinPanes);
+      focusAssistant.current = true;
+      setFocusBox((count) => count + 1);
+    };
+  });
+  const { setColumnOpener } = bridge;
+  useEffect(() => {
+    setColumnOpener(() => openColumn.current());
+    return () => setColumnOpener(null);
+  }, [setColumnOpener]);
   // A passage picked in the draft goes to the assistant: into the question, or asked about at once.
   const bring = (text: string, quick: boolean) => {
     chooseSide("assistant");
@@ -314,6 +342,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
 
   return (
     <section className="page writing" data-mobile-pane={mobilePane}>
+      <div className="writing-layout">
+      <div className="writing-main">
       {notices}
       <header className="draft-head" aria-label={`草稿第 ${chapterNumber} 章`}>
         <Num className="draft-head-num"><Odometer value={chapterNumber} /></Num>
@@ -392,11 +422,14 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
             ) : (
               <RichDraftEditor id="draft-body" label="草稿正文" placeholder="开始写这一章……" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} marks={marks} onPickMark={pick} />
             )}
-            {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)}
+            {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)} blocked={quotaReason(usage, sample)}
               onSelect={(text) => setPicked((current) => (text === null ? (current === null ? current : null) : current?.text === text ? current : { text, quick: false, nonce: ++incomingNonce.current }))}
               check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" && !sample ? usage.check_chars_remaining : null, free: sample }} />}
           </div>
         </article>
+
+        </div>
+      </div>
 
         <aside id="writing-side" className="findings" aria-label="检查与回顾">
           <SideTabs
@@ -667,10 +700,14 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, a
               {(actions.length > 0 || !decided) && (
                 <div className="finding-actions">
                   {actions.map((action, index) => <Button key={action.key} kind={index === 0 ? "primary" : "text"} className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
-                  {!decided && assist && <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>}
+                  {!decided && assist && (
+                    <span className="assist-line">
+                      <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>
+                      {assist.reason && <span className="assist-reason" data-testid="assist-reason">{assist.reason}。</span>}
+                    </span>
+                  )}
                 </div>
               )}
-              {!decided && assist?.reason && !outdated && <p className="finding-hint">{assist.reason}。</p>}
               {error && <p className="inline-error" role="alert">{error}</p>}
             </div>
           ) : <p className={tutorial ? "readonly tutorial-mobile-decision-note" : "readonly"}>{tutorial ? "手机上可以浏览完整依据；请在电脑上继续作出决定。" : "只读，不能在这里处理。"}</p>}
