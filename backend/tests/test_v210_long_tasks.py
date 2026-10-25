@@ -7,6 +7,7 @@ import re
 from datetime import datetime, timedelta, timezone
 
 from app import long_tasks as lt
+from app.memory_contract import CONTROLLED_PREDICATES
 
 from tests.scripted_chat import call, turn
 from tests.test_v200_changes import ChangeCase
@@ -311,3 +312,154 @@ class ChargeTests(LongCase):
         self.post(task["id"], "start", expect=202)
         view = self.view(task["id"])
         self.assertEqual((view["status"], view["usage"]["chars_charged"]), ("completed", 500 + planned))
+
+
+def digest_refs(messages):
+    """The passage numbers the earlier steps' findings carry into this step (their digest)."""
+    user = messages[1]["content"]
+    part = user.split("前面几步的结果（资料）：", 1)[1].split("这一步的章节原文", 1)[0]
+    return re.findall(r"R\d+", part)
+
+
+def facts_view(messages):
+    """The facts a tidy step listed: [(ref, text)] in order."""
+    user = messages[1]["content"].split("这一步的章节原文", 1)[0]
+    return re.findall(r"\[(R\d+)\] ([^\n]+)", user.split("资料里已确认的事实（资料）：", 1)[1])
+
+
+class TraceTests(LongCase):
+    def tracing(self, conflict=True, earlier=None):
+        def decide(provider, messages):
+            _, chapters = step_view(messages)
+            if 3 in chapters:
+                return turn(call("report_trace", states=[{"state": "罗盘在苏岑手里", "refs": [chapters[3][0]]}]))
+            states = [{"state": "罗盘在温岚手里", "refs": [chapters[10][0]]}]
+            conflicts = [{"earlier": [earlier(chapters) if earlier else digest_refs(messages)[0]], "later": [chapters[10][0]],
+                          "what": "罗盘在谁手上前后对不上"}] if conflict else []
+            return turn(call("report_trace", states=states, conflicts=conflicts))
+        return decide
+
+    def trace(self, output="list", turns=None):
+        self.provider.script_route({"type": "trace", "target": "罗盘", "chapters": None, "output": output})
+        task = self.create("罗盘这一路归谁拿着，前后打架的地方单独列出来")
+        self.provider.script(*(turns or [self.tracing()] * 2))
+        self.post(task["id"], "start", expect=202)
+        return self.view(task["id"])
+
+    def test_a_trace_lists_states_and_disagreements_and_asks_nothing_when_a_list_is_wanted(self):
+        view = self.trace()
+        self.assertEqual((view["status"], view["questions"], view["changes"]), ("completed", [], []))
+        self.assertIn("罗盘", self.provider.calls[0]["messages"][1]["content"])
+        sections = view["answer"]["sections"]
+        self.assertEqual([item["text"] for item in sections["状态变化"]], ["第 3 章：罗盘在苏岑手里", "第 10 章：罗盘在温岚手里"])
+        [conflict] = sections["对不上的地方"]
+        self.assertEqual((conflict["text"], conflict["label"]), ("第 3 章和第 10 章：罗盘在谁手上前后对不上", "第 3 章和第 10 章"))
+        self.assertEqual(len(conflict["refs"]), 2)
+
+    def test_when_a_conclusion_is_wanted_the_author_picks_the_passage(self):
+        view = self.trace(output="conclusion")
+        self.assertEqual(view["status"], "waiting_author")
+        [question] = view["questions"]
+        self.assertEqual((question["kind"], question["choices"]), ("decision", ["a", "b", "you_decide"]))
+        self.assertEqual([option["chapter"] for option in question["options"]], [3, 10])
+        self.assertTrue(all(option["quote"] for option in question["options"]))
+        self.post(view["id"], "answer", {"question_id": question["id"], "choice": "c"}, expect=422)
+        self.post(view["id"], "answer", {"question_id": question["id"], "choice": "a"}, expect=202)
+        view = self.view(view["id"])
+        self.assertEqual(view["status"], "completed")
+        self.assertIn("（你定的：以第 3 章为准）", view["answer"]["sections"]["对不上的地方"][0]["text"])
+
+    def test_you_decide_goes_by_the_latest_passage(self):
+        view = self.trace(output="conclusion")
+        self.post(view["id"], "answer", {"question_id": view["questions"][0]["id"], "choice": "you_decide"}, expect=202)
+        self.assertIn("（按最新一章：以第 10 章为准）", self.view(view["id"])["answer"]["sections"]["对不上的地方"][0]["text"])
+
+    def test_a_disagreement_reaches_back_only_to_passages_earlier_steps_cited(self):
+        uncited = self.tracing(earlier=lambda chapters: "R1")  # registered in step 1, never cited
+        view = self.trace(turns=[self.tracing(), uncited, self.tracing()])
+        self.assertEqual(view["status"], "completed")
+        self.assertIn("report_invalid", self.provider.calls[2]["messages"][-1]["content"])
+
+
+class TidyTests(LongCase):
+    def facts(self):
+        with self.db.connection() as c:
+            version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (self.project_id,)).fetchone()[0]
+            return self.db._confirmed_memory(c, self.project_id, version)
+
+    def tidying(self, decoy=False, conflict=True):
+        # The decoy repeats a fact the materials hold; one under a fixed property, as a missing fact must be (seed facts may
+        # carry older properties, and the facts come in no fixed order).
+        first = next(fact for fact in self.facts() if fact["predicate"] in CONTROLLED_PREDICATES)
+
+        def decide(provider, messages):
+            listed = facts_view(messages)
+            _, chapters = step_view(messages)
+            if 3 in chapters:
+                return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "先前的新写法", "refs": [chapters[3][0]]}], missing=[]))
+            missing = [{"memory_type": "dynamic_state", "subject": "温岚", "predicate": "possession", "value": "拿着那枚罗盘", "refs": [chapters[10][0]]}]
+            if decoy:  # a fact the materials state already
+                missing.append({**{k: first[k] for k in ("memory_type", "subject", "predicate", "value")}, "refs": [chapters[10][-1]]})
+            conflicts = [{"subject": "苏岑", "predicate": "identity", "memory_type": "static_canon", "what": "年龄两处写法不同",
+                          "earlier": {"refs": [chapters[6][0]], "value": "十七岁"}, "later": {"refs": [chapters[9][0]], "value": "十八岁"}}] if conflict else []
+            return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "最新的写法", "refs": [chapters[10][0]]}], missing=missing,
+                             conflicts=conflicts))
+        return decide
+
+    def tidy(self, turns=None):
+        self.provider.script_route({"type": "tidy", "target": None, "chapters": None, "output": "list"})
+        task = self.create("把资料和正文对一趟，该补的补、变过的更新")
+        self.provider.script(*(turns or [self.tidying()] * 2))
+        self.post(task["id"], "start", expect=202)
+        return self.view(task["id"])
+
+    def test_stale_and_missing_facts_make_cards_and_a_later_finding_replaces_an_earlier(self):
+        view = self.tidy(turns=[self.tidying(conflict=False)] * 2)
+        self.assertEqual(view["status"], "completed")
+        kinds = sorted(item["kind"] for item in view["changes"])
+        self.assertEqual(kinds, ["add_fact", "change_fact"])  # one card for the fact both steps found stale
+        changed = next(item for item in view["changes"] if item["kind"] == "change_fact")
+        self.assertIn("最新的写法", changed["after"])
+        self.assertEqual(set(view["answer"]["sections"]), {"补上的", "更新的"})
+
+    def test_a_fact_the_materials_state_already_makes_no_card(self):
+        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 2)
+        self.assertEqual(sorted(item["kind"] for item in view["changes"]), ["add_fact", "change_fact"])
+        dropped = [m for s in self.rows("SELECT output_json FROM assistant_long_steps WHERE task_id=?", view["id"])
+                   for m in json.loads(s["output_json"] or "{}").get("missing", []) if m.get("dropped")]
+        self.assertEqual([m["dropped"] for m in dropped], ["change_fact_already_recorded"])
+
+    def test_two_values_the_text_gives_are_asked_and_the_pick_makes_the_card(self):
+        view = self.tidy()
+        self.assertEqual(view["status"], "waiting_author")
+        [question] = view["questions"]
+        self.assertEqual([option["label"] for option in question["options"]], ["第 6 章：十七岁", "第 9 章：十八岁"])
+        self.assertEqual(len(view["changes"]), 2)
+        self.post(view["id"], "answer", {"question_id": question["id"], "choice": "a"}, expect=202)
+        view = self.view(view["id"])
+        self.assertEqual(view["status"], "completed")
+        picked = [item for item in view["changes"] if item["kind"] == "add_fact" and "十七岁" in item["after"]]
+        self.assertEqual(len(picked), 1)
+        self.assertIn("（你定的：以第 6 章为准）", view["answer"]["sections"]["要你拿主意的"][0]["text"])
+        self.long.run(view["id"])  # nothing to take up again: the pick is written once
+        self.assertEqual(len(self.view(view["id"])["changes"]), 3)
+
+    def test_with_the_questions_used_up_the_latest_passage_is_gone_by(self):
+        many = self.tidying()
+
+        def three_conflicts(provider, messages):
+            result = many(provider, messages)
+            args = json.loads(result["calls"][0]["arguments"])
+            if args.get("conflicts"):
+                args["conflicts"] = [dict(args["conflicts"][0], subject=name) for name in ("苏岑", "温岚", "老周", "黎舟")]
+                result = turn(call("report_tidy", **args))
+            return result
+        view = self.tidy(turns=[self.tidying(conflict=False), three_conflicts])
+        for _ in range(3):
+            question = next(q for q in view["questions"] if q["answer"] is None)
+            self.post(view["id"], "answer", {"question_id": question["id"], "choice": "a"}, expect=202)
+            view = self.view(view["id"])
+        self.assertEqual(view["status"], "completed")
+        last = view["questions"][-1]
+        self.assertEqual(last["answer"]["choice"], "you_decide")
+        self.assertEqual(last["answer"]["by"], "program")
