@@ -463,3 +463,17 @@ class TidyTests(LongCase):
         last = view["questions"][-1]
         self.assertEqual(last["answer"]["choice"], "you_decide")
         self.assertEqual(last["answer"]["by"], "program")
+
+
+class RouteTests(LongCase):
+    def test_the_input_box_can_judge_a_long_task_and_a_visitor_gets_a_question(self):
+        from app import assistant_route
+        self.assertEqual(assistant_route.parse('{"route": "long_task", "unsure": false}'), ("long_task", False))
+        self.assertIn("long_task", assistant_route.ROUTE_SYSTEM_PROMPT)
+        author = assistant_route.RouteFacts(writing=False, selection_chars=0, issue=False, draft_chapter=None, visitor=False)
+        visitor = assistant_route.RouteFacts(writing=False, selection_chars=0, issue=False, draft_chapter=None, visitor=True)
+        self.assertEqual((author.fitted("long_task"), visitor.fitted("long_task")), ("long_task", "ask"))
+        self.provider.script_route({"route": "long_task", "unsure": False})
+        r = self.client.post(f"/api/projects/{self.project_id}/assistant/route", headers=self.idem(),
+                             json={"input": "那些还吊着的伏笔都替我过一遍", "context": {"page": "materials"}})
+        self.assertEqual(r.json()["data"]["route"], "long_task")

@@ -47,7 +47,8 @@ DEV_SETS = ("eval_set_a2_dev", "eval_set_a2t_dev")  # the second: the thread act
 SPENT_SETS = score.SPENT_FORMAL_SETS
 # The registered formal pair that has not run yet (none until a new pair is registered).
 FORMAL_SETS = tuple(name for name in PRE_REGISTRATION["formal_sets"] if name not in SPENT_SETS)
-ROUTES = {"ask", "fix_issue", "recap", "check_passage", "change", "out_of_scope"}
+# long_task (v2.1) is a judgement like the others: on an A2 item it is a wrong route, not a broken response.
+ROUTES = {"ask", "fix_issue", "recap", "check_passage", "change", "out_of_scope", "long_task"}
 PASSWORD = "a2-local-evaluation-pass-123"
 THREAD_FIELDS = ("title", "description", "status", "planted_chapter_id", "planted_source_span_id", "resolved_chapter_id",
                  "resolved_source_span_id", "archived_at")

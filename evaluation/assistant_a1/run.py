@@ -467,8 +467,10 @@ class Work:
                         'retryable': response.status_code >= 500,
                         'elapsed_seconds': elapsed}
             result = payload.get('data', payload)
+            # A use added after A1c was registered (change in v2.0, long_task in v2.1) is a judgement like any other: on an A1c
+            # item it is a wrong route, not a broken response.
             if (not isinstance(result, dict) or result.get('route') not in
-                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope'}
+                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope', 'change', 'long_task'}
                     or result.get('source') not in {'rule', 'model'} or type(result.get('unsure')) is not bool):
                 return {'status': 'failed', 'error_code': 'route_schema_invalid', 'retryable': False,
                         'elapsed_seconds': elapsed}
