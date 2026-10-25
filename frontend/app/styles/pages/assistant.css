@@ -135,6 +135,8 @@ button.a-fold:hover { color: var(--c-ink); }
 .a-cite button:focus-visible,
 .a-cite button[aria-expanded="true"] { background: var(--c-blue-tint); color: var(--c-blue-text); }
 .a-cite button:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 1px; }
+/* The mark stays small; the pointer gets at least 24 x 24 px around it (40 x 40 on a phone, below) without the line growing. */
+.a-cite button::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 24px); height: 24px; transform: translate(-50%, -50%); }
 .a-pop { position: fixed; z-index: 80; display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--c-rule); border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-pop); color: var(--c-ink); font: 400 var(--fs-12)/1.6 var(--font-sans); letter-spacing: 0; text-align: left; vertical-align: baseline; white-space: normal; }
 .a-pop-one { display: grid; gap: 4px; }
 .a-pop-one + .a-pop-one { padding-top: 8px; border-top: 1px solid var(--c-line); }
@@ -388,11 +390,14 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 .cx-menu .what { display: grid; gap: 1px; }
 .cx-menu .what .d { color: var(--c-muted); font-size: var(--fs-11); line-height: 1.5; }
 .cx-menu [aria-checked="true"]::after { content: "✓"; color: var(--c-blue-text); }
-/* Under the frame: the note on what wrote the answer at the left, the cost (or the counter, or the key hint) at the right, in the body face. */
-.a-quota-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; }
-.a-ai-note { margin: 0; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
-.cx-note { flex: 1 1 auto; min-width: 0; margin-left: auto; color: var(--c-faint-text); font-family: var(--font-sans); font-size: var(--fs-12); line-height: 1.6; text-align: right; }
+/* Under the frame: the cost (or the counter, or the key hint) at the right, in the body face, and under it the note on what wrote the answer. Two lines
+   always, so nothing moves when the key hint takes the cost's place. */
+.a-quota-row { container-type: inline-size; display: grid; }
+.a-ai-note { justify-self: start; margin: 0; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
+.cx-note { order: -1; justify-self: end; min-width: 0; min-height: 1.6em; color: var(--c-faint-text); font-family: var(--font-sans); font-size: var(--fs-12); line-height: 1.6; text-align: right; white-space: nowrap; }
 .cx-note.warn { color: var(--c-red-text); }
+/* Where the row has no room for what is left today beside the cost, only the cost stays (what is left is in the note's title). Never half a figure. */
+@container (max-width: 240px) { .cx-note .more { display: none; } }
 .a-tip { padding: 0 var(--s-4) 6px; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
 /* A request that did not go through: red edge and words, with 重试; what was written stays in the box. */
 .a-block { margin: 0 var(--s-4) 6px; padding: 8px 12px; background: var(--c-sunken); color: var(--c-ink-2); font-size: var(--fs-12); line-height: 1.6; }
@@ -474,7 +479,7 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 /* A finger needs 40 x 40 px; the words stay the size they are. Marks inside a line get their room from a layer around them (the line does not
    grow); buttons on their own line are made as tall and as wide as the finger needs. */
 @media (max-width: 720px) {
-  .a-cite button::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 40px); height: 40px; transform: translate(-50%, -50%); }
+  .a-cite button::after { width: max(100%, 40px); height: 40px; }
   .a-foot .a-link, .a-opt-a .a-link, .a-btn-quiet, .a-process .a-link, .a-go, .a-chg-done .btn, .a-opt-a .btn, .a-resend-row .a-link { min-width: 40px; min-height: 40px; }
   .a-foot .a-link { display: inline-flex; align-items: center; justify-content: center; }
   .a-foot { gap: 0 6px; }

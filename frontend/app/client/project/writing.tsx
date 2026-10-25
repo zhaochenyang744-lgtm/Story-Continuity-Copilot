@@ -45,6 +45,18 @@ function pinPanes() {
   if (!panes) return;
   const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
   window.scrollTo({ top: Math.max(0, panes.getBoundingClientRect().top + window.scrollY - top) });
+  fitAssistantPane();
+}
+/** On a phone the 助手 pane is as high as what is left of the screen under the top bar, the pane switch and the space the page keeps between
+    the switch and the pane (measured once the pane is shown; 32px until then), so its last line (the box and what stands under it) is on screen. */
+function fitAssistantPane() {
+  const root = document.documentElement;
+  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
+  const switcher = document.querySelector<HTMLElement>(".mobile-panes");
+  const panel = document.getElementById("side-panel-assistant");
+  const visible = window.visualViewport?.height ?? window.innerHeight;
+  const gap = switcher && panel && panel.getClientRects().length > 0 ? Math.max(0, panel.getBoundingClientRect().top - switcher.getBoundingClientRect().bottom) : 32;
+  root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - (switcher?.offsetHeight ?? 0) - gap - 8))}px`);
 }
 
 export function WritingPage(props: PageProps) {
@@ -98,12 +110,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
   useEffect(() => {
     const root = document.documentElement;
-    const measure = () => {
-      const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
-      const switcher = document.querySelector<HTMLElement>(".mobile-panes")?.offsetHeight ?? 0;
-      const visible = window.visualViewport?.height ?? window.innerHeight;
-      root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - switcher - 8))}px`);
-    };
+    const measure = fitAssistantPane;
     measure();
     window.addEventListener("resize", measure);
     window.visualViewport?.addEventListener("resize", measure);

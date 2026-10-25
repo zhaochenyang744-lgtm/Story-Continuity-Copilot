@@ -443,7 +443,7 @@ export function FixView({ task, projectId, visitor, stopping, stop, retry, openC
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="fix_issue">
       {task.question && <div className={`a-ask${rise ? " rise" : ""}`}>{task.question}</div>}
       <Steps task={task} locate={locate} lead={explaining ? "解释这一处" : "帮我改这一处"}
-        end={running ? <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button> : <RerouteMenu task={task} />} />
+        end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
       <ChosenLine task={task} />
       {info ? (
         <div className="a-issue">

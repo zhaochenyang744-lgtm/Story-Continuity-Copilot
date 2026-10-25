@@ -127,7 +127,7 @@ export function failureText(task: AssistantTask, visitor: boolean): { text: stri
 }
 
 /** The one line a source takes in the list under an answer (and in a change card's 依据): 第 3 章 · 章名. */
-export const sourceRow = (source: AssistantSource) => (source.kind === "fact" && source.chapter_number != null ? cardLabel(source) : whereLabel(source));
+export const sourceRow = whereLabel;
 
 /** A source in the list: its one line, which opens to the original words (in the serif face) and the way to them. */
 export function SourceItem({ id, n, source, locate }: { id: string; n: number; source: AssistantSource; locate: (source: AssistantSource) => void }) {

@@ -79,7 +79,7 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
   return (
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="recap">
       <Steps task={task} lead={`写前回顾${answer ? ` · 第 ${answer.chapter_number} 章（只看第 1–${answer.chapter_number - 1} 章）` : ""}`}
-        end={running ? <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button> : <RerouteMenu task={task} />} />
+        end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
       <ChosenLine task={task} />
       <StoppedNote task={task} visitor={visitor} />
       {failure && (

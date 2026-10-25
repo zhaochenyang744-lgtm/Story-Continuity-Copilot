@@ -91,7 +91,7 @@ export function RerouteMenu({ task }: { task: AssistantTask }) {
     <Menu label="⋯" buttonLabel="改成别的用法" dots>
       <span className="menu-head" aria-hidden="true">改成</span>
       {options.map((use) => (
-        <button key={use} type="button" role="menuitem" disabled={!live && Boolean(control.blocked)} title={!live && control.blocked ? control.blocked : undefined}
+        <button key={use} type="button" role="menuitem" aria-label={USE_LABEL[use]} aria-description={!live && control.cost ? control.cost : undefined} disabled={!live && Boolean(control.blocked)} title={!live && control.blocked ? control.blocked : undefined}
           onClick={() => control.change(task, use)}>{USE_LABEL[use]}{!live && <span className="a-hint"> {control.cost}</span>}</button>
       ))}
     </Menu>

@@ -117,7 +117,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
     <article className="a-task" aria-live="off" data-answer={task.id}>
       {showQuestion && <Question task={task} handlers={handlers} />}
       <Steps task={task} locate={handlers.locate} lead={lead}
-        end={running ? <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button> : <RerouteMenu task={task} />} />
+        end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}</>} />
       <ChosenLine task={task} />
       <StoppedNote task={task} visitor={handlers.visitor} />
       {failure && (
