@@ -108,7 +108,9 @@ def purge(c: sqlite3.Connection, project_id: str) -> None:
     for table in ("assistant_change_events", "assistant_changes"):
         if table in existing:
             c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
-    for table in ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps"):
+    # A long task's plan, steps, questions and booked calls (v2.1 B) go with it too.
+    for table in ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps",
+                  "assistant_long_plans", "assistant_long_steps", "assistant_long_questions", "assistant_long_calls"):
         if table in existing:
             c.execute(f"DELETE FROM {table} WHERE task_id IN ({ids})", (project_id,))
     c.execute("DELETE FROM assistant_tasks WHERE project_id=?", (project_id,))

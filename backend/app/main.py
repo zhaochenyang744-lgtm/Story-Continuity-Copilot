@@ -40,6 +40,8 @@ from .long_term_workflow import register_long_term_routes
 from . import author_home, author_organization
 from .assistant import AssistantEngine, register_routes as register_assistant_routes
 from .assistant_store import AssistantStore
+from .long_tasks import LongTasks, register_routes as register_long_task_routes
+LONG_TASK_SWEEP_SECONDS=30
 
 COOKIE = "scc_local_session"
 MEMORY_INITIALIZATION_FAILURE_PHASES = {"provider_preflight","batch_planning","provider_request","post_response_decode","post_response_budget","post_response_validation","post_aggregation"}
@@ -261,12 +263,19 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
                 # Off the event loop, and one failed sweep (e.g. a busy database) must not end the loop.
                 try: await asyncio.to_thread(stage13.cleanup_expired_visitors)
                 except Exception: pass
-        task=asyncio.create_task(periodic_cleanup())
+        async def long_task_sweep():
+            # v2.1 long tasks: take up queued tasks and those whose runner died (its lease ran out), now and every half minute.
+            while True:
+                try: await asyncio.to_thread(app.state.long_tasks.sweep)
+                except Exception: pass
+                await asyncio.sleep(LONG_TASK_SWEEP_SECONDS)
+        task=asyncio.create_task(periodic_cleanup()); sweeper=asyncio.create_task(long_task_sweep())
         try: yield
         finally:
-            task.cancel()
-            try: await task
-            except asyncio.CancelledError: pass
+            for running in (task,sweeper):
+                running.cancel()
+                try: await running
+                except asyncio.CancelledError: pass
             recovery_executor.shutdown(wait=True,cancel_futures=False)
     app=FastAPI(title='Story Continuity Copilot',version=__version__,lifespan=lifespan)
     app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
@@ -380,6 +389,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     assistant_engine=AssistantEngine(assistant_store,db,guarded_provider,stage13)
     app.state.assistant=assistant_engine
     register_assistant_routes(app, db, user, csrf, key, ok, operation, assistant_engine, executor)
+    long_tasks=LongTasks(db,assistant_store,guarded_provider,stage13,executor=executor)
+    app.state.long_tasks=long_tasks
+    register_long_task_routes(app, db, user, csrf, key, ok, operation, long_tasks, assistant_engine, executor)
     def session_response(request:Request,data:dict,status:int):
         token=data.get('session',{}).pop('_token',None); response=ok(request,data,status)
         if token:

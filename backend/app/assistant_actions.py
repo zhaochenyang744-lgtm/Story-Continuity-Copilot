@@ -811,17 +811,22 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
 
 
 def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id: str, task_id: str, accepted: list[str] | None,
-           edits: dict[str, str] | None = None) -> dict[str, Any]:
+           edits: dict[str, str] | None = None, within: list[str] | None = None) -> dict[str, Any]:
     """Apply the accepted items of a card, with any value the author reworded, and turn down the rest (`accepted` None: turn
     down all). All or nothing: when any accepted item's target no longer holds the values the card was made against, or a
-    review of the facts is still open for a fact item, nothing is written."""
+    review of the facts is still open for a fact item, nothing is written. A long task's card is decided a group at a time:
+    `within` names the group's items, and the rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
-    if not task or task["kind"] != "change":
+    if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
         raise DomainError("resource_not_found", 404)
-    if task["status"] != "completed":
+    if task["status"] != "completed" and not (task["kind"] == "long" and task["status"] == "stopped"):
         raise DomainError("change_task_not_completed", 409)
     rows = c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (task_id,)).fetchall()
+    if within is not None:
+        if not set(within) <= {row["id"] for row in rows}:
+            raise DomainError("invalid_item_selection", 422)
+        rows = [row for row in rows if row["id"] in within]
     if not rows:
         raise DomainError("change_already_decided", 409)
     chosen, edits = set(accepted or []), edits or {}
