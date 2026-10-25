@@ -37,6 +37,14 @@
 .route .route-num { font-family: var(--font-display); font-stretch: 125%; font-weight: 800; font-size: 15px; }
 .route .route-label { font-size: 13px; }
 .route .route-label.current { font-weight: 700; }
+.route .route-thread-no { font-size: 12px; }
+/* On a narrow screen the threads' words live in this list; the chart keeps only the dots and their numbers. */
+.route-threads { display: grid; margin-top: 12px; border-top: 1px solid var(--c-rule); }
+.route-threads li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--c-line); }
+.route-threads-no { display: grid; flex: none; place-items: center; width: 24px; height: 24px; border: 2px solid var(--c-ink); border-radius: 50%; font-family: var(--font-display); font-stretch: 125%; font-size: 12px; font-weight: 800; line-height: 1; }
+.route-threads-copy { display: grid; min-width: 0; }
+.route-threads-copy strong { font-weight: 700; overflow-wrap: anywhere; }
+.route-threads-copy span { color: var(--c-muted); font-size: 13px; }
 .overview-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 56px; margin-top: 56px; }
 .overview-columns .small-note { margin-top: 12px; }
 

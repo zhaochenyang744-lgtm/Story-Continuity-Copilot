@@ -20,6 +20,8 @@ const BLUE = "var(--c-blue)";
 const BLUE_TEXT = "var(--c-blue-text)";
 const MUTED = "var(--c-muted)";
 const LANE = 52;
+/** At this viewport width and below the threads' long labels leave the chart: a dot and its number stay, the words go to a list under it. */
+const NARROW = "(max-width: 600px)";
 const MAX_LANES = 6;
 // Routes already drawn in this visit: the chart draws itself once, later visits show it at rest.
 const drawn = new Set<string>();
@@ -43,6 +45,14 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
   const scroller = useRef<HTMLDivElement>(null);
   const [available, setAvailable] = useState(1180);
   const [drawing] = useState(() => !drawn.has(id) && !reducedMotion());
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia(NARROW);
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   // Pointing at a chapter: which threads were already open by then.
   const [at, setAt] = useState<number | null>(null);
   useEffect(() => {
@@ -98,6 +108,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
   ].filter(Boolean).join("；");
 
   return (
+    <>
     <div className="route-scroll" ref={scroller}>
       <div className="route-frame" style={{ width, height }} onMouseLeave={() => setAt(null)}>
       <svg className={`route${drawing ? " drawing" : ""}${at !== null ? " scrubbing" : ""}`} viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`故事航线：${summary}`}>
@@ -106,7 +117,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
         {at !== null && (
           <g className="route-cursor" aria-hidden="true">
             <line x1={x(at)} y1={36} x2={x(at)} y2={baseline - 14} />
-            <text x={x(at) + 8} y={30} className="route-mono">第 {at} 章时 · {shown.filter((thread) => thread.planted <= at).length} 条伏笔悬着</text>
+            <text x={x(at) + (x(at) > width - 240 ? -8 : 8)} y={30} textAnchor={x(at) > width - 240 ? "end" : "start"} className="route-mono">第 {at} 章时 · {shown.filter((thread) => thread.planted <= at).length} 条伏笔悬着</text>
           </g>
         )}
 
@@ -122,11 +133,20 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
             <g key={thread.id} data-testid={`route-thread-${thread.id}`} className={`route-thread-line${at !== null ? (thread.planted <= at ? " lit" : " dim") : ""}`} style={{ "--i": index } as CSSProperties}>
               <path d={`M ${xp} ${baseline - 8} C ${xp} ${y + rise / 3}, ${xp + bend * 0.37} ${y}, ${xp + bend} ${y} L ${futureStart} ${y}`} fill="none" stroke={INK} strokeWidth="2" />
               <path className="route-flow" d={`M ${futureStart} ${y} L ${end - 7} ${y}`} fill="none" stroke={INK} strokeWidth="2" strokeDasharray="5 6" />
-              <rect x={end - 7} y={y - 7} width="14" height="14" fill={GROUND} stroke={INK} strokeWidth="2" />
-              <text x={xp + bend + 8} y={y - 12} className="route-thread route-thread-label">
-                <tspan className="route-thread-title">{thread.title}</tspan>
-                <tspan dx="12" className="route-mono" fill={MUTED}>第 {thread.planted} 章埋下 · 已过 {passed} 章</tspan>
-              </text>
+              {compact ? (
+                <>
+                  <circle cx={end - 7} cy={y} r="10" fill={GROUND} stroke={INK} strokeWidth="2" />
+                  <text x={end - 7} y={y + 4} textAnchor="middle" className="route-num route-thread-no" fill={INK}>{index + 1}</text>
+                </>
+              ) : (
+                <>
+                  <rect x={end - 7} y={y - 7} width="14" height="14" fill={GROUND} stroke={INK} strokeWidth="2" />
+                  <text x={xp + bend + 8} y={y - 12} className="route-thread route-thread-label">
+                    <tspan className="route-thread-title">{thread.title}</tspan>
+                    <tspan dx="12" className="route-mono" fill={MUTED}>第 {thread.planted} 章埋下 · 已过 {passed} 章</tspan>
+                  </text>
+                </>
+              )}
             </g>
           );
         })}
@@ -200,6 +220,20 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
       })}
       </div>
     </div>
+    {compact && shown.length > 0 && (
+      <ol className="route-threads" aria-label="未回收的伏笔">
+        {shown.map((thread, index) => (
+          <li key={thread.id}>
+            <span className="route-threads-no" aria-hidden="true">{index + 1}</span>
+            <span className="route-threads-copy">
+              <strong>{thread.title}</strong>
+              <span>第 {thread.planted} 章埋下 · 已过 {Math.max(0, draftNumber - thread.planted)} 章</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    )}
+    </>
   );
 }
 
