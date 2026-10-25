@@ -137,10 +137,21 @@ export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantT
   const sentenceOf = (sentence: AssistantSentence, bold: boolean) => {
     const marks = sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => ({ n: number(ref), source: task.sources[ref], sourceId: `a-src-${task.id}-${number(ref)}` }));
     const at = bold && labelled(sentence) ? sentence.text.indexOf(sentence.label!) : -1;
+    // The words as pieces (the label in bold), and the last two characters cut off them: they travel with the mark, so a mark never stands alone on a line.
+    const pieces = at < 0 ? [{ text: sentence.text, bold: false }] : [{ text: sentence.text.slice(0, at), bold: false }, { text: sentence.label!, bold: true }, { text: sentence.text.slice(at + sentence.label!.length), bold: false }];
+    let tail = "";
+    if (marks.length > 0) {
+      for (let at2 = pieces.length - 1; at2 >= 0 && Array.from(tail).length < 2; at2 -= 1) {
+        const chars = Array.from(pieces[at2].text);
+        const take = Math.min(chars.length, 2 - Array.from(tail).length);
+        tail = chars.slice(chars.length - take).join("") + tail;
+        pieces[at2] = { ...pieces[at2], text: chars.slice(0, chars.length - take).join("") };
+      }
+    }
     return (
       <span className="a-s" style={{ "--i": order++ } as CSSProperties}>
-        {at < 0 ? sentence.text : <>{sentence.text.slice(0, at)}<b>{sentence.label}</b>{sentence.text.slice(at + sentence.label!.length)}</>}
-        {marks.length > 0 && <Cite marks={marks} locate={locate} />}
+        {pieces.map((piece, index) => (piece.text ? (piece.bold ? <b key={index}>{piece.text}</b> : <Fragment key={index}>{piece.text}</Fragment>) : null))}
+        {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} /></span>}
       </span>
     );
   };

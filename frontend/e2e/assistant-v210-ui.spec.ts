@@ -736,6 +736,55 @@ test("18 手机：出处标记、复制、重新回答、接着问、点赞点�
   await photograph(page, "07-多轮对话和变更卡片-手机", async () => { await page.goto(`/projects/${id}/overview`); await topbarAssistant(page).click(); }, [[390, 1500]]);
 });
 
+// A sentence ends with a mark; however the line breaks, the mark stays with the last words of its sentence and never stands alone on a line.
+const longLine = (length: number, end: string) => `${"他走进仓道，雨水顺着帽檐往下淌，".repeat(3).slice(0, length - 1)}${end}`;
+const wrapped = askView({
+  id: "atask-wrap", question: "一串长句", created_at: ago(60), completed_at: ago(50), started_at: ago(58), sources,
+  answer: {
+    status: "answered", note: null,
+    sentences: [
+      { text: longLine(41, "。"), refs: ["R1"], lead: true },
+      ...Array.from({ length: 4 }, (_, at) => ({ text: `第${at + 1}条${longLine(30 + at * 3, "。")}`, refs: ["R2"], label: `第${at + 1}条` })),
+    ],
+  },
+});
+const crowdedParagraph = askView({
+  id: "atask-wrap-para", question: "再来一串", created_at: ago(30), completed_at: ago(20), started_at: ago(28), sources,
+  answer: { status: "answered", note: null, sentences: Array.from({ length: 16 }, (_, at) => ({ text: longLine(14 + at * 2, "。"), refs: [at % 2 ? "R3" : "R2", "R4"] })) },
+});
+
+for (const [width, height] of [[1440, 1000], [390, 1500]] as const) {
+  test(`18 出处标记不单独掉到下一行：${width} 宽，分点和段落都一样`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await withThread(page, [wrapped, crowdedParagraph]);
+    const measure = () => page.locator(".a-answer .a-s").evaluateAll((nodes) => nodes.map((node) => {
+      const tail = node.querySelector(".a-tail");
+      const mark = node.querySelector(".a-cite > button");
+      if (!tail || !mark) return null;
+      // The last character before the mark, and how many lines the sentence takes.
+      const text = Array.from(tail.childNodes).find((child) => child.nodeType === Node.TEXT_NODE) as Text;
+      const range = document.createRange();
+      range.setStart(text, text.length - 1);
+      range.setEnd(text, text.length);
+      const whole = document.createRange();
+      whole.selectNodeContents(node);
+      const lines = new Set(Array.from(whole.getClientRects()).filter((box) => box.width > 1).map((box) => Math.round(box.top / 6))).size;
+      return { gap: Math.abs(mark.getBoundingClientRect().top - range.getBoundingClientRect().top), lines, copied: node.textContent };
+    }));
+    const probe = await measure();
+    const rows = probe.filter((row) => row !== null);
+    expect(rows.length).toBe(21);
+    for (const row of rows) expect(row!.gap, `a mark stands on the line of its sentence's last character: ${row!.copied}`).toBeLessThanOrEqual(12);
+    expect(rows.filter((row) => row!.lines > 1).length, "the test has sentences that do break").toBeGreaterThan(8);
+    // What is copied is still the sentence (the pieces are one text).
+    expect(rows[1]!.copied).toContain("第1条");
+    // The check can see the fault: let the mark break away from its words and some marks do land on a line of their own.
+    await page.addStyleTag({ content: ".a-tail { white-space: normal !important; }" });
+    const loose = (await measure()).filter((row) => row !== null && row.gap > 12);
+    expect(loose.length, "without the rule some marks stand alone").toBeGreaterThan(0);
+  });
+}
+
 test("18 手机：写作页的助手窗格填满顶栏和窗格切换以下的屏幕，输入框和它下面的小字都在屏幕里", async ({ page }) => {
   await registerAccount(page, "a18");
   const id = await sampleWorkId(page);
