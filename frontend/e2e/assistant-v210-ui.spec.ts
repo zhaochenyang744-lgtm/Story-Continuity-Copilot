@@ -733,7 +733,7 @@ test("18 手机：出处标记、复制、重新回答、接着问、点赞点�
   // The words do not grow: the mark and the line of actions keep their sizes.
   expect(await style(list.locator(".a-points li").first(), "font-size")).toBe("14px");
   expect(await style(list.locator(".a-foot .a-link").first(), "font-size")).toBe("12px");
-  await photograph(page, "01b-列举回答-手机", async () => { await page.goto(`/projects/${id}/overview`); await topbarAssistant(page).click(); }, [[390, 1500]]);
+  await photograph(page, "07-多轮对话和变更卡片-手机", async () => { await page.goto(`/projects/${id}/overview`); await topbarAssistant(page).click(); }, [[390, 1500]]);
 });
 
 test("18 手机：写作页的助手窗格填满顶栏和窗格切换以下的屏幕，输入框和它下面的小字都在屏幕里", async ({ page }) => {
