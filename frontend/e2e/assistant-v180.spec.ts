@@ -661,8 +661,8 @@ test.describe("助手：输入框", () => {
     expect(focused.border).toBe(tokens.blue);
     expect(focused.shadow).toContain(tokens.tint);
     expect(focused.radius).toBe(tokens.md);
-    // The same on an ordinary form field of another page (the account settings' password form): soft fill, white and blue when
-    // focused, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
+    // An ordinary form field of another page (the account settings' password form) since v2.1: white with a 1px hairline from the
+    // start, the line turns blue when focused, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
     await page.goto("/settings/account");
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
     await page.locator(".row").filter({ hasText: "密码" }).first().getByRole("button", { name: "修改密码", exact: true }).click();
@@ -671,7 +671,8 @@ test.describe("助手：输入框", () => {
     const before = await field.evaluate(read);
     await field.focus();
     const after = await field.evaluate(read);
-    expect(before.background).toBe(tokens.sunken);
+    expect(before.background).toBe(tokens.surface);
+    expect(before.border).toBe(tokens.line);
     expect(before.radius).toBe("6px");
     expect(after.background).toBe(tokens.surface);
     expect(after.border).toBe(tokens.blue);

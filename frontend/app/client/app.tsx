@@ -414,7 +414,7 @@ export function App() {
         </header>
       )}
       {!user && ready && <ThemeSwitch theme={theme} toggle={toggleTheme} floating />}
-      <main id="main" tabIndex={-1} className={user ? "main" : "main main-auth"}>
+      <main id="main" tabIndex={-1} className={user ? "main" : pathname === "/privacy" ? "main main-auth main-article" : "main main-auth"}>
         {showFeedback && (
           <div className={error ? "feedback error" : "feedback"} role={error ? "alert" : "status"}>
             <span key={error ? "error" : notice}>{error ? labelError(error) : notice}</span>

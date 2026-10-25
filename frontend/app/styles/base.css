@@ -105,18 +105,19 @@ button { font: inherit; color: inherit; }
 .arrow, .chevron { flex: none; }
 
 /* ── Form controls ────────────────────────────────────
-   A field is a soft fill a step darker than the page, with no rule. Hovering shows a hairline; focus turns
-   the fill to the surface colour with a thin blue edge and a faint blue halo. The state rules sit in :where()
-   so a field that styles itself (the draft's title and body, the focus-mode title) still wins over them. */
+   A field is a white box (the surface colour) with a 1px hairline and the small corner: the same box as the
+   assistant's. Hovering darkens the hairline a step; focus turns it blue, with at most a 2px tint round it. Errors
+   and disabled fields keep their own looks. The state rules sit in :where() so a field that styles itself
+   (the draft's title and body, the focus-mode title, the sign-in pages' underline fields) still wins over them. */
 input,
 select,
 textarea {
   width: 100%;
   min-height: var(--control-h);
   padding: 9px 12px;
-  border: 1px solid transparent;
+  border: 1px solid var(--c-line);
   border-radius: var(--r-sm);
-  background: var(--c-sunken);
+  background-color: var(--c-surface);
   color: var(--c-ink);
   font: inherit;
   font-size: var(--fs-15);
@@ -126,11 +127,11 @@ textarea {
 textarea { min-height: 88px; resize: vertical; }
 input::placeholder,
 textarea::placeholder { color: var(--c-muted); opacity: 1; }
-:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):hover:not(:disabled):not(:focus) { border-color: var(--c-line); }
-:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus { border-color: var(--c-blue); outline: none; background-color: var(--c-surface); box-shadow: 0 0 0 3px var(--c-blue-tint); }
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):hover:not(:disabled):not(:focus):not([aria-invalid="true"]) { border-color: var(--c-faint); }
+:where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus { border-color: var(--c-blue); outline: none; box-shadow: 0 0 0 2px var(--c-blue-tint); }
 :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):disabled { border-color: var(--c-line); background-color: transparent; color: var(--c-muted); cursor: not-allowed; }
 :where(input, select, textarea)[aria-invalid="true"] { border-color: var(--c-red); }
-:where(input, select, textarea)[aria-invalid="true"]:focus { border-color: var(--c-red); box-shadow: 0 0 0 3px var(--c-red-tint); }
+:where(input, select, textarea)[aria-invalid="true"]:focus { border-color: var(--c-red); box-shadow: 0 0 0 2px var(--c-red-tint); }
 select {
   appearance: none;
   padding-right: 34px;

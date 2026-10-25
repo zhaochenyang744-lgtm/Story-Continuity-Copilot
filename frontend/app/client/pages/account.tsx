@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import { type CSSProperties, KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 import { request } from "../../api";
 import type { AuthorHome, HomeEvent, User } from "../../model";
 import { agoLabel, feedDayLabel, joinedLabel, localDay, monthDayLabel, shiftDay, weekdayOf } from "../day";
@@ -81,12 +81,13 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
     event.preventDefault();
     setActive(next);
   };
-  const place = (index: number) => ({ left: Math.floor((index + offset) / 7) * 12 + 5, top: ((index + offset) % 7) * 12 });
+  const place = (index: number) => ({ "--col": Math.floor((index + offset) / 7), "--row": (index + offset) % 7 }) as CSSProperties;
   return (
     <div className="heat">
       <div className="heat-scroll" ref={scroller}>
         <div
           className="heat-body"
+          style={{ "--cols": columns } as CSSProperties}
           role="group"
           tabIndex={0}
           aria-label="写作日历，过去 12 个月，方向键可以逐日查看"
@@ -96,7 +97,7 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
           onBlur={() => setActive(null)}
         >
           <div className="heat-days" aria-hidden="true"><span /><span>一</span><span /><span>三</span><span /><span>五</span><span /></div>
-          <div className="heat-months" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${columns}, 10px)` }}>
+          <div className="heat-months" aria-hidden="true">
             {months.map((mark) => <span key={mark.column} style={{ gridColumn: mark.column + 1 }}>{mark.label}</span>)}
           </div>
           <div className="heat-grid" onMouseLeave={() => setActive(null)}>

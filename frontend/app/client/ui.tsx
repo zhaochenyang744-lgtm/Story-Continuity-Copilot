@@ -123,9 +123,19 @@ export function Tabs<T extends string>({ items, value, onChange, label, size = "
   size?: "lg" | "md";
   trailing?: ReactNode;
 }) {
+  const nav = useRef<HTMLElement>(null);
+  // Where the row scrolls sideways (narrow screens), the chosen tab is slid into view; the page itself is not moved.
+  useEffect(() => {
+    const row = nav.current;
+    const chosen = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!row || !chosen || row.scrollWidth <= row.clientWidth) return;
+    const left = chosen.getBoundingClientRect().left - row.getBoundingClientRect().left + row.scrollLeft;
+    if (left < row.scrollLeft) row.scrollLeft = left;
+    else if (left + chosen.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollLeft = left + chosen.offsetWidth - row.clientWidth;
+  }, [value]);
   return (
     <div className={`tabs tabs-${size}`}>
-      <nav aria-label={label}>
+      <nav aria-label={label} ref={nav}>
         {items.map((item) => (
           <button key={item.id} type="button" className="tab" aria-current={item.id === value ? "page" : undefined} onClick={() => onChange(item.id)}>
             <span>{item.label}</span>
