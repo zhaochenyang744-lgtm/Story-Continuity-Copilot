@@ -1,0 +1,63 @@
+[
+  {
+    "title": "演示里迟到的半句",
+    "description": "演示中的一句话迟了半拍，原说明把它归为声优漏读，需继续追问声优为什么省掉那半句。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "署名页多出的空行",
+    "description": "署名页留着一整条没有名字的空行，人数是否核齐，以及这条空行属于谁，尚待说明。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "一直没有播放的参考音",
+    "description": "嵇映璜留有一段没有在演示中播放的参考音，别人尚不知道里面的内容以及不播放的理由。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "玩家留言里的方括号",
+    "description": "玩家留言反复出现方括号，几个人对那种写法的意义有不同猜测，仍需要玩家亲自说明。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "被退回的独白版本",
+    "description": "发行方覃蘅执嫌独白太长而退回这个版本，独白的具体内容以及删减的影响仍未明确。",
+    "status": "developing",
+    "planted_chapter": 5
+  },
+  {
+    "title": "外语版里空着的地名格",
+    "description": "外语版有一处地名格始终空白，译者没有决定是保留空白还是补上文字，这条支线尚未展开。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "冀照玄保留的离线测试",
+    "description": "冀照玄单独保留了一份离线测试，暂时没有向其他人展示，测试会牵动哪一段文字还未知。",
+    "status": "planted",
+    "planted_chapter": 7
+  },
+  {
+    "title": "禄青宓没有转交的语音留言",
+    "description": "禄青宓手里有一段暂未转交的语音留言，她是否会在征求说话人同意后转交仍未写明。",
+    "status": "planned",
+    "planted_chapter": 8
+  },
+  {
+    "title": "演示室失灵的静音键",
+    "description": "演示室静音键的异常已经查明是外接设备另有静音开关，与程序漏洞无关，这个疑问已经解决。",
+    "status": "resolved",
+    "planted_chapter": 1,
+    "resolved_chapter": 4
+  },
+  {
+    "title": "旧招募页的数字谜题",
+    "description": "旧招募页的一串数字曾引起猜测，参与者已经决定不再追查谜底，这条旁支被放下。",
+    "status": "abandoned",
+    "planted_chapter": 5
+  }
+]

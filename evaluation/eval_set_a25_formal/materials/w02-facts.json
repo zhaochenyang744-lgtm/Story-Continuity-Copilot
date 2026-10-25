@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "瑟页盘",
+    "predicate": "保管人",
+    "value": "由嵇映璜保管获准语音。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "斛星笔",
+    "predicate": "持有人",
+    "value": "由慎珑序持有。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "禄青宓",
+    "predicate": "答复权限",
+    "value": "只能转交意见，不能独立发布答复。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "语言包试用",
+    "predicate": "范围",
+    "value": "只限公司内部人员。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "釉棱麦",
+    "predicate": "保管人",
+    "value": "由嵇映璜保管。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "慎珑序",
+    "predicate": "身份",
+    "value": "文字统筹。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "嵇映璜",
+    "predicate": "身份",
+    "value": "配音统筹。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "饶旻弈",
+    "predicate": "身份",
+    "value": "外包译者。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邰颂微",
+    "predicate": "身份",
+    "value": "质量核对。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "覃蘅执",
+    "predicate": "身份",
+    "value": "发行负责人。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邴绍棠",
+    "predicate": "身份",
+    "value": "无障碍测试员。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "禄青宓",
+    "predicate": "身份",
+    "value": "玩家联络。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "冀照玄",
+    "predicate": "身份",
+    "value": "程序负责人。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "慎珑序",
+    "predicate": "别名",
+    "value": "别名是珀弦。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "嵇映璜",
+    "predicate": "别名",
+    "value": "别名是筠赭。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "饶旻弈",
+    "predicate": "别名",
+    "value": "别名是绯榫。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "瑟页盘",
+    "predicate": "标识",
+    "value": "银色外壳背面有一块窄紫贴纸。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "斛星笔",
+    "predicate": "外观",
+    "value": "透明笔帽里夹着一小块绿纸。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "釉棱麦",
+    "predicate": "用途",
+    "value": "只录参考节奏，不用于正式成品声轨。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "芰序互动",
+    "predicate": "所在地",
+    "value": "蒲弧市。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "拾昼环",
+    "predicate": "叙事方式",
+    "value": "同场对话可从不同角色视点重读。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邴绍棠",
+    "predicate": "测试方式",
+    "value": "关闭声音检查字幕能否让人理解。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邰颂微",
+    "predicate": "核对边界",
+    "value": "可以退回文本，不能替译者署名。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "禄青宓",
+    "predicate": "意见处理",
+    "value": "保留玩家原文，不把讽刺改成赞扬。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "冀照玄",
+    "predicate": "版本限制",
+    "value": "文本和语音可分别更新，但编号须成对记录。",
+    "chapter": 4
+  }
+]

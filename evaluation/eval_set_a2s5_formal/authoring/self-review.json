@@ -1,0 +1,170 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "寇荞澈",
+        "郁弥岫",
+        "韦望稷",
+        "褚镜薰",
+        "钭星芫",
+        "仇栖砚",
+        "缑听澜",
+        "丘漫蕖"
+      ],
+      "aliases": [
+        {
+          "name": "寇荞澈",
+          "alias": "泊蓼",
+          "chapter": 1,
+          "quote": "寇荞澈的小名是泊蓼，老同事们私下仍这样叫她。"
+        },
+        {
+          "name": "郁弥岫",
+          "alias": "榧尾",
+          "chapter": 2,
+          "quote": "有人从门口叫了一声榧尾，郁弥岫正好低头找笔，没有马上答应。"
+        },
+        {
+          "name": "韦望稷",
+          "alias": "瓯星",
+          "chapter": 3,
+          "quote": "韦望稷笑着解释：“瓯星是韦望稷年轻时用的别名，叫这个名字的仍是他本人。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 4,
+          "quote": "郁弥岫把翡晷函交给韦望稷保管，从这次会谈起原件不再由秘书带走。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 5,
+          "quote": "夕缟册正式交到了仇栖砚手里，之后由夜班代表保管，寇荞澈只留副本。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 7,
+          "quote": "丘漫蕖现在有了独立陈述的时段，不再只能替其他代表读已经写好的话。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 9,
+          "quote": "合并表决改在斜萼实业一楼大厅举行，顶层会议室的预留已经取消。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 11,
+          "quote": "褚镜薰将绒棱签交给丘漫蕖保管，自己不再负责这轮会议的签到。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "仇栖砚",
+          "predicate": "旁听安排",
+          "chapter": 2,
+          "quote": "仇栖砚决定把自己的旁听席让给另一位夜班职工，但仍亲自参加代表会谈。"
+        },
+        {
+          "subject": "缑听澜",
+          "predicate": "担保所知",
+          "chapter": 3,
+          "quote": "缑听澜已经知道新增担保不在自己的授权范围内，必须另请委托人决定。"
+        },
+        {
+          "subject": "寇荞澈",
+          "predicate": "公开许可",
+          "chapter": 4,
+          "quote": "寇荞澈只同意公布代表会谈的意见摘要，不同意公布职工留下的私人联系方式。"
+        },
+        {
+          "subject": "郁弥岫",
+          "predicate": "记录规则",
+          "chapter": 6,
+          "quote": "郁弥岫把记录规则改成先逐人确认原话，再把分歧写进同一份纪要。"
+        },
+        {
+          "subject": "褚镜薰",
+          "predicate": "留任决定",
+          "chapter": 8,
+          "quote": "褚镜薰撤回了提前离岗的申请，决定陪职工谈完本轮岗位安排。"
+        },
+        {
+          "subject": "钭星芫",
+          "predicate": "延期立场",
+          "chapter": 10,
+          "quote": "钭星芫接受表决延期，但没有承诺并购方会接受所有新增条件。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 6,
+          "quote": "签署日空着是因为当时只确认了草案，正式代理函尚未签下，并非刻意隐藏日期。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 8,
+          "quote": "多出来的夜班座位只供轮换旁听，并不对应一位新代表，也不多出一张表决票。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 10,
+          "quote": "反对意见缺的半句只是要求延期，发言人亲自补全后，再没有未说出的附加条件。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 12,
+          "quote": "两种颜色的签筒只区分姓名是否核对完成，既不表示赞成，也不表示反对。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 6,
+          "quote": "签署日空着是因为当时只确认了草案，正式代理函尚未签下，并非刻意隐藏日期。"
+        },
+        {
+          "foreshadow": 5,
+          "chapter": 10,
+          "quote": "退休说明没有递交，是本人尚未授权使用，褚镜薰并不是为了躲开降薪才扣住它。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "寇荞澈留白的最后一栏",
+          "planted_chapter": 7,
+          "quote": "寇荞澈把最后一栏留着没有填，只说那里要等一个尚未参加会谈的人来写。"
+        },
+        {
+          "about": "韦望稷迟寄的答复",
+          "planted_chapter": 9,
+          "quote": "韦望稷把答复折进信封却没有寄出，收件人一栏仍用一张纸盖着。"
+        },
+        {
+          "about": "仇栖砚拒收的合照",
+          "planted_chapter": 11,
+          "quote": "仇栖砚没有收下散会合照，说等照片里每个人都答应以后，再来拿那一份。"
+        }
+      ]
+    }
+  }
+}

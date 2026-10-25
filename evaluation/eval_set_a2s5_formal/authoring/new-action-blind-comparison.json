@@ -1,0 +1,16 @@
+{
+  "total": 3,
+  "initial_agreement": 3,
+  "final_agreement": 3,
+  "initial_rate": 1.0,
+  "final_rate": 1.0,
+  "unresolved": 0,
+  "disagreement_ids": [],
+  "closed_ids": [],
+  "new_target_comparison": "lead semantic comparison of the described object; planting chapter is verified separately against prose",
+  "initial_input_sha256": "6527f19813ead2d736f46e2d7498f3f643fd48eaa7d5b276293db62a22138c33",
+  "final_input_sha256": "367861e76c7175028e03ac4ddd7f3bc54456da2bdcc06f54d9ffadb61409d13f",
+  "final_method": "second independent reviewer, current materials, no previous judgments or gold read",
+  "material_revision_count": 1,
+  "affected_judgment_targets": 0
+}
