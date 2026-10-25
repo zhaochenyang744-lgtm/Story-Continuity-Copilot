@@ -186,7 +186,7 @@ test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜
     await theme(page, value);
     await page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("tab", { name: "助手", exact: true }).click();
     await expect(completed()).toHaveCount(1);
-    await page.getByTestId("assistant-thread").getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await page.getByTestId("assistant-thread").getByRole("button", { name: /查了 \d+ 处/ }).click();
     await scan("写作页助手标签", value);
     await openTab(page, id, "sources");
     await page.locator("#assistant-open").click();

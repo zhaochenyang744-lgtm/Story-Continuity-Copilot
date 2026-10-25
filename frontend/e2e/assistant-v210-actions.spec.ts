@@ -6,7 +6,7 @@ import { box, chooseMode, finished, openAssistantTab, send, taskPost, thread } f
 import { serveTasks } from "./support/assistant-mock";
 import {
   ABANDON_THREAD_ASK, ADD_THREAD_ASK, ADDED_THREAD_NOTE, ADDED_THREAD_TITLE, cardOf, changeItem, changeView, confirmButton, confirmByApi, confirmPost, EDIT_THREAD_ASK,
-  EDITED_NOTE, itemOf, lastChange, LAST_CHAPTER, openCard, openLedger, proposeByApi, threadRecord, threadRecords, threadsView, threadsViewWith,
+  EDITED_NOTE, afterOf, basisOf, beforeOf, itemOf, lastChange, LAST_CHAPTER, openBasis, openCard, openLedger, proposeByApi, threadRecord, threadRecords, threadsView, threadsViewWith, undoOf,
 } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { setup } from "./support/writing";
@@ -15,7 +15,7 @@ import { setup } from "./support/writing";
 // back. The test model proposes by a marker in the sentence (see support/assistant-change.ts). Pictures are written only when SHOTS_V210_ACTIONS_DIR
 // names a folder.
 
-const stateOf = (item: Locator) => item.locator(".a-state");
+const stateOf = (item: Locator) => item.locator(".a-chg-state");
 const STATUS_TEXT: Record<string, string> = { planned: "计划中", planted: "已埋设", developing: "推进中" };
 
 test.describe("改资料：加伏笔", () => {
@@ -34,10 +34,11 @@ test.describe("改资料：加伏笔", () => {
     const item = itemOf(card);
     await expect(item).toHaveAttribute("data-kind", "add_thread");
     await expect(item).toHaveAttribute("data-status", "proposed");
-    await expect(item.locator(".a-opt-h strong")).toHaveText(ADDED_THREAD_TITLE);
-    await expect(item.locator(".a-opt-note")).toHaveText("加伏笔");
+    await expect(item.locator(".a-chg-line strong")).toHaveText(ADDED_THREAD_TITLE);
+    await expect(item.locator(".a-chg-kind")).toHaveText("加伏笔");
     await expect(item.locator(".chg-before")).toContainText("资料里没有");
     await expect(item.locator(".chg-after")).toContainText(`已埋设（第 ${LAST_CHAPTER} 章）：${ADDED_THREAD_NOTE}`);
+    await openBasis(item);
     await expect(item.getByRole("list", { name: "依据" }).getByRole("listitem")).toHaveCount(1);
     await expect(item.getByRole("button", { name: "改内容", exact: true })).toBeVisible();
     expect((await threadRecords(page, id)).map((record) => record.title)).not.toContain(ADDED_THREAD_TITLE);
@@ -55,7 +56,7 @@ test.describe("改资料：加伏笔", () => {
     // Undo: the thread is archived, and leaves the list of open threads.
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     expect((await threadRecord(page, id, change.target.id)).archived_at).not.toBeNull();
     await threadsView(page, id);
@@ -81,7 +82,7 @@ test.describe("改资料：加伏笔", () => {
     await expect(field).toHaveAttribute("maxlength", "200");
     await field.fill("作者自己的说明");
     await expect(item.locator(".chg-after")).toContainText(`已埋设（第 ${LAST_CHAPTER} 章）：作者自己的说明`);
-    await expect(item.locator(".a-opt-h strong")).toHaveText(ADDED_THREAD_TITLE);
+    await expect(item.locator(".a-chg-line strong")).toHaveText(ADDED_THREAD_TITLE);
     await expect(item.getByRole("textbox")).toHaveCount(1);  // the title has no field
     const posted = confirmPost(page);
     await confirmButton(card).click();
@@ -111,11 +112,15 @@ test.describe("改资料：改伏笔说明", () => {
     const original = (await threadRecord(page, id, change.target.id)).description;
     const item = itemOf(card);
     await expect(item).toHaveAttribute("data-kind", "edit_thread");
-    await expect(item.locator(".a-opt-h strong")).toHaveText(change.title);
-    await expect(item.locator(".a-opt-note")).toHaveText("改伏笔说明");
-    await expect(item.locator(".chg-before")).toContainText(original);
-    await expect(item.locator(".chg-after")).toContainText(EDITED_NOTE);
-    await expect(item.locator(".a-chg-asked")).toHaveText(`依据：你说的「${change.request_words}」`);
+    await expect(item.locator(".a-chg-line strong")).toHaveText(change.title);
+    await expect(item.locator(".a-chg-kind")).toHaveText("改伏笔说明");
+    // A long note is one text with the difference marked: what stays and what is added make the new note, what stays and what goes make the old one.
+    await expect(item.locator(".a-chg-diff")).toBeVisible();
+    await expect.poll(() => beforeOf(item)).toBe(original.trim());
+    await expect.poll(() => afterOf(item)).toBe(EDITED_NOTE);
+    await expect(basisOf(item)).toHaveText("依据：你的话");
+    await openBasis(item);
+    await expect(item.locator(".a-chg-asked")).toHaveText(`你说的「${change.request_words}」`);
     expect(EDIT_THREAD_ASK.replace(/\s/g, "")).toContain(change.request_words!);
     await expect(item.getByRole("list", { name: "依据" })).toHaveCount(0);
     await expect(item.getByRole("textbox")).toHaveCount(0);
@@ -128,7 +133,7 @@ test.describe("改资料：改伏笔说明", () => {
     await expect(confirmButton(card)).toBeDisabled();
     await field.fill("作者自己的新说明");
     await expect(item).toContainText("你改过");
-    await expect(item.locator(".chg-after")).toContainText("作者自己的新说明");
+    await expect.poll(() => afterOf(item)).toBe("作者自己的新说明");
     await item.getByRole("button", { name: "改好了", exact: true }).click();
     expect((await threadRecord(page, id, change.target.id)).description).toBe(original);  // nothing is written yet
 
@@ -145,7 +150,7 @@ test.describe("改资料：改伏笔说明", () => {
 
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     const back = await threadRecord(page, id, change.target.id);
     expect([back.description, back.status]).toEqual([original, written.status]);
@@ -171,16 +176,18 @@ test.describe("改资料：伏笔标放弃", () => {
     const original = await threadRecord(page, id, change.target.id);
     const item = itemOf(card);
     await expect(item).toHaveAttribute("data-kind", "abandon_thread");
-    await expect(item.locator(".a-opt-h strong")).toHaveText(change.title);
-    await expect(item.locator(".a-opt-note")).toHaveText("伏笔标放弃");
+    await expect(item.locator(".a-chg-line strong")).toHaveText(change.title);
+    await expect(item.locator(".a-chg-kind")).toHaveText("伏笔标放弃");
     await expect(item.locator(".a-chg-note")).toHaveText("作者确认后这条伏笔不再提醒");
     await expect(item.locator(".chg-before")).toContainText(STATUS_TEXT[original.status]);
     await expect(item.locator(".chg-after")).toContainText("已放弃");
-    await expect(item.locator(".a-chg-asked")).toHaveText(`依据：你说的「${change.request_words}」`);
+    await expect(basisOf(item)).toHaveText("依据：你的话");
+    await openBasis(item);
+    await expect(item.locator(".a-chg-asked")).toHaveText(`你说的「${change.request_words}」`);
     expect(ABANDON_THREAD_ASK.replace(/\s/g, "")).toContain(change.request_words!);
     await expect(item.getByRole("list", { name: "依据" })).toHaveCount(0);
     await expect(item.getByRole("button", { name: "改内容", exact: true })).toHaveCount(0);
-    await expect(confirmButton(card)).toHaveText("确认（1 条）");
+    await expect(confirmButton(card)).toHaveText("确认 1 条");
     expect((await threadRecord(page, id, change.target.id)).status).toBe(original.status);
 
     await confirmButton(card).click();
@@ -197,7 +204,7 @@ test.describe("改资料：伏笔标放弃", () => {
 
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
-    await itemOf(cardOf(page)).getByRole("button", { name: "撤销", exact: true }).click();
+    await undoOf(cardOf(page)).click();
     await expect(itemOf(cardOf(page))).toHaveAttribute("data-status", "undone");
     expect((await threadRecord(page, id, change.target.id)).status).toBe(original.status);
     await threadsView(page, id);
@@ -234,13 +241,14 @@ test.describe("改资料：新动作的版面", () => {
     await page.reload();
     await openAssistantTab(page);
     const card = cardOf(page);
-    await expect(itemOf(card, "C1").locator(".a-opt-note")).toHaveText("加伏笔");
-    await expect(itemOf(card, "C2").locator(".a-opt-note")).toHaveText("改伏笔说明");
-    await expect(itemOf(card, "C3").locator(".a-opt-note")).toHaveText("伏笔标放弃");
+    await expect(itemOf(card, "C1").locator(".a-chg-kind")).toHaveText("加伏笔");
+    await expect(itemOf(card, "C2").locator(".a-chg-kind")).toHaveText("改伏笔说明");
+    await expect(itemOf(card, "C3").locator(".a-chg-kind")).toHaveText("伏笔标放弃");
     await expect(itemOf(card, "C3").locator(".a-chg-note")).toHaveText("作者确认后这条伏笔不再提醒");
     await expect(itemOf(card, "C1").locator(".a-chg-note")).toHaveCount(0);
-    await expect(itemOf(card, "C2").locator(".a-chg-asked")).toHaveText("依据：你说的「廊桥钥匙那条伏笔的说明」");
-    await expect(itemOf(card, "C3").locator(".a-chg-asked")).toHaveText("依据：你说的「罗盘那条线不追了」");
+    for (const label of ["C1", "C2", "C3"]) await openBasis(itemOf(card, label));
+    await expect(itemOf(card, "C2").locator(".a-chg-asked")).toHaveText("你说的「廊桥钥匙那条伏笔的说明」");
+    await expect(itemOf(card, "C3").locator(".a-chg-asked")).toHaveText("你说的「罗盘那条线不追了」");
     await expect(itemOf(card, "C1").locator(".a-chg-asked")).toContainText("「最后一章埋了个悬念」");
     for (const value of ["day", "night"] as const) {
       await theme(page, value);

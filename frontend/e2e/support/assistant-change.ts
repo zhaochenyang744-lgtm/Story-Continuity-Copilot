@@ -80,7 +80,28 @@ export async function openCard(page: Page, id: string, question: string) {
 }
 export const cardOf = (page: Page) => thread(page).getByRole("region", { name: "资料改动" }).last();
 export const itemOf = (card: Locator, label = "C1") => card.locator(`[data-label="${label}"]`);
-export const confirmButton = (card: Locator) => card.getByRole("button", { name: /^确认（\d+ 条）$/ });
+export const confirmButton = (card: Locator) => card.getByRole("button", { name: /^确认 \d+ 条$/ });
+/** 撤销 of a card that has been written: one button at the top of the card, which takes back everything the card wrote. */
+export const undoOf = (card: Locator) => card.getByTestId("change-written").getByRole("button", { name: "撤销", exact: true });
+/** An item's 依据 line (one line, folded), and it opened. */
+export const basisOf = (item: Locator) => item.getByTestId("change-basis").locator(".a-basis-fold");
+export const openBasis = (item: Locator) => basisOf(item).click();
+/** The words an item says it will leave behind: the arrow's right side, or a marked text without what is struck out of it. */
+export const afterOf = (item: Locator) => item.evaluate((node) => {
+  const source = node.querySelector(".a-chg-diff") ?? node.querySelector(".chg-after");
+  if (!source) return "";
+  const copy = source.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll("del, .sr-only").forEach((part) => part.remove());
+  return (copy.textContent ?? "").trim();
+});
+/** The words an item says it replaces. */
+export const beforeOf = (item: Locator) => item.evaluate((node) => {
+  const source = node.querySelector(".a-chg-diff") ?? node.querySelector(".chg-before");
+  if (!source) return "";
+  const copy = source.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll("ins, .sr-only").forEach((part) => part.remove());
+  return (copy.textContent ?? "").trim();
+});
 export const confirmPost = (page: Page) => page.waitForRequest((request) => request.method() === "POST" && /\/changes\/confirm$/.test(request.url()));
 
 /** The materials page's threads view, with the closed ones shown. */
