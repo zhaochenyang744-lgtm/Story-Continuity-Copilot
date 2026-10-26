@@ -414,7 +414,7 @@ class TidyTests(LongCase):
             _, chapters = step_view(messages)
             if 3 in chapters:
                 return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "先前的新写法", "refs": [chapters[3][0]]}], missing=[]))
-            missing = [{"memory_type": "dynamic_state", "subject": "温岚", "predicate": "possession", "value": "拿着那枚罗盘", "refs": [chapters[10][0]]}]
+            missing = [{"memory_type": "dynamic_state", "subject": "温岚", "predicate": "affiliation", "value": "在旧港档案馆做修复师", "refs": [chapters[10][0]]}]
             if decoy:  # a fact the materials state already
                 missing.append({**{k: first[k] for k in ("memory_type", "subject", "predicate", "value")}, "refs": [chapters[10][-1]]})
             conflicts = [{"subject": "苏岑", "predicate": "identity", "memory_type": "static_canon", "what": "年龄两处写法不同",
@@ -491,8 +491,8 @@ class TidyTests(LongCase):
             if readings["n"] % 3 == 1:  # the first reading of each step finds one more fact than the others
                 args = json.loads(result["calls"][0]["arguments"])
                 _, chapters = step_view(messages)
-                args["missing"] = args["missing"] + [{"memory_type": "dynamic_state", "subject": "老周", "predicate": "possession",
-                                                      "value": "暂时拿着灯", "refs": [chapters[min(chapters)][0]]}]
+                args["missing"] = args["missing"] + [{"memory_type": "dynamic_state", "subject": "老周", "predicate": "affiliation",
+                                                      "value": "在灯塔帮工", "refs": [chapters[min(chapters)][0]]}]
                 result = turn(call("report_tidy", **args))
             return result
         view = self.tidy(turns=[once_extra] * 6)
@@ -557,6 +557,15 @@ class SameFactTests(unittest.TestCase):
         self.assertFalse(THREAD_TALK.search("每次续租都须本人确认"))
         self.assertTrue(NO_NEWS.search("推车未在这几章出现，无新交接"))
         self.assertFalse(NO_NEWS.search("推车交给牟宛歧保管"))
+
+    def test_tidy_adds_no_fact_of_who_holds_a_thing_now(self):
+        from app.long_task_kinds import Tidy
+        self.assertNotIn("possession", Tidy.tool["function"]["parameters"]["properties"]["missing"]["items"]["properties"]["predicate"]["enum"])
+        holds = {**self.fact("滕书蔚", "possession", "接手保管弧栈坡板"), "memory_type": "dynamic_state"}
+        rule = self.fact("周转站", "rule", "续租须由租用人本人答应")
+        report, problems = Tidy().validate({"stale": [], "missing": [holds, rule]}, {}, {"R1": {}}, set())
+        self.assertEqual(problems, [])
+        self.assertEqual([item["value"] for item in report["missing"]], [rule["value"]])
 
 
 class RouteTests(LongCase):
