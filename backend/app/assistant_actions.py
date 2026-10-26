@@ -245,6 +245,16 @@ def write_thread_note(c: sqlite3.Connection, db: Any, project_id: str, target_id
     _rewrite_thread(c, db, project_id, target_id, values, THREAD_NOTE_FIELDS, user_id, stamp)
 
 
+AUTHORS_WORDS_RUN = 6  # characters in a row the note takes from the author's sentence
+
+
+def _takes_authors_words(note: str, question: str) -> bool:
+    """Whether a new note copies a run of the author's own sentence (punctuation and spaces aside)."""
+    said = "".join(ch for ch in question if ch.isalnum())
+    written = "".join(ch for ch in note if ch.isalnum())
+    return any(said[i:i + AUTHORS_WORDS_RUN] in written for i in range(len(said) - AUTHORS_WORDS_RUN + 1))
+
+
 def propose_edit_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
     """The note of a thread, reworded as the author asks (any status: a resolved thread's note may be mended too)."""
     evidence = evidence_of(ctx, args.get("evidence"), ACTIONS["edit_thread"].evidence_required)
@@ -253,6 +263,8 @@ def propose_edit_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str
         row = _live_thread(ctx, c, target)
     if value == " ".join(row["description"].split()):
         raise ToolError("change_no_difference")
+    if _takes_authors_words(value, json.loads(ctx.task["input_json"]).get("question") or ""):
+        evidence = []  # the note says what the author dictated: it stands on the author's words (a2t dev rounds 2–4)
     return {"target_id": row["id"], "before": {"description": row["description"]}, "evidence": evidence,
             "after": {"description": value, "value": value}, "display": {"title": row["title"], "before": row["description"], "after": value}}
 
