@@ -210,6 +210,8 @@ export type ComposerProps = {
 };
 
 const STOP_GRACE_MS = 700;
+// How long after the IME candidate list closes an Enter still belongs to it (Safari; half a second, as the clients that handle it).
+const IME_GRACE_MS = 500;
 
 export function Composer(props: ComposerProps) {
   const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {} } = props;
@@ -224,10 +226,14 @@ export function Composer(props: ComposerProps) {
   const modeButton = useRef<HTMLButtonElement>(null);
   const length = Array.from(text).length;
   const counting = length >= 250;
+  // When the IME's candidate list last closed. Safari can deliver the Enter that confirmed a candidate after the composition has
+  // ended, as a plain Enter: one that comes this soon after is still the candidate's, not a send.
+  const composedAt = useRef(-Infinity);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "ArrowUp" && !text && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); recall(); return; }
     // Enter sends; Shift+Enter breaks the line; Enter that confirms an IME candidate does neither.
     if (event.key !== "Enter" || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return;
+    if (performance.now() - composedAt.current < IME_GRACE_MS) { event.preventDefault(); return; }
     event.preventDefault();
     send();
   };
@@ -253,7 +259,8 @@ export function Composer(props: ComposerProps) {
             )}
             <textarea ref={fieldRef} className="cx-text" value={text} maxLength={maxLength} rows={1} aria-label="向助手提问" placeholder={placeholder}
               data-autofocus={autoFocus ? true : undefined} readOnly={fixed} aria-readonly={fixed || undefined}
-              onChange={(event) => setText(event.target.value)} onKeyDown={onKeyDown} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+              onChange={(event) => setText(event.target.value)} onKeyDown={onKeyDown} onCompositionEnd={() => { composedAt.current = performance.now(); }}
+              onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
           </>
         )}
         <div className="cx-bar">
