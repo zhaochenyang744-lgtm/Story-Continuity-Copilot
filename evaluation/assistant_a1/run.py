@@ -60,7 +60,10 @@ def settings(price):
         visitor_provider_attempts=30, registered_provider_attempts=100000, visitor_budget_cny=1, registered_budget_cny=100000,
         input_cny_per_million=price[0], output_cny_per_million=price[1], recovery_hash_secret=os.urandom(32),
         reset_base_url='http://127.0.0.1:3080', test_mode=True, registered_check_chars=10000000,
-        registered_imports=100000, assistant_rollout='all')
+        registered_imports=100000, assistant_rollout='all',
+        # Like the limits above, the per-work daily token limit is the service's guard, not what is measured: a formal pair asks
+        # some forty change questions of one work, each read three times (A2 fifth formal run, 2026-10-27).
+        assistant_project_token_limit=1_000_000_000)
 
 
 class Ledger:

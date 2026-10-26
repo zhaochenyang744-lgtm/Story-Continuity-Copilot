@@ -30,6 +30,8 @@ QUOTE_MAX = 60
 # What tidy may add as new: not who holds a thing now, which changes hands (A3 dev-2 round 3: "滕书蔚 持有：接手保管弧栈坡板",
 # though the rules say so). A stale fact of that kind can still be brought up to date.
 LASTING_PREDICATES = tuple(p for p in CONTROLLED_PREDICATES if p != "possession")
+# ... nor a handover filed under another property (confirmation round 1: the same fact came back as "状态").
+HANDOVER = re.compile(r"接手|保管|交给|交到|转交|拿着|带着|签收|借走|还回")
 
 COMMON_RULES = """
 - 只用这一步交给你的章节原文判断，不凭印象，不用常识补作品里没写的事。
@@ -219,7 +221,7 @@ class Trace:
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
 - states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
-- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
+- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
         "states": {"type": "array", "items": {"type": "object", "properties": {"state": {"type": "string", "maxLength": STATE_MAX},
@@ -271,6 +273,8 @@ class Trace:
         conflicts, decisions = [], []
         for item in report["conflicts"]:
             found = {**item, "id": f"alc-{uuid.uuid4().hex[:12]}", "chapters": [_chapter(item["earlier"], rows), _chapter(item["later"], rows)]}
+            if found["chapters"][0] == found["chapters"][1]:  # within one chapter, two sayings are a sequence (A3 confirmation round 1)
+                continue
             conflicts.append(found)
             if plan.get("output") == "conclusion":  # the author wants one answer: which passage to go by is theirs
                 decisions.append(decision(f"{item['what']}：两处写法不同，以哪处为准？", _option("a", item["earlier"], rows), _option("b", item["later"], rows),
@@ -373,8 +377,8 @@ class Tidy:
                 continue
             stale.append({"fact": item["fact"], "value": value, "refs": refs})
         for number, item in enumerate(args.get("missing") or [], 1):
-            if isinstance(item, dict) and item.get("predicate") == "possession":  # who holds a thing now is not a lasting fact
-                continue
+            if isinstance(item, dict) and (item.get("predicate") == "possession" or HANDOVER.search(str(item.get("value") or ""))):
+                continue  # who holds a thing now is not a lasting fact
             ok = isinstance(item, dict) and item.get("memory_type") in FACT_TYPES and item.get("predicate") in CONTROLLED_PREDICATES
             refs = _refs(item.get("refs")) if ok else []
             subject, value = (_short(item.get("subject"), 20), _short(item.get("value"), VALUE_MAX)) if ok else ("", "")
