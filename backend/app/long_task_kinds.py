@@ -14,7 +14,7 @@ from __future__ import annotations
 import uuid
 from typing import Any
 
-from .assistant_actions import ACTIONS, FACT_TYPES, OPEN_THREAD
+from .assistant_actions import ACTIONS, EVIDENCE_MAX, FACT_TYPES, OPEN_THREAD
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, REF_FORMAT, ToolContext, ToolError, fact_items
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value
 
@@ -73,13 +73,13 @@ class ThreadAudit:
   resolved：正文写出了这条线的答案或结局（谜底揭开、东西找到、人物交代清楚了）；
   abandoned：正文明确交代这条线不再追了（人物说不再查、叙述明说放下了）；
   open：这几章里没有收，也没有写明不追；只是提到、推进了一下也算 open。
-- resolved 和 abandoned 必须在 refs 里写出撑得住的段落编号；open 不写 refs。
-- note 用一句话（不超过 80 字）说依据。
+- resolved 和 abandoned 必须在 refs 里写出撑得住的段落编号，最多 2 个，挑最能撑住的一两段；open 不写 refs。
+- note 用一句话（不超过 80 字）说依据：只说正文写了什么，不写第几章（章节由程序标）。
 - 用 report_threads 一次交出全部判断，每条伏笔一项。""")
     tool = _function("report_threads", "交出这一步对每一条伏笔的判断。", {"threads": {"type": "array", "items": {"type": "object", "properties": {
         "thread": {"type": "string", "description": "伏笔的编号，如 R3"},
         "verdict": {"type": "string", "enum": ["resolved", "abandoned", "open"]},
-        "refs": {"type": "array", "items": {"type": "string"}, "description": "撑得住判断的段落编号，open 时为空"},
+        "refs": {"type": "array", "items": {"type": "string"}, "maxItems": EVIDENCE_MAX, "description": "撑得住判断的段落编号，最多 2 个，open 时为空"},
         "note": {"type": "string", "maxLength": NOTE_MAX}}, "required": ["thread", "verdict"]}}}, ["threads"])
     VERDICT_KIND = {"resolved": "resolve_thread", "abandoned": "abandon_thread"}
     SECTIONS = (("resolved", "已经收了"), ("abandoned", "写明不追了"), ("open", "还开着"))
@@ -133,8 +133,8 @@ class ThreadAudit:
             refs = _refs(item.get("refs"))
             note = _short(item.get("note"), NOTE_MAX)
             if item["verdict"] in self.VERDICT_KIND:
-                if not refs or any(ref not in passages for ref in refs):
-                    problems.append(f"第 {number} 项（{item['thread']}）：{item['verdict']} 要用这一步给出的段落编号作依据")
+                if not refs or len(refs) > EVIDENCE_MAX or any(ref not in passages for ref in refs):  # a card carries at most two passages
+                    problems.append(f"第 {number} 项（{item['thread']}）：{item['verdict']} 要用这一步给出的段落编号作依据，最多 2 个")
                     continue
             else:
                 refs, note = [], ""
@@ -278,23 +278,26 @@ class Tidy:
 - missing：这几章交代了、资料里没有的事实。写 memory_type、subject（人名或物名）、predicate（固定的几种之一）、value（不超过 60 字）、refs。资料里已经有意思相同的事实（换了说法也算），就不写。
   只写长期有效的设定：定下来的规矩、分工、固定的时间和地点、经费来源、人和物的身份特征。一次性的事（某次谈话没录音、某人某天说了什么）、眼下的处境和还没定的事（在等回信、暂时借用、还没答复）都不写。作者的话里点了要对哪几类（比如日程、分工、经费），就只写这几类。
 - conflicts：同一件事两处写法不同、正文没有交代变化，看不出哪个是作者本意（比如一处十七岁、一处十八岁）。fact 写资料里那条事实的编号（没有就留空，并写 subject、predicate、memory_type），earlier、later 各写段落编号和那一处的 value，what 一句话说哪里不同。这种情况不要写进 stale 或 missing，程序会问作者。
+- 每一项的 refs 最多 2 个，挑最能撑住的一两段。
 - 用 report_tidy 一次交出。""")
     tool = _function("report_tidy", "交出这一步里过时的、没记的事实，和要作者拿主意的地方。", {
         "stale": {"type": "array", "items": {"type": "object", "properties": {"fact": {"type": "string"}, "value": {"type": "string", "maxLength": VALUE_MAX},
-                                                                               "refs": {"type": "array", "items": {"type": "string"}}}, "required": ["fact", "value", "refs"]}},
+                                                                               "refs": {"type": "array", "items": {"type": "string"}, "maxItems": EVIDENCE_MAX}}, "required": ["fact", "value", "refs"]}},
         "missing": {"type": "array", "items": {"type": "object", "properties": {
             "memory_type": {"type": "string", "enum": list(FACT_TYPES)}, "subject": {"type": "string", "maxLength": 20},
             "predicate": {"type": "string", "enum": list(CONTROLLED_PREDICATES)}, "value": {"type": "string", "maxLength": VALUE_MAX},
-            "refs": {"type": "array", "items": {"type": "string"}}}, "required": ["memory_type", "subject", "predicate", "value", "refs"]}},
+            "refs": {"type": "array", "items": {"type": "string"}, "maxItems": EVIDENCE_MAX}}, "required": ["memory_type", "subject", "predicate", "value", "refs"]}},
         "conflicts": {"type": "array", "items": {"type": "object", "properties": {
             "fact": {"type": "string"}, "subject": {"type": "string", "maxLength": 20}, "predicate": {"type": "string", "enum": list(CONTROLLED_PREDICATES)},
             "memory_type": {"type": "string", "enum": list(FACT_TYPES)},
-            "earlier": {"type": "object", "properties": {"refs": {"type": "array", "items": {"type": "string"}}, "value": {"type": "string", "maxLength": VALUE_MAX}}},
-            "later": {"type": "object", "properties": {"refs": {"type": "array", "items": {"type": "string"}}, "value": {"type": "string", "maxLength": VALUE_MAX}}},
+            "earlier": {"type": "object", "properties": {"refs": {"type": "array", "items": {"type": "string"}, "maxItems": EVIDENCE_MAX}, "value": {"type": "string", "maxLength": VALUE_MAX}}},
+            "later": {"type": "object", "properties": {"refs": {"type": "array", "items": {"type": "string"}, "maxItems": EVIDENCE_MAX}, "value": {"type": "string", "maxLength": VALUE_MAX}}},
             "what": {"type": "string", "maxLength": WHAT_MAX}}, "required": ["earlier", "later", "what"]}}}, ["stale", "missing"])
 
     def step_line(self, low: int, high: int, plan: dict[str, Any]) -> str:
-        return f"这一步：读第 {low}–{high} 章，和下面的资料对一遍，找出过时的事实和没记的事实。"
+        focus = plan.get("focus") or []
+        return (f"这一步：读第 {low}–{high} 章，和下面的资料对一遍，找出过时的事实和没记的事实。"
+                + (f"作者点名只对这几类：{'、'.join(focus)}；不属于这几类的事实，没记的也不写。" if focus else ""))
 
     def subjects(self, ctx: ToolContext, high: int, outputs: list[dict[str, Any]], plan: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
         items = fact_items(ctx, ctx.memory())
@@ -312,16 +315,16 @@ class Tidy:
         for number, item in enumerate(args.get("stale") or [], 1):
             refs = _refs(item.get("refs")) if isinstance(item, dict) else []
             value = _short(item.get("value"), VALUE_MAX) if isinstance(item, dict) else ""
-            if not isinstance(item, dict) or item.get("fact") not in subjects or not value or not refs or any(ref not in passages for ref in refs):
-                problems.append(f"stale 第 {number} 项：fact 只能是列出的事实编号，refs 只能用这一步的段落编号，value 不能空")
+            if not isinstance(item, dict) or item.get("fact") not in subjects or not value or not refs or len(refs) > EVIDENCE_MAX                     or any(ref not in passages for ref in refs):
+                problems.append(f"stale 第 {number} 项：fact 只能是列出的事实编号，refs 只能用这一步的段落编号、最多 2 个，value 不能空")
                 continue
             stale.append({"fact": item["fact"], "value": value, "refs": refs})
         for number, item in enumerate(args.get("missing") or [], 1):
             ok = isinstance(item, dict) and item.get("memory_type") in FACT_TYPES and item.get("predicate") in CONTROLLED_PREDICATES
             refs = _refs(item.get("refs")) if ok else []
             subject, value = (_short(item.get("subject"), 20), _short(item.get("value"), VALUE_MAX)) if ok else ("", "")
-            if not ok or not subject or not value or not refs or any(ref not in passages for ref in refs):
-                problems.append(f"missing 第 {number} 项：字段不全，或 refs 不是这一步的段落编号")
+            if not ok or not subject or not value or not refs or len(refs) > EVIDENCE_MAX or any(ref not in passages for ref in refs):
+                problems.append(f"missing 第 {number} 项：字段不全，或 refs 不是这一步的段落编号、超过 2 个")
                 continue
             missing.append({"memory_type": item["memory_type"], "subject": subject, "predicate": item["predicate"], "value": value, "refs": refs})
         for number, item in enumerate(args.get("conflicts") or [], 1):
@@ -333,7 +336,7 @@ class Tidy:
             values = [_short(side.get("value"), VALUE_MAX) for side in sides]
             fact = item.get("fact") if item.get("fact") in subjects else None
             new = item.get("memory_type") in FACT_TYPES and item.get("predicate") in CONTROLLED_PREDICATES and _short(item.get("subject"), 20)
-            if not a or not b or not all(values) or not (fact or new) or any(ref not in passages and ref not in earlier for ref in a) \
+            if not a or not b or len(a) > EVIDENCE_MAX or len(b) > EVIDENCE_MAX or not all(values) or not (fact or new)                     or any(ref not in passages and ref not in earlier for ref in a) \
                     or any(ref not in passages for ref in b):
                 problems.append(f"conflicts 第 {number} 项：要有两处段落编号和各自的 value，以及 fact 或 subject、predicate、memory_type")
                 continue

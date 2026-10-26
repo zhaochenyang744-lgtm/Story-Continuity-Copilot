@@ -479,6 +479,25 @@ class TidyTests(LongCase):
         self.assertEqual(last["answer"]["choice"], "you_decide")
         self.assertEqual(last["answer"]["by"], "program")
 
+    def test_the_kinds_the_author_names_are_kept_on_the_plan_and_each_step_looks_only_for_them(self):
+        self.provider.script_route({"type": "tidy", "target": None, "chapters": None, "output": "list", "focus": ["日程", "分工", "经费", 7]})
+        task = self.create("把日程、分工和经费跟资料对一趟")
+        self.assertEqual(self.view(task["id"])["plan"]["proposed"]["focus"], ["日程", "分工", "经费"])
+        self.provider.script(*[self.tidying(conflict=False)] * 2)
+        self.post(task["id"], "start", expect=202)
+        self.assertIn("作者点名只对这几类：日程、分工、经费", self.provider.calls[0]["messages"][1]["content"])
+
+    def test_more_than_two_passages_for_one_finding_is_sent_back(self):
+        def three(provider, messages):
+            listed = facts_view(messages)
+            _, chapters = step_view(messages)
+            refs = [chapters[n][0] for n in sorted(chapters)[:3]]  # one passage a chapter here
+            return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "最新的写法", "refs": refs}], missing=[]))
+        view = self.tidy(turns=[three, self.tidying(conflict=False), self.tidying(conflict=False)])
+        self.assertEqual(view["status"], "completed")
+        self.assertIn("最多 2 个", self.provider.calls[1]["messages"][-1]["content"])
+        self.assertTrue(all(len(item["evidence"]) <= 2 for item in view["changes"]))
+
 
 class RouteTests(LongCase):
     def test_the_input_box_can_judge_a_long_task_and_a_visitor_gets_a_question(self):
