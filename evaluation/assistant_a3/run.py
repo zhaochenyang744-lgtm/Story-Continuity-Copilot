@@ -46,7 +46,7 @@ from . import score
 from .judge import Judge
 from .thresholds import PRE_REGISTRATION
 
-DEV_SETS = ("eval_set_a3_dev",)
+DEV_SETS = ("eval_set_a3d2_dev",)  # addendum 1: the first dev set used its 3 runs and is not run again
 FORMAL_SETS = tuple(PRE_REGISTRATION["formal_sets"])
 RESUME_SEED = 20261024
 KILLED = 86  # the runner process's exit code when it died as planned

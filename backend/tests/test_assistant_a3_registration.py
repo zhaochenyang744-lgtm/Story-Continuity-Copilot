@@ -18,7 +18,8 @@ class A3RegistrationTests(unittest.TestCase):
         self.assertEqual(len(thresholds.THRESHOLDS), 16)
         self.assertEqual(thresholds.PRE_REGISTRATION['formal_sets'], ['eval_set_a3_formal', 'eval_set_a3s_formal'])
         self.assertEqual(thresholds.PRE_REGISTRATION['protocol']['task_budget_cny'], 2.0)
-        self.assertEqual(thresholds.PRE_REGISTRATION['amended_on'], [])
+        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 1)  # addendum 1: a second dev set, no bar changes
+        self.assertIn('eval_set_a3d2_dev', thresholds.PRE_REGISTRATION['applies_to'])
 
     def test_values_at_the_bar_pass(self):
         self.assertEqual(thresholds.evaluate(PASSING)['status'], 'passed')

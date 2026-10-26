@@ -204,7 +204,9 @@ class TraceTests(unittest.TestCase):
 
 class SetTests(unittest.TestCase):
     def test_the_dev_set_alone_or_the_formal_pair_together(self):
-        self.assertEqual(run.set_names(DEV), [DEV])
+        self.assertEqual(run.set_names("eval_set_a3d2_dev"), ["eval_set_a3d2_dev"])
+        with self.assertRaises(ValueError):  # addendum 1: the first dev set used its three runs
+            run.set_names(DEV)
         self.assertEqual(run.set_names("eval_set_a3s_formal,eval_set_a3_formal"), ["eval_set_a3s_formal", "eval_set_a3_formal"])
         for bad in ("eval_set_a3_formal", f"{DEV},eval_set_a3_formal", "eval_set_a2_dev"):
             with self.assertRaises(ValueError):
