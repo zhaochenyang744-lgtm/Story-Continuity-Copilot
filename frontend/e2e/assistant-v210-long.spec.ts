@@ -181,7 +181,7 @@ test.describe("长任务：入口和计划", () => {
     expect(view.status).toBe("awaiting_plan");
     const plan = planCard(page);
     await expect(plan.locator(".a-card-head")).toContainText("长任务 · 计划");
-    await expect(plan.locator(".a-card-head")).toContainText("点「开始」后才计费");
+    await expect(plan.locator(".a-card-head")).toContainText("点「开始」才读正文");
     const steps = plan.locator(".a-long-steps li");
     await expect(steps).toHaveCount(proposed.steps.length);
     for (const [index, step] of proposed.steps.entries()) {

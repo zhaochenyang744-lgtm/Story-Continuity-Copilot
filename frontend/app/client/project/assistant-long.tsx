@@ -121,7 +121,7 @@ function PlanCard({ task, plan, handlers, usage, sample, maxChapter, usageChange
   const locked = handlers.readOnly || Boolean(busy);
   return (
     <section className="a-card a-long-plan" aria-label="长任务计划" data-testid="long-plan">
-      <div className="a-card-head"><strong>长任务 · 计划</strong><span>点「开始」后才计费</span></div>
+      <div className="a-card-head"><strong>长任务 · 计划</strong><span>点「开始」才读正文</span></div>
       <StepList steps={plan.steps} produces={plan.produces} />
       <div className="a-long-est" data-testid="long-estimate">
         <span>约读 {formatCount(plan.est_chars)} 字 · 预计 {yuan(plan.est_cny)} · 上限 {ceiling(cap)}</span>
@@ -270,6 +270,9 @@ function EndLine({ task }: { task: AssistantTask }) {
   );
 }
 
+/** What a kind of long task reads besides the chapters: the threads it audits, the facts it tidies (a trace reads the chapters only). */
+const ALSO_READ: Record<string, string> = { thread_audit: "、伏笔记录", tidy: "、资料里的事实" };
+
 /** 查过……；没查：……, written by the program from the steps that were done: the chapters read, and what a long task never reads (the draft). */
 function Cover({ task }: { task: AssistantTask }) {
   const read = (task.long_steps ?? []).filter((step) => step.status === "done" && step.spec.kind === "read").map((step) => (step.spec as Extract<LongStepSpec, { kind: "read" }>).chapters);
@@ -282,7 +285,7 @@ function Cover({ task }: { task: AssistantTask }) {
     : null;
   return (
     <p className="a-cover" data-testid="long-cover">
-      {low !== null && high !== null && <>查过{chapterSpan(low, high)}正文、伏笔记录；</>}
+      {low !== null && high !== null && <>查过{chapterSpan(low, high)}正文{ALSO_READ[task.plan?.approved?.type ?? ""] ?? ""}；</>}
       <strong>没查：{left ? `${left}、` : ""}本章草稿</strong>。
     </p>
   );
