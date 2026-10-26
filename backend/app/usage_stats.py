@@ -344,7 +344,13 @@ def _traces(tasks: list[dict[str, Any]], limit: int) -> tuple[list[dict[str, Any
     return picked[-limit:] if limit else picked, max(0, len(picked) - limit) if limit else 0
 
 
-def build(connection: sqlite3.Connection, since: str | None = None, until: str | None = None, trace_limit: int = 500) -> dict[str, Any]:
+NUMBERS_ONLY_MIN_GROUP = 5  # in a numbers-only summary, a group smaller than this is left out (a handful of tasks can point at one author)
+
+
+def build(connection: sqlite3.Connection, since: str | None = None, until: str | None = None, trace_limit: int = 500,
+          numbers_only: bool = False) -> dict[str, Any]:
+    """The statistics. `numbers_only` is the version the privacy page lets us keep for comparing releases: no task numbers (no
+    trace list) and no group of fewer than NUMBERS_ONLY_MIN_GROUP tasks; the full one is read and deleted."""
     reader = Reader(connection)
     tasks = load(reader, since, until)
     segments = {}
@@ -354,12 +360,13 @@ def build(connection: sqlite3.Connection, since: str | None = None, until: str |
         for task in mine:
             groups[(task["kind"] or UNRECOGNIZED, task["prompt_version"] or UNRECOGNIZED, task["week"])].append(task)
         segments[name] = {"overall": summarize(mine),
-                          "groups": [{"kind": kind, "prompt_version": prompt, "week": week, **summarize(group)} for (kind, prompt, week), group in sorted(groups.items())]}
-    traces, cut = _traces(tasks, trace_limit)
+                          "groups": [{"kind": kind, "prompt_version": prompt, "week": week, **summarize(group)} for (kind, prompt, week), group in sorted(groups.items())
+                                     if not numbers_only or len(group) >= NUMBERS_ONLY_MIN_GROUP]}
+    traces, cut = ([], 0) if numbers_only else _traces(tasks, trace_limit)
     return {"schema": SCHEMA,
             "meta": {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "since": since, "until": until, "tasks": len(tasks),
                      "tasks_by_segment": {name: sum(task["segment"] == name for task in tasks) for name in SEGMENTS},
-                     "traces": len(traces), "traces_cut": cut, "missing_columns": reader.missing},
+                     "traces": len(traces), "traces_cut": cut, "missing_columns": reader.missing, "numbers_only": numbers_only},
             "segments": segments, "traces": traces}
 
 
@@ -433,6 +440,9 @@ def to_markdown(stats: dict[str, Any]) -> str:
                  _pct(g["cards"]["all"]["undo_rate"]), _spread_text(g["cost_cny"]), sum(g["rules"]["failed_codes"].values())] for g in segment["groups"]]
         lines += [f"### {names[name]}：按种类 × 提示词版本 × 周", ""]
         lines += _table(["种类", "提示词版本", "周", "任务", "完成", "失败", "差评率", "卡片提出", "确认率", "拒绝率", "撤销率", "费用 中位/P90", "核对没过次数"], rows)
+    if meta.get("numbers_only"):
+        note = f"（只有数字的版本：不列任务编号，少于 {NUMBERS_ONLY_MIN_GROUP} 个任务的分组不列。可以留着和以后的版本比较。）"
+        return "\n".join(lines + [note]).rstrip() + "\n"
     lines += ["## 需要看的任务（点踩、失败、有卡片被撤销）", ""]
     if meta["traces_cut"]:
         lines += [f"（只列最近 {len(stats['traces'])} 条，更早的 {meta['traces_cut']} 条没有列；加 --trace-limit 0 可全部列出）", ""]
@@ -474,6 +484,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     parser.add_argument("--out", help="write here instead of standard output")
     parser.add_argument("--trace-limit", type=int, default=500, help="at most this many tasks in the trace list (the latest); 0 for all")
+    parser.add_argument("--numbers-only", action="store_true",
+                        help="no task numbers and no group under %d tasks: the version kept for comparing releases" % NUMBERS_ONLY_MIN_GROUP)
     args = parser.parse_args(argv)
     try:
         connection = open_readonly(args.db)
@@ -481,7 +493,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"cannot open the database read-only: {error}", file=sys.stderr)
         return 2
     try:
-        stats = build(connection, args.since, args.until, args.trace_limit)
+        stats = build(connection, args.since, args.until, args.trace_limit, args.numbers_only)
     finally:
         connection.close()
     text = to_markdown(stats) if args.format == "markdown" else json.dumps(stats, ensure_ascii=False, indent=2) + "\n"

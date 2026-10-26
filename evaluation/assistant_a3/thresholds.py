@@ -16,6 +16,7 @@ PRE_REGISTRATION = {
     "registered_on": "2026-10-24",
     "amended_on": [
         "2026-10-26 addendum 1 (user approved; the dev set's 3 runs used, the formal and safety sets not run): a second readable dev set eval_set_a3d2_dev, same shape and rules as the first, at most 3 runs, the first not run again; two ways the scorer shows report items to the judge (the model's own claim, and a disagreement as two passages each holding one side). No bar, set or protocol changes.",
+        "2026-10-27 addendum 2 (user approved; the second dev set's 3 runs used, the formal and safety sets not run): eval_set_a3d2_dev may be run again for confirmation runs after its 3rd; the formal and safety sets run when a confirmation run passes all 16 bars; after a failed one the product may be fixed and confirmed again. No bar, set or protocol changes.",
     ],
     "applies_to": ["eval_set_a3_dev", "eval_set_a3d2_dev", "eval_set_a3_formal", "eval_set_a3s_formal"],
     "formal_sets": ["eval_set_a3_formal", "eval_set_a3s_formal"],
