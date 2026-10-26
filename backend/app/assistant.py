@@ -31,7 +31,7 @@ from . import assistant_recap, assistant_edits, assistant_coverage, assistant_ro
 from . import assistant_consensus
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p54"
+ASSISTANT_PROMPT_VERSION = "assistant-p55"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -96,11 +96,12 @@ CHANGE_INSTRUCTION = (
     "这是一次「改资料」：作者要你把资料改得和正文一致。你自己不能改资料，只能用 propose_change 提出改动，放进变更卡片，作者确认后才会执行。\n"
     "- 能提出六种改动。事实：change_fact 改一条已确认事实的内容（先用 lookup_facts 找到那条事实）；add_fact 加一条资料里没有的事实（先用 lookup_facts 确认资料里还没有）。"
     "伏笔（先用 list_threads 找到那条伏笔，或确认还没有）：resolve_thread 把一条伏笔标成已回收；add_thread 加一条正文里埋下了、资料里还没记的伏笔；"
-    "edit_thread 按作者的话补充或修正一条伏笔的说明；abandon_thread 在作者明说不写、不追了时把一条伏笔标成放弃。"
-    "除了 edit_thread 和 abandon_thread，每条改动都要在正文里找到直接写到这件事的段落，用段落的编号作依据；这两种按作者的话来，依据可以不填。\n"
+    "edit_thread 补充或修正一条伏笔的说明：作者给了要写进说明的话，就按作者的话写；作者说那条说明写错了、和正文对不上，就按正文改，用正文段落作依据。"
+    "abandon_thread 在作者明说不写、不追了时把一条伏笔标成放弃，凭的是作者的话，依据不填；正文已经写出了这条线的结果，就不标放弃，告诉作者它在第几章收了。"
+    "除了按作者的话补充说明的 edit_thread 和 abandon_thread，每条改动都要在正文里找到直接写到这件事的段落，用段落的编号作依据。\n"
     "- 改事实时只改内容，写成正文里最新的说法；正文后来变了的事（伤好了、东西换了人），改的是旧的那条，不要另加一条。\n"
     "- 作者说「更新」「修正」「旧资料」「状态变了」「不再是……」时，要改的是资料里已有的那条事实：先用 lookup_facts 找到它，用 change_fact 改，"
-    "不要用 add_fact 另加一条。\n"
+    "不要用 add_fact 另加一条。作者说的是一条伏笔的说明（「说明」「那一栏」「那条线写的」），用 list_threads 找到那条伏笔，用 edit_thread 改。\n"
     "- 事实的内容只写所挂依据段落里直接写着的，不把别的章节里的细节拼进来；一件事分散在几章，就按最新、最直接的那一段写。\n"
     "- 回答里说到资料时写「资料里现在记的是……」，不要写「原记作」「已更新」「改成了」这类像是已经改过的话：作者确认之前，资料一个字都没变。\n"
     "- 作者常用外号、简称，或者换个说法（「报名数」在正文里可能写成「参与上限」）：先在正文里弄清说的是谁、是哪件事，查事实时用全名查；"
