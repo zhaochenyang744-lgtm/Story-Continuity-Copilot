@@ -24,6 +24,7 @@ from .assistant_tools import (CLOSING, ERROR_HINTS, INTERNAL_ID, NAME_MAX_CHARS,
                               ToolError, _range_label as range_label, result_refs, run_tool, tool_result_text, tools_for, TOOLS)
 from .author_home import SAMPLE_ORIGINS
 from .database import DomainError
+from .problem_codes import Problem, codes_of, count as count_codes
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
@@ -118,7 +119,7 @@ NO_CARD_LINES = {"delete": "没有出卡片：删除资料这一版还做不到�
                  "no_evidence": "没有出卡片：正文里没找到能作依据的段落。"}
 NO_CARD_RECORDED = {"change_no_difference", "change_fact_already_recorded", "change_thread_exists", "change_thread_not_open"}
 NO_CARD_UNSUPPORTED = {"change_value_not_in_evidence", "change_evidence_invalid", "change_evidence_before_planted"}
-CHANGE_STATUS_PROBLEM = "提出了资料改动时，status 用 answered，用一两句带出处的话说明依据"
+CHANGE_STATUS_PROBLEM = Problem("change_status_mismatch", "提出了资料改动时，status 用 answered，用一两句带出处的话说明依据")
 FORCE_NOTICE = "步数或预算已到，不能再查了。请现在调用 answer，用已经查到的内容回答，并在 note 里说明还没查完的部分。"
 CHANGE_FORCE_NOTICE = ("步数或预算已到，不能再查了。已经查到依据、要提出的改动，现在用 propose_change 提出，并在同一轮用 answer 收尾；"
                        "没有要提出的就直接用 answer 收尾，在 note 里说明还没查完的部分。")
@@ -208,10 +209,14 @@ def refusal_problems(sentences: list[dict[str, Any]], sources: dict[str, dict[st
     A sentence that opens the same way because it quotes the work is left alone: its opening clause is found, word for
     word, in a source the sentence cites."""
     def problem(text):
-        if _ABSENCE.search(text): return ABSENCE_PROBLEM
-        if _ATTRIBUTION.match(text): return ATTRIBUTION_PROBLEM
-        return "是拒绝或改写建议，" + REFUSAL_PROBLEM
-    return [f"第 {index + 1} 句{problem(_SENTENCE_LEAD.sub('', sentences[index]['text']))}" for index in refusal_sentences(sentences, sources)]
+        if _ABSENCE.search(text): return "absence_cited", ABSENCE_PROBLEM
+        if _ATTRIBUTION.match(text): return "attribution_cited", ATTRIBUTION_PROBLEM
+        return "refusal_cited", "是拒绝或改写建议，" + REFUSAL_PROBLEM
+    found = []
+    for index in refusal_sentences(sentences, sources):
+        code, text = problem(_SENTENCE_LEAD.sub('', sentences[index]['text']))
+        found.append(Problem(code, f"第 {index + 1} 句{text}"))
+    return found
 
 
 def refusal_sentences(sentences: list[dict[str, Any]], sources: dict[str, dict[str, Any]]) -> list[int]:
@@ -295,8 +300,13 @@ def unsupported_people_problems(sentences: list[dict[str, Any]], sources: dict[s
     for index, sentence in enumerate(sentences):
         missing = unsupported_people(sentence, sources, people)
         if missing:
-            problems.append(f"第 {index + 1} 句" + PEOPLE_PROBLEM.format(names="、".join(missing)))
+            problems.append(Problem("people_unsupported", f"第 {index + 1} 句" + PEOPLE_PROBLEM.format(names="、".join(missing))))
     return problems
+
+
+def _ms(started: float) -> int:
+    """Milliseconds since `started` (a `time.monotonic()` reading)."""
+    return int((time.monotonic() - started) * 1000)
 
 
 def should_force_answer(cost: float, last_call_cost: float | None, force_cost: float, factor: float = ASSISTANT_NEXT_ROUND_FACTOR) -> bool:
@@ -325,55 +335,55 @@ def validate_answer(arguments: Any, known_refs: set[str], sources: dict[str, dic
     spent) an over-long note is cut back to whole sentences instead of failing the answer."""
     problems: list[str] = []
     if not isinstance(arguments, dict):
-        return None, ["answer 的参数不是一个对象"]
+        return None, [Problem("answer_args_invalid", "answer 的参数不是一个对象")]
     status = arguments.get("status")
     if status == OUT_OF_SCOPE and kind == "ask":
         return {"status": OUT_OF_SCOPE, "sentences": [], "note": None}, []
     if status not in ANSWER_STATUSES:
-        problems.append("status 必须是 answered、not_found 或 inconsistent 之一")
+        problems.append(Problem("status_invalid", "status 必须是 answered、not_found 或 inconsistent 之一"))
     raw_sentences = arguments.get("sentences")
     if raw_sentences is None:
         raw_sentences = []
     if not isinstance(raw_sentences, list):
-        return None, ["sentences 必须是数组"]
+        return None, [Problem("sentences_not_list", "sentences 必须是数组")]
     most = FIX_MAX_SENTENCES if kind == "fix_issue" else ANSWER_MAX_SENTENCES
     # A lead sentence (p53) sums up the ones after it and is not counted against the limit.
     led = bool(raw_sentences) and isinstance(raw_sentences[0], dict) and raw_sentences[0].get("lead") is True
     if len(raw_sentences) - led > most:
-        problems.append(f"最多 {most} 句，现在是 {len(raw_sentences)} 句；只留回答问题必需的句子")
+        problems.append(Problem("sentences_over_limit", f"最多 {most} 句，现在是 {len(raw_sentences)} 句；只留回答问题必需的句子"))
     note = arguments.get("note")
     if isinstance(note, str) and len(note.strip()) > NOTE_MAX_CHARS and clip_note:
         note = clipped_note(note.strip())
     if note is not None and not isinstance(note, str):
-        problems.append(f"note 必须是不超过 {NOTE_MAX_CHARS} 字的文字")
+        problems.append(Problem("note_not_text", f"note 必须是不超过 {NOTE_MAX_CHARS} 字的文字"))
         note = None
     elif note is not None and len(note.strip()) > NOTE_MAX_CHARS:
-        problems.append(f"note 现在有 {len(note.strip())} 字，超过 {NOTE_MAX_CHARS} 字上限；删到 {NOTE_MAX_CHARS} 字以内，只留最要紧的一两句")
+        problems.append(Problem("note_too_long", f"note 现在有 {len(note.strip())} 字，超过 {NOTE_MAX_CHARS} 字上限；删到 {NOTE_MAX_CHARS} 字以内，只留最要紧的一两句"))
         note = None
     note = note.strip() if isinstance(note, str) and note.strip() else None
     sentences: list[dict[str, Any]] = []
     for number, item in enumerate(raw_sentences, 1):
         if not isinstance(item, dict) or not isinstance(item.get("text"), str) or not isinstance(item.get("refs", []), list):
-            problems.append(f"第 {number} 句格式不对，应为 {{text, refs}}")
+            problems.append(Problem("sentence_malformed", f"第 {number} 句格式不对，应为 {{text, refs}}"))
             continue
         text = item["text"].strip()
         refs: list[str] = []
         before = len(problems)
         for ref in item.get("refs") or []:
             if not isinstance(ref, str) or not REF_FORMAT.fullmatch(ref):
-                problems.append(f"第 {number} 句的出处 {str(ref)[:20]!r} 不是 R 编号")
+                problems.append(Problem("ref_not_r_format", f"第 {number} 句的出处 {str(ref)[:20]!r} 不是 R 编号"))
             elif ref not in known_refs:
-                problems.append(f"第 {number} 句引用了不存在的编号 {ref}；只能引用工具返回过的编号")
+                problems.append(Problem("ref_unknown", f"第 {number} 句引用了不存在的编号 {ref}；只能引用工具返回过的编号"))
             elif ref not in refs:
                 refs.append(ref)
         if not text:
-            problems.append(f"第 {number} 句的文字是空的")
+            problems.append(Problem("sentence_empty", f"第 {number} 句的文字是空的"))
         elif len(text) > SENTENCE_MAX_CHARS:
-            problems.append(f"第 {number} 句超过 {SENTENCE_MAX_CHARS} 字")
+            problems.append(Problem("sentence_too_long", f"第 {number} 句超过 {SENTENCE_MAX_CHARS} 字"))
         if INTERNAL_ID.search(text):
-            problems.append(f"第 {number} 句里出现了内部标识；出处只写在 refs 里")
+            problems.append(Problem("internal_id_in_sentence", f"第 {number} 句里出现了内部标识；出处只写在 refs 里"))
         if not refs and len(problems) == before:
-            problems.append(f"第 {number} 句没有出处，每句都至少要带一个编号")
+            problems.append(Problem("sentence_no_ref", f"第 {number} 句没有出处，每句都至少要带一个编号"))
         entry: dict[str, Any] = {"text": text, "refs": refs}
         # p53: a label the page sets in bold must be words of the sentence itself; a lead is the first sentence only. Once
         # the one repair is spent (`clip_note`), a label or lead that does not hold is dropped rather than failing the answer.
@@ -383,33 +393,33 @@ def validate_answer(arguments: Any, known_refs: set[str], sources: dict[str, dic
             if len(label) <= LABEL_MAX_CHARS and label in text and not INTERNAL_ID.search(label):
                 entry["label"] = label
             elif not clip_note:
-                problems.append(f"第 {number} 句的 label「{label[:20]}」要原样出现在这句里，不超过 {LABEL_MAX_CHARS} 字")
+                problems.append(Problem("label_invalid", f"第 {number} 句的 label「{label[:20]}」要原样出现在这句里，不超过 {LABEL_MAX_CHARS} 字"))
         if item.get("lead") is True:
             if number == 1:
                 entry["lead"] = True
             elif not clip_note:
-                problems.append(f"第 {number} 句标了 lead；只有第一句能是总述")
+                problems.append(Problem("lead_misplaced", f"第 {number} 句标了 lead；只有第一句能是总述"))
         sentences.append(entry)
     if kind == "ask" and check_refusals:
         problems += refusal_problems(sentences, sources)
     if check_refusals:
         problems += unsupported_people_problems(sentences, sources, people)
     if note and INTERNAL_ID.search(note):
-        problems.append("note 里出现了内部标识")
+        problems.append(Problem("internal_id_in_note", "note 里出现了内部标识"))
     # The note is shown to the author as plain text; R numbers mean nothing to them there.
     if note and REF_FORMAT.search(note):
-        problems.append("note 里不要写 R 编号，只写查过哪些地方、没找到什么")
+        problems.append(Problem("ref_in_note", "note 里不要写 R 编号，只写查过哪些地方、没找到什么"))
     if status in ("answered", "inconsistent") and not sentences:
-        problems.append("这个状态至少要有 1 句结论")
+        problems.append(Problem("status_needs_sentence", "这个状态至少要有 1 句结论"))
     if status == "not_found" and not note:
-        problems.append("not_found 必须在 note 里说明查过哪些地方、没找到什么")
+        problems.append(Problem("not_found_needs_note", "not_found 必须在 note 里说明查过哪些地方、没找到什么"))
     if status == "inconsistent" and sentences and not problems:
         cited = [sources[ref] for sentence in sentences for ref in sentence["refs"]]
         chapters = {source["chapter_number"] for source in cited if source["chapter_number"] is not None}
         has_text = any(source["kind"] in ("passage", "draft") for source in cited)
         has_fact = any(source["kind"] == "fact" for source in cited)
         if len(chapters) < 2 and not (has_text and has_fact):
-            problems.append("inconsistent 要引用至少两个不同章节的出处（或一章正文加一条事实），两边的说法都要引用")
+            problems.append(Problem("inconsistent_one_side", "inconsistent 要引用至少两个不同章节的出处（或一章正文加一条事实），两边的说法都要引用"))
     if problems:
         return None, problems
     return {"status": status, "sentences": sentences, "note": note}, []
@@ -857,6 +867,7 @@ class AssistantEngine:
         force_cost = min(ASSISTANT_FORCE_ANSWER_CNY, max_cost)
         last_call_cost: float | None = None  # what the previous model call cost (a point check's review is not counted)
         repaired = False
+        dropped_codes: list[str] = []  # rules whose offending items the program left out once the repair was spent (codes only)
         protocol_errors = 0
         lines_shown = 0
         limited = False
@@ -909,6 +920,7 @@ class AssistantEngine:
                     messages.append({"role": "user", "content": CHANGE_FORCE_NOTICE if kind == "change" else FORCE_NOTICE.replace("answer", final_tool)
                                      if kind != "recap" else "步数或预算已到，不能再查。请只用已登记出处调用 recap 收尾。"})
                     notified = True
+            round_started = time.monotonic()
             self.store.set_phase(task_id, "thinking")
             try:
                 # After a reply with no tool call, the next one must call a tool (any of them): a reminder alone was ignored
@@ -980,13 +992,17 @@ class AssistantEngine:
                                                                                   check_refusals=not repaired, clip_note=repaired, people=ctx.people()))
                     if cleaned is not None and kind != "recap" and repaired:
                         # The one repair is spent: a fact-only sentence naming someone its facts do not mention goes.
+                        before_people = len(cleaned["sentences"])
                         cleaned, dropped_problems = without_unsupported_people(cleaned, registry.rows, ctx.people())
                         problems += dropped_problems
+                        if cleaned is not None:
+                            dropped_codes += ["people_unsupported"] * (before_people - len(cleaned["sentences"]))
                     if cleaned is not None and kind == "ask" and repaired:
                         # The one repair is spent: drop cited refusals and rewrite advice rather than lose the answer;
                         # with nothing left to stand on, it still fails.
                         dropped = refusal_sentences(cleaned["sentences"], registry.rows)
                         if dropped:
+                            dropped_codes += codes_of(refusal_problems(cleaned["sentences"], registry.rows))
                             kept = [item for index, item in enumerate(cleaned["sentences"]) if index not in dropped]
                             if kept or cleaned["status"] == "not_found":
                                 cleaned = {**cleaned, "sentences": kept}
@@ -1006,6 +1022,7 @@ class AssistantEngine:
                         note_issues = assistant_coverage.note_problems(cleaned["note"], steps)
                         if note_issues and repaired:
                             # The one repair is spent: drop the untrue places from the note rather than lose the answer.
+                            dropped_codes += codes_of(note_issues)
                             note = assistant_coverage.without_untrue(cleaned["note"], steps)
                             if not note and cleaned["status"] == "not_found":
                                 note = "没有找到问题问到的内容。"
@@ -1020,8 +1037,9 @@ class AssistantEngine:
                             spoken = [item for item in cleaned["sentences"] if assistant_edits.mentions_withdrawn(ctx, item["text"])]
                             if spoken and repaired and len(spoken) < len(cleaned["sentences"]):
                                 cleaned = {**cleaned, "sentences": [item for item in cleaned["sentences"] if item not in spoken]}
+                                dropped_codes += ["withdrawn_mentioned"] * len(spoken)
                             elif spoken:
-                                problems += [f"回答里提到了已撤回的 {label}" for label in dict.fromkeys(
+                                problems += [Problem("withdrawn_mentioned", f"回答里提到了已撤回的 {label}") for label in dict.fromkeys(
                                     label for item in spoken for label in assistant_edits.mentions_withdrawn(ctx, item["text"]))]
                         if problems:
                             cleaned = None
@@ -1037,17 +1055,21 @@ class AssistantEngine:
                     if cleaned is not None:
                         answer = cleaned
                         self.store.add_step(task_id, round_, "answer", TOOLS[final_tool].summary({}, None), tool_name=final_tool,
-                                            result_count=sum(len(s) for s in cleaned["sections"].values()) if kind == "recap" else len(cleaned["sentences"]))
+                                            result_count=sum(len(s) for s in cleaned["sections"].values()) if kind == "recap" else len(cleaned["sentences"]),
+                                            diagnostics={"problem_codes": [], "repairs": 1, "dropped": len(dropped_codes), "dropped_codes": count_codes(dropped_codes)}
+                                            if repaired else None, elapsed_ms=_ms(round_started))
                         continue
                     if repaired:
                         self.store.add_step(task_id, round_, "repair", "回答的引用仍然对不上，已放弃", args={"problems": problems[:8]},
-                                            error_code="citation_validation_failed")
+                                            error_code="citation_validation_failed", elapsed_ms=_ms(round_started),
+                                            diagnostics={"problem_codes": codes_of(problems), "repairs": 1, "dropped": 0, "dropped_codes": {}})
                         return self._fail(task_id, "citation_validation_failed", limited=limited)
                     repaired = True
                     last_event = "repair"
                     # What was sent back is kept with the step (never shown to the author) so a failed task can be read afterwards.
                     self.store.add_step(task_id, round_, "repair", "回答的引用有误，让助手重新回答", args={"problems": problems[:8]},
-                                        error_code="citation_validation_failed")
+                                        error_code="citation_validation_failed", elapsed_ms=_ms(round_started),
+                                        diagnostics={"problem_codes": codes_of(problems), "repairs": 1, "dropped": 0, "dropped_codes": {}})
                     messages.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(
                         {"error": "answer_invalid", "problems": problems, "instruction": f"请修正这些问题后再次调用 {final_tool}。"}, ensure_ascii=False)})
                     continue
@@ -1062,17 +1084,18 @@ class AssistantEngine:
                 chapter = args.get("chapter_number")
                 self.store.set_phase(task_id, "tool", str(call["name"])[:40],
                                      chapter if call["name"] == "read_chapter" and isinstance(chapter, int) and not isinstance(chapter, bool) else None)
+                tool_started = time.monotonic()
                 try:
                     outcome = run_tool(call["name"], kind, ctx, args)
                 except ToolError as error:
                     if error.code == "assistant_budget_exhausted" or cost > max_cost:
                         return self._fail(task_id, "assistant_budget_exhausted", limited=True)
-                    self._tool_step(task_id, round_, call, args, None, error.code)
+                    self._tool_step(task_id, round_, call, args, None, error.code, _ms(tool_started))
                     hint = ERROR_HINTS.get(error.code)
                     messages.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(
                         {"error": error.code, **({"message": hint} if hint else {})}, ensure_ascii=False)})
                     continue
-                self._tool_step(task_id, round_, call, args, outcome, None)
+                self._tool_step(task_id, round_, call, args, outcome, None, _ms(tool_started))
                 messages.append({"role": "tool", "tool_call_id": call["id"], "content": tool_result_text(outcome.result)})
                 if cost > max_cost:
                     return self._fail(task_id, "assistant_budget_exhausted", limited=True)
@@ -1080,14 +1103,15 @@ class AssistantEngine:
                 return self._complete(task_id, answer, limited)
         self._fail(task_id, {"protocol": "assistant_protocol_error", "repair": "citation_validation_failed"}.get(last_event, "assistant_no_answer"), limited=True)
 
-    def _tool_step(self, task_id: str, round_: int, call: dict[str, Any], args: dict[str, Any] | None, outcome: Any, error: str | None) -> None:
+    def _tool_step(self, task_id: str, round_: int, call: dict[str, Any], args: dict[str, Any] | None, outcome: Any, error: str | None,
+                   elapsed_ms: int | None = None) -> None:
         tool = TOOLS.get(call["name"])
         shown = outcome.args if outcome is not None else (args or {})
         summary = tool.summary(shown, outcome) if tool else f"未知工具：{str(call['name'])[:30]}"
         if error == "too_many_calls":
             summary += "（超出每轮上限，没有执行）"
         self.store.add_step(task_id, round_, "tool", summary, tool_name=str(call["name"])[:40], args=shown, result_count=outcome.count if outcome is not None else None,
-                            error_code=error, refs=result_refs(outcome.result) if outcome is not None else [])
+                            error_code=error, refs=result_refs(outcome.result) if outcome is not None else [], elapsed_ms=elapsed_ms)
 
     # -- closing -----------------------------------------------------------------------------------------------------------
     def _settle(self, task_id: str) -> None:

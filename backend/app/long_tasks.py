@@ -23,7 +23,7 @@ import sqlite3
 import threading
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import Any, Callable
+from typing import Any, Callable, Literal
 
 from fastapi import Header, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
@@ -34,6 +34,7 @@ from .assistant_store import new_task_id, utcnow
 from .assistant_tools import SourceRegistry, ToolContext
 from .database import DomainError
 from .long_task_kinds import KINDS, same_new_fact
+from .problem_codes import Problem, codes_of, count as count_codes
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 
 LONG_KIND = "long"
@@ -51,6 +52,21 @@ PLAN_MAX_TOKENS = 300
 PLAN_TIMEOUT_SECONDS = 20
 STEP_OVERHEAD_TOKENS = 3000  # rules, request, digest and the thread list a step carries besides its chapters
 NOTE_MAX = 80
+ORIGINS = ("route", "mode")
+# Why a long task ended without finishing its steps (`assistant_long_plans.stopped_by`); NULL for one that finished.
+AUTHOR_STOP, COST_CAP, QUESTIONS_USED, PROGRAM_ERROR = "author_stop", "cost_cap", "questions_exhausted", "program_error"
+# Columns added after the long-task tables first shipped (v2.1 telemetry): where the task came from (`origin`: the box judged the sentence
+# to be one - "route" - or the author chose the mode - "mode"; NULL when the page did not say), whether the author changed the chapter range
+# / the ceiling on the plan card, and why the task ended. Numbers and codes only, never a word of the author's. `plan_type` (thread_audit,
+# trace, tidy, or none when the sentence was no long task) and `chapters_planned` (how many chapters the plan reads) are the plan's
+# numbers kept apart from the plan's JSON, which holds the author's words.
+ADDED_COLUMNS = {
+    "assistant_long_plans": (("origin", "TEXT"), ("range_edited", "INTEGER NOT NULL DEFAULT 0"), ("cap_edited", "INTEGER NOT NULL DEFAULT 0"),
+                             ("stopped_by", "TEXT"), ("plan_type", "TEXT"), ("chapters_planned", "INTEGER")),
+    # {"problem_codes": [rule codes, one per failure], "repairs": extra model calls, "dropped": findings left out after the repair,
+    # "dropped_codes": {rule: times}, "apply_dropped_codes": {code: times of findings the program could not turn into a card}}
+    "assistant_long_steps": (("diagnostics_json", "TEXT"),),
+}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS assistant_long_plans(
@@ -96,6 +112,22 @@ class LongTaskError(Exception):
 def initialize(db: Any) -> None:
     with db.connection() as c:
         c.executescript(SCHEMA)
+        for table, added in ADDED_COLUMNS.items():
+            columns = {row[1] for row in c.execute(f"PRAGMA table_info({table})")}
+            for name, type_ in added:
+                if name not in columns:
+                    c.execute(f"ALTER TABLE {table} ADD COLUMN {name} {type_}")
+
+
+def diagnostics(problem_codes: list[str] | None = None, repairs: int = 0, dropped: list[str] | None = None, apply_dropped: list[str] | None = None) -> dict[str, Any]:
+    """What a step's checks found, as codes and counts (see `ADDED_COLUMNS`)."""
+    return {"problem_codes": list(problem_codes or []), "repairs": repairs, "dropped": len(dropped or []), "dropped_codes": count_codes(dropped or []),
+            "apply_dropped_codes": count_codes(apply_dropped or [])}
+
+
+def _apply_dropped(output: dict[str, Any]) -> list[str]:
+    """The codes of the findings a kind's `apply` left without a card (an item carries its `dropped` code)."""
+    return [item["dropped"] for value in output.values() if isinstance(value, list) for item in value if isinstance(item, dict) and isinstance(item.get("dropped"), str)]
 
 
 def _now(clock: Callable[[], datetime]) -> str:
@@ -124,13 +156,13 @@ class LongTasks:
         initialize(db)
 
     # -- creating and planning ----------------------------------------------------------------------------------------
-    def create(self, user_id: str, project_id: str, question: str, context: dict[str, Any], key: str) -> tuple[dict[str, Any], int, bool]:
+    def create(self, user_id: str, project_id: str, question: str, context: dict[str, Any], key: str, origin: str | None = None) -> tuple[dict[str, Any], int, bool]:
         with self.db.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             return self.db._idem(c, user_id, f"assistant_long:{project_id}", key, {"question": question, "context": context},
-                                 lambda: self._new(c, user_id, project_id, question, context), 202, with_created=True)
+                                 lambda: self._new(c, user_id, project_id, question, context, origin), 202, with_created=True)
 
-    def _new(self, c: sqlite3.Connection, user_id: str, project_id: str, question: str, context: dict[str, Any]) -> dict[str, Any]:
+    def _new(self, c: sqlite3.Connection, user_id: str, project_id: str, question: str, context: dict[str, Any], origin: str | None = None) -> dict[str, Any]:
         project = self.db._project(c, user_id, project_id, True)
         actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
         if actor and actor["account_type"] == "visitor":
@@ -155,7 +187,8 @@ class LongTasks:
             "model_label": str(getattr(self.provider, "assistant_model", None) or "unconfigured"), "follow_up_of": None,
             "models_json": json.dumps({"plan": self._model("plan"), "loop": self._model("loop")}), "regenerated_from": None, "edited_from": None,
             "created_at": utcnow()})
-        c.execute("INSERT INTO assistant_long_plans(task_id,cap_cny,created_at) VALUES(?,?,?)", (task_id, CAP_DEFAULT, utcnow()))
+        c.execute("INSERT INTO assistant_long_plans(task_id,cap_cny,created_at,origin) VALUES(?,?,?,?)",
+                  (task_id, CAP_DEFAULT, utcnow(), origin if origin in ORIGINS else None))
         return self.view(c, task_id, user_id)
 
     def _model(self, role: str) -> str | None:
@@ -176,14 +209,17 @@ class LongTasks:
             return self._finish(task_id, FAILED, error_code="assistant_long_plan_failed", internal=type(error).__name__)
         scope = json.loads(row["scope_json"])
         if choice["type"] not in TYPES:
+            with self.db.connection() as c:
+                c.execute("UPDATE assistant_long_plans SET plan_type='none' WHERE task_id=?", (task_id,))
             return self._finish(task_id, COMPLETED, answer={"status": "not_found", "sentences": [], "note":
                                 "这类长任务现在还做不了。现在能做的是：清点还没收的伏笔、梳理一样东西或一件事在全书的变化、把资料和正文对一遍。"})
         chapters = _chapters(choice["chapters"], scope["max_chapter"])
         with self.db.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             proposed = self._expand(c, row, choice, chapters)
-            c.execute("UPDATE assistant_long_plans SET proposed_json=?,est_chars=?,est_cny=? WHERE task_id=?",
-                      (json.dumps(proposed, ensure_ascii=False), proposed["est_chars"], proposed["est_cny"], task_id))
+            c.execute("UPDATE assistant_long_plans SET proposed_json=?,est_chars=?,est_cny=?,plan_type=?,chapters_planned=? WHERE task_id=?",
+                      (json.dumps(proposed, ensure_ascii=False), proposed["est_chars"], proposed["est_cny"], proposed["type"],
+                       proposed["chapters"][1] - proposed["chapters"][0] + 1, task_id))
             c.execute("UPDATE assistant_tasks SET status=?,phase=NULL WHERE id=? AND status=?", (AWAITING_PLAN, task_id, PLANNING))
 
     def _expand(self, c: sqlite3.Connection, row: Any, choice: dict[str, Any], chapters: list[int]) -> dict[str, Any]:
@@ -216,12 +252,16 @@ class LongTasks:
             if row["status"] != AWAITING_PLAN:
                 raise DomainError("assistant_long_plan_closed", 409)
             proposed = json.loads(plan["proposed_json"])
+            range_edited = plan["range_edited"]
             if chapters is not None:
                 scope = json.loads(row["scope_json"])
+                before = proposed["chapters"]
                 proposed = self._expand(c, row, proposed, _chapters(chapters, scope["max_chapter"], strict=True))
+                range_edited = range_edited or int(proposed["chapters"] != before)
             cap = plan["cap_cny"] if cap_cny is None else round(min(CAP_MAX, max(CAP_MIN, cap_cny)), 2)
-            c.execute("UPDATE assistant_long_plans SET proposed_json=?,est_chars=?,est_cny=?,cap_cny=? WHERE task_id=?",
-                      (json.dumps(proposed, ensure_ascii=False), proposed["est_chars"], proposed["est_cny"], cap, task_id))
+            c.execute("UPDATE assistant_long_plans SET proposed_json=?,est_chars=?,est_cny=?,cap_cny=?,range_edited=?,cap_edited=?,chapters_planned=? WHERE task_id=?",
+                      (json.dumps(proposed, ensure_ascii=False), proposed["est_chars"], proposed["est_cny"], cap, range_edited,
+                       plan["cap_edited"] or int(cap != plan["cap_cny"]), proposed["chapters"][1] - proposed["chapters"][0] + 1, task_id))
             return self.view(c, task_id, user_id)
 
     def start(self, user_id: str, project_id: str, task_id: str) -> dict[str, Any]:
@@ -264,7 +304,7 @@ class LongTasks:
             c.execute("UPDATE assistant_long_questions SET answer_json=?,answered_at=? WHERE id=?",
                       (json.dumps({"choice": choice, "cap_cny": cap_cny}, ensure_ascii=False), utcnow(), question_id))
             if stop:
-                c.execute("UPDATE assistant_long_plans SET stop_requested=1 WHERE task_id=?", (task_id,))
+                c.execute("UPDATE assistant_long_plans SET stop_requested=1,stopped_by=COALESCE(stopped_by,?) WHERE task_id=?", (COST_CAP, task_id))
             c.execute("UPDATE assistant_tasks SET status=? WHERE id=?", (QUEUED, task_id))
             return self.view(c, task_id, user_id)
 
@@ -275,7 +315,7 @@ class LongTasks:
             row, _ = self._owned(c, user_id, project_id, task_id)
             if row["status"] not in ACTIVE:
                 raise DomainError("assistant_long_not_active", 409)
-            c.execute("UPDATE assistant_long_plans SET stop_requested=1 WHERE task_id=?", (task_id,))
+            c.execute("UPDATE assistant_long_plans SET stop_requested=1,stopped_by=COALESCE(stopped_by,?) WHERE task_id=?", (AUTHOR_STOP, task_id))
             early = row["status"] in (PLANNING, AWAITING_PLAN)
             if row["status"] == WAITING:  # its question is moot now; a runner winds it up
                 c.execute("UPDATE assistant_tasks SET status=? WHERE id=?", (QUEUED, task_id))
@@ -401,7 +441,7 @@ class LongTasks:
             spent = c.execute("SELECT cost_cny FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()[0] or 0.0
             left = c.execute("SELECT COUNT(*) FROM assistant_long_steps WHERE task_id=? AND status<>'done'", (task_id,)).fetchone()[0]
             if asked >= MAX_QUESTIONS:
-                c.execute("UPDATE assistant_long_plans SET stop_requested=1 WHERE task_id=?", (task_id,))
+                c.execute("UPDATE assistant_long_plans SET stop_requested=1,stopped_by=COALESCE(stopped_by,?) WHERE task_id=?", (QUESTIONS_USED, task_id))
                 return False
             c.execute("INSERT INTO assistant_long_questions(id,task_id,step,kind,body_json,asked_at) VALUES(?,?,?,?,?,?)",
                       (f"alq-{uuid.uuid4().hex}", task_id, ordinal, "budget", json.dumps(
@@ -482,7 +522,10 @@ class LongTasks:
         row = self.store.row(task_id)
         report = None
         problems: list[str] = []
+        problem_codes: list[str] = []
+        calls_made = 0
         for _ in range(2):  # crutch `step_repair`: one more call when the report does not validate
+            calls_made += 1
             try:
                 with provider_usage(row["user_id"], row["reservation_id"]):
                     result = self.provider.chat(messages, [kind.tool], "required", STEP_MAX_TOKENS)
@@ -497,9 +540,10 @@ class LongTasks:
             except ValueError:
                 args = None
             if not isinstance(args, dict):
-                report, problems = None, [f"请调用 {kind.tool_name}，参数是一个 JSON 对象"]
+                report, problems = None, [Problem("report_call_missing", f"请调用 {kind.tool_name}，参数是一个 JSON 对象")]
             else:
                 report, problems = kind.validate(args, subjects, passages, earlier)
+            problem_codes += codes_of(problems)
             if report is not None:
                 break
             messages += [{"role": "assistant", "content": None, "tool_calls": [{"id": call["id"], "type": "function",
@@ -507,13 +551,22 @@ class LongTasks:
             messages += ([{"role": "tool", "tool_call_id": calls[0]["id"], "content": json.dumps({"error": "report_invalid", "problems": problems}, ensure_ascii=False)}]
                          if calls else [{"role": "user", "content": f"请调用 {kind.tool_name} 交出结果。问题：" + "；".join(problems)}])
         dropped = 0
+        dropped_codes: list[str] = []
         if report is None and isinstance(args, dict):  # after the repair, what still does not validate is left out (A3 dev round 1)
             report, problems = kind.validate(args, subjects, passages, earlier, keep_valid=True)
             dropped = len(problems)
+            dropped_codes = codes_of(problems)
         if report is None:
+            self._note_checks(task_id, ordinal, diagnostics(problem_codes, calls_made - 1))
             raise LongTaskError("assistant_long_report_invalid")
         output, proposals, decisions = kind.apply(ctx, spec, plan, report, subjects, passages)
-        self._done(task_id, ordinal, {**output, "decisions": decisions, **({"dropped": dropped} if dropped else {})}, proposals, chars)
+        self._done(task_id, ordinal, {**output, "decisions": decisions, **({"dropped": dropped} if dropped else {})}, proposals, chars,
+                   diagnostics(problem_codes, calls_made - 1, dropped_codes, _apply_dropped(output)))
+
+    def _note_checks(self, task_id: str, ordinal: int, checks: dict[str, Any]) -> None:
+        """What a step's checks found, kept on a step that did not get to be done."""
+        with self.db.connection() as c:
+            c.execute("UPDATE assistant_long_steps SET diagnostics_json=? WHERE task_id=? AND ordinal=?", (json.dumps(checks), task_id, ordinal))
 
     def _ask_decision(self, task_id: str) -> bool:
         """Stop on the first question a finished step left that was not asked yet (True). With the questions used up, the
@@ -577,7 +630,8 @@ class LongTasks:
         with self.db.connection() as c:
             return c.execute(query, params).fetchall()
 
-    def _done(self, task_id: str, ordinal: int, output: dict[str, Any], proposals: list[tuple[str, dict[str, Any]]], chars: int) -> None:
+    def _done(self, task_id: str, ordinal: int, output: dict[str, Any], proposals: list[tuple[str, dict[str, Any]]], chars: int,
+              checks: dict[str, Any] | None = None) -> None:
         """What a step found, the cards it makes, and the characters it read, in one transaction. The step's cost is its
         booked calls (every attempt's: a call that was made is paid for, once)."""
         with self.db.connection() as c:
@@ -585,9 +639,9 @@ class LongTasks:
             if c.execute("SELECT status FROM assistant_long_steps WHERE task_id=? AND ordinal=?", (task_id, ordinal)).fetchone()[0] == "done":
                 return
             ids = self._insert(c, task_id, ordinal, proposals)
-            c.execute("UPDATE assistant_long_steps SET status='done',output_json=?,chars_read=?,finished_at=?,"
+            c.execute("UPDATE assistant_long_steps SET status='done',output_json=?,chars_read=?,finished_at=?,diagnostics_json=?,"
                       "cost_cny=(SELECT COALESCE(SUM(cost_cny),0) FROM assistant_long_calls WHERE task_id=? AND step=?) WHERE task_id=? AND ordinal=?",
-                      (json.dumps({**output, "changes": ids}, ensure_ascii=False), chars, utcnow(), task_id, ordinal, task_id, ordinal))
+                      (json.dumps({**output, "changes": ids}, ensure_ascii=False), chars, utcnow(), json.dumps(checks or diagnostics()), task_id, ordinal, task_id, ordinal))
             c.execute("UPDATE assistant_long_plans SET chars_read=chars_read+? WHERE task_id=?", (chars, task_id))
             c.execute("UPDATE assistant_tasks SET steps_used=steps_used+1 WHERE id=?", (task_id,))
 
@@ -638,7 +692,8 @@ class LongTasks:
             c.execute("BEGIN IMMEDIATE")
             c.execute("UPDATE assistant_tasks SET status=?,answer_json=?,error_code=?,internal_error_type=?,phase=NULL,completed_at=? WHERE id=?",
                       (status, json.dumps(answer, ensure_ascii=False) if answer is not None else None, error_code, internal, utcnow(), task_id))
-            c.execute("UPDATE assistant_long_plans SET lease_owner=NULL,lease_until=NULL WHERE task_id=?", (task_id,))
+            c.execute("UPDATE assistant_long_plans SET lease_owner=NULL,lease_until=NULL,stopped_by=CASE ? WHEN 'failed' THEN ? WHEN 'completed' THEN NULL "
+                      "ELSE stopped_by END WHERE task_id=?", (status, PROGRAM_ERROR, task_id))
             if chars_read is not None:  # what was read stays charged, what was not is given back
                 self.stage13.settle_long_task_characters(c, row["reservation_id"], chars_read)
                 c.execute("UPDATE assistant_tasks SET chars_charged=? WHERE id=?",
@@ -726,6 +781,7 @@ class LongContext(Strict):
 class LongCreate(Strict):
     question: str = Field(min_length=1, max_length=500)
     context: LongContext
+    origin: Literal["route", "mode"] | None = None  # where the page got the task from; only counted
 
 
 class LongPlanEdit(Strict):
@@ -766,7 +822,7 @@ def register_routes(app: Any, db: Any, user: Callable, csrf: Callable, key: Call
         actor = guarded(request, "create")
         if not long_tasks.provider.available:
             raise HTTPException(503, "provider_unavailable")
-        data, status, created = long_tasks.create(actor["id"], project_id, payload.question.strip(), payload.context.model_dump(exclude_none=True), key(idempotency_key))
+        data, status, created = long_tasks.create(actor["id"], project_id, payload.question.strip(), payload.context.model_dump(exclude_none=True), key(idempotency_key), payload.origin)
         if created:
             later(long_tasks.plan, data["id"])
         return ok(request, data, status)
