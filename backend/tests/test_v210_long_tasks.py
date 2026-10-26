@@ -373,6 +373,11 @@ class TraceTests(LongCase):
         self.assertEqual((conflict["text"], conflict["label"]), ("第 3 章和第 10 章：罗盘在谁手上前后对不上", "第 3 章和第 10 章"))
         self.assertEqual(len(conflict["refs"]), 2)
 
+    def test_two_sayings_in_one_chapter_are_a_sequence_not_a_disagreement(self):
+        view = self.trace(turns=[self.tracing(earlier=lambda chapters: chapters[10][-1])] * 2)  # A3 confirmation round 1
+        self.assertEqual(view["status"], "completed")
+        self.assertNotIn("对不上的地方", view["answer"]["sections"])
+
     def test_when_a_conclusion_is_wanted_the_author_picks_the_passage(self):
         view = self.trace(output="conclusion")
         self.assertEqual(view["status"], "waiting_author")
@@ -563,7 +568,8 @@ class SameFactTests(unittest.TestCase):
         self.assertNotIn("possession", Tidy.tool["function"]["parameters"]["properties"]["missing"]["items"]["properties"]["predicate"]["enum"])
         holds = {**self.fact("滕书蔚", "possession", "接手保管弧栈坡板"), "memory_type": "dynamic_state"}
         rule = self.fact("周转站", "rule", "续租须由租用人本人答应")
-        report, problems = Tidy().validate({"stale": [], "missing": [holds, rule]}, {}, {"R1": {}}, set())
+        moved = {**self.fact("滕书蔚", "status", "接手保管弧栈坡板"), "memory_type": "dynamic_state"}  # confirmation round 1
+        report, problems = Tidy().validate({"stale": [], "missing": [holds, moved, rule]}, {}, {"R1": {}}, set())
         self.assertEqual(problems, [])
         self.assertEqual([item["value"] for item in report["missing"]], [rule["value"]])
 
