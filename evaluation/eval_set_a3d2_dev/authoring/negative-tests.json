@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "state_below_five",
+      "exit_code": 1,
+      "status": "FAIL",
+      "expected_error": "trace_object:1:state_count",
+      "expected_error_found": true,
+      "errors": [
+        "trace_object:1:state_count"
+      ]
+    },
+    {
+      "case": "quote_one_character",
+      "exit_code": 1,
+      "status": "FAIL",
+      "expected_error": "trace_object:1:state:1:quote_verbatim_unique",
+      "expected_error_found": true,
+      "errors": [
+        "trace_object:1:state:1:quote_verbatim_unique"
+      ]
+    },
+    {
+      "case": "tidy_action_deleted",
+      "exit_code": 1,
+      "status": "FAIL",
+      "expected_error": "a3e-tidy-01:complete_scope_actions",
+      "expected_error_found": true,
+      "errors": [
+        "a3e-tidy-01:complete_scope_actions"
+      ]
+    },
+    {
+      "case": "three_evidence_passages",
+      "exit_code": 1,
+      "status": "FAIL",
+      "expected_error": "a3e-tidy-01:expected_actions:1:evidence_alignment_max_2",
+      "expected_error_found": true,
+      "errors": [
+        "a3e-tidy-01:expected_actions:1:evidence_alignment_max_2"
+      ]
+    },
+    {
+      "case": "source_one_character",
+      "exit_code": 1,
+      "status": "FAIL",
+      "expected_error": "manifest:hash:works/w01.md",
+      "expected_error_found": true,
+      "errors": [
+        "manifest:hash:works/w01.md"
+      ]
+    }
+  ],
+  "cases_detected": 5,
+  "canonical_files_unchanged": true,
+  "temporary_copies_removed": true
+}

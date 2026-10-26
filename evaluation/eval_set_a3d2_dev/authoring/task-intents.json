@@ -1,0 +1,10 @@
+{
+  "a3e-trace-01": {"operation":"trace","trace_object":1},
+  "a3e-trace-02": {"operation":"trace","trace_object":2},
+  "a3e-thread-01": {"operation":"thread_audit"},
+  "a3e-tidy-01": {"operation":"tidy"},
+  "a3e-tidy-02": {"operation":"tidy"},
+  "a3e-ask-01": {"operation":"decision"},
+  "a3e-ask-02": {"operation":"decision"},
+  "a3e-narrowed-01": {"operation":"thread_audit"}
+}

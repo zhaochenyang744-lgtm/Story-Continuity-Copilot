@@ -1,0 +1,561 @@
+{
+  "status": "complete",
+  "inventory_items": 47,
+  "counts": {
+    "existing_fact": 33,
+    "stale_fact": 4,
+    "missing_fact": 10
+  },
+  "uncovered": 0,
+  "clarifications_added_to_starting_facts": [
+    26,
+    33
+  ],
+  "rows": [
+    {
+      "id": "T1-01",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "绮衡周转站位于赫沄市呈晖大厦首层",
+      "classification": "existing_fact",
+      "facts": [
+        9,
+        10
+      ]
+    },
+    {
+      "id": "T1-02",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "屈予葭负责接单与预约登记",
+      "classification": "existing_fact",
+      "facts": [
+        13
+      ]
+    },
+    {
+      "id": "T1-03",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "滕书蔚负责送取物件",
+      "classification": "existing_fact",
+      "facts": [
+        14
+      ]
+    },
+    {
+      "id": "T1-04",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "周转站经营家用无障碍辅具短租周转，不提供诊疗",
+      "classification": "existing_fact",
+      "facts": [
+        11
+      ]
+    },
+    {
+      "id": "T1-05",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "嵇沐乔总协调，不能替居民同意方案",
+      "classification": "existing_fact",
+      "facts": [
+        12
+      ]
+    },
+    {
+      "id": "T1-06",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "固定碰头原为周一午后，第6章改为每周四傍晚并取消旧安排",
+      "classification": "stale_fact",
+      "facts": [
+        1
+      ]
+    },
+    {
+      "id": "T1-07",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "匡泽絮负责场地安排",
+      "classification": "existing_fact",
+      "facts": [
+        15
+      ]
+    },
+    {
+      "id": "T1-08",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "日常交接地点原为璃岑服务间，第9章起改为砚棕间；旧间不再承担日常交接",
+      "classification": "stale_fact",
+      "facts": [
+        2
+      ]
+    },
+    {
+      "id": "T1-09",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "退租需租用人确认清单，送达物件不等于确认",
+      "classification": "existing_fact",
+      "facts": [
+        22
+      ]
+    },
+    {
+      "id": "T1-10",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "物件未经检验验收，不可出库",
+      "classification": "existing_fact",
+      "facts": [
+        24
+      ]
+    },
+    {
+      "id": "T1-11",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "应时霏负责与供应方接洽",
+      "classification": "existing_fact",
+      "facts": [
+        16
+      ]
+    },
+    {
+      "id": "T1-12",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "缪见隅负责展示陈列",
+      "classification": "existing_fact",
+      "facts": [
+        17
+      ]
+    },
+    {
+      "id": "T1-13",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "连照棠是试办租用者代表，只表达本人需要，不替其他居民表态",
+      "classification": "existing_fact",
+      "facts": [
+        18
+      ]
+    },
+    {
+      "id": "T1-14",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "公开住户门牌须事先征得同意",
+      "classification": "existing_fact",
+      "facts": [
+        23
+      ]
+    },
+    {
+      "id": "T1-15",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "损坏费用须先列原因后讨论，不自动扣费",
+      "classification": "existing_fact",
+      "facts": [
+        25
+      ]
+    },
+    {
+      "id": "T1-16",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "每次续租都须本人确认，沉默不是续租",
+      "classification": "missing_fact",
+      "missing_fact": 1
+    },
+    {
+      "id": "T1-17",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "邵令珂只负责物件验收，不能替租用人选择用途",
+      "classification": "existing_fact",
+      "facts": [
+        5
+      ]
+    },
+    {
+      "id": "T1-18",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "不可强迫租用人拍摄，同意谈话不代表同意入镜",
+      "classification": "existing_fact",
+      "facts": [
+        26
+      ]
+    },
+    {
+      "id": "T1-19",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "屈予葭负责逐一通知租用人预约变动，只改内部表格不够",
+      "classification": "missing_fact",
+      "missing_fact": 2
+    },
+    {
+      "id": "T1-20",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "租用人可以只体验而不签租约",
+      "classification": "existing_fact",
+      "facts": [
+        27
+      ]
+    },
+    {
+      "id": "T1-21",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "费用单应分别列明租金和押金",
+      "classification": "existing_fact",
+      "facts": [
+        28
+      ]
+    },
+    {
+      "id": "T1-22",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "屈予葭不能替租用人签字，即便知道姓名写法",
+      "classification": "existing_fact",
+      "facts": [
+        39
+      ]
+    },
+    {
+      "id": "T1-23",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "每次送取停车费由站内经营收入承担，不让租用人垫付",
+      "classification": "missing_fact",
+      "missing_fact": 3
+    },
+    {
+      "id": "T1-24",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "傅语岑负责包装，不代送取人员签收单据",
+      "classification": "existing_fact",
+      "facts": [
+        6
+      ]
+    },
+    {
+      "id": "T1-25",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "体验接待固定周五上午在璃岑服务间，与日常交接分开",
+      "classification": "missing_fact",
+      "missing_fact": 4
+    },
+    {
+      "id": "T1-26",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "接单本身并不构成对送达时段的承诺",
+      "classification": "existing_fact",
+      "facts": [
+        29
+      ]
+    },
+    {
+      "id": "T1-27",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "再次出租前清除归还物件个人标签，由傅语岑负责",
+      "classification": "missing_fact",
+      "missing_fact": 5
+    },
+    {
+      "id": "T1-28",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "周转站不替居民承诺楼内通行许可",
+      "classification": "existing_fact",
+      "facts": [
+        30
+      ]
+    },
+    {
+      "id": "T1-29",
+      "scope": [
+        1,
+        10
+      ],
+      "setting": "送取目的地发生变更，必须重新和租用人确认",
+      "classification": "existing_fact",
+      "facts": [
+        40
+      ]
+    },
+    {
+      "id": "T2-01",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "出库最终复核起初由嵇沐乔承担，第17章交给邵令珂，嵇不再兼任",
+      "classification": "stale_fact",
+      "facts": [
+        3
+      ]
+    },
+    {
+      "id": "T2-02",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "包装耗材款原由押金周转，第20章改为只用经营收入，取消押金周转办法",
+      "classification": "stale_fact",
+      "facts": [
+        4
+      ]
+    },
+    {
+      "id": "T2-03",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "经营收入与住户押金分别记账",
+      "classification": "existing_fact",
+      "facts": [
+        38
+      ]
+    },
+    {
+      "id": "T2-04",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "租用人提出暂停后，不得自动增加计费天数",
+      "classification": "missing_fact",
+      "missing_fact": 6
+    },
+    {
+      "id": "T2-05",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "已经核对的物件仍需交接人签收",
+      "classification": "existing_fact",
+      "facts": [
+        31
+      ]
+    },
+    {
+      "id": "T2-06",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "砚棕间和璃岑服务间均在呈晖大厦首层",
+      "classification": "existing_fact",
+      "facts": [
+        35
+      ]
+    },
+    {
+      "id": "T2-07",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "服务范围仅限赫沄市，不承诺跨城送取",
+      "classification": "existing_fact",
+      "facts": [
+        37
+      ]
+    },
+    {
+      "id": "T2-08",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "牟宛歧负责核账，没有减免审批权限",
+      "classification": "existing_fact",
+      "facts": [
+        7
+      ]
+    },
+    {
+      "id": "T2-09",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "已经退回的押金不能拿来抵下一笔租金",
+      "classification": "existing_fact",
+      "facts": [
+        32
+      ]
+    },
+    {
+      "id": "T2-10",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "跨楼答疑固定周二傍晚在砚棕间，不占体验时段",
+      "classification": "missing_fact",
+      "missing_fact": 7
+    },
+    {
+      "id": "T2-11",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "试办陈列不代表厂家推荐，图示不能替来客判断何种用法适合本人生活",
+      "classification": "existing_fact",
+      "facts": [
+        33
+      ]
+    },
+    {
+      "id": "T2-12",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "破损外包装必须单独回收，不得混入住户私人纸件",
+      "classification": "missing_fact",
+      "missing_fact": 8
+    },
+    {
+      "id": "T2-13",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "跨楼试办往返运费由经营收入承担，不从住户押金扣款",
+      "classification": "missing_fact",
+      "missing_fact": 9
+    },
+    {
+      "id": "T2-14",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "租用结束并不代表同意公开本人经历",
+      "classification": "existing_fact",
+      "facts": [
+        34
+      ]
+    },
+    {
+      "id": "T2-15",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "住户押金不得挪用（不只是一笔包装费的来源）",
+      "classification": "existing_fact",
+      "facts": [
+        41
+      ]
+    },
+    {
+      "id": "T2-16",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "允许提前退租，租用人无需说明私人原因",
+      "classification": "missing_fact",
+      "missing_fact": 10
+    },
+    {
+      "id": "T2-17",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "巫承晏承担住户联络，不代住户签约",
+      "classification": "existing_fact",
+      "facts": [
+        8
+      ]
+    },
+    {
+      "id": "T2-18",
+      "scope": [
+        16,
+        22
+      ],
+      "setting": "临时借用展示物也必须登记",
+      "classification": "existing_fact",
+      "facts": [
+        36
+      ]
+    }
+  ]
+}
