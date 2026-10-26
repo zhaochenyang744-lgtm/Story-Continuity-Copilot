@@ -1,8 +1,10 @@
-/* 版面 design tokens (v1.7.0). The only place colours, type, spacing and timing are defined; every
+/* 版面 design tokens (v1.7.0, softened in v2.1). The only place colours, type, spacing and timing are defined; every
    other stylesheet uses these names. Swiss typographic layout: off-white paper, black ink, one
    electric blue for actions, the draft and what comes next. Red and yellow are reserved for
    findings (confirmed / possible conflict); dashed outlines mean "not certain yet". Corners are
    graded by size (--r-xs … --r-lg); rules, tables and the page's structure stay straight.
+   Layers are told apart by a step of background (1–3% apart), not by black frames: page, raised
+   (a region that groups things), surface (white: fields, menus, the card that can be clicked).
    Day is the default; <html data-theme="night"> switches palettes. */
 :root {
   color-scheme: light;
@@ -10,10 +12,13 @@
   --writing-focus-gap: 12px;
 
   /* Surfaces */
-  --c-ground: #f4f4f1;        /* page */
-  --c-surface: #ffffff;       /* raised: selected rows, open cards, inputs */
+  --c-ground: #f3f3f0;        /* page */
+  --c-raised: #f8f8f6;        /* a region that groups things: it was a framed box, it is now a step lighter than the page */
+  --c-surface: #ffffff;       /* white: fields, menus, the card that can be clicked, the open row */
   --c-paper: #ffffff;
-  --c-sunken: #eaeae6;        /* tracks, quiet fills */
+  --c-sunken: #ebebe7;        /* tracks, quiet fills */
+  --c-fill: #e9e9e5;          /* a button at rest */
+  --c-fill-hover: #dfdfda;    /* a button pointed at */
   --c-inverse: #111111;       /* black bands (continue card, selection bar) */
   --c-on-inverse: #f4f4f1;
   --c-on-inverse-2: #d8d8d8;
@@ -22,10 +27,17 @@
   --inverse-edge: none;
 
   /* Rules */
-  --c-rule: #111111;          /* section rules, outlines */
-  --c-line: #d4d4cf;          /* hairlines between rows */
-  --c-line-soft: #e4e4df;
-  --c-line-strong: #111111;
+  /* Lines are faint and kept only where two things really have to be told apart: the rows of a list, the foot of the top bar. */
+  --c-rule: rgba(17, 17, 17, .09);   /* section rules */
+  --c-line: rgba(17, 17, 17, .08);   /* hairlines between rows */
+  --c-line-soft: rgba(17, 17, 17, .05);
+  --c-line-strong: rgba(17, 17, 17, .16);
+  /* A field or a white card: a faint inner ring and a soft shadow; pointing deepens both, focus deepens them further. No blue edge. */
+  --ring-rest: inset 0 0 0 1px rgba(17, 17, 17, .08), 0 1px 2px rgba(17, 17, 17, .04);
+  --ring-hover: inset 0 0 0 1px rgba(17, 17, 17, .13), 0 1px 3px rgba(17, 17, 17, .06);
+  --ring-focus: inset 0 0 0 1px rgba(17, 17, 17, .24), 0 0 0 4px rgba(17, 17, 17, .045), 0 4px 14px rgba(17, 17, 17, .10);
+  --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(17, 17, 17, .04);
+  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 14px rgba(17, 17, 17, .10);
 
   /* Ink */
   --c-ink: #111111;
@@ -75,8 +87,10 @@
   /* Type. Fonts are self-hosted (sliced by unicode-range, fetched on demand). */
   --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
   --font-serif: "Noto Serif SC", "Songti SC", STSong, "Source Han Serif SC", serif;
-  --font-mono: "IBM Plex Mono", "Noto Sans SC", ui-monospace, Consolas, monospace;
-  /* Expanded heavy numerals and the wordmark. Use with font-stretch: 125%. */
+  /* Small words, counts and times: the text face with tabular digits (the typewriter face is kept only where columns must line up). */
+  --font-mono: var(--font-sans);
+  --font-code: "IBM Plex Mono", "Noto Sans SC", ui-monospace, Consolas, monospace;
+  /* Large numerals: the display face at its ordinary width, weight 700. The wordmark alone keeps the expanded heavy face (font-stretch: 125%). */
   --font-display: "Archivo Variable", "Archivo", "Noto Sans SC", sans-serif;
   --fs-11: 11px;
   --fs-12: 12px;
@@ -93,8 +107,9 @@
   --fs-30: 30px;
   --fs-36: 36px;
   /* Large numerals: the sizes they are set at and the least they shrink to when their box is too narrow.
-     --num-digit / --num-comma are the width of a digit and of a separator in em (Archivo 125% at weight
-     900 measures .82 and .38); --figures-reserve is what a row of page-head figures spends on padding,
+     --num-digit / --num-comma are the width of a digit and of a separator in em. They were measured on the expanded heavy face
+     (Archivo 125% at weight 900: .82 and .38) and are kept as an upper bound for the ordinary-width face the numerals use now, which
+     is narrower: a numeral is sized with room to spare, never too wide. --figures-reserve is what a row of page-head figures spends on padding,
      rules and labels. */
   --fs-figure: 72px;
   --fs-figure-md: 48px;
@@ -161,20 +176,28 @@
 
 :root[data-theme="night"] {
   color-scheme: dark;
-  --c-ground: #111111;
-  --c-surface: #1c1c1c;
-  --c-paper: #1c1c1c;
-  --c-sunken: #262626;
+  --c-ground: #131313;
+  --c-raised: #191919;
+  --c-surface: #1f1f1f;
+  --c-paper: #1f1f1f;
+  --c-sunken: #1b1b1b;
+  --c-fill: #252525;
+  --c-fill-hover: #2e2e2e;
   /* The "inverse" bands stay a dark colour at night too: deep blue with light text, not a white slab. */
   --c-inverse: #1d2155;
   --c-on-inverse: #f4f4f1;
   --c-on-inverse-2: #c9cdff;
   --c-on-inverse-3: #959bff;
   --inverse-edge: inset 0 0 0 2px var(--c-on-inverse-3);
-  --c-rule: #f4f4f1;
-  --c-line: #3a3a38;
-  --c-line-soft: #2a2a29;
-  --c-line-strong: #f4f4f1;
+  --c-rule: rgba(255, 255, 255, .08);
+  --c-line: rgba(255, 255, 255, .07);
+  --c-line-soft: rgba(255, 255, 255, .045);
+  --c-line-strong: rgba(255, 255, 255, .16);
+  --ring-rest: inset 0 0 0 1px rgba(255, 255, 255, .07), 0 1px 2px rgba(0, 0, 0, .3);
+  --ring-hover: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 1px 3px rgba(0, 0, 0, .35);
+  --ring-focus: inset 0 0 0 1px rgba(255, 255, 255, .24), 0 0 0 4px rgba(255, 255, 255, .05), 0 4px 16px rgba(0, 0, 0, .55);
+  --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(0, 0, 0, .3);
+  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 16px rgba(0, 0, 0, .55);
   --c-ink: #f4f4f1;
   --c-ink-2: #d4d4cf;
   --c-muted: #a3a39e;

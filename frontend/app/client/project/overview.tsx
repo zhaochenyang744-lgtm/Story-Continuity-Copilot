@@ -61,42 +61,40 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
     <section className="page overview" data-testid="overview-page">
       {notices}
       <header className="overview-hero">
+        <p className="label overview-kicker">
+          {sample && <span className="badge">示例作品</span>}
+          {project.genre && <span>{project.genre}</span>}
+          {project.genre && <span aria-hidden="true">/</span>}
+          <span>{project.chapter_count ? `写到第 ${project.chapter_count} 章` : "还没有已写的章节"}</span>
+          {project.status === "archived" && <span className="badge">已归档</span>}
+        </p>
         <div className="overview-hero-main">
-          <p className="label overview-kicker">
-            {sample && <span className="badge">示例作品</span>}
-            {project.genre && <span>{project.genre}</span>}
-            {project.genre && <span aria-hidden="true">/</span>}
-            <span>{project.chapter_count ? `写到第 ${project.chapter_count} 章` : "还没有已写的章节"}</span>
-            {project.status === "archived" && <span className="badge">已归档</span>}
-          </p>
           <h1 className="overview-title">{project.title}</h1>
           {project.summary && <p className="overview-summary">{project.summary}</p>}
         </div>
-        <div className="overview-hero-side">
-          <div className="overview-menu">
-            <Menu buttonLabel="更多：导出、编辑信息、归档" danger={!p.readOnly ? <button type="button" role="menuitem" className="danger" onClick={() => open("reset")}>重置作品</button> : undefined}>
-              <button type="button" role="menuitem" onClick={() => open("export")}>导出作品</button>
-              {!p.readOnly && !project.is_tutorial && <button type="button" role="menuitem" onClick={() => open("meta")}>编辑作品信息</button>}
-              {!project.is_tutorial && !p.narrow && <button type="button" role="menuitem" onClick={() => open("archive")}>{project.status === "archived" ? "恢复作品" : "归档作品"}</button>}
-            </Menu>
+        <dl className="overview-figures" data-testid="overview-figures">
+          <div>
+            <dt className="sr-only">已写章节</dt>
+            <dd><Num fit={formatCount(project.chapter_count ?? 0)}><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
+            <dd className="figure-label">章{timeline ? ` · 已检查 ${checked}` : ""}</dd>
           </div>
-          <dl className="overview-figures" data-testid="overview-figures">
-            <div>
-              <dt className="sr-only">已写章节</dt>
-              <dd><Num fit={formatCount(project.chapter_count ?? 0)}><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
-              <dd className="figure-label">章{timeline ? ` · 已检查 ${checked}` : ""}</dd>
-            </div>
-            <div>
-              <dt className="sr-only">待看</dt>
-              <dd><Num className="blue" fit={formatCount(issues.length)}><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
-              <dd className="figure-label">处待看</dd>
-            </div>
-            <div className="wide" data-testid="overview-word-count">
-              <dt className="sr-only">字数</dt>
-              <dd><Num fit={formatCount(wordCount)}><CountUp id={`${project.id}:words`} value={wordCount} /></Num></dd>
-              <dd className="figure-label">字正文{draftChars ? ` · 另有草稿 ${formatCount(draftChars)} 字` : ""}</dd>
-            </div>
-          </dl>
+          <div>
+            <dt className="sr-only">待看</dt>
+            <dd><Num className="blue" fit={formatCount(issues.length)}><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
+            <dd className="figure-label">处待看</dd>
+          </div>
+          <div className="wide" data-testid="overview-word-count">
+            <dt className="sr-only">字数</dt>
+            <dd><Num fit={formatCount(wordCount)}><CountUp id={`${project.id}:words`} value={wordCount} /></Num></dd>
+            <dd className="figure-label">字正文{draftChars ? ` · 另有草稿 ${formatCount(draftChars)} 字` : ""}</dd>
+          </div>
+        </dl>
+        <div className="overview-menu">
+          <Menu buttonLabel="更多：导出、编辑信息、归档" danger={!p.readOnly ? <button type="button" role="menuitem" className="danger" onClick={() => open("reset")}>重置作品</button> : undefined}>
+            <button type="button" role="menuitem" onClick={() => open("export")}>导出作品</button>
+            {!p.readOnly && !project.is_tutorial && <button type="button" role="menuitem" onClick={() => open("meta")}>编辑作品信息</button>}
+            {!project.is_tutorial && !p.narrow && <button type="button" role="menuitem" onClick={() => open("archive")}>{project.status === "archived" ? "恢复作品" : "归档作品"}</button>}
+          </Menu>
         </div>
       </header>
 

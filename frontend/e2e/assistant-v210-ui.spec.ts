@@ -312,13 +312,14 @@ test("18 额度用完：重新回答、接着问置灰，悬停写原因；写�
   }
 });
 
-test("18 变更卡片：白底细边框的容器，标题行、细线、底部按钮；长文本在一段里标出差异；依据收成一行；高风险有红边", async ({ page }) => {
+test("18 变更卡片：白底、一圈细环的容器（没有边框），标题行、细线、底部按钮；长文本在一段里标出差异；依据收成一行；高风险有红边", async ({ page }) => {
   const abandon = changeItem({ id: "achange-3", label: "C3", kind: "abandon_thread", title: "廊桥钥匙", before: "已埋设", after: "已放弃", risk: "high", evidence: [], request_words: "廊桥钥匙我不追了", editable: false, value: null });
   await withThread(page, [changeView([...cardItems(), abandon])]);
   const card = cardOf(page);
-  expect(await style(card, "border-top-width")).toBe("1px");
+  expect(await style(card, "border-top-width")).toBe("0px");
   expect(await style(card, "border-top-left-radius")).toBe("10px");
   expect(await style(card, "background-color")).toBe("rgb(255, 255, 255)");
+  expect(await style(card, "box-shadow")).not.toBe("none");
   await expect(card.locator(".a-chg-head strong")).toHaveText("资料改动 · 3 条");
   await expect(card.locator(".a-chg-note-r")).toHaveText("确认后才会执行，可以撤销");
   const buttons = card.locator(".a-chg-foot button");
@@ -421,7 +422,7 @@ test("18 变更卡片和改动记录：确认后顶上是“已写入资料 · �
   await expect(entry.locator(".ledger-at").last()).toHaveText(/^撤销 /);
 });
 
-test("18 输入框：白底、1px 细边框、聚焦变蓝不加光晕；空着一行高，长高到六行再滚动；发送键是圆形", async ({ page }) => {
+test("18 输入框：白底、没有边框、一圈细环加淡影，聚焦时环和外圈一起加深不变蓝；空着一行高，长高到六行再滚动；发送键是圆形", async ({ page }) => {
   await registerAccount(page, "a18");
   const id = await sampleWorkId(page);
   await serveTasks(page, () => []);
@@ -430,7 +431,12 @@ test("18 输入框：白底、1px 细边框、聚焦变蓝不加光晕；空着�
   const frame = thread(page).locator("form.cx");
   const surface = await frame.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-surface)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
   expect(await style(frame, "background-color")).toBe(surface);
-  expect(await style(frame, "border-top-width")).toBe("1px");
+  const ringOf = (name: string) => page.evaluate((token) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${token}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }, name);
+  await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
+  // (The page puts the cursor in the box when the drawer opens; take it out to see the box at rest.)
+  await box(page).evaluate((node) => (node as HTMLElement).blur());
+  expect(await style(frame, "border-top-width")).toBe("0px");
+  expect(await style(frame, "box-shadow")).toBe(await ringOf("--ring-rest"));
   expect(await style(frame, "border-top-left-radius")).toBe("10px");
   expect(await style(thread(page).locator(".a-compose"), "border-top-width")).toBe("0px");
   const field = box(page);
@@ -438,8 +444,8 @@ test("18 输入框：白底、1px 细边框、聚焦变蓝不加光晕；空着�
   expect(empty.height).toBeLessThanOrEqual(26);
   await field.focus();
   const blue = await frame.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-blue)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
-  expect(await style(frame, "border-top-color")).toBe(blue);
-  expect(await style(frame, "box-shadow")).toBe("none");
+  expect(await style(frame, "box-shadow")).toBe(await ringOf("--ring-focus"));
+  expect(await style(frame, "box-shadow")).not.toContain(blue);
   await field.fill("一\n二\n三");
   expect((await rect(field)).height).toBeGreaterThan(empty.height + 30);
   await field.fill(Array.from({ length: 12 }, (_, at) => `第 ${at + 1} 行`).join("\n"));

@@ -640,13 +640,14 @@ test.describe("助手：输入框", () => {
     await expect(send(page)).toBeEnabled();
   });
 
-  test("输入框和全站的输入框是同一套：白底、1px 细边框、聚焦变蓝不加光晕", async ({ page }) => {
+  test("输入框和全站的输入框是同一套：白底、没有边框，平时一圈淡环加淡影，悬停和聚焦各深一档，聚焦不再变蓝", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     const frame = thread(page).locator("form.cx");
     // The fields ease between their states; what is read here is the state they arrive at.
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
-    const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, border: style.borderTopColor, shadow: style.boxShadow, radius: style.borderTopLeftRadius }; };
+    const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, border: style.borderTopWidth, shadow: style.boxShadow, radius: style.borderTopLeftRadius }; };
+    const shadows = () => page.evaluate(() => { const read = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }; return { rest: read("--ring-rest"), hover: read("--ring-hover"), focus: read("--ring-focus") }; });
     const quiet = await frame.evaluate(read);
     await page.mouse.move(2, 2);
     await frame.hover();
@@ -654,17 +655,19 @@ test.describe("助手：输入框", () => {
     await box(page).focus();
     const focused = await frame.evaluate(read);
     const tokens = await page.evaluate(() => { const root = getComputedStyle(document.documentElement); const colour = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `color: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).color; probe.remove(); return value; }; return { sunken: colour("--c-sunken"), line: colour("--c-line"), surface: colour("--c-surface"), blue: colour("--c-blue"), tint: colour("--c-blue-tint"), md: root.getPropertyValue("--r-md").trim() }; });
-    // (v2.1) the box is white with a 1px line from the start, as the form fields of the other pages are; pointing at it darkens the line,
-    // focus turns it blue, and nothing glows around it.
+    // (v2.1, soft look) the box is a white well with no border: a faint inner ring and a soft shadow at rest, a step deeper when pointed at, deeper
+    // again with a pale halo when focused. Nothing turns blue.
+    const ring = await shadows();
     expect(quiet.background).toBe(tokens.surface);
-    expect(quiet.border).toBe(tokens.line);
-    expect(hovered.border).not.toBe(tokens.line);
+    expect(quiet.border).toBe("0px");
+    expect(quiet.shadow).toBe(ring.rest);
+    expect(hovered.shadow).toBe(ring.hover);
     expect(focused.background).toBe(tokens.surface);
-    expect(focused.border).toBe(tokens.blue);
-    expect(focused.shadow).toBe("none");
+    expect(focused.border).toBe("0px");
+    expect(focused.shadow).toBe(ring.focus);
+    expect(focused.shadow).not.toContain(tokens.blue);
     expect(focused.radius).toBe(tokens.md);
-    // An ordinary form field of another page (the account settings' password form) since v2.1: white with a 1px hairline from the
-    // start, the line turns blue when focused, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
+    // An ordinary form field of another page (the account settings' password form) since v2.1: white, no border, the same rings, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
     await page.goto("/settings/account");
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
     await page.locator(".row").filter({ hasText: "密码" }).first().getByRole("button", { name: "修改密码", exact: true }).click();
@@ -674,11 +677,12 @@ test.describe("助手：输入框", () => {
     await field.focus();
     const after = await field.evaluate(read);
     expect(before.background).toBe(tokens.surface);
-    expect(before.border).toBe(tokens.line);
+    expect(before.border).toBe("0px");
+    expect(before.shadow).toBe(ring.rest);
     expect(before.radius).toBe("6px");
     expect(after.background).toBe(tokens.surface);
-    expect(after.border).toBe(tokens.blue);
-    expect(after.shadow).toContain(tokens.tint);
+    expect(after.border).toBe("0px");
+    expect(after.shadow).toBe(ring.focus);
   });
 });
 

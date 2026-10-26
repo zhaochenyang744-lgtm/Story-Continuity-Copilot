@@ -291,7 +291,8 @@ test.describe("助手", () => {
     await expect(frame.getByText("今天的可检查字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。", { exact: true })).toBeVisible();
     await expect(box(page)).toHaveCount(0);
     await expect(send(page)).toBeDisabled();
-    expect(await frame.evaluate((node) => ({ style: getComputedStyle(node).borderStyle, fill: getComputedStyle(node).backgroundColor }))).toEqual({ style: "dashed", fill: "rgba(0, 0, 0, 0)" });
+    // (soft look) the box has no border; the dashes are an outline drawn just inside its edge.
+    expect(await frame.evaluate((node) => ({ style: getComputedStyle(node).outlineStyle, border: getComputedStyle(node).borderTopWidth, fill: getComputedStyle(node).backgroundColor }))).toEqual({ style: "dashed", border: "0px", fill: "rgba(0, 0, 0, 0)" });
     await expect(thread(page).locator(".a-block")).toHaveCount(0);
     // The server refuses it too, with the code the page turns into those words.
     const refused = await api(page).raw("POST", `/projects/${id}/assistant/tasks`, { kind: "ask", question: "苏岑是谁？", context: { page: "writing" } });
