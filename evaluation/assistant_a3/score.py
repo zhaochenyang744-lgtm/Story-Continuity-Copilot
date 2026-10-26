@@ -17,7 +17,7 @@ import json
 import random
 import statistics
 
-from app.memory_contract import normalize_memory_value
+from app.long_task_kinds import same_new_fact
 from evaluation.assistant_a2 import score as a2
 from evaluation.assistant_a2.judge import change_material
 
@@ -95,8 +95,10 @@ def resume_check(row):
     attempts = {s["ordinal"]: s["attempt"] for s in steps}
     expected = {s["ordinal"]: 2 if s["ordinal"] == interrupt["step"] else 1 if s["spec"]["kind"] == "read" else 0 for s in steps}
     items = row.get("changes") or []
-    keys = [(i["kind"], i["target_id"]) if i["kind"] != "add_fact" else
-            ("add_fact", normalize_memory_value(str(i["after"].get("subject"))), i["after"].get("predicate")) for i in items]
+    keys = [(i["kind"], i["target_id"]) for i in items if i["kind"] != "add_fact"]
+    added = [i["after"] for i in items if i["kind"] == "add_fact"]
+    # A new fact is one by its subject and what it says (the product's own `same_new_fact`): one subject may hold several.
+    added_twice = any(same_new_fact(a, b) for n, a in enumerate(added) for b in added[n + 1:])
     ids = {i["id"] for i in items}
     paid = long.get("paid") or []
     booked = long.get("calls") or []
@@ -105,7 +107,7 @@ def resume_check(row):
         "all_steps_done": bool(steps) and all(s["status"] == "done" for s in steps),
         "attempts": attempts == expected,
         "steps_counted_once": task.get("steps_used") == len(steps),
-        "no_card_twice": len(keys) == len(set(keys)),
+        "no_card_twice": len(keys) == len(set(keys)) and not added_twice,
         "cards_kept": all(set((s.get("output") or {}).get("changes", [])) <= ids for s in steps),
         "calls_paid_once": len(booked) == len(paid),
         "cost_counted_once": abs((task.get("cost_cny") or 0) - sum(p["cost_cny"] or 0 for p in paid)) <= 1e-6
