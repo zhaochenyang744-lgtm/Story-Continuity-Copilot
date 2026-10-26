@@ -304,7 +304,7 @@ class Work:
         self.persist = lambda: write_json(self.state_path, state)
         self.persist()
         self.app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / 'protected'), provider=provider,
-                              executor=lambda fn, *args: fn(*args), settings=settings(price))
+                              executor=lambda fn, *args: fn(*args), settings=self.settings_for(price))
         self.client = TestClient(self.app)
         self.client.timeout = httpx.Timeout(180)
         self.project = self.lengths = None
@@ -318,6 +318,10 @@ class Work:
         except BaseException:
             self.close()
             raise
+
+    def settings_for(self, price):
+        """The product settings of this work's app (A3's work keeps a larger character quota)."""
+        return settings(price)
 
     def request(self, method, path, **kwargs):
         return response_data(self.response(method, path, **kwargs))
