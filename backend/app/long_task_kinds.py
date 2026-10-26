@@ -75,6 +75,7 @@ def decision(text: str, earlier: dict[str, Any], later: dict[str, Any], **extra:
 
 class ThreadAudit:
     name = "thread_audit"
+    runs = 1
     look_for = "还没收的伏笔在这几章里收了没有、是不是写明不追了"
     produces = ["resolve_thread", "abandon_thread"]
     tool_name = "report_threads"
@@ -207,6 +208,7 @@ def _resolution(decisions: list[dict[str, Any]], decision_id: str) -> str:
 
 class Trace:
     name = "trace"
+    runs = 1
     look_for = "这个对象或这件事在这几章里的状态和变化"
     produces: list[str] = []
     tool_name = "report_trace"
@@ -283,6 +285,7 @@ class Trace:
 
 class Tidy:
     name = "tidy"
+    runs = 3  # crutch `tidy_majority` (A3 dev rounds 2 and 3: the extra cards differed from reading to reading, the planted ones did not)
     look_for = "资料里过时的事实和没记的事实"
     produces = ["change_fact", "add_fact"]
     tool_name = "report_tidy"
@@ -311,6 +314,24 @@ class Tidy:
         focus = plan.get("focus") or []
         return (f"这一步：读第 {low}–{high} 章，和下面的资料对一遍，找出过时的事实和没记的事实。"
                 + (f"作者点名只对这几类：{'、'.join(focus)}；不属于这几类的事实，没记的也不写。" if focus else ""))
+
+    @staticmethod
+    def majority(reports: list[dict[str, Any]], need: int) -> dict[str, Any]:
+        """What at least `need` readings found, as the first reading that found it put it: a stale fact by its number, a missing
+        fact by its subject and property, a disagreement by its fact (or subject) and property."""
+        keys = {"stale": lambda item: item["fact"],
+                "missing": lambda item: (normalize_memory_value(item["subject"]), item["predicate"]),
+                "conflicts": lambda item: (item["fact"] or normalize_memory_value(item["subject"] or ""), item["predicate"])}
+        merged: dict[str, list[dict[str, Any]]] = {}
+        for part, key in keys.items():
+            counts: dict[Any, int] = {}
+            first: dict[Any, dict[str, Any]] = {}
+            for report in reports:
+                for found_key, item in {key(item): item for item in report.get(part, [])}.items():
+                    counts[found_key] = counts.get(found_key, 0) + 1
+                    first.setdefault(found_key, item)
+            merged[part] = [item for found_key, item in first.items() if counts[found_key] >= need]
+        return merged
 
     def subjects(self, ctx: ToolContext, high: int, outputs: list[dict[str, Any]], plan: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
         items = fact_items(ctx, ctx.memory())

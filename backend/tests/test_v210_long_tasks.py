@@ -337,9 +337,10 @@ def digest_refs(messages):
 
 
 def facts_view(messages):
-    """The facts a tidy step listed: [(ref, text)] in order."""
+    """The facts a tidy step listed: [(ref, text)] in the order they were numbered (a second or third reading lists them in
+    another order)."""
     user = messages[1]["content"].split("这一步的章节原文", 1)[0]
-    return re.findall(r"\[(R\d+)\] ([^\n]+)", user.split("资料里已确认的事实（资料）：", 1)[1])
+    return sorted(re.findall(r"\[(R\d+)\] ([^\n]+)", user.split("资料里已确认的事实（资料）：", 1)[1]), key=lambda item: int(item[0][1:]))
 
 
 class TraceTests(LongCase):
@@ -424,12 +425,12 @@ class TidyTests(LongCase):
     def tidy(self, turns=None):
         self.provider.script_route({"type": "tidy", "target": None, "chapters": None, "output": "list"})
         task = self.create("把资料和正文对一趟，该补的补、变过的更新")
-        self.provider.script(*(turns or [self.tidying()] * 2))
+        self.provider.script(*(turns or [self.tidying()] * 6))  # two steps, each read three times
         self.post(task["id"], "start", expect=202)
         return self.view(task["id"])
 
     def test_stale_and_missing_facts_make_cards_and_a_later_finding_replaces_an_earlier(self):
-        view = self.tidy(turns=[self.tidying(conflict=False)] * 2)
+        view = self.tidy(turns=[self.tidying(conflict=False)] * 6)
         self.assertEqual(view["status"], "completed")
         kinds = sorted(item["kind"] for item in view["changes"])
         self.assertEqual(kinds, ["add_fact", "change_fact"])  # one card for the fact both steps found stale
@@ -438,7 +439,7 @@ class TidyTests(LongCase):
         self.assertEqual(set(view["answer"]["sections"]), {"补上的", "更新的"})
 
     def test_a_fact_the_materials_state_already_makes_no_card(self):
-        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 2)
+        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 6)
         self.assertEqual(sorted(item["kind"] for item in view["changes"]), ["add_fact", "change_fact"])
         dropped = [m for s in self.rows("SELECT output_json FROM assistant_long_steps WHERE task_id=?", view["id"])
                    for m in json.loads(s["output_json"] or "{}").get("missing", []) if m.get("dropped")]
@@ -469,7 +470,7 @@ class TidyTests(LongCase):
                 args["conflicts"] = [dict(args["conflicts"][0], subject=name) for name in ("苏岑", "温岚", "老周", "黎舟")]
                 result = turn(call("report_tidy", **args))
             return result
-        view = self.tidy(turns=[self.tidying(conflict=False), three_conflicts])
+        view = self.tidy(turns=[self.tidying(conflict=False)] * 3 + [three_conflicts] * 3)
         for _ in range(3):
             question = next(q for q in view["questions"] if q["answer"] is None)
             self.post(view["id"], "answer", {"question_id": question["id"], "choice": "a"}, expect=202)
@@ -479,11 +480,33 @@ class TidyTests(LongCase):
         self.assertEqual(last["answer"]["choice"], "you_decide")
         self.assertEqual(last["answer"]["by"], "program")
 
+    def test_a_tidy_step_is_read_three_times_and_keeps_what_two_readings_found(self):
+        readings = {"n": 0}
+        plain = self.tidying(conflict=False)
+
+        def once_extra(provider, messages):
+            readings["n"] += 1
+            result = plain(provider, messages)
+            if readings["n"] % 3 == 1:  # the first reading of each step finds one more fact than the others
+                args = json.loads(result["calls"][0]["arguments"])
+                _, chapters = step_view(messages)
+                args["missing"] = args["missing"] + [{"memory_type": "dynamic_state", "subject": "老周", "predicate": "possession",
+                                                      "value": "暂时拿着灯", "refs": [chapters[min(chapters)][0]]}]
+                result = turn(call("report_tidy", **args))
+            return result
+        view = self.tidy(turns=[once_extra] * 6)
+        self.assertEqual(view["status"], "completed")
+        self.assertEqual(len(self.provider.calls), 6)
+        self.assertNotIn("老周", [item["title"].split("·")[0] for item in view["changes"]])
+        self.assertEqual(sorted(item["kind"] for item in view["changes"]), ["add_fact", "change_fact"])
+        orders = [call["messages"][1]["content"].split("资料里已确认的事实（资料）：", 1)[1].split("这一步的章节原文", 1)[0] for call in self.provider.calls[:3]]
+        self.assertEqual(sorted(orders[0].split()), sorted(orders[1].split()))  # the same facts, the second reading in another order
+
     def test_the_kinds_the_author_names_are_kept_on_the_plan_and_each_step_looks_only_for_them(self):
         self.provider.script_route({"type": "tidy", "target": None, "chapters": None, "output": "list", "focus": ["日程", "分工", "经费", 7]})
         task = self.create("把日程、分工和经费跟资料对一趟")
         self.assertEqual(self.view(task["id"])["plan"]["proposed"]["focus"], ["日程", "分工", "经费"])
-        self.provider.script(*[self.tidying(conflict=False)] * 2)
+        self.provider.script(*[self.tidying(conflict=False)] * 6)
         self.post(task["id"], "start", expect=202)
         self.assertIn("作者点名只对这几类：日程、分工、经费", self.provider.calls[0]["messages"][1]["content"])
 
@@ -493,7 +516,7 @@ class TidyTests(LongCase):
             _, chapters = step_view(messages)
             refs = [chapters[n][0] for n in sorted(chapters)[:3]]  # one passage a chapter here
             return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "最新的写法", "refs": refs}], missing=[]))
-        view = self.tidy(turns=[three, self.tidying(conflict=False), self.tidying(conflict=False)])
+        view = self.tidy(turns=[three] + [self.tidying(conflict=False)] * 6)
         self.assertEqual(view["status"], "completed")
         self.assertIn("最多 2 个", self.provider.calls[1]["messages"][-1]["content"])
         self.assertTrue(all(len(item["evidence"]) <= 2 for item in view["changes"]))
@@ -625,12 +648,12 @@ class TelemetryTests(LongCase):
             _, chapters = step_view(messages)
             refs = [chapters[n][0] for n in sorted(chapters)[:3]]
             return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "最新的写法", "refs": refs}], missing=[]))
-        view = self.tidy(turns=[three, self.tidying(conflict=False), self.tidying(conflict=False)])
+        view = self.tidy(turns=[three] + [self.tidying(conflict=False)] * 6)
         first = self.diagnostics(view["id"])[1]
         self.assertEqual((first["problem_codes"], first["repairs"]), (["refs_over_two"], 1))
 
     def test_an_item_the_program_could_not_turn_into_a_card_is_counted_by_its_code(self):
-        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 2)
+        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 6)
         applied = [d["apply_dropped_codes"] for d in self.diagnostics(view["id"]).values() if d["apply_dropped_codes"]]
         self.assertEqual(applied, [{"change_fact_already_recorded": 1}])
 

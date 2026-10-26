@@ -164,6 +164,12 @@ class TraceTests(unittest.TestCase):
         self.assertEqual([k for n, k in judge.asked if n == "a3_contradiction_real"], ["real:6"])
         self.assertEqual(r["auto"]["report_evidence"], [True] * 7)
 
+    def test_a_disagreement_is_shown_to_the_judge_as_two_passages_each_holding_one_side(self):
+        r = self.row([{"text": "第 10 章和第 22 章：铭牌两说", "refs": ["Ca", "Cb"], "claim": "铭牌末三位一处六三九，一处九三六"}])
+        score.grade(r, FixedJudge(), self.points, self.texts)
+        material = next(j["material"] for j in r["judgments"] if j["key"] == f"report:{len(self.states)}")
+        self.assertEqual(material["sentence"]["text"], "原文有两处说法不同，第 10 章一处、第 22 章一处：铭牌末三位一处六三九，一处九三六")
+
     def test_a_state_in_another_chapter_is_not_found_without_asking(self):
         self.states[0]["refs"] = ["X1"]
         r = self.row([])

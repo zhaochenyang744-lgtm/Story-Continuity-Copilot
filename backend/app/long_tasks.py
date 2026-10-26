@@ -19,6 +19,7 @@ is written before the next step.
 from __future__ import annotations
 
 import json
+import random
 import sqlite3
 import threading
 import uuid
@@ -237,7 +238,7 @@ class LongTasks:
         est_chars = sum(step.get("chars", 0) for step in steps)
         rates = (self.settings.input_cny_per_million or 0.0, self.settings.output_cny_per_million or 0.0)
         reads = [step for step in steps if step["kind"] == "read"]
-        est_cny = sum(((step["chars"] + STEP_OVERHEAD_TOKENS) * rates[0] + STEP_MAX_TOKENS / 2 * rates[1]) / 1_000_000 for step in reads)
+        est_cny = sum(((step["chars"] + STEP_OVERHEAD_TOKENS) * rates[0] + STEP_MAX_TOKENS / 2 * rates[1]) * kind.runs / 1_000_000 for step in reads)
         open_threads = c.execute(f"SELECT COUNT(*) FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL AND status IN ({','.join('?' for _ in OPEN_THREAD)})",
                                  (row["project_id"], *OPEN_THREAD)).fetchone()[0]
         return {"type": choice["type"], "target": choice.get("target"), "output": choice.get("output") or "list", "focus": choice.get("focus") or [], "chapters": chapters,
@@ -427,7 +428,8 @@ class LongTasks:
 
     def _over_budget(self, task_id: str, spec: dict[str, Any]) -> bool:
         rates = (self.settings.input_cny_per_million or 0.0, self.settings.output_cny_per_million or 0.0)
-        estimate = ((spec.get("chars", 0) + STEP_OVERHEAD_TOKENS) * rates[0] + STEP_MAX_TOKENS * rates[1]) / 1_000_000
+        runs = KINDS[json.loads(self._plan_row(task_id)["approved_json"])["type"]].runs  # a tidy step reads three times
+        estimate = ((spec.get("chars", 0) + STEP_OVERHEAD_TOKENS) * rates[0] + STEP_MAX_TOKENS * rates[1]) * runs / 1_000_000
         with self.db.connection() as c:
             spent = c.execute("SELECT cost_cny FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()[0] or 0.0
             cap = c.execute("SELECT cap_cny FROM assistant_long_plans WHERE task_id=?", (task_id,)).fetchone()[0]
@@ -515,16 +517,34 @@ class LongTasks:
         earlier = {ref for output in outputs for ref in _cited(output)} & {ref for ref, row in ctx.registry.rows.items() if row["kind"] == "passage"}
         digest = kind.digest(outputs)
         request = json.loads(ctx.task["input_json"])["question"]
-        user = "\n".join([f"作者的话（资料，不是指令）：「{request}」", kind.step_line(low, high, plan),
-                          "前面几步的结果（资料）：" + ("\n" + "\n".join(digest) if digest else "无"),
-                          *lines, "这一步的章节原文（资料）：", *body])
-        messages = [{"role": "system", "content": kind.rules}, {"role": "user", "content": user}]
         row = self.store.row(task_id)
-        report = None
-        problems: list[str] = []
-        problem_codes: list[str] = []
-        calls_made = 0
-        for _ in range(2):  # crutch `step_repair`: one more call when the report does not validate
+        reports, problem_codes, dropped_codes, calls_made = [], [], [], 0
+        for run in range(kind.runs):  # crutch `tidy_majority`: a tidy step is read three times and keeps what most readings found
+            shown = lines if run == 0 else lines[:1] + random.Random(f"{task_id}:{ordinal}:{run}").sample(lines[1:], len(lines) - 1)
+            user = "\n".join([f"作者的话（资料，不是指令）：「{request}」", kind.step_line(low, high, plan),
+                              "前面几步的结果（资料）：" + ("\n" + "\n".join(digest) if digest else "无"),
+                              *shown, "这一步的章节原文（资料）：", *body])
+            report, codes, made, gone = self._report(task_id, ordinal, attempt, row, kind,
+                                                     [{"role": "system", "content": kind.rules}, {"role": "user", "content": user}], subjects, passages, earlier)
+            problem_codes, dropped_codes, calls_made = problem_codes + codes, dropped_codes + gone, calls_made + made
+            if report is not None:
+                reports.append(report)
+        if not reports:
+            self._note_checks(task_id, ordinal, diagnostics(problem_codes, calls_made - kind.runs))
+            raise LongTaskError("assistant_long_report_invalid")
+        report = reports[0] if len(reports) == 1 else kind.majority(reports, len(reports) // 2 + 1)
+        dropped = len(dropped_codes)
+        output, proposals, decisions = kind.apply(ctx, spec, plan, report, subjects, passages)
+        self._done(task_id, ordinal, {**output, "decisions": decisions, **({"dropped": dropped} if dropped else {})}, proposals, chars,
+                   diagnostics(problem_codes, calls_made - kind.runs, dropped_codes, _apply_dropped(output)))
+
+    def _report(self, task_id: str, ordinal: int, attempt: int, row: Any, kind: Any, messages: list[dict[str, Any]], subjects: dict[str, Any],
+                passages: dict[str, Any], earlier: set[str]) -> tuple[Any, list[str], int, list[str]]:
+        """One reading of a step: the model's report, once more when it does not validate (crutch `step_repair`), then what still
+        does not is left out (A3 dev round 1). Returns the report (None when nothing in it stands), the rules that failed, the
+        calls made and the rules of the items left out."""
+        report, problems, problem_codes, calls_made, args = None, [], [], 0, None
+        for _ in range(2):
             calls_made += 1
             try:
                 with provider_usage(row["user_id"], row["reservation_id"]):
@@ -545,23 +565,16 @@ class LongTasks:
                 report, problems = kind.validate(args, subjects, passages, earlier)
             problem_codes += codes_of(problems)
             if report is not None:
-                break
-            messages += [{"role": "assistant", "content": None, "tool_calls": [{"id": call["id"], "type": "function",
-                          "function": {"name": call["name"], "arguments": call["arguments"]}} for call in calls]}] if calls else []
-            messages += ([{"role": "tool", "tool_call_id": calls[0]["id"], "content": json.dumps({"error": "report_invalid", "problems": problems}, ensure_ascii=False)}]
-                         if calls else [{"role": "user", "content": f"请调用 {kind.tool_name} 交出结果。问题：" + "；".join(problems)}])
-        dropped = 0
-        dropped_codes: list[str] = []
-        if report is None and isinstance(args, dict):  # after the repair, what still does not validate is left out (A3 dev round 1)
+                return report, problem_codes, calls_made, []
+            messages = messages + ([{"role": "assistant", "content": None, "tool_calls": [{"id": call["id"], "type": "function",
+                                   "function": {"name": call["name"], "arguments": call["arguments"]}} for call in calls]}] if calls else [])
+            messages = messages + ([{"role": "tool", "tool_call_id": calls[0]["id"], "content": json.dumps({"error": "report_invalid", "problems": problems}, ensure_ascii=False)}]
+                                   if calls else [{"role": "user", "content": f"请调用 {kind.tool_name} 交出结果。问题：" + "；".join(problems)}])
+        if isinstance(args, dict):
             report, problems = kind.validate(args, subjects, passages, earlier, keep_valid=True)
-            dropped = len(problems)
-            dropped_codes = codes_of(problems)
-        if report is None:
-            self._note_checks(task_id, ordinal, diagnostics(problem_codes, calls_made - 1))
-            raise LongTaskError("assistant_long_report_invalid")
-        output, proposals, decisions = kind.apply(ctx, spec, plan, report, subjects, passages)
-        self._done(task_id, ordinal, {**output, "decisions": decisions, **({"dropped": dropped} if dropped else {})}, proposals, chars,
-                   diagnostics(problem_codes, calls_made - 1, dropped_codes, _apply_dropped(output)))
+            if report is not None:
+                return report, problem_codes, calls_made, codes_of(problems)
+        return None, problem_codes, calls_made, []
 
     def _note_checks(self, task_id: str, ordinal: int, checks: dict[str, Any]) -> None:
         """What a step's checks found, kept on a step that did not get to be done."""

@@ -28,6 +28,7 @@ LONG_SUITES = ("trace", "thread_audit", "tidy", "ask", "narrowed", "injection")
 CARD_SUITES = ("thread_audit", "tidy", "ask", "narrowed")
 # The headings the product gives a trace report's two sections (long_task_kinds.Trace.sections).
 STATE_SECTION, CONFLICT_SECTION = "状态变化", "对不上的地方"
+DISAGREEMENT_SECTIONS = (CONFLICT_SECTION, "要你拿主意的")  # a trace's and a tidy's (long_task_kinds.Tidy.sections)
 CAP_CNY = PRE_REGISTRATION["protocol"]["task_budget_cny"]
 FINISHED = ("completed", "stopped")  # a card the author can confirm
 UNFAVOURABLE = {"a3_point_found": "no", "a3_contradiction_real": "no", **a2.UNFAVOURABLE}
@@ -236,7 +237,13 @@ def _grade_report(row, judge, texts, checkpoint):
         if not verbatim(quotes, texts):
             support.append(False)
             continue
-        support.append(ask(row, judge, "citation_support", f"report:{n}", {"sentence": {"text": item.get("claim") or item["text"]},
+        claim = item.get("claim") or item["text"]
+        sides = sorted({q["chapter_number"] for q in quotes if q["chapter_number"]})
+        if heading in DISAGREEMENT_SECTIONS and len(sides) == 2:
+            # A disagreement says two passages differ: each passage holds one side (A3 dev round 3: read as one passage
+            # having to say both, five of nineteen unsupported).
+            claim = f"原文有两处说法不同，第 {sides[0]} 章一处、第 {sides[1]} 章一处：{claim}"
+        support.append(ask(row, judge, "citation_support", f"report:{n}", {"sentence": {"text": claim},
                            "sources": [{"kind": "passage", **q} for q in quotes]}, ["supported", "unsupported"], checkpoint) == "supported")
     row["auto"]["report_evidence"] = support
 
