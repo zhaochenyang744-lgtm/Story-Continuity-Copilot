@@ -8,6 +8,7 @@
 - [demo-guide.md](demo-guide.md) — 示例作品的 3–5 分钟英文演示路线。
 - [local-setup.md](local-setup.md) — 本地启动、环境与单分组浏览器测试。
 - [operations.md](operations.md) — 备份、恢复演练和监测的既有运维流程。
+- [usage-stats.md](usage-stats.md) — 助手使用统计脚本（只读，只有数字和编码）：怎么在服务器上跑、怎么读、规则编号。
 - [evaluation-maintenance.md](evaluation-maintenance.md) — 评测资产维护规则及有日期的历史状态快照。
 
 ## 发布与部署记录
