@@ -52,6 +52,12 @@ RESUME_SEED = 20261024
 KILLED = 86  # the runner process's exit code when it died as planned
 CHECK_CHARS = 100_000_000  # three passes of 32 long tasks read about nine million characters; A1's settings allow ten
 TASK_RESERVE_CNY = 2.5  # kept free before a long task starts: its ceiling (CNY 2) and its judging
+def workspaces(out):
+    """Where a run keeps its works' files: a short name beside the results. Named after the checkpoint, the formal pair's paths
+    passed Windows' 260-character limit and the runner process could not write its result (formal run f1-d524302)."""
+    return out["checkpoint"].parent / ("ws-" + hashlib.sha256(out["checkpoint"].name.encode("utf-8")).hexdigest()[:12])
+
+
 CHILD_PROVIDER = "priced"  # what the runner process answers with: A1's priced provider, or "module:function" (tests)
 CHOICE = re.compile(r"选\s*([abAB])")
 MAX_ANSWERS = 3
@@ -116,7 +122,7 @@ def preflight(args, provider, output=None):
     if args.resume:
         if not out["checkpoint"].exists():
             raise ValueError("resume_checkpoint_missing")
-    elif any(p.exists() for p in out.values()) or out["checkpoint"].with_suffix(".workspaces").exists():
+    elif any(p.exists() for p in out.values()) or workspaces(out).exists():
         raise FileExistsError("run_output_already_exists")
     for name in names:
         a2.validate_set(name)
@@ -409,7 +415,7 @@ def execute(args, datasets, provider, judge, ledger, out):
     points = {(name, w["key"]): score.planted(datasets[name]["review"], w["key"]) for name in names for w in datasets[name]["works"]}
     texts = {(name, w["key"]): {i: score.squeeze(text.split("\n", 1)[1] if "\n" in text else "") for i, text in enumerate(chapters(w["source"]), 1)}
              for name in names for w in datasets[name]["works"]}
-    state_root = out["checkpoint"].with_suffix(".workspaces")
+    state_root = workspaces(out)
     if args.resume:
         report = json.loads(out["checkpoint"].read_text(encoding="utf-8"))
         if report["environment"] != fingerprint:
