@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "normalized_auxiliary_records": [
+    "handoff-c-01.md",
+    "independent-gold-audit.json",
+    "route-blind-result.json"
+  ],
+  "remaining_errors": [],
+  "canonical_data_changed": false
+}

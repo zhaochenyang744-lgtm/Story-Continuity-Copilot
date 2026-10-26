@@ -1,0 +1,78 @@
+{
+  "judgments": 10,
+  "agreed": 10,
+  "agreement_rate": 1.0,
+  "disagreements": [],
+  "rows": [
+    {
+      "id": "a3e-route-08",
+      "blind_route": "ask",
+      "gold": "ask",
+      "agrees": true,
+      "reason": "询问一致性，但无可核正文选区。"
+    },
+    {
+      "id": "a3e-route-10",
+      "blind_route": "recap",
+      "gold": "recap",
+      "agrees": true,
+      "reason": "动笔前回顾前情与未落定事项。"
+    },
+    {
+      "id": "a3e-route-05",
+      "blind_route": "change",
+      "gold": "change",
+      "agrees": true,
+      "reason": "明确只替换旧资料中的一项时间。"
+    },
+    {
+      "id": "a3e-route-01",
+      "blind_route": "long_task",
+      "gold": "long_task",
+      "agrees": true,
+      "reason": "要求全书查齐交接并形成带出处的表。"
+    },
+    {
+      "id": "a3e-route-06",
+      "blind_route": "change",
+      "gold": "change",
+      "agrees": true,
+      "reason": "指定结束一条已知悬念记录。"
+    },
+    {
+      "id": "a3e-route-09",
+      "blind_route": "check_passage",
+      "gold": "check_passage",
+      "agrees": true,
+      "reason": "写作页带正文选区并要求核一致性。"
+    },
+    {
+      "id": "a3e-route-07",
+      "blind_route": "ask",
+      "gold": "ask",
+      "agrees": true,
+      "reason": "明确只问核对做法，未授权执行。"
+    },
+    {
+      "id": "a3e-route-03",
+      "blind_route": "long_task",
+      "gold": "long_task",
+      "agrees": true,
+      "reason": "要求通篇核查接手顺序并指出冲突。"
+    },
+    {
+      "id": "a3e-route-04",
+      "blind_route": "long_task",
+      "gold": "long_task",
+      "agrees": true,
+      "reason": "明确创建全书核对任务并先审章次计划。"
+    },
+    {
+      "id": "a3e-route-02",
+      "blind_route": "long_task",
+      "gold": "long_task",
+      "agrees": true,
+      "reason": "要求通读全书并按支线状态形成卡片。"
+    }
+  ]
+}

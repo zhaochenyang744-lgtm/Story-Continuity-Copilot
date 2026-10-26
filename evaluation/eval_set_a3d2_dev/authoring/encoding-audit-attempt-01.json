@@ -1,0 +1,10 @@
+{
+  "status": "FAIL",
+  "reason": "CRLF in auxiliary review records",
+  "files": [
+    "handoff-c-01.md",
+    "independent-gold-audit.json",
+    "route-blind-result.json"
+  ],
+  "canonical_data_changed": false
+}
