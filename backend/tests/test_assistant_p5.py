@@ -153,7 +153,7 @@ class LookupFactsTests(unittest.TestCase):
 # --- the prompt ----------------------------------------------------------------------------------------------------------
 class PromptTests(unittest.TestCase):
     def test_version_and_the_new_rules(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p56")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p57")
         self.assertIn("一轮最多调用 6 次工具，说明只写这一轮实际要调用的那几项", SYSTEM_PROMPT)
         self.assertIn("要查的超过 6 项，就分到下一轮，下一轮再写新的说明", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词", SYSTEM_PROMPT)
