@@ -169,6 +169,21 @@ class RunTests(LongCase):
         self.assertEqual((view["status"], view["error_code"]), ("failed", "assistant_long_report_invalid"))
         self.assertEqual(self.rows("SELECT COUNT(*) n FROM v2_character_usage WHERE id LIKE ?", f"chars-{self.reservation(view)}%")[0]["n"], 0)
 
+    def test_after_the_repair_what_still_does_not_validate_is_left_out_and_the_rest_kept(self):
+        def half(provider, messages):
+            threads, chapters = step_view(messages)
+            items = [{"thread": "R999", "verdict": "resolved", "refs": [], "note": "x"}]
+            if 10 in chapters:
+                items.append({"thread": threads["罗盘下落"], "verdict": "resolved", "refs": [chapters[10][0]], "note": "这一章交代了罗盘的下落。"})
+            return report(*items)
+        view = self.started(turns=[self.audit_turns(), half, half])
+        self.assertEqual(view["status"], "completed", view)
+        self.assertEqual([item["title"] for item in view["changes"]], ["罗盘下落"])
+        output = json.loads(self.rows("SELECT output_json FROM assistant_long_steps WHERE task_id=? AND ordinal=2", view["id"])[0]["output_json"])
+        self.assertEqual(output["dropped"], 1)
+        claims = [item["claim"] for item in view["answer"]["sections"]["已经收了"]]
+        self.assertEqual(claims, ["这一章交代了罗盘的下落。"])  # the model's words, for grading; the text keeps the program's frame
+
     def reservation(self, view):
         return self.rows("SELECT reservation_id FROM assistant_tasks WHERE id=?", view["id"])[0]["reservation_id"]
 

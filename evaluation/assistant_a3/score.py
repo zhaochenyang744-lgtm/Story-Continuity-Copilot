@@ -225,7 +225,9 @@ def _grade_card(row, judge, task, items, texts, checkpoint):
 
 
 def _grade_report(row, judge, texts, checkpoint):
-    """Each report item that quotes the text: its quotes verbatim and supporting what it says."""
+    """Each report item that quotes the text: its quotes verbatim and supporting what it says. What it says is the model's own
+    words (`claim`), not the program's frame around them ("第 12 章收了", "改成「…」", "你定的：…"), which a grader read as claims
+    about the story (A3 dev round 1, as A2's round 1); a report from before the field has only its text."""
     support = []
     for n, (heading, item) in enumerate(report_items(row)):
         quotes = passages(row, item.get("refs") or [])
@@ -234,7 +236,7 @@ def _grade_report(row, judge, texts, checkpoint):
         if not verbatim(quotes, texts):
             support.append(False)
             continue
-        support.append(ask(row, judge, "citation_support", f"report:{n}", {"sentence": {"text": item["text"]},
+        support.append(ask(row, judge, "citation_support", f"report:{n}", {"sentence": {"text": item.get("claim") or item["text"]},
                            "sources": [{"kind": "passage", **q} for q in quotes]}, ["supported", "unsupported"], checkpoint) == "supported")
     row["auto"]["report_evidence"] = support
 

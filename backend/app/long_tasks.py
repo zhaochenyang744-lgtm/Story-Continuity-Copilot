@@ -76,8 +76,8 @@ PLAN_PROMPT = """作者在写作助手里说了一句话，要助手做一件跨
 
 类别 type：
 - thread_audit：清点还没收的伏笔，看哪些在正文里其实已经收了、哪些写明不追了；
-- trace：把一样东西、一个人的状态或一件事在全书里的去向、变化理一遍，标出前后对不上的地方；
-- tidy：把资料（事实）和正文对一遍，补缺的、改过时的；
+- trace：把一样东西、一个人的状态或一件事在全书里的去向、变化理一遍，标出前后对不上的地方；核对一个名字、一个说法、一个时间在几章里写得是否一致，也是 trace；
+- tidy：把资料（事实）和正文对一遍，补缺的、改过时的；作者要对的是资料库里的记录，才是 tidy；
 - none：都不是，或者作者要的是写新情节、改正文。
 
 其他字段：
@@ -505,10 +505,14 @@ class LongTasks:
                           "function": {"name": call["name"], "arguments": call["arguments"]}} for call in calls]}] if calls else []
             messages += ([{"role": "tool", "tool_call_id": calls[0]["id"], "content": json.dumps({"error": "report_invalid", "problems": problems}, ensure_ascii=False)}]
                          if calls else [{"role": "user", "content": f"请调用 {kind.tool_name} 交出结果。问题：" + "；".join(problems)}])
+        dropped = 0
+        if report is None and isinstance(args, dict):  # after the repair, what still does not validate is left out (A3 dev round 1)
+            report, problems = kind.validate(args, subjects, passages, earlier, keep_valid=True)
+            dropped = len(problems)
         if report is None:
             raise LongTaskError("assistant_long_report_invalid")
         output, proposals, decisions = kind.apply(ctx, spec, plan, report, subjects, passages)
-        self._done(task_id, ordinal, {**output, "decisions": decisions}, proposals, chars)
+        self._done(task_id, ordinal, {**output, "decisions": decisions, **({"dropped": dropped} if dropped else {})}, proposals, chars)
 
     def _ask_decision(self, task_id: str) -> bool:
         """Stop on the first question a finished step left that was not asked yet (True). With the questions used up, the

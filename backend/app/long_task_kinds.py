@@ -119,7 +119,8 @@ class ThreadAudit:
         return [f"- {item['title']}：第 {item['chapter']} 章{'已收' if item['verdict'] == 'resolved' else '写明不追'}"
                 for item in self.settled(outputs).values() if item["verdict"] in self.VERDICT_KIND][-DIGEST_MAX:]
 
-    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str]) -> tuple[Any, list[str]]:
+    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str],
+                 keep_valid: bool = False) -> tuple[Any, list[str]]:
         problems: list[str] = []
         report: list[dict[str, Any]] = []
         seen = set()
@@ -139,10 +140,10 @@ class ThreadAudit:
                 refs, note = [], ""
             seen.add(item["thread"])
             report.append({"thread": item["thread"], "verdict": item["verdict"], "refs": refs, "note": note})
-        if problems:
+        if problems and not (keep_valid and report):  # kept only when something in it stands
             return None, problems
         # A thread the report left out is open as far as this step can tell.
-        return report + [{"thread": ref, "verdict": "open", "refs": [], "note": ""} for ref in subjects if ref not in seen], []
+        return report + [{"thread": ref, "verdict": "open", "refs": [], "note": ""} for ref in subjects if ref not in seen], problems
 
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
@@ -177,7 +178,8 @@ class ThreadAudit:
                 else:
                     where = f"第 {item['chapter']} 章" if item["chapter"] else "正文"
                     items.append({"text": f"{item['title']}：{where}{'收了' if verdict == 'resolved' else '写明不追了'}。{item['note']}".rstrip(),
-                                  "refs": item["refs"], "label": item["title"]})
+                                  "refs": item["refs"], "label": item["title"], "claim": item["note"] or f"伏笔「{item['title']}」"
+                                  + ("的答案或结局在这里写出来了。" if verdict == "resolved" else "在这里写明不再追了。")})
             if items:
                 sections[heading] = items
         return sections
@@ -198,8 +200,8 @@ class Trace:
     produces: list[str] = []
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
-- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写。
-- conflicts：两处说法不能同时成立、正文也没有交代中间怎么变过来的，才算对不上。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。正常的先后变化（东西换了人、伤好了）不算对不上。
+- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机）。
+- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化，哪怕正文没写中间怎么变的，也不算对不上。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
         "states": {"type": "array", "items": {"type": "object", "properties": {"state": {"type": "string", "maxLength": STATE_MAX},
@@ -218,7 +220,8 @@ class Trace:
         states = [f"- 第 {s['chapter']} 章：{s['state']}（{'、'.join(s['refs'])}）" for output in outputs for s in output.get("states", [])]
         return states[-DIGEST_MAX:]
 
-    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str]) -> tuple[Any, list[str]]:
+    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str],
+                 keep_valid: bool = False) -> tuple[Any, list[str]]:
         problems: list[str] = []
         states, conflicts = [], []
         for number, item in enumerate(args.get("states") or [], 1):
@@ -237,7 +240,7 @@ class Trace:
                 problems.append(f"conflicts 第 {number} 项：earlier 用前面几步或这一步的段落编号，later 用这一步的，what 写哪里对不上")
                 continue
             conflicts.append({"earlier": a, "later": b, "what": what})
-        return (None, problems) if problems else ({"states": states, "conflicts": conflicts}, [])
+        return (None, problems) if problems and not (keep_valid and (states or conflicts)) else ({"states": states, "conflicts": conflicts}, problems)
 
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
@@ -256,11 +259,11 @@ class Trace:
         return []
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
-        states = [{"text": f"第 {s['chapter']} 章：{s['state']}", "refs": s["refs"], "label": f"第 {s['chapter']} 章"}
+        states = [{"text": f"第 {s['chapter']} 章：{s['state']}", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"]}
                   for output in outputs for s in output.get("states", [])]
         asked = {d.get("conflict"): d["id"] for d in decisions}
         conflicts = [{"text": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章：{c['what']}" + _resolution(decisions, asked.get(c["id"], "")),
-                      "refs": c["earlier"] + c["later"], "label": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章"}
+                      "refs": c["earlier"] + c["later"], "label": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章", "claim": c["what"]}
                      for output in outputs for c in output.get("conflicts", [])]
         return {heading: items for heading, items in (("状态变化", states), ("对不上的地方", conflicts)) if items}
 
@@ -273,6 +276,7 @@ class Tidy:
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：把资料（已确认的事实）和这几章正文对一遍。\n" + COMMON_RULES + """
 - stale：资料里的一条事实，这几章写明它已经变了。fact 写那条事实的编号，value 写正文里最新的说法（不超过 60 字），refs 写撑得住的段落编号（这一步给的）。
 - missing：这几章交代了、资料里没有的事实。写 memory_type、subject（人名或物名）、predicate（固定的几种之一）、value（不超过 60 字）、refs。资料里已经有意思相同的事实（换了说法也算），就不写。
+  只写长期有效的设定：定下来的规矩、分工、固定的时间和地点、经费来源、人和物的身份特征。一次性的事（某次谈话没录音、某人某天说了什么）、眼下的处境和还没定的事（在等回信、暂时借用、还没答复）都不写。作者的话里点了要对哪几类（比如日程、分工、经费），就只写这几类。
 - conflicts：同一件事两处写法不同、正文没有交代变化，看不出哪个是作者本意（比如一处十七岁、一处十八岁）。fact 写资料里那条事实的编号（没有就留空，并写 subject、predicate、memory_type），earlier、later 各写段落编号和那一处的 value，what 一句话说哪里不同。这种情况不要写进 stale 或 missing，程序会问作者。
 - 用 report_tidy 一次交出。""")
     tool = _function("report_tidy", "交出这一步里过时的、没记的事实，和要作者拿主意的地方。", {
@@ -301,7 +305,8 @@ class Tidy:
                  for output in outputs for item in output.get("stale", []) + output.get("missing", [])]
         return found[-DIGEST_MAX:]
 
-    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str]) -> tuple[Any, list[str]]:
+    def validate(self, args: dict[str, Any], subjects: dict[str, Any], passages: dict[str, Any], earlier: set[str],
+                 keep_valid: bool = False) -> tuple[Any, list[str]]:
         problems: list[str] = []
         stale, missing, conflicts = [], [], []
         for number, item in enumerate(args.get("stale") or [], 1):
@@ -334,7 +339,7 @@ class Tidy:
                 continue
             conflicts.append({"fact": fact, "subject": _short(item.get("subject"), 20), "predicate": item.get("predicate"), "memory_type": item.get("memory_type"),
                               "earlier": {"refs": a, "value": values[0]}, "later": {"refs": b, "value": values[1]}, "what": _short(item.get("what"), WHAT_MAX)})
-        return (None, problems) if problems else ({"stale": stale, "missing": missing, "conflicts": conflicts}, [])
+        return (None, problems) if problems and not (keep_valid and (stale or missing or conflicts)) else ({"stale": stale, "missing": missing, "conflicts": conflicts}, problems)
 
     @staticmethod
     def _propose(ctx: ToolContext, fact: str | None, fields: dict[str, Any], value: str, refs: list[str]) -> tuple[str, dict[str, Any]]:
@@ -382,12 +387,13 @@ class Tidy:
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
         updated = [{"text": f"{s['title'].split('：', 1)[0]}：改成「{s['value']}」（第 {s['chapter']} 章）", "refs": s["refs"],
-                    "label": s["title"].split("：", 1)[0]} for output in outputs for s in output.get("stale", []) if not s.get("dropped")]
-        added = [{"text": f"{m['subject']}：{m['value']}（第 {m['chapter']} 章）", "refs": m["refs"], "label": m["subject"]}
+                    "label": s["title"].split("：", 1)[0], "claim": f"{s['title'].split('（', 1)[0].split('：', 1)[0]}：{s['value']}"}
+                   for output in outputs for s in output.get("stale", []) if not s.get("dropped")]
+        added = [{"text": f"{m['subject']}：{m['value']}（第 {m['chapter']} 章）", "refs": m["refs"], "label": m["subject"], "claim": f"{m['subject']}：{m['value']}"}
                  for output in outputs for m in output.get("missing", []) if not m.get("dropped")]
         asked = {d.get("conflict"): d["id"] for d in decisions}
         conflicts = [{"text": f"{c['subject'] or '这条事实'}：{c['what']}" + _resolution(decisions, asked.get(c["id"], "")),
-                      "refs": c["earlier"]["refs"] + c["later"]["refs"], "label": c["subject"] or "两处写法"}
+                      "refs": c["earlier"]["refs"] + c["later"]["refs"], "label": c["subject"] or "两处写法", "claim": c["what"]}
                      for output in outputs for c in output.get("conflicts", [])]
         return {heading: items for heading, items in (("补上的", added), ("更新的", updated), ("要你拿主意的", conflicts)) if items}
 

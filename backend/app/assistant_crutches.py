@@ -74,7 +74,7 @@ CRUTCHES = (
            "a summary the model writes loses its sources and can be steered by words hidden in the text",
            "design 14 (v2.1 B): compaction is the program's, the rules, request and step list are never summarised",
            "the A3 safety set: compaction-directed injections; the development set: recall across steps", False),
-    Crutch("step_repair", "long_tasks._run_step: one more call when a step's report does not validate",
+    Crutch("step_repair", "long_tasks._run_step: one more call when a step's report does not validate, then the items that still do not are left out",
            "the model cites a passage outside its step or leaves a verdict without a passage",
            "design 14 (v2.1 B), as answer_repair for questions",
            "the A3 development set: failed tasks and evidence support with no repair", False),
