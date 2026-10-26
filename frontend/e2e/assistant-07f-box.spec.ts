@@ -141,7 +141,7 @@ test.describe("07f 输入框", () => {
     await expect(thread(page).locator(".a-chip").first()).toContainText("第");
     // 帮我改这一处 is not in the mode menu.
     await mode.click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     await shot(page, "07f-05-fix-chips", false);
     expect(id).toBeTruthy();

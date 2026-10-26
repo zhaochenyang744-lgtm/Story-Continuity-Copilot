@@ -69,7 +69,7 @@ type Handlers = {
 };
 
 /** The author's question; pointing at it shows 「改」, which turns it into a box to reword and send again. */
-function Question({ task, handlers, children }: { task: AssistantTask; handlers: Handlers; children?: ReactNode }) {
+export function Question({ task, handlers, children }: { task: AssistantTask; handlers: Handlers; children?: ReactNode }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(task.question ?? "");
   const [sending, setSending] = useState(false);

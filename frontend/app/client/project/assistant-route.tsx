@@ -11,7 +11,7 @@ import { active } from "./assistant-parts";
 
 /** The uses a task can be started as; `out_of_scope` starts nothing. */
 export type Use = Exclude<AssistantRoute, "out_of_scope">;
-export const USE_LABEL: Record<Use, string> = { ask: "问作品", recap: "写前回顾", fix_issue: "帮我改这一处", check_passage: "查前文矛盾", change: "改资料" };
+export const USE_LABEL: Record<Use, string> = { ask: "问作品", recap: "写前回顾", fix_issue: "帮我改这一处", check_passage: "查前文矛盾", change: "改资料", long_task: "长任务" };
 export const CHECK_QUESTION = "这段和前文有没有矛盾？";
 /** The judgement is waited for this long; after it the sentence is an ordinary question (问作品), and the line above its answer says so. */
 export const ROUTE_WAIT_MS = 15000;
@@ -46,13 +46,15 @@ export function taskFor(use: Use, input: string, context: AssistantContextInput,
   if (use === "recap") return { kind: "recap", context: { page: "writing" } };
   if (use === "fix_issue") return plain.issue_id ? { kind: "fix_issue", ...(input ? { question: input } : {}), context: { page: "writing", issue_id: plain.issue_id } } : null;
   if (use === "change") return input ? { kind: "change", question: input, context: plain } : null;
+  // A long task takes the page and the chapter in view and nothing else (the server refuses any other field).
+  if (use === "long_task") return input ? { kind: "long", question: input, context: { page: plain.page, ...(plain.chapter_number != null ? { chapter_number: plain.chapter_number } : {}) } } : null;
   if (use === "check_passage") return plain.selection ? { kind: "ask", question: CHECK_QUESTION, context: { ...plain, intent: "check_selection" } } : null;
   return input ? { kind: "ask", question: input, context: plain, followUpOf: followUpOf ?? null } : null;
 }
 
 /** The use a task was started as. */
 export const usageOf = (task: AssistantTask): Use =>
-  task.kind === "recap" ? "recap" : task.kind === "fix_issue" ? "fix_issue" : task.kind === "change" ? "change" : task.context.intent === "check_selection" ? "check_passage" : "ask";
+  task.kind === "recap" ? "recap" : task.kind === "fix_issue" ? "fix_issue" : task.kind === "change" ? "change" : task.kind === "long" ? "long_task" : task.context.intent === "check_selection" ? "check_passage" : "ask";
 
 export type RerouteControl = {
   /** The other uses this task's sentence can be sent as here. */

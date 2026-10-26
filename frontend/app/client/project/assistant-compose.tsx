@@ -16,8 +16,8 @@ export type ComposeChip = {
   note?: string;
   drop: () => void;
 };
-export type Mode = "auto" | "ask" | "recap" | "check" | "change";
-export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料" };
+export type Mode = "auto" | "ask" | "recap" | "check" | "change" | "long";
+export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料", long: "长任务" };
 /** One line under each use in the menu: what choosing it does. */
 export const MODE_HINT: Record<Mode, string> = {
   auto: "由助手判断这句话要做什么",
@@ -25,6 +25,7 @@ export const MODE_HINT: Record<Mode, string> = {
   recap: "回顾上一章停在哪、哪些线没收",
   check: "检查选中的一段和前文有没有矛盾",
   change: "提出改动，你确认后才执行",
+  long: "先列计划，你点头后在后台做",
 };
 
 /** What the 「＋」 menu can add, and what choosing each does. */
@@ -153,7 +154,7 @@ function PlusMenu({ pick, close, anchor, writing }: { pick: PlusPick; close: () 
   );
 }
 
-function ModeMenu({ modes, mode, setMode, close, anchor }: { modes: Mode[]; mode: Mode; setMode: (mode: Mode) => void; close: () => void; anchor: RefObject<HTMLElement | null> }) {
+function ModeMenu({ modes, mode, setMode, close, anchor, unavailable }: { modes: Mode[]; mode: Mode; setMode: (mode: Mode) => void; close: () => void; anchor: RefObject<HTMLElement | null>; unavailable: Partial<Record<Mode, string>> }) {
   const { list, onKeyDown } = useMenu(close, anchor);
   usePlacement(anchor, "mode");
   useEffect(() => { list.current?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus({ preventScroll: true }); }, [list]);
@@ -161,7 +162,10 @@ function ModeMenu({ modes, mode, setMode, close, anchor }: { modes: Mode[]; mode
     <div ref={list} className="cx-menu mode" role="menu" aria-label="这次让助手做什么" onKeyDown={onKeyDown}>
       <span className="head" aria-hidden="true">这次让助手做什么</span>
       {modes.map((item) => (
-        <button key={item} type="button" role="menuitemradio" aria-label={MODE_LABEL[item]} aria-checked={item === mode} onClick={() => { setMode(item); close(); }}>
+        // A use this account cannot have is greyed, not hidden, and says why when pointed at (aria-disabled keeps it reachable, so the reason can be read).
+        <button key={item} type="button" role="menuitemradio" aria-label={MODE_LABEL[item]} aria-checked={item === mode} aria-disabled={unavailable[item] ? true : undefined}
+          title={unavailable[item] || undefined}
+          onClick={() => { if (unavailable[item]) return; setMode(item); close(); }}>
           <span className="what"><span className="name">{MODE_LABEL[item]}</span><span className="d">{MODE_HINT[item]}</span></span>
         </button>
       ))}
@@ -199,6 +203,8 @@ export type ComposerProps = {
   modeName?: string;
   /** The text box cannot be typed in (查前文矛盾 asks about the picked words only). */
   fixed?: boolean;
+  /** Uses shown in the menu but greyed, each with the reason (长任务 for a visitor: 注册后可以用). */
+  unavailable?: Partial<Record<Mode, string>>;
   /** ↑ with an empty box. */
   recall: () => void;
 };
@@ -206,7 +212,7 @@ export type ComposerProps = {
 const STOP_GRACE_MS = 700;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {} } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -267,7 +273,7 @@ export function Composer(props: ComposerProps) {
           )}
         </div>
         {open === "plus" && <PlusMenu pick={pick} writing={writing} close={closePlus} anchor={frame} />}
-        {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} />}
+        {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} unavailable={unavailable} />}
       </form>
       {/* Under the frame, at its right: one place for the counter, the key hint and the cost. The key hint takes the cost's place while the box has focus, so the line never reflows. */}
       <div className="a-quota-row">
