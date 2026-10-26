@@ -210,12 +210,12 @@ class QuotaTests(AssistantCase):
         self.register()
         self.own_work()
         before = self.usage()
-        self.assertEqual((before["check_chars_remaining"], before["assistant_task_chars"]), (60_000, 500))
+        self.assertEqual((before["check_chars_remaining"], before["assistant_task_chars"]), (100_000, 500))
         reserved = []
         self.run_ask(lambda p, m: (reserved.append(self.rows("SELECT reserved_microunits r FROM v2_usage_reservations WHERE workflow_kind='assistant_task'")[0]["r"]), read(9, cost=0.05))[1], cite(9))
         self.assertEqual(reserved, [300_000])  # the ceiling is held while the task runs
         after = self.usage()
-        self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (500, 59_500))
+        self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (500, 99_500))
         reservation = self.rows("SELECT * FROM v2_usage_reservations WHERE workflow_kind='assistant_task'")
         self.assertEqual(len(reservation), 1)
         self.assertEqual(reservation[0]["reserved_microunits"], 60_000)  # two calls at 0.05 and 0.01
