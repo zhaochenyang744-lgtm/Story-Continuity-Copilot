@@ -547,6 +547,17 @@ class SameFactTests(unittest.TestCase):
         self.assertFalse(restates(self.fact("滕书蔚", "rule", "预约变化由他逐个通知租用者"), existing))
         self.assertFalse(restates(self.fact("屈予葭", "rule", "负责送取"), existing))  # another subject
 
+    def test_from_the_same_chapter_half_the_words_restate_and_a_thread_or_no_news_is_no_finding(self):
+        from app.long_task_kinds import NO_NEWS, THREAD_TALK, restates
+        held = {"subject": "周转站", "predicate": "日常交接地点", "value": "日常交接使用璃岑服务间。", "chapter": 2}
+        self.assertTrue(restates({**self.fact("周转站", "location", "固定交接地点是璃岑服务间"), "chapter": 2}, held))
+        self.assertFalse(restates({**self.fact("周转站", "location", "固定交接地点是璃岑服务间"), "chapter": 9}, held))
+        self.assertFalse(restates({**self.fact("周转站", "rule", "周五上午的体验接待放在璃岑服务间，不与日常交接混用"), "chapter": 8}, held))
+        self.assertTrue(THREAD_TALK.search("不再追问旧租单上的模糊收件人，这条线到此为止"))
+        self.assertFalse(THREAD_TALK.search("每次续租都须本人确认"))
+        self.assertTrue(NO_NEWS.search("推车未在这几章出现，无新交接"))
+        self.assertFalse(NO_NEWS.search("推车交给牟宛歧保管"))
+
 
 class RouteTests(LongCase):
     def test_the_input_box_can_judge_a_long_task_and_a_visitor_gets_a_question(self):

@@ -11,6 +11,7 @@ trace the author wants the disagreements of lists them.
 """
 from __future__ import annotations
 
+import re
 import uuid
 from typing import Any
 
@@ -213,7 +214,7 @@ class Trace:
     produces: list[str] = []
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
-- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机）。
+- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
 - conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
@@ -240,6 +241,8 @@ class Trace:
         for number, item in enumerate(args.get("states") or [], 1):
             refs = _refs(item.get("refs")) if isinstance(item, dict) else []
             state = _short(item.get("state"), STATE_MAX) if isinstance(item, dict) else ""
+            if NO_NEWS.search(state):  # "not in these chapters" is no state, and no passage can back it (A3 dev-2 round 2)
+                continue
             if not state or not refs or any(ref not in passages for ref in refs):
                 problems.append(Problem("state_empty" if not state else "refs_missing" if not refs else "ref_outside_step",
                                         f"states 第 {number} 项：要有 state，refs 只能用这一步给出的段落编号"))
@@ -292,7 +295,7 @@ class Tidy:
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：把资料（已确认的事实）和这几章正文对一遍。\n" + COMMON_RULES + """
 - stale：资料里的一条事实，这几章写明它已经变了。fact 写那条事实的编号，value 写正文里最新的说法（不超过 60 字），refs 写撑得住的段落编号（这一步给的）。
 - missing：这几章交代了、资料里没有的事实。写 memory_type、subject（人名或物名）、predicate（固定的几种之一）、value（不超过 60 字）、refs。资料里已经有意思相同的事实（换了说法也算），就不写。
-  只写长期有效的设定：定下来的规矩、分工、固定的时间和地点、经费来源、人和物的身份特征。一次性的事（某次谈话没录音、某人某天说了什么）、眼下的处境和还没定的事（在等回信、暂时借用、还没答复）、东西眼下在谁手里（会换手）、人物介绍自己时说能做什么或不能保证什么、伏笔和悬念（哪条线不追了、哪个谜还没解），都不写。同一条规矩只记在一个对象名下。作者的话里点了要对哪几类（比如日程、分工、经费），就只写这几类。
+  只写长期有效的设定：定下来的规矩、分工、固定的时间和地点、经费来源、人和物的身份特征。一次性的事（某次谈话没录音、某人某天说了什么）、眼下的处境和还没定的事（在等回信、暂时借用、还没答复）、东西眼下在谁手里（会换手）、人物介绍自己时说能做什么或不能保证什么、伏笔和悬念（哪条线不追了、哪个谜还没解），都不写。同一条规矩只记在一个对象名下；写明由谁负责的，记在负责的人名下，value 写他负责什么。subject 尽量用依据段落里写出来的名字。大家决定不再追查某条线索、某张单子，是伏笔，不是事实。作者的话里点了要对哪几类（比如日程、分工、经费），就只写这几类。
 - conflicts：同一件事两处写法不同、正文没有交代变化，看不出哪个是作者本意（比如一处十七岁、一处十八岁）。fact 写资料里那条事实的编号（没有就留空，并写 subject、predicate、memory_type），earlier、later 各写段落编号和那一处的 value，what 一句话说哪里不同。这种情况不要写进 stale 或 missing，程序会问作者。
 - 每一项的 refs 最多 2 个，挑最能撑住的一两段。
 - 用 report_tidy 一次交出。""")
@@ -411,9 +414,14 @@ class Tidy:
             except ToolError as error:
                 found["dropped"] = error.code
             output["stale"].append(found)
+        held = _with_chapters(ctx, ctx.memory()) if report["missing"] else []
         for item in report["missing"]:
             found = {**item, "chapter": _chapter(item["refs"], rows)}
-            if any(restates(item, fact) for fact in ctx.memory()):  # the materials say it already, under another property
+            if THREAD_TALK.search(item["value"]):  # a line of inquiry let go is a thread, not a fact (A3 dev-2 round 2)
+                found["dropped"] = "thread_not_fact"
+                output["missing"].append(found)
+                continue
+            if any(restates(found, fact) for fact in held):  # the materials say it already, under another property
                 found["dropped"] = "change_fact_already_recorded"
                 output["missing"].append(found)
                 continue
@@ -443,7 +451,7 @@ class Tidy:
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
         updated = [{"text": f"{s['title'].split('：', 1)[0]}：改成「{s['value']}」（第 {s['chapter']} 章）", "refs": s["refs"],
-                    "label": s["title"].split("：", 1)[0], "claim": f"{s['title'].split('（', 1)[0].split('：', 1)[0]}：{s['value']}"}
+                    "label": s["title"].split("：", 1)[0], "claim": s["value"]}
                    for output in outputs for s in output.get("stale", []) if not s.get("dropped")]
         added = [{"text": f"{m['subject']}：{m['value']}（第 {m['chapter']} 章）", "refs": m["refs"], "label": m["subject"], "claim": f"{m['subject']}：{m['value']}"}
                  for output in outputs for m in output.get("missing", []) if not m.get("dropped")]
@@ -458,7 +466,11 @@ KINDS = {kind.name: kind for kind in (ThreadAudit(), Trace(), Tidy())}
 
 
 SAME_FINDING = 0.6  # two readings of one fact share this much of what they say
-RESTATED = 0.8  # a new fact that shares this much with an existing one of its subject says what it says
+RESTATED = 0.7  # a new fact this much of whose words an existing one of its subject holds says nothing new
+RESTATED_SAME_CHAPTER = 0.55  # ... or this much, when both come from the same chapter (A3 dev-2 round 2: "固定交接地点是璃岑服务间"
+#                               beside "日常交接使用璃岑服务间", both chapter 2)
+NO_NEWS = re.compile(r"(未|没|没有)(再)?(出现|提到|提及|写到|露面)|无新|没有新")
+THREAD_TALK = re.compile(r"这条线|不再(追|查)|往后不(再)?查")
 
 
 def _said(value: Any, subject: Any) -> set[str]:
@@ -470,6 +482,13 @@ def _said(value: Any, subject: Any) -> set[str]:
 def _overlap(a: dict[str, Any], b: dict[str, Any]) -> float:
     one, other = _said(a.get("value"), a.get("subject")), _said(b.get("value"), a.get("subject"))
     return len(one & other) / min(len(one), len(other)) if min(len(one), len(other)) >= 3 else 0.0
+
+
+def _covered(new: dict[str, Any], existing: dict[str, Any]) -> float:
+    """How much of what a new fact says an existing one says too. Measured on the new fact, not the shorter one: a short fact
+    ("日常交接使用璃岑服务间") is inside many longer new ones that add to it (A3 dev-2 round 2)."""
+    one, other = _said(new.get("value"), new.get("subject")), _said(existing.get("value"), new.get("subject"))
+    return len(one & other) / len(one) if len(one) >= 3 else 0.0
 
 
 def same_subject(a: dict[str, Any], b: dict[str, Any]) -> bool:
@@ -484,5 +503,18 @@ def same_new_fact(a: dict[str, Any], b: dict[str, Any]) -> bool:
 
 def restates(new: dict[str, Any], existing: dict[str, Any]) -> bool:
     """A new fact the materials hold already: same subject, nearly the same words, under any property ("滕书蔚 规则：负责送取"
-    beside "滕书蔚 送取职责：负责物件送取", A3 dev-2 round 1)."""
-    return same_subject(new, existing) and _overlap(new, existing) >= RESTATED
+    beside "滕书蔚 送取职责：负责物件送取", A3 dev-2 round 1); from the same chapter, half the words are enough."""
+    if not same_subject(new, existing):
+        return False
+    covered = _covered(new, existing)
+    same_chapter = new.get("chapter") is not None and new.get("chapter") == existing.get("chapter")
+    return covered >= RESTATED or (same_chapter and covered >= RESTATED_SAME_CHAPTER)
+
+
+def _with_chapters(ctx: ToolContext, facts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Facts with the chapter each was recorded from."""
+    with ctx.db.connection() as c:
+        chapter_of_span = {row["id"]: row["chapter_number"] for row in c.execute(
+            "SELECT s.id,ch.chapter_number FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=?",
+            (ctx.project_id,))}
+    return [{**fact, "chapter": chapter_of_span.get(fact.get("source_span_id"))} for fact in facts]
