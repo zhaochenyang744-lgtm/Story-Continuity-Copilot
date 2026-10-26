@@ -3,6 +3,7 @@ to ask, a report and a card decided a group at a time. A scripted model; a runne
 from __future__ import annotations
 
 import json
+import unittest
 import re
 from datetime import datetime, timedelta, timezone
 
@@ -520,6 +521,31 @@ class TidyTests(LongCase):
         self.assertEqual(view["status"], "completed")
         self.assertIn("最多 2 个", self.provider.calls[1]["messages"][-1]["content"])
         self.assertTrue(all(len(item["evidence"]) <= 2 for item in view["changes"]))
+
+
+class SameFactTests(unittest.TestCase):
+    """A3 dev-2 round 1: one subject holds several facts under one property, and readings file one fact under different ones."""
+
+    def fact(self, subject, predicate, value):
+        return {"memory_type": "static_canon", "subject": subject, "predicate": predicate, "value": value, "refs": ["R1"]}
+
+    def test_two_rules_of_one_subject_both_pass_the_majority_and_one_fact_under_two_properties_is_one(self):
+        from app.long_task_kinds import Tidy
+        renew = self.fact("周转站", "rule", "续租须由租用人本人答应，没有回应不算同意")
+        parking = self.fact("周转站", "rule", "送取停车费从经营收入出，租用者不用先垫")
+        renew_again = self.fact("周转站", "policy", "续租要租用人本人答应，没回应不算同意继续")
+        once = self.fact("周转站", "rule", "门口暂放一把旧伞")
+        merged = Tidy.majority([{"missing": [renew, parking, once]}, {"missing": [renew_again, parking]}, {"missing": []}], 2)
+        self.assertEqual([item["value"] for item in merged["missing"]], [renew["value"], parking["value"]])
+        self.assertEqual(merged["minority"], ["周转站/rule"])
+
+    def test_a_fact_the_materials_hold_under_another_property_is_restated(self):
+        from app.long_task_kinds import restates
+        existing = {"subject": "滕书蔚", "predicate": "送取职责", "value": "负责物件送取。"}
+        self.assertTrue(restates(self.fact("滕书蔚", "rule", "负责送取"), existing))
+        self.assertTrue(restates(self.fact("匡泽絮", "rule", "场地安排由她负责"), {"subject": "匡泽絮", "predicate": "场地职责", "value": "负责安排场地。"}))
+        self.assertFalse(restates(self.fact("滕书蔚", "rule", "预约变化由他逐个通知租用者"), existing))
+        self.assertFalse(restates(self.fact("屈予葭", "rule", "负责送取"), existing))  # another subject
 
 
 class RouteTests(LongCase):

@@ -317,12 +317,13 @@ class Tidy:
 
     @staticmethod
     def majority(reports: list[dict[str, Any]], need: int) -> dict[str, Any]:
-        """What at least `need` readings found, as the first reading that found it put it: a stale fact by its number, a missing
-        fact by its subject and property, a disagreement by its fact (or subject) and property."""
+        """What at least `need` readings found, as the first reading that found it put it: a stale fact by its number, a
+        disagreement by its fact (or subject) and property, a missing fact by its subject and what it says (`same_new_fact`:
+        readings file one fact under different properties, and one subject holds several facts under one property, A3 dev-2
+        round 1). What fewer readings found is kept aside as `minority`, by subject and property only."""
+        merged: dict[str, Any] = {"minority": []}
         keys = {"stale": lambda item: item["fact"],
-                "missing": lambda item: (normalize_memory_value(item["subject"]), item["predicate"]),
                 "conflicts": lambda item: (item["fact"] or normalize_memory_value(item["subject"] or ""), item["predicate"])}
-        merged: dict[str, list[dict[str, Any]]] = {}
         for part, key in keys.items():
             counts: dict[Any, int] = {}
             first: dict[Any, dict[str, Any]] = {}
@@ -331,6 +332,16 @@ class Tidy:
                     counts[found_key] = counts.get(found_key, 0) + 1
                     first.setdefault(found_key, item)
             merged[part] = [item for found_key, item in first.items() if counts[found_key] >= need]
+        clusters: list[list[Any]] = []  # [first item, readings that found it]
+        for number, report in enumerate(reports):
+            for item in report.get("missing", []):
+                cluster = next((c for c in clusters if number not in c[1] and same_new_fact(c[0], item)), None)
+                if cluster is None:
+                    clusters.append([item, {number}])
+                else:
+                    cluster[1].add(number)
+        merged["missing"] = [item for item, found in clusters if len(found) >= need]
+        merged["minority"] = [f"{item['subject']}/{item['predicate']}" for item, found in clusters if len(found) < need]
         return merged
 
     def subjects(self, ctx: ToolContext, high: int, outputs: list[dict[str, Any]], plan: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
@@ -391,7 +402,7 @@ class Tidy:
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
         rows = ctx.registry.rows
-        output: dict[str, Any] = {"stale": [], "missing": [], "conflicts": []}
+        output: dict[str, Any] = {"stale": [], "missing": [], "conflicts": [], **({"minority": report["minority"]} if report.get("minority") else {})}
         proposals = []
         for item in report["stale"]:
             found = {**item, "chapter": _chapter(item["refs"], rows), "title": subjects[item["fact"]]["text"]}
@@ -402,6 +413,10 @@ class Tidy:
             output["stale"].append(found)
         for item in report["missing"]:
             found = {**item, "chapter": _chapter(item["refs"], rows)}
+            if any(restates(item, fact) for fact in ctx.memory()):  # the materials say it already, under another property
+                found["dropped"] = "change_fact_already_recorded"
+                output["missing"].append(found)
+                continue
             try:
                 proposals.append(self._propose(ctx, None, {k: item[k] for k in ("memory_type", "subject", "predicate")}, item["value"], item["refs"]))
             except ToolError as error:  # an existing fact says it already (a decoy), or it would not stand
@@ -442,5 +457,32 @@ class Tidy:
 KINDS = {kind.name: kind for kind in (ThreadAudit(), Trace(), Tidy())}
 
 
+SAME_FINDING = 0.6  # two readings of one fact share this much of what they say
+RESTATED = 0.8  # a new fact that shares this much with an existing one of its subject says what it says
+
+
+def _said(value: Any, subject: Any) -> set[str]:
+    """The characters a fact's value says, the subject's own name left out (it is in many values and says nothing)."""
+    name = set(normalize_memory_value(str(subject or "")))
+    return {ch for ch in normalize_memory_value(str(value or "")) if ch.isalnum() and ch not in name}
+
+
+def _overlap(a: dict[str, Any], b: dict[str, Any]) -> float:
+    one, other = _said(a.get("value"), a.get("subject")), _said(b.get("value"), a.get("subject"))
+    return len(one & other) / min(len(one), len(other)) if min(len(one), len(other)) >= 3 else 0.0
+
+
+def same_subject(a: dict[str, Any], b: dict[str, Any]) -> bool:
+    return normalize_memory_value(str(a.get("subject"))) == normalize_memory_value(str(b.get("subject")))
+
+
 def same_new_fact(a: dict[str, Any], b: dict[str, Any]) -> bool:
-    return (normalize_memory_value(str(a.get("subject"))), a.get("predicate")) == (normalize_memory_value(str(b.get("subject"))), b.get("predicate"))
+    """Two new facts are one when they are about the same subject and say much the same, whatever property each was filed
+    under (a subject holds several facts under one property: the station's rules, A3 dev-2 round 1)."""
+    return same_subject(a, b) and _overlap(a, b) >= SAME_FINDING
+
+
+def restates(new: dict[str, Any], existing: dict[str, Any]) -> bool:
+    """A new fact the materials hold already: same subject, nearly the same words, under any property ("滕书蔚 规则：负责送取"
+    beside "滕书蔚 送取职责：负责物件送取", A3 dev-2 round 1)."""
+    return same_subject(new, existing) and _overlap(new, existing) >= RESTATED
