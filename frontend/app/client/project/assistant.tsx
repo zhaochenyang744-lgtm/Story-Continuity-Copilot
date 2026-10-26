@@ -390,9 +390,11 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const post = async (task: NewTask) => {
     setSending(true); setRefusal(""); setAgain(null);
     try {
-      // A long task has its own address, and takes the sentence and the page (and chapter) only.
+      // A long task has its own address, and takes the sentence and the page (and chapter) only, and where it came from: the box judged
+      // the sentence to be one ("route"), or the author chose the mode ("mode"); the server only counts it.
       const created = task.kind === "long"
-        ? await json<AssistantTask>(`/projects/${projectId}/assistant/long-tasks`, "POST", { question: task.question, context: task.context })
+        ? await json<AssistantTask>(`/projects/${projectId}/assistant/long-tasks`, "POST", {
+          question: task.question, context: task.context, origin: task.routed && task.routed.source !== "manual" ? "route" : "mode" })
         : await json<AssistantTask>(`/projects/${projectId}/assistant/tasks`, "POST", {
           kind: task.kind, ...(task.question ? { question: task.question } : {}), context: task.context,
           ...(task.followUpOf ? { follow_up_of: task.followUpOf } : {}), ...(task.editedFrom ? { edited_from: task.editedFrom } : {}),

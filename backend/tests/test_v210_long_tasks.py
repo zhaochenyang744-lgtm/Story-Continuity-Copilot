@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, timezone
 from app import long_tasks as lt
 from app.memory_contract import CONTROLLED_PREDICATES
 
-from tests.scripted_chat import call, turn
+from tests.scripted_chat import call, text, turn
 from tests.test_v200_changes import ChangeCase
 
 
@@ -511,3 +511,156 @@ class RouteTests(LongCase):
         r = self.client.post(f"/api/projects/{self.project_id}/assistant/route", headers=self.idem(),
                              json={"input": "那些还吊着的伏笔都替我过一遍", "context": {"page": "materials"}})
         self.assertEqual(r.json()["data"]["route"], "long_task")
+
+
+class TelemetryTests(LongCase):
+    """What a long task keeps for the usage statistics (`usage_stats`): where it came from, what the author changed on the plan card, why it
+    ended, and for each step which rules failed, how many repairs and how many findings were left out. Codes and counts, never text."""
+    facts, tidying, tidy = TidyTests.facts, TidyTests.tidying, TidyTests.tidy
+
+    def plan_row(self, task_id):
+        return dict(self.rows("SELECT * FROM assistant_long_plans WHERE task_id=?", task_id)[0])
+
+    def diagnostics(self, task_id):
+        return {r["ordinal"]: json.loads(r["diagnostics_json"]) if r["diagnostics_json"] else None
+                for r in self.rows("SELECT ordinal,diagnostics_json FROM assistant_long_steps WHERE task_id=? ORDER BY ordinal", task_id)}
+
+    def make(self, **body):
+        self.plan()
+        return self.client.post(f"/api/projects/{self.project_id}/assistant/long-tasks", headers=self.idem(),
+                                json={"question": "那些还吊着的伏笔都替我过一遍", "context": {"page": "materials"}, **body})
+
+    def test_the_origin_is_kept_when_the_page_says_it_and_null_when_it_does_not(self):
+        r = self.make(origin="route")
+        self.assertEqual(r.status_code, 202, r.text)
+        row = self.plan_row(r.json()["data"]["id"])
+        self.assertEqual((row["origin"], row["plan_type"], row["chapters_planned"]), ("route", "thread_audit", 10))
+        self.post(r.json()["data"]["id"], "stop", expect=200)
+        self.plan()
+        task = self.create()
+        self.assertIsNone(self.plan_row(task["id"])["origin"])
+        self.post(task["id"], "stop", expect=200)
+        self.assertEqual(self.make(origin="somewhere").status_code, 400)
+        self.assertEqual(self.make(origin="mode").status_code, 202)
+
+    def test_a_sentence_that_is_no_long_task_is_a_plan_of_type_none(self):
+        self.plan(kind="none")
+        task = self.create("帮我把第三卷重写一遍")
+        self.assertEqual(self.plan_row(task["id"])["plan_type"], "none")
+
+    def test_changing_the_range_or_the_ceiling_on_the_plan_card_is_flagged_and_sending_the_same_is_not(self):
+        self.plan()
+        task = self.create()
+        self.post(task["id"], "plan", {"chapters": [1, 10], "cap_cny": lt.CAP_DEFAULT}, expect=200)
+        row = self.plan_row(task["id"])
+        self.assertEqual((row["range_edited"], row["cap_edited"]), (0, 0))
+        self.post(task["id"], "plan", {"cap_cny": 1.2}, expect=200)
+        row = self.plan_row(task["id"])
+        self.assertEqual((row["range_edited"], row["cap_edited"], row["chapters_planned"]), (0, 1, 10))
+        self.post(task["id"], "plan", {"chapters": [6, 10]}, expect=200)
+        row = self.plan_row(task["id"])
+        self.assertEqual((row["range_edited"], row["cap_edited"], row["chapters_planned"]), (1, 1, 5))
+        self.post(task["id"], "plan", {"chapters": [1, 10]}, expect=200)  # put back: it was changed, and that is what is counted
+        self.assertEqual(self.plan_row(task["id"])["range_edited"], 1)
+
+    def test_why_a_task_ended(self):
+        task = self.started(turns=[self.audit_turns()] * 2)
+        self.assertEqual((task["status"], self.plan_row(task["id"])["stopped_by"]), ("completed", None))
+        # the author stops it before it starts
+        self.plan()
+        early = self.create()
+        self.post(early["id"], "stop", expect=200)
+        self.assertEqual(self.plan_row(early["id"])["stopped_by"], "author_stop")
+        # the author stops at the ceiling
+        self.own_work()
+        capped = self.started(cap=0.5, turns=[AskTests.costly(self)])
+        self.post(capped["id"], "answer", {"question_id": capped["questions"][0]["id"], "choice": "stop"}, expect=202)
+        self.assertEqual((self.view(capped["id"])["status"], self.plan_row(capped["id"])["stopped_by"]), ("stopped", "cost_cap"))
+
+    def test_the_questions_used_up_stop_the_task(self):
+        original = lt.MAX_QUESTIONS
+        lt.MAX_QUESTIONS = 0
+        self.addCleanup(setattr, lt, "MAX_QUESTIONS", original)
+        task = self.started(cap=0.5, turns=[AskTests.costly(self)])
+        self.assertEqual((task["status"], self.plan_row(task["id"])["stopped_by"]), ("stopped", "questions_exhausted"))
+
+    def test_a_task_that_fails_ends_by_program_error(self):
+        def bad(provider, messages):
+            return report({"thread": "R999", "verdict": "resolved", "refs": [], "note": "x"})
+        task = self.started(turns=[bad, bad])
+        self.assertEqual((task["status"], self.plan_row(task["id"])["stopped_by"]), ("failed", "program_error"))
+        # the step that did not get done still says which rule failed, twice, after one repair
+        self.assertEqual(self.diagnostics(task["id"])[1], {"problem_codes": ["thread_unknown", "thread_unknown"], "repairs": 1, "dropped": 0,
+                                                           "dropped_codes": {}, "apply_dropped_codes": {}})
+
+    def test_a_step_keeps_the_rules_that_failed_the_repairs_and_the_dropped(self):
+        def outside(provider, messages):
+            threads, _ = step_view(messages)
+            return report({"thread": threads["罗盘下落"], "verdict": "resolved", "refs": ["R999"], "note": "x"})
+        view = self.started(turns=[self.audit_turns(), outside, self.audit_turns()])
+        clean = {"problem_codes": [], "repairs": 0, "dropped": 0, "dropped_codes": {}, "apply_dropped_codes": {}}
+        self.assertEqual(self.diagnostics(view["id"]), {1: clean, 2: {**clean, "problem_codes": ["ref_outside_step"], "repairs": 1}, 3: clean})
+
+    def test_what_is_left_out_after_the_repair_is_counted_by_its_rule(self):
+        def half(provider, messages):
+            threads, chapters = step_view(messages)
+            items = [{"thread": "R999", "verdict": "resolved", "refs": [], "note": "x"}]
+            if 10 in chapters:
+                items.append({"thread": threads["罗盘下落"], "verdict": "resolved", "refs": [chapters[10][0]], "note": "这一章交代了罗盘的下落。"})
+            return report(*items)
+        view = self.started(turns=[self.audit_turns(), half, half])
+        found = self.diagnostics(view["id"])[2]
+        self.assertEqual((found["problem_codes"], found["repairs"], found["dropped"], found["dropped_codes"]),
+                         (["thread_unknown", "thread_unknown"], 1, 1, {"thread_unknown": 1}))
+        output = json.loads(self.rows("SELECT output_json FROM assistant_long_steps WHERE task_id=? AND ordinal=2", view["id"])[0]["output_json"])
+        self.assertEqual(output["dropped"], 1)  # still in the step's output, too
+
+    def test_a_report_that_is_not_called_for_at_all_has_its_own_code(self):
+        task = self.started(turns=[text("我看了，没什么。")] * 2)
+        self.assertEqual(self.diagnostics(task["id"])[1]["problem_codes"], ["report_call_missing", "report_call_missing"])
+
+    def test_more_than_two_passages_is_its_own_rule(self):
+        def three(provider, messages):
+            listed = facts_view(messages)
+            _, chapters = step_view(messages)
+            refs = [chapters[n][0] for n in sorted(chapters)[:3]]
+            return turn(call("report_tidy", stale=[{"fact": listed[0][0], "value": "最新的写法", "refs": refs}], missing=[]))
+        view = self.tidy(turns=[three, self.tidying(conflict=False), self.tidying(conflict=False)])
+        first = self.diagnostics(view["id"])[1]
+        self.assertEqual((first["problem_codes"], first["repairs"]), (["refs_over_two"], 1))
+
+    def test_an_item_the_program_could_not_turn_into_a_card_is_counted_by_its_code(self):
+        view = self.tidy(turns=[self.tidying(decoy=True, conflict=False)] * 2)
+        applied = [d["apply_dropped_codes"] for d in self.diagnostics(view["id"]).values() if d["apply_dropped_codes"]]
+        self.assertEqual(applied, [{"change_fact_already_recorded": 1}])
+
+    def test_the_time_of_a_step_is_kept_and_nothing_in_the_diagnostics_is_text(self):
+        view = self.started()
+        for step in self.rows("SELECT started_at,finished_at,diagnostics_json,status FROM assistant_long_steps WHERE task_id=?", view["id"]):
+            if step["status"] == "done":
+                self.assertIsNotNone(step["finished_at"])
+            self.assertTrue(step["diagnostics_json"].isascii(), step["diagnostics_json"])
+        self.assertTrue(all(row["started_at"] for row in self.rows("SELECT started_at FROM assistant_long_steps WHERE task_id=? AND ordinal<3", view["id"])))
+
+    def test_an_older_database_gets_the_columns_and_keeps_its_rows(self):
+        import contextlib
+        import sqlite3
+
+        class OldDb:
+            def __init__(self):
+                self.c = sqlite3.connect(":memory:")
+
+            @contextlib.contextmanager
+            def connection(self):
+                yield self.c
+
+        old = OldDb()
+        old.c.execute("CREATE TABLE assistant_long_plans(task_id TEXT PRIMARY KEY, proposed_json TEXT, approved_json TEXT, cap_cny REAL NOT NULL, est_chars INTEGER NOT NULL DEFAULT 0,"
+                      "est_cny REAL NOT NULL DEFAULT 0, approved_at TEXT, lease_owner TEXT, lease_until TEXT, stop_requested INTEGER NOT NULL DEFAULT 0,"
+                      "chars_read INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL)")
+        old.c.execute("INSERT INTO assistant_long_plans(task_id,cap_cny,created_at) VALUES('t',2.0,'2026-10-01T00:00:00+00:00')")
+        lt.initialize(old)
+        lt.initialize(old)  # and again
+        row = old.c.execute("SELECT origin,range_edited,cap_edited,stopped_by,plan_type,chapters_planned,cap_cny FROM assistant_long_plans").fetchone()
+        self.assertEqual(row, (None, 0, 0, None, None, None, 2.0))
+        self.assertIn("diagnostics_json", [r[1] for r in old.c.execute("PRAGMA table_info(assistant_long_steps)")])

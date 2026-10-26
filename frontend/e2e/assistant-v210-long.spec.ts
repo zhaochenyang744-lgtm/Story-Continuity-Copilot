@@ -165,7 +165,7 @@ test.describe("长任务：入口和计划", () => {
     const request = longRequest(page, "");
     await send(page).click();
     const body = (await request);
-    expect(body.postDataJSON()).toEqual({ question: `E2E_LONG_PLAN_SLOW ${ASK}`, context: { page: "overview" } });
+    expect(body.postDataJSON()).toEqual({ question: `E2E_LONG_PLAN_SLOW ${ASK}`, context: { page: "overview" }, origin: "mode" });
     expect(body.headers()["idempotency-key"]).toBeTruthy();
     // The box is empty and back on 自动 at once; the conversation says the plan is being made.
     await expect(box(page)).toHaveValue("");
@@ -259,7 +259,7 @@ test.describe("长任务：入口和计划", () => {
     await box(page).fill(ASK);
     const created = longRequest(page, "");
     await send(page).click();
-    expect((await created).postDataJSON()).toEqual({ question: ASK, context: { page: "overview" } });
+    expect((await created).postDataJSON()).toEqual({ question: ASK, context: { page: "overview" }, origin: "route" });
     await expect(planCard(page)).toBeVisible({ timeout: 20_000 });
     expect((await viewOf(page, id)).kind).toBe("long");
 

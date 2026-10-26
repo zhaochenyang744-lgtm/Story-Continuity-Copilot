@@ -25,7 +25,10 @@ ADDED_COLUMNS = {
                         ("consensus_json", "TEXT"),
                         # v2.1: the model each role used for the task, e.g. {"loop": ..., "requests": ...} (`provider.model_for`).
                         ("models_json", "TEXT")),
-    "assistant_steps": (("refs_json", "TEXT"),),
+    # `diagnostics_json` / `elapsed_ms` (v2.1 telemetry): on a step, how long it took and, on a repair (or the answer after one),
+    # {"problem_codes": [rule codes, one per time the rule failed], "repairs": repairs spent, "dropped": items the program left
+    # out after the repair, "dropped_codes": {code: times}} - codes and counts only, never the sentences sent back to the model.
+    "assistant_steps": (("refs_json", "TEXT"), ("diagnostics_json", "TEXT"), ("elapsed_ms", "INTEGER")),
     # `undone_at` / `undone_after` (v2.1): when an adoption was undone and the sentence that had been adopted (the record is kept in the
     # change ledger, while the proposal itself goes back to `proposed` with its adoption fields cleared).
     "assistant_proposals": (("recheck_json", "TEXT"), ("adopted_draft_revision", "INTEGER"), ("after_edited", "TEXT"), ("edited_by_author", "INTEGER"),
@@ -192,13 +195,14 @@ class AssistantStore:
 
     def add_step(self, task_id: str, round_: int, kind: str, summary: str, *, tool_name: str | None = None,
                  args: dict[str, Any] | None = None, result_count: int | None = None, error_code: str | None = None,
-                 refs: list[str] | None = None) -> None:
+                 refs: list[str] | None = None, diagnostics: dict[str, Any] | None = None, elapsed_ms: int | None = None) -> None:
         with self.db.connection() as c:
             ordinal = c.execute("SELECT COALESCE(MAX(ordinal),0)+1 FROM assistant_steps WHERE task_id=?", (task_id,)).fetchone()[0]
-            c.execute("INSERT INTO assistant_steps(task_id,ordinal,round,kind,tool_name,args_json,summary,result_count,error_code,created_at,refs_json) "
-                      "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            c.execute("INSERT INTO assistant_steps(task_id,ordinal,round,kind,tool_name,args_json,summary,result_count,error_code,created_at,refs_json,"
+                      "diagnostics_json,elapsed_ms) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
                       (task_id, ordinal, round_, kind, tool_name, json.dumps(args, ensure_ascii=False) if args is not None else None,
-                       summary, result_count, error_code, utcnow(), json.dumps(refs) if refs is not None else None))
+                       summary, result_count, error_code, utcnow(), json.dumps(refs) if refs is not None else None,
+                       json.dumps(diagnostics) if diagnostics is not None else None, elapsed_ms))
 
     def steps(self, task_id: str) -> list[dict[str, Any]]:
         with self.db.connection() as c:

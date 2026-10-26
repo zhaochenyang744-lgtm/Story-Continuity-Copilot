@@ -7,6 +7,7 @@ from typing import Any
 
 from .assistant_tools import ToolContext, _draft
 from .passages import terms
+from .problem_codes import Problem
 
 LIMITS = {"previous_ending": 1, "character_state": 5, "open_threads": 4, "plan": 3}
 # Facts that say how someone stands (who they are, where, what they hold) stay true until changed; they come first in
@@ -187,8 +188,8 @@ def missing_people(arguments: Any, required: list[dict]) -> list[str]:
     items = arguments.get("character_state") if isinstance(arguments, dict) else None
     cited = {ref for item in items if isinstance(item, dict) and isinstance(item.get("refs"), list)
              for ref in item["refs"] if isinstance(ref, str)} if isinstance(items, list) else set()
-    return [f"「出场人物的最新状态」还没写到{person['name']}截至上一章仍然有效的状态（候选里{person['name']}的 facts：{'、'.join(person['refs'])}）。"
-            "请补一条；条数满了，就换掉一条只写了上一章里某个动作的。"
+    return [Problem("recap_person_missing", f"「出场人物的最新状态」还没写到{person['name']}截至上一章仍然有效的状态（候选里{person['name']}的 facts：{'、'.join(person['refs'])}）。"
+                    "请补一条；条数满了，就换掉一条只写了上一章里某个动作的。")
             for person in required if not cited & set(person["refs"])]
 
 
@@ -210,7 +211,7 @@ def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, 
     errors, sections = [], {}
     ending = ending_refs(sources, n) if strict_ending else None
     if not isinstance(arguments, dict):
-        return None, ["recap 参数必须是对象"]
+        return None, [Problem("recap_args_invalid", "recap 参数必须是对象")]
     for name, limit in LIMITS.items():
         items = arguments.get(name)
         if name == "previous_ending" and isinstance(items, list) and len(items) > 1 and not strict_ending:
@@ -221,44 +222,44 @@ def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, 
             # 2026-10-21: six items, the recap was lost). Keep the items about required people first, then the rest in order.
             items = within_limit(items, required or [], limit)
         if not isinstance(items, list):
-            errors.append(f"{name} 必须是数组")
+            errors.append(Problem("recap_section_invalid", f"{name} 必须是数组"))
             continue
         if name == "previous_ending" and len(items) != 1:
-            errors.append(f"previous_ending 只能写 1 条，现在是 {len(items)} 条")
+            errors.append(Problem("recap_ending_count", f"previous_ending 只能写 1 条，现在是 {len(items)} 条"))
             continue
         if len(items) > limit:
-            errors.append(f"{name} 最多 {limit} 条，现在是 {len(items)} 条")
+            errors.append(Problem("recap_over_limit", f"{name} 最多 {limit} 条，现在是 {len(items)} 条"))
             continue
         sections[name] = []
         for item in items:
             if not isinstance(item, dict):
-                errors.append(f"{name} 条目必须是对象")
+                errors.append(Problem("recap_item_malformed", f"{name} 条目必须是对象"))
                 continue
             summary, refs = item.get("summary"), item.get("refs")
             # Name the item and its length: told only "必须为 1–40 字", the model resent the same long summary
             # (development round a1cx-dev-r2-p6) and the recap failed.
             if not isinstance(summary, str) or not summary.strip():
-                errors.append(f"{name} 有一条 summary 是空的")
+                errors.append(Problem("summary_empty", f"{name} 有一条 summary 是空的"))
             elif len(summary) > 40:
-                errors.append(f"{name} 的「{summary[:20]}……」有 {len(summary)} 字，超过 40 字；请缩短到 40 字以内，只留最要紧的事")
+                errors.append(Problem("summary_too_long", f"{name} 的「{summary[:20]}……」有 {len(summary)} 字，超过 40 字；请缩短到 40 字以内，只留最要紧的事"))
             elif internal_id.search(summary):
-                errors.append(f"{name} 的「{summary[:20]}」含内部标识，只能用 refs 标出处")
+                errors.append(Problem("internal_id_in_summary", f"{name} 的「{summary[:20]}」含内部标识，只能用 refs 标出处"))
             if not isinstance(refs, list) or not refs or any(not isinstance(r, str) or r not in known for r in refs):
-                errors.append(f"{name} 必须引用已登记的 R 编号")
+                errors.append(Problem("recap_ref_unknown", f"{name} 必须引用已登记的 R 编号"))
                 continue
             cited = [sources[r] for r in refs]
             if any(s["kind"] in ("draft", "issue") or (s["chapter_number"] is not None and s["chapter_number"] >= n)
                    or (s["chapter_number"] is None and s["kind"] != "plan") for s in cited):
-                errors.append(f"{name} 不能引用本章、后文、草稿或无章节的事实")
+                errors.append(Problem("recap_ref_out_of_scope", f"{name} 不能引用本章、后文、草稿或无章节的事实"))
             if name == "previous_ending" and not any(s["kind"] == "passage" and s["chapter_number"] == n - 1 for s in cited):
-                errors.append("previous_ending 必须引用上一章正文")
+                errors.append(Problem("ending_not_previous_chapter", "previous_ending 必须引用上一章正文"))
             elif name == "previous_ending" and ending and not set(refs) & ending:
                 # Third A1c formal (2026-10-19): two endings were taken from earlier in the chapter.
-                errors.append("previous_ending 要写上一章最后的事，引用上一章最后两段之一（候选 previous_ending 里的段落）")
+                errors.append(Problem("ending_not_last_passages", "previous_ending 要写上一章最后的事，引用上一章最后两段之一（候选 previous_ending 里的段落）"))
             if name == "plan" and any(s["kind"] != "plan" for s in cited):
-                errors.append("plan 只能引用计划")
+                errors.append(Problem("plan_ref_mixed", "plan 只能引用计划"))
             if name != "plan" and all(s["kind"] == "plan" for s in cited):
-                errors.append(f"{name} 不能只引用计划")
+                errors.append(Problem("plan_only_cited", f"{name} 不能只引用计划"))
             sections[name].append({"summary": summary.strip() if isinstance(summary, str) else "", "refs": list(dict.fromkeys(refs))})
     if strict_ending and required:
         errors += missing_people(arguments, required)

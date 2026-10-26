@@ -17,6 +17,7 @@ from typing import Any
 from .assistant_actions import ACTIONS, EVIDENCE_MAX, FACT_TYPES, OPEN_THREAD
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, REF_FORMAT, ToolContext, ToolError, fact_items
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value
+from .problem_codes import Problem
 
 NOTE_MAX = 80
 STATE_MAX = 40
@@ -56,6 +57,15 @@ def _option(key: str, refs: list[str], rows: dict[str, dict[str, Any]], value: s
     chapter = first.get("chapter_number")
     return {"key": key, "label": f"第 {chapter} 章" + (f"：{value}" if value else ""), "chapter": chapter,
             "quote": " ".join(first["text"].split())[:QUOTE_MAX], "refs": refs, **({"value": value} if value else {})}
+
+
+def _refs_code(refs: list[str], passages: dict[str, Any]) -> str | None:
+    """The rule a finding's passage numbers break, if any (a card carries at most two passages, all from this step)."""
+    if not refs:
+        return "refs_missing"
+    if len(refs) > EVIDENCE_MAX:
+        return "refs_over_two"
+    return "ref_outside_step" if any(ref not in passages for ref in refs) else None
 
 
 def decision(text: str, earlier: dict[str, Any], later: dict[str, Any], **extra: Any) -> dict[str, Any]:
@@ -126,15 +136,16 @@ class ThreadAudit:
         seen = set()
         for number, item in enumerate(args.get("threads") or [], 1):
             if not isinstance(item, dict) or item.get("thread") not in subjects or item.get("verdict") not in ("resolved", "abandoned", "open"):
-                problems.append(f"第 {number} 项的 thread 或 verdict 不对：thread 只能是列出的伏笔编号")
+                unknown = not isinstance(item, dict) or item.get("thread") not in subjects
+                problems.append(Problem("thread_unknown" if unknown else "verdict_invalid", f"第 {number} 项的 thread 或 verdict 不对：thread 只能是列出的伏笔编号"))
                 continue
             if item["thread"] in seen:
                 continue
             refs = _refs(item.get("refs"))
             note = _short(item.get("note"), NOTE_MAX)
             if item["verdict"] in self.VERDICT_KIND:
-                if not refs or len(refs) > EVIDENCE_MAX or any(ref not in passages for ref in refs):  # a card carries at most two passages
-                    problems.append(f"第 {number} 项（{item['thread']}）：{item['verdict']} 要用这一步给出的段落编号作依据，最多 2 个")
+                if _refs_code(refs, passages):  # a card carries at most two passages
+                    problems.append(Problem(_refs_code(refs, passages), f"第 {number} 项（{item['thread']}）：{item['verdict']} 要用这一步给出的段落编号作依据，最多 2 个"))
                     continue
             else:
                 refs, note = [], ""
@@ -228,16 +239,18 @@ class Trace:
             refs = _refs(item.get("refs")) if isinstance(item, dict) else []
             state = _short(item.get("state"), STATE_MAX) if isinstance(item, dict) else ""
             if not state or not refs or any(ref not in passages for ref in refs):
-                problems.append(f"states 第 {number} 项：要有 state，refs 只能用这一步给出的段落编号")
+                problems.append(Problem("state_empty" if not state else "refs_missing" if not refs else "ref_outside_step",
+                                        f"states 第 {number} 项：要有 state，refs 只能用这一步给出的段落编号"))
                 continue
             states.append({"state": state, "refs": refs})
         for number, item in enumerate(args.get("conflicts") or [], 1):
             if not isinstance(item, dict):
-                problems.append(f"conflicts 第 {number} 项格式不对")
+                problems.append(Problem("conflict_malformed", f"conflicts 第 {number} 项格式不对"))
                 continue
             a, b, what = _refs(item.get("earlier")), _refs(item.get("later")), _short(item.get("what"), WHAT_MAX)
             if not a or not b or not what or any(ref not in passages and ref not in earlier for ref in a) or any(ref not in passages for ref in b):
-                problems.append(f"conflicts 第 {number} 项：earlier 用前面几步或这一步的段落编号，later 用这一步的，what 写哪里对不上")
+                problems.append(Problem("conflict_fields_missing" if not a or not b or not what else "ref_outside_step",
+                                        f"conflicts 第 {number} 项：earlier 用前面几步或这一步的段落编号，later 用这一步的，what 写哪里对不上"))
                 continue
             conflicts.append({"earlier": a, "later": b, "what": what})
         return (None, problems) if problems and not (keep_valid and (states or conflicts)) else ({"states": states, "conflicts": conflicts}, problems)
@@ -315,30 +328,34 @@ class Tidy:
         for number, item in enumerate(args.get("stale") or [], 1):
             refs = _refs(item.get("refs")) if isinstance(item, dict) else []
             value = _short(item.get("value"), VALUE_MAX) if isinstance(item, dict) else ""
-            if not isinstance(item, dict) or item.get("fact") not in subjects or not value or not refs or len(refs) > EVIDENCE_MAX                     or any(ref not in passages for ref in refs):
-                problems.append(f"stale 第 {number} 项：fact 只能是列出的事实编号，refs 只能用这一步的段落编号、最多 2 个，value 不能空")
+            if not isinstance(item, dict) or item.get("fact") not in subjects or not value or _refs_code(refs, passages):
+                code = "fact_unknown" if not isinstance(item, dict) or item.get("fact") not in subjects else "value_empty" if not value else _refs_code(refs, passages)
+                problems.append(Problem(code, f"stale 第 {number} 项：fact 只能是列出的事实编号，refs 只能用这一步的段落编号、最多 2 个，value 不能空"))
                 continue
             stale.append({"fact": item["fact"], "value": value, "refs": refs})
         for number, item in enumerate(args.get("missing") or [], 1):
             ok = isinstance(item, dict) and item.get("memory_type") in FACT_TYPES and item.get("predicate") in CONTROLLED_PREDICATES
             refs = _refs(item.get("refs")) if ok else []
             subject, value = (_short(item.get("subject"), 20), _short(item.get("value"), VALUE_MAX)) if ok else ("", "")
-            if not ok or not subject or not value or not refs or len(refs) > EVIDENCE_MAX or any(ref not in passages for ref in refs):
-                problems.append(f"missing 第 {number} 项：字段不全，或 refs 不是这一步的段落编号、超过 2 个")
+            if not ok or not subject or not value or _refs_code(refs, passages):
+                problems.append(Problem("fact_fields_invalid" if not ok or not subject or not value else _refs_code(refs, passages),
+                                        f"missing 第 {number} 项：字段不全，或 refs 不是这一步的段落编号、超过 2 个"))
                 continue
             missing.append({"memory_type": item["memory_type"], "subject": subject, "predicate": item["predicate"], "value": value, "refs": refs})
         for number, item in enumerate(args.get("conflicts") or [], 1):
             sides = [item.get(side) if isinstance(item, dict) else None for side in ("earlier", "later")]
             if not all(isinstance(side, dict) for side in sides):
-                problems.append(f"conflicts 第 {number} 项格式不对")
+                problems.append(Problem("conflict_malformed", f"conflicts 第 {number} 项格式不对"))
                 continue
             a, b = (_refs(side.get("refs")) for side in sides)
             values = [_short(side.get("value"), VALUE_MAX) for side in sides]
             fact = item.get("fact") if item.get("fact") in subjects else None
             new = item.get("memory_type") in FACT_TYPES and item.get("predicate") in CONTROLLED_PREDICATES and _short(item.get("subject"), 20)
-            if not a or not b or len(a) > EVIDENCE_MAX or len(b) > EVIDENCE_MAX or not all(values) or not (fact or new)                     or any(ref not in passages and ref not in earlier for ref in a) \
-                    or any(ref not in passages for ref in b):
-                problems.append(f"conflicts 第 {number} 项：要有两处段落编号和各自的 value，以及 fact 或 subject、predicate、memory_type")
+            if not a or not b or len(a) > EVIDENCE_MAX or len(b) > EVIDENCE_MAX or not all(values) or not (fact or new) \
+                    or any(ref not in passages and ref not in earlier for ref in a) or any(ref not in passages for ref in b):
+                code = ("refs_missing" if not a or not b else "refs_over_two" if len(a) > EVIDENCE_MAX or len(b) > EVIDENCE_MAX else
+                        "conflict_fields_missing" if not all(values) else "conflict_subject_missing" if not (fact or new) else "ref_outside_step")
+                problems.append(Problem(code, f"conflicts 第 {number} 项：要有两处段落编号和各自的 value，以及 fact 或 subject、predicate、memory_type"))
                 continue
             conflicts.append({"fact": fact, "subject": _short(item.get("subject"), 20), "predicate": item.get("predicate"), "memory_type": item.get("memory_type"),
                               "earlier": {"refs": a, "value": values[0]}, "later": {"refs": b, "value": values[1]}, "what": _short(item.get("what"), WHAT_MAX)})
