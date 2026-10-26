@@ -386,7 +386,7 @@ def check_card(work, row, provider):
     ok = all(code == 200 for code in confirmed)
     return {"run_number": row["run_number"], "set": row["set"], "task_id": row["task"]["id"], "items": len(items), "groups": [len(g) for g in groups],
             "confirm_statuses": confirmed, "confirm_exact": ok and after == a2._expected_after(start, items, after), "undo_statuses": undone,
-            "undo_exact": ok and all(code == 200 for code in undone) and final == start, "start_matches_prepared": start == work.start}
+            "undo_exact": ok and all(code == 200 for code in undone) and a2.undo_restored(start, final, items), "start_matches_prepared": start == work.start}
 
 
 def new_record(task):

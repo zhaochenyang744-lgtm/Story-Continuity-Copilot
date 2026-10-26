@@ -248,6 +248,15 @@ def _expected_after(start, items, after):
     return expected
 
 
+def undo_restored(start, final, items):
+    """Addendum 8: the materials are as at the start after the card is undone. A thread the card added is archived by its
+    undo (as the materials page deletes one), so the threads compared are the live ones, and every added thread must be
+    archived; the facts are compared as they are."""
+    live = lambda snap: {**snap, "threads": {k: v for k, v in snap["threads"].items() if not v.get("archived_at")}}
+    added = [item["target_id"] for item in items if item["kind"] == "add_thread"]
+    return live(final) == live(start) and all((final["threads"].get(t) or {}).get("archived_at") for t in added)
+
+
 def check_card(work, row, provider):
     """Confirm the whole card and undo it again on a copy of the work, and compare (SPEC section 4)."""
     items = [item for item in row.get("changes") or [] if item["status"] == "proposed"]
@@ -272,7 +281,7 @@ def check_card(work, row, provider):
     confirm_exact = confirmed.status_code == 200 and after == _expected_after(start, items, after)
     return {"run_number": row["run_number"], "set": row["set"], "task_id": row["task"]["id"], "items": len(items),
             "confirm_status": confirmed.status_code, "confirm_exact": confirm_exact, "undo_statuses": undone,
-            "undo_exact": confirmed.status_code == 200 and all(code == 200 for code in undone) and final == start,
+            "undo_exact": confirmed.status_code == 200 and all(code == 200 for code in undone) and undo_restored(start, final, items),
             "start_matches_prepared": start == work.start}
 
 

@@ -308,6 +308,19 @@ class MetricTests(unittest.TestCase):
         self.assertTrue(report["gate_decision"].startswith("not_a_formal_run:"))
         self.assertIn("| route_accuracy | 0.000 |", score.markdown(report))
 
+    def test_addendum_8_an_added_thread_undone_is_archived_and_the_live_materials_are_as_at_the_start(self):
+        thread = lambda **kw: {"title": "t", "description": "d", "status": "planted", "archived_at": None, **kw}
+        start = {"facts": {"f1": {"value": "v"}}, "threads": {"x": thread()}}
+        items = [{"kind": "add_thread", "target_id": "new"}]
+        archived = {"facts": start["facts"], "threads": {"x": thread(), "new": thread(title="n", archived_at="2026-10-26")}}
+        self.assertTrue(run.undo_restored(start, archived, items))
+        self.assertNotEqual(archived, start)  # what the check compared before addendum 8
+        left_live = {"facts": start["facts"], "threads": {"x": thread(), "new": thread(title="n")}}
+        self.assertFalse(run.undo_restored(start, left_live, items))
+        touched = {"facts": start["facts"], "threads": {"x": thread(status="resolved"), "new": thread(title="n", archived_at="2026-10-26")}}
+        self.assertFalse(run.undo_restored(start, touched, items))
+        self.assertFalse(run.undo_restored(start, {"facts": {}, "threads": start["threads"]}, []))
+
     def test_the_new_thread_kinds_reach_the_grader_as_what_their_quotes_can_support(self):
         from evaluation.assistant_a2.judge import change_text
         thread = lambda kind, after=None: {"kind": kind, "after": after or {}, "display": {"title": "旧尺零点", "before": "b", "after": "a"}}

@@ -32,7 +32,7 @@ class A2RegistrationTests(unittest.TestCase):
         self.assertIn('a2_matches_request', judging)
         self.assertEqual(set(judging['a2_matches_request_meanings']), {'yes', 'no'})
         self.assertIn('unrequested_actions_before_addendum_2', thresholds.REPORTED_NOT_GATED)
-        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 7)
+        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 8)
 
     def test_addendum_3_asks_whether_two_facts_state_the_same_matter(self):
         judging = thresholds.PRE_REGISTRATION['judging']
