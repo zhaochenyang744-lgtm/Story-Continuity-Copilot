@@ -875,7 +875,11 @@ test.describe("助手：开关、测试版、隐私", () => {
     await other.goto("/privacy");
     await expect(other.getByRole("heading", { level: 1, name: "隐私说明" })).toBeVisible();
     await expect(other).toHaveURL(/\/privacy$/);
-    await expect(other.getByText("最近更新：2026 年 10 月 24 日")).toBeVisible();
+    await expect(other.getByText("最近更新：2026 年 10 月 27 日")).toBeVisible();
+    // v2.1: the usage statistics, what they are used for, and how their summaries are kept.
+    await expect(other.getByText("这些只有数字和代码，不包含你的作品内容、你的问题和助手的回答。", { exact: false })).toBeVisible();
+    await expect(other.getByText("做这件事时我们只看汇总的数字，不读你的作品、你的问题和助手的回答。", { exact: false })).toBeVisible();
+    await expect(other.getByText("带任务编号的明细看完就删", { exact: false })).toBeVisible();
     await expect(other.getByRole("heading", { level: 2 })).toHaveText(["我们收集什么", "怎么用", "交给谁处理", "保存多久", "你可以做什么", "关于 AI 生成的内容", "联系我们", "这份说明的变更"]);
     await expect(other.getByText("我们不会公开、出售你的作品，也不会用你的作品训练任何模型。")).toBeVisible();
     await expect(other.getByText("这些片段会被发送到 DeepSeek 在中国大陆的服务器上处理。", { exact: false })).toBeVisible();

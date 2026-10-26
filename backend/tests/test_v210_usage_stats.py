@@ -64,6 +64,23 @@ class NoTextTests(StatsCase):
             self.assertNotIn("正文", text)  # nothing quoting a chapter either
         self.assertNotIn(SENTINEL, json.dumps(self.stats, ensure_ascii=False))
 
+    def test_the_numbers_only_version_names_no_task_and_no_small_group(self):
+        """The one the privacy page lets us keep: no task numbers anywhere, no group under five tasks."""
+        kept = self.run_stats("--numbers-only")
+        self.assertTrue(kept["meta"]["numbers_only"])
+        self.assertEqual(kept["traces"], [])
+        with sqlite3.connect(self.path) as c:
+            ids = [task_id for (task_id,) in c.execute("SELECT id FROM assistant_tasks")]
+        text = json.dumps(kept, ensure_ascii=False)
+        self.assertTrue(ids)
+        self.assertFalse([task_id for task_id in ids if task_id in text])
+        for segment in kept["segments"].values():
+            self.assertTrue(all(group["tasks"] >= usage_stats.NUMBERS_ONLY_MIN_GROUP for group in segment["groups"]))
+        out = pathlib.Path(tempfile.mkdtemp()) / "kept.md"
+        self.assertEqual(usage_stats.main(["--db", str(self.path), "--format", "markdown", "--numbers-only", "--out", str(out)]), 0)
+        self.assertNotIn("需要看的任务", out.read_text(encoding="utf-8"))
+        self.assertTrue(self.stats["traces"])  # the full version still lists them
+
     def test_standard_output_carries_the_same_json(self):
         import contextlib
         import io
