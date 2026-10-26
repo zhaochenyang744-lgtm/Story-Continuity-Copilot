@@ -496,7 +496,7 @@ export type SourceChangeSet = { id:string; project_id:string; base_source_revisi
 // The built-in assistant (v1.8.0): what GET/POST /projects/{id}/assistant/tasks answer with.
 export type AssistantPage = "writing" | "chapters" | "materials" | "plan" | "overview";
 /** The uses the input box can tell apart (`POST /assistant/route`), and what it answers. */
-export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "change" | "out_of_scope";
+export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "change" | "long_task" | "out_of_scope";
 export type AssistantRouting = { route: AssistantRoute; source: "rule" | "model"; unsure: boolean };
 export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection" };
 /** `say` is the model's one line before it works; `tool` an action (grouped with the others of its round in `group`); `repair` a re-written
@@ -526,7 +526,11 @@ export type AssistantSource = {
 };
 /** `label` (v2.1): the words of the sentence that name what it is about, set in bold when three or more sentences have one; `lead`: the first sentence sums the rest up. */
 export type AssistantSentence = { text: string; refs: string[]; label?: string | null; lead?: boolean };
-export type AssistantAnswer = { status: "answered" | "not_found" | "inconsistent" | "out_of_scope"; sentences: AssistantSentence[]; note?: string | null };
+export type AssistantAnswer = {
+  status: "answered" | "not_found" | "inconsistent" | "out_of_scope"; sentences: AssistantSentence[]; note?: string | null;
+  /** A long task's report (v2.1 B): the sections in the order the server gives them, each item laid out like a point. */
+  sections?: Record<string, AssistantSentence[]>;
+};
 export type AssistantFeedbackReason = "wrong" | "verbose" | "not_found" | "bad_source";
 /** The signed-in author's own verdict on a task. */
 export type AssistantFeedback = { verdict: "up" | "down"; reasons: AssistantFeedbackReason[] } | null;
@@ -618,10 +622,22 @@ export type AssistantAdoption = {
   undone_at: string | null;
 };
 export type LedgerEntry = AssistantChange | AssistantAdoption;
+/** 长任务 (v2.1 B): the plan the author approves, the steps taken one by one in the background, the questions it stops on. */
+export type LongStatus = "planning" | "awaiting_plan" | "long_queued" | "long_running" | "waiting_author" | "stopped";
+export type LongStepSpec = { kind: "read"; chapters: [number, number]; look_for: string; produces?: string[]; chars?: number } | { kind: "report"; produces?: string[] };
+export type LongPlanBody = { type: string; target?: string | null; output?: string; chapters: [number, number]; steps: LongStepSpec[]; est_chars: number; est_cny: number; open_threads?: number; produces: string[] };
+export type LongPlan = { proposed: LongPlanBody | null; approved: LongPlanBody | null; cap_cny: number; est_chars: number; est_cny: number; chars_read: number; stop_requested: boolean };
+export type LongStep = { ordinal: number; spec: LongStepSpec; status: "pending" | "running" | "done"; attempt: number; found: number; cost_cny: number };
+export type LongQuestion = {
+  id: string; kind: "budget" | "decision" | string; step: number; text: string; choices: string[];
+  /** A decision: what each of the two ways reads, with a line of the original. */
+  options?: { key: string; label: string; chapter?: number | null; quote?: string }[];
+  answer: { choice: string; cap_cny?: number | null } | null;
+};
 export type AssistantTask = {
   id: string;
-  kind: "ask" | "recap" | "fix_issue" | "change";
-  status: "queued" | "running" | "completed" | "failed" | "cancelled";
+  kind: "ask" | "recap" | "fix_issue" | "change" | "long";
+  status: "queued" | "running" | "completed" | "failed" | "cancelled" | LongStatus;
   /** Null for a 写前回顾, and for a 帮我改这一处 asked without a request. */
   question: string | null;
   context: Partial<AssistantContextInput>;
@@ -654,6 +670,11 @@ export type AssistantTask = {
   completed_at: string | null;
   /** Only on a fix_issue task. */
   proposals?: AssistantProposal[];
-  /** Only on a change task: the card, in order. */
+  /** Only on a change task, and on a long task: the card, in order. */
   changes?: AssistantChange[];
+  /** Only on a long task (the list of the conversation holds the plain view; the long task's own address holds these). */
+  plan?: LongPlan;
+  long_steps?: LongStep[];
+  progress?: { done: number; total: number; cost_cny: number; cap_cny: number };
+  questions?: LongQuestion[];
 };
