@@ -23,6 +23,8 @@ async function pair(page: Page, name: string, options: { part?: () => Locator; b
     await setMood(page, tone);
     if (options.before) await options.before();
     await page.evaluate(async () => { await document.fonts.ready; });
+    // A whole-page picture resizes the window for a moment and the charts redraw; one picture is thrown away so the real one is taken at rest.
+    if (options.fullPage) { await page.screenshot({ fullPage: true, animations: "disabled" }); await page.waitForTimeout(900); }
     await page.waitForTimeout(450);
     const path = `${dir}/${name}-${tone === "day" ? "浅色" : "深色"}.png`;
     if (options.part) await options.part().screenshot({ path, animations: "disabled" });
