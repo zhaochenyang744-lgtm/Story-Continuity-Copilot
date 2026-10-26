@@ -215,7 +215,7 @@
 /* ── Dialogs, drawer, menu ── */
 .layer { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 24px; background: var(--c-veil); animation: fade-in var(--motion-base) var(--ease-standard); }
 .layer-drawer { place-items: stretch end; padding: 0; }
-.dialog { width: min(100%, 560px); max-height: calc(100vh - 48px); overflow: auto; background: var(--c-ground); box-shadow: var(--elev-2); animation: rise var(--motion-panel) var(--ease-standard); }
+.dialog { width: min(100%, 560px); max-height: calc(100vh - 48px); overflow: auto; background: var(--c-surface); box-shadow: var(--elev-2); animation: rise var(--motion-panel) var(--ease-standard); }
 .dialog.wide { width: min(100%, 960px); }
 .dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px 14px; border-bottom: 1px solid var(--c-line); }
 .dialog-head h2 { font-size: 24px; }
@@ -224,7 +224,7 @@
 .dialog-body { display: grid; gap: 14px; padding: 20px 24px 24px; }
 .dialog-lede { color: var(--c-muted); font-size: 14px; }
 .dialog-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
-.drawer { display: flex; flex-direction: column; width: min(100%, 520px); height: 100%; background: var(--c-ground); box-shadow: var(--elev-pop); animation: slide-in var(--motion-panel) var(--ease-standard); }
+.drawer { display: flex; flex-direction: column; width: min(100%, 520px); height: 100%; background: var(--c-surface); box-shadow: var(--elev-pop); animation: slide-in var(--motion-panel) var(--ease-standard); }
 .drawer-body { flex: 1; overflow: auto; padding: 20px 24px 32px; }
 .source-quote { margin-top: 8px; font-family: var(--font-serif); font-size: 18px; line-height: 1.9; }
 .source-quote mark { padding: 2px 0; background: var(--c-yellow-tint); -webkit-box-decoration-break: clone; box-decoration-break: clone; }

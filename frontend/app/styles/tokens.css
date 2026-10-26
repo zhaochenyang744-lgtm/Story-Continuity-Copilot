@@ -13,7 +13,7 @@
 
   /* Surfaces */
   --c-ground: #f3f3f0;        /* page */
-  --c-raised: #f8f8f6;        /* a region that groups things: it was a framed box, it is now a step lighter than the page */
+  --c-raised: #fafaf8;        /* a region that groups things: it was a framed box, it is now a step lighter than the page */
   --c-surface: #ffffff;       /* white: fields, menus, the card that can be clicked, the open row */
   --c-paper: #ffffff;
   --c-sunken: #ebebe7;        /* tracks, quiet fills */
@@ -35,7 +35,7 @@
   /* A field or a white card: a faint inner ring and a soft shadow; pointing deepens both, focus deepens them further. No blue edge. */
   --ring-rest: inset 0 0 0 1px rgba(17, 17, 17, .08), 0 1px 2px rgba(17, 17, 17, .04);
   --ring-hover: inset 0 0 0 1px rgba(17, 17, 17, .13), 0 1px 3px rgba(17, 17, 17, .06);
-  --ring-focus: inset 0 0 0 1px rgba(17, 17, 17, .24), 0 0 0 4px rgba(17, 17, 17, .045), 0 4px 14px rgba(17, 17, 17, .10);
+  --ring-focus: inset 0 0 0 1px rgba(17, 17, 17, .35), 0 0 0 4px rgba(17, 17, 17, .045), 0 4px 14px rgba(17, 17, 17, .10);
   --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(17, 17, 17, .04);
   --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 14px rgba(17, 17, 17, .10);
 
@@ -177,7 +177,7 @@
 :root[data-theme="night"] {
   color-scheme: dark;
   --c-ground: #131313;
-  --c-raised: #191919;
+  --c-raised: #1b1b1b;
   --c-surface: #1f1f1f;
   --c-paper: #1f1f1f;
   --c-sunken: #1b1b1b;
@@ -195,7 +195,7 @@
   --c-line-strong: rgba(255, 255, 255, .16);
   --ring-rest: inset 0 0 0 1px rgba(255, 255, 255, .07), 0 1px 2px rgba(0, 0, 0, .3);
   --ring-hover: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 1px 3px rgba(0, 0, 0, .35);
-  --ring-focus: inset 0 0 0 1px rgba(255, 255, 255, .24), 0 0 0 4px rgba(255, 255, 255, .05), 0 4px 16px rgba(0, 0, 0, .55);
+  --ring-focus: inset 0 0 0 1px rgba(255, 255, 255, .35), 0 0 0 4px rgba(255, 255, 255, .05), 0 4px 16px rgba(0, 0, 0, .55);
   --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(0, 0, 0, .3);
   --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 16px rgba(0, 0, 0, .55);
   --c-ink: #f4f4f1;
