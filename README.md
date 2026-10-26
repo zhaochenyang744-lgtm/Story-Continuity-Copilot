@@ -133,7 +133,7 @@ Earlier releases remain in Git tags; the [documentation index](docs/README.md) l
 - Works are isolated per account. Another account's resources return not found. Evidence must resolve within the same work; failed, cancelled or timed-out checks leave no partial findings.
 - Model and email credentials stay on the server.
 - **Allowances:**
-  - Registered authors can check 60,000 characters per rolling 24 hours by default, and each assistant task counts as 500 of them.
+  - Registered authors can check 100,000 characters per rolling 24 hours by default, and each assistant task counts as 500 of them.
   - Visitors check one chapter of at most 3,000 characters per request.
   - Separate workflow and provider-attempt limits also apply.
 - Reset clears the selected work's checks, decisions and unsubmitted changes; it does not reset other works.

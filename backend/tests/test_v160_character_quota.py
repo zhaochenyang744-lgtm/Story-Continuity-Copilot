@@ -1,7 +1,7 @@
 """Character quotas (v1.6.0).
 
 Authors meet a daily character budget instead of a count of provider dispatches: a check spends the
-characters of what it checks, a registered author has 60,000 a day and one whole-book import, and a
+characters of what it checks, a registered author has 100,000 a day and one whole-book import, and a
 visitor checks one chapter of up to 3,000 characters at a time. Dispatch counts remain only as a
 runaway backstop.
 """
@@ -68,11 +68,11 @@ class CharacterQuotaTests(unittest.TestCase):
         self.start()
         before = self.usage()
         self.assertEqual((before["account_type"], before["check_chars_limit"], before["check_chars_remaining"], before["imports_remaining"]),
-                         ("registered", 60_000, 60_000, 1))
+                         ("registered", 100_000, 100_000, 1))
         draft, chars = self.save(4)
         self.assertEqual(self.check(draft).status_code, 202)
         after = self.usage()
-        self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (chars, 60_000 - chars))
+        self.assertEqual((after["check_chars_used"], after["check_chars_remaining"]), (chars, 100_000 - chars))
 
     def test_a_check_on_the_sample_work_spends_no_characters_and_ignores_the_allowance(self):
         self.start(sample=True, registered_check_chars=1_000)
@@ -139,7 +139,7 @@ class CharacterQuotaTests(unittest.TestCase):
 
     def test_backstop_defaults_cover_a_whole_book_import(self):
         settings = Stage13Settings.for_test()
-        self.assertGreaterEqual(dataclasses.replace(settings).registered_check_chars, 60_000)
+        self.assertGreaterEqual(dataclasses.replace(settings).registered_check_chars, 100_000)
         self.assertEqual((settings.visitor_check_chars, settings.registered_imports), (3_000, 1))
 
 

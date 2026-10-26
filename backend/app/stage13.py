@@ -94,7 +94,7 @@ class Stage13Settings:
     require_recovery_email: bool = False
     test_mode: bool = False
     # Character quotas (v1.6.0): what an author can understand and predict, unlike dispatch counts.
-    registered_check_chars: int = 60_000
+    registered_check_chars: int = 100_000
     visitor_check_chars: int = 3_000
     registered_imports: int = 1
     # v1.8.0 assistant: visitors get their own count, and an assistant task reserves its own ceiling.
@@ -253,7 +253,7 @@ class Stage13Settings:
             # Dispatch counts stay as a runaway backstop; the character quotas below are what authors meet.
             visitor_provider_attempts=_positive_int(os.environ.get("VISITOR_PROVIDER_ATTEMPTS_24H"), 60, minimum=1, maximum=10000),
             registered_provider_attempts=_positive_int(os.environ.get("REGISTERED_PROVIDER_ATTEMPTS_24H"), 3000, minimum=1, maximum=100000),
-            registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 60_000, minimum=1_000, maximum=10_000_000),
+            registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 100_000, minimum=1_000, maximum=10_000_000),
             visitor_check_chars=_positive_int(os.environ.get("VISITOR_CHECK_CHARS"), 3_000, minimum=500, maximum=100_000),
             registered_imports=_positive_int(os.environ.get("REGISTERED_IMPORTS_24H"), 1, minimum=1, maximum=100),
             visitor_assistant_tasks=_positive_int(os.environ.get("VISITOR_ASSISTANT_TASKS_24H"), 3, minimum=1, maximum=1000),
