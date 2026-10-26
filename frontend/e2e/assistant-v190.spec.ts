@@ -27,21 +27,21 @@ test.describe("助手输入框：自动判断用法", () => {
     await openAssistantTab(page);
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);
     await expect(thread(page).getByRole("menuitemradio", { name: /^自动/ })).toHaveAttribute("aria-checked", "true");
     await page.keyboard.press("Escape");
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
     await expect(modeButton(page, "自动")).toBeVisible();
     await modeButton(page, "自动").click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
     await openTab(visitor, await sampleWorkId(visitor), "workspace");
     await openAssistantTab(visitor);
     await modeButton(visitor, "自动").click();
-    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料"]);
+    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料", "长任务"]);
     await visitor.close();
   });
 

@@ -141,7 +141,7 @@ test.describe("07f 输入框", () => {
     await expect(thread(page).locator(".a-chip").first()).toContainText("第");
     // 帮我改这一处 is not in the mode menu.
     await mode.click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     await shot(page, "07f-05-fix-chips", false);
     expect(id).toBeTruthy();
@@ -289,4 +289,20 @@ test.describe("07f 菜单", () => {
       for (const entry of await mode.getByRole("menuitemradio").all()) await entry.click({ trial: true });
     });
   }
+
+  test("33 中文输入法：选字结束后紧跟着的那一下 Enter 还是选字的，不发送（Safari 会这样送来）；过一会儿再按 Enter 才发送", async ({ page }) => {
+    await setup(page);
+    await openAssistantTab(page);
+    let sent = 0;
+    page.on("request", (request) => { if (request.method() === "POST" && /\/assistant\/(route|tasks)$/.test(new URL(request.url()).pathname)) sent += 1; });
+    await box(page).fill("罗盘现在在谁手里");
+    await box(page).dispatchEvent("compositionend", { data: "手里" });
+    await box(page).press("Enter");
+    await page.waitForTimeout(200);
+    expect(sent).toBe(0);
+    await expect(box(page)).toHaveValue("罗盘现在在谁手里");
+    await page.waitForTimeout(500);
+    await box(page).press("Enter");
+    await expect.poll(() => sent).toBeGreaterThan(0);
+  });
 });

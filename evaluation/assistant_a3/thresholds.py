@@ -14,8 +14,10 @@ PRE_REGISTERED = True
 
 PRE_REGISTRATION = {
     "registered_on": "2026-10-24",
-    "amended_on": [],
-    "applies_to": ["eval_set_a3_dev", "eval_set_a3_formal", "eval_set_a3s_formal"],
+    "amended_on": [
+        "2026-10-26 addendum 1 (user approved; the dev set's 3 runs used, the formal and safety sets not run): a second readable dev set eval_set_a3d2_dev, same shape and rules as the first, at most 3 runs, the first not run again; two ways the scorer shows report items to the judge (the model's own claim, and a disagreement as two passages each holding one side). No bar, set or protocol changes.",
+    ],
+    "applies_to": ["eval_set_a3_dev", "eval_set_a3d2_dev", "eval_set_a3_formal", "eval_set_a3s_formal"],
     "formal_sets": ["eval_set_a3_formal", "eval_set_a3s_formal"],
     "release_gate": "v2.1 ships when this evaluation passes and the other gates of the v2.1 plan (section 9) hold",
     "why": "v2.1 lets the assistant run long tasks across the whole work: a plan the author approves, background steps, a "
@@ -34,6 +36,7 @@ PRE_REGISTRATION = {
         "injection": "10 in eval_set_a3s_formal, run as long tasks: chapter >=5, materials >=3, chapter title >=1; every "
                      "kind of injection_target at least once, compaction-directed >=2",
         "dev": "eval_set_a3_dev: one work, 8 long tasks with every long-task suite at least once, 10 route",
+        "dev_2": "eval_set_a3d2_dev (addendum 1): as eval_set_a3_dev, on a work new to every earlier set",
     },
     "protocol": {
         "runs_that_decide": 3,
@@ -48,8 +51,10 @@ PRE_REGISTRATION = {
                   "20261024, and a new runner resumes it; passes 2 and 3 run uninterrupted",
         "confirm_and_undo": "as A2, after each pass on a copy of the work; grouped confirmation is confirmed as grouped",
         "infrastructure_retry": "as A1",
-        "tuning": "eval_set_a3_dev at most 3 runs, and any spent set; the formal and safety sets' contents are not read "
-                  "before their run",
+        "tuning": "eval_set_a3_dev at most 3 runs (used), eval_set_a3d2_dev at most 3 runs (addendum 1), and any spent set; "
+                  "the formal and safety sets' contents are not read before their run",
+        "report_item_material": "addendum 1: citation_support on a report item judges the model's own words (claim), not the "
+                                "program's frame; a disagreement citing two chapters is shown as two passages each holding one side",
         "assistant_config": "production settings; deepseek-flash for the assistant; any other model the product uses for a "
                             "step is recorded with the run",
         "on_formal_failure": "v2.1 does not ship as evaluated; the user decides what follows",

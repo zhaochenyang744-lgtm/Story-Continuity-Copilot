@@ -94,7 +94,7 @@ class Stage13Settings:
     require_recovery_email: bool = False
     test_mode: bool = False
     # Character quotas (v1.6.0): what an author can understand and predict, unlike dispatch counts.
-    registered_check_chars: int = 60_000
+    registered_check_chars: int = 100_000
     visitor_check_chars: int = 3_000
     registered_imports: int = 1
     # v1.8.0 assistant: visitors get their own count, and an assistant task reserves its own ceiling.
@@ -253,7 +253,7 @@ class Stage13Settings:
             # Dispatch counts stay as a runaway backstop; the character quotas below are what authors meet.
             visitor_provider_attempts=_positive_int(os.environ.get("VISITOR_PROVIDER_ATTEMPTS_24H"), 60, minimum=1, maximum=10000),
             registered_provider_attempts=_positive_int(os.environ.get("REGISTERED_PROVIDER_ATTEMPTS_24H"), 3000, minimum=1, maximum=100000),
-            registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 60_000, minimum=1_000, maximum=10_000_000),
+            registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 100_000, minimum=1_000, maximum=10_000_000),
             visitor_check_chars=_positive_int(os.environ.get("VISITOR_CHECK_CHARS"), 3_000, minimum=500, maximum=100_000),
             registered_imports=_positive_int(os.environ.get("REGISTERED_IMPORTS_24H"), 1, minimum=1, maximum=100),
             visitor_assistant_tasks=_positive_int(os.environ.get("VISITOR_ASSISTANT_TASKS_24H"), 3, minimum=1, maximum=1000),
@@ -887,6 +887,32 @@ class Stage13Service:
             cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
             self._spend_characters(c, user_id, project_id, task_id, False, "check", characters, cutoff, reservation_id + "-x1")
             c.execute("UPDATE assistant_tasks SET chars_charged=chars_charged+? WHERE id=?", (characters, task_id))
+
+    # -- long tasks (v2.1 B): the characters a plan will read are spent when the author starts it, one row per task, and
+    # settled to what was read when it ends; the reservation's ceiling is raised to the author's ceiling for the task.
+    def spend_long_task_characters(self, c: Any, user_id: str, project_id: str, task_id: str, reservation_id: str, characters: int) -> None:
+        """Spend the characters a long task's plan reads, inside the caller's transaction; a quota too small refuses here."""
+        if self._is_sample(c, project_id) or characters <= 0:
+            return
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        self._spend_characters(c, user_id, project_id, task_id, False, "check", characters, cutoff, reservation_id + "-read")
+
+    def settle_long_task_characters(self, c: Any, reservation_id: str, characters: int) -> None:
+        """What a long task really read stays charged; the rest of what its plan reserved is given back."""
+        c.execute("UPDATE v2_character_usage SET characters=MIN(characters,?) WHERE id=?", (max(0, int(characters)), f"chars-{reservation_id}-read"))
+
+    def raise_reservation(self, c: Any, user_id: str, reservation_id: str, microunits: int) -> None:
+        """Raise a reservation's ceiling (a long task's ceiling set by the author), within the day's budget."""
+        actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
+        budget = self.settings.visitor_budget_cny if actor and actor["account_type"] == "visitor" else self.settings.registered_budget_cny
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        current = c.execute("SELECT reserved_microunits FROM v2_usage_reservations WHERE id=? AND user_id=?", (reservation_id, user_id)).fetchone()
+        if current is None:
+            raise DomainError("usage_context_invalid", 503)
+        used = c.execute("SELECT COALESCE(SUM(reserved_microunits),0) FROM v2_usage_reservations WHERE user_id=? AND created_at>?", (user_id, cutoff)).fetchone()[0]
+        if used - current["reserved_microunits"] + microunits > int(round(budget * 1_000_000)):
+            raise DomainError("server_budget_exceeded", 429, True)
+        c.execute("UPDATE v2_usage_reservations SET reserved_microunits=? WHERE id=?", (max(current["reserved_microunits"], microunits), reservation_id))
 
     def _spend_characters(self, c: Any, user_id: str, project_id: str | None, run_id: str | None, visitor: bool,
                           kind: str, characters: int, cutoff: str, reservation_id: str) -> None:

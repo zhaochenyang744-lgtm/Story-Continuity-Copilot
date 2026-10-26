@@ -129,6 +129,44 @@ class CitationTests(AssistantCase):
         self.assertEqual(self.usage()["check_chars_used"], 0)
         self.assertEqual(len(self.rows("SELECT * FROM v2_usage_reservations WHERE workflow_kind='assistant_task'")), 1)  # the workflow still counts
 
+    def test_the_rule_that_failed_is_kept_as_a_code_with_its_time_and_never_as_the_sentence(self):
+        task = self.run_ask(
+            turn(call("read_chapter", chapter_number=9)),
+            turn(answer_call("answered", [("没有出处的话。", ["R99"])])),
+            cite(9))
+        self.assertEqual(task["status"], "completed")
+        steps = self.rows("SELECT kind,elapsed_ms,diagnostics_json FROM assistant_steps WHERE task_id=? ORDER BY ordinal", task["id"])
+        by_kind = {step["kind"]: step for step in steps}
+        self.assertEqual(json.loads(by_kind["repair"]["diagnostics_json"]), {"problem_codes": ["ref_unknown"], "repairs": 1, "dropped": 0, "dropped_codes": {}})
+        self.assertEqual(json.loads(by_kind["answer"]["diagnostics_json"]), {"problem_codes": [], "repairs": 1, "dropped": 0, "dropped_codes": {}})
+        self.assertIsNone(by_kind["tool"]["diagnostics_json"])
+        self.assertTrue(all(isinstance(step["elapsed_ms"], int) and step["elapsed_ms"] >= 0 for step in steps if step["kind"] != "say"))
+        self.assertTrue(all(step["diagnostics_json"].isascii() for step in steps if step["diagnostics_json"]))  # codes and numbers, no sentence
+        # the model still gets the sentence
+        self.assertIn("引用了不存在的编号 R99", [m for m in self.provider.calls[2]["messages"] if m["role"] == "tool"][-1]["content"])
+
+    def test_a_task_given_up_after_two_bad_answers_keeps_the_rules_of_the_last(self):
+        task = self.run_ask(
+            turn(call("read_chapter", chapter_number=9)),
+            turn(answer_call("answered", [("甲。", ["R99"])])),
+            turn(answer_call("answered", [("乙。", [])])))
+        self.assertEqual(task["status"], "failed")
+        repairs = self.rows("SELECT diagnostics_json FROM assistant_steps WHERE task_id=? AND kind='repair' ORDER BY ordinal", task["id"])
+        self.assertEqual([json.loads(row["diagnostics_json"])["problem_codes"] for row in repairs], [["ref_unknown"], ["sentence_no_ref"]])
+
+    def test_an_item_left_out_once_the_repair_is_spent_is_counted_by_the_rule_it_broke(self):
+        def refusing(provider, messages):
+            ref = ref_of_chapter(messages, 9)
+            return turn(answer_call("answered", [("苏岑把罗盘交给了温岚保管。", [ref]), ("我无法确定后面发生的事。", [ref])]))
+        task = self.run_ask(
+            turn(call("read_chapter", chapter_number=9)),
+            turn(answer_call("answered", [("没有出处的话。", ["R99"])])),
+            refusing)
+        self.assertEqual(task["status"], "completed")
+        self.assertEqual(len(task["answer"]["sentences"]), 1)
+        [answer] = self.rows("SELECT diagnostics_json FROM assistant_steps WHERE task_id=? AND kind='answer'", task["id"])
+        self.assertEqual(json.loads(answer["diagnostics_json"]), {"problem_codes": [], "repairs": 1, "dropped": 1, "dropped_codes": {"refusal_cited": 1}})
+
     def test_inconsistent_needs_two_chapters_or_a_chapter_and_a_fact(self):
         task = self.run_ask(
             turn(call("read_chapter", chapter_number=9), call("read_chapter", chapter_number=10)),

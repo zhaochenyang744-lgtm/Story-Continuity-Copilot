@@ -116,10 +116,38 @@ function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSour
 
 /** What the program writes as the first line of an answer that found nothing; the model's own note goes under it. */
 export const NOT_FOUND_TEXT = "没有找到问题问到的内容。";
-/** A sentence whose label (the words the page sets in bold) really is in it. */
-const labelled = (sentence: AssistantSentence) => Boolean(sentence.label) && sentence.text.includes(sentence.label!);
 /** Points (one layer) when this many of the sentences after the lead name what they are about; otherwise a paragraph. */
 export const POINTS_FROM = 3;
+
+/** A sentence whose label (the words the page sets in bold) really is in it. */
+export const labelled = (sentence: AssistantSentence) => Boolean(sentence.label) && sentence.text.includes(sentence.label!);
+
+/** One sentence as it is laid out: its words (the label in bold when `bold`), then one mark that names its sources. `refs` is the task's cited
+    refs in order (a mark's number is its place in it); `order` staggers the fade-in of a sentence that has just arrived. */
+export function SentenceText({ task, sentence, bold, order, refs, locate }: {
+  task: AssistantTask; sentence: AssistantSentence; bold: boolean; order: number; refs: string[]; locate: (source: AssistantSource) => void;
+}) {
+  const number = (ref: string) => refs.indexOf(ref) + 1;
+  const marks = sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => ({ n: number(ref), source: task.sources[ref], sourceId: `a-src-${task.id}-${number(ref)}` }));
+  const at = bold && labelled(sentence) ? sentence.text.indexOf(sentence.label!) : -1;
+  // The words as pieces (the label in bold), and the last two characters cut off them: they travel with the mark, so a mark never stands alone on a line.
+  const pieces = at < 0 ? [{ text: sentence.text, bold: false }] : [{ text: sentence.text.slice(0, at), bold: false }, { text: sentence.label!, bold: true }, { text: sentence.text.slice(at + sentence.label!.length), bold: false }];
+  let tail = "";
+  if (marks.length > 0) {
+    for (let at2 = pieces.length - 1; at2 >= 0 && Array.from(tail).length < 2; at2 -= 1) {
+      const chars = Array.from(pieces[at2].text);
+      const take = Math.min(chars.length, 2 - Array.from(tail).length);
+      tail = chars.slice(chars.length - take).join("") + tail;
+      pieces[at2] = { ...pieces[at2], text: chars.slice(0, chars.length - take).join("") };
+    }
+  }
+  return (
+    <span className="a-s" style={{ "--i": order } as CSSProperties}>
+      {pieces.map((piece, index) => (piece.text ? (piece.bold ? <b key={index}>{piece.text}</b> : <Fragment key={index}>{piece.text}</Fragment>) : null))}
+      {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} /></span>}
+    </span>
+  );
+}
 
 /** The answer: an opening line if the model gave one, then the sentences as points (each with its label in bold) when enough of them have a label,
     otherwise as one paragraph; a mark after each sentence names the sources, and the model's note comes last. An answer that found nothing starts with
@@ -129,32 +157,11 @@ export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantT
   if (!answer) return null;
   if (answer.status === "out_of_scope") return <p className="a-fixed" data-testid="out-of-scope">{task.out_of_scope_text || OUT_OF_SCOPE_TEXT}</p>;
   const refs = citedRefs(task);
-  const number = (ref: string) => refs.indexOf(ref) + 1;
   const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
   const rest = lead ? answer.sentences.slice(1) : answer.sentences;
   const points = rest.filter(labelled).length >= POINTS_FROM;
   let order = 0;
-  const sentenceOf = (sentence: AssistantSentence, bold: boolean) => {
-    const marks = sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => ({ n: number(ref), source: task.sources[ref], sourceId: `a-src-${task.id}-${number(ref)}` }));
-    const at = bold && labelled(sentence) ? sentence.text.indexOf(sentence.label!) : -1;
-    // The words as pieces (the label in bold), and the last two characters cut off them: they travel with the mark, so a mark never stands alone on a line.
-    const pieces = at < 0 ? [{ text: sentence.text, bold: false }] : [{ text: sentence.text.slice(0, at), bold: false }, { text: sentence.label!, bold: true }, { text: sentence.text.slice(at + sentence.label!.length), bold: false }];
-    let tail = "";
-    if (marks.length > 0) {
-      for (let at2 = pieces.length - 1; at2 >= 0 && Array.from(tail).length < 2; at2 -= 1) {
-        const chars = Array.from(pieces[at2].text);
-        const take = Math.min(chars.length, 2 - Array.from(tail).length);
-        tail = chars.slice(chars.length - take).join("") + tail;
-        pieces[at2] = { ...pieces[at2], text: chars.slice(0, chars.length - take).join("") };
-      }
-    }
-    return (
-      <span className="a-s" style={{ "--i": order++ } as CSSProperties}>
-        {pieces.map((piece, index) => (piece.text ? (piece.bold ? <b key={index}>{piece.text}</b> : <Fragment key={index}>{piece.text}</Fragment>) : null))}
-        {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} /></span>}
-      </span>
-    );
-  };
+  const sentenceOf = (sentence: AssistantSentence, bold: boolean) => <SentenceText task={task} sentence={sentence} bold={bold} order={order++} refs={refs} locate={locate} />;
   return (
     <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={points ? "points" : "paragraph"}>
       {answer.status === "not_found" && <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>}

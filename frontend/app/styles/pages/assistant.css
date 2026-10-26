@@ -68,7 +68,7 @@
 .a-fold { display: inline-flex; align-items: center; gap: 4px; min-width: 0; max-width: 100%; padding: 0; border: 0; background: none; color: var(--c-faint-text); font-size: var(--fs-11); text-align: left; cursor: pointer; }
 .a-fold.static { cursor: default; }
 button.a-fold:hover { color: var(--c-ink); }
-.a-fold .tally { white-space: nowrap; }
+.a-fold .tally { white-space: nowrap; font-variant-numeric: tabular-nums; }  /* a long task's step, cost and minutes change every two seconds: the line does not shift */
 .a-fold-mark { flex: none; transition: transform var(--dur-fast) var(--ease); }
 .a-fold-mark.open { transform: rotate(90deg); }
 .a-process .menu > summary { min-height: 20px; padding: 0 var(--s-2); font-size: var(--fs-12); letter-spacing: 2px; }
@@ -114,7 +114,7 @@ button.a-fold:hover { color: var(--c-ink); }
 .a-limit { color: var(--c-muted); font-size: var(--fs-12); }
 
 /* The answer and where it comes from. Its sentences fade in one after another once it has passed its checks. */
-.a-answer { display: grid; gap: var(--s-2); color: var(--c-ink); font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; }
+.a-answer { display: grid; gap: var(--s-2); color: var(--c-ink); font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }  /* fewer lines ending on one character; ignored where unsupported */
 .a-answer p { margin: 0; }
 .a-answer.a-fade .a-s { animation: a-appear .45s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 120ms); }
 .a-answer b { margin-right: .4em; font-weight: 700; }
@@ -124,7 +124,7 @@ button.a-fold:hover { color: var(--c-ink); }
 .a-points { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .a-points li { position: relative; padding-left: 14px; }
 .a-points li::before { content: ""; position: absolute; left: 2px; top: .8em; width: 4px; height: 4px; border-radius: 50%; background: var(--c-muted); }
-.a-answer-note { color: var(--c-muted); font-size: var(--fs-13); line-height: 1.7; }
+.a-answer-note { color: var(--c-muted); font-size: var(--fs-13); line-height: 1.7; text-wrap: pretty; }
 /* What the answer rests on and the row of actions: they appear after the last sentence has begun to (--n sentences x 0.12 s). */
 .a-rest { display: grid; gap: 8px; }
 .a-rest:empty { display: none; }
@@ -299,6 +299,64 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 @keyframes a-spin { to { transform: rotate(360deg); } }
 /* The ledger on the materials page keeps both times of an entry: when it was written, and when it was taken back. */
 .ledger-time .ledger-at { display: block; }
+
+/* ── 长任务 (v2.1 B) ──
+   The plan card and the question card are the change card's own container (one frame, 1px line, the same corner): the cards that change data or need
+   the author all look alike. The progress is the line above an answer with a thin bar under it. The report is the answer's own layout (points, bold
+   labels, one mark each) under a bold section title. */
+.a-card { display: grid; min-width: 0; overflow: hidden; border: 1px solid var(--c-line); border-radius: var(--r-md); background: var(--c-surface); }
+.a-card-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; padding: 10px 12px; border-bottom: 1px solid var(--c-line-soft); }
+.a-card-head strong { font-size: var(--fs-13); }
+.a-card-head span { color: var(--c-muted); font-size: var(--fs-11); }
+.a-card-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 10px 12px; }
+.a-long-steps { display: grid; margin: 0; padding: 4px 0; list-style: none; }
+.a-long-steps li { display: grid; grid-template-columns: 18px auto minmax(0, 1fr); gap: 4px 8px; padding: 5px 12px; font-size: var(--fs-13); line-height: 1.6; }
+.a-long-steps .n { color: var(--c-faint-text); font-family: var(--font-mono); font-size: var(--fs-12); }
+.a-long-steps .where { color: var(--c-ink); white-space: nowrap; }
+.a-long-steps .what { color: var(--c-muted); font-size: var(--fs-12); overflow-wrap: anywhere; }
+.a-long-est { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; padding: 8px 12px 2px; border-top: 1px solid var(--c-line-soft); color: var(--c-muted); font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+.a-long-est .a-link { padding: 0 var(--s-1); }
+.a-long-quota { margin: 0; padding: 0 12px 8px; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
+.a-long-quota:empty { display: none; }
+.a-long-quota.warn { color: var(--c-red-text); }
+.a-long-form { display: grid; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--c-line-soft); background: var(--c-ground); }
+.a-long-form .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.a-long-form .row.end { justify-content: flex-end; }
+.a-long-form label { display: inline-flex; align-items: center; gap: 6px; color: var(--c-ink-2); font-size: var(--fs-13); white-space: nowrap; }
+.a-long-form .hint, .a-long-choice .hint { margin: 0; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
+.a-field { width: 4.6em; min-height: 32px; padding: 0 8px; font-size: var(--fs-13); text-align: center; }
+.a-select { width: auto; min-height: 32px; padding: 0 30px 0 10px; font-size: var(--fs-13); }
+.a-long-problem { margin: 0; padding: 0 12px 8px; color: var(--c-red-text); }
+/* Progress: the process line, a thin bar, 停止 at the right. */
+.a-long-progress { display: grid; gap: 6px; }
+.a-long-progress .a-fold.static { align-items: center; }
+.a-long-bar { height: 3px; overflow: hidden; border-radius: 2px; background: var(--c-sunken); }
+.a-long-bar i { display: block; height: 100%; background: var(--c-blue); transition: width .6s var(--ease); }
+/* The question: the same card with a blue edge. */
+.a-long-ask { box-shadow: inset 3px 0 0 var(--c-blue); }
+.a-long-q { margin: 0; padding: 10px 12px 0; font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; }
+.a-long-choice { display: grid; gap: 6px; padding: 10px 12px; }
+.a-long-choice.row { display: flex; flex-wrap: wrap; align-items: center; }
+.a-long-raise { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.a-long-option { display: grid; gap: 2px; width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: var(--r-sm); background: transparent; color: var(--c-ink); font-size: var(--fs-13); line-height: 1.6; text-align: left; cursor: pointer; }
+.a-long-option small { color: var(--c-faint-text); font-size: var(--fs-11); line-height: 1.6; overflow-wrap: anywhere; }
+.a-long-option:hover:not(:disabled) { border-color: var(--c-blue); background: var(--c-blue-tint); }
+.a-long-option:disabled { color: var(--c-muted); cursor: not-allowed; }
+.a-block.a-long-failed { margin: 0; }
+/* The report: the line that ends the work, then sections. */
+.a-long-end { margin: 6px 0 2px; }
+.a-long-report { display: grid; gap: 8px; }
+.a-long-section { display: grid; gap: 6px; margin-top: var(--s-2); }
+.a-long-section h4 { margin: 0; font-size: var(--fs-13); font-weight: 700; }
+.a-long-groups { display: grid; gap: 10px; }
+.a-long-groups .a-chg-card { margin: 0; }
+.a-chg-card[data-risk="high"] { box-shadow: inset 3px 0 0 var(--c-red-text); }
+/* The dot on the top bar's 助手 button: the long task waits for an answer or is over. */
+.topbar-assistant { position: relative; }
+.topbar-dot { position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c-red-text); box-shadow: 0 0 0 2px var(--c-surface); }
+.topbar-assistant:hover .topbar-dot, .topbar-assistant[aria-expanded="true"] .topbar-dot { box-shadow: 0 0 0 2px var(--c-blue); }
+.cx-menu button[aria-disabled="true"] { color: var(--c-muted); cursor: not-allowed; }
+.cx-menu button[aria-disabled="true"]:hover { background: none; }
 
 /* 对照计划, folded into the first block of the column. */
 .a-plan { display: grid; gap: var(--s-2); padding-bottom: var(--s-4); border-bottom: 1px solid var(--c-line); }
@@ -493,10 +551,18 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
   .a-chg-foot .a-btn { min-height: 40px; }
   .a-process .menu > summary { min-height: 40px; min-width: 40px; justify-content: center; }
   .a-sources-fold, .a-basis-fold, .a-where { min-height: 40px; }
+  /* 长任务: every button, field and link of the cards is a finger's size. */
+  .a-card-foot .a-btn, .a-long-form .a-btn, .a-long-choice .a-btn, .a-long-option { min-height: 40px; }
+  .a-long-est .a-link, .a-long-form .a-link, .a-long-progress .a-link { min-width: 40px; min-height: 40px; }
+  .a-field, .a-select { min-height: 40px; }
+  .a-long-steps li { grid-template-columns: 18px minmax(0, 1fr); }
+  .a-long-steps .what { grid-column: 2; }
+  .cx-menu button[role="menuitemradio"] { min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .a-say, .a-act, .a-answer.a-fade .a-s, .a-selpop, .a-rest.a-fade, .a-rest.a-fade .a-cost-line, .a-ask.rise, .a-drop, .a-proc-wrap.unfolding { animation: none; }
+  .a-long-bar i { transition: none; }
   .a-three i { animation: none; opacity: 1; transform: none; }
   .a-three i:nth-child(2), .a-three i:nth-child(3) { opacity: .45; }
   .a-spin { animation: none; }

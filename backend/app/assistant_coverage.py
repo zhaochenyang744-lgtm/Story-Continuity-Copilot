@@ -12,6 +12,8 @@ import json
 import re
 from typing import Any
 
+from .problem_codes import Problem
+
 MAX_RANGE = 1000  # a range written as 第1至99999章 is not expanded further than this
 
 _NUM = r"(?:[0-9]+|[〇零一二两三四五六七八九十百]+)"
@@ -117,7 +119,7 @@ def note_problems(note: str | None, steps: list[dict[str, Any]]) -> list[str]:
     for clause in _clauses(note):
         missing = _clause_missing(clause, looked)
         if missing:
-            problems.append(f"note 里的「{clause[:40]}」和实际不符：{'；'.join(missing)}。请去掉这一处说法，或者先补查再写")
+            problems.append(Problem("note_untrue", f"note 里的「{clause[:40]}」和实际不符：{'；'.join(missing)}。请去掉这一处说法，或者先补查再写"))
     return problems
 
 

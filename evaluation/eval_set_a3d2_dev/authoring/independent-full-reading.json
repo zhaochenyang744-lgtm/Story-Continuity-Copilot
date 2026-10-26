@@ -1,0 +1,120 @@
+{
+  "status": "completed",
+  "initial_status": "NEEDS_REVISION",
+  "initial_source_sha256": "1f5ac0ecd676e11c9faff4da4c81c4310dbac82695d4c1a17d399c114c2448b0",
+  "source_sha256": "3f32a399134c04b07e3abac5f27218828f9ac94b87dc6ca4c1d163bff0e73ef0",
+  "unresolved_findings": 0,
+  "chapters_read": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+  "material_hashes": {
+    "materials/w01-facts.json": "7a8b67d68473ad811c700f29b82463fc5dcdd89a1976d39294035bce854266c4",
+    "materials/w01-foreshadows.json": "d1ae1b6819f530c1eefcee54849076be594114427460a1c02bceab859a0f85dc"
+  },
+  "reviewer_role": "independent_full_reader_not_involved_in_writing",
+  "read_batches": [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24], [25, 26], [27, 28], [29, 30]],
+  "material_support_checked": {"facts": 41, "foreshadows": 9},
+  "initial_material_hashes": {
+    "materials/w01-facts.json": "a2979922393928e6f9687be3f955f476b6ae579f3d2ee1e588edf72873ce72ab",
+    "materials/w01-foreshadows.json": "d1ae1b6819f530c1eefcee54849076be594114427460a1c02bceab859a0f85dc"
+  },
+  "final_review": {
+    "status": "completed",
+    "revision_chapters_reread": [2, 19, 24, 25, 27, 29],
+    "material_support_chapters_reread": [4, 19],
+    "chapters_reread": [2, 4, 19, 24, 25, 27, 29],
+    "reread_batches": [[2, 4], [19, 24], [25, 27], [29]],
+    "remaining_chapters_reread": false,
+    "basis": "初次完整通读30章；修订后全文复读6个受影响章节，另全文复读第4章核对事实扩充，没有声称重读其余章节。",
+    "new_findings": [],
+    "protection_and_custody_review": "第2章推车初次领用、第19章推车巫转傅、第24章坡板原刻四线及匡保管、第25章周六预约原句、第27章便条署名且分享未定、第29章试配箱邵转应及开放线均保留；本轮修订未引入额外交接或新问题。",
+    "material_expansions": [
+      {
+        "fact": 26,
+        "chapter": 4,
+        "status": "supported",
+        "quote": "嵇沐乔随后向缪见隅确认，站里不强求租用人接受拍摄，愿意谈话也不等于愿意出现在镜头里。",
+        "reason": "同时支持拍摄自愿和同意谈话不等于同意入镜两部分，未从正文外添加条件。"
+      },
+      {
+        "fact": 33,
+        "chapter": 19,
+        "status": "supported",
+        "quote": "应时霏向众人讲明，试办陈列不代表厂家推荐；那张供应方图片，也不能替来的人决定怎样才适合自己的生活。",
+        "reason": "同时支持陈列不等于厂家推荐和供应方图片不能代替来客判断适合用法两部分。"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "FR-01",
+      "chapters": [2],
+      "source_line": 109,
+      "quote": "匡泽絮站在门边，说看过和看懂也隔着一段距离。他没有再改椅子的朝向，而是让两个人交换座位。",
+      "issue": "中央设定规定匡泽絮使用女性代词；此处紧随姓名的“他”明确指匡泽絮，与设定及后文女性指代不一致。",
+      "severity": "low",
+      "recommendation": "将“他没有再改”改为“她没有再改”，保留交换座位事件。",
+      "status": "closed",
+      "final_quote": "匡泽絮站在门边，说看过和看懂也隔着一段距离。她没有再改椅子的朝向，而是让两个人交换座位。",
+      "final_review_reason": "全文复读第2章，女性代词已修正，交换座位事件、推车领用及伏笔未变，未发现新问题。"
+    },
+    {
+      "id": "FR-02",
+      "chapters": [19],
+      "source_line": 1059,
+      "quote": "傅语岑拿出两张没有印字的废纸，请她们各自折一个觉得容易辨认的开口。缪见隅折得方整，连照棠留了一个宽边，傅语岑自己那张则斜出一小角。",
+      "issue": "被请各自折纸的两人是缪见隅与连照棠，缪见隅为男性，“她们”与明确列出的对象不符。",
+      "severity": "low",
+      "recommendation": "将“请她们各自折”改为“请他们各自折”或直接写“请缪见隅和连照棠各自折”。",
+      "status": "closed",
+      "final_quote": "傅语岑拿出两张没有印字的废纸，请他们各自折一个觉得容易辨认的开口。",
+      "final_review_reason": "全文复读第19章，“他们”与缪见隅和连照棠对应；推车巫转傅、回收边界仍在，未发现新问题。"
+    },
+    {
+      "id": "FR-03",
+      "chapters": [24],
+      "source_line": 1333,
+      "quote": "一张圈的是看不清，一张圈的是看得太累，原来并不是只能在两种眼色里选一种。",
+      "issue": "上下文讨论两种纸样背景的深浅和文字辨识，“两种眼色”是用词笔误。",
+      "severity": "low",
+      "recommendation": "将“两种眼色”改为“两种颜色”。",
+      "status": "closed",
+      "final_quote": "一张圈的是看不清，一张圈的是看得太累，原来并不是只能在两种颜色里选一种。",
+      "final_review_reason": "全文复读第24章，“颜色”符合纸样讨论；坡板原厂四道竖线及匡保管不变，未发现新问题。"
+    },
+    {
+      "id": "FR-04",
+      "chapters": [25],
+      "source_line": 1349,
+      "quote": "傅语岑走过来帮他看，手里只有普通纸夹，没有碰三件具名物件。",
+      "issue": "“三件具名物件”以设定表或评测审计视角给物件分组，泄露写作约束，脱离当前人物松纸夹的故事动作。",
+      "severity": "medium",
+      "recommendation": "删去“没有碰三件具名物件”，让叙述直接衔接松开纸夹；不要新增三件物品的搬动或保管交接。",
+      "status": "closed",
+      "final_quote": "傅语岑走过来帮他看，手里只有普通纸夹。她松开一只纸夹，折角便自然落下，那句话露出来，却又挡住了下方另一行。",
+      "final_review_reason": "全文复读第25章，元叙述已删除，纸夹动作连贯；排演与正式展示区分、周六最初预约原句仍在，没有新增保管交接。"
+    },
+    {
+      "id": "FR-05",
+      "chapters": [27],
+      "source_line": 1447,
+      "quote": "匡泽絮陪他过去，选了今天不挡门的一小块空处，没有搬动任何具名物件。",
+      "issue": "“具名物件”属于中央设定与审计分类，不是此处门边试放说明的自然叙述。",
+      "severity": "medium",
+      "recommendation": "删去“没有搬动任何具名物件”，或仅描述手持说明纸到门边的动作；保管链不变。",
+      "status": "closed",
+      "final_quote": "匡泽絮陪他过去，选了今天不挡门的一小块空处。",
+      "final_review_reason": "全文复读第27章，元叙述已删除且门边说明场景连贯；便条署名明收、公开分享仍未定，没有新增保管交接。"
+    },
+    {
+      "id": "FR-06",
+      "chapters": [29],
+      "source_line": 1555,
+      "quote": "门外一阵脚步，滕书蔚回来时手上提着普通空袋，没有带追踪物件。",
+      "issue": "“追踪物件”直接使用评测考点分类，属于正文元叙述。",
+      "severity": "medium",
+      "recommendation": "删去“没有带追踪物件”，保留滕书蔚提空袋回来及后续指出图牌问题的动作。",
+      "status": "closed",
+      "final_quote": "门外一阵脚步，滕书蔚回来时手上提着普通空袋。",
+      "final_review_reason": "全文复读第29章，评测术语已删除，空袋与图牌事件衔接自然；试配箱邵转应及各开放线仍在，未发现新问题。"
+    }
+  ]
+}

@@ -243,7 +243,9 @@ class ToolTests(AssistantCase):
 
 class CleanUpTests(AssistantCase):
     TABLES = ("assistant_tasks", "assistant_steps", "assistant_sources", "assistant_proposals", "assistant_feedback",
-              "assistant_changes", "assistant_change_events")
+              "assistant_changes", "assistant_change_events",
+              # v2.1 long tasks: the plan, steps, questions and booked calls go with the work too.
+              "assistant_long_plans", "assistant_long_steps", "assistant_long_questions", "assistant_long_calls")
 
     def seed_proposal(self):
         task_id = self.rows("SELECT id FROM assistant_tasks")[0]["id"]
@@ -260,6 +262,13 @@ class CleanUpTests(AssistantCase):
                                                          "applied", "2026-10-10T00:00:00+00:00"))
             c.execute("INSERT INTO assistant_change_events(id,change_id,project_id,event,actor_user_id,detail_json,created_at) VALUES(?,?,?,?,?,?,?)",
                       (f"achevent-{uuid.uuid4()}", change_id, project_id, "applied", self.user_id, "{}", "2026-10-10T00:00:00+00:00"))
+            # v2.1: a long task's plan, step, question and booked call (rows only; the purge does not look at their content).
+            stamp = "2026-10-10T00:00:00+00:00"
+            c.execute("INSERT INTO assistant_long_plans(task_id,cap_cny,created_at) VALUES(?,?,?)", (task_id, 2.0, stamp))
+            c.execute("INSERT INTO assistant_long_steps(task_id,ordinal,spec_json,status) VALUES(?,?,?,?)", (task_id, 1, "{}", "done"))
+            c.execute("INSERT INTO assistant_long_questions(id,task_id,step,kind,body_json,asked_at) VALUES(?,?,?,?,?,?)",
+                      (f"alq-{uuid.uuid4()}", task_id, 1, "budget", "{}", stamp))
+            c.execute("INSERT INTO assistant_long_calls VALUES(?,?,?,?,?,?,?,?,?,?)", (task_id, 1, 1, 1, "loop", None, 10, 5, 0.01, stamp))
 
     def counts(self):
         return {table: self.rows(f"SELECT COUNT(*) n FROM {table}")[0]["n"] for table in self.TABLES}

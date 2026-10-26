@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "proper_name_candidates": 25,
+  "permitted_md_json_files": 523,
+  "proper_name_overlap": 0,
+  "overlaps": [],
+  "snapshot_sources": 29,
+  "snapshot_sources_live_hash_match": 29,
+  "snapshot_inputs": 716,
+  "excluded_sets": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_a25_formal",
+    "eval_set_a2s5_formal",
+    "eval_set_a3_formal",
+    "eval_set_a3s_formal",
+    "eval_set_v13_authoring"
+  ],
+  "long_paragraph_duplicates": [],
+  "authoring_meta_term_counts": {
+    "具名物件": 0,
+    "追踪物件": 0,
+    "考点": 0,
+    "题集": 0,
+    "起始资料": 0,
+    "标准答案": 1,
+    "主控": 0,
+    "金标": 0
+  },
+  "canonical_source_sha256": "3f32a399134c04b07e3abac5f27218828f9ac94b87dc6ca4c1d163bff0e73ef0",
+  "authoring_meta_review": [
+    {
+      "term": "标准答案",
+      "chapter": 25,
+      "classification": "ordinary metaphor, not evaluation metadata",
+      "quote": "没有将一次找到的办法当成所有材料的标准答案。",
+      "actionable": false
+    }
+  ],
+  "actionable_authoring_meta_hits": 0
+}

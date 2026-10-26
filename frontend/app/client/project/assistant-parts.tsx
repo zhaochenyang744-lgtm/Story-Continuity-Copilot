@@ -19,9 +19,16 @@ export const FOLLOW_UP_LIMIT_TEXT = "这一串已经追问两次了，可以问�
 export const TASK_CHARS = 500;
 
 export const active = (task: AssistantTask) => task.status === "queued" || task.status === "running";
+/** A long task (v2.1 B) the program is working on by itself: the plan is being made, or the steps are being taken. It is asked for every 2 seconds. */
+export const LONG_LIVE: AssistantTask["status"][] = ["planning", "long_queued", "long_running"];
+export const longLive = (task: AssistantTask) => task.kind === "long" && LONG_LIVE.includes(task.status);
+/** A long task that has come to a stop the author should see: it asks, or it is over. */
+export const longSettled = (status: string) => ["waiting_author", "completed", "stopped", "failed"].includes(status);
 export const isRecap = (answer: AssistantTask["answer"]): answer is RecapAnswer => Boolean(answer && "kind" in answer && answer.kind === "recap");
 /** The answer of an ask or a fix_issue task (a recap's answer has another shape). */
 export const sentencesOf = (task: AssistantTask): AssistantAnswer | null => (task.answer && !isRecap(task.answer) ? task.answer : null);
+/** Every sentence an answer holds: its own, then those of a long task's report sections, in the order they are shown. */
+export const allSentences = (answer: AssistantAnswer | null) => [...(answer?.sentences ?? []), ...Object.values(answer?.sections ?? {}).flat()];
 
 export const whereLabel = (source: AssistantSource) =>
   source.chapter_number != null ? chapterHeading(source.chapter_number, source.chapter_title ?? "") : SOURCE_KIND[source.kind] ?? "资料";
@@ -62,7 +69,7 @@ export function turnTime(iso: string, now = new Date()): string {
     passage the task turned up, cited or not, so a source only counts here when the answer's sentences name it and it is marked cited. */
 export function citedRefs(task: AssistantTask): string[] {
   const order: string[] = [];
-  for (const sentence of sentencesOf(task)?.sentences ?? []) for (const ref of sentence.refs) if (!order.includes(ref) && task.sources[ref] && task.sources[ref].cited !== false) order.push(ref);
+  for (const sentence of allSentences(sentencesOf(task))) for (const ref of sentence.refs) if (!order.includes(ref) && task.sources[ref] && task.sources[ref].cited !== false) order.push(ref);
   return order;
 }
 /** What a screen reader hears when a task has finished. */
@@ -101,11 +108,14 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
     case "assistant_edit_invalid": return "原来的问题已经不在了，直接重新提问吧。";
     case "assistant_task_not_completed": return "这个回答还没有结束。";
     case "provider_unavailable": return "助手暂时不可用，这次没有开始，也没有计字数。稍后再试。";
+    case "assistant_long_task_active": return "已经有一个长任务在做（或在等你确认计划），先处理它，再开新的。";
+    case "assistant_long_visitor_forbidden": return "访客不能用长任务，注册账号后可以用。";
+    case "assistant_long_no_chapters": return "这部作品还没有章节，长任务没有可读的内容。";
     default: return labelError(cause);
   }
 }
 
-const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法", change: "回答和改动" };
+const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法", change: "回答和改动", long: "报告" };
 
 /** What went wrong with a task that ended without an answer; "没有计字数" only when nothing was charged. */
 export function failureText(task: AssistantTask, visitor: boolean): { text: string; retry: boolean } {

@@ -1,0 +1,15 @@
+{
+  "input_sha256": "9c099984f7a2e4bcc03ab74af770fde971ba66fb8f58cab78edb8073a172981d",
+  "judgments": [
+    {"position": 1, "route": "ask", "reason": "询问一致性，但无可核正文选区。"},
+    {"position": 2, "route": "recap", "reason": "动笔前回顾前情与未落定事项。"},
+    {"position": 3, "route": "change", "reason": "明确只替换旧资料中的一项时间。"},
+    {"position": 4, "route": "long_task", "reason": "要求全书查齐交接并形成带出处的表。"},
+    {"position": 5, "route": "change", "reason": "指定结束一条已知悬念记录。"},
+    {"position": 6, "route": "check_passage", "reason": "写作页带正文选区并要求核一致性。"},
+    {"position": 7, "route": "ask", "reason": "明确只问核对做法，未授权执行。"},
+    {"position": 8, "route": "long_task", "reason": "要求通篇核查接手顺序并指出冲突。"},
+    {"position": 9, "route": "long_task", "reason": "明确创建全书核对任务并先审章次计划。"},
+    {"position": 10, "route": "long_task", "reason": "要求通读全书并按支线状态形成卡片。"}
+  ]
+}

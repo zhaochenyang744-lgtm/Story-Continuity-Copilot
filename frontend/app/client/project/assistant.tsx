@@ -5,8 +5,9 @@
 // advises; nothing here writes to the draft or the materials except through the editor, one change at a time,
 // when the author says so. The same AssistantThread is used in three places: the writing page's right
 // column (and its phone pane), and a drawer opened from the top bar on the other pages. A pop-up bar over
-// selected text brings a passage into a question. Five uses live in it: 问作品, 写前回顾, 帮我改这一处, 查前文矛盾 and 改资料 (v2.0: the
-// assistant proposes changes to the materials, which the author confirms); the box's
+// selected text brings a passage into a question. Six uses live in it: 问作品, 写前回顾, 帮我改这一处, 查前文矛盾, 改资料 (v2.0: the
+// assistant proposes changes to the materials, which the author confirms) and 长任务 (v2.1: a plan the author approves, steps taken in the
+// background, a report and cards to confirm); the box's
 // 自动 mode (the default) judges which one a sentence asks for, and the task it starts says so and can be changed.
 import {
   createContext,
@@ -31,7 +32,9 @@ import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistan
 import { ThreeSquares } from "./assistant-process";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
-import { active, isRecap, locateTarget, quotaReason, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, turnTime } from "./assistant-parts";
+import { LongView } from "./assistant-long";
+import { active, isRecap, locateTarget, longLive, quotaReason, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, turnTime } from "./assistant-parts";
+import { noteLong, seenLong } from "./long-watch";
 import { RecapView } from "./assistant-recap";
 import { CHECK_QUESTION, type NewTask, OutOfScopeNote, RecapElsewhereNote, RerouteContext, type RerouteControl, routeInput, taskFor, type Use, USE_LABEL, wantRecapOnArrival } from "./assistant-route";
 import { Starters, starterQuestions } from "./assistant-start";
@@ -78,6 +81,20 @@ const REFINE_PLACEHOLDER = "对改法有什么要求？比如：保留苏岑的�
 const RECAP_PLACEHOLDER = "不用写字，直接发送：回顾上一章停在哪、有哪些线还没收";
 const CHECK_PLACEHOLDER = "在正文里选中要查的一段";
 const CHANGE_PLACEHOLDER = "说要改资料里的什么：比如把第 12 章她左腕受伤记进事实";
+const LONG_PLACEHOLDER = "说一件跨很多章的事：比如那些还吊着的伏笔都替我过一遍";
+const LONG_VISITOR = "注册后可以用";
+/** Whether an element is on screen now (not hidden by its tab, not closed): the top bar's dot goes out once the author has looked at the assistant. */
+function useShown(target: { current: HTMLElement | null }) {
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const node = target.current;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    const watch = new IntersectionObserver((entries) => setShown(entries[entries.length - 1]?.isIntersecting ?? false));
+    watch.observe(node);
+    return () => watch.disconnect();
+  }, [target]);
+  return shown;
+}
 const PRIVACY_SEEN = "story-continuity:assistant-privacy-seen";
 
 /** A task is being followed while it runs, and while one of its changes is being rechecked. */
@@ -228,12 +245,61 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     return () => { live = false; window.clearTimeout(timer); };
   }, [watchedId, projectId, bridge]);
 
+  // A long task that is being worked on (the plan is made, or the steps are taken) is asked for every 2 seconds, until it stops to ask,
+  // is over, or the thread goes away. The top bar's note of it is kept in step.
+  const liveLongId = tasks?.find(longLive)?.id ?? null;
+  const liveLongStatus = tasks?.find(longLive)?.status ?? null;
+  useEffect(() => {
+    if (!liveLongId) return;
+    let live = true;
+    let timer = 0;
+    const poll = async () => {
+      try {
+        const next = await request<AssistantTask>(`/projects/${projectId}/assistant/long-tasks/${liveLongId}`);
+        if (!live) return;
+        setTasks((current) => current && current.map((task) => (task.id === next.id ? next : task)));
+        noteLong(projectId, next.id, next.status);
+        if (!longLive(next)) {
+          bridge.usageChanged();
+          if (!announced.current.has(`${next.id}:${next.status}`)) {
+            announced.current.add(`${next.id}:${next.status}`);
+            setAnnounce(next.status === "waiting_author" ? "长任务停下来了，等你回答一个问题" : next.status === "completed" ? "长任务做完了" : next.status === "stopped" ? "长任务停下了" : "长任务出错了");
+          }
+          return;
+        }
+      } catch (cause) {
+        if (live && (cause as ApiFailure).code === "resource_not_found") { setTasks((current) => current && current.filter((task) => task.id !== liveLongId)); return; }
+      }
+      if (live) timer = window.setTimeout(() => void poll(), 2000);
+    };
+    timer = window.setTimeout(() => void poll(), liveLongStatus === "planning" ? 1000 : 2000);
+    return () => { live = false; window.clearTimeout(timer); };
+  }, [liveLongId, liveLongStatus, projectId, bridge]);
+  // The conversation's list holds a long task as a plain task; its plan, steps, questions and cards come from its own address, read once.
+  const longRead = useRef(new Set<string>());
+  useEffect(() => {
+    for (const task of tasks ?? []) {
+      if (task.kind !== "long" || task.plan || longRead.current.has(task.id)) continue;
+      longRead.current.add(task.id);
+      request<AssistantTask>(`/projects/${projectId}/assistant/long-tasks/${task.id}`)
+        .then((next) => setTasks((current) => current && current.map((item) => (item.id === next.id ? next : item))), () => undefined);
+    }
+  }, [tasks, projectId]);
+  // The author has the assistant in front of them and the latest long task is waiting for an answer or is over: the top bar's dot has been seen.
+  const shown = useShown(root);
+  const lastLong = [...(tasks ?? [])].reverse().find((task) => task.kind === "long" && task.plan) ?? null;
+  const lastLongSeen = lastLong ? `${lastLong.id}:${lastLong.status}` : "";
+  useEffect(() => {
+    if (shown && lastLong) seenLong(projectId, lastLong.id, lastLong.status);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the task's id and status are the key
+  }, [shown, lastLongSeen, projectId]);
+
   // New text keeps the view at the bottom, unless the author has scrolled up to read (then 「新回答 ↓」 says there is more);
   // a new task keeps its own top in view.
   useEffect(() => {
     const box = thread.current;
     if (!box) return;
-    const now = (tasks ?? []).map((task) => `${task.id}:${task.status}:${task.steps.length}:${task.answer ? 1 : 0}`).join("|") + (pending ? "|pending" : "");
+    const now = (tasks ?? []).map((task) => `${task.id}:${task.status}:${task.steps.length}:${task.answer ? 1 : 0}:${task.progress?.done ?? ""}:${task.questions?.length ?? ""}:${task.changes?.length ?? ""}`).join("|") + (pending ? "|pending" : "");
     const changed = now !== signature.current;
     signature.current = now;
     const id = pinned.current;
@@ -241,7 +307,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     if (target) {
       quiet.current = performance.now() + 150;
       box.scrollTop += target.getBoundingClientRect().top - box.getBoundingClientRect().top - 8;
-      if (!active(tasks?.find((task) => task.id === id) ?? { status: "completed" } as AssistantTask)) pinned.current = null;
+      const pinnedTask = tasks?.find((task) => task.id === id) ?? { status: "completed" } as AssistantTask;
+      if (!active(pinnedTask) && !longLive(pinnedTask)) pinned.current = null;
     } else if (stick.current) {
       quiet.current = performance.now() + 150;
       box.scrollTop = box.scrollHeight;
@@ -284,13 +351,18 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   useEffect(() => { report.current?.adoptedChanged(adopted ? adopted.split("|") : []); }, [adopted]);
 
   const actions: ProposalActions = useProposalActions(projectId, writing, setTasks, bridge.usageChanged);
-  const replace = (next: AssistantTask) => setTasks((current) => current && current.map((task) => (task.id === next.id ? next : task)));
+  const replace = (next: AssistantTask) => {
+    setTasks((current) => current && current.map((task) => (task.id === next.id ? next : task)));
+    if (next.kind === "long") noteLong(projectId, next.id, next.status);
+  };
 
   const onWriting = variant === "column" && Boolean(writing);
   const chapterNumber = anchor.page === "writing" ? anchor.chapter_number : undefined;
   const recapReason = chapterNumber != null && chapterNumber <= 1 ? "第一章前面没有内容可以回顾" : writing?.draft.dirty ? "等草稿保存后再回顾" : "";
-  const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap", "change"] : ["auto", "ask", "recap", "check", "change"]) : ["auto", "ask", "change"];
-  const activeMode: Mode = modes.includes(mode) ? mode : "auto";
+  const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap", "change", "long"] : ["auto", "ask", "recap", "check", "change", "long"]) : ["auto", "ask", "change", "long"];
+  // 长任务 is shown to a visitor but greyed, with the reason.
+  const unavailable: Partial<Record<Mode, string>> = visitor ? { long: LONG_VISITOR } : {};
+  const activeMode: Mode = modes.includes(mode) && !unavailable[mode] ? mode : "auto";
   const asking = activeMode === "auto" || activeMode === "ask";
   // The latest answer is followed on its own (the tag is on the box) while it can be, unless the author took the tag off, or the box
   // holds something that decides the use itself (a picked passage, a finding) or the author chose another mode.
@@ -318,11 +390,17 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const post = async (task: NewTask) => {
     setSending(true); setRefusal(""); setAgain(null);
     try {
-      const created = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks`, "POST", {
-        kind: task.kind, ...(task.question ? { question: task.question } : {}), context: task.context,
-        ...(task.followUpOf ? { follow_up_of: task.followUpOf } : {}), ...(task.editedFrom ? { edited_from: task.editedFrom } : {}),
-        ...(task.routed ? { routed: true, route_source: task.routed.source, routed_input: task.routed.input } : {}),
-      });
+      // A long task has its own address, and takes the sentence and the page (and chapter) only, and where it came from: the box judged
+      // the sentence to be one ("route"), or the author chose the mode ("mode"); the server only counts it.
+      const created = task.kind === "long"
+        ? await json<AssistantTask>(`/projects/${projectId}/assistant/long-tasks`, "POST", {
+          question: task.question, context: task.context, origin: task.routed && task.routed.source !== "manual" ? "route" : "mode" })
+        : await json<AssistantTask>(`/projects/${projectId}/assistant/tasks`, "POST", {
+          kind: task.kind, ...(task.question ? { question: task.question } : {}), context: task.context,
+          ...(task.followUpOf ? { follow_up_of: task.followUpOf } : {}), ...(task.editedFrom ? { edited_from: task.editedFrom } : {}),
+          ...(task.routed ? { routed: true, route_source: task.routed.source, routed_input: task.routed.input } : {}),
+        });
+      if (created.kind === "long") { noteLong(projectId, created.id, created.status); bridge.usageChanged(); }
       stick.current = false;
       pinned.current = created.id;
       lastCreated.current = created.id;
@@ -374,7 +452,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     }
     if (verdict.route === "recap" && recapReason) { abandon(recapReason); return; }
     if (verdict.route === "check_passage" && checkShort(kept.selection)) { abandon(); shortOfCheck(); return; }
-    const chosenUse = taskFor(verdict.route, input, base, verdict.route === "ask" ? following?.id : null);
+    // A visitor has no long tasks: a sentence the judgement takes for one is asked as a question.
+    const route = visitor && verdict.route === "long_task" ? "ask" : verdict.route;
+    const chosenUse = taskFor(route, input, base, route === "ask" ? following?.id : null);
     const made = chosenUse ?? taskFor("ask", input, base, following?.id);
     if (!made) { abandon("先写下想问的话，再发送。"); return; }
     if (await post({ ...made, routed: { source: verdict.source, input } })) {
@@ -403,6 +483,12 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       const question = text.trim();
       if (!question) return;
       if (await post({ kind: "change", question, context: contextFor(selection) })) afterSend();
+      return;
+    }
+    if (activeMode === "long") {
+      const made = taskFor("long_task", text.trim(), contextFor(""));
+      if (!made) return;
+      if (await post(made)) afterSend();
       return;
     }
     if (activeMode === "auto" && !refine?.manual) { await sendAuto(); return; }
@@ -624,13 +710,14 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     onSelectHint: () => setTip("在正文里选中一段文字，再点浮出来的「问助手」，它就会带进这次提问。"),
   };
 
-  const placeholder = activeMode === "recap" ? RECAP_PLACEHOLDER : activeMode === "check" ? CHECK_PLACEHOLDER : activeMode === "change" ? CHANGE_PLACEHOLDER : refine ? REFINE_PLACEHOLDER : ASK_PLACEHOLDER;
+  const placeholder = activeMode === "recap" ? RECAP_PLACEHOLDER : activeMode === "check" ? CHECK_PLACEHOLDER : activeMode === "change" ? CHANGE_PLACEHOLDER : activeMode === "long" ? LONG_PLACEHOLDER : refine ? REFINE_PLACEHOLDER : ASK_PLACEHOLDER;
   const hint = busy && !routing ? RUNNING_NOW
     : activeMode === "check" ? `约 ${formatCount(TASK_CHARS + writtenChars(selection))} 字`
-      : activeMode === "recap" && recapReason ? recapReason : cost;
-  const hintMore = busy || !(asking || activeMode === "change") ? "" : costMore;
+      : activeMode === "recap" && recapReason ? recapReason
+        : activeMode === "long" && usage?.account_type === "registered" && !sample ? `列计划约 ${formatCount(needed)} 字，开始另算` : cost;
+  const hintMore = busy || !(asking || activeMode === "change" || activeMode === "long") ? "" : costMore;
   // In 自动 a picked passage alone is enough to send (it is checked); a sentence is needed for anything else.
-  const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "change" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
+  const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "change" || activeMode === "long" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
   const changeMode = (next: Mode) => { setMode(next); };
   const edited = (next: string) => { setText(next); };
   const starters = tasks?.length === 0 ? starterQuestions({
@@ -683,7 +770,10 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
           // A question that follows the one just above hangs from it; any other turn starts under a thin line with its time.
           const above = index > 0 ? groups[index - 1] : null;
           const follow = Boolean(task.follow_up_of && above && [above.latest, ...above.older].some((item) => item.id === task.follow_up_of));
-          const view = task.kind === "recap"
+          const view = task.kind === "long"
+            ? <LongView task={task} handlers={handlers} usage={usage} project={project} usageChanged={bridge.usageChanged}
+              maxChapter={material.chapters.length ? Math.max(...material.chapters.map((chapter) => chapter.number)) : null} />
+            : task.kind === "recap"
             ? <RecapView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)} openChapter={openChapter} rerun={onWriting ? rerunRecap : null} replace={replace} />
             : task.kind === "fix_issue"
               ? <FixView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)}
@@ -715,7 +805,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId)} stopping={stopping}
         stop={() => { const running = tasks?.find(active); if (running) void stop(running); }}
         canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
-        fixed={activeMode === "recap" || activeMode === "check"} recall={recall} />
+        fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable} />
       {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus(), 0); }} />}
     </div>
     </RerouteContext.Provider>

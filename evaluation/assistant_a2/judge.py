@@ -46,8 +46,14 @@ def change_text(item):
     that a thread has been resolved. Not the card's "资料里没有 →" or chapter labels, which a grader read as claims about the
     story (A2 dev round 1)."""
     after = item.get("after") or {}
+    title = item["display"]["title"]
     if item["kind"] == "resolve_thread":
-        return f"伏笔「{item['display']['title']}」在正文里已经收了。"
+        return f"伏笔「{title}」在正文里已经收了。"
+    # Addendum 7's kinds (until the a2t dev run they reached the grader as "None：None", their evidence all unsupported).
+    if item["kind"] == "abandon_thread":  # it stands on the author's words; what its quotes can show is that the text left it open
+        return f"伏笔「{title}」在正文里还没有收。"
+    if item["kind"] in ("add_thread", "edit_thread"):
+        return f"伏笔「{title}」：{after.get('description')}"
     return f"{after.get('subject')}：{after.get('value')}"
 
 

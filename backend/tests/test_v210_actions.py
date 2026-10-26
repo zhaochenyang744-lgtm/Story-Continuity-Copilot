@@ -218,6 +218,17 @@ class EditThreadTests(ThreadActionCase):
         self.assertEqual((item["evidence"], item["risk"], item["evidence_required"]), ([], "low", False))
         self.assertEqual((self.thread()["description"], self.foreshadow_version()), ("罗盘下落还没有交代", version))
 
+    def test_a_note_in_the_authors_own_words_keeps_no_evidence(self):
+        from app.assistant_actions import _takes_authors_words
+        ask = "罗盘那条伏笔的说明补一句：温岚其实早就知道罗盘在哪"
+        value = "罗盘下落还没有交代；温岚其实早就知道罗盘在哪。"
+        task = self.change_task(*self.thread_turns(lambda m: {"action": "edit_thread", "target": self.thread_ref(m), "value": value,
+                                                              "evidence": [refs(m, self.last)[0]], "request_words": "罗盘那条伏笔"}, [self.last]), question=ask)
+        [item] = task["changes"]
+        self.assertEqual((item["kind"], item["evidence"]), ("edit_thread", []))
+        self.assertTrue(_takes_authors_words(value, ask))
+        self.assertFalse(_takes_authors_words("罗盘最后落在温岚手里", "罗盘那条伏笔的说明和正文对不上，按正文改"))
+
     def test_confirm_writes_only_the_note_and_undo_puts_only_the_note_back(self):
         before = dict(self.thread())
         version = self.foreshadow_version()

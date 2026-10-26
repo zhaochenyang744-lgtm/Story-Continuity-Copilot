@@ -245,6 +245,16 @@ def write_thread_note(c: sqlite3.Connection, db: Any, project_id: str, target_id
     _rewrite_thread(c, db, project_id, target_id, values, THREAD_NOTE_FIELDS, user_id, stamp)
 
 
+AUTHORS_WORDS_RUN = 6  # characters in a row the note takes from the author's sentence
+
+
+def _takes_authors_words(note: str, question: str) -> bool:
+    """Whether a new note copies a run of the author's own sentence (punctuation and spaces aside)."""
+    said = "".join(ch for ch in question if ch.isalnum())
+    written = "".join(ch for ch in note if ch.isalnum())
+    return any(said[i:i + AUTHORS_WORDS_RUN] in written for i in range(len(said) - AUTHORS_WORDS_RUN + 1))
+
+
 def propose_edit_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
     """The note of a thread, reworded as the author asks (any status: a resolved thread's note may be mended too)."""
     evidence = evidence_of(ctx, args.get("evidence"), ACTIONS["edit_thread"].evidence_required)
@@ -253,6 +263,8 @@ def propose_edit_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str
         row = _live_thread(ctx, c, target)
     if value == " ".join(row["description"].split()):
         raise ToolError("change_no_difference")
+    if _takes_authors_words(value, json.loads(ctx.task["input_json"]).get("question") or ""):
+        evidence = []  # the note says what the author dictated: it stands on the author's words (a2t dev rounds 2–4)
     return {"target_id": row["id"], "before": {"description": row["description"]}, "evidence": evidence,
             "after": {"description": value, "value": value}, "display": {"title": row["title"], "before": row["description"], "after": value}}
 
@@ -811,17 +823,22 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
 
 
 def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id: str, task_id: str, accepted: list[str] | None,
-           edits: dict[str, str] | None = None) -> dict[str, Any]:
+           edits: dict[str, str] | None = None, within: list[str] | None = None) -> dict[str, Any]:
     """Apply the accepted items of a card, with any value the author reworded, and turn down the rest (`accepted` None: turn
     down all). All or nothing: when any accepted item's target no longer holds the values the card was made against, or a
-    review of the facts is still open for a fact item, nothing is written."""
+    review of the facts is still open for a fact item, nothing is written. A long task's card is decided a group at a time:
+    `within` names the group's items, and the rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
-    if not task or task["kind"] != "change":
+    if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
         raise DomainError("resource_not_found", 404)
-    if task["status"] != "completed":
+    if task["status"] != "completed" and not (task["kind"] == "long" and task["status"] == "stopped"):
         raise DomainError("change_task_not_completed", 409)
     rows = c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (task_id,)).fetchall()
+    if within is not None:
+        if not set(within) <= {row["id"] for row in rows}:
+            raise DomainError("invalid_item_selection", 422)
+        rows = [row for row in rows if row["id"] in within]
     if not rows:
         raise DomainError("change_already_decided", 409)
     chosen, edits = set(accepted or []), edits or {}

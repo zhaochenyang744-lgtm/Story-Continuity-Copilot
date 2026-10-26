@@ -1,0 +1,444 @@
+{
+  "status": "PASS",
+  "tasks_sha256": "26483e3b6209b45dd2ceab65814ca0a9282e8a25ed23671f38cf687174b5d7f6",
+  "source_sha256": "3f32a399134c04b07e3abac5f27218828f9ac94b87dc6ca4c1d163bff0e73ef0",
+  "materials_sha256": {
+    "materials/w01-facts.json": "7a8b67d68473ad811c700f29b82463fc5dcdd89a1976d39294035bce854266c4",
+    "materials/w01-foreshadows.json": "d1ae1b6819f530c1eefcee54849076be594114427460a1c02bceab859a0f85dc"
+  },
+  "checked_actions": 20,
+  "checked_unique_action_targets": 18,
+  "checked_states": 15,
+  "action_checks": [
+    {
+      "ordinal": 1,
+      "task_id": "a3e-thread-01",
+      "kind": "resolve_thread",
+      "target": 1,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确空行给回程件使用，疑问已解开。"
+    },
+    {
+      "ordinal": 2,
+      "task_id": "a3e-thread-01",
+      "kind": "resolve_thread",
+      "target": 2,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确异色布为试装包边样料，来历已解释。"
+    },
+    {
+      "ordinal": 3,
+      "task_id": "a3e-thread-01",
+      "kind": "resolve_thread",
+      "target": 3,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文点名连照棠并说明草稿逐行吻合。"
+    },
+    {
+      "ordinal": 4,
+      "task_id": "a3e-thread-01",
+      "kind": "abandon_thread",
+      "target": 4,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确集体决定往后不查，不是假定已查明身份。"
+    },
+    {
+      "ordinal": 5,
+      "task_id": "a3e-tidy-01",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "续租确认"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确本人续租确认及沉默不构成续租。"
+    },
+    {
+      "ordinal": 6,
+      "task_id": "a3e-tidy-01",
+      "kind": "add_fact",
+      "target": {
+        "subject": "屈予葭",
+        "predicate": "变动通知"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文直接点名屈予葭逐一通知并排除只改内表。"
+    },
+    {
+      "ordinal": 7,
+      "task_id": "a3e-tidy-01",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "停车费来源"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确经营收入负担停车费及不让租用人垫付。"
+    },
+    {
+      "ordinal": 8,
+      "task_id": "a3e-tidy-01",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "体验时地"
+      },
+      "after_points_checked": 3,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确周五上午、璃岑服务间及与日常交接分开。"
+    },
+    {
+      "ordinal": 9,
+      "task_id": "a3e-tidy-01",
+      "kind": "add_fact",
+      "target": {
+        "subject": "傅语岑",
+        "predicate": "清除个人标签"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确傅语岑负责且应在再次出租前清除标签。"
+    },
+    {
+      "ordinal": 10,
+      "task_id": "a3e-tidy-01",
+      "kind": "change_fact",
+      "target": 1,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确改为周四傍晚并取消周一午后。"
+    },
+    {
+      "ordinal": 11,
+      "task_id": "a3e-tidy-01",
+      "kind": "change_fact",
+      "target": 2,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确改到砚棕间并退出璃岑服务间。"
+    },
+    {
+      "ordinal": 12,
+      "task_id": "a3e-tidy-02",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "暂停计费"
+      },
+      "after_points_checked": 1,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文只规定暂停后的计费边界，金标未补执行人。"
+    },
+    {
+      "ordinal": 13,
+      "task_id": "a3e-tidy-02",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "答疑时地"
+      },
+      "after_points_checked": 3,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确周二傍晚、砚棕间及不占体验时段。"
+    },
+    {
+      "ordinal": 14,
+      "task_id": "a3e-tidy-02",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "外包装回收边界"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文只规定破损外包装回收边界，金标未补执行人。"
+    },
+    {
+      "ordinal": 15,
+      "task_id": "a3e-tidy-02",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "试办运费来源"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确往返运费走经营收入且不扣押金，未补执行人。"
+    },
+    {
+      "ordinal": 16,
+      "task_id": "a3e-tidy-02",
+      "kind": "add_fact",
+      "target": {
+        "subject": "绮衡周转站",
+        "predicate": "提前退租理由"
+      },
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确允许提前退租及无需私人理由。"
+    },
+    {
+      "ordinal": 17,
+      "task_id": "a3e-tidy-02",
+      "kind": "change_fact",
+      "target": 3,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确邵令珂接任及嵇沐乔不再兼任。"
+    },
+    {
+      "ordinal": 18,
+      "task_id": "a3e-tidy-02",
+      "kind": "change_fact",
+      "target": 4,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "正文明确耗材改用经营收入并取消押金周转。"
+    },
+    {
+      "ordinal": 19,
+      "task_id": "a3e-narrowed-01",
+      "kind": "resolve_thread",
+      "target": 2,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "与全书回收卡同义，依据第18章在圈定范围内。"
+    },
+    {
+      "ordinal": 20,
+      "task_id": "a3e-narrowed-01",
+      "kind": "abandon_thread",
+      "target": 4,
+      "after_points_checked": 2,
+      "evidence_count": 1,
+      "supported": true,
+      "no_added_executor": true,
+      "reason": "与全书放弃卡同义，依据第20章在圈定范围内。"
+    }
+  ],
+  "unique_action_breakdown": {
+    "add_fact": 10,
+    "change_fact": 4,
+    "resolve_thread": 3,
+    "abandon_thread": 1
+  },
+  "state_checks": [
+    {
+      "object": "弧栈坡板",
+      "chapter": 1,
+      "state": "供应方交嵇沐乔接收保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "弧栈坡板",
+      "chapter": 5,
+      "state": "嵇沐乔交滕书蔚保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "弧栈坡板",
+      "chapter": 10,
+      "state": "滕书蔚交邵令珂保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "弧栈坡板",
+      "chapter": 16,
+      "state": "邵令珂交匡泽絮并签收",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "弧栈坡板",
+      "chapter": 28,
+      "state": "匡泽絮交嵇沐乔",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "棱湾折叠推车",
+      "chapter": 2,
+      "state": "屈予葭领出并保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "棱湾折叠推车",
+      "chapter": 7,
+      "state": "屈予葭交牟宛歧保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "棱湾折叠推车",
+      "chapter": 12,
+      "state": "牟宛歧交巫承晏保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "棱湾折叠推车",
+      "chapter": 19,
+      "state": "巫承晏交傅语岑签收",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "棱湾折叠推车",
+      "chapter": 30,
+      "state": "傅语岑交回屈予葭",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "赭环试配箱",
+      "chapter": 3,
+      "state": "供应方交应时霏接收保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "赭环试配箱",
+      "chapter": 8,
+      "state": "应时霏交连照棠保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "赭环试配箱",
+      "chapter": 14,
+      "state": "连照棠交缪见隅保管",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    },
+    {
+      "object": "赭环试配箱",
+      "chapter": 21,
+      "state": "缪见隅交邵令珂并签收",
+      "actual_change": true,
+      "reason": "同段前句以缪见隅为主语，后句再次点名；他唯一指缪见隅，箱子已交邵令珂签收。"
+    },
+    {
+      "object": "赭环试配箱",
+      "chapter": 29,
+      "state": "邵令珂交回应时霏",
+      "actual_change": true,
+      "reason": "引用及附近叙述明确领出、交接或接收保管，非仅仍在原处。"
+    }
+  ],
+  "scope_checks": [
+    {
+      "task_id": "a3e-thread-01",
+      "status": "PASS",
+      "reason": "三回收一放弃全部匹配正文及资料起始状态；开放5至8及已回收9无卡。"
+    },
+    {
+      "task_id": "a3e-tidy-01",
+      "status": "PASS",
+      "scope": [
+        1,
+        10
+      ],
+      "expected_actions": 7,
+      "reason": "范围内五缺漏两旧值完整；四章验收与七章包装等既有同义资料不重复出卡。"
+    },
+    {
+      "task_id": "a3e-tidy-02",
+      "status": "PASS",
+      "scope": [
+        16,
+        22
+      ],
+      "expected_actions": 7,
+      "reason": "范围内五缺漏两旧值完整；十八章核账与二十二章联络等既有同义资料不重复出卡。"
+    },
+    {
+      "task_id": "a3e-narrowed-01",
+      "status": "PASS",
+      "plan_edit_chapters": [
+        18,
+        20
+      ],
+      "expected_actions": 2,
+      "reason": "只保留第18章回收2和第20章放弃4；第12及27章的回收1、3均排除。"
+    }
+  ],
+  "ask_checks": [
+    {
+      "task_id": "a3e-ask-01",
+      "status": "PASS",
+      "expected_actions": 0,
+      "reason": "11与13章同次最初登记名称冲突，作者选a且只统一叙述；无资料卡。"
+    },
+    {
+      "task_id": "a3e-ask-02",
+      "status": "PASS",
+      "expected_actions": 0,
+      "reason": "25与26章同次最初预约日期冲突，作者选b且只统一叙述；无资料卡。"
+    }
+  ],
+  "decoy_checks": {
+    "fact_targets": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "unsupported_cards": 0,
+    "status": "PASS"
+  },
+  "evidence_limit_check": {
+    "maximum_per_card": 1,
+    "required_maximum": 2,
+    "status": "PASS"
+  },
+  "findings": []
+}

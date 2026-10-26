@@ -552,7 +552,7 @@ test.describe("助手：输入框", () => {
     await openAssistantTab(page);
     const mode = thread(page).getByRole("button", { name: /^这次做什么：/ });
     await mode.click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     // 写前回顾: nothing to write; the placeholder and the cost line follow; sending starts one.
     await chooseMode(page, "写前回顾");
@@ -587,7 +587,7 @@ test.describe("助手：输入框", () => {
     await topbarAssistant(page).click();
     await expect(thread(page).getByRole("button", { name: "这次做什么：自动" })).toBeEnabled();
     await thread(page).getByRole("button", { name: /^这次做什么：/ }).click();
-    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     const visitor = await newPage(browser);
     await startVisitor(visitor);
@@ -595,7 +595,7 @@ test.describe("助手：输入框", () => {
     await openTab(visitor, sample, "workspace");
     await openAssistantTab(visitor);
     await thread(visitor).getByRole("button", { name: /^这次做什么：/ }).click();
-    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料"]);
+    expect(await menuNames(thread(visitor))).toEqual(["自动", "问作品", "写前回顾", "改资料", "长任务"]);
     await visitor.close();
   });
 

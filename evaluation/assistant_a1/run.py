@@ -304,7 +304,7 @@ class Work:
         self.persist = lambda: write_json(self.state_path, state)
         self.persist()
         self.app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / 'protected'), provider=provider,
-                              executor=lambda fn, *args: fn(*args), settings=settings(price))
+                              executor=lambda fn, *args: fn(*args), settings=self.settings_for(price))
         self.client = TestClient(self.app)
         self.client.timeout = httpx.Timeout(180)
         self.project = self.lengths = None
@@ -318,6 +318,10 @@ class Work:
         except BaseException:
             self.close()
             raise
+
+    def settings_for(self, price):
+        """The product settings of this work's app (A3's work keeps a larger character quota)."""
+        return settings(price)
 
     def request(self, method, path, **kwargs):
         return response_data(self.response(method, path, **kwargs))
@@ -467,8 +471,10 @@ class Work:
                         'retryable': response.status_code >= 500,
                         'elapsed_seconds': elapsed}
             result = payload.get('data', payload)
+            # A use added after A1c was registered (change in v2.0, long_task in v2.1) is a judgement like any other: on an A1c
+            # item it is a wrong route, not a broken response.
             if (not isinstance(result, dict) or result.get('route') not in
-                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope'}
+                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope', 'change', 'long_task'}
                     or result.get('source') not in {'rule', 'model'} or type(result.get('unsure')) is not bool):
                 return {'status': 'failed', 'error_code': 'route_schema_invalid', 'retryable': False,
                         'elapsed_seconds': elapsed}

@@ -298,19 +298,31 @@ export type CardProps = {
   locate: (source: AssistantSource) => void;
   written: ChangeWritten;
   goMaterials: () => void;
+  /** A long task's card is made of groups: this one is the items of one kind (or one high-risk item, `alone`), decided on the long task's own address. */
+  group?: LongGroup;
+};
+/** One group of a long task's changes: its title, its items, and how it is confirmed (the whole group is `within`, the ticked items `accepted`). */
+export type LongGroup = {
+  title: string;
+  items: AssistantChange[];
+  /** A high-risk item: its own card, no tick box, confirmed by itself. `place` says which of the alone cards this is ("2/3"). */
+  alone: boolean;
+  place?: string;
+  confirm: (accepted: string[], within: string[]) => Promise<AssistantTask>;
+  refresh: () => Promise<AssistantTask>;
 };
 
 /** The card: a frame with its title above, one block per item (a tick box in front of each that waits), and 不要 / 确认 below. Once written, its top
     line says so and holds 撤销 (the same button as in the materials page's ledger). */
-export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, written, goMaterials }: CardProps) {
-  const items = task.changes ?? [];
+export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, written, goMaterials, group }: CardProps) {
+  const items = group?.items ?? task.changes ?? [];
   // What the author chose; an item they have not touched is ticked unless the materials have moved away from what it expects.
   const [choice, setChoice] = useState<Record<string, boolean>>({});
   const [typed, setTyped] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<Record<string, boolean>>({});
   const [busy, setBusy] = useState<"confirm" | "reject" | null>(null);
   const [problem, setProblem] = useState<ChangeProblem | null>(null);
-  const refreshTask = () => request<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}`).then(replace, () => undefined);
+  const refreshTask = () => (group ? group.refresh() : request<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}`)).then(replace, () => undefined);
   const ops = useItemOps(projectId, merge, written, () => void refreshTask());
   if (!items.length) return null;
   const waiting = items.some((item) => item.status === "proposed");
@@ -323,7 +335,9 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
   const decide = async (step: "confirm" | "reject") => {
     setBusy(step); setProblem(null);
     try {
-      const next = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}/changes/${step}`, "POST", step === "confirm" ? { accepted: chosen.map((item) => item.id), edits } : {});
+      const next = group
+        ? await group.confirm(chosen.map((item) => item.id), items.map((item) => item.id))
+        : await json<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}/changes/${step}`, "POST", step === "confirm" ? { accepted: chosen.map((item) => item.id), edits } : {});
       replace(next);
       if (step === "confirm") written();
     } catch (cause) {
@@ -337,7 +351,7 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
   const why = readOnly ? "作品已归档，只能浏览。" : "";
   const shared = sharedEvidence(items);
   return (
-    <section className="a-chg-card" aria-label="资料改动" data-change-card={task.id} data-waiting={waiting || undefined}>
+    <section className="a-chg-card" aria-label={group ? group.title : "资料改动"} data-change-card={task.id} data-waiting={waiting || undefined} data-risk={group?.alone ? "high" : undefined}>
       {writtenItems.length > 0 ? (
         <div className="a-chg-done" data-testid="change-written">
           <span>已写入资料{items.length > 1 ? ` · ${writtenItems.length} 条` : ""}</span>
@@ -345,20 +359,20 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
         </div>
       ) : (
         <div className="a-chg-head">
-          <strong>资料改动 · {items.length} 条</strong>
-          {waiting && <span className="a-chg-note-r">确认后才会执行，可以撤销</span>}
+          <strong>{group ? `${group.title} · ${group.place ? `第 ${group.place.replace("/", " 条，共 ")} 条` : `${items.length} 条`}` : `资料改动 · ${items.length} 条`}</strong>
+          {waiting && <span className="a-chg-note-r">{group ? (group.alone ? "要一条条确认" : "整组确认") : "确认后才会执行，可以撤销"}</span>}
         </div>
       )}
       {items.map((item) => (
         <Item key={item.id} item={item} ops={ops} picked={picked(item)} setPicked={(value) => setChoice((all) => ({ ...all, [item.id]: value }))}
           typed={typed[item.id]} setTyped={(value) => setTyped((all) => ({ ...all, [item.id]: value }))}
           editing={Boolean(editing[item.id])} setEditing={(value) => setEditing((all) => ({ ...all, [item.id]: value }))}
-          locate={locate} readOnly={readOnly} goMaterials={goMaterials} decided={!waiting} alone={items.length === 1} sameEvidenceAs={shared[item.id]} />
+          locate={locate} readOnly={readOnly} goMaterials={goMaterials} decided={!waiting || Boolean(group?.alone)} alone={items.length === 1} sameEvidenceAs={shared[item.id]} />
       ))}
       {waiting && (
         <div className="a-chg-foot">
-          <button type="button" className="a-btn quiet" disabled={Boolean(busy) || readOnly} title={why || undefined} onClick={() => void decide("reject")}>不要</button>
-          <button type="button" className="a-btn" disabled={Boolean(busy) || readOnly || chosen.length === 0 || emptied} title={why || undefined} onClick={() => void decide("confirm")}>确认 {chosen.length} 条</button>
+          {!group && <button type="button" className="a-btn quiet" disabled={Boolean(busy) || readOnly} title={why || undefined} onClick={() => void decide("reject")}>不要</button>}
+          <button type="button" className="a-btn" disabled={Boolean(busy) || readOnly || chosen.length === 0 || emptied} title={why || undefined} onClick={() => void decide("confirm")}>{group?.alone ? "确认这一条" : `确认 ${chosen.length} 条`}</button>
         </div>
       )}
       {problem && (
