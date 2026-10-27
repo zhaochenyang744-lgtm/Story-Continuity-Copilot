@@ -48,6 +48,8 @@ from .thresholds import PRE_REGISTRATION
 
 DEV_SETS = ("eval_set_a3d2_dev",)  # addendum 1: the first dev set used its 3 runs and is not run again
 FORMAL_SETS = tuple(PRE_REGISTRATION["formal_sets"])
+# Addendum 3: the first formal pair ran (failed) and both dev sets are used; all are development material, in any combination.
+SPENT_SETS = tuple(PRE_REGISTRATION["first_formal_sets"]) + ("eval_set_a3_dev",)
 RESUME_SEED = 20261024
 KILLED = 86  # the runner process's exit code when it died as planned
 CHECK_CHARS = 100_000_000  # three passes of 32 long tasks read about nine million characters; A1's settings allow ten
@@ -69,7 +71,7 @@ def set_names(value):
     names = value.split(",")
     if len(names) != len(set(names)):
         raise ValueError("invalid_sets")
-    if (len(names) == 1 and names[0] in DEV_SETS) or sorted(names) == sorted(FORMAL_SETS):
+    if all(readable(name) for name in names) or sorted(names) == sorted(FORMAL_SETS):
         return names
     raise ValueError("invalid_sets")
 
@@ -83,7 +85,7 @@ def set_names_arg(value):
 
 
 def readable(name):
-    return name in DEV_SETS
+    return name in DEV_SETS or name in SPENT_SETS
 
 
 def load_set(name):

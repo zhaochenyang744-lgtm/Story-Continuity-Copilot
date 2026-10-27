@@ -60,11 +60,16 @@ PRE_REGISTRATION = {
                    "actions, thread dev set, budget per product run (no number changes)",
                    "2026-10-26: addendum 8, undoing an added thread is exact when the live threads are as at the start and the "
                    "added thread is archived; what the grader is shown for the evidence of the three new thread kinds (no number "
-                   "changes, fifth pair not run)"],
+                   "changes, fifth pair not run)",
+                   "2026-10-27: addendum 9, the fifth run failed (first attempt void: the per-work daily token limit; "
+                   "second stopped at its cost cap with three checks failing); the sixth pair eval_set_a26_formal + "
+                   "eval_set_a2s6_formal decides; infrastructure retry of a failed product task; dev on halves of the fifth "
+                   "pair (no number changes)"],
     "sets_sealed": {"eval_set_a2_formal": "fd9d9b2", "eval_set_a2s_formal": "2ef9787", "eval_set_a2_dev": "c1bb6b8 (readable)"},
     "applies_to": ["eval_set_a2_dev", "eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal",
                    "eval_set_a23_formal", "eval_set_a2s3_formal", "eval_set_a24_formal", "eval_set_a2s4_formal",
-                   "eval_set_a2t_dev", "eval_set_a25_formal", "eval_set_a2s5_formal"],
+                   "eval_set_a2t_dev", "eval_set_a25_formal", "eval_set_a2s5_formal", "eval_set_a26_formal",
+                   "eval_set_a2s6_formal"],
     "first_formal_sets": ["eval_set_a2_formal", "eval_set_a2s_formal"],
     "first_formal_run": "a2 f1-p35 on 2026-10-23 (code 2e90d80, prompt p35, CNY 12.84) failed: unrequested_actions 7, all decided by "
                         "program; its sets are development material from then on (SPEC addendum 4)",
@@ -83,7 +88,12 @@ PRE_REGISTRATION = {
                          "duplicate facts recording what the author's sentence asked for) and all 14 passed; the user decided "
                          "on 2026-10-24 that the audited result stands: passed, v2.0.0 shipped on it; its sets are development "
                          "material from then on (SPEC addendum 7)",
-    "formal_sets": ["eval_set_a25_formal", "eval_set_a2s5_formal"],
+    "fifth_formal_sets": ["eval_set_a25_formal", "eval_set_a2s5_formal"],
+    "fifth_formal_run": "a2 on 2026-10-27 (code a614716 and afb2b32, product p57): f5-p57 void (103 tasks refused by the per-work "
+                        "daily token limit); f5b stopped at its CNY 30 cap after 130 of 240 tasks with card 0.771, pass3 0.694 "
+                        "and budget 0.980 failing; recorded failed, not completed; its sets are development material from "
+                        "then on (SPEC addendum 9)",
+    "formal_sets": ["eval_set_a26_formal", "eval_set_a2s6_formal"],
     "thread_dev_set": "eval_set_a2t_dev (addendum 7): readable, any number of runs, never a formal result; the chapters of "
                       "eval_set_a23_formal w01 and eval_set_a24_formal w01 copied unchanged, new starting materials and tasks",
     "release_gate": "v2.0 shipped when this evaluation passed, the chapter check's code is unchanged since the v1.9 "

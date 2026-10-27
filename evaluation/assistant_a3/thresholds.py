@@ -17,9 +17,14 @@ PRE_REGISTRATION = {
     "amended_on": [
         "2026-10-26 addendum 1 (user approved; the dev set's 3 runs used, the formal and safety sets not run): a second readable dev set eval_set_a3d2_dev, same shape and rules as the first, at most 3 runs, the first not run again; two ways the scorer shows report items to the judge (the model's own claim, and a disagreement as two passages each holding one side). No bar, set or protocol changes.",
         "2026-10-27 addendum 2 (user approved; the second dev set's 3 runs used, the formal and safety sets not run): eval_set_a3d2_dev may be run again for confirmation runs after its 3rd; the formal and safety sets run when a confirmation run passes all 16 bars; after a failed one the product may be fixed and confirmed again. No bar, set or protocol changes.",
+        "2026-10-27 addendum 3 (user approved; the formal run failed, the new formal and safety sets not yet authored): first attempt f1-d524302 void (Windows path limit), f2 stopped at its cost cap after 107 of 156 tasks with 6 checks failing, recorded failed; v2.1 does not measure tidy (moved to a later release); new sets eval_set_a3f2_formal and eval_set_a3s2_formal without tidy tasks; dev on halves of the spent sets. No bar changes.",
     ],
-    "applies_to": ["eval_set_a3_dev", "eval_set_a3d2_dev", "eval_set_a3_formal", "eval_set_a3s_formal"],
-    "formal_sets": ["eval_set_a3_formal", "eval_set_a3s_formal"],
+    "applies_to": ["eval_set_a3_dev", "eval_set_a3d2_dev", "eval_set_a3_formal", "eval_set_a3s_formal", "eval_set_a3f2_formal",
+                   "eval_set_a3s2_formal"],
+    "first_formal_sets": ["eval_set_a3_formal", "eval_set_a3s_formal"],
+    "first_formal_run": "a3 on 2026-10-27: f1-d524302 void (Windows path limit); f2 (code afb2b32) stopped at its CNY 30 cap after "
+                        "107 of 156 tasks, 10 of 16 checks passing; recorded failed; development material from then on (addendum 3)",
+    "formal_sets": ["eval_set_a3f2_formal", "eval_set_a3s2_formal"],
     "release_gate": "v2.1 ships when this evaluation passes and the other gates of the v2.1 plan (section 9) hold",
     "why": "v2.1 lets the assistant run long tasks across the whole work: a plan the author approves, background steps, a "
            "pause to ask the author, a report with sources and a set of change cards. A2 measures one sentence and one "
