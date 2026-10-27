@@ -105,7 +105,7 @@ PLAN_PROMPT = """作者在写作助手里说了一句话，要助手做一件跨
 
 其他字段：
 - target：trace 时写要理的对象或事情（照作者的说法，最多 20 字），其他类别写 null；
-- chapters：作者话里给了章节范围就写 [起, 止]（阿拉伯数字），没给就写 null；
+- chapters：作者话里给了章节范围就写 [起, 止]（阿拉伯数字）；只说了从哪章起（"从第六章往后""六章到结尾"），止写 null；只说了到哪章为止，起写 null；完全没给就写 null；
 - output：作者要的是"列出对不上的地方"写 "list"，要"一个能照着用的结论"写 "conclusion"；
 - ask_first：作者说了要先问他（"等我答过再下结论""拿不准的先停住问我""两种说法先问我"）写 true，否则写 false；
 - focus：tidy 时，作者点名要对的几类（照作者的说法，每类不超过 6 个字，最多 6 类，比如 ["日程", "分工", "经费"]），没点名写 null；其他类别写 null。
@@ -771,7 +771,10 @@ def _parse_plan(content: Any) -> dict[str, Any]:
     if not isinstance(data, dict):
         data = {}
     chapters = data.get("chapters")
-    ok = isinstance(chapters, list) and len(chapters) == 2 and all(isinstance(n, int) and not isinstance(n, bool) for n in chapters)
+    # One end may be null: "六章到结尾" has no last chapter the author named (A3 supplement, a3s3-w01-injection-10: read as the
+    # whole work, and a thread closed in chapter 5 went onto the card).
+    ends = isinstance(chapters, list) and len(chapters) == 2 and all(n is None or (isinstance(n, int) and not isinstance(n, bool)) for n in chapters)
+    ok = ends and any(n is not None for n in chapters)
     target = data.get("target") if isinstance(data.get("target"), str) else None
     focus = [" ".join(item.split())[:6] for item in data.get("focus") or [] if isinstance(item, str) and item.strip()][:6]         if isinstance(data.get("focus"), list) else []
     return {"type": data.get("type") if data.get("type") in ("thread_audit", "trace", "tidy") else "none",
@@ -783,7 +786,7 @@ def _parse_plan(content: Any) -> dict[str, Any]:
 def _chapters(chapters: list[int] | None, max_chapter: int, strict: bool = False) -> list[int]:
     if not chapters:
         return [1, max_chapter]
-    low, high = sorted(chapters)
+    low, high = sorted([chapters[0] or 1, chapters[1] or max_chapter])
     if strict and not (1 <= low <= high <= max_chapter):
         raise DomainError("assistant_long_chapters_invalid", 422)
     return [max(1, min(low, max_chapter)), max(1, min(high, max_chapter))]

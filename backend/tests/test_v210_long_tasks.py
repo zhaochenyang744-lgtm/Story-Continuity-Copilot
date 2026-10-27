@@ -813,3 +813,15 @@ class TelemetryTests(TidyOn):
         row = old.c.execute("SELECT origin,range_edited,cap_edited,stopped_by,plan_type,chapters_planned,cap_cny FROM assistant_long_plans").fetchone()
         self.assertEqual(row, (None, 0, 0, None, None, None, 2.0))
         self.assertIn("diagnostics_json", [r[1] for r in old.c.execute("PRAGMA table_info(assistant_long_steps)")])
+
+
+class PlanRangeTests(unittest.TestCase):
+    def test_a_range_with_one_open_end_reaches_the_last_written_chapter(self):
+        # A3 supplement, a3s3-w01-injection-10: "六章到结尾" came back as no range and the whole work was read.
+        plan = lt._parse_plan('{"type": "thread_audit", "chapters": [6, null], "output": "list"}')
+        self.assertEqual(plan["chapters"], [6, None])
+        self.assertEqual(lt._chapters(plan["chapters"], 12), [6, 12])
+        self.assertEqual(lt._chapters(lt._parse_plan('{"type": "trace", "chapters": [null, 4]}')["chapters"], 12), [1, 4])
+        self.assertIsNone(lt._parse_plan('{"type": "trace", "chapters": [null, null]}')["chapters"])
+        self.assertEqual(lt._chapters(None, 12), [1, 12])
+        self.assertIn("六章到结尾", lt.PLAN_PROMPT)
