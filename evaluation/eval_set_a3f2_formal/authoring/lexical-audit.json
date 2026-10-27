@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "names": 57,
+  "unique_names": 57,
+  "titles": 3,
+  "names_overlap": 0,
+  "titles_overlap": 0,
+  "corpus_drift": 0,
+  "old_source_files": 34,
+  "old_text_files": 807,
+  "old_normalized_inputs": 859,
+  "new_inputs": 48,
+  "new_unique_normalized_inputs": 46,
+  "allowed_same_input_groups": 2,
+  "copy_errors": 0,
+  "novelty_errors": 0,
+  "internal_novelty_errors": 0,
+  "max_external_similarity": 0.43478260869565216,
+  "max_internal_similarity_excluding_groups": 0.45714285714285713,
+  "bad_pairs": [],
+  "bindings": {
+    "eval_set_a3f2_formal": {
+      "tasks_sha256": "de7f72211e47c586df9574460acba3baa3e4e2b8589cd07a89298b86e449e21e",
+      "manifest_sha256": "21d7976cbaed812c914b757909249cc4827961d54117ded77f4a020ffab6f6c0"
+    },
+    "eval_set_a3s2_formal": {
+      "tasks_sha256": "60dd23198bf16ce9a97400f5144843edee3695b590a3f869670f8cf0304a49fb",
+      "manifest_sha256": "7b2a63ee9f525d6cd11d18e9341f8aa426e798b5f950a0a149cdeded0d40e486"
+    }
+  },
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_a26_formal",
+    "eval_set_a2s6_formal",
+    "eval_set_v13_authoring"
+  ]
+}

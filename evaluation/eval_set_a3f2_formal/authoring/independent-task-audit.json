@@ -1,0 +1,663 @@
+{
+  "status": "completed",
+  "audit_scope": "Independent semantic and execution-range review of all 38 formal tasks against final canonical works, materials and self-review; static authoring review only.",
+  "sha256": {
+    "tasks.json": "de7f72211e47c586df9574460acba3baa3e4e2b8589cd07a89298b86e449e21e",
+    "authoring/self-review.json": "754e80506e12b6965feb70c021eb10f86c92d772185177ec2f6eececac755eb0",
+    "works/w01.md": "c5acdd48b00b223e0c679c58d8d45c59f8863deee627de9dd50404ffc59e1135",
+    "works/w02.md": "982f7c36440bb52aeb62d55266da16f930fc9961ecac24abd3fe42769a211bf4",
+    "materials/w01-facts.json": "d625a1902053e4971f54a3c1d34f1f3b2f8fc5560fc1cba7038e2695645cdeab",
+    "materials/w02-facts.json": "d6c711969792e3d0a6b8f3864993aec51130b584640b42f8e2fa04bf3e8e5147",
+    "materials/w01-foreshadows.json": "c72aad36b39dc9282656cdb5a56ffcf12560f0a6298bd2f2f0971c27a8608c46",
+    "materials/w02-foreshadows.json": "6f4e9d4390d5df1958c0f7c7de52613bb01b4fecf2552ab7897fdc3e2849ef24"
+  },
+  "covered_task_ids": [
+    "a3f2-w01-trace-01",
+    "a3f2-w01-trace-02",
+    "a3f2-w01-trace-03",
+    "a3f2-w01-thread-audit-01",
+    "a3f2-w01-thread-audit-02",
+    "a3f2-w01-ask-01",
+    "a3f2-w01-ask-02",
+    "a3f2-w01-narrowed-01",
+    "a3f2-w01-narrowed-02",
+    "a3f2-w01-route-01",
+    "a3f2-w01-route-02",
+    "a3f2-w01-route-03",
+    "a3f2-w01-route-04",
+    "a3f2-w01-route-05",
+    "a3f2-w01-route-06",
+    "a3f2-w01-route-07",
+    "a3f2-w01-route-08",
+    "a3f2-w01-route-09",
+    "a3f2-w01-route-10",
+    "a3f2-w02-trace-01",
+    "a3f2-w02-trace-02",
+    "a3f2-w02-trace-03",
+    "a3f2-w02-thread-audit-01",
+    "a3f2-w02-thread-audit-02",
+    "a3f2-w02-ask-01",
+    "a3f2-w02-ask-02",
+    "a3f2-w02-narrowed-01",
+    "a3f2-w02-narrowed-02",
+    "a3f2-w02-route-01",
+    "a3f2-w02-route-02",
+    "a3f2-w02-route-03",
+    "a3f2-w02-route-04",
+    "a3f2-w02-route-05",
+    "a3f2-w02-route-06",
+    "a3f2-w02-route-07",
+    "a3f2-w02-route-08",
+    "a3f2-w02-route-09",
+    "a3f2-w02-route-10"
+  ],
+  "chapter_coverage": {
+    "w01": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "w02": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ]
+  },
+  "shared_draft_coverage": [
+    "w01",
+    "w02"
+  ],
+  "full_reading_basis": {
+    "w01": "Reused the same-final-source full reading documented in authoring/independent-full-reading-w01.json; final source hash rechecked before this audit.",
+    "w02": "Read final canonical chapters 1 through 30 in full in this audit, then checked the complete shared draft."
+  },
+  "independence": {
+    "participated_in_task_or_gold_authoring": false,
+    "route_blind_review_records_read_or_modified": false,
+    "sources_tasks_and_gold_modified": false
+  },
+  "review_rules": [
+    "The confirmed plan range overrides the initial whole-book request for narrowed tasks.",
+    "Foreshadow action sets are derived from actual closure chapters inside execution range, including threads planted earlier.",
+    "Near-miss events do not resolve their original questions; already-resolved initial records do not receive duplicate actions.",
+    "A contradiction endpoint outside the execution range is not required in a narrowed report.",
+    "Same-object original-event double versions require asking only where a definite conclusion or an explicit ask-first request requires a choice.",
+    "Task 33 takes precedence over the older general non-null scope quota; each work has three explicit non-null scopes and two confirmed narrowed ranges."
+  ],
+  "summary": {
+    "task_count": 38,
+    "long_task_count": 18,
+    "route_task_count": 20,
+    "long_tasks_with_single_reasonable_interpretation": 18,
+    "distinct_trace_objects_per_work": 3,
+    "ask_conclusion_tasks": 2,
+    "ask_explicit_wait_tasks": 2,
+    "closure_action_sets_checked": 6,
+    "registered_source_quote_checks": 74,
+    "shared_selection_checks": 2,
+    "same_input_context_pairs_checked": 2,
+    "tidy_requests": 0
+  },
+  "task_reviews": [
+    {
+      "task_id": "a3f2-w01-trace-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "全书只追翼纹候筒；换手、保管位置、展示及教学用途是同一原件的连续经历。六孔/八孔为原始状态矛盾，首次测影日两说只并列，正文未提供择一依据，请求也未要求定论。",
+      "required_registered_state_chapters": [
+        2,
+        7,
+        13,
+        19,
+        25,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-trace-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "全书只追硃脊漏舟；封柜、试水、登台、看守职责转移、议席和园圃构成连续经过。青铜/整木指同一原件初始材质；初装朝向异文与已交代的后续移动不同，请求明确暂不选边。",
+      "required_registered_state_chapters": [
+        3,
+        8,
+        14,
+        20,
+        26,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-trace-03",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "全书只追缄朔玉筹；封匣、启匣、核影、悬台、断裂、两片交园均须追踪。唯一原刻者冲突与后来断成两片的正常变化可以分开，报告请求未授权改资料。",
+      "required_registered_state_chapters": [
+        4,
+        9,
+        15,
+        21,
+        28,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-thread-audit-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "逐条核全书伏笔，完整动作集合为回收1、2、3并放弃8；4、5近似事件未答原问，6、7仍未说明；9材料起始已回收，不重复出卡。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "closure_chapter": 26
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "closure_chapter": 23
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w01-thread-audit-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        20
+      ],
+      "semantic_evidence": "前二十章上限明确，实际收束仅1于10章、2于18章；3于26章、8于23章均超界。不是按种植章排除仍应在范围内核验的线索。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w01-ask-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        14
+      ],
+      "semantic_evidence": "范围内的同一翼纹候筒、同一次首次测影在5/12章为初七/初九。作者要求可续写的定论，必须询问再采用回复；选初七只确定报告版本，不自动改事实或裁定范围外问题。",
+      "required_registered_state_chapters": [
+        2,
+        7,
+        13
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-ask-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        15,
+        30
+      ],
+      "semantic_evidence": "范围内同一硃脊漏舟的同一次初装在17/27章为朝东/朝西，两端均在15至30章。请求明确先问再继续，回复选朝西；后续安置变化不能解释这个原事件双写。",
+      "required_registered_state_chapters": [
+        20,
+        26,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-narrowed-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        9,
+        24
+      ],
+      "semantic_evidence": "最终计划9至24章覆盖1于10章、2于18章和8于23章，故三项完整集合与金标一致。3于26章不得带入；22/24章的4/5仍是近似未收，9初始已回收不重复。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "closure_chapter": 23
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w01-narrowed-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        12,
+        26
+      ],
+      "semantic_evidence": "最终计划12至26章只要求13、19、25三个登记状态。7章六孔端点在范围外，不要求补齐7/25孔数矛盾；5章首次测影日期在范围外，范围内12章单侧不能要求作双写裁定。",
+      "required_registered_state_chapters": [
+        13,
+        19,
+        25
+      ]
+    },
+    {
+      "task_id": "a3f2-w01-route-01",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "明确要求全书逐次追候筒并列出处及出入，是跨章追踪。"
+    },
+    {
+      "task_id": "a3f2-w01-route-02",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "明确要从封柜到后来逐次追漏舟，30章上下文未把范围限制为当前章。"
+    },
+    {
+      "task_id": "a3f2-w01-route-03",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "要求整本逐条核正文后给回收卡，尚需发现与核验全部伏笔。"
+    },
+    {
+      "task_id": "a3f2-w01-route-04",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "前24章全线核验并判断放弃，仍是范围明确的跨章清点。"
+    },
+    {
+      "task_id": "a3f2-w01-route-05",
+      "verdict": "pass",
+      "interpreted_route": "change",
+      "semantic_evidence": "现有湿纸事实可唯一定位为facts第18条；直接改措辞，不要求重新查全书。"
+    },
+    {
+      "task_id": "a3f2-w01-route-06",
+      "verdict": "pass",
+      "interpreted_route": "change",
+      "semantic_evidence": "无署名异议稿对应伏笔第3条，作者已认定收束，只要求单条改状态。"
+    },
+    {
+      "task_id": "a3f2-w01-route-07",
+      "verdict": "pass",
+      "interpreted_route": "ask",
+      "semantic_evidence": "明确只问能否整本追的功能，没有执行授权。"
+    },
+    {
+      "task_id": "a3f2-w01-route-08",
+      "verdict": "pass",
+      "interpreted_route": "ask",
+      "semantic_evidence": "概览页没有选文，这几句缺少可执行检查对象；需先问。"
+    },
+    {
+      "task_id": "a3f2-w01-route-09",
+      "verdict": "pass",
+      "interpreted_route": "check_passage",
+      "semantic_evidence": "写作页给出第31章共享草稿中的完整选句，同输入这几句因此有唯一选文对象。"
+    },
+    {
+      "task_id": "a3f2-w01-route-10",
+      "verdict": "pass",
+      "interpreted_route": "recap",
+      "semantic_evidence": "明确回忆最近三章以接续写作，没有追对象、查伏笔或改资料要求。"
+    },
+    {
+      "task_id": "a3f2-w02-trace-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "只追迟汐对钟原物的封存、移交、分持、合拢、暂借展示和取回；连扣分合没有更换外壳。黑陶/纯钛是同一原壳制造材质冲突，首次同步年份依请求保留两说。",
+      "required_registered_state_chapters": [
+        1,
+        6,
+        12,
+        18,
+        24,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-trace-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "只追刈光指匣，匣、航路片、旧门匙分开记。13章片入阴的独立护袋，19章匣装旧匙托冉，25章匙归窗台后空匣交竺，30章拆带成桌上空匣。固定左右的唯一原缺口冲突不能按观察角度消解，原归还日不裁定。",
+      "required_registered_state_chapters": [
+        2,
+        7,
+        13,
+        19,
+        25,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-trace-03",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "只追返龄契盒的原物、保管人和内容物，26章旧约取清、30章空盒归亓。8/26章制造当日一把/三把配钥不是后来补钥；与空盒回收等正常变化相互独立。",
+      "required_registered_state_chapters": [
+        3,
+        8,
+        14,
+        20,
+        26,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-thread-audit-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        30
+      ],
+      "semantic_evidence": "全书完整动作集合为回收1、2、3并放弃8；10章围巾来路、18章订餐人与收餐人、26章拍窗者均明确，23章永久停止寻址。4至7仍开放，9已resolved不重复。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "closure_chapter": 26
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "closure_chapter": 23
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w02-thread-audit-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        20
+      ],
+      "semantic_evidence": "限定1至20章仅有1于10章、2于18章可回收；26章拍窗解释与23章放弃寻址超界，不得凭全文认知带入。仍有眉目但原问未答不改状态。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w02-ask-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        1,
+        14
+      ],
+      "semantic_evidence": "迟汐对钟首次同步是4/11章指明的同一个首次事件，八十一/八十三年两端在前十四章。请求明确要定下结论，需先问；回复采用八十三年末日仅确定报告版本。",
+      "required_registered_state_chapters": [
+        1,
+        6,
+        12
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-ask-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        15,
+        30
+      ],
+      "semantic_evidence": "17/27章同指返港第二日首次相认时、此后未改的刈光指匣归还约，六/八天两端均在范围内。实际25章归还以及另行改动的散步、相见安排不能消解原约双写。请求先问，回复选第六天，无资料动作。",
+      "required_registered_state_chapters": [
+        19,
+        25,
+        30
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-narrowed-01",
+      "verdict": "pass",
+      "effective_chapters": [
+        9,
+        24
+      ],
+      "semantic_evidence": "按确认后的9至24章收束章，完整集合为1于10章、2于18章回收及8于23章放弃；3在26章超界。22章乐手到齐不等于找出作者，24章展架新灯不解释旧影暗光，4、5保持开放。",
+      "independently_expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "closure_chapter": 10
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "closure_chapter": 18
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 8,
+          "closure_chapter": 23
+        }
+      ],
+      "unchanged_open_targets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_resolved_target_not_repeated": 9
+    },
+    {
+      "task_id": "a3f2-w02-narrowed-02",
+      "verdict": "pass",
+      "effective_chapters": [
+        12,
+        26
+      ],
+      "semantic_evidence": "按最终12至26章只列12、18、24三个登记状态，6章黑陶端点在范围外，不强求6/24原壳冲突完整两端；同步年份4/11两端都在范围外，不进入报告。",
+      "required_registered_state_chapters": [
+        12,
+        18,
+        24
+      ]
+    },
+    {
+      "task_id": "a3f2-w02-route-01",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "返龄契盒三十章的内容物与跟随人需逐站报告，是跨章追踪。"
+    },
+    {
+      "task_id": "a3f2-w02-route-02",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "要求对钟开头至结尾分合去向并列冲突，是跨章报告。"
+    },
+    {
+      "task_id": "a3f2-w02-route-03",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "询问全书先前问题何者已回答，再核正文给状态卡，需整体伏笔核验。"
+    },
+    {
+      "task_id": "a3f2-w02-route-04",
+      "verdict": "pass",
+      "interpreted_route": "long_task",
+      "semantic_evidence": "明确翻完全书伏笔并分别回收、放弃，不是改单条既定状态。"
+    },
+    {
+      "task_id": "a3f2-w02-route-05",
+      "verdict": "pass",
+      "interpreted_route": "change",
+      "semantic_evidence": "母亲独游见矮柱可唯一定位为facts第27条；要求单条重写且保留独自去。"
+    },
+    {
+      "task_id": "a3f2-w02-route-06",
+      "verdict": "pass",
+      "interpreted_route": "change",
+      "semantic_evidence": "围巾来路对应伏笔第1条，作者已认定解释完，只要求该条改状态。"
+    },
+    {
+      "task_id": "a3f2-w02-route-07",
+      "verdict": "pass",
+      "interpreted_route": "ask",
+      "semantic_evidence": "明确只聊跨章查矛盾用法、不开始执行，功能咨询边界清楚。"
+    },
+    {
+      "task_id": "a3f2-w02-route-08",
+      "verdict": "pass",
+      "interpreted_route": "ask",
+      "semantic_evidence": "概览页没有选文，这几句无法指到具体检查对象。"
+    },
+    {
+      "task_id": "a3f2-w02-route-09",
+      "verdict": "pass",
+      "interpreted_route": "check_passage",
+      "semantic_evidence": "写作页提供第31章共享草稿原句，同输入因有明确选文可直接检查与前文关系。"
+    },
+    {
+      "task_id": "a3f2-w02-route-10",
+      "verdict": "pass",
+      "interpreted_route": "recap",
+      "semantic_evidence": "要求开写前回顾上一章几件事，既非选文检查也非跨章追踪。"
+    }
+  ],
+  "findings": [],
+  "unresolved_findings": 0
+}
