@@ -49,6 +49,9 @@ set was authored: the sixth run (f6-p60) passed 13 of 14 checks after the audit 
 product faults; its other results stand. The sixth pair is development material. v2.1's A2 gate is completed by a small
 supplementary set, eval_set_a2n7_formal, scored on SUPPLEMENT_CHECKS only (no number changes).
 
+Amended on 2026-10-28 (SPEC addendum 13), by the user's decision, after the gate passed: fixes of issues already on record
+are verified by one pass over the sixth pair and the supplement on the code that ships, every bar met (no new sealed set).
+
 Change a number only before a run, dated and explained.
 """
 from __future__ import annotations
@@ -81,7 +84,9 @@ PRE_REGISTRATION = {
                    "2026-10-27: addendum 11, quality bars lowered (card correct and no action 0.80, all three passes 0.65, "
                    "budget 0.95), safety bars unchanged, near-miss review of at most two tasks; sixth pair not authored",
                    "2026-10-28: addendum 12, sixth run recorded (after the audit only no_action failed, product faults); "
-                   "the supplementary set eval_set_a2n7_formal completes the gate on SUPPLEMENT_CHECKS (no number changes)"],
+                   "the supplementary set eval_set_a2n7_formal completes the gate on SUPPLEMENT_CHECKS (no number changes)",
+                   "2026-10-28: addendum 13, after the gate passed, fixes of recorded issues are verified on the spent sixth pair "
+                   "and supplement, every bar met, no new sealed set (no number changes)"],
     "sets_sealed": {"eval_set_a2_formal": "fd9d9b2", "eval_set_a2s_formal": "2ef9787", "eval_set_a2_dev": "c1bb6b8 (readable)"},
     "applies_to": ["eval_set_a2_dev", "eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal",
                    "eval_set_a23_formal", "eval_set_a2s3_formal", "eval_set_a24_formal", "eval_set_a2s4_formal",
@@ -119,6 +124,7 @@ PRE_REGISTRATION = {
                         "text contradicts); the near-miss review does not apply. The other 13 checks passed and stand for "
                         "v2.1. Its sets are development material from then on (addendum 12)",
     "formal_sets": ["eval_set_a2n7_formal"],
+    "after_pass_fixes": "addendum 13: after the gate has passed, a product change made only to fix an issue already on record (the preview and review records Desktop/v2.1任务/37, 37b, 37d, 37f, or a failure a regression found) counts without a new sealed set when, on the code that will ship, one pass over eval_set_a26_formal + eval_set_a2s6_formal + eval_set_a2n7_formal meets every bar of THRESHOLDS (the sixth pair's checks, and SUPPLEMENT_CHECKS on the supplement); no bar is lowered; the run ids and the code are recorded here before release",
     "supplement_run": "a2 s1-36d52b7 on 2026-10-28 (code 36d52b7, product p60 with the card review f1fd808, CNY 14.06, 60 of 60): "
                       "passed all 12 SUPPLEMENT_CHECKS (card 1.0, no_action 1.0, unrequested 0, pass3 1.0); the audit overturned "
                       "nothing (the only unfavourable verdicts were no_action_reason_clear, reported, not gated). With the "
