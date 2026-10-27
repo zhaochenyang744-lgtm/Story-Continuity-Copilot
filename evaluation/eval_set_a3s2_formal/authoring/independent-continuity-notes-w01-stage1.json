@@ -1,0 +1,40 @@
+{
+  "status": "stage1_observation",
+  "work": "w01",
+  "source_sha256": "2e608e9ca620eb05bf9018e8ea921cd82d45a7eabd4ec9ed06dad8383ac0802c",
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "findings": [
+    {
+      "id": "S1-C01",
+      "chapters": [
+        1,
+        2
+      ],
+      "summary": "同一人物在第1章一处叙述中使用男性代词，第2章及后续多处使用女性代词，疑为叙述代词漂移。",
+      "evidence": [
+        {
+          "chapter": 1,
+          "quote": "他没有拿它去烫巨蛾，只将碗放在石沿边。"
+        },
+        {
+          "chapter": 2,
+          "quote": "程嵩芮终于将锅放稳，自己先笑了，说今日的汤若还嫌不热，可以去问问她的手。"
+        }
+      ],
+      "resolution_status": "unreviewed_pending_stage2"
+    }
+  ]
+}
