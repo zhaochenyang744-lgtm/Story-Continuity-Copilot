@@ -625,6 +625,18 @@ class SameFactTests(unittest.TestCase):
         report, problems = ThreadAudit().validate(args, subjects, passages, set(), keep_valid=True)
         self.assertEqual(([entry["verdict"] for entry in report], problems), (["resolved", "resolved"], []))
 
+    def test_a_repaired_trace_step_keeps_what_stands_even_nothing_and_drops_not_yet_then_first_time(self):
+        from app.long_task_kinds import Trace
+        passages = {"R1": "罗盘仍在苏岑手里。", "R2": "温岚第一次打开罗盘。"}
+        own_words = {"states": [{"state": "罗盘被人悄悄拿走了", "refs": ["R1"]}], "conflicts": []}
+        self.assertIsNone(Trace().validate(own_words, {}, passages, set())[0])
+        # Regression ref-p60, a3f-w01-ask-02: after the repair a step with nothing standing failed the whole task.
+        self.assertEqual(Trace().validate(own_words, {}, passages, set(), keep_valid=True)[0], {"states": [], "conflicts": []})
+        sequence = {"states": [], "conflicts": [{"earlier": ["R1"], "later": ["R2"], "what": "前说封口从未打开，后说这一刻第一次开封"}]}
+        self.assertEqual(Trace().validate(sequence, {}, passages, set())[0]["conflicts"], [])
+        at_odds = {"states": [], "conflicts": [{"earlier": ["R1"], "later": ["R2"], "what": "一处说十七岁，一处说十八岁"}]}
+        self.assertEqual(len(Trace().validate(at_odds, {}, passages, set())[0]["conflicts"]), 1)
+
     def test_tidy_adds_no_fact_of_who_holds_a_thing_now(self):
         from app.long_task_kinds import Tidy
         self.assertNotIn("possession", Tidy.tool["function"]["parameters"]["properties"]["missing"]["items"]["properties"]["predicate"]["enum"])

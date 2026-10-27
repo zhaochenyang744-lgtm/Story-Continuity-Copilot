@@ -18,7 +18,7 @@ from typing import Any
 from .assistant_actions import ACTIONS, EVIDENCE_MAX, FACT_TYPES, OPEN_THREAD
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, REF_FORMAT, ToolContext, ToolError, fact_items
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value
-from .problem_codes import Problem
+from .problem_codes import Problem, codes_of
 
 NOTE_MAX = 80
 STATE_MAX = 40
@@ -285,8 +285,15 @@ class Trace:
                 problems.append(Problem("conflict_fields_missing" if not a or not b or not what else "ref_outside_step",
                                         f"conflicts 第 {number} 项：earlier 用前面几步或这一步的段落编号，later 用这一步的，what 写哪里对不上"))
                 continue
+            if NOT_YET.search(what) and FIRST_TIME.search(what):  # its own words say "not yet, then the first time": a sequence
+                continue
             conflicts.append({"earlier": a, "later": b, "what": what})
-        return (None, problems) if problems and not (keep_valid and (states or conflicts)) else ({"states": states, "conflicts": conflicts}, problems)
+        # After the repair a step keeps what stands. When all that failed was states in words of their own, that may be nothing:
+        # such a step failed the whole task (regression ref-p60, a3f-w01-ask-02, assistant_long_report_invalid). A report
+        # that is wrong in its form still fails.
+        only_unquoted = all(code == "state_not_quoted" for code in codes_of(problems))
+        stands = keep_valid and (states or conflicts or only_unquoted)
+        return (None, problems) if problems and not stands else ({"states": states, "conflicts": conflicts}, problems)
 
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
@@ -503,6 +510,10 @@ SAME_FINDING = 0.6  # two readings of one fact share this much of what they say
 RESTATED = 0.7  # a new fact this much of whose words an existing one of its subject holds says nothing new
 RESTATED_SAME_CHAPTER = 0.55  # ... or this much, when both come from the same chapter (A3 dev-2 round 2: "固定交接地点是璃岑服务间"
 #                               beside "日常交接使用璃岑服务间", both chapter 2)
+# A disagreement described as "never / not yet ... then for the first time" is a thing happening, not two sayings at odds
+# (regression ref-p60, a3f-w01-trace-02: "前说封口从未打开，后说这一刻第一次开封", twice, after the rule said so in words).
+NOT_YET = re.compile(r"从未|还没|未曾|尚未|仍然?(?:封|未|没)|没有?拆|看不见拆")
+FIRST_TIME = re.compile(r"第一次|首次|初次|头一回|这才")
 NO_NEWS = re.compile(r"(未|没|没有)(再)?(出现|提到|提及|写到|露面)|无新|没有新")
 THREAD_TALK = re.compile(r"这条线|不再(追|查)|往后不(再)?查")
 
