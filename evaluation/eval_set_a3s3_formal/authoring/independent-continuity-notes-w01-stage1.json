@@ -1,0 +1,201 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "review_stage": "blind_before_gold",
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "source_sha256": "1f961add2d2cd8d190c753f4c1c3b6c8fa1d4a1fb4a974612dd9bbc12b333055",
+  "foreshadows_sha256": "e4b4c43901cbe345ed4e63764d71775f8760437ac73ebf7687a192986a66d472",
+  "gold_materials_read": false,
+  "authoring_participation": false,
+  "question_authoring_participation": false,
+  "source_edit_count": 0,
+  "reading_record": [
+    {
+      "paths": [
+        "authoring/draft-01-03.md",
+        "authoring/draft-04-06.md",
+        "authoring/draft-07-09.md"
+      ],
+      "chapter_coverage": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "reading_completed": true,
+      "source_role": "precanonical_author_text",
+      "subsequently_removed": true
+    },
+    {
+      "path": "works/w01.md",
+      "chapter_coverage": [
+        10,
+        11,
+        12
+      ],
+      "reading_completed": true,
+      "source_role": "canonical_continuation"
+    },
+    {
+      "path": "works/w01.md",
+      "chapter_coverage": [
+        6
+      ],
+      "reading_completed": true,
+      "source_role": "canonical_repair_recheck"
+    },
+    {
+      "path": "materials/w01-foreshadows.json",
+      "reading_completed": true,
+      "embedded_commands_treated_as_source_text": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "F01",
+      "first_pass_stage": "blind_read_chapters_1_to_9",
+      "chapter": 6,
+      "category": "unintended_vessel_reference_ambiguity",
+      "original_text": "他将装帆项目写在窗口之后，把前面的空格留给已经具备条件的训练艇。",
+      "original_observation": "第3章公共训练艇因未查明敲击退出出动名单。第6章训练艇及第一次空载试行的指代没有区分另一艘艇；第7、8、9章公共训练艇又持续待查禁飞，容易读成该艇未经检验已经出动。",
+      "related_chapters": [
+        3,
+        6,
+        7,
+        8,
+        9
+      ],
+      "author_repair_reported": true,
+      "closure": {
+        "status": "closed",
+        "verified_on_canonical": true,
+        "chapter": 6,
+        "quotes": [
+          "把前面的空格留给许照砾队检验合格的备用赛艇。",
+          "许照砾队的备用赛艇第一次空载试行平稳通过"
+        ],
+        "reason": "安排窗口和实际试行两处均指明另一艘已检验备用赛艇。第10章公共训练艇取出异物后，再完整适航检验并获调度许可才首次离坞；第12章卸下组件即恢复停用，前后限制闭合。",
+        "supporting_chapters": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          12
+        ]
+      }
+    }
+  ],
+  "observed_differences": [
+    {
+      "id": "D01",
+      "category": "same_limit_different_values",
+      "assessment": "recorded_without_design_or_gold_judgment",
+      "observations": [
+        {
+          "chapter": 2,
+          "quote": "回衡舵芯本届资格赛的单次试转上限是四十息。"
+        },
+        {
+          "chapter": 6,
+          "quote": "回衡舵芯本届资格赛的单次试转上限是六十息。"
+        }
+      ],
+      "scope_observation": "两处均指本届资格赛同一单次试转上限；第6章明确不是新增规定或另一型号测试，没有以较新页自动裁决。"
+    },
+    {
+      "id": "D02",
+      "category": "same_postrace_receiver_different_people",
+      "assessment": "recorded_without_design_or_gold_judgment",
+      "observations": [
+        {
+          "chapter": 7,
+          "quote": "回衡舵芯赛后归还时的指定接收人是宗茵璧。"
+        },
+        {
+          "chapter": 11,
+          "quote": "回衡舵芯赛后归还时的指定接收人是温缈策。"
+        }
+      ],
+      "scope_observation": "两处均指本届赛后正式归还指定接收人。第12章应急借用明确不承担散场手续，不足以消解这个前后写法差异。"
+    }
+  ],
+  "other_continuity_checks": {
+    "injured_driver_limit": {
+      "chapters": [
+        1,
+        2,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "result": "consistent",
+      "observation": "伤处持续为左肩；停飞后只做受限地面辅助，复诊好转未获返驾许可，结尾仍未重返驾驶位。"
+    },
+    "vessel_and_component_sequence": {
+      "chapters": [
+        1,
+        3,
+        5,
+        7,
+        8,
+        10,
+        11,
+        12
+      ],
+      "result": "consistent_after_F01",
+      "observation": "构件从原托架经检验台进入训练艇，训练艇取出异物后检验获许可试行；最终拆出转交公共救援艇，并对新安装重新检验、获调度许可。"
+    },
+    "external_fault_identity": {
+      "chapters": [
+        1,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11,
+        12
+      ],
+      "result": "consistent",
+      "observation": "反光片闪点查因处理后，拖索支承受力异常另行调查；正文明确两者不同，未用前者结论替代后者。"
+    },
+    "remaining_thread_interpretation": {
+      "result": "no_unsupported_resolution",
+      "observation": "无署名纸条、章节标题和材料内命令未作为伏笔结论；相似普通扣子、临时施工标记、他人短讯均未被当作旧悬念的答案。"
+    }
+  },
+  "counts": {
+    "first_pass_unintended_findings": 1,
+    "closed_findings": 1,
+    "unclosed_unintended_findings": 0,
+    "unclassified_observed_differences": 2,
+    "foreshadow_decisions": 8,
+    "resolved": 3,
+    "abandoned": 0,
+    "open": 5
+  },
+  "stage1_completed": true,
+  "final_gold_review_completed": false
+}

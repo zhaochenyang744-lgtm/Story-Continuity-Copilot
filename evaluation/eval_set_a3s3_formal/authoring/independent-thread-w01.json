@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "source_sha256": "1f961add2d2cd8d190c753f4c1c3b6c8fa1d4a1fb4a974612dd9bbc12b333055",
+  "foreshadows_sha256": "e4b4c43901cbe345ed4e63764d71775f8760437ac73ebf7687a192986a66d472",
+  "review_stage": "blind_before_gold",
+  "gold_materials_read": false,
+  "starting_statuses_used_as_verdicts": false,
+  "decisions": [
+    {
+      "foreshadow": 1,
+      "state": "resolved",
+      "chapter": 5,
+      "quote": "外道护栏的浅白闪点来自松脱的反光片，岑沅枢紧固片脚后，闪点消失了。"
+    },
+    {
+      "foreshadow": 2,
+      "state": "resolved",
+      "chapter": 10,
+      "quote": "训练艇空舱里的敲击来自卡在肋板间的废铆钉，彭纾鹭取走铆钉后，声响停止了。"
+    },
+    {
+      "foreshadow": 3,
+      "state": "open",
+      "chapter": 2,
+      "quote": "他们找不到这张空白参赛签为何被特意留下的缘由"
+    },
+    {
+      "foreshadow": 4,
+      "state": "open",
+      "chapter": 11,
+      "quote": "附近新划的施工标记有日期和签名，方向也不同，不能用来解释旧痕。"
+    },
+    {
+      "foreshadow": 5,
+      "state": "open",
+      "chapter": 12,
+      "quote": "那封话仍留在原处，没有因为今天人人忙着交代去向，就自动变成一件已经对谁说清的事。"
+    },
+    {
+      "foreshadow": 6,
+      "state": "open",
+      "chapter": 11,
+      "quote": "也没有借着眼前这枚有主人的扣子，为帆角里的那一枚编一个来历。"
+    },
+    {
+      "foreshadow": 7,
+      "state": "open",
+      "chapter": 11,
+      "quote": "遇见没有收到确认的预留位置，便绕开它，先安排别处。"
+    },
+    {
+      "foreshadow": 8,
+      "state": "resolved",
+      "chapter": 2,
+      "quote": "进坞梯踏板发滑是溅出的润滑脂造成的，岑沅枢已经将油脂清净。"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "candidate_names": 17,
+  "candidate_names_sha256": "ae0224f5c8ab411e00a0ae6a17ed3ce1226d37ea1ea793be1ac2fd6ec3716017",
+  "names_source": "tasks",
+  "readable": {
+    "directories": 49,
+    "text_files": 807,
+    "files_by_directory": {
+      "eval_set_a1_dev": 5,
+      "eval_set_a1_formal": 8,
+      "eval_set_a1b_dev": 22,
+      "eval_set_a1b_formal": 25,
+      "eval_set_a1c2_formal": 17,
+      "eval_set_a1c3_formal": 10,
+      "eval_set_a1c4_formal": 5,
+      "eval_set_a1c5_formal": 5,
+      "eval_set_a1c_dev": 6,
+      "eval_set_a1c_formal": 9,
+      "eval_set_a1cr6_formal": 4,
+      "eval_set_a1cs2_formal": 13,
+      "eval_set_a1cs3_formal": 7,
+      "eval_set_a1cs4_formal": 4,
+      "eval_set_a1cs5_formal": 4,
+      "eval_set_a1cs_formal": 5,
+      "eval_set_a1cx_dev": 5,
+      "eval_set_a1cy_dev": 6,
+      "eval_set_a22_formal": 34,
+      "eval_set_a23_formal": 29,
+      "eval_set_a24_formal": 28,
+      "eval_set_a25_formal": 38,
+      "eval_set_a26_formal": 43,
+      "eval_set_a2_dev": 18,
+      "eval_set_a2_formal": 39,
+      "eval_set_a2s2_formal": 22,
+      "eval_set_a2s3_formal": 15,
+      "eval_set_a2s4_formal": 14,
+      "eval_set_a2s5_formal": 19,
+      "eval_set_a2s6_formal": 24,
+      "eval_set_a2s_formal": 20,
+      "eval_set_a2t_dev": 29,
+      "eval_set_a3_dev": 34,
+      "eval_set_a3_formal": 36,
+      "eval_set_a3d2_dev": 38,
+      "eval_set_a3f2_formal": 44,
+      "eval_set_a3s2_formal": 23,
+      "eval_set_a3s_formal": 19,
+      "eval_set_lf1_dev": 6,
+      "eval_set_lf1_formal": 6,
+      "eval_set_lf1_import": 5,
+      "eval_set_lf2_formal": 6,
+      "eval_set_lf3_formal": 6,
+      "eval_set_lf4_formal": 6,
+      "eval_set_lf5_formal": 6,
+      "eval_set_lf6_formal": 6,
+      "eval_set_lf7_formal": 6,
+      "eval_set_v11_authoring": 13,
+      "eval_set_v12_authoring": 15
+    },
+    "matching_names": 0,
+    "matching_files": 0,
+    "occurrences": 0,
+    "task_source_files": 38,
+    "normalized_inputs": 983
+  },
+  "sealed": {
+    "directories_scoped": 3,
+    "directories": 1,
+    "files_by_directory": {
+      "eval_set_a1_reserve": {
+        "text_files": 0,
+        "matching_files": 0,
+        "occurrences": 0
+      },
+      "eval_set_a1b_reserve": {
+        "text_files": 0,
+        "matching_files": 0,
+        "occurrences": 0
+      },
+      "eval_set_v13_authoring": {
+        "text_files": 20,
+        "matching_files": 0,
+        "occurrences": 0
+      }
+    },
+    "matching_names": 0,
+    "text_files": 20,
+    "matching_files": 0,
+    "occurrences": 0,
+    "content_output": 0
+  },
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_v13_authoring",
+    "eval_set_a2n7_formal"
+  ],
+  "prohibited_files_read": 0
+}

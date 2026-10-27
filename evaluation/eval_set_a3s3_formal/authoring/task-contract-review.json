@@ -1,0 +1,90 @@
+{
+  "status": "completed",
+  "review_scope": "task_contract_and_shared_draft",
+  "task_authoring_participation": false,
+  "prose_authoring_participation": true,
+  "independent_full_reading": false,
+  "tasks_reviewed": [
+    "a3s3-w01-injection-01",
+    "a3s3-w01-injection-02",
+    "a3s3-w01-injection-03",
+    "a3s3-w01-injection-04",
+    "a3s3-w01-injection-05",
+    "a3s3-w01-injection-06",
+    "a3s3-w01-injection-07",
+    "a3s3-w01-injection-08",
+    "a3s3-w01-injection-09",
+    "a3s3-w01-injection-10"
+  ],
+  "task_contract_agreement": 10,
+  "task_count": 10,
+  "source_chapters_reviewed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "source_chapters_pending": [],
+  "checks": {
+    "request_intent_and_scope": 10,
+    "run_suite_compatibility": 10,
+    "allowed_actions_range_exact": 10,
+    "injection_target_separate": 10,
+    "injection_location_design": 10,
+    "skip_asking_decision_mapping": 2,
+    "skip_asking_exactly_one_decision_point": 2,
+    "skip_asking_no_two_value_leak": 2,
+    "numeric_decision_points": 1,
+    "shared_draft_decision_points_prematurely_resolved": 0,
+    "review_quote_occurrences_verified": 38,
+    "injection_locations_verified": 10,
+    "action_quote_occurrences_verified": 6,
+    "decision_point_sides_source_verified": 4,
+    "chapter_10_resolution_semantic_match": true,
+    "chapter_11_decision_point_semantic_match": true,
+    "chapter_12_transfer_semantic_match": true,
+    "shared_draft_rechecked_after_source_completion": true,
+    "request_05_wording_recheck_pass": true
+  },
+  "findings": [
+    {
+      "id": "task-contract-01",
+      "task": "a3s3-w01-injection-01",
+      "type": "request_presupposition",
+      "status": "closed",
+      "resolution": "request_scope_wording_revised_and_rechecked",
+      "recheck_pass": true
+    },
+    {
+      "id": "task-contract-02",
+      "task": "a3s3-w01-injection-05",
+      "reported_by": "independent_full_reading_reviewer",
+      "type": "request_wording",
+      "status": "closed",
+      "resolution": "wording_revised_with_scope_decision_reply_and_actions_unchanged",
+      "recheck_pass": true
+    }
+  ],
+  "unresolved_findings": 0,
+  "limitations": [
+    "This is task-contract review with full chapter source coverage; this reviewer authored source chapters and is not the author-independent full-reading or blind-thread reviewer.",
+    "Static source and task review only; no product, evaluation runner, or model interface was invoked."
+  ],
+  "sha256": {
+    "tasks.json": "3f7fba697452cd6e60c7165f893b92c8b2daf178728c3823992cd8c3c02d2431",
+    "authoring/self-review.json": "0929afc5620dbd5f7677c1cd7191a768ae68df68d732481c91e6810a2b4dd3d9",
+    "authoring/self-review.md": "ad55ecfddb56fadf5cfdea1437c4f21f62c0a632a2985a7e2f4ab2377ec55da5",
+    "materials/w01-facts.json": "54375881a16e5a594163457c52b25837de6d5921bc175b5f626d66b3d3fda2bd",
+    "materials/w01-foreshadows.json": "e4b4c43901cbe345ed4e63764d71775f8760437ac73ebf7687a192986a66d472",
+    "works/w01.md": "1f961add2d2cd8d190c753f4c1c3b6c8fa1d4a1fb4a974612dd9bbc12b333055"
+  },
+  "source_sha256": "1f961add2d2cd8d190c753f4c1c3b6c8fa1d4a1fb4a974612dd9bbc12b333055"
+}

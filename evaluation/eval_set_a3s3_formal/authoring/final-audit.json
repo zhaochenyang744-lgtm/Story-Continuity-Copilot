@@ -1,0 +1,45 @@
+{
+  "branch": "eval/a3-3-authoring",
+  "base_head": "4f90ded395bcf3a7ed53a7ca69306837c95870a5",
+  "protected_files": 1427,
+  "protected_modified": 0,
+  "gitattributes_append_only": true,
+  "source_audit": {
+    "status": "PASS",
+    "works": {
+      "w01": {
+        "chapters": 12,
+        "chapter_han": [
+          2874,
+          2848,
+          2870,
+          2730,
+          2679,
+          2870,
+          2807,
+          2935,
+          2806,
+          2862,
+          2913,
+          2816
+        ],
+        "total_han": 34010,
+        "repeated_sentences": 0,
+        "sha256": "1f961add2d2cd8d190c753f4c1c3b6c8fa1d4a1fb4a974612dd9bbc12b333055"
+      }
+    },
+    "utf8_bom_files": 0,
+    "cr_files": 0
+  },
+  "negative_cases": 10,
+  "negative_passed": 10,
+  "temporary_directories_remaining": 0,
+  "canonical_unchanged_in_negatives": true,
+  "tracked_changes": [
+    " M .gitattributes"
+  ],
+  "untracked_top_entries": [
+    "evaluation/eval_set_a3s3_formal/"
+  ],
+  "status": "PASS"
+}

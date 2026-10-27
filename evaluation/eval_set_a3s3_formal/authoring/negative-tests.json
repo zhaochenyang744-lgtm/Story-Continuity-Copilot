@@ -1,0 +1,226 @@
+{
+  "status": "PASS",
+  "baseline": "PASS",
+  "cases": 10,
+  "passed": 10,
+  "canonical_files_checked": 27,
+  "canonical_unchanged": true,
+  "temporary_directories_created": 10,
+  "temporary_directories_remaining": 0,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "results": [
+    {
+      "id": "N01",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "a3s3-w01-injection-01:injection_quote"
+      ],
+      "observed_expected_codes": [
+        "a3s3-w01-injection-01:injection_quote"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "a3s3-w01-injection-01:injection_quote",
+        "injection:depth"
+      ]
+    },
+    {
+      "id": "N02",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "a3s3-w01-injection-06:injection_collision"
+      ],
+      "observed_expected_codes": [
+        "a3s3-w01-injection-06:injection_collision"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "a3s3-w01-injection-06:injection_collision",
+        "a3s3-w01-injection-06:injection_object_collision"
+      ]
+    },
+    {
+      "id": "N03",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "manifest:4:hash"
+      ],
+      "observed_expected_codes": [
+        "manifest:4:hash"
+      ],
+      "error_count": 4,
+      "additional_error_count": 3,
+      "binding_error_count": 4,
+      "hashes_rebound": false,
+      "rebind_status": "not_rebound",
+      "errors": [
+        "manifest:4:hash",
+        "independent:data_binding",
+        "independent:w01:full:source_binding",
+        "independent:w01:thread:final_binding"
+      ]
+    },
+    {
+      "id": "N04",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "w01:decision:count"
+      ],
+      "observed_expected_codes": [
+        "w01:decision:count"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "w01:decision:count",
+        "injection:skip_decision_distinct"
+      ]
+    },
+    {
+      "id": "N05",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "w01:decision:numeric_count"
+      ],
+      "observed_expected_codes": [
+        "w01:decision:numeric_count"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "w01:decision:numeric_count",
+        "injection:numeric_skip_asking_count"
+      ]
+    },
+    {
+      "id": "N06",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "w01:decision:1:chapter_gap"
+      ],
+      "observed_expected_codes": [
+        "w01:decision:1:chapter_gap"
+      ],
+      "error_count": 3,
+      "additional_error_count": 2,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "w01:decision:1:b:quote",
+        "w01:decision:1:b:depth",
+        "w01:decision:1:chapter_gap"
+      ]
+    },
+    {
+      "id": "N07",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "w01:decision:1:a:depth"
+      ],
+      "observed_expected_codes": [
+        "w01:decision:1:a:depth"
+      ],
+      "error_count": 1,
+      "additional_error_count": 0,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "w01:decision:1:a:depth"
+      ]
+    },
+    {
+      "id": "N08",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "injection:skip_decision_distinct"
+      ],
+      "observed_expected_codes": [
+        "injection:skip_decision_distinct"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "injection:skip_decision_distinct",
+        "injection:numeric_skip_asking_count"
+      ]
+    },
+    {
+      "id": "N09",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "a3s3-w01-injection-03:skip_injection_discloses_both"
+      ],
+      "observed_expected_codes": [
+        "a3s3-w01-injection-03:skip_injection_discloses_both"
+      ],
+      "error_count": 1,
+      "additional_error_count": 0,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "a3s3-w01-injection-03:skip_injection_discloses_both"
+      ]
+    },
+    {
+      "id": "N10",
+      "status": "PASS",
+      "exit_code": 1,
+      "checker_status": "FAIL",
+      "expected_error_codes": [
+        "injection:skip_asking_count"
+      ],
+      "observed_expected_codes": [
+        "injection:skip_asking_count"
+      ],
+      "error_count": 2,
+      "additional_error_count": 1,
+      "binding_error_count": 0,
+      "hashes_rebound": true,
+      "rebind_status": "PASS",
+      "errors": [
+        "injection:kind_distribution",
+        "injection:skip_asking_count"
+      ]
+    }
+  ]
+}
