@@ -49,7 +49,7 @@ from .thresholds import PRE_REGISTRATION
 DEV_SETS = ("eval_set_a3d2_dev",)  # addendum 1: the first dev set used its 3 runs and is not run again
 FORMAL_SETS = tuple(PRE_REGISTRATION["formal_sets"])
 # Addendum 3: the first formal pair ran (failed) and both dev sets are used; all are development material, in any combination.
-SPENT_SETS = tuple(PRE_REGISTRATION["first_formal_sets"]) + ("eval_set_a3_dev",)
+SPENT_SETS = tuple(PRE_REGISTRATION["first_formal_sets"]) + ("eval_set_a3_dev",) + tuple(PRE_REGISTRATION["second_formal_sets"])  # addendum 5
 RESUME_SEED = 20261024
 KILLED = 86  # the runner process's exit code when it died as planned
 CHECK_CHARS = 100_000_000  # three passes of 32 long tasks read about nine million characters; A1's settings allow ten

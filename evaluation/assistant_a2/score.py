@@ -17,7 +17,7 @@ import statistics
 from app.assistant_tools import INTERNAL_ID
 
 from .judge import ask, change_material, change_text, expected_fact, expected_thread, new_fact, new_thread
-from .thresholds import _CHECKS as CHECKS, PRE_REGISTRATION, THRESHOLDS, evaluate
+from .thresholds import _CHECKS as CHECKS, PRE_REGISTRATION, SUPPLEMENT_CHECKS, THRESHOLDS, evaluate
 
 FORCED_LINE = "步数或预算已到，没有查完"
 # The first formal pair ran on 2026-10-23 and failed (report 11), the second the same night (report 14), the third the next
@@ -25,7 +25,7 @@ FORCED_LINE = "步数或预算已到，没有查完"
 # shape, and no run of them is a formal result.
 SPENT_FORMAL_SETS = ("eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal",
                      "eval_set_a23_formal", "eval_set_a2s3_formal", "eval_set_a24_formal", "eval_set_a2s4_formal",
-                     "eval_set_a25_formal", "eval_set_a2s5_formal")
+                     "eval_set_a25_formal", "eval_set_a2s5_formal", "eval_set_a26_formal", "eval_set_a2s6_formal")
 CHAPTER_NUMBER = re.compile(r"第\s*(\d+)\s*章")
 # Addendum 5: a resolve_thread point that says only "resolved", or names the chapter it was resolved in, is read off the card.
 RESOLVED_POINT = re.compile(r"^(?:已经?|标[为成])?回收(?:了)?$")
@@ -348,7 +348,8 @@ def _spread(values):
 def refresh(report):
     values, reported = metrics(report)
     report["metrics"], report["reported"] = values, reported
-    report["gate"] = evaluate(values)
+    supplement = set(report.get("sets", [])) == set(PRE_REGISTRATION["formal_sets"])  # addendum 12: the formal set is the supplement
+    report["gate"] = evaluate(values, only=SUPPLEMENT_CHECKS) if supplement else evaluate(values)
     formal = (set(report.get("sets", [])) == set(PRE_REGISTRATION["formal_sets"]) and not set(report.get("sets", [])) & set(SPENT_FORMAL_SETS)
               and report.get("runs") == 3 and report.get("complete"))
     report["gate_decision"] = report["gate"]["status"] if formal else "not_a_formal_run:" + report["gate"]["status"]

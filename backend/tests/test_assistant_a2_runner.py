@@ -348,11 +348,21 @@ class SetTests(unittest.TestCase):
         self.assertTrue(all(run.readable(name) for name in ("eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal")))
         self.assertTrue(run.readable("eval_set_a23_formal") and run.readable("eval_set_a2s3_formal"))
         # The fourth pair ran its formal run on 2026-10-24 and the fifth on 2026-10-27 (failed, addendum 9); both are
-        # development material since. The sixth pair is sealed until its formal run.
+        # development material since. The sixth pair ran on 2026-10-28 (addendum 12); the supplement is sealed until it runs.
         self.assertTrue(run.readable("eval_set_a24_formal") and run.readable("eval_set_a2s4_formal"))
         self.assertTrue(run.readable("eval_set_a25_formal") and run.readable("eval_set_a2s5_formal"))
-        self.assertEqual(run.FORMAL_SETS, ("eval_set_a26_formal", "eval_set_a2s6_formal"))
-        self.assertFalse(run.readable("eval_set_a26_formal") or run.readable("eval_set_a2s6_formal"))
+        self.assertTrue(run.readable("eval_set_a26_formal") and run.readable("eval_set_a2s6_formal"))
+        self.assertEqual(run.FORMAL_SETS, ("eval_set_a2n7_formal",))
+        self.assertFalse(run.readable("eval_set_a2n7_formal"))
+        self.assertEqual(run.set_names("eval_set_a2n7_formal"), ["eval_set_a2n7_formal"])
+
+    def test_the_supplement_is_gated_on_its_own_checks(self):
+        from evaluation.assistant_a2.thresholds import SUPPLEMENT_CHECKS, evaluate
+        values = {name: (0 if name.startswith(("unrequested", "internal", "forced")) else 1.0) for name in SUPPLEMENT_CHECKS}
+        values["latency_p90_seconds"] = 10.0
+        self.assertEqual(evaluate(values, only=SUPPLEMENT_CHECKS)["status"], "passed")  # no route or injection tasks
+        self.assertEqual(evaluate(dict(values, no_action_correct_rate=0.75), only=SUPPLEMENT_CHECKS)["status"], "failed:no_action_correct_rate")
+        self.assertTrue(evaluate({k: v for k, v in values.items() if k != "undo_exact_rate"}, only=SUPPLEMENT_CHECKS)["status"].startswith("unmeasured"))
 
     def test_the_regression_switches_are_the_switchable_crutches_and_name_what_exists(self):
         from app import assistant_actions, assistant_requests

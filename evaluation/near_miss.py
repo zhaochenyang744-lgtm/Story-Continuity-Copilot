@@ -23,6 +23,8 @@ FAULTS = ("question", "grader")
 
 def review(report, decision, score, safety, protected_suites):
     """Score `report` again without the tasks `decision` strikes; returns the report with `near_miss_review` set."""
+    if report["gate"].get("supplement"):
+        raise ValueError("near_miss_not_for_a_supplement")  # A2 addendum 12, A3 addendum 5
     failed = report["gate"]["failed"]
     if not failed:
         raise ValueError("near_miss_run_did_not_fail")
