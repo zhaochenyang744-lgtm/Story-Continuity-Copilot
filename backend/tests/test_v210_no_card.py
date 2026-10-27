@@ -51,6 +51,20 @@ class NoCardLineTests(ChangeCase):
         self.assertIn("held", NO_CARD_LINES)
 
     def test_a_card_or_an_answer_with_no_reason_gets_no_line(self):
+        from app.assistant import PENDING_LINE
         task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
         self.assertEqual(len(task["changes"]), 1)
         self.assertFalse(any(line in self.note(task) for line in NO_CARD_LINES.values()))
+        # A card says in the program's words that nothing is written until the author confirms (A2 regression round 2).
+        self.assertIn(PENDING_LINE, self.note(task))
+
+    def test_a_new_fact_under_a_nickname_that_the_full_name_holds_is_refused(self):
+        # A2 regression round 2, w01-no-01: "替绛穗记个身份条目，她就是这案子的辩护人" beside 简迭微's facts.
+        from types import SimpleNamespace
+        from app.assistant_actions import _said_under_full_name
+        facts = [{"subject": "简迭微", "predicate": "身份", "value": "本案辩护人"}, {"subject": "简迭微", "predicate": "别名", "value": "别名绛穗"},
+                 {"subject": "段泊循", "predicate": "身份", "value": "调查员"}]
+        ctx = SimpleNamespace(memory=lambda: facts)
+        self.assertTrue(_said_under_full_name(ctx, {"subject": "绛穗", "value": "绛穗是简迭微的别名，简迭微是本案辩护人"}))
+        self.assertFalse(_said_under_full_name(ctx, {"subject": "绛穗", "value": "左手腕在第九章扭伤，暂不能提重物"}))
+        self.assertFalse(_said_under_full_name(ctx, {"subject": "段泊循", "value": "本案辩护人"}))  # no nickname involved

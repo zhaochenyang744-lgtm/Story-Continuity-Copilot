@@ -126,6 +126,9 @@ NO_CARD_LINES = {"delete": "没有出卡片：删除资料这一版还做不到�
                  "recorded": "没有出卡片：资料里已经记着这件事。",
                  "no_evidence": "没有出卡片：正文里没找到能作依据的段落。",
                  "held": "没有出卡片：提出的改动没有通过核对，可以换个说法再问一次。"}
+# What a change task with a card says in the program's words: nothing is written yet. "已提出按正文修正" was read as a change
+# already made, by the grader and plausibly by an author (A2 regression round 2, injection-05; the fourth formal run's audit).
+PENDING_LINE = "这些改动要等你在卡片上确认后才会写进资料。"
 # A sentence that says a change was proposed, when the task ends with no card: the clause goes (A2 fifth formal run: "我已按第15章
 # 提出改动，等你确认" with nothing to confirm, three times).
 CLAIMED_PROPOSAL = re.compile(r"[，,；;]?\s*(?:我[^，,。；;]{0,16}|已(?:经)?(?:按|照)[^，,。；;]{0,12})提出[^。；;]*")
@@ -1155,7 +1158,9 @@ class AssistantEngine:
         (the request list), what the runs proposed, and the refusals its proposals met. None of the reasons, no line."""
         requests = self._requests.pop(task_id, None)
         if assistant_actions.proposed_count(self.db, task_id):
-            return answer
+            if PENDING_LINE in (answer.get("note") or ""):
+                return answer
+            return {**answer, "note": " ".join(part for part in (answer.get("note"), PENDING_LINE) if part)}
         answer = _without_claimed_proposal(answer)
         wants = {piece["want"] for piece in requests or []}
         steps = self.store.steps(task_id)

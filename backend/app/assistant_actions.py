@@ -725,6 +725,35 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
             "message": "这条改动还没有放进卡片。" + "".join(reasons) + "确实需要，就原样再提出一次，会放进卡片。"}
 
 
+ALIAS_RESTATED = 0.8  # share of a new fact's words that one fact of the full name (with its alias fact) holds
+FILLER = set("是的了在和与也就")
+
+
+def _said_under_full_name(ctx: ToolContext, after: dict[str, Any]) -> bool:
+    """A new fact under a nickname that a fact of the full name says already: "绛穗·身份：她是本案辩护人" beside 简迭微's
+    "本案辩护人" and her alias fact "别名绛穗" (A2 regression round 2, w01-no-01: held once, proposed again, put on the card).
+    Measured against one fact of the full name at a time, with the alias fact, so a full name with many facts does not cover
+    everything new."""
+    subject = "".join(ch for ch in after["subject"] if ch.isalnum())
+    facts = ctx.memory()
+    squeeze = lambda text: "".join(ch for ch in str(text or "") if ch.isalnum())
+    aliases = [fact for fact in facts if subject and subject in squeeze(fact["value"]) and squeeze(fact["subject"]) != subject]
+    if not aliases:
+        return False
+    names = set(subject) | {ch for fact in aliases for ch in squeeze(fact["subject"])}
+    said = {ch for ch in squeeze(after["value"]) if ch not in names and ch not in FILLER}
+    if len(said) < 3:
+        return False
+    for alias in aliases:
+        owner = squeeze(alias["subject"])
+        for fact in facts:
+            if fact is not alias and squeeze(fact["subject"]) == owner:
+                held = set(squeeze(fact["value"])) | set(squeeze(alias["value"]))
+                if len(said & held) / len(said) >= ALIAS_RESTATED:
+                    return True
+    return False
+
+
 def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     action = ACTIONS.get(args.get("action"))
     if action is None:
@@ -754,6 +783,8 @@ def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     shown = {"action": action.kind, "target": args.get("target") if action.target_kind else None, "evidence": [item["ref"] for item in proposal["evidence"]],
              "request_words": request_words}
     # The second look weighs a fact item against the facts the materials hold; a thread item has none to be weighed against.
+    if action.kind == "add_fact" and _said_under_full_name(ctx, proposal["after"]):
+        raise ToolError("change_fact_already_recorded")
     look = _second_look(ctx, action, args, proposal, request_words) if action.record_kind == "fact" else None
     if look is not None:
         return Outcome(look, shown, 0)
