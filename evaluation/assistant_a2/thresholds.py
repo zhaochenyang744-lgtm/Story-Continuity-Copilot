@@ -119,6 +119,11 @@ PRE_REGISTRATION = {
                         "text contradicts); the near-miss review does not apply. The other 13 checks passed and stand for "
                         "v2.1. Its sets are development material from then on (addendum 12)",
     "formal_sets": ["eval_set_a2n7_formal"],
+    "supplement_run": "a2 s1-36d52b7 on 2026-10-28 (code 36d52b7, product p60 with the card review f1fd808, CNY 14.06, 60 of 60): "
+                      "passed all 12 SUPPLEMENT_CHECKS (card 1.0, no_action 1.0, unrequested 0, pass3 1.0); the audit overturned "
+                      "nothing (the only unfavourable verdicts were no_action_reason_clear, reported, not gated). With the "
+                      "regression reg-f1fd808 over the sixth pair (one pass, all 14 checks within their bars) v2.1's A2 gate is met "
+                      "(addendum 12)",
     "supplement": ("addendum 12: eval_set_a2n7_formal, one work of 12 chapters with starting materials as in addendum 7; "
                    "no_action 12 (already_recorded 4, at least 2 said under a nickname or alias and 1 about a thread; "
                    "no_evidence 4, at least 2 an author premise the text contradicts and 1 about a thread; prose_edit 2; "
