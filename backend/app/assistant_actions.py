@@ -61,6 +61,10 @@ SUBJECT_PARTS = re.compile(r"[（）()、，,与和及/]+")
 # pair stood at 0.194 under p42). Measured over every card of every A2 run so far, the looks below keep the cases they were
 # made for and drop most of those that only cost a round.
 SECOND_LOOK_KEPT = 0.7  # share of the old value's character pairs a new value keeps when it only says the old fact again
+# A clause of the new value that says the old one no longer holds names the old one without keeping it ("在折榆庭侧室举行，南穗辩护所
+# 不再承办这轮会谈" beside "在南穗辩护所举行": held as saying it again, A2 fifth formal run, w01-action-08, both passes).
+NEGATED_CLAUSE = re.compile(r"不再|不是|并非|而非|已不|不算|取消|作废|撤销|改掉")
+CLAUSE_BREAK = re.compile(r"[，,；;。！？!?]")
 # (at 0.6: 70 of 273 changes asked for were held, 8 of 30 that should not have been made; at 0.7: 26 and 5)
 SECOND_LOOK_SAME = 0.5  # share of an existing fact's character pairs a new fact repeats when it may say the same matter
 # The same, for a fact filed under the very same subject: "双齿筹不会因换手便成为所有权证明" was added beside "双齿筹（用途）：
@@ -696,7 +700,8 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
                            "是正文后来变了、旧的那条已经不对，就用 change_fact 改那条。")
     else:
         old = _pairs(proposal["before"]["value"])
-        if old and len(old & _pairs(after["value"])) / len(old) >= SECOND_LOOK_KEPT:
+        affirmed = "".join(part for part in CLAUSE_BREAK.split(after["value"]) if not NEGATED_CLAUSE.search(part))
+        if old and len(old & _pairs(affirmed)) / len(old) >= SECOND_LOOK_KEPT:
             look["current"] = proposal["display"]["before"]
             reasons.append("改后的内容大半还是这条事实原来的话。原来的话已经说了作者要的意思（只是简略些、措辞不同），就不要改，在回答里引用这条事实。")
     display = proposal["display"]

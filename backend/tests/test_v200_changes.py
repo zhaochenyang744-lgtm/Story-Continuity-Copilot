@@ -698,6 +698,10 @@ class SecondLookTests(FactCase):
         task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
         moved = {**restated, "target": fact, "evidence": [passage], "value": "鹦鹉螺号潜艇沉没"}
         self.assertEqual(run_propose_change(ctx, moved).result["change"], "C1")
+        # A new value naming the old only to say it no longer holds keeps nothing of it (A2 fifth formal run, w01-action-08).
+        task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
+        replaced = {**restated, "target": fact, "evidence": [passage], "value": f"鹦鹉螺号潜艇，{self.fact['value']}的说法不再成立"}
+        self.assertEqual(run_propose_change(ctx, replaced).result["change"], "C1")
 
     def test_words_that_share_nothing_with_the_record_are_held_back(self):
         task, ctx, passage, fact = self.setup_task("罗盘那条线最后一章已经收了")

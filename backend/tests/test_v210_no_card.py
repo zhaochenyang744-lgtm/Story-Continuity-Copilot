@@ -38,6 +38,18 @@ class NoCardLineTests(ChangeCase):
         self.assertEqual(task["changes"], [])
         self.assertIn(NO_CARD_LINES["recorded"], self.note(task))
 
+    def test_an_answer_that_claims_a_change_with_no_card_loses_the_claim(self):
+        # A2 fifth formal run: "我已按第15章提出改动，等你确认" three times, with nothing on the card.
+        from app.assistant import _without_claimed_proposal
+        answer = {"status": "answered", "sentences": [
+            {"text": "资料里现在记的是「在南穗辩护所举行」，这条与正文对不上，我已按第15章提出改动，等你确认。", "refs": ["R1"]},
+            {"text": "我已提出改动，等你确认。", "refs": []},
+            {"text": "第5章写覃蘅执已提出续约意向。", "refs": ["R2"]}]}
+        self.assertEqual([s["text"] for s in _without_claimed_proposal(answer)["sentences"]],
+                         ["资料里现在记的是「在南穗辩护所举行」，这条与正文对不上。", "第5章写覃蘅执已提出续约意向。"])
+        self.assertIs(_without_claimed_proposal(answer["sentences"][2:] and {"sentences": answer["sentences"][2:]})["sentences"][0], answer["sentences"][2])
+        self.assertIn("held", NO_CARD_LINES)
+
     def test_a_card_or_an_answer_with_no_reason_gets_no_line(self):
         task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
         self.assertEqual(len(task["changes"]), 1)

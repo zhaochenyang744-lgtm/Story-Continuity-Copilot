@@ -29,6 +29,7 @@ class MergeTests(unittest.TestCase):
         self.c.execute("CREATE TABLE assistant_changes(id TEXT PRIMARY KEY, task_id TEXT, project_id TEXT, ordinal INTEGER, kind TEXT, target_id TEXT, "
                        "before_json TEXT, after_json TEXT, display_json TEXT, evidence_json TEXT, status TEXT, created_at TEXT)")
         self.c.execute("CREATE TABLE assistant_tasks(id TEXT PRIMARY KEY, input_json TEXT, consensus_json TEXT)")
+        self.c.execute("CREATE TABLE assistant_steps(task_id TEXT, ordinal INTEGER, tool_name TEXT)")
         self.c.execute("INSERT INTO assistant_tasks(id,input_json) VALUES('T',?)", (json.dumps({"question": "第八章兽医说没另添镇静药，这个安排给她留一格"}, ensure_ascii=False),))
         self.assertIn("assistant_changes", SCHEMA)
 
@@ -75,6 +76,14 @@ class MergeTests(unittest.TestCase):
         self.assertEqual(self.card(), [])
         record = json.loads(self.c.execute("SELECT consensus_json FROM assistant_tasks WHERE id='T'").fetchone()[0])
         self.assertEqual([(item["runs"], item["kept"]) for item in record["items"]], [([1, 2], False)])
+
+    def test_an_authors_run_that_tried_and_was_refused_takes_what_the_other_two_agreed(self):
+        # A2 fifth formal run, w02-action-03: the author's run proposed a fact with a field wrong and was refused; the other
+        # two proposed the same fact, and the card came out empty.
+        self.c.execute("INSERT INTO assistant_steps(task_id,ordinal,tool_name) VALUES('T',3,'propose_change')")
+        self.put(item("S1", 1, "change_fact", "C"), item("S2", 1, "change_fact", "C"))
+        self.assertTrue(assistant_consensus.merge(self.c, "T", ["S1", "S2"]))
+        self.assertEqual(self.card(), [("change_fact", "C", 1)])
 
     def test_with_fewer_than_three_runs_the_authors_card_stands(self):
         self.put(item("T", 1, "change_fact", "B"), item("S1", 1, "change_fact", "A"))

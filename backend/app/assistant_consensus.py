@@ -6,7 +6,9 @@ author sees) and two hidden runs of the same request (status `shadow`, no reserv
 proposed what they will, an item stays when at least two runs proposed it, an item the author's run alone proposed goes, and
 an item the other two proposed and the author's run did not is added from one of them, unless the author's run proposed
 nothing: its answer then says why nothing should change, and the card follows it (p52; on the spent pairs two of the five
-cards filled this way were no-action tasks made wrong, and none was made right). The hidden runs are then deleted; what they
+cards filled this way were no-action tasks made wrong, and none was made right). An author's run that tried to propose and
+was refused or held back did not decide that nothing should change, and is filled like any other (A2 fifth formal run:
+w02-action-03, whose fact the other two runs agreed on, lost to a field the author's run got wrong). The hidden runs are then deleted; what they
 cost is the task's.
 
 Items are matched by what they change: a record's kind and the record (its id). A new record is matched by its kind and the
@@ -85,9 +87,11 @@ def merge(c: sqlite3.Connection, task_id: str, other_ids: list[str]) -> bool:
     question = "".join(str((json.loads(task["input_json"]) if task and task["input_json"] else {}).get("question") or "").split())
     groups = _groups(question, rows)
     majority = len(rows) >= 3
+    tried = bool(rows[task_id]) or c.execute("SELECT 1 FROM assistant_steps WHERE task_id=? AND tool_name='propose_change' LIMIT 1",
+                                             (task_id,)).fetchone() is not None
     for group in groups:
         agreed = len(set(group["runs"])) >= MAJORITY_OF_THREE
-        group["kept"] = (agreed if majority else 0 in group["runs"]) and (0 in group["runs"] or bool(rows[task_id]))
+        group["kept"] = (agreed if majority else 0 in group["runs"]) and (0 in group["runs"] or tried)
     _record(c, task_id, groups, len(rows))
     if not majority:
         return False

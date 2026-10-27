@@ -119,7 +119,11 @@ NO_CARD_LINES = {"delete": "没有出卡片：删除资料这一版还做不到�
                  "prose": "没有出卡片：正文由你自己改，可以让我给改法。",
                  "agreed": "没有出卡片：几次核对没有得出一致的改动。",
                  "recorded": "没有出卡片：资料里已经记着这件事。",
-                 "no_evidence": "没有出卡片：正文里没找到能作依据的段落。"}
+                 "no_evidence": "没有出卡片：正文里没找到能作依据的段落。",
+                 "held": "没有出卡片：提出的改动没有通过核对，可以换个说法再问一次。"}
+# A sentence that says a change was proposed, when the task ends with no card: the clause goes (A2 fifth formal run: "我已按第15章
+# 提出改动，等你确认" with nothing to confirm, three times).
+CLAIMED_PROPOSAL = re.compile(r"[，,；;]?\s*(?:我[^，,。；;]{0,16}|已(?:经)?(?:按|照)[^，,。；;]{0,12})提出[^。；;]*")
 NO_CARD_RECORDED = {"change_no_difference", "change_fact_already_recorded", "change_thread_exists", "change_thread_not_open"}
 NO_CARD_UNSUPPORTED = {"change_value_not_in_evidence", "change_evidence_invalid", "change_evidence_before_planted"}
 CHANGE_STATUS_PROBLEM = Problem("change_status_mismatch", "提出了资料改动时，status 用 answered，用一两句带出处的话说明依据")
@@ -1147,11 +1151,14 @@ class AssistantEngine:
         requests = self._requests.pop(task_id, None)
         if assistant_actions.proposed_count(self.db, task_id):
             return answer
+        answer = _without_claimed_proposal(answer)
         wants = {piece["want"] for piece in requests or []}
-        codes = {step["error_code"] for step in self.store.steps(task_id) if step.get("error_code")}
+        steps = self.store.steps(task_id)
+        codes = {step["error_code"] for step in steps if step.get("error_code")}
+        tried = any(step.get("tool_name") == "propose_change" for step in steps)
         reason = ("delete" if "delete" in wants else "prose" if "prose" in wants else "agreed" if proposed
                   else "recorded" if codes & NO_CARD_RECORDED else "no_evidence" if codes & NO_CARD_UNSUPPORTED or answer.get("status") == "not_found"
-                  else None)
+                  else "held" if tried else None)
         line = NO_CARD_LINES.get(reason)
         if not line or line in (answer.get("note") or ""):
             return answer
@@ -1170,6 +1177,17 @@ class AssistantEngine:
             self.store.set_chars_charged(task_id, 0)
         self._settle(task_id)
 
+
+
+def _without_claimed_proposal(answer: dict[str, Any]) -> dict[str, Any]:
+    """The answer of a change task that ends with no card, less any clause saying a change was proposed; a sentence that was
+    nothing but the claim goes."""
+    sentences = []
+    for sentence in answer.get("sentences") or []:
+        text = CLAIMED_PROPOSAL.sub("", sentence.get("text") or "").strip("，,；;。 ")
+        if text:
+            sentences.append({**sentence, "text": text if text.endswith(("。", "！", "？", "”", "」")) else text + "。"})
+    return {**answer, "sentences": sentences} if sentences != (answer.get("sentences") or []) else answer
 
 # --- routes ------------------------------------------------------------------------------------------------------------------
 class Strict(BaseModel):
