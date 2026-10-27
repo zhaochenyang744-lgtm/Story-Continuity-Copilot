@@ -1,0 +1,14 @@
+{
+  "passed": 2,
+  "identical_results": true,
+  "module": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "absolute_path": {
+    "status": "PASS",
+    "exit_code": 0,
+    "cwd_inside_authoring": true
+  },
+  "checker_sha256": "286c9431af8fbb79969e89b6c024b65da7659bba71626eda5da0cf116f15372d"
+}

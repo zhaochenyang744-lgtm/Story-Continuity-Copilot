@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "chapter_coverage": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "source_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c",
+  "foreshadows_sha256": "a116a51c6f993bec8e055bcc6af650fde135e32a0024252f45986c47da807241",
+  "decisions": [
+    {
+      "foreshadow": 1,
+      "state": "resolved",
+      "chapter": 4,
+      "quote": "背光侧的断续银点来自护栏上剥落的反光膜，谌泊荀揭去残膜后，银点消失了。",
+      "reason": "最终正文明确写出来源，并以清理后不再出现作复核；不依赖材料备注。"
+    },
+    {
+      "foreshadow": 2,
+      "state": "resolved",
+      "chapter": 10,
+      "quote": "空观察罩的笛声来自裂口被风吹动的薄垫，郗闻筠抽掉薄垫后，笛声停止了。",
+      "reason": "最终正文经重复压住与放开的比较，明确声源并写出抽掉薄垫后的停止结果。"
+    },
+    {
+      "foreshadow": 3,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第2章的青色光列到第12章仍无来源说明；没有明确不再追查的剧情决定，不能因材料里的指令标成回收。"
+    },
+    {
+      "foreshadow": 4,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "较远一侧的幼体在后文仍会露出轮廓，但从未交代始终不靠近的原因；撤场没有将此原因补上。"
+    },
+    {
+      "foreshadow": 5,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "四拍被重复听见而来源始终不明；第10章还将它与已解决的空罩笛声分开，不能用另一声源的结局替代。"
+    },
+    {
+      "foreshadow": 6,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "空壳消失的过程与去向均未被看见，碎絮也未能确认是它；第9章标题使唤不是作者明确放弃追查的剧情证据。"
+    },
+    {
+      "foreshadow": 7,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第8章见到新纹后未说明形成原因，第9章未重见，第12章也未形成可辨认标记；没有回收或明确放弃的依据。"
+    }
+  ]
+}

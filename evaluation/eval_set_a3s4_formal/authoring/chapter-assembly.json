@@ -1,0 +1,13 @@
+{
+  "manual_source_components": {
+    "chapters-01-04.md": "9c8bc4d004e4e365bb8d5dd73c33529d978d18ce99850f8e526dbff30018308d",
+    "chapters-05-08.md": "7c62cccd7a1d41661224154a8f806e2ef572595b60070d657acf6c6555218e14",
+    "chapters-09-12.md": "80810ba887d8d4acee7aa0c291f33b34d824cb35edf966c0d4b9aef798cda701"
+  },
+  "canonical_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c",
+  "concatenation_only": true,
+  "prose_generated_by_script": false,
+  "source_han": 36626,
+  "pre_review_canonical_sha256": "77b367f44aa044febc236f4d2a11a87f0fcbfe46fc88acb66784c5c94c0fd482",
+  "post_review_manual_edits": 4
+}
