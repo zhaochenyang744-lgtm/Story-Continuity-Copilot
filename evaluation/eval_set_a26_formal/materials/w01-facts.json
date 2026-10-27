@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "莳页册",
+    "predicate": "保管人",
+    "value": "黎见棠保管原件，许泊垣需要照片时先问她。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "萼弧坠",
+    "predicate": "持有人",
+    "value": "许泊垣持有并佩戴，是他自己的银坠。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "黎见棠",
+    "predicate": "居住安排",
+    "value": "暂住周砚荞家的客房。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "姜序弥",
+    "predicate": "参与方式",
+    "value": "只在朋友群线上联系，尚未返城线下相聚。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "任澄蓁",
+    "predicate": "合照公开",
+    "value": "与黎见棠的私人合照暂不公开。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "黎见棠与周砚荞",
+    "predicate": "相识时期",
+    "value": "读书时已经相识。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "许泊垣",
+    "predicate": "职业",
+    "value": "建筑模型师。",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "周砚荞",
+    "predicate": "与黎见棠关系",
+    "value": "朋友，愿意暂借客房供黎过渡。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "宁晏菱",
+    "predicate": "个人活动",
+    "value": "曾照自己日程上课，随后与同学吃午饭。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "贺以蘅",
+    "predicate": "借物归还",
+    "value": "向任澄蓁借过防滑手套，后来已归还。",
+    "chapter": 8
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "任澄蓁",
+    "predicate": "职业",
+    "value": "独立摄影，习惯与被摄者确认用途。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "姜序弥",
+    "predicate": "与许泊垣关系",
+    "value": "许泊垣的朋友。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "樊予蔚",
+    "predicate": "失物处理",
+    "value": "从包装纸下找出客人的红袋短折伞并交还，不是门口深色长伞。",
+    "chapter": 7
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "黎见棠",
+    "predicate": "别名",
+    "value": "周砚荞从读书时叫她荻瓣。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "许泊垣",
+    "predicate": "别名",
+    "value": "熟悉的朋友也叫他榛屿。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "周砚荞",
+    "predicate": "别名",
+    "value": "黎见棠与老朋友叫她柑芽。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "卷云杯",
+    "predicate": "归属",
+    "value": "已赠给周砚荞，归周所有，不是借放。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "黎见棠与许泊垣",
+    "predicate": "婚姻状态",
+    "value": "取消婚约，此前未登记结婚。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "宁晏菱",
+    "predicate": "家庭关系",
+    "value": "许泊垣的表姐。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "贺以蘅",
+    "predicate": "与黎见棠关系",
+    "value": "旧同学，毕业后仍有往来。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "樊予蔚",
+    "predicate": "职业",
+    "value": "在澜苒市经营花店。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "周砚荞",
+    "predicate": "借住边界",
+    "value": "提供客房，不替黎见棠与许泊垣转达彼此的话。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "许泊垣",
+    "predicate": "工作决定",
+    "value": "继续做模型师，不为争取复合辞职。",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "宁晏菱",
+    "predicate": "传话原则",
+    "value": "只转说话人明确同意转达的内容，不替人补说意图。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "卷云杯",
+    "predicate": "用途",
+    "value": "供周砚荞自己使用，不作为黎许关系的证明。",
+    "chapter": 5
+  }
+]

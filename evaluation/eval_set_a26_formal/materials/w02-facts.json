@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "禾角册",
+    "predicate": "保管人",
+    "value": "由杨映荃保管，要看原件先向她借。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "两家见面",
+    "predicate": "频率",
+    "value": "每周星期六八个人一起见面。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "陆照苒",
+    "predicate": "公开范围",
+    "value": "不向家庭以外的人公开抱错经历。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "雾纹包",
+    "predicate": "持有人",
+    "value": "方若荻拿着自己的包。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "柴照棠",
+    "predicate": "联络方式",
+    "value": "只通过柴予萱向陆照苒转达，不直接联系她。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴予萱",
+    "predicate": "养育父母",
+    "value": "由柴照棠和杨映荃养育，陆问杉与方若荻所生。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆照苒",
+    "predicate": "养育父母",
+    "value": "由陆问杉和方若荻养育，柴照棠与杨映荃所生。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴照棠",
+    "predicate": "职业",
+    "value": "公交驾驶员。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "杨映荃",
+    "predicate": "职业",
+    "value": "图书发行公司的普通职员。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆问杉",
+    "predicate": "职业",
+    "value": "在汽车维修店工作。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "方若荻",
+    "predicate": "职业",
+    "value": "服装公司的样衣助理。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴闻序",
+    "predicate": "年龄",
+    "value": "三十一岁，是柴照棠与杨映荃的长子。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆筱砚",
+    "predicate": "年龄",
+    "value": "二十三岁，是陆问杉与方若荻的小女儿。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴予萱",
+    "predicate": "别名",
+    "value": "家人从小叫她蓼芽。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆照苒",
+    "predicate": "别名",
+    "value": "朋友给她起的昵称是黛团。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴闻序",
+    "predicate": "别名",
+    "value": "朋友叫他杉栖。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "瓷棉熊",
+    "predicate": "归属",
+    "value": "陆照苒的童年布熊，始终归她，不因相认转送。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴予萱",
+    "predicate": "居住安排",
+    "value": "独自租住，不因相认搬到任何一对父母家。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆照苒",
+    "predicate": "居住安排",
+    "value": "独自租住，不与柴予萱交换住房。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "抱错记录",
+    "predicate": "确认状态",
+    "value": "八个人已认可确认记录，不再重新调查真假。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "柴闻序",
+    "predicate": "称呼原则",
+    "value": "不要求两位主角都叫自己哥哥。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆筱砚",
+    "predicate": "公开边界",
+    "value": "不替任何一位姐姐决定对外说到哪里。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "杨映荃",
+    "predicate": "照片处分",
+    "value": "只把自己拍的照片给别人，不处分他人的原件。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "方若荻",
+    "predicate": "装照片经历",
+    "value": "曾将自己保存的家庭照片装入雾纹包，不是两家共用收纳。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "柴予萱与陆照苒",
+    "predicate": "成长及相认",
+    "value": "各在原家庭长大，二十七岁相认。",
+    "chapter": 1
+  }
+]

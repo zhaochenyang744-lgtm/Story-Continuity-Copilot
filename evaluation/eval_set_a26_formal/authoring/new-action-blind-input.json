@@ -1,0 +1,550 @@
+{
+  "tasks": [
+    {
+      "id": "a26f-w02-action-16",
+      "work": "w02",
+      "request": "旧工具箱那段说错了，依陆后来亲口讲的重写，私信还封着这一层别丢。"
+    },
+    {
+      "id": "a26f-w02-action-15",
+      "work": "w02",
+      "request": "筱砚未发语音的说明添一句：她想先誊成文字再决定要不要发；原先未发送、未放给人听的内容别删。"
+    },
+    {
+      "id": "a26f-w01-action-13",
+      "work": "w01",
+      "request": "那张没图又不署名的明信片，来处还悬着，给它单独留根线。"
+    },
+    {
+      "id": "a26f-w01-action-18",
+      "work": "w01",
+      "request": "花店门口的陌生长伞我决定不写了，把那条伏笔标成放弃。"
+    },
+    {
+      "id": "a26f-w02-action-14",
+      "work": "w02",
+      "request": "那段没人落款的生日录音也替我单开根线，来路先悬着。"
+    },
+    {
+      "id": "a26f-w02-action-17",
+      "work": "w02",
+      "request": "筱砚那条录好没发的语音，后面我不展开了，整支停写。"
+    },
+    {
+      "id": "a26f-w01-action-14",
+      "work": "w01",
+      "request": "旧模型底下那张月份对不齐的小纸片，也开成一条新线，别并到相册那边。"
+    },
+    {
+      "id": "a26f-w01-action-15",
+      "work": "w01",
+      "request": "未打开那张画的说明补一句：任想等寄画的人当面讲过再展开；原来未拆和来意不明的内容留着。"
+    },
+    {
+      "id": "a26f-w02-action-13",
+      "work": "w02",
+      "request": "相册背页那组谁也认不出的缩写，加一条伏笔追它的书写者，不要记成空相格的事。"
+    },
+    {
+      "id": "a26f-w01-action-17",
+      "work": "w01",
+      "request": "任那张蓝纸裹着的画后面我不追写了，这一支就停在这里。"
+    },
+    {
+      "id": "a26f-w01-action-16",
+      "work": "w01",
+      "request": "贺去外地那条写偏了，别还写他要长住，按他后来亲口解释重写，没定的日子别替他定。"
+    },
+    {
+      "id": "a26f-w02-action-18",
+      "work": "w02",
+      "request": "远方看房间那条我不追了，把柴闻序这支伏笔标成放弃。"
+    }
+  ],
+  "materials": {
+    "w01": {
+      "facts": [
+        {
+          "memory_type": "dynamic_state",
+          "subject": "莳页册",
+          "predicate": "保管人",
+          "value": "黎见棠保管原件，许泊垣需要照片时先问她。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "萼弧坠",
+          "predicate": "持有人",
+          "value": "许泊垣持有并佩戴，是他自己的银坠。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "黎见棠",
+          "predicate": "居住安排",
+          "value": "暂住周砚荞家的客房。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "姜序弥",
+          "predicate": "参与方式",
+          "value": "只在朋友群线上联系，尚未返城线下相聚。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "任澄蓁",
+          "predicate": "合照公开",
+          "value": "与黎见棠的私人合照暂不公开。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "黎见棠与周砚荞",
+          "predicate": "相识时期",
+          "value": "读书时已经相识。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "许泊垣",
+          "predicate": "职业",
+          "value": "建筑模型师。",
+          "chapter": 5
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "周砚荞",
+          "predicate": "与黎见棠关系",
+          "value": "朋友，愿意暂借客房供黎过渡。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "宁晏菱",
+          "predicate": "个人活动",
+          "value": "曾照自己日程上课，随后与同学吃午饭。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "贺以蘅",
+          "predicate": "借物归还",
+          "value": "向任澄蓁借过防滑手套，后来已归还。",
+          "chapter": 8
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "任澄蓁",
+          "predicate": "职业",
+          "value": "独立摄影，习惯与被摄者确认用途。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "姜序弥",
+          "predicate": "与许泊垣关系",
+          "value": "许泊垣的朋友。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "樊予蔚",
+          "predicate": "失物处理",
+          "value": "从包装纸下找出客人的红袋短折伞并交还，不是门口深色长伞。",
+          "chapter": 7
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "黎见棠",
+          "predicate": "别名",
+          "value": "周砚荞从读书时叫她荻瓣。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "许泊垣",
+          "predicate": "别名",
+          "value": "熟悉的朋友也叫他榛屿。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "周砚荞",
+          "predicate": "别名",
+          "value": "黎见棠与老朋友叫她柑芽。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "卷云杯",
+          "predicate": "归属",
+          "value": "已赠给周砚荞，归周所有，不是借放。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "黎见棠与许泊垣",
+          "predicate": "婚姻状态",
+          "value": "取消婚约，此前未登记结婚。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "宁晏菱",
+          "predicate": "家庭关系",
+          "value": "许泊垣的表姐。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "贺以蘅",
+          "predicate": "与黎见棠关系",
+          "value": "旧同学，毕业后仍有往来。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "樊予蔚",
+          "predicate": "职业",
+          "value": "在澜苒市经营花店。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "周砚荞",
+          "predicate": "借住边界",
+          "value": "提供客房，不替黎见棠与许泊垣转达彼此的话。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "许泊垣",
+          "predicate": "工作决定",
+          "value": "继续做模型师，不为争取复合辞职。",
+          "chapter": 5
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "宁晏菱",
+          "predicate": "传话原则",
+          "value": "只转说话人明确同意转达的内容，不替人补说意图。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "卷云杯",
+          "predicate": "用途",
+          "value": "供周砚荞自己使用，不作为黎许关系的证明。",
+          "chapter": 5
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "退回信封里未写完的称呼",
+          "description": "许泊垣写给黎见棠的信停在称呼开头，显示他仍期待复合；这封信为什么退回、未写完的话是什么尚未说清。",
+          "status": "planted",
+          "planted_chapter": 1
+        },
+        {
+          "title": "周包里没有送出的两张票",
+          "description": "周留着两张未送出的票，想邀请的人尚未知道，为什么一直不曾说出口及能否成行仍有待展开。",
+          "status": "developing",
+          "planted_chapter": 2
+        },
+        {
+          "title": "书架下的未签名便条",
+          "description": "许在书架下发现没有落款的便条，要求把话亲自说完，谁写的、为什么留下这句话还没确认。",
+          "status": "planted",
+          "planted_chapter": 3
+        },
+        {
+          "title": "萼弧坠内侧的短刻痕",
+          "description": "银坠内侧靠边处留着短刻痕，许说不清缘由，看起来可能与某次被留在记忆里的日子有关。",
+          "status": "developing",
+          "planted_chapter": 4
+        },
+        {
+          "title": "贺对外地邀约的迟疑",
+          "description": "贺计划离开澜苒市到外地长期居住，但一直没有向朋友说清何时离开，邀约与他的犹豫还需要追索。",
+          "status": "planted",
+          "planted_chapter": 5
+        },
+        {
+          "title": "任没有打开的蓝色画纸",
+          "description": "朋友寄给任一件私人画作，折在蓝色画纸里却一直未打开；里面画了什么、寄来的用意还未说明。",
+          "status": "planted",
+          "planted_chapter": 6
+        },
+        {
+          "title": "花店门口反复出现的陌生伞",
+          "description": "樊店门口反复出现一把陌生深色长伞，没有人认领；它与客人来取的红袋短折伞并非同一把。",
+          "status": "planted",
+          "planted_chapter": 7
+        },
+        {
+          "title": "姜未答应的远方见面",
+          "description": "远方有人邀姜见面，姜还未答应，对方具体想谈什么也没讲明；这趟见面是否会发生仍悬着。",
+          "status": "planned",
+          "planted_chapter": 8
+        },
+        {
+          "title": "卷云杯把手的修补",
+          "description": "周已说明杯子是自己意外磕坏后找人修好，并非许损坏，这条关于裂痕来由的疑问已经说清。",
+          "status": "resolved",
+          "planted_chapter": 2,
+          "resolved_chapter": 5
+        },
+        {
+          "title": "共同拍周年照的旧打算",
+          "description": "黎与许取消婚约时同时作罢了共同拍周年照的打算，不再留作将来必须赴的约，此线已经放弃。",
+          "status": "abandoned",
+          "planted_chapter": 1
+        }
+      ]
+    },
+    "w02": {
+      "facts": [
+        {
+          "memory_type": "dynamic_state",
+          "subject": "禾角册",
+          "predicate": "保管人",
+          "value": "由杨映荃保管，要看原件先向她借。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "两家见面",
+          "predicate": "频率",
+          "value": "每周星期六八个人一起见面。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "陆照苒",
+          "predicate": "公开范围",
+          "value": "不向家庭以外的人公开抱错经历。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "雾纹包",
+          "predicate": "持有人",
+          "value": "方若荻拿着自己的包。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "柴照棠",
+          "predicate": "联络方式",
+          "value": "只通过柴予萱向陆照苒转达，不直接联系她。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴予萱",
+          "predicate": "养育父母",
+          "value": "由柴照棠和杨映荃养育，陆问杉与方若荻所生。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆照苒",
+          "predicate": "养育父母",
+          "value": "由陆问杉和方若荻养育，柴照棠与杨映荃所生。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴照棠",
+          "predicate": "职业",
+          "value": "公交驾驶员。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "杨映荃",
+          "predicate": "职业",
+          "value": "图书发行公司的普通职员。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆问杉",
+          "predicate": "职业",
+          "value": "在汽车维修店工作。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "方若荻",
+          "predicate": "职业",
+          "value": "服装公司的样衣助理。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴闻序",
+          "predicate": "年龄",
+          "value": "三十一岁，是柴照棠与杨映荃的长子。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆筱砚",
+          "predicate": "年龄",
+          "value": "二十三岁，是陆问杉与方若荻的小女儿。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴予萱",
+          "predicate": "别名",
+          "value": "家人从小叫她蓼芽。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆照苒",
+          "predicate": "别名",
+          "value": "朋友给她起的昵称是黛团。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴闻序",
+          "predicate": "别名",
+          "value": "朋友叫他杉栖。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "瓷棉熊",
+          "predicate": "归属",
+          "value": "陆照苒的童年布熊，始终归她，不因相认转送。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴予萱",
+          "predicate": "居住安排",
+          "value": "独自租住，不因相认搬到任何一对父母家。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆照苒",
+          "predicate": "居住安排",
+          "value": "独自租住，不与柴予萱交换住房。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "抱错记录",
+          "predicate": "确认状态",
+          "value": "八个人已认可确认记录，不再重新调查真假。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "柴闻序",
+          "predicate": "称呼原则",
+          "value": "不要求两位主角都叫自己哥哥。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆筱砚",
+          "predicate": "公开边界",
+          "value": "不替任何一位姐姐决定对外说到哪里。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "杨映荃",
+          "predicate": "照片处分",
+          "value": "只把自己拍的照片给别人，不处分他人的原件。",
+          "chapter": 4
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "方若荻",
+          "predicate": "装照片经历",
+          "value": "曾将自己保存的家庭照片装入雾纹包，不是两家共用收纳。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "event_timeline",
+          "subject": "柴予萱与陆照苒",
+          "predicate": "成长及相认",
+          "value": "各在原家庭长大，二十七岁相认。",
+          "chapter": 1
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "方没有寄出的双份信",
+          "description": "方写下两封同样信封的信，想请柴予萱搬回陆家；收信的安排以及为什么写完却没有寄出仍未说明。",
+          "status": "planted",
+          "planted_chapter": 1
+        },
+        {
+          "title": "禾角册空着的一格",
+          "description": "杨的旧相册空出一格没有照片，她还未说明留给谁或准备放什么，似乎等着以后补上某种新的关系。",
+          "status": "developing",
+          "planted_chapter": 2
+        },
+        {
+          "title": "柴总绕开的公交终点",
+          "description": "柴照棠熟悉公交路线却总回避一处终点，问到缘故只说以后再讲，这个地点与他有何关联仍待解释。",
+          "status": "planted",
+          "planted_chapter": 3
+        },
+        {
+          "title": "瓷棉熊背后的改线",
+          "description": "陆照苒童年布熊背后有改过的针脚，她暂时想不起是谁缝的，修补缘由与缝者仍待后文说明。",
+          "status": "developing",
+          "planted_chapter": 4
+        },
+        {
+          "title": "陆不肯打开的旧工具箱",
+          "description": "陆问杉把当年的身份文件藏在旧工具箱里，不愿打开或让人看，箱中材料与两家相认的关系还需追索。",
+          "status": "planted",
+          "planted_chapter": 5
+        },
+        {
+          "title": "筱砚录好却未发的语音",
+          "description": "陆筱砚录好一段语音，留在自己手里，没有发送也不愿放给别人；内容还未向旁人说明，是否发送仍未决定。",
+          "status": "planted",
+          "planted_chapter": 6
+        },
+        {
+          "title": "柴闻序答应陪看的远方房间",
+          "description": "柴闻序答应陪朋友到远方看一间房，否认这是搬家计划，却还没听清朋友为何想去以及房间的关系。",
+          "status": "planted",
+          "planted_chapter": 7
+        },
+        {
+          "title": "杨在旧票上圈出的日子",
+          "description": "杨在一张旧票上圈出一个日子，又将票带回，承诺以后自己讲，眼下并未说明日期与谁或什么事相关。",
+          "status": "planned",
+          "planted_chapter": 8
+        },
+        {
+          "title": "雾纹包底下的第二层口袋",
+          "description": "方已经解释底层口袋由自己缝出，只用于放普通车票，没有隐藏身份材料，这处疑问已经收束。",
+          "status": "resolved",
+          "planted_chapter": 2,
+          "resolved_chapter": 5
+        },
+        {
+          "title": "互换童年房间的提议",
+          "description": "首次会面时有人提议让两位主角互换童年房间住一阵，八人已当面否决，今后不按这项提议办。",
+          "status": "abandoned",
+          "planted_chapter": 1
+        }
+      ]
+    }
+  }
+}
