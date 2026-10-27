@@ -54,6 +54,17 @@ def _short(value: Any, limit: int) -> str:
     return "" if INTERNAL_ID.search(text) or REF_FORMAT.search(text) else text[:limit]
 
 
+def _squeezed(text: Any) -> str:
+    return "".join(ch for ch in str(text or "") if ch.isalnum())
+
+
+def _quoted(state: str, passages: list[Any]) -> bool:
+    """Whether a trace state is the passages' own words (punctuation and spaces aside): a summary of several things added
+    people and doings no passage holds, one item in ten of a report (A3 first formal run, evidence support 0.90)."""
+    words = _squeezed(state)
+    return bool(words) and any(words in _squeezed(getattr(p, "text", p)) for p in passages)
+
+
 def _chapter(refs: list[str], rows: dict[str, dict[str, Any]]) -> int | None:
     numbers = [rows[ref]["chapter_number"] for ref in refs if ref in rows and rows[ref].get("chapter_number")]
     return max(numbers) if numbers else None
@@ -220,7 +231,7 @@ class Trace:
     produces: list[str] = []
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
-- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
+- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项。state 照抄 refs 那段原文里说出这个新状态的连续原话（不超过 40 字，可以只抄半句；不改字、不加字、不并句），refs 写这一段的编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
 - conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
@@ -248,6 +259,9 @@ class Trace:
             refs = _refs(item.get("refs")) if isinstance(item, dict) else []
             state = _short(item.get("state"), STATE_MAX) if isinstance(item, dict) else ""
             if NO_NEWS.search(state):  # "not in these chapters" is no state, and no passage can back it (A3 dev-2 round 2)
+                continue
+            if refs and all(ref in passages for ref in refs) and not _quoted(state, [passages[ref] for ref in refs]):
+                problems.append(Problem("state_not_quoted", f"states 第 {number} 项：state 要照抄 refs 段落里连续的原话，不改字、不加字、不并句"))
                 continue
             if not state or not refs or any(ref not in passages for ref in refs):
                 problems.append(Problem("state_empty" if not state else "refs_missing" if not refs else "ref_outside_step",
@@ -287,7 +301,7 @@ class Trace:
         return []
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
-        states = [{"text": f"第 {s['chapter']} 章：{s['state']}", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"]}
+        states = [{"text": f"第 {s['chapter']} 章：「{s['state']}」", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"]}
                   for output in outputs for s in output.get("states", [])]
         asked = {d.get("conflict"): d["id"] for d in decisions}
         conflicts = [{"text": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章：{c['what']}" + _resolution(decisions, asked.get(c["id"], "")),

@@ -35,6 +35,12 @@ def step_view(messages):
     return threads, chapters
 
 
+def quote(messages, ref, length=8):
+    """The opening words of a passage the step showed: what a trace state copies."""
+    text = re.search(rf"^\[{ref}\] (.+)$", messages[1]["content"], re.MULTILINE).group(1)
+    return "".join(ch for ch in text if ch.isalnum())[:length]
+
+
 def report(*items):
     return turn(call("report_threads", threads=list(items)))
 
@@ -350,8 +356,8 @@ class TraceTests(LongCase):
         def decide(provider, messages):
             _, chapters = step_view(messages)
             if 3 in chapters:
-                return turn(call("report_trace", states=[{"state": "罗盘在苏岑手里", "refs": [chapters[3][0]]}]))
-            states = [{"state": "罗盘在温岚手里", "refs": [chapters[10][0]]}]
+                return turn(call("report_trace", states=[{"state": quote(messages, chapters[3][0]), "refs": [chapters[3][0]]}]))
+            states = [{"state": quote(messages, chapters[10][0]), "refs": [chapters[10][0]]}]
             conflicts = [{"earlier": [earlier(chapters) if earlier else digest_refs(messages)[0]], "later": [chapters[10][0]],
                           "what": "罗盘在谁手上前后对不上"}] if conflict else []
             return turn(call("report_trace", states=states, conflicts=conflicts))
@@ -369,10 +375,24 @@ class TraceTests(LongCase):
         self.assertEqual((view["status"], view["questions"], view["changes"]), ("completed", [], []))
         self.assertIn("罗盘", self.provider.calls[0]["messages"][1]["content"])
         sections = view["answer"]["sections"]
-        self.assertEqual([item["text"] for item in sections["状态变化"]], ["第 3 章：罗盘在苏岑手里", "第 10 章：罗盘在温岚手里"])
+        texts = [item["text"] for item in sections["状态变化"]]
+        self.assertEqual([text.split("：", 1)[0] for text in texts], ["第 3 章", "第 10 章"])
+        self.assertTrue(all(re.fullmatch(r"第 \d+ 章：「\w+」", text) for text in texts), texts)  # the passage's own words, quoted
         [conflict] = sections["对不上的地方"]
         self.assertEqual((conflict["text"], conflict["label"]), ("第 3 章和第 10 章：罗盘在谁手上前后对不上", "第 3 章和第 10 章"))
         self.assertEqual(len(conflict["refs"]), 2)
+
+    def test_a_state_in_words_of_its_own_is_sent_back_and_then_left_out(self):
+        # A3 first formal run: summaries added people and doings no passage held ("被冉砾珂拦住"), one item in ten.
+        def summary(provider, messages):
+            _, chapters = step_view(messages)
+            low = min(chapters)
+            return turn(call("report_trace", states=[{"state": "罗盘被人悄悄拿走了", "refs": [chapters[low][0]]},
+                                                     {"state": quote(messages, chapters[low][0]), "refs": [chapters[low][0]]}]))
+        view = self.trace(turns=[summary] * 4)
+        self.assertEqual(view["status"], "completed")
+        self.assertNotIn("罗盘被人悄悄拿走了", json.dumps(view["answer"], ensure_ascii=False))
+        self.assertTrue(view["answer"]["sections"]["状态变化"])
 
     def test_two_sayings_in_one_chapter_are_a_sequence_not_a_disagreement(self):
         view = self.trace(turns=[self.tracing(earlier=lambda chapters: chapters[10][-1])] * 2)  # A3 confirmation round 1
