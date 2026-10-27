@@ -197,7 +197,9 @@ def grade(row, judge, checkpoint=lambda: None):
     if task["suite"] == "action":
         points_ok = True
         for e, i in pairs.items():
-            change = change_material(items[i])
+            # Addendum 10: the point is judged against the new content alone. Shown the old content beside it, the grader read
+            # what an edit kept as missing ("补一句" after a note kept word for word, every regression round of 2026-10-27).
+            change = {key: value for key, value in change_material(items[i]).items() if key != "before"}
             if items[i]["kind"] == "resolve_thread":  # addendum 4: what the card shows, the quoted evidence with it
                 change["evidence"] = [quote.get("text") for quote in items[i].get("evidence", [])]
             for p, point in enumerate(expected[e].get("after_points", [])):

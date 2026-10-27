@@ -64,7 +64,9 @@ PRE_REGISTRATION = {
                    "2026-10-27: addendum 9, the fifth run failed (first attempt void: the per-work daily token limit; "
                    "second stopped at its cost cap with three checks failing); the sixth pair eval_set_a26_formal + "
                    "eval_set_a2s6_formal decides; infrastructure retry of a failed product task; dev on halves of the fifth "
-                   "pair (no number changes)"],
+                   "pair (no number changes)",
+                   "2026-10-27: addendum 10, a2_after_point is shown the change's new content without the old (the grader read "
+                   "what an edit kept as missing); question, answers and bars unchanged; sixth pair not authored"],
     "sets_sealed": {"eval_set_a2_formal": "fd9d9b2", "eval_set_a2s_formal": "2ef9787", "eval_set_a2_dev": "c1bb6b8 (readable)"},
     "applies_to": ["eval_set_a2_dev", "eval_set_a2_formal", "eval_set_a2s_formal", "eval_set_a22_formal", "eval_set_a2s2_formal",
                    "eval_set_a23_formal", "eval_set_a2s3_formal", "eval_set_a24_formal", "eval_set_a2s4_formal",
