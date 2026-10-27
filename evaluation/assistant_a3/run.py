@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import dataclasses
+import difflib
 import hashlib
 import json
 import math
@@ -205,15 +206,32 @@ def author_choice(task, question, points):
     """The scripted author's answer to a decision question: the side `author_replies.decision` picks, when the question is the
     task's decision point; '你定' to anything else."""
     point = decision_point_of(task, question, points)
-    found = CHOICE.search((task.get("author_replies") or {}).get("decision") or "")
-    if point is None or not found:
+    reply = (task.get("author_replies") or {}).get("decision") or ""
+    found = CHOICE.search(reply)
+    side = found.group(1).lower() if found else side_named(reply, point) if point is not None else None
+    if point is None or side is None:
         return "you_decide", point is not None
-    wanted = point[found.group(1).lower()]
+    wanted = point[side]
     options = [o for o in question["options"] if o.get("chapter") == wanted["chapter"]]
     if len(options) > 1:  # both passages in one chapter: the one that quotes the chosen side
         options = [o for o in options if squeezed(wanted["quote"])[:QUOTE_PROBE] in squeezed(o["quote"])
                    or squeezed(o["quote"])[:QUOTE_PROBE] in squeezed(wanted["quote"])] or options
     return options[0]["key"], True
+
+
+def side_named(reply, point):
+    """The side of a decision point a reply in the author's words picks (A3 addendum 5): the side some of whose own words
+    (where its passage differs from the other's: "七次" against "九次") the reply holds, when the other's it does not; else None.
+    The registered sets wrote "采用十七岁", "这次原约定按七次敲节" where the SPEC asked for a or b, and the runner read every
+    such reply as "你定" (A3 regression of f1fd808, a3s2-w01-injection-05)."""
+    a, b, said = squeezed(point["a"]["quote"]), squeezed(point["b"]["quote"]), squeezed(reply)
+    own = {"a": [], "b": []}
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
+        if tag != "equal":
+            own["a"].append(a[i1:i2])
+            own["b"].append(b[j1:j2])
+    named = [side for side in ("a", "b") if any(words and words in said for words in own[side])]
+    return named[0] if len(named) == 1 else None
 
 
 def squeezed(text):

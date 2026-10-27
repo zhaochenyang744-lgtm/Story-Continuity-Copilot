@@ -298,3 +298,18 @@ class WorkTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AuthorReplyTests(unittest.TestCase):
+    def test_a_reply_in_the_authors_words_picks_the_side_it_names(self):
+        # A3 addendum 5: the sets wrote "这次原约定按七次敲节" where the SPEC asked for a or b, and every such reply was read as "你定".
+        point = {"a": {"chapter": 4, "quote": "约定留在灯槽的时长，是七次敲节。"}, "b": {"chapter": 9, "quote": "约定留在灯槽的时长，是九次敲节。"}}
+        self.assertEqual(run.side_named("这次原约定按七次敲节", point), "a")
+        self.assertEqual(run.side_named("采用九次", point), "b")
+        self.assertIsNone(run.side_named("你看着办", point))
+        self.assertIsNone(run.side_named("七次九次都行", point))
+        question = {"options": [{"key": "x", "chapter": 4, "quote": "…七次敲节"}, {"key": "y", "chapter": 9, "quote": "…九次敲节"}]}
+        task = {"decision_point": 1, "author_replies": {"decision": "这次原约定按七次敲节"}}
+        self.assertEqual(run.author_choice(task, question, {"decision_points": [point]}), ("x", True))
+        task["author_replies"]["decision"] = "选 b，以九次为准"
+        self.assertEqual(run.author_choice(task, question, {"decision_points": [point]}), ("y", True))
