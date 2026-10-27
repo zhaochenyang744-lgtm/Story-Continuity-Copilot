@@ -276,7 +276,9 @@ class Trace:
             if found["chapters"][0] == found["chapters"][1]:  # within one chapter, two sayings are a sequence (A3 confirmation round 1)
                 continue
             conflicts.append(found)
-            if plan.get("output") == "conclusion":  # the author wants one answer: which passage to go by is theirs
+            # The author wants one answer, or said to be asked first (A3 first formal run: "等我答过再下结论" on a chapter-by-chapter
+            # report, never asked): which passage to go by is theirs.
+            if plan.get("output") == "conclusion" or plan.get("ask_first"):
                 decisions.append(decision(f"{item['what']}：两处写法不同，以哪处为准？", _option("a", item["earlier"], rows), _option("b", item["later"], rows),
                                           conflict=found["id"]))
         return {"states": states, "conflicts": conflicts}, [], decisions

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import unittest
+from unittest.mock import patch
 import re
 from datetime import datetime, timedelta, timezone
 
@@ -378,6 +379,22 @@ class TraceTests(LongCase):
         self.assertEqual(view["status"], "completed")
         self.assertNotIn("对不上的地方", view["answer"]["sections"])
 
+    def test_an_author_who_asks_to_be_asked_first_is_asked_on_a_list_too(self):
+        # A3 first formal run, ask-01: "等我答过再下结论" on a chapter-by-chapter report, and the trace never asked.
+        self.provider.script_route({"type": "trace", "target": "罗盘", "chapters": None, "output": "list", "ask_first": True})
+        task = self.create("罗盘这一路归谁拿着，逐章列出来；两种说法先问我")
+        self.provider.script(*[self.tracing()] * 2)
+        self.post(task["id"], "start", expect=202)
+        view = self.view(task["id"])
+        self.assertEqual(view["status"], "waiting_author")
+        self.assertTrue(view["plan"]["approved"]["ask_first"])
+
+    def test_tidying_the_materials_is_not_offered_in_this_release(self):
+        self.provider.script_route({"type": "tidy", "target": None, "chapters": None, "output": "list", "focus": None})
+        view = self.view(self.create("前十章的资料和正文对一趟，该补的补")["id"])
+        from app.long_tasks import NOT_OFFERED_TIDY
+        self.assertEqual((view["status"], view["answer"]["note"], view["changes"]), ("completed", NOT_OFFERED_TIDY, []))
+
     def test_when_a_conclusion_is_wanted_the_author_picks_the_passage(self):
         view = self.trace(output="conclusion")
         self.assertEqual(view["status"], "waiting_author")
@@ -403,7 +420,19 @@ class TraceTests(LongCase):
         self.assertIn("report_invalid", self.provider.calls[2]["messages"][-1]["content"])
 
 
-class TidyTests(LongCase):
+class TidyOn(LongCase):
+    """Tidying the materials is not offered in v2.1 (A3 addendum 3); its code is kept for a later release and tested with it on."""
+
+    def setUp(self):
+        super().setUp()
+        from app import long_tasks
+        offered = patch.object(long_tasks, "OFFERED", long_tasks.TYPES)
+        offered.start()
+        self.addCleanup(offered.stop)
+
+
+class TidyTests(TidyOn):
+
     def facts(self):
         with self.db.connection() as c:
             version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (self.project_id,)).fetchone()[0]
@@ -588,7 +617,7 @@ class RouteTests(LongCase):
         self.assertEqual(r.json()["data"]["route"], "long_task")
 
 
-class TelemetryTests(LongCase):
+class TelemetryTests(TidyOn):
     """What a long task keeps for the usage statistics (`usage_stats`): where it came from, what the author changed on the plan card, why it
     ended, and for each step which rules failed, how many repairs and how many findings were left out. Codes and counts, never text."""
     facts, tidying, tidy = TidyTests.facts, TidyTests.tidying, TidyTests.tidy
