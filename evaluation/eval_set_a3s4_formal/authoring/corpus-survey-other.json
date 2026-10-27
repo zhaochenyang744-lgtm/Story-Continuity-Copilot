@@ -1,0 +1,1138 @@
+{
+  "status": "completed",
+  "scope": "non_a2_a3_readable_sets",
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_v13_authoring",
+    "eval_set_a26_formal",
+    "eval_set_a2s6_formal",
+    "eval_set_a2n7_formal"
+  ],
+  "directories": [
+    "evaluation/eval_set_a1_dev",
+    "evaluation/eval_set_a1_formal",
+    "evaluation/eval_set_a1b_dev",
+    "evaluation/eval_set_a1b_formal",
+    "evaluation/eval_set_a1c2_formal",
+    "evaluation/eval_set_a1c3_formal",
+    "evaluation/eval_set_a1c4_formal",
+    "evaluation/eval_set_a1c5_formal",
+    "evaluation/eval_set_a1c_dev",
+    "evaluation/eval_set_a1c_formal",
+    "evaluation/eval_set_a1cr6_formal",
+    "evaluation/eval_set_a1cs2_formal",
+    "evaluation/eval_set_a1cs3_formal",
+    "evaluation/eval_set_a1cs4_formal",
+    "evaluation/eval_set_a1cs5_formal",
+    "evaluation/eval_set_a1cs_formal",
+    "evaluation/eval_set_a1cx_dev",
+    "evaluation/eval_set_a1cy_dev",
+    "evaluation/eval_set_lf1_dev",
+    "evaluation/eval_set_lf1_formal",
+    "evaluation/eval_set_lf1_import",
+    "evaluation/eval_set_lf2_formal",
+    "evaluation/eval_set_lf3_formal",
+    "evaluation/eval_set_lf4_formal",
+    "evaluation/eval_set_lf5_formal",
+    "evaluation/eval_set_lf6_formal",
+    "evaluation/eval_set_lf7_formal",
+    "evaluation/eval_set_v11_authoring",
+    "evaluation/eval_set_v12_authoring"
+  ],
+  "readmes": [
+    {
+      "path": "evaluation/eval_set_a1_dev/README.md",
+      "sha256": "2cb1314ffb2d3a776a012f62829bff51c3d3c604f5147a0529b8ecb3c2eca3ad",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/README.md",
+      "sha256": "57ccf157d55c26ed8d6ca1228e19b00bb227db3878b6956ad8cfead86224a2b2",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/README.md",
+      "sha256": "36322e4086ec7909e560b89f41fc9f2a14d9651fa7feda1abe933436166ab91d",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/README.md",
+      "sha256": "ed3fcaeec82acf3b9736bc543f1ae65ca690402d29fdc7339350a0d543e83c4b",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/README.md",
+      "sha256": "5014cd0a458e26a371ef22e59d979a72654162b72d0f5dabb09c39ca619e94da",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/README.md",
+      "sha256": "3b25394dd6044e92f6e1faab0bf3647c3327569b6f2daab1acc4e7b325a90130",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/README.md",
+      "sha256": "af6775117a4cf9b82de86f5802ce9aace7b3e9560323115608d63663f0a7687a",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/README.md",
+      "sha256": "e4ca0c5a4cbfdf2cf4b9545ee77094ed9292a8ce21676237ec2b8591c322563c",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c_dev/README.md",
+      "sha256": "a36c9acc98c9085cf67092ecfe5e9b6703cfd76d85bc5fee65bbcdfb263a1a4d",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/README.md",
+      "sha256": "01eba752f144ed6618b9a226cb1ee30cf8a211004e8c816b71869b5bbbc82454",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/README.md",
+      "sha256": "8cb82314d8f9f0af178835d4d3fb4a1e05295d4cac8aa876710e4dc689b23e10",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs2_formal/README.md",
+      "sha256": "6f0eb1dc39a81a497291263cfa8ff95fc3262890f2834ac7d6659f6258e86678",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs3_formal/README.md",
+      "sha256": "583d38c88a8dc480d5f0097dd4347d72c8d9aba49d5055ebf7002bbc979d79ed",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs4_formal/README.md",
+      "sha256": "9ab320c7f2234ea99190c5045d3c56035e1809972ddb3fe1f668beed1b204dc8",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs5_formal/README.md",
+      "sha256": "42c1e5c0466c88109c9e7eeb5a2c38975a7d272581876189eab85b041d0ebd6d",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs_formal/README.md",
+      "sha256": "18ad3a001e218feb6cdda4fbdffa6214c92371cb188ba59247cf14cd00eafc1d",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/README.md",
+      "sha256": "3b8c62eb1ee3dbcc8f741b374f271d6351e708554fe9fb5898c025554d3fc90d",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/README.md",
+      "sha256": "8b9b27791c9dd762f1765cc70aee991637a081689d687fb88552b3006d8e4e0e",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/README.md",
+      "sha256": "192636f9622a1260e54c6927d801ef4904fc3c871deebccf342f70dfc0758157",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/README.md",
+      "sha256": "026c466e2126860e6df644d0194e3e4a9ce23e76353cd42047f5c678d4e83f34",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/README.md",
+      "sha256": "48087839ac9f41d9cebe706acce98eff0a65ad842e08468f94eb5211ced59033",
+      "read": "full"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/README.md",
+      "sha256": "1f7e329ba464011472e55fcc3926e48f511d9de51aa837f0ee8e52a77e7a7999",
+      "read": "full"
+    }
+  ],
+  "absent_readmes": [
+    "evaluation/eval_set_lf1_formal/README.md",
+    "evaluation/eval_set_lf2_formal/README.md",
+    "evaluation/eval_set_lf3_formal/README.md",
+    "evaluation/eval_set_lf4_formal/README.md",
+    "evaluation/eval_set_lf5_formal/README.md",
+    "evaluation/eval_set_lf6_formal/README.md",
+    "evaluation/eval_set_lf7_formal/README.md"
+  ],
+  "works": [
+    {
+      "path": "evaluation/eval_set_a1_dev/works/d01.md",
+      "sha256": "df3fa60cbfcd316de747f49ddabe939706423b3197ef5ff927c8fa0472fead34",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "89a88a6a1b5d1ff3da29cff4d2fc09a9882891a14b4f72257564b4bb2e14be86",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_dev/works/d02.md",
+      "sha256": "16c1fcd8409ae653f21d56e0d1d37d9a562b7b5650636006f7565c6cbe72c2ca",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b1c4004d7584aaad4a92646d0ea7fff36b85d53c508758146796a66ef31c5bf4",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f01.md",
+      "sha256": "8997b5b428874306f6e03e1bc97eef3baf4106b7f12e50965709fd31420ad27c",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "45d6f8a6fb355a24a5546f722cc605b788514c4996b77e897d4736b26cb68afa",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f02.md",
+      "sha256": "6ae559532b8527f636d71e23e69206903388248608c0b3eea7c1537670d2da36",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "bc23689ebfb4f601eb2039e4c9441ebe06f2cd9106eb72a591974dabb8af2c32",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f03.md",
+      "sha256": "b5c52ab93bcc28f098345f9cb5e70e7b814004615e20fcf014996823d5c3a544",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "69bad05f6edf4e30eb30d4b60cea2150aeab6d0d371cff57663125f50d09f5d3",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f04.md",
+      "sha256": "6b206b473643c2c7ff5dc1538f4c5c6aef3f45e41d5771a1456c47d9f6a3b9ec",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "3eb8f6a15497ecfdc333c8798dcaeab35173bf1e1f70695549dcbf034a41ce24",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f05.md",
+      "sha256": "68338c3887dd804dcb02c9dc586db1e75965c94c54ba3c478a7cbb5986ef63e3",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "fc5341dba0f7e0d3d5b93c536746175b45036bf188ada7cfe3948e6a4e4bd24e",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/works/l1.md",
+      "sha256": "24681f2160a622110a2401443afffd0cab5d61b4ea0a692378f23c32ef0f8c1b",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "a3a641d14bb2891458a1f0be0cb071590bdacd5baa6b3c65b604d05141e89f49",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/works/s1.md",
+      "sha256": "22a4e2ad58cda96af08121ae9e7eea7749063165079e22c3a3d9edd98edcfeaf",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b680902487598c9076d6328f01038ffc9956cc89fa3f6d2d30c768bf5e5a8d91",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/l2.md",
+      "sha256": "fefe59487d6b5752b4632a2bcead5b6e3d5113374d51af75abc25f6e40214413",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "97d1bb877f13bdd9963146cd07f986baa2c92449d7af35281f9c43858f433537",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/n.md",
+      "sha256": "9bdf60b7317b5b4969f78d78238b2e416d09ab5ea61e1f2a43d5fa3d97f358aa",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b4c70d46c3738a3d770b9768283e02f9f9e7a38dc7b1da3f5bfd1ec43ea0f918",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/s2.md",
+      "sha256": "0ac3b938c4e1139af6b2b670630789081a3c9c0e44ba1a47598817d9b42d0eb0",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "fdf2f387fbf065fe5fd2e7eb4921c37bcb0fd5e66c121036787cc6fcbf4c84ab",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/works/w01.md",
+      "sha256": "ce2c5e42a8fa9ae46934c5469ed4975f7a98546c98020c79525f31d0222f3a69",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "1bddffff5ada022dcb882ccd1228f4985f9d6ac03b51ee92007dde1ad9e3a3b1",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/works/w02.md",
+      "sha256": "30bb94c8b2062e6d28e3000513d362a85d10ddbfaaecaabc6f7e4e98d41d7cf7",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "6f92fb83b36ddcde9b56b622a5a3d4939cbb6f866692e5276fa18f972f0c095c",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/works/w01.md",
+      "sha256": "f40520ca0a9185a2b04e208df2fa26a16fecac03800a61fc132239f7c3701f13",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "713b368cfa858b7a0fd007f0b24f447593a140e8de50988c9397315699bfa8a7",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/works/w02.md",
+      "sha256": "8aa856872ed45a4b7877a05e73b8764aaa923ad5e46c4f2a0eb12c5c1f74c92a",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "d3084203cc86ba3dd76855237866055e556be49ffe0d061329eaa1ba6c00a0e2",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/works/w01.md",
+      "sha256": "57b0ea162cf1da01736e31c461ad66ea9ba19f6541df5ee90a00eaeaba8104e1",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "05112a25f6a527d97f6a6aff4e5292e6b64b809237dfc9a6c5f183481419109b",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/works/w02.md",
+      "sha256": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "8b4d785da1ecdf1b0ed1b3b97b5481e74d673cff6d54090ab089448972914712",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/works/w01.md",
+      "sha256": "3ecd6e94353b2e70a2354be2e31d509e6f6bf4e326fe17fc6bdc1e409aa530bf",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "99b15164f4cb616a28e1d1e8d40f07b3e1343a970a3e993f0e009bf71d15fd34",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/works/w02.md",
+      "sha256": "7c974259864f0e69dd912eaa041c73eb8c411d87bd68c3f48e9bdc0998eccdd9",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "c97cb57bdb65fbc2543c17d97e7bc64e6d1091fa5b75af9d521979af54c40083",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c_dev/works/race.md",
+      "sha256": "936497c5bc64d52965d2148434cda6812a82c7fba1f73296bc18418cd19d473f",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "30a2663d5b8c8cf6d1ac5b837676d147675d3becedce89831411af5306a899bc",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/works/f1.md",
+      "sha256": "3abd4641f66b697fb52d5e219367b2e5c082e0edd9cbe1eaa63c7151335465c8",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "02c56745cf9febbb0e66f6068ac8e1e75d503c2b8a6cef2e862306df446ef5ee",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/works/f2.md",
+      "sha256": "016ae68183cc7e3462bad7c2bf6aedf0dc48d6590464ac3293ed70dab4193aa8",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "60d326cc07055d445e24e3322dbe1b5b67815abba06492fdbfa6db04ac866d8c",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/works/w01.md",
+      "sha256": "3ecd6e94353b2e70a2354be2e31d509e6f6bf4e326fe17fc6bdc1e409aa530bf",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "99b15164f4cb616a28e1d1e8d40f07b3e1343a970a3e993f0e009bf71d15fd34",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1c5_formal/works/w01.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/works/w02.md",
+      "sha256": "7c974259864f0e69dd912eaa041c73eb8c411d87bd68c3f48e9bdc0998eccdd9",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "c97cb57bdb65fbc2543c17d97e7bc64e6d1091fa5b75af9d521979af54c40083",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1c5_formal/works/w02.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs2_formal/works/safe.md",
+      "sha256": "7d0997884dd109a4e1babfc996ca922dfc908bd7c1e26c4a1a4977eae9025e8b",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b03cb5d9f7a30d2712af198b888ad51785835954606dd456809c82844b74ba86",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs3_formal/works/safe.md",
+      "sha256": "51ee7292adddca1a11ebfddd862bcfae3147f90d78fa3a0711b215fd34c46c7d",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "f540f93a70380bd61a0ac018e6dd9cab16a7ee90ecf98be290ed9688badd150b",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs4_formal/works/w03.md",
+      "sha256": "ae016ec40d0290bfeb31e4d3b3e7a424dc63d53843a2b9ddb9d4da182114b36e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "0e38b225e1e9c1b7d225cfae0854e80bd155d05af5a17bfade052dc26726a6e5",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs5_formal/works/w03.md",
+      "sha256": "39c536311ad353d504de018b425b17dbe15ee749d902b3e4e2e556162b360ca7",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "e73689e3d97ecae7bed7bd6d2a8435eac94c7b5a81efd59737a942334ceff7b4",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cs_formal/works/lumen.md",
+      "sha256": "4736914ebafa91bf02e0e487e0074268fad629fbae1863060db7075c38f80908",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "a1b8b9f8c3c5c139bad30de970cf3eec84af9147bec7dae720105e188ab71d02",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/cistern.md",
+      "sha256": "4f11cea18e71c48fe41bb7ca3702be944f9c7f0784bf3759ff8e6f64b07b6711",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5659cfb34ad74a3137d6528be15ea20ffde88f6f40fed5ea4de87dd4bfb28b02",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/folio.md",
+      "sha256": "f467faba2b03e38044df59e4305439f8d0cc7c0384678720aa44d47249e6f399",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "c2445c727c7a5efba52c612de1bf6aadb3473e737a595a532feeb5e2c007d569",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/moriri.md",
+      "sha256": "4ca32199a1883bb17f21181361c6881a931398485c82f0f8b4a84b6124b5d6d6",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "df7023019ddf7b14f47f239461a7300a6fc92f14eb6a0c93efa76846a0e72ad3",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w01.md",
+      "sha256": "57b0ea162cf1da01736e31c461ad66ea9ba19f6541df5ee90a00eaeaba8104e1",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "05112a25f6a527d97f6a6aff4e5292e6b64b809237dfc9a6c5f183481419109b",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1c4_formal/works/w01.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w02.md",
+      "sha256": "b38b250cad65efe935a1b71c6d4f8166c76e1aa0e2316dc1492c3f104dbaf67a",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "8b4d785da1ecdf1b0ed1b3b97b5481e74d673cff6d54090ab089448972914712",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1c4_formal/works/w02.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w03.md",
+      "sha256": "ae016ec40d0290bfeb31e4d3b3e7a424dc63d53843a2b9ddb9d4da182114b36e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "0e38b225e1e9c1b7d225cfae0854e80bd155d05af5a17bfade052dc26726a6e5",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1cs4_formal/works/w03.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/chaochi_letters.md",
+      "sha256": "45a35d8197bebb913575f69f3ecc5ab73bc2433bb31b5b25451456a9d4621f78",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5137c0645d338f881e1472d45fed808f2f6ce2d856c01ea84174b62ff1789d8a",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/shahai_error.md",
+      "sha256": "fd39de1fbf4e189a397bc99646b5749e6a76dadab2f8649bbb9faa7c742486b5",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "3c24b47bfe631d319f61febcc4b0b6498b67d96c924cdec036530e03e2cc63db",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/yechu_orders.md",
+      "sha256": "59b74735ebe403736c1965408157c1a9dd2ff9272b1159105a7a732b93464653",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "7eead1f6d34a96dd358b3c67ae5ec8c64fbb760adcb67d021aea6d916e330030",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "sha256": "b2ad28ee5a18e4bf36df658666384c09765600c0ad9e55e105c52c7edf1ebc1e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "74d2b2179b9a3ab7e465fc9dc27567dc68d954f58f18aba891aaa3f1374cf213",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "sha256": "0c9fb25e3f0cd292e767685305065457dd6b3b40ce2034d8cc7f6ecbe0eb4eee",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5bb5eab2a6056fafd69482a2bc3433235ea4d66c4c4554a0bf4ec1994d8eb21b",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "sha256": "91c9c1bd90e155ef004019874eac7face13c13308379984d002ec976d73a3b6a",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5350fbc54e39d8576b779a7b89459dadc24f5c723a46415f8d573f4de1138166",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "sha256": "07c86a435beaed2f94915b1b8263150b7d57b5a3c5901563be16ce8cdf7d8cb2",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b547ce7a7edc5263eaf1193dbadf5c7e21722da286c6a1c66bd58e1d06d0ef91",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/works/moriri_cleaner.md",
+      "sha256": "a1c4e7e3d77a9f8c6717bf98df9faeedbc77c871adb1803cb791e78cb979ceda",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "df7023019ddf7b14f47f239461a7300a6fc92f14eb6a0c93efa76846a0e72ad3",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1cx_dev/works/moriri.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/folded_folio.md",
+      "sha256": "f467faba2b03e38044df59e4305439f8d0cc7c0384678720aa44d47249e6f399",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "c2445c727c7a5efba52c612de1bf6aadb3473e737a595a532feeb5e2c007d569",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1cx_dev/works/folio.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/resonant_cistern.md",
+      "sha256": "4f11cea18e71c48fe41bb7ca3702be944f9c7f0784bf3759ff8e6f64b07b6711",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5659cfb34ad74a3137d6528be15ea20ffde88f6f40fed5ea4de87dd4bfb28b02",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": "evaluation/eval_set_a1cx_dev/works/cistern.md",
+      "read_mode": "hash_equivalent_already_read"
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/switchyard_fern.md",
+      "sha256": "38b34de78b8f4a8606b6276546ed8430bb7526a94029735a8101b1f428daad51",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b4a0aa92cd814a34afed60659bd09824e1337b3a84a327df8bd0994ede65e2f5",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/upland_fieldnotes.md",
+      "sha256": "af5c960077b260713e3c36367f640bf72e315d331c268a8606031e555d630b2f",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "84f1fb9a2652b62729c080c5099db52ddebeca70b7fc89a3d5db6040d97c3053",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/felt_ferry.md",
+      "sha256": "0ad831904fc0019e757127980580d14f5f0189c1348da94cfb0af01ed83e0e99",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "44861a228942b550e47ae5e417567d5210795cc9f40c732625eb585a9d312068",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/sand_sail.md",
+      "sha256": "d1e99c3d94f2c0685bbb775c75837e8c63958dfd95b32f2b47bc30cd4bafb670",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "27f8de84933dff6fefc2b32aea6188d7cd3d07b9dea14d7ec54a63cc7f56cddb",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/spore_circuit.md",
+      "sha256": "29374d366c2711e30f7b1a8a1d1d8504a34b6d4b956fc387d382ea0cddf257ed",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "512d2600e6593b63b44f55176272e376fac79cdd88c8853c1a7fe17a1ba8b82c",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/submerged_room.md",
+      "sha256": "4790d4b98d2bff9c3d7c9b729043bebdb56bb5b857a821eab51df700a8e7852f",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "8f016500c9cd5f03a30ef61b79d4385b403f382c967179c8c630e9f97632a4ee",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/chaomu.md",
+      "sha256": "b981d32d389b32de7addb7dff48a9bad06b0d2cd50ae5dd28172da2734c641d4",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "59ebff27645261866e16e176b2ad5b76e9dcb66d6439be8da2540a94851f8143",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/chiji.md",
+      "sha256": "8fe86faf3b96845a7eadd54684c228c50151423eac1ff24dccd6989b45aa2b37",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "21fbc1ca0d0d363b49900b70828901704598eaa2963a2eb5e3046ec79283b115",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/weiwan.md",
+      "sha256": "93511e11ac1ef36e0dcf0eef1389c4e819863568fcecd684164acf3edf6888f3",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "b629e18f169387774458c08a9a25c44aa5d581a38a31f1c9edd0f8addcee41e0",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/zhuxiang.md",
+      "sha256": "08c3fe49164121dfdb4d1e1ee55d1c21425155a6df4e7650270914df3a31cf0c",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "f1b07fe26e99e38552a681d34e568fc31cad8e35a176b7433c400cf9398dfaf6",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/huli_mail.md",
+      "sha256": "be0b8b4e83b1259e039eb80d212af77af42b0e0577d47898dce0dc80526eae12",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "4327341b1a7b285c35ce18d81f204218b8806f9bfe85ab0ea7085fb0d0b7a69f",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/rongji_stage.md",
+      "sha256": "4e1221383497f375a90a880084151d59ad18a8c06098fdb32114ecb2d161a92d",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "1631f276479b1ef2a2cbb2f4145a5773548c830513677c13feaaf1f6ea137833",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/taijie_rain.md",
+      "sha256": "c3ae1927512262aaa70df9848fd9b42d8990f1cb787a1da50557565dce013d68",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "907fc3f702bdf1c5699bb440ba06684fba4654d60fef261942e8d8406a1e7082",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/xiuzi_school.md",
+      "sha256": "098afacd0a4a9ab04feb98ab89f4e8fd9352c6c60c29eeebb92ad8abef25c033",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "06d48e82604744fc30f92c2f145d472cc7dfcf27d2872d66803ca8839a15a9c6",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/fengnang.md",
+      "sha256": "c6ad1dc8d824734550ce0d66598b43427a61e2b4985351b64c286253394ed7e0",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "48d591dfce9fb1ecb5c58e02748906c2aa9ff6d07d72b199fe17c8f8d476fefb",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/hanceng.md",
+      "sha256": "ac2a070e4d1507de95d5b74208aa234cfe95bed32a48df1a3dad88b29a970f3e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "0a7ce30c8f768977f378430e7904865ac1e04cea728b146ddb2d79d3011e446a",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/rongwen.md",
+      "sha256": "ca2272be064612a5aa6bf46d9a594f211f128c50b8a2fa0c35086b2d82f90c05",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "7f6cbc252b24b632eb96cd1424d6c2d6967fda92824c5f8759237794d7995124",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/yingxiang.md",
+      "sha256": "35d7a42a8d98e571c18a0180df2873b7f9a75ccc4c3489f656e1ec5f1d0c3922",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "f6599cd32eaffb968f4816e992822b1d2595c23355279b025283e92ece2962ed",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/huixiang.md",
+      "sha256": "9466cd04b5f584308dfc5e3d1e2129c2cedc7a803e15eff84fec7120a6d2ba2d",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "725e42bf49f2f6bbc3aeeb8ed4851ed2d092d0cafcd92e2ec43a4e7ad80b7e62",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/juzao.md",
+      "sha256": "88ed2236baa89f8ffe3b2324ea2caa3154128deb17833d7b8dc0bc83a05dae5e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "bb5e009c8224334947dc0d195cfdfa08a1a8d1d7bde1c8f83b4fd996fbd115a0",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/yishou.md",
+      "sha256": "31b2ee148eb75942e879e488a82b0884f19e40b3e9de44017d89de766dbd5d72",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "42aaf6be44c5f592085be5b9022f2b2dda1de198c49229d1cfa2d2d6c7cb4227",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/yueji.md",
+      "sha256": "ab1f07078ec3f9253e4064955cb98beecf245e7a036b234dba5c89f4f6f1a8b1",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "f15a0bd053c107f4da7c0d269864c42420a4bf3af01aeb6b167f9bbc8313a0c9",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/huangting_recording.md",
+      "sha256": "fa8003d39a8624f881e7ba9ad70ebfaf7c153c2709bffa890a3563767abba654",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "e67472028de5994da5f369f74d2db23de218138b4dcc1de506286109b13f2c93",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/jinyu_credit_market.md",
+      "sha256": "217d02a45ffae9b9e4adb9247fb4ec375500ac50f3a02fcccc762dd9682ccbbe",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "bf947ac60282687230497500729810a102104ab982d38fccf9e0bcfed8fda51e",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/luliao_last_collection.md",
+      "sha256": "8d599daf38916bb6f1a264efb4bb24c16efd86e35ac894bb58c3252d636b482c",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "a28c9bf3b55cc383468e265b7157a7d5b771601f8f1da64661e3f1bd5a9ec2ec",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/mosswick_costume_rental.md",
+      "sha256": "ef1e37a224cba7c3f63151fda4792dd987b39d5ab8756d372c565f5e6e764d0e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "886c1a40b4dddee153c56a2540918de1a155109921756f9bad686440437e3e8a",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/sablefen_translation_residency.md",
+      "sha256": "8d1b4ea2db89f77b0abbc0845b364958f4ed5a3ba3a0e5766d8eaac00e04ba2e",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "7eaeea61870bd2f9319897e98a61e7e4141623870a30022bb2bb5bd4e1ab96d7",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/ternhollow_model_railway.md",
+      "sha256": "033368c73a0b1e24ba60fe2016475cbc10c712958e61e620de939e76f0af47ae",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "28fc6df2c5735e6895db74108694ba0c9da88d7086e148674b4c66261849a5fd",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/brambletide_aquarium_census.md",
+      "sha256": "6ec74dd67f833d732e890edca0bcf0e7c8ac42f6bc3939168815d5530d9e020d",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "a55562dfaedbe7cfae9030ce775e8c0a0537a3293e81202ef3c1eb263bb305d6",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/calverin_rag_paper_mill.md",
+      "sha256": "09c1a7f76bbef78e83db63a93ee6d33ba506e9e163fbce051729297834376601",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "9da368d2484f31e8b8f3e8c9fbeb79acddf9057cd581baf809ce08043817ad52",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/elmrake_hotel_repairs.md",
+      "sha256": "4be8e8ea80a2a7320ae91bd25d3e224d5b2491ba950319e93d3610d385a55ab9",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "aa9fff72bc2830476e0c81f63d20bc955587740b8717fd87ad69a82aa8a1da36",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/puling_refraction_festival.md",
+      "sha256": "17cd5275b55533c5dbe68fcbaba8976bea51fa9d19113950f4a78d152160c447",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "5e9327ae396f565c78270230a07e1cd24e826eaa43e3cf96cdb07a8a7b2d6a5a",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/shengxiu_score_library.md",
+      "sha256": "f4dfe4b1bfef1597ce9568631574d1584e397d40980d9542f2dce8d9852abff0",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "61bda29fa2f014b5502e0d3139cfe451ef7b9336cbb042ddb91d4c719003125c",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/tiaojin_rainworks.md",
+      "sha256": "d4632f8255a835322cebf4d77eb944e500f57817e38be617c386179e3c1700a2",
+      "read_chapters": [
+        1,
+        2
+      ],
+      "opening_sha256": "352fa4ebb2baeec0b6b7414129d26a58190e8f4137352c888d51dcfc4b4a156f",
+      "opening_hash_normalization": "remove_all_whitespace",
+      "duplicate_opening_of": null,
+      "read_mode": "full_opening_two_chapters"
+    }
+  ],
+  "coverage": {
+    "sets": 29,
+    "existing_readmes": 22,
+    "readmes_read": 22,
+    "absent_readmes": 7,
+    "work_files": 80,
+    "work_file_chapter_coverage": 160,
+    "unique_openings": 72,
+    "unique_opening_chapters_read": 144,
+    "hash_equivalent_openings": 8
+  },
+  "source_prose_included": false
+}

@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "chapter_coverage": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "source_sha256": "77b367f44aa044febc236f4d2a11a87f0fcbfe46fc88acb66784c5c94c0fd482",
+  "foreshadows_sha256": "a116a51c6f993bec8e055bcc6af650fde135e32a0024252f45986c47da807241",
+  "decisions": [
+    {
+      "foreshadow": 1,
+      "state": "resolved",
+      "chapter": 4,
+      "quote": "背光侧的断续银点来自护栏上剥落的反光膜，谌泊荀揭去残膜后，银点消失了。",
+      "reason": "正文明确说明来源，并写出移除残膜后现象消失的复核结果。"
+    },
+    {
+      "foreshadow": 2,
+      "state": "resolved",
+      "chapter": 10,
+      "quote": "空观察罩的笛声来自裂口被风吹动的薄垫，郗闻筠抽掉薄垫后，笛声停止了。",
+      "reason": "正文明确说明声源，重复压住与放开后的比较，并写出抽掉薄垫后声音停止。"
+    },
+    {
+      "foreshadow": 3,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第2章出现后未得到来源解释；第12章仅说今日仍未出现，没有写出放弃追查的决定。"
+    },
+    {
+      "foreshadow": 4,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "后文持续见到它留在较远处，直到第12章仍未说明不靠近的缘故；没有明确放弃这条追查。"
+    },
+    {
+      "foreshadow": 5,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第7章确认多人能听见多出的四拍，第10章仍明说来源未知；空罩笛声的解释没有覆盖这副耳机。"
+    },
+    {
+      "foreshadow": 6,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第4章只确认空壳不见，未看到离开过程，碎絮也未能确认含有空壳；其后没有给出去向或明确放弃追查。第9章标题中的抄录使唤不作为剧情状态证据。"
+    },
+    {
+      "foreshadow": 7,
+      "state": "open",
+      "chapter": null,
+      "quote": null,
+      "reason": "第8章明确说新纹如何形成无人知道；第9章和第12章均没有进一步解释其形成。"
+    }
+  ]
+}

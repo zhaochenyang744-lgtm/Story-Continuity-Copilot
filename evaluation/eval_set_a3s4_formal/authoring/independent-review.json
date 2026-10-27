@@ -1,0 +1,41 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "sha256": {
+    "materials/w01-facts.json": "62f8b7eafe3fedf7c8f252170b3314bf1789dd827a4fb84f2da9d837bb1c81c6",
+    "materials/w01-foreshadows.json": "a116a51c6f993bec8e055bcc6af650fde135e32a0024252f45986c47da807241",
+    "tasks.json": "6d6526935eae85c65139aa4cdef6c69e9493844c529226c0a1d1137c0cfade69",
+    "works/w01.md": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "4574098f060104b711497af62b37f4f9d7add0f558a96a3b952136de212f463d",
+    "authoring/self-review.md": "cd981f7b918668b4e72d88435970df39d277ccd05cad4f1410b10b077979b7f0",
+    "authoring/novelty-reference.json": "9823d0b6bc7d82ca41d9ed9517f53521d42b0ea8fd3d2702b6e76f44fa1c1e43"
+  },
+  "review_files_sha256": {
+    "authoring/blind-thread-input-w01.json": "6be2fd374464bed98069a46b8828fbea6b010022a684b7e8ab9dc52afcd9e06d",
+    "authoring/independent-continuity-notes-w01-stage1.json": "cb2d9941acd906151306b58809d715e4b97dd4eb4ae2afc3dca54ac717af1890",
+    "authoring/independent-full-reading-w01.json": "f22d5ba96241f434b155f190c2637e640d86f43ba72d8107207f6a8beb8154aa",
+    "authoring/independent-thread-w01-final.json": "12cf70a75ee28fa3111690c04f1faa123d8a7c15d12bff82c5f1f14598a4d32c",
+    "authoring/independent-thread-w01.json": "216a8a75e55ff09955eac8d24cfb446f929f9bbb69669d27a0640625343e4c29"
+  },
+  "blind_threads": {
+    "total": 7,
+    "first_agreement": 7,
+    "final_agreement": 7,
+    "unresolved": 0,
+    "action_sets": 5,
+    "action_set_agreement": 5,
+    "works": {
+      "w01": {
+        "total": 7,
+        "first_agreement": 7,
+        "final_agreement": 7
+      }
+    }
+  },
+  "checker_sha256": "286c9431af8fbb79969e89b6c024b65da7659bba71626eda5da0cf116f15372d"
+}

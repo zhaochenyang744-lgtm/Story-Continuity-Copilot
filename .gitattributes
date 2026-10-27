@@ -64,3 +64,4 @@ evaluation/eval_set_a3f2_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,
 evaluation/eval_set_a3s2_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/eval_set_a2n7_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/eval_set_a3s3_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_a3s4_formal/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol

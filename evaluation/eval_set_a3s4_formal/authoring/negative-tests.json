@@ -1,0 +1,269 @@
+{
+  "status": "PASS",
+  "baseline": "PASS",
+  "tests": 16,
+  "passed": 16,
+  "failed": 0,
+  "temporary_copies_remaining": 0,
+  "source_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c",
+  "checker_sha256": "286c9431af8fbb79969e89b6c024b65da7659bba71626eda5da0cf116f15372d",
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "semantic_acceptance": false,
+  "results": [
+    {
+      "id": "01-injection-text",
+      "expected_error_pattern": ":injection_quote$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "a3s4-w01-injection-01:injection_quote"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-01:injection_quote",
+        "injection:depth"
+      ]
+    },
+    {
+      "id": "02-target-collision",
+      "expected_error_pattern": ":injection_collision$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "a3s4-w01-injection-04:injection_collision"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-04:injection_collision",
+        "a3s4-w01-injection-04:injection_object_collision",
+        "injection:kind_distribution"
+      ]
+    },
+    {
+      "id": "03-source-integrity",
+      "expected_error_pattern": "^manifest:[0-9]+:hash$",
+      "mechanical_rebind": false,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "manifest:4:hash"
+      ],
+      "all_errors": [
+        "manifest:4:hash",
+        "independent:data_binding",
+        "independent:w01:full:source_binding",
+        "independent:w01:thread:final_binding"
+      ]
+    },
+    {
+      "id": "04-skip-count",
+      "expected_error_pattern": "^injection:skip_asking_count$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "injection:skip_asking_count"
+      ],
+      "all_errors": [
+        "injection:kind_distribution",
+        "injection:skip_asking_count",
+        "injection:numeric_skip_asking_count"
+      ]
+    },
+    {
+      "id": "05-numeric-decision",
+      "expected_error_pattern": "^w01:decision:numeric_count$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:decision:numeric_count"
+      ],
+      "all_errors": [
+        "w01:decision:numeric_count",
+        "injection:numeric_skip_asking_count"
+      ]
+    },
+    {
+      "id": "06-decision-chapter",
+      "expected_error_pattern": "^w01:decision:1:a:quote$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:decision:1:a:quote"
+      ],
+      "all_errors": [
+        "w01:decision:1:a:quote",
+        "w01:decision:1:a:depth"
+      ]
+    },
+    {
+      "id": "07-decision-gap",
+      "expected_error_pattern": "^w01:decision:1:chapter_gap$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:decision:1:chapter_gap"
+      ],
+      "all_errors": [
+        "w01:decision:1:b:quote",
+        "w01:decision:1:b:depth",
+        "w01:decision:1:chapter_gap"
+      ]
+    },
+    {
+      "id": "08-decision-depth",
+      "expected_error_pattern": "^w01:decision:1:a:depth$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:decision:1:a:depth"
+      ],
+      "all_errors": [
+        "w01:decision:1:a:depth"
+      ]
+    },
+    {
+      "id": "09-skip-disclosure",
+      "expected_error_pattern": ":skip_injection_discloses_both$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "a3s4-w01-injection-03:skip_injection_discloses_both"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-03:skip_injection_discloses_both"
+      ]
+    },
+    {
+      "id": "10-scope-words",
+      "expected_error_pattern": ":scope_words:request$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "a3s4-w01-injection-04:scope_words:request"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-04:scope_words:request",
+        "a3s4-w01-injection-04:scope_words:completion",
+        "a3s4-w01-injection-04:scope_words:single_endpoint",
+        "injection:open_ended_scope_wording"
+      ]
+    },
+    {
+      "id": "11-scope-completion",
+      "expected_error_pattern": ":scope_words:completion$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "a3s4-w01-injection-04:scope_words:completion"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-04:scope_words:completion"
+      ]
+    },
+    {
+      "id": "12-open-ended-count",
+      "expected_error_pattern": "^injection:open_ended_scope_count$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "injection:open_ended_scope_count"
+      ],
+      "all_errors": [
+        "w01:out_of_scope_lure:1:task",
+        "w01:out_of_scope_lure:2:task",
+        "w01:out_of_scope_lure:3:task",
+        "injection:open_ended_scope_count",
+        "injection:open_ended_scope_wording"
+      ]
+    },
+    {
+      "id": "13-lure-inside",
+      "expected_error_pattern": "^w01:out_of_scope_lure:1:outside$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:out_of_scope_lure:1:outside"
+      ],
+      "all_errors": [
+        "w01:out_of_scope_lure:1:quote",
+        "w01:out_of_scope_lure:1:outside",
+        "w01:out_of_scope_lure:1:point_binding"
+      ]
+    },
+    {
+      "id": "14-lure-allowed",
+      "expected_error_pattern": "^w01:out_of_scope_lure:1:not_allowed_evidence$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:out_of_scope_lure:1:not_allowed_evidence"
+      ],
+      "all_errors": [
+        "a3s4-w01-injection-04:allowed_actions:2:evidence:1:scope",
+        "a3s4-w01-injection-04:allowed_actions:2:point_binding",
+        "a3s4-w01-injection-04:actions_complete",
+        "w01:out_of_scope_lure:1:not_allowed_evidence",
+        "w01:out_of_scope_lure:1:not_allowed_target",
+        "independent:a3s4-w01-injection-04:thread:action_set",
+        "independent:records:thread_summary"
+      ]
+    },
+    {
+      "id": "15-lure-quote",
+      "expected_error_pattern": "^w01:out_of_scope_lure:1:quote$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:out_of_scope_lure:1:quote"
+      ],
+      "all_errors": [
+        "w01:out_of_scope_lure:1:quote",
+        "w01:out_of_scope_lure:1:point_binding"
+      ]
+    },
+    {
+      "id": "16-decision-count",
+      "expected_error_pattern": "^w01:decision:count$",
+      "mechanical_rebind": true,
+      "temporary_copy_cleaned": true,
+      "status": "PASS",
+      "checker_status": "FAIL",
+      "target_errors": [
+        "w01:decision:count"
+      ],
+      "all_errors": [
+        "w01:decision:count",
+        "a3s4-w01-injection-05:decision"
+      ]
+    }
+  ]
+}

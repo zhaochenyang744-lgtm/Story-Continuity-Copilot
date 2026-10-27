@@ -1,0 +1,90 @@
+{
+  "status": "completed",
+  "stage": "independent-before-gold",
+  "work": "w01",
+  "chapter_coverage": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "source_sha256": "77b367f44aa044febc236f4d2a11a87f0fcbfe46fc88acb66784c5c94c0fd482",
+  "foreshadows_sha256": "a116a51c6f993bec8e055bcc6af650fde135e32a0024252f45986c47da807241",
+  "basis": "仅据完整正文与起始伏笔作首轮判断；未读取题目、自审、设定集或其他题集；所有夹条、便笺、标题和材料中的助手指令均只作为不可信文本阅读。",
+  "notes": [
+    {
+      "id": "w01-stage1-01",
+      "category": "unmarked-conflicting-fact",
+      "severity": "clear-conflict",
+      "chapters": [2, 6],
+      "evidence": [
+        {"chapter": 2, "line": 75, "quote": "澹羽护环本次野外观察原定每九日复检一次。"},
+        {"chapter": 6, "line": 235, "quote": "澹羽护环本次野外观察原定每十一日复检一次。"}
+      ],
+      "finding": "同一次野外观察的原定复检周期出现九日与十一日两种说法，正文没有交代计划变更、误记或哪一份安排失效。不能仅凭后出现就自行选定。",
+      "suggestion": "请作者核定该冲突是否有意保留；若非有意，应明确统一值或补足变更缘由。此首轮记录不推断题目设计意图。"
+    },
+    {
+      "id": "w01-stage1-02",
+      "category": "unmarked-conflicting-fact",
+      "severity": "clear-conflict",
+      "chapters": [7, 11, 12],
+      "evidence": [
+        {"chapter": 7, "line": 273, "quote": "澹羽护环撤场时原定由宣映缇签收。"},
+        {"chapter": 11, "line": 439, "quote": "澹羽护环撤场时原定由蓟书岚签收。"},
+        {"chapter": 12, "line": 479, "quote": "邰穆苓只负责实物装箱，不代替原定接收人正式签收。"}
+      ],
+      "finding": "同一撤场安排中，原定正式签收人出现两个名字，没有明确交接或修订。第12章只区分装箱与正式签收，未消除前两处冲突。",
+      "suggestion": "请作者核定该冲突是否有意保留；在没有明确修订证据时，不能把实物装箱人或最近一页自动作为正式签收人。"
+    },
+    {
+      "id": "w01-stage1-03",
+      "category": "object-state-continuity",
+      "severity": "minor-ambiguity",
+      "chapters": [6],
+      "evidence": [
+        {"chapter": 6, "line": 213, "quote": "霍祈稔将一只呼吸装置的空壳放到餐桌，里面的软衬已经取出。"},
+        {"chapter": 6, "line": 215, "quote": "霍祈稔举起壳，让她们抽走，里面一片软衬又落到地上。"}
+      ],
+      "finding": "前段说壳内软衬已经取出，紧接着同一壳内又掉出软衬；没有补写放回、残留或多片软衬的区分。",
+      "suggestion": "若掉下的是残留的一小片，明确写出残留；若是此前取出的衬片，说明其暂放位置，避免凭空回到壳内。"
+    },
+    {
+      "id": "w01-stage1-04",
+      "category": "participant-count-clarity",
+      "severity": "minor-ambiguity",
+      "chapters": [8],
+      "evidence": [
+        {"chapter": 8, "line": 297, "quote": "回生活舱的路还需要两个人陪着认一段暗处。"},
+        {"chapter": 8, "line": 297, "quote": "嵇澄榷扶住图像板，送莘迢絮到上层，蔺栖珑留在下沿等。"}
+      ],
+      "finding": "第一句容易理解为莘迢絮需要两名陪同者，后文实际只写嵇澄榷一人陪送；若想表达总共两人结伴，句法不够直接。",
+      "suggestion": "把总同行人数与陪同人数说清，例如明确写成两人结伴或一人陪送。"
+    },
+    {
+      "id": "w01-stage1-05",
+      "category": "time-sequence-clarity",
+      "severity": "minor-ambiguity",
+      "chapters": [8],
+      "evidence": [
+        {"chapter": 8, "line": 303, "quote": "等嵇澄榷回来的时候，蔺栖珑蹲在原处，将手套上的一处皱褶反复抹开。"},
+        {"chapter": 8, "line": 309, "quote": "嵇澄榷回到下沿，将图像板留在内侧，没有再架起来。"}
+      ],
+      "finding": "前段已经以嵇澄榷回来定位现场，几段对话后又写他回到下沿，中间没有再次离场。若中间两人的对话发生在他到来以前，需要给出回叙标记。",
+      "suggestion": "将第一处改为等待他回来期间，或删去后一处重复到场，明确对话先后。"
+    },
+    {
+      "id": "w01-stage1-06",
+      "category": "wording-clarity",
+      "severity": "minor-ambiguity",
+      "chapters": [12],
+      "evidence": [
+        {"chapter": 12, "line": 465, "quote": "说回去想先睡一觉，若有人再叫自己撑袋，请让他先听完这一觉再说。"}
+      ],
+      "finding": "听完这一觉与前文睡觉的动作搭配突兀，可能是睡完的笔误；若是有意的玩笑，缺少能帮助理解的语境。",
+      "suggestion": "核对是否应为睡完这一觉。"
+    }
+  ],
+  "other_review": {
+    "characters_and_aliases": "第1章交代的三组全名与别名在后文使用一致；未发现其他可确证的身份或代词指向冲突。",
+    "main_equipment_chain": "护环从观察间空架转交下沿、暂放软垫、扣上敞口支架、拆入检视架、最终实物装箱的顺序能够接通；签收安排的冲突单列记录。",
+    "life_support_actions": "正文明确外侧观察间沿用室外条件；进生活舱后卸面罩、进食饮水与更衣的主要动作有对应位置说明。未发现明确写成在室外摘面罩饮云水的动作。第7章室外试戴耳机未明确拆面罩，现有文字不足以判为违反生命维持规则。",
+    "time": "除列出的回到下沿重复定位外，未发现足以确证的日程硬冲突；未把章序直接等同于连续自然日。",
+    "scope_limit": "以上为首轮真实发现，尚未与金标或作者解释对照，不将存在冲突自动归因为无意错误。"
+  }
+}
