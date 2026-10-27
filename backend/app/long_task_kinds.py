@@ -100,7 +100,7 @@ class ThreadAudit:
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：伏笔清点。\n" + COMMON_RULES + """
 - 对列出的每一条伏笔，判断这几章里：
   resolved：正文写出了这条线的答案或结局（谜底揭开、东西找到、人物交代清楚了）；
-  abandoned：正文明确交代这条线不再追了（人物说不再查、叙述明说放下了）；
+  abandoned：正文明确交代这条线不再追了（人物说不再查、叙述明说放下了；当众撤下、不再追讨、不再追究这件事，也是 abandoned，不是 resolved）；
   open：这几章里没有收，也没有写明不追；只是提到、推进了一下也算 open。找到了线索、有人说了打算、离答案近了一步，都还是 open：resolved 要正文把这条伏笔问的那件事明确答完。
 - resolved 和 abandoned 必须在 refs 里写出撑得住的段落编号，最多 2 个，挑最能撑住的一两段；open 不写 refs。
 - note 用一句话（不超过 80 字）说依据：只说正文写了什么，不写第几章（章节由程序标）。
@@ -170,6 +170,14 @@ class ThreadAudit:
                 refs, note = [], ""
             seen.add(item["thread"])
             report.append({"thread": item["thread"], "verdict": item["verdict"], "refs": refs, "note": note})
+        # One passage that settles two threads usually settles one: "最后一个人已被接回" closed the empty sledge's rounds and was
+        # taken for the sister who never came back too (A3 first formal run and its regression, every reading). Asked once; a
+        # second answer that keeps both stands.
+        settled = [entry for entry in report if entry["verdict"] == "resolved"]
+        shared = sorted({ref for entry in settled for ref in entry["refs"] if sum(ref in other["refs"] for other in settled) > 1})
+        if shared and not keep_valid:
+            problems.append(Problem("one_passage_two_threads", f"{'、'.join(shared)} 被当作两条伏笔收了的依据：一段原文通常只回答其中一条。"
+                                    "再看一遍，另一条要有直接写到它的段落才算收了，没有就写 open"))
         if problems and not (keep_valid and report):  # kept only when something in it stands
             return None, problems
         # A thread the report left out is open as far as this step can tell.
@@ -232,7 +240,7 @@ class Trace:
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
 - states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项。state 照抄 refs 那段原文里说出这个新状态的连续原话（不超过 40 字，可以只抄半句；不改字、不加字、不并句），refs 写这一段的编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
-- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
+- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象或这件事的说法对不上，它的时间、年龄、数量、名字写成了两样也算；跟它无关的别的人、别的事对不上，不写。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
         "states": {"type": "array", "items": {"type": "object", "properties": {"state": {"type": "string", "maxLength": STATE_MAX},

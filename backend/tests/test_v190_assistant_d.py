@@ -390,7 +390,7 @@ class FollowUpLimitTests(AssistantCase):
 # ---- advice ----------------------------------------------------------------------------------------------------------------
 class AdvicePromptTests(AssistantCase):
     def test_the_prompt_version_moves_and_the_prompt_holds_the_new_rule(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p58")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p59")
         for needle in ("建议也是带出处的句子", "依据 + 建议", "建议只指向已经写下的东西", "帮我想个结局", "情节怎么写由你决定，我只能指出前文已有的线索。",
                        "不要写「把……改成……」", "status 填 not_found"):
             self.assertIn(needle, SYSTEM_PROMPT)

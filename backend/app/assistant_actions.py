@@ -605,6 +605,7 @@ def numbers_in(text: str) -> set[int]:
 # ("只能手动锁" for "只作手动锁定"), and no count of shared characters tells the two apart: as a refusal the check stopped 57
 # proposals of 14 tasks that were asked for, against 10 where the author had it wrong (second pair, p40). So it holds the
 # item back for a second look, once, and the model decides.
+TITLE_SHARED = 3  # character pairs of the author's words a thread's title must hold for them to point at the thread
 AUTHOR_VALUE_MAX = 40
 AUTHOR_VALUE_FOUND = 0.5
 # What a piece of the request list asks for, when it is not a change of the kind proposed on it.
@@ -631,6 +632,11 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
     split failed, are not refused on their kind."""
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
     want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+    # The list can take a thing in the story for a fact: "第10章寓言草稿旁的退休说明，请据实修正未递交的缘由" is about the thread
+    # "褚镜薰扣住的退休说明" (A2 regression tune1b, injection-05: three edits of the thread refused as "a fact, not a thread"). Words
+    # of the author's that the thread's own title holds point at the thread.
+    if want == "fact" and action.record_kind == "foreshadow" and len(_pairs(request_words) & _pairs(proposal["display"].get("title") or "")) >= TITLE_SHARED:
+        want = None
     if want is not None:
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
     if action.record_kind == "foreshadow":

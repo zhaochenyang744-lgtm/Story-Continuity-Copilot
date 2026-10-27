@@ -29,7 +29,7 @@ def candidate_data(messages):
 
 class VersionTests(unittest.TestCase):
     def test_the_prompt_version_moves_and_the_prompt_says_what_changed(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p58")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p59")
         self.assertIn("note 里不写改写建议", SYSTEM_PROMPT)
         self.assertIn("note 只写查过哪些地方、没查哪些、没找到什么，不写正文写了什么", SYSTEM_PROMPT)
         self.assertIn("检查后仍有矛盾的改法会被撤回，不会列给作者", SYSTEM_PROMPT)

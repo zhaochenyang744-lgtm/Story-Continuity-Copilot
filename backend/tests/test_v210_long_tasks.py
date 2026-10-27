@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 from app import long_tasks as lt
 from app.memory_contract import CONTROLLED_PREDICATES
+from app.problem_codes import codes_of
 
 from tests.scripted_chat import call, text, turn
 from tests.test_v200_changes import ChangeCase
@@ -611,6 +612,18 @@ class SameFactTests(unittest.TestCase):
         self.assertFalse(THREAD_TALK.search("每次续租都须本人确认"))
         self.assertTrue(NO_NEWS.search("推车未在这几章出现，无新交接"))
         self.assertFalse(NO_NEWS.search("推车交给牟宛歧保管"))
+
+    def test_one_passage_settling_two_threads_is_asked_about_once(self):
+        # A3 first formal run: "最后一个人已被接回" closed the empty sledge's rounds and was taken for the missing sister too.
+        from app.long_task_kinds import ThreadAudit
+        args = {"threads": [{"thread": "R1", "verdict": "resolved", "refs": ["R9"], "note": "接回了"},
+                            {"thread": "R2", "verdict": "resolved", "refs": ["R9", "R8"], "note": "接回了"}]}
+        subjects, passages = {"R1": {}, "R2": {}}, {"R8": {}, "R9": {}}
+        report, problems = ThreadAudit().validate(args, subjects, passages, set())
+        self.assertIsNone(report)
+        self.assertEqual(codes_of(problems), ["one_passage_two_threads"])
+        report, problems = ThreadAudit().validate(args, subjects, passages, set(), keep_valid=True)
+        self.assertEqual(([entry["verdict"] for entry in report], problems), (["resolved", "resolved"], []))
 
     def test_tidy_adds_no_fact_of_who_holds_a_thing_now(self):
         from app.long_task_kinds import Tidy
