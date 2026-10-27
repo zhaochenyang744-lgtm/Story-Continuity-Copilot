@@ -1,0 +1,450 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+  "chapter_coverage": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "unresolved_findings": 0,
+  "findings": [
+    {
+      "id": "S1-C01",
+      "chapters": [
+        1,
+        2
+      ],
+      "summary": "首轮发现的叙述代词漂移已由主控修正，完整复读确认该处现在与后续代词一致。",
+      "evidence": [
+        {
+          "phase": "stage1",
+          "source_sha256": "2e608e9ca620eb05bf9018e8ea921cd82d45a7eabd4ec9ed06dad8383ac0802c",
+          "chapter": 1,
+          "quote": "他没有拿它去烫巨蛾，只将碗放在石沿边。"
+        },
+        {
+          "phase": "stage2_final_reread",
+          "source_sha256": "88ecf08fdd5032cd234e97d92416ec528fb9ad5477c22dd75216a29f0dd75582",
+          "chapter": 1,
+          "quote": "她没有拿它去烫巨蛾，只将碗放在石沿边。"
+        },
+        {
+          "phase": "stage2_final_reread",
+          "source_sha256": "88ecf08fdd5032cd234e97d92416ec528fb9ad5477c22dd75216a29f0dd75582",
+          "chapter": 2,
+          "quote": "程嵩芮终于将锅放稳，自己先笑了，说今日的汤若还嫌不热，可以去问问她的手。"
+        },
+        {
+          "phase": "stage2_repair_reread",
+          "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+          "chapter": 1,
+          "quote": "她没有拿它去烫巨蛾，只将碗放在石沿边。"
+        }
+      ],
+      "resolution_status": "closed",
+      "closure_record": "首轮独立记录保留在independent-continuity-notes-w01-stage1.json；本轮明确复读当前正文后关闭。"
+    },
+    {
+      "id": "D-C01",
+      "chapters": [
+        4,
+        9
+      ],
+      "summary": "同一次原约的停留时长存在两种清楚写法，属于主控明确授权保留的唯一设计双写。",
+      "evidence": [
+        {
+          "chapter": 4,
+          "quote": "霁蛾令壳约定留在灯槽的时长，是七次敲节。"
+        },
+        {
+          "chapter": 9,
+          "quote": "霁蛾令壳约定留在灯槽的时长，是九次敲节。"
+        }
+      ],
+      "resolution_status": "designed",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5"
+    },
+    {
+      "id": "S2-C01",
+      "chapters": [
+        2
+      ],
+      "summary": "同一段过门动作先要求抱壳者持续用双手托壳，紧接着又泛指每个人用一只手搭绳，手部占用出现未交代的冲突。",
+      "evidence": [
+        {
+          "chapter": 2,
+          "quote": "他想用肩夹住令壳，腾一只手去扶门，佘珂窈及时扣住他的肘，叫他两只手仍托好东西。",
+          "phase": "stage2_initial_finding",
+          "source_sha256": "88ecf08fdd5032cd234e97d92416ec528fb9ad5477c22dd75216a29f0dd75582"
+        },
+        {
+          "chapter": 2,
+          "quote": "卜遐樾将一条绳垂到他们腰际，让每个人用一只手搭着，不把手绑死。",
+          "phase": "stage2_initial_finding",
+          "source_sha256": "88ecf08fdd5032cd234e97d92416ec528fb9ad5477c22dd75216a29f0dd75582"
+        },
+        {
+          "phase": "stage2_repair_reread",
+          "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+          "chapter": 2,
+          "quote": "卜遐樾将一条绳垂到他们腰际，让能腾手的人用一只手搭着，不把手绑死。"
+        },
+        {
+          "phase": "stage2_repair_reread",
+          "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+          "chapter": 2,
+          "quote": "苗珣翳仍用双手托壳，佘珂窈在他身侧扶着手肘，没有叫他去抓绳。"
+        }
+      ],
+      "resolution_status": "closed",
+      "requested_resolution": "请主控决定是否限定搭绳者为能腾出手的人，并补明抱壳者仍双手托壳；如调整正文，也需核对第15条事实及其支持句是否应相应限定。",
+      "closure_record": "保留初始发现与原证据；主控将搭绳者限定为能腾手的人，并补明抱壳者继续双手托壳、不抓绳。本轮完整复读12章、24条基础事实及共享开头后确认手部占用已一致，第15条事实及支持句同步正确，未发现新增无意矛盾。"
+    }
+  ],
+  "review_scope": {
+    "full_source_chapters_read": 12,
+    "checked_dimensions": [
+      "人物指代",
+      "事件顺序与地点",
+      "令壳交接和负载",
+      "灯碗灯杆旧钩",
+      "锅口锅底锅盖及火",
+      "门环软芯",
+      "拐杖与裂木片",
+      "衣包衣带损耗",
+      "脚掌掌心指端肩部颧骨伤情",
+      "伏笔原疑问与最终状态",
+      "24条基础事实支持",
+      "第13章共享开头衔接"
+    ],
+    "fact_support_checks": 24,
+    "fact_base_statement_unsupported": 0,
+    "intentional_value_note_count": 2,
+    "shared_draft_reviewed": true,
+    "shared_draft_continuity_findings": 0,
+    "new_unintentional_findings_on_final_reread": 0
+  },
+  "fact_support_checks": [
+    {
+      "fact": 1,
+      "chapter": 1,
+      "base_statement": "同一庭院可同时出现雪和热雨",
+      "support_quote": "一场雪横着穿过蚀穗天庭，落到另一边就成了热雨。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 2,
+      "chapter": 1,
+      "base_statement": "覆盖半座宫苑",
+      "support_quote": "它的夏翅覆着半座宫苑，离得近了，看不见完整的形状",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 3,
+      "chapter": 2,
+      "base_statement": "无需向季蛾交出姓名，可以不报名通过",
+      "support_quote": "姓名不必交给季蛾，谁都可以不报名而经过这里。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 4,
+      "chapter": 1,
+      "base_statement": "蘅灯",
+      "support_quote": "蘅灯，你再晚叫一声，我就成了春天的鞋。”苗珣翳把脚拔出来。这个称呼原是孩子追着灯喊的，喊久了，费蘅墟也肯应。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 5,
+      "chapter": 1,
+      "base_statement": "翳羽",
+      "support_quote": "苗珣翳在这里，翳羽也在，别为了找两个名字多爬一趟。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 6,
+      "chapter": 2,
+      "base_statement": "茉背",
+      "support_quote": "叫蒯泠茉时总嫌字多，叫茉背时，倒谁都记得还可以往我背上添一件。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 7,
+      "chapter": 1,
+      "base_statement": "承受一季的重量，交接时卸壳而非割翅",
+      "support_quote": "翅仍属于它，卸下的只该是替这一季承重的令壳。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 8,
+      "chapter": 1,
+      "base_statement": "抱住令壳后离开夏翅阴影",
+      "support_quote": "苗珣翳接住霁蛾令壳，把它抱在胸前，离开夏翅下的阴影。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 9,
+      "chapter": 2,
+      "base_statement": "空蛹薄片搭在风上，远看如池",
+      "support_quote": "原来那是一层层空蛹留下的薄片，铺在风上，互相搭着，远处看像一整面平静的池。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 10,
+      "chapter": 2,
+      "base_statement": "薄片可翻转，仅盯倒影认不出承重点",
+      "support_quote": "薄片会翻，人若只盯倒影，踩下去时便认不得哪一层能承重。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 11,
+      "chapter": 2,
+      "base_statement": "在宫苑外睡去，醒来时同行者已换季衣而他的没有跟来",
+      "support_quote": "他曾在宫苑外睡去，醒来时，同行的人已经换了季衣；他自己的那件没有跟来",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 12,
+      "chapter": 4,
+      "base_statement": "不能永久扣住要离苑的人",
+      "support_quote": "守门者不能永远扣住要离苑的人，别的人也不能。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 13,
+      "chapter": 4,
+      "base_statement": "知道现今石面裂口未画进旧图",
+      "support_quote": "石面如今多出一道裂口，图上的路却没有跟着裂。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 14,
+      "chapter": 3,
+      "base_statement": "苗珣翳交给蒯泠茉后先上桥",
+      "support_quote": "苗珣翳将霁蛾令壳交给蒯泠茉，自己先走上结霜的桥。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 15,
+      "chapter": 2,
+      "base_statement": "垂绳供能腾手的人搭手，不把手绑住",
+      "support_quote": "卜遐樾将一条绳垂到他们腰际，让能腾手的人用一只手搭着，不把手绑死。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 16,
+      "chapter": 1,
+      "base_statement": "额角有一条细红痕",
+      "support_quote": "她摇头，额角却露出一道细细的红。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 17,
+      "chapter": 4,
+      "base_statement": "沿半露在石面的长槽绕上去",
+      "support_quote": "路不在崖外，而是沿着一条半露在石面的长槽往上绕",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 18,
+      "chapter": 3,
+      "base_statement": "被霜涨开，碰触会向外翻",
+      "support_quote": "栏木被霜涨开，碰一下便往外翻。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 19,
+      "chapter": 4,
+      "base_statement": "不同地方声音相近不等于同一来源",
+      "support_quote": "这里的石头响得厚，不能把两个地方碰巧相近的声音当成同一件事。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 20,
+      "chapter": 2,
+      "base_statement": "可以拒领季衣，拒领也可离开天庭",
+      "support_quote": "每个人都有拒领季衣的权利，不领也能离开天庭。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 21,
+      "chapter": 4,
+      "base_statement": "佘珂窈当年试路所留",
+      "support_quote": "崖边那两排旧足迹，是佘珂窈当年试路时留下的。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 22,
+      "chapter": 4,
+      "base_statement": "携走的单环已经裂开，留挂会砸人",
+      "support_quote": "这一环裂了，挂着会落到人头上。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 23,
+      "chapter": 4,
+      "base_statement": "火靠得过近会使壳面干脆",
+      "support_quote": "守灯人却说火若靠得太近，壳面会干得发脆。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    },
+    {
+      "fact": 24,
+      "chapter": 3,
+      "base_statement": "移开灯火后，暖风退去，薄影收拢",
+      "support_quote": "他把火从那段桥移开，暖风一退，薄影才慢慢收拢。",
+      "supported": true,
+      "scope": "只核基础陈述，不将随手备注作为事实或执行规则"
+    }
+  ],
+  "shared_draft_checks": [
+    {
+      "item": "空间与时序",
+      "result": "not_conflict",
+      "rationale": "第13章仍在高窗与外廊附近处理换季后的残局，未使已经清出的旧帷或翻砖自动复原；昨夜一词允许续章已经过夜，不与前12章明确时点相抵。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "苗珣翳伤情",
+      "result": "not_conflict",
+      "rationale": "共享开头保留第8章造成且第11章继续疼痛的颧骨伤，没有恢复无伤状态。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "卜遐樾与浅兜",
+      "result": "not_conflict",
+      "rationale": "共享开头仍靠浅兜移行，掌根用力就退让，与第11章拍石后掌根青及第12章不能独行相接。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "佘珂窈手指与鞋",
+      "result": "not_conflict",
+      "rationale": "共享开头保留第10章指端割口及第11章焦鞋，不让受伤指端接触粗线，试路也仅确认小段。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "鄄玟羽与嵇汀柊",
+      "result": "not_conflict",
+      "rationale": "共享开头继续以前臂辅助，破掌朝上；拐杖仍撑高窗，老人改借普通撑木，裂木片未再次承担或试敲。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "锅灯与肩伤",
+      "result": "not_conflict",
+      "rationale": "共享开头仍是失铁边且凹底的锅护余火、受伤者肩衣干硬、短杆与旧带保留；没有恢复灯碗、完整锅沿或持壳状态。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "乐阙榛衣物与邀请",
+      "result": "not_conflict",
+      "rationale": "共享开头保留烧破袖口，邀请仍未写全且没有发送日程，不将新蛾交接视作冬邀已解决。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    },
+    {
+      "item": "邬昭粼与旧帷",
+      "result": "not_conflict",
+      "rationale": "共享开头指腹避用、旧扣待收，与第12章割线磨破指腹、退下旧扣和移走旧帷的动作衔接。",
+      "final_reread_source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "record_sha256": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+    }
+  ],
+  "supporting_input_sha256": {
+    "materials/w01-facts.json": "74551a1e8ea2bb417a452ef680e5bc6f642dc4503965292899b166f0c15d855c",
+    "authoring/material-draft-w01.json": "4103107eefc838f9f739630bd8ccebd9297028572864941fe639dc3a2352c33b",
+    "authoring/record-w01.json": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+  },
+  "review_history": [
+    {
+      "round": "stage2_initial_full_reading",
+      "source_sha256": "88ecf08fdd5032cd234e97d92416ec528fb9ad5477c22dd75216a29f0dd75582",
+      "chapter_coverage": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fact_support_checked": 24,
+      "shared_draft_reviewed": true,
+      "unresolved_findings": 1,
+      "report_sha256_before_update": "53c57810d6a800114c4527326d11f705077805ced0f52e7912ccebe99fee3a1f",
+      "supporting_input_sha256": {
+        "materials/w01-facts.json": "292288608535fb90f45e25146152f33a0657c2a3846c51852af9802090d0f832",
+        "authoring/material-draft-w01.json": "f99a6cbf4ab26548420b5ee50ce13843f3163d814456966042e8382a1f6fe699",
+        "authoring/record-w01.json": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+      }
+    },
+    {
+      "round": "stage2_repair_full_reread",
+      "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+      "chapter_coverage": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fact_support_checked": 24,
+      "shared_draft_reviewed": true,
+      "unresolved_findings": 0,
+      "new_unintentional_findings": 0,
+      "supporting_input_sha256": {
+        "materials/w01-facts.json": "74551a1e8ea2bb417a452ef680e5bc6f642dc4503965292899b166f0c15d855c",
+        "authoring/material-draft-w01.json": "4103107eefc838f9f739630bd8ccebd9297028572864941fe639dc3a2352c33b",
+        "authoring/record-w01.json": "44c66d174304c00bb0f906087809d08412405a84014651fa197597706a12cc6d"
+      }
+    }
+  ]
+}

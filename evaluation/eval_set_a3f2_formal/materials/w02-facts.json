@@ -1,0 +1,212 @@
+[
+  {
+    "memory_type": "static_canon",
+    "subject": "郜缃遥",
+    "predicate": "别名",
+    "value": "阔时客",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "班聿岐",
+    "predicate": "别名",
+    "value": "炬耳人",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "竺芩曜",
+    "predicate": "别名",
+    "value": "缄帆者",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "郜缃遥与班聿岐",
+    "predicate": "伴侣关系起点",
+    "value": "成为伴侣时邬曼洄生父已经去世",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "邬曼洄",
+    "predicate": "生父",
+    "value": "已故",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "邬曼洄",
+    "predicate": "母亲抵港当日下午",
+    "value": "此前已答应帮人搬东西，先告知对方也许晚到",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "岑弧返港",
+    "predicate": "生活区位置",
+    "value": "在舱场后面",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥",
+    "predicate": "抵港所见旧近路",
+    "value": "旧横穿路已加矮栏，栏后草长齐腰",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥",
+    "predicate": "抵港行李",
+    "value": "背着的轻包就是全部行李",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "甄洛蘩",
+    "predicate": "首日灶间",
+    "value": "端来热食，请邬曼洄开窗",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥",
+    "predicate": "首日临住床位",
+    "value": "房间只铺她的一床，未替女儿另铺",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "迟汐对钟",
+    "predicate": "抵港日封存",
+    "value": "由班聿岐锁在返航舱旁柜里，暂不交人",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "航庭门边花",
+    "predicate": "抵港日晚间所见",
+    "value": "午后垂枝已被换掉，瓶中新添带水的叶",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥与班聿岐",
+    "predicate": "抵港日再见",
+    "value": "沿返航舱外侧散步",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "祁梵棱",
+    "predicate": "次日见面选择",
+    "value": "愿意见昔日伴侣但不恢复伴侣关系",
+    "chapter": 2
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "竺芩曜与阴俞旻",
+    "predicate": "次日另约",
+    "value": "约在后天再见，阴明天有事且午后会累",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "冉栖遐",
+    "predicate": "出航前关系",
+    "value": "离港时没有等他归来的伴侣",
+    "chapter": 2
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "刈光指匣",
+    "predicate": "初现状态",
+    "value": "竺芩曜扣在腰间，航路片未取出",
+    "chapter": 2
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "晚餐出餐口",
+    "predicate": "次日晚间",
+    "value": "又有一份单放的无名晚餐，与昨夜一样",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "喻聆峭",
+    "predicate": "生活情况",
+    "value": "已独居多年，也接受部分陪伴",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "纭隙双星",
+    "predicate": "天幕亮色",
+    "value": "两侧分开，长廊一边先暖而另一边仍凉",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "喻聆峭",
+    "predicate": "买碗用途",
+    "value": "给自己每日吃饭用，不先以客人喜好挑选",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "返龄契盒",
+    "predicate": "初置航庭",
+    "value": "亓宸苓置门内，封条未揭",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "返龄",
+    "predicate": "名称含义",
+    "value": "只是返航年岁核对的旧称，不能逆龄",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "返龄契盒",
+    "predicate": "旧时用途",
+    "value": "旧团体保存旧约的盒子",
+    "chapter": 3
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "邬曼洄",
+    "predicate": "陪母登坡约定",
+    "value": "答应白日同游，日暮前返回",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "高坡旧围栏",
+    "predicate": "母亲独游所见",
+    "value": "只剩几根矮柱",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥",
+    "predicate": "首次听见拍窗",
+    "value": "声音断续，隔窗传来而不像敲门",
+    "chapter": 4
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "郜缃遥与邬曼洄",
+    "predicate": "第五日合影邀请",
+    "value": "两人当日都拒绝参加",
+    "chapter": 5
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "留港歌单",
+    "predicate": "无名曲初现",
+    "value": "其中有一首无署名且无人知道作者的曲子",
+    "chapter": 5
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "initial_dirty": 0,
+  "head": "ad82ff04cb61277d6370fb6d63b2e3608a2c6d6b",
+  "protected_sha256": {
+    "evaluation/assistant_a3/thresholds.py": "6dcc0a09f1bae00002ad40ec8922eea258bbb932296da69565f6879cac7ae8b9",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+    "evaluation/assistant_a2/SPEC.md": "571212409f15dc665db08b2705b34777e18b2d511350f922c3f6859a499876ce",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512",
+    "evaluation/assistant_a3/SPEC.md": "3fcbb805fdace53c12e3207a6b491d8f8ceb1039d836a421d0ea4896ff164d91"
+  },
+  "branch": "eval/a3-2-authoring"
+}

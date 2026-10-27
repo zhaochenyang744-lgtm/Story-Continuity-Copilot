@@ -1,0 +1,339 @@
+{
+  "module": {
+    "exit_code": 0,
+    "stdout": "{\"copy_errors\": 0, \"errors\": [], \"evaluation_runs\": 0, \"independent_routes\": {\"final_agreement\": 20, \"first_agreement\": 20, \"total\": 20, \"unresolved\": 0}, \"independent_threads\": {\"action_set_agreement\": 6, \"action_sets\": 6, \"final_agreement\": 18, \"first_agreement\": 18, \"total\": 18, \"unresolved\": 0, \"works\": {\"w01\": {\"final_agreement\": 9, \"first_agreement\": 9, \"total\": 9}, \"w02\": {\"final_agreement\": 9, \"first_agreement\": 9, \"total\": 9}}}, \"model_calls\": 0, \"novelty_errors\": 0, \"novelty_reference_inputs\": 859, \"product_runs\": 0, \"scope\": \"this_set_only\", \"semantic_acceptance\": false, \"status\": \"PASS\", \"tasks\": 38, \"works\": {\"w01\": {\"abandoned_in_text\": 1, \"aliases\": 3, \"chapter_han_max\": 3157, \"chapter_han_min\": 2926, \"chapters\": 30, \"characters\": 10, \"contradictions\": 3, \"decision_points\": 2, \"draft_han\": 796, \"expected_action_kinds\": {\"abandon_thread\": 2, \"resolve_thread\": 7}, \"facts\": 30, \"foreshadow_states\": {\"developing\": 4, \"planted\": 4, \"resolved\": 1}, \"foreshadows\": 9, \"names\": 20, \"near_misses\": 2, \"point_after1500\": 37, \"point_after2500\": 37, \"point_han_max\": 2934, \"point_han_min\": 2633, \"point_position_buckets\": {\"1501_2500\": 0, \"1_1500\": 0, \"2501_plus\": 37}, \"point_quotes\": 37, \"resolved_unmarked\": 3, \"routes\": {\"ask\": 2, \"change\": 2, \"check_passage\": 1, \"long_task\": 4, \"recap\": 1}, \"same_input_groups\": 1, \"scope_all\": 6, \"scope_given\": 3, \"still_open\": 4, \"suites\": {\"ask\": 2, \"narrowed\": 2, \"route\": 10, \"thread_audit\": 2, \"trace\": 3}, \"total_han\": 91011, \"trace_objects\": 3, \"trace_states\": 18}, \"w02\": {\"abandoned_in_text\": 1, \"aliases\": 3, \"chapter_han_max\": 3172, \"chapter_han_min\": 2905, \"chapters\": 30, \"characters\": 10, \"contradictions\": 3, \"decision_points\": 2, \"draft_han\": 796, \"expected_action_kinds\": {\"abandon_thread\": 2, \"resolve_thread\": 7}, \"facts\": 30, \"foreshadow_states\": {\"developing\": 3, \"planted\": 5, \"resolved\": 1}, \"foreshadows\": 9, \"names\": 19, \"near_misses\": 2, \"point_after1500\": 35, \"point_after2500\": 34, \"point_han_max\": 2858, \"point_han_min\": 225, \"point_position_buckets\": {\"1501_2500\": 1, \"1_1500\": 2, \"2501_plus\": 34}, \"point_quotes\": 37, \"resolved_unmarked\": 3, \"routes\": {\"ask\": 2, \"change\": 2, \"check_passage\": 1, \"long_task\": 4, \"recap\": 1}, \"same_input_groups\": 1, \"scope_all\": 6, \"scope_given\": 3, \"still_open\": 4, \"suites\": {\"ask\": 2, \"narrowed\": 2, \"route\": 10, \"thread_audit\": 2, \"trace\": 3}, \"total_han\": 90200, \"trace_objects\": 3, \"trace_states\": 18}}}",
+    "output": {
+      "copy_errors": 0,
+      "errors": [],
+      "evaluation_runs": 0,
+      "independent_routes": {
+        "final_agreement": 20,
+        "first_agreement": 20,
+        "total": 20,
+        "unresolved": 0
+      },
+      "independent_threads": {
+        "action_set_agreement": 6,
+        "action_sets": 6,
+        "final_agreement": 18,
+        "first_agreement": 18,
+        "total": 18,
+        "unresolved": 0,
+        "works": {
+          "w01": {
+            "final_agreement": 9,
+            "first_agreement": 9,
+            "total": 9
+          },
+          "w02": {
+            "final_agreement": 9,
+            "first_agreement": 9,
+            "total": 9
+          }
+        }
+      },
+      "model_calls": 0,
+      "novelty_errors": 0,
+      "novelty_reference_inputs": 859,
+      "product_runs": 0,
+      "scope": "this_set_only",
+      "semantic_acceptance": false,
+      "status": "PASS",
+      "tasks": 38,
+      "works": {
+        "w01": {
+          "abandoned_in_text": 1,
+          "aliases": 3,
+          "chapter_han_max": 3157,
+          "chapter_han_min": 2926,
+          "chapters": 30,
+          "characters": 10,
+          "contradictions": 3,
+          "decision_points": 2,
+          "draft_han": 796,
+          "expected_action_kinds": {
+            "abandon_thread": 2,
+            "resolve_thread": 7
+          },
+          "facts": 30,
+          "foreshadow_states": {
+            "developing": 4,
+            "planted": 4,
+            "resolved": 1
+          },
+          "foreshadows": 9,
+          "names": 20,
+          "near_misses": 2,
+          "point_after1500": 37,
+          "point_after2500": 37,
+          "point_han_max": 2934,
+          "point_han_min": 2633,
+          "point_position_buckets": {
+            "1501_2500": 0,
+            "1_1500": 0,
+            "2501_plus": 37
+          },
+          "point_quotes": 37,
+          "resolved_unmarked": 3,
+          "routes": {
+            "ask": 2,
+            "change": 2,
+            "check_passage": 1,
+            "long_task": 4,
+            "recap": 1
+          },
+          "same_input_groups": 1,
+          "scope_all": 6,
+          "scope_given": 3,
+          "still_open": 4,
+          "suites": {
+            "ask": 2,
+            "narrowed": 2,
+            "route": 10,
+            "thread_audit": 2,
+            "trace": 3
+          },
+          "total_han": 91011,
+          "trace_objects": 3,
+          "trace_states": 18
+        },
+        "w02": {
+          "abandoned_in_text": 1,
+          "aliases": 3,
+          "chapter_han_max": 3172,
+          "chapter_han_min": 2905,
+          "chapters": 30,
+          "characters": 10,
+          "contradictions": 3,
+          "decision_points": 2,
+          "draft_han": 796,
+          "expected_action_kinds": {
+            "abandon_thread": 2,
+            "resolve_thread": 7
+          },
+          "facts": 30,
+          "foreshadow_states": {
+            "developing": 3,
+            "planted": 5,
+            "resolved": 1
+          },
+          "foreshadows": 9,
+          "names": 19,
+          "near_misses": 2,
+          "point_after1500": 35,
+          "point_after2500": 34,
+          "point_han_max": 2858,
+          "point_han_min": 225,
+          "point_position_buckets": {
+            "1501_2500": 1,
+            "1_1500": 2,
+            "2501_plus": 34
+          },
+          "point_quotes": 37,
+          "resolved_unmarked": 3,
+          "routes": {
+            "ask": 2,
+            "change": 2,
+            "check_passage": 1,
+            "long_task": 4,
+            "recap": 1
+          },
+          "same_input_groups": 1,
+          "scope_all": 6,
+          "scope_given": 3,
+          "still_open": 4,
+          "suites": {
+            "ask": 2,
+            "narrowed": 2,
+            "route": 10,
+            "thread_audit": 2,
+            "trace": 3
+          },
+          "total_han": 90200,
+          "trace_objects": 3,
+          "trace_states": 18
+        }
+      }
+    },
+    "stderr_empty": true,
+    "data_sha256": {
+      "materials/w01-facts.json": "d625a1902053e4971f54a3c1d34f1f3b2f8fc5560fc1cba7038e2695645cdeab",
+      "materials/w01-foreshadows.json": "c72aad36b39dc9282656cdb5a56ffcf12560f0a6298bd2f2f0971c27a8608c46",
+      "materials/w02-facts.json": "d6c711969792e3d0a6b8f3864993aec51130b584640b42f8e2fa04bf3e8e5147",
+      "materials/w02-foreshadows.json": "6f4e9d4390d5df1958c0f7c7de52613bb01b4fecf2552ab7897fdc3e2849ef24",
+      "tasks.json": "de7f72211e47c586df9574460acba3baa3e4e2b8589cd07a89298b86e449e21e",
+      "works/w01.md": "c5acdd48b00b223e0c679c58d8d45c59f8863deee627de9dd50404ffc59e1135",
+      "works/w02.md": "982f7c36440bb52aeb62d55266da16f930fc9961ecac24abd3fe42769a211bf4"
+    },
+    "data_unchanged": true
+  },
+  "absolute": {
+    "exit_code": 0,
+    "stdout": "{\"copy_errors\": 0, \"errors\": [], \"evaluation_runs\": 0, \"independent_routes\": {\"final_agreement\": 20, \"first_agreement\": 20, \"total\": 20, \"unresolved\": 0}, \"independent_threads\": {\"action_set_agreement\": 6, \"action_sets\": 6, \"final_agreement\": 18, \"first_agreement\": 18, \"total\": 18, \"unresolved\": 0, \"works\": {\"w01\": {\"final_agreement\": 9, \"first_agreement\": 9, \"total\": 9}, \"w02\": {\"final_agreement\": 9, \"first_agreement\": 9, \"total\": 9}}}, \"model_calls\": 0, \"novelty_errors\": 0, \"novelty_reference_inputs\": 859, \"product_runs\": 0, \"scope\": \"this_set_only\", \"semantic_acceptance\": false, \"status\": \"PASS\", \"tasks\": 38, \"works\": {\"w01\": {\"abandoned_in_text\": 1, \"aliases\": 3, \"chapter_han_max\": 3157, \"chapter_han_min\": 2926, \"chapters\": 30, \"characters\": 10, \"contradictions\": 3, \"decision_points\": 2, \"draft_han\": 796, \"expected_action_kinds\": {\"abandon_thread\": 2, \"resolve_thread\": 7}, \"facts\": 30, \"foreshadow_states\": {\"developing\": 4, \"planted\": 4, \"resolved\": 1}, \"foreshadows\": 9, \"names\": 20, \"near_misses\": 2, \"point_after1500\": 37, \"point_after2500\": 37, \"point_han_max\": 2934, \"point_han_min\": 2633, \"point_position_buckets\": {\"1501_2500\": 0, \"1_1500\": 0, \"2501_plus\": 37}, \"point_quotes\": 37, \"resolved_unmarked\": 3, \"routes\": {\"ask\": 2, \"change\": 2, \"check_passage\": 1, \"long_task\": 4, \"recap\": 1}, \"same_input_groups\": 1, \"scope_all\": 6, \"scope_given\": 3, \"still_open\": 4, \"suites\": {\"ask\": 2, \"narrowed\": 2, \"route\": 10, \"thread_audit\": 2, \"trace\": 3}, \"total_han\": 91011, \"trace_objects\": 3, \"trace_states\": 18}, \"w02\": {\"abandoned_in_text\": 1, \"aliases\": 3, \"chapter_han_max\": 3172, \"chapter_han_min\": 2905, \"chapters\": 30, \"characters\": 10, \"contradictions\": 3, \"decision_points\": 2, \"draft_han\": 796, \"expected_action_kinds\": {\"abandon_thread\": 2, \"resolve_thread\": 7}, \"facts\": 30, \"foreshadow_states\": {\"developing\": 3, \"planted\": 5, \"resolved\": 1}, \"foreshadows\": 9, \"names\": 19, \"near_misses\": 2, \"point_after1500\": 35, \"point_after2500\": 34, \"point_han_max\": 2858, \"point_han_min\": 225, \"point_position_buckets\": {\"1501_2500\": 1, \"1_1500\": 2, \"2501_plus\": 34}, \"point_quotes\": 37, \"resolved_unmarked\": 3, \"routes\": {\"ask\": 2, \"change\": 2, \"check_passage\": 1, \"long_task\": 4, \"recap\": 1}, \"same_input_groups\": 1, \"scope_all\": 6, \"scope_given\": 3, \"still_open\": 4, \"suites\": {\"ask\": 2, \"narrowed\": 2, \"route\": 10, \"thread_audit\": 2, \"trace\": 3}, \"total_han\": 90200, \"trace_objects\": 3, \"trace_states\": 18}}}",
+    "output": {
+      "copy_errors": 0,
+      "errors": [],
+      "evaluation_runs": 0,
+      "independent_routes": {
+        "final_agreement": 20,
+        "first_agreement": 20,
+        "total": 20,
+        "unresolved": 0
+      },
+      "independent_threads": {
+        "action_set_agreement": 6,
+        "action_sets": 6,
+        "final_agreement": 18,
+        "first_agreement": 18,
+        "total": 18,
+        "unresolved": 0,
+        "works": {
+          "w01": {
+            "final_agreement": 9,
+            "first_agreement": 9,
+            "total": 9
+          },
+          "w02": {
+            "final_agreement": 9,
+            "first_agreement": 9,
+            "total": 9
+          }
+        }
+      },
+      "model_calls": 0,
+      "novelty_errors": 0,
+      "novelty_reference_inputs": 859,
+      "product_runs": 0,
+      "scope": "this_set_only",
+      "semantic_acceptance": false,
+      "status": "PASS",
+      "tasks": 38,
+      "works": {
+        "w01": {
+          "abandoned_in_text": 1,
+          "aliases": 3,
+          "chapter_han_max": 3157,
+          "chapter_han_min": 2926,
+          "chapters": 30,
+          "characters": 10,
+          "contradictions": 3,
+          "decision_points": 2,
+          "draft_han": 796,
+          "expected_action_kinds": {
+            "abandon_thread": 2,
+            "resolve_thread": 7
+          },
+          "facts": 30,
+          "foreshadow_states": {
+            "developing": 4,
+            "planted": 4,
+            "resolved": 1
+          },
+          "foreshadows": 9,
+          "names": 20,
+          "near_misses": 2,
+          "point_after1500": 37,
+          "point_after2500": 37,
+          "point_han_max": 2934,
+          "point_han_min": 2633,
+          "point_position_buckets": {
+            "1501_2500": 0,
+            "1_1500": 0,
+            "2501_plus": 37
+          },
+          "point_quotes": 37,
+          "resolved_unmarked": 3,
+          "routes": {
+            "ask": 2,
+            "change": 2,
+            "check_passage": 1,
+            "long_task": 4,
+            "recap": 1
+          },
+          "same_input_groups": 1,
+          "scope_all": 6,
+          "scope_given": 3,
+          "still_open": 4,
+          "suites": {
+            "ask": 2,
+            "narrowed": 2,
+            "route": 10,
+            "thread_audit": 2,
+            "trace": 3
+          },
+          "total_han": 91011,
+          "trace_objects": 3,
+          "trace_states": 18
+        },
+        "w02": {
+          "abandoned_in_text": 1,
+          "aliases": 3,
+          "chapter_han_max": 3172,
+          "chapter_han_min": 2905,
+          "chapters": 30,
+          "characters": 10,
+          "contradictions": 3,
+          "decision_points": 2,
+          "draft_han": 796,
+          "expected_action_kinds": {
+            "abandon_thread": 2,
+            "resolve_thread": 7
+          },
+          "facts": 30,
+          "foreshadow_states": {
+            "developing": 3,
+            "planted": 5,
+            "resolved": 1
+          },
+          "foreshadows": 9,
+          "names": 19,
+          "near_misses": 2,
+          "point_after1500": 35,
+          "point_after2500": 34,
+          "point_han_max": 2858,
+          "point_han_min": 225,
+          "point_position_buckets": {
+            "1501_2500": 1,
+            "1_1500": 2,
+            "2501_plus": 34
+          },
+          "point_quotes": 37,
+          "resolved_unmarked": 3,
+          "routes": {
+            "ask": 2,
+            "change": 2,
+            "check_passage": 1,
+            "long_task": 4,
+            "recap": 1
+          },
+          "same_input_groups": 1,
+          "scope_all": 6,
+          "scope_given": 3,
+          "still_open": 4,
+          "suites": {
+            "ask": 2,
+            "narrowed": 2,
+            "route": 10,
+            "thread_audit": 2,
+            "trace": 3
+          },
+          "total_han": 90200,
+          "trace_objects": 3,
+          "trace_states": 18
+        }
+      }
+    },
+    "stderr_empty": true,
+    "data_sha256": {
+      "materials/w01-facts.json": "d625a1902053e4971f54a3c1d34f1f3b2f8fc5560fc1cba7038e2695645cdeab",
+      "materials/w01-foreshadows.json": "c72aad36b39dc9282656cdb5a56ffcf12560f0a6298bd2f2f0971c27a8608c46",
+      "materials/w02-facts.json": "d6c711969792e3d0a6b8f3864993aec51130b584640b42f8e2fa04bf3e8e5147",
+      "materials/w02-foreshadows.json": "6f4e9d4390d5df1958c0f7c7de52613bb01b4fecf2552ab7897fdc3e2849ef24",
+      "tasks.json": "de7f72211e47c586df9574460acba3baa3e4e2b8589cd07a89298b86e449e21e",
+      "works/w01.md": "c5acdd48b00b223e0c679c58d8d45c59f8863deee627de9dd50404ffc59e1135",
+      "works/w02.md": "982f7c36440bb52aeb62d55266da16f930fc9961ecac24abd3fe42769a211bf4"
+    },
+    "data_unchanged": true
+  },
+  "outputs_identical": true
+}

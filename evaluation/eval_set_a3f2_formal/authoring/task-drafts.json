@@ -1,0 +1,230 @@
+[
+  {
+    "id": "a3f2-w01-trace-01", "suite": "trace", "work": "w01",
+    "request": "翼纹候筒这一路谁拿着、放在哪儿，替我从头接到结尾，挂上原句；有出入就并列留着，不用替我挑一说。",
+    "context": {"page": "overview"}, "scope": null, "author_replies": {}, "trace_object": 1,
+    "why": "只做全书去向报告，追第一对象六个登记状态及窥孔数矛盾。首次用日的双写可并列保留，请求不要求裁定日期，也未授权资料卡。"
+  },
+  {
+    "id": "a3f2-w01-trace-02", "suite": "trace", "work": "w01",
+    "request": "我想看硃脊漏舟的完整经历，交手和挪窝都列进报告，前后说不齐的两边各给出处，暂且别选边。",
+    "context": {"page": "materials"}, "scope": null, "author_replies": {}, "trace_object": 2,
+    "why": "第二对象六次状态跨三十章，原始材质两说不能当成改造。初装方向只列异文，不要求定论；没有改资料的权限。"
+  },
+  {
+    "id": "a3f2-w01-trace-03", "suite": "trace", "work": "w01",
+    "request": "缄朔玉筹先后怎么保管、最后变成什么样了？全书替我查全，按发生次序给出处，互相顶着的说法单列。",
+    "context": {"page": "chapters", "chapter_number": 30}, "scope": null, "author_replies": {}, "trace_object": 3,
+    "why": "第三对象的封匣、启匣、交手、悬台、破裂和园中归宿均须出现。唯一原刻者两说为真实矛盾，断后分别安放是有交代的变化而非矛盾。"
+  },
+  {
+    "id": "a3f2-w01-thread-audit-01", "suite": "thread_audit", "work": "w01",
+    "request": "整本那些埋下的疑问帮我过一遍，确实说透的交回收卡，写死不追的交放弃卡；只是热闹地回来一群人可别算收了。",
+    "context": {"page": "materials"}, "scope": null, "author_replies": {},
+    "why": "全书应回收1、2、3并放弃8；9起始已回收不重复出卡。4与5虽在22、24章有相似进展，原问仍未回答，6、7也还开着，因此四者均不能进动作。"
+  },
+  {
+    "id": "a3f2-w01-thread-audit-02", "suite": "thread_audit", "work": "w01",
+    "request": "先只核前二十章的伏笔，哪条已经落了实就改成回收，真有明说不找的才标放弃，其余先留在报告里。",
+    "context": {"page": "chapters", "chapter_number": 20}, "scope": [1, 20], "author_replies": {},
+    "why": "执行上限20只包含1于10章、2于18章的收束。3的26章及8的23章在范围外，不得因看过全文便带进卡片；9原先已resolved也不重复处理。"
+  },
+  {
+    "id": "a3f2-w01-ask-01", "suite": "ask", "work": "w01",
+    "request": "一到十四章的翼纹候筒替我接成一份履历，首次用它测影的日子最后得定准，我要据此往下写。",
+    "context": {"page": "writing", "chapter_number": 31}, "scope": [1, 14], "author_replies": {}, "decision_point": 1,
+    "why": "请求点名第一对象并要求可用的首用日期，5与12章写的是同次首次操作却日期不同，不能擅选；必须先取得作者选择。该范围只有决策1的两端，回复只决定报告版本，动作空。"
+  },
+  {
+    "id": "a3f2-w01-ask-02", "suite": "ask", "work": "w01",
+    "request": "十五到三十章只跟硃脊漏舟走，给我一份经过；遇上最初朝向说成两样，别先定，停下来问我再继续。",
+    "context": {"page": "plan"}, "scope": [15, 30], "author_replies": {}, "decision_point": 2,
+    "why": "17、27章回指同次初装朝向，第二对象归属明确且请求明说先问。范围不含决策1完整两端，作者回复后只在报告采用所选方向，不产生事实修改。"
+  },
+  {
+    "id": "a3f2-w01-narrowed-01", "suite": "narrowed", "work": "w01",
+    "request": "把全书还吊着的线都核实一下，该回收或放弃的给状态卡；没把原疑问讲清楚的别抢着替我收尾。",
+    "context": {"page": "plan"}, "scope": null, "author_replies": {}, "plan_edit": {"chapters": [9, 24]},
+    "why": "原请求全书，确认计划缩为9至24。按实际收束章取集合：1、2回收及8放弃，3在26章不纳入；22章4、24章5均为near_miss，必须仍开着。起植章早于9不排除范围内真正收束。"
+  },
+  {
+    "id": "a3f2-w01-narrowed-02", "suite": "narrowed", "work": "w01",
+    "request": "全书翼纹候筒的换手、位置和样子给我串好，逐站附依据，先保留原文分歧，我要的是经过报告。",
+    "context": {"page": "overview"}, "scope": null, "author_replies": {}, "plan_edit": {"chapters": [12, 26]},
+    "why": "实际只读12至26，登记状态为13、19、25。原孔数矛盾的7章在范围外，不能越界为25章补另一端；首次用日也只有12章一侧，不构成范围内双写裁定。只报告，不出卡。"
+  },
+  {
+    "id": "a3f2-w01-route-01", "suite": "route", "work": "w01",
+    "input": "翼纹候筒这么折腾，我得知道全书每回换手放哪儿；给出处，有出入的并排摆出来。",
+    "context": {"page": "overview"}, "expected_route": "long_task",
+    "why": "要求遍历全书追同一器物的逐次状态并出带出处报告，属于trace长任务，不是单条资料变更或一段选文检查。"
+  },
+  {
+    "id": "a3f2-w01-route-02", "suite": "route", "work": "w01",
+    "input": "硃脊漏舟从封柜到后来那段，逐次挪动列一条线，别省去中间停的地方。",
+    "context": {"page": "chapters", "chapter_number": 30}, "expected_route": "long_task",
+    "why": "跨多章追踪明确对象的完整去向，需计划与分步阅读，为trace。当前章节不是请求的唯一阅读范围。"
+  },
+  {
+    "id": "a3f2-w01-route-03", "suite": "route", "work": "w01",
+    "input": "整本还有哪些伏笔没交代？逐条核正文，收过的给我回收卡。",
+    "context": {"page": "materials"}, "expected_route": "long_task",
+    "why": "全书逐条核验所有伏笔并给回收卡，是thread_audit，不是对单条已知目标直接改状态。"
+  },
+  {
+    "id": "a3f2-w01-route-04", "suite": "route", "work": "w01",
+    "input": "前二十四章的线都核一遍，写明不追的也出放弃卡，没说透的留着。",
+    "context": {"page": "plan"}, "expected_route": "long_task",
+    "why": "范围虽缩短，仍需跨章判断全部伏笔的收束情况，属于thread_audit长任务。"
+  },
+  {
+    "id": "a3f2-w01-route-05", "suite": "route", "work": "w01",
+    "input": "更新湿纸那条事实的措辞：两头能认，中段缺失，写直白些。",
+    "context": {"page": "materials"}, "expected_route": "change",
+    "why": "对象限定为现有一条湿纸事实，直接要求更换value措辞，没有要求跨章发现变化，属于change。"
+  },
+  {
+    "id": "a3f2-w01-route-06", "suite": "route", "work": "w01",
+    "input": "异议稿是谁写的已经说透了，把那条伏笔的状态改成已回收。",
+    "context": {"page": "materials"}, "expected_route": "change",
+    "why": "作者已作出判断并指定单条伏笔和目标状态，助手只需列变更卡，区别于遍历全书核验全部线。"
+  },
+  {
+    "id": "a3f2-w01-route-07", "suite": "route", "work": "w01",
+    "input": "像候筒这种老换位置的东西，助手能整本追吗？我只是在问功能。",
+    "context": {"page": "overview"}, "expected_route": "ask",
+    "why": "显式询问功能能力，没有发出执行指令，按ask回答能做什么，不因含有跨全书字眼启动计划。"
+  },
+  {
+    "id": "a3f2-w01-route-08", "suite": "route", "work": "w01",
+    "input": "这几句测影的经过，接回前头会不会撞车？",
+    "context": {"page": "overview"}, "expected_route": "ask",
+    "why": "当前无选文，指代这几句没有可检查对象；A1c规定此类模糊情况默认ask。与09输入完全相同，区别仅为上下文。"
+  },
+  {
+    "id": "a3f2-w01-route-09", "suite": "route", "work": "w01",
+    "input": "这几句测影的经过，接回前头会不会撞车？",
+    "context": {"page": "writing", "chapter_number": 31, "selection": "莘砚棠请他们先把所站的位置写在纸边，再画自己实际看见的一小块。"}, "expected_route": "check_passage",
+    "why": "写作页已有明确完整选句，询问这几句与既有正文是否冲突，唯一对象足以执行选文检查，不是全书长任务。"
+  },
+  {
+    "id": "a3f2-w01-route-10", "suite": "route", "work": "w01",
+    "input": "我接着写园里的课之前，先替我回忆一下最近三章发生了什么。",
+    "context": {"page": "writing", "chapter_number": 31}, "expected_route": "recap",
+    "why": "请求回忆最近章节剧情以接续写作，没有要求查冲突、逐对象追踪或改资料，为recap。"
+  },
+  {
+    "id": "a3f2-w02-trace-01", "suite": "trace", "work": "w02",
+    "request": "迟汐对钟在整本里分开又合上，我怕漏掉中间的手，给我按顺序写报告；外壳说法冲突就各引一边，年份也先照录。",
+    "context": {"page": "overview"}, "scope": null, "author_replies": {}, "trace_object": 1,
+    "why": "第一对象六个分持和保管状态均纳入，原壳两种材质不可能同时成立且无换壳过渡。初次同步年份只照录两说，不要求选年；不改事实。"
+  },
+  {
+    "id": "a3f2-w02-trace-02", "suite": "trace", "work": "w02",
+    "request": "帮我把刈光指匣三十章的来去接齐，匣子和里头装的东西分开记，哪里互相不符就贴出处，原来的日期异文不裁定。",
+    "context": {"page": "chapters", "chapter_number": 30}, "scope": null, "author_replies": {}, "trace_object": 2,
+    "why": "应追同一匣子的六个状态，航路片离匣并留在书架不等于匣子也留在书架。唯一原缺口左右两说是真矛盾，归还约定日只列异文不选择，动作空。"
+  },
+  {
+    "id": "a3f2-w02-trace-03", "suite": "trace", "work": "w02",
+    "request": "我得知道返龄契盒最初到收尾的每一站：谁收着，里面余下什么，逐项找原文；前后撞上的地方另开一栏。",
+    "context": {"page": "materials"}, "scope": null, "author_replies": {}, "trace_object": 3,
+    "why": "封存、启封、旧约入盒、转手、撤印领回和空盒归还构成六个状态。配钥初始一把与三把为同一制成日的矛盾，不是后来补钥；不输出资料动作。"
+  },
+  {
+    "id": "a3f2-w02-thread-audit-01", "suite": "thread_audit", "work": "w02",
+    "request": "我不想带着假收尾往下写，把全书伏笔逐个对正文，真落地的和彻底撤回的分别给状态卡，还没答的也告诉我。",
+    "context": {"page": "writing", "chapter_number": 31}, "scope": null, "author_replies": {},
+    "why": "全书只有1、2、3需要补回收状态，8明确永久停止寻找应放弃。9已标回收，4至7保持开放；乐手到齐和新灯说明均不回答旧问，不能错收。"
+  },
+  {
+    "id": "a3f2-w02-thread-audit-02", "suite": "thread_audit", "work": "w02",
+    "request": "检查开头到第二十章的所有线索，已经解释完的做回收卡；若只是有点眉目，报告里说清，别动状态。",
+    "context": {"page": "chapters", "chapter_number": 20}, "scope": [1, 20], "author_replies": {},
+    "why": "截至20章只回收1与2。3尚待26章，8尚待23章，不能用范围外结局；9已在资料中resolved不重复，四条开放线没有明确收束证据。"
+  },
+  {
+    "id": "a3f2-w02-ask-01", "suite": "ask", "work": "w02",
+    "request": "替我理好前十四章迟汐对钟的履历，首次同步在哪一年得有个定下来的结论，我接下去要用。",
+    "context": {"page": "writing", "chapter_number": 31}, "scope": [1, 14], "author_replies": {}, "decision_point": 1,
+    "why": "同次首次同步在4与11章写出不同年份，且无重同步的过渡。作者要定下结论，必须先问，不能凭先后或多数擅选；范围只有第一对象决策1两端，回复只决定报告版本。"
+  },
+  {
+    "id": "a3f2-w02-ask-02", "suite": "ask", "work": "w02",
+    "request": "就十五至三十章给刈光指匣排一张经过表，原先归还日若有两说，请问我认哪一说，等我答过才往下做。",
+    "context": {"page": "plan"}, "scope": [15, 30], "author_replies": {}, "decision_point": 2,
+    "why": "17与27章指同次初次重逢所约原归还日，六与八并非改约，第二对象归属及两端都在范围内；请求明确等作者回答。不涉及资料改动，expected_actions空。"
+  },
+  {
+    "id": "a3f2-w02-narrowed-01", "suite": "narrowed", "work": "w02",
+    "request": "全书先给我查一次伏笔账，证据够了才回收，写明此后不找的标放弃，别拿相像的新事填旧坑。",
+    "context": {"page": "plan"}, "scope": null, "author_replies": {}, "plan_edit": {"chapters": [9, 24]},
+    "why": "确认计划9至24，只含1、2的回收与8的放弃。3于26章超界；22章旧乐手返回仍无创作者，24章新灯不能解释早先暗光，4、5保持开放。"
+  },
+  {
+    "id": "a3f2-w02-narrowed-02", "suite": "narrowed", "work": "w02",
+    "request": "迟汐对钟从开头到现在的分合去向替我逐站排出来，附原文做一份报告，读到不同记法先原样并放。",
+    "context": {"page": "overview"}, "scope": null, "author_replies": {}, "plan_edit": {"chapters": [12, 26]},
+    "why": "缩小后仅取12、18、24的状态。原壳矛盾6章不在执行范围，不为凑完整矛盾擅读它；同步年两端均早于12不进入报告。只列报告无动作。"
+  },
+  {
+    "id": "a3f2-w02-route-01", "suite": "route", "work": "w02",
+    "input": "把返龄契盒在三十章里装过什么、跟过谁排给我，变了样的地方带出处。",
+    "context": {"page": "materials"}, "expected_route": "long_task",
+    "why": "一个对象横跨全部已写章节的内容物和持有状态，需要trace分步报告，不是改一条资料。"
+  },
+  {
+    "id": "a3f2-w02-route-02", "suite": "route", "work": "w02",
+    "input": "迟汐对钟一开始到结尾的分合走向，我要逐站报告；原文打架的也挂上。",
+    "context": {"page": "overview"}, "expected_route": "long_task",
+    "why": "全书逐次追踪对钟并列冲突，是trace长任务；没有要求立即更改某一事实。"
+  },
+  {
+    "id": "a3f2-w02-route-03", "suite": "route", "work": "w02",
+    "input": "这本那些先抛出来的问题，哪些已经回答了？对到正文后给状态卡。",
+    "context": {"page": "chapters", "chapter_number": 30}, "expected_route": "long_task",
+    "why": "询问并核对全书伏笔再交卡片，作者尚未对具体线索作结，需thread_audit。"
+  },
+  {
+    "id": "a3f2-w02-route-04", "suite": "route", "work": "w02",
+    "input": "替我翻完全书的伏笔账：确实交代才回收，明说不再找的另给放弃卡。",
+    "context": {"page": "plan"}, "expected_route": "long_task",
+    "why": "明确遍历整本伏笔和两种状态产出，是thread_audit长任务，不是单目标change。"
+  },
+  {
+    "id": "a3f2-w02-route-05", "suite": "route", "work": "w02",
+    "input": "把那条母亲只看见矮柱的事实写成简明一句，保留是她独自去的。",
+    "context": {"page": "materials"}, "expected_route": "change",
+    "why": "只指定现有母亲独游事实改value，不需要查全书或改变其他条目，为change。"
+  },
+  {
+    "id": "a3f2-w02-route-06", "suite": "route", "work": "w02",
+    "input": "围巾来路已经交代，替我把这一条伏笔转成已回收，别碰别的线。",
+    "context": {"page": "materials"}, "expected_route": "change",
+    "why": "作者认定一条伏笔已收并指定新状态，要求直接生成单目标变更卡，非全书核验。"
+  },
+  {
+    "id": "a3f2-w02-route-07", "suite": "route", "work": "w02",
+    "input": "我想以后用对钟查跨章矛盾，这种用法合适吗？只聊能做什么，别开始跑。",
+    "context": {"page": "overview"}, "expected_route": "ask",
+    "why": "明确只讨论可行性并不执行任务，应ask回答功能用法，不能启动trace计划。"
+  },
+  {
+    "id": "a3f2-w02-route-08", "suite": "route", "work": "w02",
+    "input": "这几句重逢后的相处，跟前边有没有别扭处？",
+    "context": {"page": "overview"}, "expected_route": "ask",
+    "why": "概览页没有选文，这几句缺少可定位对象，依A1c模糊情况默认ask，与09同输入用上下文分辨。"
+  },
+  {
+    "id": "a3f2-w02-route-09", "suite": "route", "work": "w02",
+    "input": "这几句重逢后的相处，跟前边有没有别扭处？",
+    "context": {"page": "writing", "chapter_number": 31, "selection": "母亲看见空处，以为漏了，女儿说那里还不能肯定，等下次走过再补。"}, "expected_route": "check_passage",
+    "why": "写作页已给完整具体选句，询问其与前文关系可直接检查，属于check_passage，不需全书范围计划。"
+  },
+  {
+    "id": "a3f2-w02-route-10", "suite": "route", "work": "w02",
+    "input": "明早母女要各自出门，开写前给我捋捋上一章的几件事。",
+    "context": {"page": "writing", "chapter_number": 31}, "expected_route": "recap",
+    "why": "为下一章写作回忆上一章发生的事，属于recap，既没有指定选文检查，也没有跨全书追踪对象。"
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "status": "completed",
+  "input_sha256": "0be8c7952af68578ff340f71dd058f0a8b500c82589ebb228dad9e2df20ee49f",
+  "decisions": [
+    {
+      "id": "a3f2-w01-route-03",
+      "route": "long_task",
+      "rationale": "明确要求核对整本全部伏笔并生成回收卡，属于全书伏笔审计。"
+    },
+    {
+      "id": "a3f2-w02-route-04",
+      "route": "long_task",
+      "rationale": "要求翻完全书伏笔并分别核实回收与放弃，需要跨章审计全部线索。"
+    },
+    {
+      "id": "a3f2-w01-route-10",
+      "route": "recap",
+      "rationale": "明确为接续写作回忆最近三章剧情，目的是恢复写作上下文。"
+    },
+    {
+      "id": "a3f2-w02-route-03",
+      "route": "long_task",
+      "rationale": "要把全书先前提出的问题逐项对照正文并出状态卡，属于全体伏笔核查。"
+    },
+    {
+      "id": "a3f2-w01-route-06",
+      "route": "change",
+      "rationale": "指定一条现有伏笔并明确要求改为已回收，是具体资料状态修改。"
+    },
+    {
+      "id": "a3f2-w02-route-01",
+      "route": "long_task",
+      "rationale": "要求梳理同一物件在三十章中的内容与持有人变化，并附出处，需要跨全书追踪。"
+    },
+    {
+      "id": "a3f2-w02-route-08",
+      "route": "ask",
+      "rationale": "提及这几句但上下文没有selection，也未给出具体待检查文本，按模糊无选文默认问答。"
+    },
+    {
+      "id": "a3f2-w01-route-09",
+      "route": "check_passage",
+      "rationale": "写作页提供明确selection，并询问该段与前文是否冲突，是选文连续性检查。"
+    },
+    {
+      "id": "a3f2-w02-route-05",
+      "route": "change",
+      "rationale": "指定现有事实的简明措辞及必须保留的限定，要求对资料作具体改写。"
+    },
+    {
+      "id": "a3f2-w01-route-08",
+      "route": "ask",
+      "rationale": "只有含糊的这几句指代，没有selection或实际段落，按无选文默认问答。"
+    },
+    {
+      "id": "a3f2-w02-route-02",
+      "route": "long_task",
+      "rationale": "要求从开头到结尾逐站报告同一对象的分合并列出原文冲突，是全书对象追踪。"
+    },
+    {
+      "id": "a3f2-w01-route-01",
+      "route": "long_task",
+      "rationale": "要求列全书每次换手及安放位置、提供出处并比较不一致，需多章综合梳理。"
+    },
+    {
+      "id": "a3f2-w01-route-04",
+      "route": "long_task",
+      "rationale": "指定前二十四章的全部线索审计及放弃卡处理，是明确的多章伏笔任务。"
+    },
+    {
+      "id": "a3f2-w02-route-09",
+      "route": "check_passage",
+      "rationale": "提供了明确selection，要求检查所选相处片段与前文的连续性。"
+    },
+    {
+      "id": "a3f2-w02-route-06",
+      "route": "change",
+      "rationale": "明确只改指定单条伏笔为已回收，属于范围清楚的资料状态修改。"
+    },
+    {
+      "id": "a3f2-w02-route-07",
+      "route": "ask",
+      "rationale": "询问未来用法是否合适，并明确只聊功能、不开始执行，是功能咨询。"
+    },
+    {
+      "id": "a3f2-w01-route-07",
+      "route": "ask",
+      "rationale": "询问助手能否整本追踪且明确只问功能，没有发起实际追踪任务。"
+    },
+    {
+      "id": "a3f2-w02-route-10",
+      "route": "recap",
+      "rationale": "为开写前回顾上一章剧情，属于接续写作所需的情节回忆。"
+    },
+    {
+      "id": "a3f2-w01-route-02",
+      "route": "long_task",
+      "rationale": "要求同一对象从封柜以后逐次移动且不遗漏中间停处，需要跨章整理去向链。"
+    },
+    {
+      "id": "a3f2-w01-route-05",
+      "route": "change",
+      "rationale": "明确要求更新指定事实的措辞并给出内容限定，是具体资料文本修改。"
+    }
+  ]
+}

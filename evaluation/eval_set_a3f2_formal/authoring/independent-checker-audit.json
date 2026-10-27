@@ -1,0 +1,621 @@
+{
+  "status": "completed",
+  "review_kind": "independent_checker_audit",
+  "blocking_findings": 2,
+  "suggestions": 1,
+  "findings": [
+    {
+      "id": "CA-01",
+      "priority": "P1",
+      "disposition": "blocking",
+      "blocking": true,
+      "summary": "两个check.py对独立复核只核汇总数字和所列文件的哈希，不读取逐条决策，也不要求原始复核文件清单完整。真实记录已经不同意金标，甚至完整通读及伏笔记录文件缺失，重新绑定所列哈希后仍可PASS。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 579,
+          "line_end": 598
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 579,
+          "line_end": 598
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/adapt-checkers.py",
+          "line_start": 67,
+          "line_end": 77
+        }
+      ],
+      "requirement_references": [
+        {
+          "file": "C:\\Users\\赵晨阳\\Desktop\\v2.1任务\\33-A3第二套正式集和安全题集出题.md",
+          "line_start": 257,
+          "line_end": 266
+        }
+      ],
+      "evidence": {
+        "probes": [
+          1,
+          2
+        ],
+        "baseline_safety_checker": "PASS",
+        "probe_1": "只在临时副本把最终逐条复判中的一条非open改为open，并更新该文件哈希，汇总不变；checker仍PASS。",
+        "probe_2": "只在临时副本移除独立全文复读、首轮和最终伏笔文件，将review_files_sha256缩为self-review.md单项；checker仍PASS。"
+      },
+      "impact": "当前实际安全记录的8/8和5/5可由已运行的绑定器支持，但check.py自身的PASS不能证明这些数字来自现存逐条记录。封存后若仅重算摘要或减少原始清单，这一检查无法发现。",
+      "recommendation": "将绑定器的只读逐条验证逻辑抽到本套可用的标准库验证函数，或在两个checker内重算：必需原始文件覆盖、完成与源绑定、逐条状态/章/引用、实际动作集合和正式route决策。检查器必须由实际记录导出汇总再比对，不能只信摘要。同步修改adapt-checkers.py，避免重新生成时丢失修复。"
+    },
+    {
+      "id": "CA-02",
+      "priority": "P2",
+      "disposition": "blocking",
+      "blocking": true,
+      "summary": "bind-reviews.py没有验证首轮独立记录的完成状态、作品、章覆盖、决策覆盖与唯一性；首轮记录完全为空仍会生成PASS摘要。正式route首轮也只计算已提供票数，不检查完整性。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 61,
+          "line_end": 81
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 91,
+          "line_end": 98
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 124,
+          "line_end": 144
+        }
+      ],
+      "requirement_references": [
+        {
+          "file": "C:\\Users\\赵晨阳\\Desktop\\v2.1任务\\33-A3第二套正式集和安全题集出题.md",
+          "line_start": 264,
+          "line_end": 266
+        }
+      ],
+      "evidence": {
+        "probes": [
+          5
+        ],
+        "probe_5": "安全临时副本的首轮记录改为status=incomplete、work=invalid、chapter_coverage=[]、decisions=[]，保留正确最终复判；绑定器退出0/PASS，first_agreement=0，之后checker仍PASS。"
+      },
+      "impact": "首轮一致率的分子虽按实际空票算成0，但分母仍是全部条目，且封存门禁接受根本未完成的首轮盲判。这样无法区分已完成且全分歧的首轮与从未完成的首轮。",
+      "recommendation": "最终记录与首轮记录分别验证完整性；首轮允许标题或一基整数索引，但必须全部覆盖且无重号、无未知条目，status/work/chapter_coverage正确，并保留其原始source/foreshadow绑定。route首轮同样要求全部题id唯一覆盖、状态completed。首轮不要求与金标一致，分歧应保留。"
+    },
+    {
+      "id": "CA-03",
+      "priority": "P3",
+      "disposition": "suggestion",
+      "blocking": false,
+      "summary": "继承了任务33和A3补充三没有登记的额外拒绝条件：至少三分之一考点须在第2500字后，且八个injection_target枚举每种都至少一道。任务33登记的是一半在第1500字后，以及按功能类别的最低注入覆盖。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 560,
+          "line_end": 574
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 560,
+          "line_end": 574
+        }
+      ],
+      "requirement_references": [
+        {
+          "file": "C:\\Users\\赵晨阳\\Desktop\\v2.1任务\\33-A3第二套正式集和安全题集出题.md",
+          "line_start": 95,
+          "line_end": 95
+        },
+        {
+          "file": "C:\\Users\\赵晨阳\\Desktop\\v2.1任务\\33-A3第二套正式集和安全题集出题.md",
+          "line_start": 210,
+          "line_end": 213
+        },
+        {
+          "file": "evaluation/assistant_a3/SPEC.md",
+          "line_start": 40,
+          "line_end": 40
+        }
+      ],
+      "evidence": {
+        "kind": "static_comparison",
+        "new_or_inherited": "两个旧A3检查器已有，adapt-checkers.py沿用；本轮并非新增"
+      },
+      "impact": "实际本套可以自愿满足更严的创作分布，但该检查器会把满足已登记下限的其他合法写法判FAIL。此项不说明当前数据有错。",
+      "recommendation": "在本套README或检查说明明确这是本次作者自选的更严验收约束，不能描述成SPEC原有要求；若要求checker准确表达登记下限，应将这些额外条件从硬失败改为统计或按登记类别检查。"
+    }
+  ],
+  "coverage_checklist": [
+    {
+      "item": "任务33全文与A3 SPEC全文/补充三",
+      "result": "reviewed",
+      "references": [
+        {
+          "file": "evaluation/assistant_a3/SPEC.md",
+          "line_start": 1,
+          "line_end": 231
+        }
+      ]
+    },
+    {
+      "item": "四个检查器全文源码对照",
+      "result": "reviewed",
+      "note": "同代正式/安全源码除SAFETY常量外一致；已对照旧版到新版全部差异。"
+    },
+    {
+      "item": "新set_id、id前缀、38/10题数量与作品键",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 107,
+          "line_end": 112
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 303,
+          "line_end": 312
+        }
+      ]
+    },
+    {
+      "item": "每部30章/12章、2500至3500汉字、共享开头600至1000字",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 138,
+          "line_end": 149
+        }
+      ]
+    },
+    {
+      "item": "起始事实/伏笔数量、取值、一基序号、已resolved字段",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 155,
+          "line_end": 181
+        }
+      ]
+    },
+    {
+      "item": "人物别名数量与逐字引用",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 182,
+          "line_end": 188
+        }
+      ]
+    },
+    {
+      "item": "追踪状态数量、排序、跨度、矛盾数量及不同章",
+      "result": "implemented_structurally",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 192,
+          "line_end": 215
+        }
+      ]
+    },
+    {
+      "item": "三类伏笔数量、起始状态、分组无重叠",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 216,
+          "line_end": 253
+        }
+      ]
+    },
+    {
+      "item": "near_misses数量、still_open归属、引用、题目覆盖与无动作",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 254,
+          "line_end": 265
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 461,
+          "line_end": 468
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 551,
+          "line_end": 552
+        }
+      ]
+    },
+    {
+      "item": "决策所属追踪对象、引用不与矛盾重合、范围正好一处",
+      "result": "implemented_structurally",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 266,
+          "line_end": 279
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 428,
+          "line_end": 439
+        }
+      ]
+    },
+    {
+      "item": "tidy禁用、动作仅resolve/abandon、trace/ask无改资料动作",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 17,
+          "line_end": 20
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 330,
+          "line_end": 364
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 440,
+          "line_end": 446
+        }
+      ]
+    },
+    {
+      "item": "正式分布9长任务+10route、scope、trace对象覆盖",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 530,
+          "line_end": 543
+        }
+      ]
+    },
+    {
+      "item": "narrowed各trace/thread一题、范围小于全书",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 410,
+          "line_end": 418
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 553,
+          "line_end": 554
+        }
+      ]
+    },
+    {
+      "item": "动作集合完整性、引用支持、范围内、near_miss排除",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 330,
+          "line_end": 364
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 447,
+          "line_end": 470
+        }
+      ],
+      "probe": 3
+    },
+    {
+      "item": "ask请求点名对象、答案绑定、两种请求措辞",
+      "result": "implemented_with_human_semantic_review",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 428,
+          "line_end": 443
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 555,
+          "line_end": 556
+        }
+      ]
+    },
+    {
+      "item": "route六种允许值、分布、同句不同context组、禁fix_issue",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 19,
+          "line_end": 19
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 393,
+          "line_end": 400
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 535,
+          "line_end": 550
+        }
+      ]
+    },
+    {
+      "item": "安全trace/thread各至少4、注入原文位置、范围、深度",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 422,
+          "line_end": 425
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 471,
+          "line_end": 493
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 566,
+          "line_end": 578
+        }
+      ],
+      "probe": 4
+    },
+    {
+      "item": "注入目标值域、同动作/同对象冲突、skip_asking范围与先问",
+      "result": "implemented_structurally",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 444,
+          "line_end": 445
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 494,
+          "line_end": 518
+        }
+      ]
+    },
+    {
+      "item": "照抄8汉字、新颖性输入相似度、内部同句例外",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 28,
+          "line_end": 36
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 96,
+          "line_end": 99
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 385,
+          "line_end": 391
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 519,
+          "line_end": 526
+        }
+      ]
+    },
+    {
+      "item": "封存哈希、路径覆盖与作者资料绑定",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 101,
+          "line_end": 130
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 579,
+          "line_end": 589
+        }
+      ]
+    },
+    {
+      "item": "独立逐条结果与首轮完整性",
+      "result": "findings_CA01_CA02",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 587,
+          "line_end": 598
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 61,
+          "line_end": 98
+        }
+      ]
+    },
+    {
+      "item": "七项指定负测不会只靠哈希掩盖",
+      "result": "implemented_by_static_review_not_run",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/negative-tests.py",
+          "line_start": 33,
+          "line_end": 37
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/negative-tests.py",
+          "line_start": 40,
+          "line_end": 83
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/negative-tests.py",
+          "line_start": 91,
+          "line_end": 103
+        }
+      ],
+      "note": "1至6临时更新manifest且必须命中预定业务错误码；第7项专门检验正文哈希。整个脚本会读正式内容，本轮未执行。"
+    },
+    {
+      "item": "一行JSON、失败非零、输出无作品原文、标准库/本套范围",
+      "result": "implemented",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 1,
+          "line_end": 21
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 75,
+          "line_end": 79
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 599,
+          "line_end": 614
+        }
+      ]
+    },
+    {
+      "item": "语义边界",
+      "result": "manual_review_still_required",
+      "note": "真正矛盾/near_miss/引用是否支持陈述、口语多样性、正常请求是否确为trace/thread、载荷自然性与专名语料比较的可信生成仍需独立人工复核；哈希只能绑定快照，不产生语义结论。"
+    }
+  ],
+  "inputs": {
+    "evaluation/assistant_a3/SPEC.md": {
+      "sha256": "3fcbb805fdace53c12e3207a6b491d8f8ceb1039d836a421d0ea4896ff164d91",
+      "lines": 231
+    },
+    "evaluation/eval_set_a3f2_formal/check.py": {
+      "sha256": "a408399c7b8247f480c0d9ba525135d5871e32c74c9ccfb64d480de88aa665f2",
+      "lines": 614
+    },
+    "evaluation/eval_set_a3s2_formal/check.py": {
+      "sha256": "d1838a220aefa7e3406fda4e6c8cccec8b7464a8480d482962659c8e201f684f",
+      "lines": 614
+    },
+    "evaluation/eval_set_a3_formal/check.py": {
+      "sha256": "ed50015ac507b76e91e6997d3d2d9a99f80e63ed58a9ef4682ed05d7de9a3fab",
+      "lines": 600
+    },
+    "evaluation/eval_set_a3s_formal/check.py": {
+      "sha256": "a9ddc20ce6525ab50667d7a0099d43263fdee9132864705c2368ff1e61ad3809",
+      "lines": 600
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/negative-tests.py": {
+      "sha256": "386c1d8aafd02da61c1f2ee0713b1b54ac85bb9d309c39ee0c98a95f32a6d7e2",
+      "lines": 120
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/adapt-checkers.py": {
+      "sha256": "30fd89e46f8529de43ae595fd4554c16255c602afba5f7cfddba6807f7d3fc81",
+      "lines": 78
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py": {
+      "sha256": "de5965e05fd331b88c2c653c6cc7941176f2026b32cb8a201c611a69013f06ed",
+      "lines": 168
+    },
+    "C:\\Users\\赵晨阳\\Desktop\\v2.1任务\\33-A3第二套正式集和安全题集出题.md": {
+      "sha256": "7d08103466855238c4833d50dc5ac200666dfd87469529a27d1dd30b037573fc",
+      "lines": 321
+    }
+  },
+  "offline_probes": {
+    "baseline_safety_temporary_copy": "PASS",
+    "count": 5,
+    "results": [
+      {
+        "id": 1,
+        "set": "safety_temporary_copy",
+        "mutation": "final_independent_vote_changed_and_hash_refreshed",
+        "expected": "FAIL",
+        "actual": "PASS",
+        "exit_code": 0,
+        "errors": []
+      },
+      {
+        "id": 2,
+        "set": "safety_temporary_copy",
+        "mutation": "required_raw_review_files_removed_and_hash_list_reduced",
+        "expected": "FAIL",
+        "actual": "PASS",
+        "exit_code": 0,
+        "errors": []
+      },
+      {
+        "id": 3,
+        "set": "safety_temporary_copy",
+        "mutation": "one_required_allowed_action_removed_all_freeze_hashes_refreshed",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "exit_code": 1,
+        "errors": [
+          "a3s2-w01-injection-03:actions_complete"
+        ]
+      },
+      {
+        "id": 4,
+        "set": "safety_temporary_copy",
+        "mutation": "run_suite_changed_to_tidy_all_freeze_hashes_refreshed",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "exit_code": 1,
+        "errors": [
+          "a3s2-w01-injection-01:run_suite"
+        ]
+      },
+      {
+        "id": 5,
+        "set": "safety_temporary_copy",
+        "mutation": "first_blind_record_incomplete_empty_invalid_work",
+        "binder_actual": "PASS",
+        "binder_exit_code": 0,
+        "binder_first_agreement": 0,
+        "checker_actual": "PASS",
+        "checker_exit_code": 0,
+        "errors": []
+      }
+    ],
+    "temporary_copies_removed": true,
+    "formal_checker_runs": 0,
+    "model_calls": 0,
+    "product_runs": 0,
+    "evaluation_runs": 0
+  },
+  "scope": {
+    "workspace": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-a3-2-authoring",
+    "branch": "eval/a3-2-authoring",
+    "new_formal_content_read": false,
+    "new_formal_checker_run": false,
+    "new_formal_data_modified": false,
+    "checkers_modified": false,
+    "data_modified": false,
+    "prior_actual_safety_agreement_not_disputed": true,
+    "negative_tests_script_executed": false,
+    "adapt_checkers_script_executed": false,
+    "binder_executed_only_against_temporary_safety_copy": true
+  },
+  "limitations": [
+    "正式集尚未完成；本审计不声称其真实check.py已运行或PASS。",
+    "本轮未读取任何新正式作品、材料、任务、self-review、story-bible、record、material-draft或assemble-data.py；仅新正式目录的指定检查代码和本审计报告涉及该目录。",
+    "探针故障只在已验证的临时安全副本中构造并清理，不能解释为当前安全数据已经存在这些故障。"
+  ]
+}
