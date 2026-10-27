@@ -77,7 +77,7 @@ class AnswerFormatTests(unittest.TestCase):
         self.assertEqual((item["label"]["maxLength"], item["lead"]["type"]), (LABEL_MAX_CHARS, "boolean"))
         self.assertIn("lead 填 true", SYSTEM_PROMPT)
         self.assertIn("label", SYSTEM_PROMPT)
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p59")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p60")
 
 
 if __name__ == "__main__":
