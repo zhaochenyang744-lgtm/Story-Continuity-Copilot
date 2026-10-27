@@ -279,6 +279,15 @@ class CleanUpTests(AssistantCase):
         self.engine.store.initialize()
         self.assertEqual({row["name"] for row in self.rows("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'assistant_%'")}, set(self.TABLES))
 
+    def test_a_new_visitor_is_told_the_assistant_is_open_to_them(self):
+        # The sign-in's own answer carries it, as login and registration do (the 助手 button waited for a reload before).
+        self.start()
+        data = self.client.post("/api/auth/visitor").json()["data"]
+        session = self.client.get("/api/auth/session").json()["data"]
+        self.assertEqual(data["user"]["assistant"], session["user"]["assistant"])
+        self.assertIn("available", data["user"]["assistant"])
+        self.assertEqual(data["user"]["account_type"], "visitor")
+
     def test_a_visitors_assistant_rows_go_with_the_visitor(self):
         self.start()
         self.visitor()
