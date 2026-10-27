@@ -1,0 +1,63 @@
+[
+  {
+    "title": "方没有寄出的双份信",
+    "description": "方写下两封同样信封的信，想请柴予萱搬回陆家；收信的安排以及为什么写完却没有寄出仍未说明。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "禾角册空着的一格",
+    "description": "杨的旧相册空出一格没有照片，她还未说明留给谁或准备放什么，似乎等着以后补上某种新的关系。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "柴总绕开的公交终点",
+    "description": "柴照棠熟悉公交路线却总回避一处终点，问到缘故只说以后再讲，这个地点与他有何关联仍待解释。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "瓷棉熊背后的改线",
+    "description": "陆照苒童年布熊背后有改过的针脚，她暂时想不起是谁缝的，修补缘由与缝者仍待后文说明。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "陆不肯打开的旧工具箱",
+    "description": "陆问杉把当年的身份文件藏在旧工具箱里，不愿打开或让人看，箱中材料与两家相认的关系还需追索。",
+    "status": "planted",
+    "planted_chapter": 5
+  },
+  {
+    "title": "筱砚录好却未发的语音",
+    "description": "陆筱砚录好一段语音，留在自己手里，没有发送也不愿放给别人；内容还未向旁人说明，是否发送仍未决定。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "柴闻序答应陪看的远方房间",
+    "description": "柴闻序答应陪朋友到远方看一间房，否认这是搬家计划，却还没听清朋友为何想去以及房间的关系。",
+    "status": "planted",
+    "planted_chapter": 7
+  },
+  {
+    "title": "杨在旧票上圈出的日子",
+    "description": "杨在一张旧票上圈出一个日子，又将票带回，承诺以后自己讲，眼下并未说明日期与谁或什么事相关。",
+    "status": "planned",
+    "planted_chapter": 8
+  },
+  {
+    "title": "雾纹包底下的第二层口袋",
+    "description": "方已经解释底层口袋由自己缝出，只用于放普通车票，没有隐藏身份材料，这处疑问已经收束。",
+    "status": "resolved",
+    "planted_chapter": 2,
+    "resolved_chapter": 5
+  },
+  {
+    "title": "互换童年房间的提议",
+    "description": "首次会面时有人提议让两位主角互换童年房间住一阵，八人已当面否决，今后不按这项提议办。",
+    "status": "abandoned",
+    "planted_chapter": 1
+  }
+]

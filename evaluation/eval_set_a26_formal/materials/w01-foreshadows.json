@@ -1,0 +1,63 @@
+[
+  {
+    "title": "退回信封里未写完的称呼",
+    "description": "许泊垣写给黎见棠的信停在称呼开头，显示他仍期待复合；这封信为什么退回、未写完的话是什么尚未说清。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "周包里没有送出的两张票",
+    "description": "周留着两张未送出的票，想邀请的人尚未知道，为什么一直不曾说出口及能否成行仍有待展开。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "书架下的未签名便条",
+    "description": "许在书架下发现没有落款的便条，要求把话亲自说完，谁写的、为什么留下这句话还没确认。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "萼弧坠内侧的短刻痕",
+    "description": "银坠内侧靠边处留着短刻痕，许说不清缘由，看起来可能与某次被留在记忆里的日子有关。",
+    "status": "developing",
+    "planted_chapter": 4
+  },
+  {
+    "title": "贺对外地邀约的迟疑",
+    "description": "贺计划离开澜苒市到外地长期居住，但一直没有向朋友说清何时离开，邀约与他的犹豫还需要追索。",
+    "status": "planted",
+    "planted_chapter": 5
+  },
+  {
+    "title": "任没有打开的蓝色画纸",
+    "description": "朋友寄给任一件私人画作，折在蓝色画纸里却一直未打开；里面画了什么、寄来的用意还未说明。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "花店门口反复出现的陌生伞",
+    "description": "樊店门口反复出现一把陌生深色长伞，没有人认领；它与客人来取的红袋短折伞并非同一把。",
+    "status": "planted",
+    "planted_chapter": 7
+  },
+  {
+    "title": "姜未答应的远方见面",
+    "description": "远方有人邀姜见面，姜还未答应，对方具体想谈什么也没讲明；这趟见面是否会发生仍悬着。",
+    "status": "planned",
+    "planted_chapter": 8
+  },
+  {
+    "title": "卷云杯把手的修补",
+    "description": "周已说明杯子是自己意外磕坏后找人修好，并非许损坏，这条关于裂痕来由的疑问已经说清。",
+    "status": "resolved",
+    "planted_chapter": 2,
+    "resolved_chapter": 5
+  },
+  {
+    "title": "共同拍周年照的旧打算",
+    "description": "黎与许取消婚约时同时作罢了共同拍周年照的打算，不再留作将来必须赴的约，此线已经放弃。",
+    "status": "abandoned",
+    "planted_chapter": 1
+  }
+]

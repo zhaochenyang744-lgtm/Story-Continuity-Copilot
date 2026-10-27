@@ -1,0 +1,24 @@
+{
+  "judgments": [
+    {"id":"a26f-w01-route-03","route":"change","reason":"作者明确要求另开线索，属于新增作品资料的执行令。","uncertain":false},
+    {"id":"a26f-w02-route-04","route":"change","reason":"作者明确要求将该支线停写，属于变更伏笔或线索状态的执行令。","uncertain":false},
+    {"id":"a26f-w01-route-10","route":"out_of_scope","reason":"请求为手机壁纸提供配色，与作品内容及连续性无关。","uncertain":false},
+    {"id":"a26f-w02-route-03","route":"change","reason":"作者明确要求纠正资料中的说明，并指定另一项保留未知，属于资料修改执行令。","uncertain":false},
+    {"id":"a26f-w01-route-06","route":"ask","reason":"作者询问资料中的保管归属是否仍成立，没有要求执行修改。","uncertain":false},
+    {"id":"a26f-w02-route-01","route":"change","reason":"作者明确要求以较后的安排替换较早记载，属于事实资料修改执行令。","uncertain":false},
+    {"id":"a26f-w02-route-08","route":"recap","reason":"作者在下一段开写前要求梳理现有约定和未解旧事，属于下笔前回顾。","uncertain":false},
+    {"id":"a26f-w01-route-09","route":"check_passage","reason":"写作页提供了选中草稿，作者要求检查这些句子与既有交代是否一致。","uncertain":false},
+    {"id":"a26f-w02-route-05","route":"ask","reason":"作者只询问该语音情节是否值得继续写，尚未发出停写或修改执行令。","uncertain":false},
+    {"id":"a26f-w01-route-08","route":"recap","reason":"作者准备继续落笔，要求整理人物和物品当前状态，属于下笔前回顾。","uncertain":false},
+    {"id":"a26f-w02-route-02","route":"change","reason":"作者明确要求将人物选择留入资料，属于新增或更新人物资料的执行令。","uncertain":false},
+    {"id":"a26f-w01-route-01","route":"change","reason":"作者明确要求把人物态度记入人物资料，属于资料写入执行令。","uncertain":false},
+    {"id":"a26f-w01-route-04","route":"change","reason":"作者明确要求停止追写并停掉支线，属于变更线索状态的执行令。","uncertain":false},
+    {"id":"a26f-w02-route-09","route":"check_passage","reason":"写作页提供了选中草稿，作者要求检查其中说法是否与前文交代冲突。","uncertain":false},
+    {"id":"a26f-w02-route-06","route":"ask","reason":"作者询问是否该改并要求先说明前文依据，没有授权执行修改。","uncertain":false},
+    {"id":"a26f-w02-route-07","route":"ask","reason":"作者在章节页询问作品说法与前文的关系，未提供选中草稿或打开的检查结果，按作品问答处理。","uncertain":false},
+    {"id":"a26f-w01-route-07","route":"ask","reason":"作者在章节页询问作品交代是否反转，未提供选中草稿或打开的检查结果，按作品问答处理。","uncertain":false},
+    {"id":"a26f-w02-route-10","route":"out_of_scope","reason":"请求进行单纯乘法计算，与作品内容及连续性无关。","uncertain":false},
+    {"id":"a26f-w01-route-02","route":"change","reason":"作者要求依据后来的交接改好保管资料，包含明确修改执行令。","uncertain":false},
+    {"id":"a26f-w01-route-05","route":"ask","reason":"作者询问线索是否该放弃及其用途，尚未要求执行放弃操作。","uncertain":false}
+  ]
+}
