@@ -28,7 +28,7 @@ from .problem_codes import Problem, codes_of, count as count_codes
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
-from . import assistant_consensus
+from . import assistant_consensus, assistant_review
 from .text_content import written_chars
 
 ASSISTANT_PROMPT_VERSION = "assistant-p60"
@@ -127,7 +127,10 @@ NO_CARD_LINES = {"delete": "没有出卡片：删除资料这一版还做不到�
                  "agreed": "没有出卡片：几次核对没有得出一致的改动。",
                  "recorded": "没有出卡片：资料里已经记着这件事。",
                  "no_evidence": "没有出卡片：正文里没找到能作依据的段落。",
-                 "held": "没有出卡片：提出的改动没有通过核对，可以换个说法再问一次。"}
+                 "held": "没有出卡片：提出的改动没有通过核对，可以换个说法再问一次。",
+                 "not_closed": "没有出卡片：依据的原文没有把这条伏笔收住，正文里写的和你说的不一样。"}
+# What a card says when its second reader (`assistant_review`) took some of its items off, the others staying.
+REVIEW_LINES = {"not_closed": "核对后去掉了一条：依据的原文没有把那条伏笔收住。", "recorded": "核对后去掉了一条：资料里已经记着这件事。"}
 # What a change task with a card says in the program's words: nothing is written yet. "已提出按正文修正" was read as a change
 # already made, by the grader and plausibly by an author (A2 regression round 2, injection-05; the fourth formal run's audit).
 PENDING_LINE = "这些改动要等你在卡片上确认后才会写进资料。"
@@ -523,6 +526,7 @@ class AssistantEngine:
         self._shadows: dict[str, list[tuple[str, threading.Thread]]] = {}
         self._shadows_done: set[str] = set()
         self._requests: dict[str, list[dict[str, Any]] | None] = {}  # a change task's request list, kept for its closing line
+        self._reviewed: dict[str, set[str]] = {}  # why the card's second reader took items off a change task's card
 
     # -- creation ---------------------------------------------------------------------------------------------------
     def model_label(self) -> str:
@@ -1151,9 +1155,51 @@ class AssistantEngine:
         proposed = assistant_actions.proposed_count(self.db, task_id)
         answer = self._agree(task_id, answer)
         if self.store.row(task_id)["kind"] == "change":
+            answer = self._review(task_id, answer)
             answer = self._no_card_line(task_id, answer, proposed)
         self.store.finish(task_id, "completed", answer=answer, coverage=self._coverage(task_id, limited))
         self._settle(task_id)
+
+    def _review(self, task_id: str, answer: dict[str, Any]) -> dict[str, Any]:
+        """The card's second reader (`assistant_review`): each fact or thread item on the agreed card is put to one small call,
+        and an item it answers against leaves the card. What the calls cost is the task's; a call that fails keeps its item."""
+        row = self.store.row(task_id)
+        request = json.loads(row["input_json"]).get("question") or ""
+        with self.db.connection() as c:
+            memory = self.db._confirmed_memory(c, row["project_id"], row["memory_version"])
+            asked = [(item, assistant_review.question(c, memory, request, item))
+                     for item in c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (task_id,))]
+        dropped: dict[str, str] = {}
+        input_tokens = output_tokens = 0
+        cost = 0.0
+        for item, question in asked:
+            if question is None:
+                continue
+            try:
+                result = assistant_review.call_model(self.provider, question)
+            except Exception:  # a failed review keeps the item: the author still confirms it
+                continue
+            input_tokens += result.input_tokens or 0
+            output_tokens += result.output_tokens or 0
+            cost += self._cost(result)
+            reason = assistant_review.DROP.get(assistant_review.parse((result.message or {}).get("content"), item["kind"]))
+            if reason:
+                dropped[item["id"]] = reason
+        with self.db.connection() as c:
+            c.execute("UPDATE assistant_tasks SET input_tokens=input_tokens+?,output_tokens=output_tokens+?,cost_cny=cost_cny+? WHERE id=?",
+                      (input_tokens, output_tokens, cost, task_id))
+            for item_id in dropped:
+                c.execute("DELETE FROM assistant_changes WHERE id=?", (item_id,))
+            left = c.execute("SELECT id FROM assistant_changes WHERE task_id=? ORDER BY ordinal", (task_id,)).fetchall()
+            for ordinal, item in enumerate(left, 1):
+                c.execute("UPDATE assistant_changes SET ordinal=? WHERE id=?", (ordinal, item["id"]))
+        if not dropped:
+            return answer
+        self._reviewed[task_id] = set(dropped.values())
+        if not left:  # an emptied card has its own line (`_no_card_line`)
+            return answer
+        line = REVIEW_LINES[min(dropped.values())]
+        return {**answer, "note": " ".join(part for part in (answer.get("note"), line) if part)}
 
     def _no_card_line(self, task_id: str, answer: dict[str, Any], proposed: int) -> dict[str, Any]:
         """A change task that ends without a card says why in a line the program writes (v2.1): from what the author asked for
@@ -1168,7 +1214,9 @@ class AssistantEngine:
         steps = self.store.steps(task_id)
         codes = {step["error_code"] for step in steps if step.get("error_code")}
         tried = any(step.get("tool_name") == "propose_change" for step in steps)
-        reason = ("delete" if "delete" in wants else "prose" if "prose" in wants else "agreed" if proposed
+        reviewed = self._reviewed.pop(task_id, set())
+        reason = ("delete" if "delete" in wants else "prose" if "prose" in wants
+                  else "recorded" if "recorded" in reviewed else "not_closed" if "not_closed" in reviewed else "agreed" if proposed
                   else "recorded" if codes & NO_CARD_RECORDED else "no_evidence" if codes & NO_CARD_UNSUPPORTED or answer.get("status") == "not_found"
                   else "held" if tried else None)
         line = NO_CARD_LINES.get(reason)

@@ -910,9 +910,11 @@ class RequestListTests(GroundedTests):
     def test_the_change_task_splits_the_sentence_once_before_reading(self):
         self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "最后一章已经收了", "want": "resolve_thread"}]})
         task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
-        self.assertEqual(task["changes"][0]["kind"], "resolve_thread")
-        self.assertEqual(len(self.provider.route_calls), 1)
-        self.assertIn("罗盘那条线最后一章已经收了", self.provider.route_calls[0]["messages"][-1]["content"])
+        self.assertEqual(task["changes"][0]["kind"], "resolve_thread")  # the card's review was not scripted: a failed review keeps the item
+        splits = [call for call in self.provider.route_calls if call["messages"][0]["content"] == assistant_requests.REQUEST_SYSTEM_PROMPT]
+        self.assertEqual(len(splits), 1)
+        self.assertIs(self.provider.route_calls[0], splits[0])
+        self.assertIn("罗盘那条线最后一章已经收了", splits[0]["messages"][-1]["content"])
 
 
 class DisplayTests(unittest.TestCase):

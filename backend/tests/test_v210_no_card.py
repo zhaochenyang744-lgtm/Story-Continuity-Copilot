@@ -68,3 +68,45 @@ class NoCardLineTests(ChangeCase):
         self.assertTrue(_said_under_full_name(ctx, {"subject": "绛穗", "value": "绛穗是简迭微的别名，简迭微是本案辩护人"}))
         self.assertFalse(_said_under_full_name(ctx, {"subject": "绛穗", "value": "左手腕在第九章扭伤，暂不能提重物"}))
         self.assertFalse(_said_under_full_name(ctx, {"subject": "段泊循", "value": "本案辩护人"}))  # no nickname involved
+
+
+class CardReviewTests(ChangeCase):
+    """The card's second reader (`assistant_review`): one small call per fact or thread item after the runs agree."""
+
+    def resolve(self, verdict):
+        split = {"items": [{"about": "罗盘那条线", "ask": "最后一章已经收了", "want": "resolve_thread"}]}
+        self.provider.script_route(split, {"verdict": verdict, "reason": "r"})
+        return self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
+
+    def test_a_thread_the_passage_does_not_close_leaves_the_card(self):
+        # A2 sixth formal run, w02-no-04: marked resolved on the author's word when the passage settles another thing.
+        task = self.resolve("open")
+        self.assertEqual(task["changes"], [])
+        self.assertIn(NO_CARD_LINES["not_closed"], task["answer"]["note"])
+        review = self.provider.route_calls[1]["messages"][-1]["content"]
+        self.assertIn("罗盘下落", review)
+        self.assertIn("罗盘那条线最后一章已经收了", review)
+        self.assertIn(f"第 {self.last} 章", review)
+
+    def test_a_closed_thread_or_an_unclear_answer_stays(self):
+        for verdict in ("closed", "unclear", "maybe"):
+            with self.subTest(verdict):
+                self.assertEqual([item["kind"] for item in self.resolve(verdict)["changes"]], ["resolve_thread"])
+
+    def test_a_fact_is_asked_against_the_facts_of_every_name_of_its_subject(self):
+        from app.assistant_review import FACT_KINDS, parse, question
+        memory = [{"subject": "柴闻序", "predicate": "alias", "value": "朋友叫他杉栖"},
+                  {"subject": "柴闻序", "predicate": "occupation", "value": "修表匠"},
+                  {"subject": "别人", "predicate": "occupation", "value": "船工"}]
+        item = {"kind": "change_fact", "after_json": '{"subject": "柴闻序", "predicate": "alias", "value": "杉栖就是柴闻序，不是另一个人"}',
+                "before_json": '{"value": "朋友叫他杉栖"}', "evidence_json": "[]", "target_id": "x"}
+        text = question(None, memory, "杉栖就是柴闻序这一层对应，也替我收进事实库", item)
+        self.assertIn("原来：朋友叫他杉栖", text)
+        self.assertIn("修表匠", text)
+        self.assertNotIn("船工", text)
+        under_nickname = dict(item, kind="add_fact", after_json='{"subject": "杉栖", "predicate": "occupation", "value": "修表"}')
+        self.assertIn("修表匠", question(None, memory, "杉栖是修表的，记一笔", under_nickname))  # the nickname reaches the full name's facts
+        self.assertIsNone(question(None, memory[2:], "杉栖是修表的，记一笔", under_nickname))  # nothing it could already say
+        self.assertEqual((parse('{"verdict": "said"}', "add_fact"), parse('{"verdict": "closed"}', "add_fact"), parse("x", "change_fact")),
+                         ("said", None, None))
+        self.assertIn("change_fact", FACT_KINDS)
