@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "baseline_status": "PASS",
+  "invocation": "validate(temporary_copy)",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "temporary_directories_remaining": 0,
+  "cases": [
+    {
+      "id": "N01",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "w01:primary_actions"
+      ],
+      "cleanup": true,
+      "error_count": 16
+    },
+    {
+      "id": "N02",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "w01:primary_actions"
+      ],
+      "cleanup": true,
+      "error_count": 16
+    },
+    {
+      "id": "N03",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-action-01:action:1:evidence:1:quote"
+      ],
+      "cleanup": true,
+      "error_count": 5
+    },
+    {
+      "id": "N04",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-action-01:alias_use_fields"
+      ],
+      "cleanup": true,
+      "error_count": 5
+    },
+    {
+      "id": "N05",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-no-05:premise_evidence:quote"
+      ],
+      "cleanup": true,
+      "error_count": 6
+    },
+    {
+      "id": "N06",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-no-05:premise_why_quote"
+      ],
+      "cleanup": true,
+      "error_count": 5
+    },
+    {
+      "id": "N07",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-no-01:request_targets"
+      ],
+      "cleanup": true,
+      "error_count": 6
+    },
+    {
+      "id": "N08",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "a2n7-w01-action-01:actions"
+      ],
+      "cleanup": true,
+      "error_count": 7
+    },
+    {
+      "id": "N09",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "blind:work_packet"
+      ],
+      "cleanup": true,
+      "error_count": 5
+    },
+    {
+      "id": "N10",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "manifest:coverage_order"
+      ],
+      "cleanup": true,
+      "error_count": 1
+    },
+    {
+      "id": "N11",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "blind:verdict:1:fields"
+      ],
+      "cleanup": true,
+      "error_count": 6
+    },
+    {
+      "id": "N12",
+      "status": "PASS",
+      "validator_status": "FAIL",
+      "validator_exit": 1,
+      "expected_error_hits": 1,
+      "matched_errors": [
+        "w01:alias:1:fact_identity"
+      ],
+      "cleanup": true,
+      "error_count": 8
+    }
+  ],
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}

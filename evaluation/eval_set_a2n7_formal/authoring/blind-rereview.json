@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "chapters_reread": [
+    9,
+    12
+  ],
+  "requests_unchanged": true,
+  "judgements_changed": 0,
+  "unresolved": 0,
+  "packet_sha256": "c7b472b6c4eef03d07d30465b971a89dad391f7ebe3c1a2629a18231a47153c5",
+  "initial_verdicts_preserved": true
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "title": "双瓣样三点痕",
+    "description": "双瓣样上出现三个紫色小点，颜色为何在那几个位置留下、是否自行移动，还没有找到可信的解释。",
+    "status": "developing",
+    "planted_chapter": 2
+  },
+  {
+    "title": "空架低鸣",
+    "description": "空着的架子附近仍传来低鸣，几个人都听见过，声音究竟来自哪里尚未查明。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "灰芽膜空白角",
+    "description": "灰芽膜的一角迟迟不显色，和其他区域的表现不同，还不清楚是材料本身还是别的原因。",
+    "status": "planted",
+    "planted_chapter": 2
+  },
+  {
+    "title": "暮纹片慢退色",
+    "description": "暮纹片的颜色退得比昼纹片慢，差异的来源尚不明确，需要保留这条疑问。",
+    "status": "developing",
+    "planted_chapter": 3
+  },
+  {
+    "title": "夜蓝反光",
+    "description": "桌边夜里出现的蓝影来自窗帘的反射，移开窗帘后蓝影消失，原先不明的来源已经查清。",
+    "status": "resolved",
+    "planted_chapter": 1,
+    "resolved_chapter": 4
+  },
+  {
+    "title": "昼纹片离室",
+    "description": "昼纹片已经离开迟测间，带走者尚不清楚，外面看到的颜色和室内是否相同仍待核实。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "岔脊盒夹层",
+    "description": "白线封着的岔脊盒是否有夹层还未查明，盒内可能藏着旧样页，但尚无人看见里面的情形。",
+    "status": "developing",
+    "planted_chapter": 3
+  },
+  {
+    "title": "弧脉条斜纹",
+    "description": "条体在暗处也自行发光，斜纹可能随内光移动，准备比较斜纹的来源及变化方式。",
+    "status": "planned",
+    "planted_chapter": 3
+  },
+  {
+    "title": "缺角目录",
+    "description": "目录纸被去掉一角，缺失的位置原来写着什么还不知道，这部分是否与旧样有关也未证实。",
+    "status": "planted",
+    "planted_chapter": 6
+  },
+  {
+    "title": "旧色谱重建",
+    "description": "上一轮曾计划重新拼出旧色谱，后来已经明确不再追索，这条研究旁枝决定放弃。",
+    "status": "abandoned",
+    "planted_chapter": 2
+  }
+]
