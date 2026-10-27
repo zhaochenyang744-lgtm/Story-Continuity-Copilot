@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "static_canon",
+    "subject": "蒋珞岑",
+    "predicate": "别名",
+    "value": "矩鸢",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褚霁禾",
+    "predicate": "别名",
+    "value": "霜芥",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "厉闻绡",
+    "predicate": "别名",
+    "value": "砂鹭",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "范筠策",
+    "predicate": "别名",
+    "value": "斜栅",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "蒋珞岑",
+    "predicate": "组内职责",
+    "value": "制样员，负责制作试样",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "褚霁禾",
+    "predicate": "工作房间",
+    "value": "迟测间",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "灰芽膜",
+    "predicate": "保管人",
+    "value": "厉闻绡",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "范筠策",
+    "predicate": "试次次序",
+    "value": "先看双瓣样",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "卫砚翎",
+    "predicate": "组内身份",
+    "value": "报告统筹",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒋珞岑",
+    "predicate": "书写习惯",
+    "value": "用左手写标签",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褚霁禾",
+    "predicate": "随身本",
+    "value": "青布封面",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "厉闻绡",
+    "predicate": "午后习惯",
+    "value": "午饭后走楼梯",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "范筠策",
+    "predicate": "饮品偏好",
+    "value": "只喝温水",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "黎映珂",
+    "predicate": "职责",
+    "value": "安排研究日程",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "郝宥弦",
+    "predicate": "座位",
+    "value": "靠北窗",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "翁素缦",
+    "predicate": "研究方向",
+    "value": "比较颜色的时间差",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "昼纹片",
+    "predicate": "形状",
+    "value": "方形",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "暮纹片",
+    "predicate": "形状",
+    "value": "圆形",
+    "chapter": 3
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "岔脊盒",
+    "predicate": "封装",
+    "value": "盒盖缠着白线",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "双瓣样",
+    "predicate": "结构",
+    "value": "两片可以分离",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "灰芽膜",
+    "predicate": "外观",
+    "value": "边缘呈灰绿",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "弧脉条",
+    "predicate": "外观",
+    "value": "有一道弯曲暗纹",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "澄络材料实验中心",
+    "predicate": "例会时间",
+    "value": "午后举行",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "本轮研究",
+    "predicate": "结果认定原则",
+    "value": "不把一次颜色变化当作可重复结果",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "黎映珂",
+    "predicate": "告示写法",
+    "value": "不用红字催人",
+    "chapter": 4
+  }
+]

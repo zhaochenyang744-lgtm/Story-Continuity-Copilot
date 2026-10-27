@@ -1,0 +1,35 @@
+{
+  "status": "closed",
+  "source_changes": 3,
+  "metadata_changes": 1,
+  "source_before_sha256": "1f4f9a5a7ec2678ea87dcc2d603b00f99efe801f8565f1ac9d309c64d0aa382d",
+  "source_after_sha256": "9fc5d31ffb6b549dc14a916273e03bc4c8854eaaaf40c44c34c68ec95b947a3d",
+  "request_changes": 0,
+  "gold_kind_target_changes": 0,
+  "records": [
+    {
+      "id": "S01",
+      "chapter": 9,
+      "type": "time_of_day"
+    },
+    {
+      "id": "S02",
+      "chapter": 12,
+      "type": "relative_day"
+    },
+    {
+      "id": "S03",
+      "chapter": 12,
+      "type": "relative_day"
+    },
+    {
+      "id": "M01",
+      "task": "a2n7-w01-action-03",
+      "field": "vague",
+      "before": false,
+      "after": true
+    }
+  ],
+  "closure_report": "authoring/full-source-review.json",
+  "unresolved": 0
+}

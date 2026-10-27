@@ -1,0 +1,505 @@
+{
+  "version": "a2-2",
+  "set_id": "a2n7-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "退色之前",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "蒋珞岑",
+        "褚霁禾",
+        "厉闻绡",
+        "范筠策",
+        "卫砚翎",
+        "黎映珂",
+        "郝宥弦",
+        "翁素缦",
+        "矩鸢",
+        "霜芥",
+        "砂鹭",
+        "斜栅",
+        "澄络材料实验中心",
+        "昼纹片",
+        "暮纹片",
+        "岔脊盒",
+        "灰芽膜",
+        "弧脉条",
+        "双瓣样",
+        "退色之前",
+        "迟测间",
+        "漫照间"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第13章 留给空白的页",
+        "body": "蒋珞岑来得早，先去看走廊尽头的窗。雨在玻璃上留下许多细长的痕，楼下的人撑着伞走过，每一把伞都比昨天记忆里的颜色深。她想起自己曾为一种暖色守过整整一个上午，如今却不想从窗前找出一句适合放在短文开头的话。她站到雨声稍轻的地方，把包换到另一侧，才向桌边走。\n\n横格本已经摊开，昨天写到一半的字旁边仍有空位。她用左手将纸角压平，没有去描那条陌生的浅划痕。划痕是谁留下的，至今没有人说清；她现在不想借一个猜测使这张纸变得完整。门口传来脚步声，她抬头，看见翁素缦抱着一件湿外套，头发贴在耳侧。两人先找地方晾衣服，谁也没有马上坐到那一页前。\n\n翁素缦问公开短文的题目定了没有。蒋珞岑说自己暂时写了《退色之前》，听起来像要讲一段最后留下的颜色，可他们最后能拿出来的偏偏是没有留下。翁素缦没有替她把题目改得更像一个结果，只说先把正文写完，也许写完便不再需要这个名字。蒋珞岑在题目旁画了一个很小的圈，留着以后可以擦去。\n\n郝宥弦随后进来，鞋底带着一点水。他在门边停下，将地上的水印擦掉，才问能不能先看一段。他没有拿材料，也没有把藏着的颜色重新摆满桌面，只将一把普通椅子拉到两人旁边。蒋珞岑把本子转过去，等他读。屋里第一次安静得不像在等某样东西发生，而像在容许一个人慢慢读完。\n\n他读到一处，手指停在纸外，没有替她圈字。那里写着一次很短的犹豫，她原想删掉，免得旁人以为他们一直不知道自己在做什么。郝宥弦说自己记得那一段等候，问删了以后，后面的决定会不会显得太容易。蒋珞岑没有马上答应留下，也没有解释当时比纸上艰难多少，只把另一张空白纸拿来，试着重新写起。\n\n走廊有人经过，褚霁禾从漫照间探出头，问谁把晾着的外套挡在门边。翁素缦起身去挪，衣服落下一滴水，恰好碰在桌脚旁。三个人都看见了，谁也没有把那点水比作别的。蒋珞岑听着外头两人说话，觉得今天至少还有许多句子不必被她及时记住，才能确实发生。\n\n她把刚写的半行推到一旁，重新坐直。纸上仍有说不清的地方，盒里的夹层、目录缺失的角和那几道未明的痕迹也没有因为短文动笔便得到解释。她没有打算把它们挤进开头。郝宥弦把椅子往后让了一点，给她留出搁手的位置。蒋珞岑提起笔，这回先写了一个日期，随后停下来，认真想下一句话。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a2n7-w01-action-01",
+      "work": "w01",
+      "suite": "action",
+      "request": "矩鸢现在换了活儿，资料里她做什么的那一项跟上。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "事实5停在制样员，正文第5章明确改为只做观察记录，须更新原条目。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 5,
+          "after_points": [
+            "仅负责观察和记录"
+          ],
+          "evidence_chapters": [
+            "第5章 站到手的另一边"
+          ],
+          "evidence_quotes": [
+            "从今天起，蒋珞岑只做观察记录，不再承担制样工作；这项职责变更已经确定，并非临时替班。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "alias_use": {
+        "name": "蒋珞岑",
+        "alias": "矩鸢",
+        "fact": 1
+      }
+    },
+    {
+      "id": "a2n7-w01-action-02",
+      "work": "w01",
+      "suite": "action",
+      "request": "霜芥搬去漫照间了，替她把工作房间更新一下。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 6
+      },
+      "why": "事实6仍是迟测间，第6章已明确正式搬至漫照间，返回旧屋只是查看材料。",
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 6,
+          "after_points": [
+            "改在漫照间做日常工作"
+          ],
+          "evidence_chapters": [
+            "第6章 门还在原处"
+          ],
+          "evidence_quotes": [
+            "褚霁禾正式搬到漫照间工作，迟测间不再是她的工作房间；今后只是按需去旧屋查看材料。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": false,
+      "alias_use": {
+        "name": "褚霁禾",
+        "alias": "霜芥",
+        "fact": 2
+      }
+    },
+    {
+      "id": "a2n7-w01-action-03",
+      "work": "w01",
+      "suite": "action",
+      "request": "双瓣样上那几个紫点已经讲明白了，给这条线结个尾。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "伏笔1记录developing，第7章已由夹持垫解释三点压痕，疑问明确收束。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第7章"
+          ],
+          "evidence_chapters": [
+            "第7章 三处落下的地方"
+          ],
+          "evidence_quotes": [
+            "双瓣样上的三个紫点原来是夹持垫留下的三点压痕，并非颜色自行移动。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a2n7-w01-action-04",
+      "work": "w01",
+      "suite": "action",
+      "request": "空架那阵怪声前因后果都落定了，把线收起来。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "伏笔2仍是planted，第8章已找到转椅共振并做重现与消除对照。",
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第8章"
+          ],
+          "evidence_chapters": [
+            "第8章 沿着地面去听"
+          ],
+          "evidence_quotes": [
+            "低鸣来自隔壁转椅的椅脚与地面共振，声音沿地面传到空架旁，并非架子内部有东西。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true
+    },
+    {
+      "id": "a2n7-w01-action-05",
+      "work": "w01",
+      "suite": "action",
+      "request": "给灰芽膜补上“存放位置”这一项，正文怎么放的照着记进事实。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "起始事实没有灰芽膜的存放位置，第7章明示放进郝宥弦抽屉最下层。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "灰芽膜",
+            "predicate": "存放位置"
+          },
+          "after_points": [
+            "收在郝宥弦抽屉的最底层"
+          ],
+          "evidence_chapters": [
+            "第7章 三处落下的地方"
+          ],
+          "evidence_quotes": [
+            "郝宥弦把灰芽膜放进自己抽屉的最下层，众人都看清了位置。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": true
+    },
+    {
+      "id": "a2n7-w01-action-06",
+      "work": "w01",
+      "suite": "action",
+      "request": "资料里给暮纹片的“发生的事件”补上矩鸢把它拿到外面看过这一笔。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 9
+      },
+      "why": "起始事实只有暮纹片形状，第9章的实际外出是新的明确事件，不能和昼纹片混同。",
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "暮纹片",
+            "predicate": "发生的事件"
+          },
+          "after_points": [
+            "蒋珞岑曾将它带至室外"
+          ],
+          "evidence_chapters": [
+            "第9章 楼下的半小时"
+          ],
+          "evidence_quotes": [
+            "暮纹片今天由蒋珞岑带到屋外自然光下，回来后仍放回原来的浅盘。"
+          ]
+        }
+      ],
+      "paraphrased": false,
+      "vague": false
+    },
+    {
+      "id": "a2n7-w01-action-07",
+      "work": "w01",
+      "suite": "action",
+      "request": "弧脉条的说明跟后来写的不一样了，照正文重新理一下。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "伏笔8原说明错误断定自发光，第11章已排除该解释，斜纹成因仍未知，应仅纠正说明。",
+      "expected_actions": [
+        {
+          "kind": "edit_thread",
+          "target": 8,
+          "after_points": [
+            "亮光来自外部照明的反射",
+            "弯纹的形成原因还未知"
+          ],
+          "evidence_chapters": [
+            "第11章 再来时不带文件"
+          ],
+          "evidence_quotes": [
+            "弧脉条在全暗中不发光，只反射外界的光；斜纹究竟怎样形成，仍未查明。"
+          ]
+        }
+      ],
+      "paraphrased": true,
+      "vague": true,
+      "author_words": false
+    },
+    {
+      "id": "a2n7-w01-action-08",
+      "work": "w01",
+      "suite": "action",
+      "request": "缺角目录那条我后面不写了，作罢吧。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "伏笔9尚未收，作者明确不再写这条旁枝，凭作者意图标放弃即可。",
+      "expected_actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 9,
+          "after_points": [
+            "已放弃"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ],
+      "paraphrased": true,
+      "vague": false
+    },
+    {
+      "id": "a2n7-w01-no-01",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "矩鸢写标签用的那只手，还是左手，替我把这点存一下。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "事实10已记录蒋珞岑用左手写标签，事实1及正文第1章明确矩鸢为其别名，无状态变化。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          10
+        ],
+        "foreshadows": []
+      },
+      "alias_use": {
+        "name": "蒋珞岑",
+        "alias": "矩鸢",
+        "fact": 1
+      }
+    },
+    {
+      "id": "a2n7-w01-no-02",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "给霜芥那个随身本补个记录：封皮是青布的。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "事实11已记录褚霁禾随身本的青布封面，事实2及正文明确霜芥为同一人，后文未换本。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          11
+        ],
+        "foreshadows": []
+      },
+      "alias_use": {
+        "name": "褚霁禾",
+        "alias": "霜芥",
+        "fact": 2
+      }
+    },
+    {
+      "id": "a2n7-w01-no-03",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "双瓣样能拆成两部分，这点也帮我存进事实。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 2
+      },
+      "why": "事实20已记录两片可以分离，第2章也当场分开两片，无需再新增或改写。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          20
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a2n7-w01-no-04",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "给空架低鸣新建一条伏笔，写架边没放东西却有声响。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "伏笔2已经记录空架旁低鸣及来源疑问；本题仅要求再建同一条线，不能自行转成回收请求。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "a2n7-w01-no-05",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "矩鸢都把昼纹片拿出去了，给这片出门的线结个尾。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 9
+      },
+      "why": "作者把两片混同；第9章原文为“被领出迟测间的是圆形暮纹片，方形昼纹片始终留在迟测间，从未被任何人领出。”，昼纹片离室的前提明确不成立。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          6
+        ]
+      },
+      "premise_contradicted": true,
+      "premise_evidence": {
+        "chapter": 9,
+        "quote": "被领出迟测间的是圆形暮纹片，方形昼纹片始终留在迟测间，从未被任何人领出。"
+      }
+    },
+    {
+      "id": "a2n7-w01-no-06",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "霜芥已经把岔脊盒拆开了，夹层那条可以收掉了。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 10
+      },
+      "why": "作者把包装筒与岔脊盒混同；第10章原文为“褚霁禾今天拆开的只是普通外用包装筒，取出的是垫纸，岔脊盒从未被她拆开。”，夹层仍未知。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          7
+        ]
+      },
+      "premise_contradicted": true,
+      "premise_evidence": {
+        "chapter": 10,
+        "quote": "褚霁禾今天拆开的只是普通外用包装筒，取出的是垫纸，岔脊盒从未被她拆开。"
+      }
+    },
+    {
+      "id": "a2n7-w01-no-07",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把灰芽膜的制造月份写成五月，添进事实里。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "第2章仅写“厉闻绡收起的灰芽膜边缘呈灰绿”，起始资料与全文均未交代制造月份，不能据此添加月份。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a2n7-w01-no-08",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "缺角目录的缺失部分写的是耗材清单，替我把这个发现加进事实。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "第6章原文“柜旁那张散纸是一页缺角目录，右下角少了一块，缺掉的部分原来写过什么，眼下仍没人知道。”且到结尾仍未知，缺失部分写什么并未交代。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a2n7-w01-no-09",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把选中这句写得轻一点，直接润这句正文就行。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 13,
+        "selection": "她把刚写的半行推到一旁，重新坐直。"
+      },
+      "why": "作者明确要求润色共享草稿中的选句，不是修改起始事实或伏笔。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a2n7-w01-no-10",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "空架刚出声那段写得太平，帮我把那几句正文改得紧张些。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 3
+      },
+      "why": "作者要求改变第3章的叙述风格，未要求更动伏笔2的资料状态或说明。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a2n7-w01-no-11",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把双瓣样三点痕这条伏笔删掉，别留在列表里。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者要求删除伏笔1，这一动作不在六种支持动作内，不能代替为回收或放弃。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "a2n7-w01-no-12",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "弧脉条的外观那条事实删了吧。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者要求删除事实22，这一版未支持删除事实，不能改写成空值。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [
+          22
+        ],
+        "foreshadows": []
+      }
+    }
+  ]
+}

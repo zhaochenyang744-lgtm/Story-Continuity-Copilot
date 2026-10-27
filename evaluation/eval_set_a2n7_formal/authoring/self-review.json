@@ -1,0 +1,231 @@
+{
+  "works": {
+    "w01": {
+      "stale_facts": [
+        {
+          "fact": 5,
+          "changed_chapter": 5,
+          "quote": "从今天起，蒋珞岑只做观察记录，不再承担制样工作；这项职责变更已经确定，并非临时替班。"
+        },
+        {
+          "fact": 6,
+          "changed_chapter": 6,
+          "quote": "褚霁禾正式搬到漫照间工作，迟测间不再是她的工作房间；今后只是按需去旧屋查看材料。"
+        },
+        {
+          "fact": 7,
+          "changed_chapter": 7,
+          "quote": "灰芽膜从此交由郝宥弦保管，厉闻绡不再保管它，这次交接不是临时借用。"
+        },
+        {
+          "fact": 8,
+          "changed_chapter": 8,
+          "quote": "范筠策从此把试次次序改为先看弧脉条，之后才看双瓣样，不再沿用先看双瓣样的旧次序。"
+        },
+        {
+          "fact": 9,
+          "changed_chapter": 11,
+          "quote": "卫砚翎已经退出小组，不再担任报告统筹；这次回来，她仅以独立观察者身份在场。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "蒋珞岑",
+          "predicate": "观察用本",
+          "chapter": 5,
+          "quote": "蒋珞岑的新观察用本是横格本，第一页从今天的上午写起。"
+        },
+        {
+          "subject": "褚霁禾",
+          "predicate": "旧样页存放",
+          "chapter": 6,
+          "quote": "褚霁禾把所有旧样页都留在迟测间，一页也没有带去漫照间。"
+        },
+        {
+          "subject": "灰芽膜",
+          "predicate": "存放位置",
+          "chapter": 7,
+          "quote": "郝宥弦把灰芽膜放进自己抽屉的最下层，众人都看清了位置。"
+        },
+        {
+          "subject": "范筠策",
+          "predicate": "试次时长",
+          "chapter": 8,
+          "quote": "所有试次的长度统一为半小时，不因哪一片先显色就临时缩短，也不为等一张好看的图拖长。"
+        },
+        {
+          "subject": "暮纹片",
+          "predicate": "发生的事件",
+          "chapter": 9,
+          "quote": "暮纹片今天由蒋珞岑带到屋外自然光下，回来后仍放回原来的浅盘。"
+        },
+        {
+          "subject": "岔脊盒",
+          "predicate": "内层开启记录",
+          "chapter": 10,
+          "quote": "岔脊盒的白线仍完整缠在盒盖上，连内层封装也从未开启；盒内是否真有夹层，至今仍不知道。"
+        },
+        {
+          "subject": "本轮研究",
+          "predicate": "结果公开",
+          "chapter": 12,
+          "quote": "澄络材料实验中心决定将这一轮无效结果写成公开短文"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 7,
+          "quote": "双瓣样上的三个紫点原来是夹持垫留下的三点压痕，并非颜色自行移动。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 8,
+          "quote": "低鸣来自隔壁转椅的椅脚与地面共振，声音沿地面传到空架旁，并非架子内部有东西。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 11,
+          "quote": "灰芽膜的空白角原来被衬纸残胶遮住，清去残胶后，那一角与其余部分显色一致，这个疑问就此解开。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 12,
+          "quote": "暮纹片退色较慢，是因为背面仍贴着保湿衬层"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 6,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 9,
+          "abandonable": true
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 6,
+          "chapter": 9,
+          "quote": "被领出迟测间的是圆形暮纹片，方形昼纹片始终留在迟测间，从未被任何人领出。"
+        },
+        {
+          "foreshadow": 8,
+          "chapter": 11,
+          "quote": "弧脉条在全暗中不发光，只反射外界的光；斜纹究竟怎样形成，仍未查明。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "横格本浅划痕",
+          "planted_chapter": 5,
+          "quote": "横格本的边缘有一道浅划痕，蒋珞岑确定不是自己画的，却说不出谁在何时留下。"
+        },
+        {
+          "about": "迟测间门背方印",
+          "planted_chapter": 6,
+          "quote": "临走将门合拢时，褚霁禾看见迟测间门背有一枚陌生方印。"
+        },
+        {
+          "about": "三角折纸来历",
+          "planted_chapter": 9,
+          "quote": "那张空白纸被折成三角，却没有一个人承认折过，三角折纸的来历仍未明。"
+        }
+      ],
+      "characters": [
+        "蒋珞岑",
+        "褚霁禾",
+        "厉闻绡",
+        "范筠策",
+        "卫砚翎",
+        "黎映珂",
+        "郝宥弦",
+        "翁素缦"
+      ],
+      "aliases": [
+        {
+          "name": "蒋珞岑",
+          "alias": "矩鸢",
+          "chapter": 1,
+          "quote": "矩鸢就是蒋珞岑，霜芥就是褚霁禾。"
+        },
+        {
+          "name": "褚霁禾",
+          "alias": "霜芥",
+          "chapter": 1,
+          "quote": "矩鸢就是蒋珞岑，霜芥就是褚霁禾。"
+        },
+        {
+          "name": "厉闻绡",
+          "alias": "砂鹭",
+          "chapter": 1,
+          "quote": "砂鹭是厉闻绡，斜栅是范筠策。"
+        },
+        {
+          "name": "范筠策",
+          "alias": "斜栅",
+          "chapter": 1,
+          "quote": "砂鹭是厉闻绡，斜栅是范筠策。"
+        }
+      ],
+      "no_evidence_modes": {
+        "a2n7-w01-no-05": "contradicted",
+        "a2n7-w01-no-06": "contradicted",
+        "a2n7-w01-no-07": "not_stated",
+        "a2n7-w01-no-08": "not_stated"
+      },
+      "same_input_groups": [],
+      "lookalike_pairs": [
+        {
+          "action": "a2n7-w01-action-01",
+          "no_action": "a2n7-w01-no-01",
+          "axis": "同人物，已记书写习惯与已变职责"
+        },
+        {
+          "action": "a2n7-w01-action-02",
+          "no_action": "a2n7-w01-no-02",
+          "axis": "同人物，未变随身本与已变工作房间"
+        },
+        {
+          "action": "a2n7-w01-action-03",
+          "no_action": "a2n7-w01-no-03",
+          "axis": "同物件，已记结构与已收未标的三点线"
+        },
+        {
+          "action": "a2n7-w01-action-04",
+          "no_action": "a2n7-w01-no-04",
+          "axis": "同伏笔，重复新建与明确收束"
+        },
+        {
+          "action": "a2n7-w01-action-05",
+          "no_action": "a2n7-w01-no-07",
+          "axis": "同物件，有正文支持的位置与未写的制造月份"
+        },
+        {
+          "action": "a2n7-w01-action-06",
+          "no_action": "a2n7-w01-no-05",
+          "axis": "同人物，实际外出圆片与误认方片"
+        },
+        {
+          "action": "a2n7-w01-action-07",
+          "no_action": "a2n7-w01-no-12",
+          "axis": "同物件，支持的说明纠正与不支持的删除"
+        },
+        {
+          "action": "a2n7-w01-action-08",
+          "no_action": "a2n7-w01-no-08",
+          "axis": "同目录，明确放弃未收线与无依据补事实"
+        }
+      ]
+    }
+  }
+}
