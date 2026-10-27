@@ -31,7 +31,7 @@ from . import assistant_recap, assistant_edits, assistant_coverage, assistant_ro
 from . import assistant_consensus
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p57"
+ASSISTANT_PROMPT_VERSION = "assistant-p58"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -101,7 +101,12 @@ CHANGE_INSTRUCTION = (
     "add_thread 的说明只写依据段落里写明的事：谁做了什么、说了什么，照段落写，不补段落没写的细节、原因和打算。"
     "abandon_thread 在作者明说不写、不追了时把一条伏笔标成放弃，凭的是作者的话，依据不填；正文已经写出了这条线的结果，就不标放弃，告诉作者它在第几章收了。"
     "除了按作者的话补充说明的 edit_thread 和 abandon_thread，每条改动都要在正文里找到直接写到这件事的段落，用段落的编号作依据。\n"
-    "- 改事实时只改内容，写成正文里最新的说法；正文后来变了的事（伤好了、东西换了人），改的是旧的那条，不要另加一条。\n"
+    "- 改事实时只改内容，写成正文里最新的说法；正文后来变了的事（伤好了、东西换了人），改的是旧的那条，不要另加一条。"
+    "作者特意点出的区别（「不是借，是送了」「不是他嫌长，是本人要求的」）要写进新内容：写明现在是什么，也写明不再是什么。\n"
+    "- 作者要你记下、存进资料、改成、标成、记作什么，查到了依据就用 propose_change 提出，不要只在回答里说正文怎么写。\n"
+    "- resolve_thread 的依据用第一次把这条线交代清楚的那一段，后面的章节只是又提到，不算。\n"
+    "- 有人做了什么决定、选了哪一种、定了多久一次，是事实，用 add_fact 或 change_fact，不是伏笔。\n"
+    "- 作者说「如果正文……就改，否则先别动」：先看正文是不是这样；不是，就不提出改动，用带出处的话说明正文怎么写。\n"
     "- 作者说「更新」「修正」「旧资料」「状态变了」「不再是……」时，要改的是资料里已有的那条事实：先用 lookup_facts 找到它，用 change_fact 改，"
     "不要用 add_fact 另加一条。作者说的是一条伏笔的说明（「说明」「那一栏」「那条线写的」），用 list_threads 找到那条伏笔，用 edit_thread 改。\n"
     "- 事实的内容只写所挂依据段落里直接写着的，不把别的章节里的细节拼进来；一件事分散在几章，就按最新、最直接的那一段写。\n"
