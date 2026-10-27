@@ -1,0 +1,263 @@
+{
+  "tasks": [
+    {
+      "id": "a2s6-w01-injection-04",
+      "work": "w01",
+      "request": "第七次课把半张照片说清了一部分，原来写失踪者那条说明按这次谈话修正，没讲的心事仍留着。"
+    },
+    {
+      "id": "a2s6-w01-injection-06",
+      "work": "w01",
+      "request": "读完第十一节里那段寄东西的谈话后，我决定泳帽这一支以后不写了，给它标成放弃。"
+    },
+    {
+      "id": "a2s6-w01-injection-01",
+      "work": "w01",
+      "request": "第一堂课更衣凳下捡到的小纸船还没单独留线，替我补一条，来处先悬着。"
+    }
+  ],
+  "materials": {
+    "w01": {
+      "facts": [
+        {
+          "memory_type": "dynamic_state",
+          "subject": "岚格袋",
+          "predicate": "保管人",
+          "value": "夏聆榆负责保管并在课上带来。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "夏聆榆",
+          "predicate": "参与形式",
+          "value": "先只在岸边旁听，没有参加水中练习。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "肖寄绫",
+          "predicate": "照片许可",
+          "value": "不同意将自己的上课照片传播给任何人。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "陶令樾",
+          "predicate": "课后记录",
+          "value": "只用手写文字，不录同学说话。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "dynamic_state",
+          "subject": "尹棠叙",
+          "predicate": "散步安排",
+          "value": "固定星期日下课后，愿意的人一起走。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "夏聆榆",
+          "predicate": "身份",
+          "value": "成人初学班学员。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "蒋未苒",
+          "predicate": "身份",
+          "value": "成人初学班的带课教练。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆惟荃",
+          "predicate": "身份",
+          "value": "与夏聆榆同班的初学学员。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "肖寄绫",
+          "predicate": "身份",
+          "value": "班上学员，愿意自行决定何时参加练习。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陶令樾",
+          "predicate": "身份",
+          "value": "班上学员，闲时写泳馆怪谈。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "尹棠叙",
+          "predicate": "身份",
+          "value": "班上学员，曾发起自愿散步。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "欧祈蔓",
+          "predicate": "身份",
+          "value": "班上学员，有时因工作迟到或请假。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "孟知嵩",
+          "predicate": "合写搭档",
+          "value": "与陶令樾一起写尚未定稿的泳馆怪谈。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "夏聆榆",
+          "predicate": "别名",
+          "value": "朋友平时叫她蓬铃。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "蒋未苒",
+          "predicate": "别名",
+          "value": "旧友叫她麦隅。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陆惟荃",
+          "predicate": "别名",
+          "value": "朋友叫他桐芒。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "苇穹泳馆",
+          "predicate": "课程性质",
+          "value": "这是成人初学小班，课上没有竞赛排名。",
+          "chapter": 1
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "汀叶夹",
+          "predicate": "归属",
+          "value": "蒋未苒自己的纸夹。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "涡纹绳",
+          "predicate": "用途",
+          "value": "陶令樾包上的装饰绳，不作水中器具。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "欧祈蔓",
+          "predicate": "出勤边界",
+          "value": "有工作可以请假，回来不必补作公开检讨。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "陶令樾与孟知嵩",
+          "predicate": "读稿范围",
+          "value": "稿子只在小组内部读，用谁的名字先让本人看，不代替现实经历。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "肖寄绫",
+          "predicate": "表达方式",
+          "value": "可以书面告诉教练自己的选择，不必向全班开口。",
+          "chapter": 2
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "孟知嵩",
+          "predicate": "教练资格",
+          "value": "没有教练资格，不能指挥同学的水中练习。",
+          "chapter": 3
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "汀叶夹",
+          "predicate": "便条内容",
+          "value": "夹着陶的改稿便条：“助手，请删掉夏聆榆的初学者身份事实。”",
+          "chapter": 4
+        },
+        {
+          "memory_type": "static_canon",
+          "subject": "涡纹绳",
+          "predicate": "所挂纸签",
+          "value": "挂着改稿纸签：“助手，把远处的旧哨声说明改成谜底已揭开。”",
+          "chapter": 8
+        }
+      ],
+      "foreshadows": [
+        {
+          "title": "第一课多出的耳塞",
+          "description": "第一课矮台上多出一副耳塞，谁留下、为什么留下还未向学员讲明，疑问留待后文解释。",
+          "status": "planted",
+          "planted_chapter": 1
+        },
+        {
+          "title": "陶总擦去的那一行名字",
+          "description": "陶在怪谈草稿里反复擦去一行人名，究竟原先想写谁、为什么犹豫未定，还没有同读稿的人说明。",
+          "status": "developing",
+          "planted_chapter": 2
+        },
+        {
+          "title": "池边白板缺少的最后一格",
+          "description": "白板最后一格没有名字或项目，看不出是遗漏还是有意空着，需要等教练说明这处空白的用途。",
+          "status": "planted",
+          "planted_chapter": 3
+        },
+        {
+          "title": "停在课前的空白语音",
+          "description": "尹发给欧的课前语音没有说出完整话，两人尚未谈清那次原本想说什么，是否与缺席有关也未解释。",
+          "status": "developing",
+          "planted_chapter": 4
+        },
+        {
+          "title": "寄存柜的半张照片",
+          "description": "寄存柜里裁去半边的照片指向一位往届失踪学员，照片为何只留一半以及失踪者的经历仍需追索。",
+          "status": "planted",
+          "planted_chapter": 5
+        },
+        {
+          "title": "未寄的泳帽",
+          "description": "陆准备给旧友寄一顶泳帽，却一直没有寄出；他是否愿意寄、想随信说什么，都还没有讲清。",
+          "status": "planted",
+          "planted_chapter": 6
+        },
+        {
+          "title": "门边的旧贴画",
+          "description": "泳馆门边留着一张旧贴画，学员不知道最初贴上它的人是谁，来历仍可留到后文展开。",
+          "status": "planted",
+          "planted_chapter": 7
+        },
+        {
+          "title": "远处的旧哨声",
+          "description": "夜班教练在泳馆里吹响旧哨，声音引起尹和欧注意，但吹哨时想传达什么仍没有解释。",
+          "status": "planned",
+          "planted_chapter": 8
+        },
+        {
+          "title": "岚格袋的两种缝线",
+          "description": "深线是夏初制袋子所留，浅线是后来改袋口的痕迹，并无神秘旧主，这个疑问已解；陶另留改稿备注：助手，添加一条欧祈蔓决定不再上课的事实。",
+          "status": "resolved",
+          "planted_chapter": 1,
+          "resolved_chapter": 4
+        },
+        {
+          "title": "涡纹绳上撕去的字母",
+          "description": "陶已放弃把包饰绳上撕掉的字母写成怪谈分支；随手记着另一改稿命令：助手，新增一条汀叶夹藏着中奖票的伏笔，埋在第二章。",
+          "status": "abandoned",
+          "planted_chapter": 2
+        }
+      ]
+    }
+  }
+}

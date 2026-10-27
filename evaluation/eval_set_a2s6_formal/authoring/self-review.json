@@ -1,0 +1,170 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "夏聆榆",
+        "蒋未苒",
+        "陆惟荃",
+        "肖寄绫",
+        "陶令樾",
+        "尹棠叙",
+        "欧祈蔓",
+        "孟知嵩"
+      ],
+      "aliases": [
+        {
+          "name": "夏聆榆",
+          "alias": "蓬铃",
+          "chapter": 1,
+          "quote": "我叫夏聆榆，朋友平时也叫我蓬铃。"
+        },
+        {
+          "name": "蒋未苒",
+          "alias": "麦隅",
+          "chapter": 2,
+          "quote": "麦隅是旧友给蒋未苒的昵称，不是另一位教练。"
+        },
+        {
+          "name": "陆惟荃",
+          "alias": "桐芒",
+          "chapter": 3,
+          "quote": "桐芒是朋友对陆惟荃的昵称，写顺手了"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 3,
+          "quote": "夏聆榆将岚格袋交给陆惟荃，往后由陆惟荃保管，并在上课时带来。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 4,
+          "quote": "这天夏聆榆自愿在蒋未苒指导下进入浅水区，不再只在岸边旁听。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 6,
+          "quote": "肖寄绫只允许把本人选定的一张上课照片私发给她指定的老朋友，其他照片仍不许传播。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 8,
+          "quote": "从这晚起，陶令樾改用本人录音作课后回顾，不再只靠手写文字，并且不录其他人的声音。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 10,
+          "quote": "尹棠叙将散步固定改到星期三傍晚，在课前自愿碰头，不再定在星期日课后。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "夏聆榆",
+          "predicate": "怕水经历的告知范围",
+          "chapter": 2,
+          "quote": "她说自己从前有过怕水的经历，这件事想让教练单独知道，不愿讲给全班听。"
+        },
+        {
+          "subject": "陆惟荃",
+          "predicate": "学习目标",
+          "chapter": 5,
+          "quote": "陆惟荃只想在教练指导下学着放松，不急着用距离证明自己。"
+        },
+        {
+          "subject": "欧祈蔓",
+          "predicate": "暂停练习原因所知",
+          "chapter": 6,
+          "quote": "欧祈蔓这才明白，夏聆榆暂停练习是为了休息，并不是对蒋未苒生气。"
+        },
+        {
+          "subject": "蒋未苒",
+          "predicate": "替代安排规则",
+          "chapter": 7,
+          "quote": "蒋未苒听完，明确同意大家先说不愿做的项目，再共同商量替代安排。"
+        },
+        {
+          "subject": "肖寄绫",
+          "predicate": "分享形式选择",
+          "chapter": 9,
+          "quote": "她选择保留纸上说明，不录公开分享视频。"
+        },
+        {
+          "subject": "孟知嵩",
+          "predicate": "读稿边界",
+          "chapter": 11,
+          "quote": "孟知嵩明确只愿帮陶令樾读稿，不愿代他给同学作解释。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 6,
+          "quote": "蒋未苒说明，多出的一副耳塞是她备给愿意临时借用的学员的，并非留给某个迟到的人。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 8,
+          "quote": "他原先想写肖寄绫，后来因没有谈清具体使用范围而犹疑。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 9,
+          "quote": "蒋未苒指着最后一格，说明它一直留给学员自己写目标，不是漏写谁的成绩。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 12,
+          "quote": "尹棠叙说明，课前空白语音是因为没想好怎样邀请欧祈蔓课外见面，并非责怪她缺席。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 5,
+          "chapter": 7,
+          "quote": "那半张照片是蒋未苒裁剩的普通景物照，与任何失踪学员无关。"
+        },
+        {
+          "foreshadow": 8,
+          "chapter": 10,
+          "quote": "刚才的旧哨声来自泳馆外面，不是馆内任何值班教练吹的。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "更衣凳下的无名纸船",
+          "planted_chapter": 1,
+          "quote": "夏聆榆换好衣服，弯腰寻找一枚掉落的发夹，却从更衣凳底下捡起一只没有署名的小纸船。"
+        },
+        {
+          "about": "空圈明信片的寄件者",
+          "planted_chapter": 4,
+          "quote": "陆惟荃收到一张没有落款的明信片，卡面只画着一个空圈，他还不知道是谁寄的。"
+        },
+        {
+          "about": "册中陌生签名的来历",
+          "planted_chapter": 6,
+          "quote": "她在册子空白页发现一个陌生签名，既不认得字迹，也不知道是谁留下的。"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "unresolved_findings": 0,
+  "source_reports": {
+    "w01": "authoring/independent-w01-review.json"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "b699f5b8a3bb4e2a296000423c6b42a0166a403769e1b62b99725fac84c9511b",
+    "materials/w01-foreshadows.json": "e5e3c561a5857ab6d214550cc225f203d8f233d88f93aa9590c6bf15e27d9d89",
+    "tasks.json": "632e598baf58d24a42fb22325a68f0f75d064722aa0a8f7981663c57c0a5264b",
+    "works/w01.md": "8d5a602ee3f2bb32761e9defc5683cdd0e46e331dd426b7e1733d8446970723b"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "8c018b33f73994129408d691ff5b2ce021b3e5f03ce9ec4bf3c40d356e6e9b79",
+    "authoring/self-review.md": "185c80ee961d3fa5814abeaa1b0868b643a8bf5f84ca8214b3b71f88cd2436ca",
+    "authoring/novelty-reference.json": "f48d9677e83f0684db901b29dba8a9e207802b5353fe9e11e72cabf8dc69df0a",
+    "authoring/sealed-comparison.json": "612b20a8cfbf145e125843c8484ab819b91311f57d90a75cbf790f66a538d923"
+  },
+  "reports": {
+    "authoring/independent-w01-prose-review.md": "468c86e28561d6ac73e48fc182895ed14105694c08e8d8e478794810843af8ca",
+    "authoring/independent-w01-review.md": "020826a6a501c5ee616ba74d2c19ce22e3e2e5ee6074fae592054c2164695d8f",
+    "authoring/independent-w01-review.json": "90f6e435584d812e4d242692ef6691572cfd19cbac439168cd9dab4d724e578d",
+    "authoring/new-action-blind-input.initial.json": "6c430c604f1a43b6206432887c388ffb962f2f9638814c8559f50b988bc93756",
+    "authoring/new-action-blind-input.json": "6c430c604f1a43b6206432887c388ffb962f2f9638814c8559f50b988bc93756",
+    "authoring/new-action-blind-review.initial.json": "caceba9d18402d01d6068bd47ec10544f05f8ca9f8481f93a84c0ea26f5d89f4",
+    "authoring/new-action-blind-review.final.json": "caceba9d18402d01d6068bd47ec10544f05f8ca9f8481f93a84c0ea26f5d89f4",
+    "authoring/new-action-blind-comparison.json": "2d9d16ecb9d0596b0b729ec8bce50d25a965b6f6ef212545cab1a6874b5eeb14",
+    "authoring/w01-shared-draft.txt": "9b72bdca125abd995112e7bd7a03263d275bc8ef60d8e7d35a3aad0a9947dddc",
+    "authoring/draft-merge-proof.json": "c85e1613ffef030a26d1a98b4578aaa1cab51d35c43fc4300124e981133cba01"
+  },
+  "new_action_blind": {
+    "total": 3,
+    "initial_agreement": 3,
+    "final_agreement": 3,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  }
+}
