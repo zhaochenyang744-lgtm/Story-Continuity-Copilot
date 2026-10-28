@@ -309,7 +309,9 @@ class RerouteTests(RerouteCase):
         self.assertEqual(len(self.rows("SELECT * FROM assistant_tasks")), 1)
 
     def test_a_check_is_the_check_request_of_the_page(self):
-        old = self.made(question="这段有没有问题", input="这段有没有问题", context={"page": "writing", "selection": SELECTION})
+        # 38c (V09): the sentence the author wrote stays the question; the fixed question is for the box's own words
+        # (see tests.test_v210_38c for a sentence of the author's and for a button phrase).
+        old = self.made(question="检查这段", input="检查这段", context={"page": "writing", "selection": SELECTION}, source="rule")
         self.provider.script(lambda provider, messages: turn(answer_call("not_found", [], note="没有找到问题问到的内容。")))
         created = self.reroute(old, "check_passage", {"page": "writing", "selection": SELECTION}).json()["data"]
         self.assertEqual((created["kind"], created["question"], created["context"].get("intent")), ("ask", CHECK_SELECTION_QUESTION, "check_selection"))
