@@ -11,6 +11,7 @@ import { button } from "./support/writing";
 const dayOf = (offsetDays = 0) => new Date(Date.now() + 8 * 3_600_000 + offsetDays * 86_400_000).toISOString().slice(0, 10);
 const rect = (locator: Locator) => locator.evaluate((node) => { const box = node.getBoundingClientRect(); return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height }; });
 const cssColor = (page: Page, value: string) => page.evaluate((expression) => { const probe = document.createElement("i"); probe.style.color = expression; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; }, value);
+const cssShadow = (page: Page, name: string) => page.evaluate((token) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${token}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }, name);
 const noSideScroll = (page: Page) => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 
 /** Screenshots for the delivery report: only when PAGES_SHOTS_DIR is set, so the ordinary run leaves no files. */
@@ -239,7 +240,7 @@ test("17 资料页、计划页的分类导航：窄屏一行横向滑动，选�
   expect(await page.getByRole("navigation", { name: "资料分类", exact: true }).evaluate((node) => getComputedStyle(node).overflowX)).toBe("visible");
 });
 
-test("17 内部表单的输入框：白底、细边框、小圆角；悬停加深，聚焦变蓝；浅色和深色；登录页和写作页不受影响", async ({ page }) => {
+test("17 内部表单的输入框：白底、没有边框、小圆角、一圈细环加淡影；悬停和聚焦各深一档，不变蓝；浅色和深色；登录页和写作页不受影响", async ({ page }) => {
   await registerAccount(page, "fields17");
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto("/settings/general");
@@ -249,38 +250,36 @@ test("17 内部表单的输入框：白底、细边框、小圆角；悬停加�
     await theme(page, mode);
     await page.mouse.move(0, 0);
     const surface = await cssColor(page, "var(--c-surface)");
-    const line = await cssColor(page, "var(--c-line)");
     const blue = await cssColor(page, "var(--c-blue)");
-    const faint = await cssColor(page, "var(--c-faint)");
+    const [rest, hover, focus] = [await cssShadow(page, "--ring-rest"), await cssShadow(page, "--ring-hover"), await cssShadow(page, "--ring-focus")];
+    await expect.poll(async () => (await look(name)).shadow, { message: `${mode}: resting` }).toBe(rest);
     const resting = await look(name);
-    expect(resting, `${mode}: resting`).toMatchObject({ background: surface, width: "1px", style: "solid", color: line, radius: "6px" });
+    expect(resting, `${mode}: resting`).toMatchObject({ background: surface, width: "0px", radius: "6px" });
     await name.hover();
-    await expect.poll(async () => (await look(name)).color, { message: `${mode}: hover` }).toBe(faint);
+    await expect.poll(async () => (await look(name)).shadow, { message: `${mode}: hover` }).toBe(hover);
     await page.mouse.move(0, 0);
     await name.focus();
-    await expect.poll(async () => (await look(name)).color, { message: `${mode}: focus` }).toBe(blue);
-    await expect.poll(async () => (await look(name)).shadow, { message: `${mode}: halo settled` }).toMatch(/0px 0px 0px 2px$/);
+    await expect.poll(async () => (await look(name)).shadow, { message: `${mode}: focus` }).toBe(focus);
     const focused = await look(name);
     expect(focused.background).toBe(surface);
-    // The halo is the 2px tint, no more.
-    expect(focused.shadow).toMatch(/0px 0px 0px 2px$/);
+    expect(focused.shadow).not.toContain(blue);
     await name.blur();
   }
   await theme(page, "day");
   // The area for the introduction and the select-like controls share the box.
   const bio = await look(page.getByRole("textbox", { name: "简介", exact: true }));
-  expect(bio).toMatchObject({ width: "1px", radius: "6px" });
+  expect(bio).toMatchObject({ width: "0px", radius: "6px" });
 
   // New work and the import form.
   await page.goto("/projects/new");
   const title = page.getByRole("textbox", { name: /^书名/ });
-  expect(await look(title)).toMatchObject({ width: "1px", style: "solid", radius: "6px" });
-  expect(await look(page.getByRole("textbox", { name: /^简介/ }))).toMatchObject({ width: "1px", radius: "6px" });
+  expect(await look(title)).toMatchObject({ width: "0px", radius: "6px" });
+  expect(await look(page.getByRole("textbox", { name: /^简介/ }))).toMatchObject({ width: "0px", radius: "6px" });
 
-  // An error keeps its red edge, a disabled field its quiet look.
+  // An error keeps its red, now a ring; a disabled field its quiet look.
   await page.getByRole("button", { name: "创建并开始写第一章", exact: true }).click();
   await title.evaluate((node: HTMLInputElement) => node.setAttribute("aria-invalid", "true"));
-  await expect.poll(async () => (await look(title)).color).toBe(await cssColor(page, "var(--c-red)"));
+  await expect.poll(async () => (await look(title)).shadow).toContain(await cssColor(page, "var(--c-red-text)"));
   await title.evaluate((node: HTMLInputElement) => node.removeAttribute("aria-invalid"));
 
   // Writing page: the chapter title and the body keep their own looks (no box).

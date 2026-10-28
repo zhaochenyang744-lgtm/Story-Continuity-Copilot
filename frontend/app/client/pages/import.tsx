@@ -164,7 +164,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
           )}
           <details className="tech">
             <summary>文件校验</summary>
-            <p className="mono">SHA-256 {preview.file.sha256}</p>
+            <p className="mono code">SHA-256 {preview.file.sha256}</p>
             {audit && <p className="mono">{formatCount(audit.source_line_count)} 行 · 保留 {formatCount(audit.retained_body_characters)} 个正文字符</p>}
           </details>
           <div className="form-actions">

@@ -92,7 +92,7 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
         <p className="loading">正在读取…</p>
       ) : !hasWorks ? (
         <div className="start-cards works-empty">
-          <button type="button" className="start-card start-card-raised" onClick={() => go("/projects/import")}>
+          <button type="button" className="start-card" onClick={() => go("/projects/import")}>
             <Num>导入</Num><strong>导入已有作品</strong><span>Word、TXT、Markdown。按标题自动分章，确认后才创建作品。</span><span className="start-card-go blue">选择文件<Arrow size={16} /></span>
           </button>
           <button type="button" className="start-card" onClick={() => go("/projects/new")}>

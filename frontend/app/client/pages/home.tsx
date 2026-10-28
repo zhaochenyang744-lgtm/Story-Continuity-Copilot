@@ -106,7 +106,7 @@ export function HomePage({ user, onboarding, usage, fail, go, reopenTutorial }: 
             <>
               <p className="home-note">还没有自己的作品。把写好的稿子导进来，或者从第一章开始。</p>
               <div className="start-cards">
-                <button type="button" className="start-card start-card-raised" onClick={() => go("/projects/import")}>
+                <button type="button" className="start-card" onClick={() => go("/projects/import")}>
                   <Num>导入</Num>
                   <strong>导入已有作品</strong>
                   <span>Word、TXT、Markdown，最多 {visitor ? "1 万" : "35 万"}字。按标题自动分章。</span>
@@ -126,18 +126,20 @@ export function HomePage({ user, onboarding, usage, fail, go, reopenTutorial }: 
         {sampleId && (
           <section className="home-sample" aria-labelledby="home-sample-title">
             <SectionHead id="home-sample-title" title="示例作品" />
-            <button type="button" className="sample-card" onClick={() => go(`/projects/${sampleId}/overview`)}>
-              <span className="label">{sample ? [sample.genre, `${sample.chapter_count} 章`, `${formatCount(sample.chapter_word_count ?? sample.word_count ?? 0)} 字`].filter(Boolean).join(" · ") : "示例"}</span>
-              <span className="sample-card-title">{sample?.title ?? onboarding?.tutorial?.title ?? "示例作品"}</span>
-              {sample?.summary && <span className="sample-card-summary">{sample.summary}</span>}
-              {sample && <span className="sample-card-tags"><WorkCheckTag project={sample} /></span>}
-            </button>
-            {firstRun ? (
-              <Button kind="primary" className="home-sample-action" onClick={() => go(`/projects/${sampleId}/overview`)}>开始导览</Button>
-            ) : !visitor && onboarding?.tutorial ? (
-              <button type="button" className="link home-sample-action" onClick={reopenTutorial}>重新看一遍导览</button>
-            ) : null}
-            <p className="small-note">示例作品不占你的作品数，也不计入额度。</p>
+            <div className="sample-box">
+              <button type="button" className="sample-card" onClick={() => go(`/projects/${sampleId}/overview`)}>
+                <span className="label">{sample ? [sample.genre, `${sample.chapter_count} 章`, `${formatCount(sample.chapter_word_count ?? sample.word_count ?? 0)} 字`].filter(Boolean).join(" · ") : "示例"}</span>
+                <span className="sample-card-title">{sample?.title ?? onboarding?.tutorial?.title ?? "示例作品"}</span>
+                {sample?.summary && <span className="sample-card-summary">{sample.summary}</span>}
+                {sample && <span className="sample-card-tags"><WorkCheckTag project={sample} /></span>}
+              </button>
+              {firstRun ? (
+                <Button kind="primary" className="home-sample-action" onClick={() => go(`/projects/${sampleId}/overview`)}>开始导览</Button>
+              ) : !visitor && onboarding?.tutorial ? (
+                <button type="button" className="link home-sample-action" onClick={reopenTutorial}>重新看一遍导览</button>
+              ) : null}
+              <p className="small-note">示例作品不占你的作品数，也不计入额度。</p>
+            </div>
           </section>
         )}
       </div>

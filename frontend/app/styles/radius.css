@@ -26,7 +26,8 @@
 /* md */
 .menu-list, .account-menu, .feedback, .a-ask, .a-selpop { border-radius: var(--r-md); }
 .menu-list, .account-menu, .a-selpop { overflow: hidden; }
-.note { border-radius: var(--r-md); }
+.note, .import-summary, .chapter-passages, .reuse, .ledger, .finding.open, .prose-pre { border-radius: var(--r-md); }
+.a-card, .a-chg-card { border-radius: var(--r-md); }
 
 /* lg */
 .dialog, .start-card, .plan-card, .confirm-block, .person-detail, .category-editor, .thread-form, .candidates, .dropzone,
