@@ -22,6 +22,9 @@ PLAN_LINE = "计划这一版不能由助手改，可以在计划页加。"
 PLAN_STARTS = re.compile(r"^[\s「『“\"'（(【\[]*计划")
 PLAN_OF_CHAPTER = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百千]+\s*章\s*的?\s*计划")
 FACT_CARD_KINDS = ("add_fact", "change_fact")
+# The author asking for a plan in so many words ("新增第11章计划：……", "计划里加一条"): the answer says where plans are added even
+# when the model proposed nothing for it (V05, second trial: no card and no word about the plan).
+PLAN_ASKED = re.compile(r"(加|新增|添|补|写|记|改|放)[^，。；！？,;!?]{0,8}计划|计划[^，。；！？,;!?]{0,4}(加|添|补|写|改)")
 
 
 def is_plan_fact(value: Any, written_chapters: int) -> bool:

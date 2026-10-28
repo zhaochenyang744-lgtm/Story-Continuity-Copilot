@@ -193,7 +193,7 @@ class LongTasks:
             "input_json": json.dumps({"question": question, "context": context}, ensure_ascii=False),
             "draft_id": None, "draft_revision": None, "source_revision": project["source_revision"], "memory_version": project["current_memory_version"],
             "author_context_version": project["author_context_version"], "scope_json": json.dumps({"max_chapter": int(max_chapter), "draft_readable": False}),
-            "chars_charged": 0 if sample else ASSISTANT_TASK_CHARS, "reservation_id": reservation_id, "prompt_version": "long-p1",
+            "chars_charged": 0 if sample else ASSISTANT_TASK_CHARS, "reservation_id": reservation_id, "prompt_version": "long-p2",
             "model_label": str(getattr(self.provider, "assistant_model", None) or "unconfigured"), "follow_up_of": None,
             "models_json": json.dumps({"plan": self._model("plan"), "loop": self._model("loop")}), "regenerated_from": None, "edited_from": None,
             "created_at": utcnow()})

@@ -31,7 +31,7 @@ from . import assistant_recap, assistant_edits, assistant_coverage, assistant_ro
 from . import assistant_consensus, assistant_proposals, assistant_review
 from .text_content import written_chars
 
-ASSISTANT_PROMPT_VERSION = "assistant-p60"
+ASSISTANT_PROMPT_VERSION = "assistant-p61"
 ASSISTANT_MAX_ROUNDS = 8
 ASSISTANT_MAX_CALLS_PER_ROUND = 6  # was 4: a recap reads the last chapter and looks up four or five people
 ASSISTANT_TASK_TIMEOUT_SECONDS = 90
@@ -64,7 +64,7 @@ SYSTEM_PROMPT = """你是小说作者的写作助手，帮作者查这部作品�
    作者在问题里要求直接改正文时（这类普通问答里没有 propose_edit 工具），带出处的句子只回答问题里能从作品查到的部分；「不能直接改」写进 note，note 里不写改写建议，也不要写成带出处的句子。带出处的句子只回答问题里真正问的那件事，一般一两句；不要为了说明为什么不能改，去引用别的段落。note 一共不超过 200 字：「不能直接改」只写一句。note 只写查过哪些地方、没查哪些、没找到什么，不写正文写了什么。
 4. 每一句结论都要用 R 编号标出处，只能引用工具返回过的编号（如 R2）。没有出处的话不要说。
    一句只写它所引出处里明明白白写着的事：不加「可见」「印证」「多次」「一直」这类推断或概括，不在句子里加括号注章节名。
-   不补出处里没写的动作、原因或先后关系（出处写「找了避风处」，就不要写成「找了避风处生火」）；不同出处里的事不要拼成一句。只引了事实、没引正文段落的句子，只写那条事实里出现的人；写某人对谁说了什么、做了什么，要引正文段落。句子里说到人物时写出名字，不用「他」「她」开头，因为作者会单独看每一句和它的出处。回答里不要留下要回原文才懂的指代（「同一时间」「那件事」「她」）：原文里指的是什么就写出来；原文没写明，就直说没写明。
+   不补出处里没写的动作、原因或先后关系（出处写「找了避风处」，就不要写成「找了避风处生火」）；不同出处里的事不要拼成一句。只引了事实、没引正文段落的句子，只写那条事实里出现的人；写某人对谁说了什么、做了什么，要引正文段落。句子里说到人物时写出名字，不用「他」「她」开头，因为作者会单独看每一句和它的出处。回答里不要留下要回原文才懂的指代（「同一时间」「那件事」「她」）：原文前后写明了指的是什么，就把它写出来，并引上写明它的那一处；原文没写明，句子照原文写，note 里说一句没写明指什么。
    只回答作者问的：一个简单问题写 1 到 3 句，问两件事就每件一两句，最多 5 句（帮作者改一处问题时最多 8 句）；不要把查到的情节经过从头复述一遍，也不要把问题里的时间、场合写进句子，除非出处里写着。问的是某一时刻（例如「起初」「复工之初」）就只答那一刻；问的是最后、现在才讲变化。不要顺带讲问题没问的后续发展、别的章节的用途或无关细节。
    回答里有三件以上并列的事（几条伏笔、几个人、几处地方）时，给说每件事的那一句加上 label，写这句说的对象，原样摘自这句的 2 到 12 个字（例如「廊桥钥匙」）。label 只给界面排版用：句子怎么写、写几句、写什么，照这里的其他规则，不要因为写 label 改动。这时也可以在最前面加一句总述，lead 填 true，只说一共几件、结论是什么，也要带出处，不算在 5 句里。
    「某处没有提到」「查过但没找到」「检查没有结果」这类话不能当带出处的结论，只能写进 note。
@@ -851,7 +851,7 @@ class AssistantEngine:
             if task_input["question"] == CHECK_SELECTION_QUESTION:
                 lines.append("作者要你检查选中的这段文字和前文有没有矛盾：先用 check_passage 检查这段文字，再根据结果回答；没有发现问题也要说明查了什么。")
             else:  # the author asked something of their own about the passage (V09)
-                lines.append(f"作者选中了一段，问的是：{task_input['question']}。先用 check_passage 检查这段文字，再回答作者的问题。")
+                lines.append(f"作者选中了一段，问的是「{task_input['question']}」。先用 check_passage 检查这段文字，再回答作者的问题。")
         if context.get("character_id"):
             with self.db.connection() as c:
                 person = c.execute("SELECT name FROM v2_characters WHERE id=? AND project_id=?", (context["character_id"], row["project_id"])).fetchone()
@@ -1176,11 +1176,13 @@ class AssistantEngine:
 
     def _without_plans(self, task_id: str, answer: dict[str, Any]) -> dict[str, Any]:
         """A fact item that is really a plan (see `assistant_proposals.is_plan_fact`) leaves the card, and the answer ends with the
-        program's line that plans are not changed by the assistant in this version (V05)."""
-        written = json.loads(self.store.row(task_id)["scope_json"])["max_chapter"]
-        if not assistant_proposals.drop_plan_facts(self.db, task_id, written):
+        program's line that plans are not changed by the assistant in this version (V05). A request that asks for a plan in so many
+        words gets the line too, card or not."""
+        row = self.store.row(task_id)
+        if assistant_proposals.drop_plan_facts(self.db, task_id, json.loads(row["scope_json"])["max_chapter"]):
+            self._reviewed.setdefault(task_id, set()).add("plan")
+        elif not assistant_proposals.PLAN_ASKED.search(json.loads(row["input_json"]).get("question") or ""):
             return answer
-        self._reviewed.setdefault(task_id, set()).add("plan")
         if assistant_proposals.PLAN_LINE in (answer.get("note") or ""):
             return answer
         return {**answer, "note": " ".join(part for part in (answer.get("note"), assistant_proposals.PLAN_LINE) if part)}

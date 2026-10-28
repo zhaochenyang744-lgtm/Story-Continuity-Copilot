@@ -16,9 +16,10 @@ class A3RegistrationTests(unittest.TestCase):
         self.assertTrue(thresholds.PRE_REGISTERED)
         self.assertEqual(thresholds.REGISTERED_ON, '2026-10-24')
         self.assertEqual(len(thresholds.THRESHOLDS), 16)
-        self.assertEqual(thresholds.PRE_REGISTRATION['formal_sets'], ['eval_set_a3_formal', 'eval_set_a3s_formal'])
+        self.assertEqual(thresholds.PRE_REGISTRATION['first_formal_sets'], ['eval_set_a3_formal', 'eval_set_a3s_formal'])
+        self.assertEqual(thresholds.PRE_REGISTRATION['formal_sets'], ['eval_set_a3s4_formal'])  # the sealed second supplement, run last
         self.assertEqual(thresholds.PRE_REGISTRATION['protocol']['task_budget_cny'], 2.0)
-        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 1)  # addendum 1: a second dev set, no bar changes
+        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 7)  # addenda 1-7
         self.assertIn('eval_set_a3d2_dev', thresholds.PRE_REGISTRATION['applies_to'])
 
     def test_values_at_the_bar_pass(self):
@@ -32,7 +33,7 @@ class A3RegistrationTests(unittest.TestCase):
         self.assertEqual(thresholds.evaluate({**PASSING, 'resume_exact_rate': 21 / 22})['failed'], ['resume_exact_rate'])
 
     def test_rates_on_the_wrong_side_fail(self):
-        result = thresholds.evaluate({**PASSING, 'trace_recall': 0.79, 'unrequested_item_rate': 0.031, 'latency_p90_minutes': 20.5})
+        result = thresholds.evaluate({**PASSING, 'trace_recall': 0.74, 'unrequested_item_rate': 0.031, 'latency_p90_minutes': 20.5})
         self.assertEqual(result['failed'], ['latency_p90_minutes', 'trace_recall', 'unrequested_item_rate'])
 
     def test_missing_metric_is_unmeasured(self):

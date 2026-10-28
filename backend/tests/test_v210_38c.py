@@ -55,7 +55,7 @@ class CheckWithOwnWordsTests(Task04Case):
         task = self.routed_check(OWN_WORDS)
         self.assertEqual((task["question"], task["context"]["intent"], task["routed_input"]), (OWN_WORDS, "check_selection", OWN_WORDS))
         self.assertIn(f"作者的问题：{OWN_WORDS}", self.sent())
-        self.assertIn(f"作者选中了一段，问的是：{OWN_WORDS}。先用 check_passage 检查这段文字，再回答作者的问题。", self.sent())
+        self.assertIn(f"作者选中了一段，问的是「{OWN_WORDS}」。先用 check_passage 检查这段文字，再回答作者的问题。", self.sent())
         self.assertNotIn("作者要你检查选中的这段文字和前文有没有矛盾", self.sent())
 
     def test_no_words_or_a_button_phrase_keeps_the_fixed_question_and_line(self):
@@ -90,7 +90,7 @@ class RerouteKeepsWordsTests(RerouteCase):
         self.provider.script(lambda provider, messages: turn(answer_call("not_found", [], note="没有找到问题问到的内容。")))
         created = self.reroute(old, "check_passage", {"page": "writing", "selection": SELECTION}).json()["data"]
         self.assertEqual((created["kind"], created["question"], created["context"].get("intent")), ("ask", OWN_WORDS, "check_selection"))
-        self.assertIn(f"作者选中了一段，问的是：{OWN_WORDS}。", self.provider.calls[0]["messages"][-1]["content"])
+        self.assertIn(f"作者选中了一段，问的是「{OWN_WORDS}」。", self.provider.calls[0]["messages"][-1]["content"])
 
     def test_a_reroute_of_a_button_phrase_is_the_fixed_check(self):
         old = self.made(question="检查这段", input="检查这段", context={"page": "writing", "selection": SELECTION}, source="rule")
@@ -218,7 +218,7 @@ class FixInstructionTests(Task04Case):
 # ---- 4. no reference that needs the source ---------------------------------------------------------------------------------
 class ReferenceRuleTests(unittest.TestCase):
     def test_the_system_prompt_asks_for_the_thing_itself(self):
-        self.assertIn("回答里不要留下要回原文才懂的指代（「同一时间」「那件事」「她」）：原文里指的是什么就写出来；原文没写明，就直说没写明。", SYSTEM_PROMPT)
+        self.assertIn("回答里不要留下要回原文才懂的指代（「同一时间」「那件事」「她」）：原文前后写明了指的是什么，就把它写出来，并引上写明它的那一处；原文没写明，句子照原文写，note 里说一句没写明指什么。", SYSTEM_PROMPT)
 
 
 # ---- 5. plans are not facts ------------------------------------------------------------------------------------------------
@@ -284,6 +284,25 @@ class PlanCardTests(ChangeCase):
         answer = self.engine._no_card_line(task["id"], answer, 1)
         self.assertEqual(answer["note"], assistant_proposals.PLAN_LINE)
         self.assertFalse(any(line in answer["note"] for line in NO_CARD_LINES.values()))
+
+    def test_a_plan_asked_for_in_so_many_words_gets_the_line_without_a_card(self):
+        task = self.change_task(*self.resolving(), question="罗盘那条线最后一章已经收了；另外新增第12章计划：温岚把罗盘交还苏岑")
+        answer = self.engine._without_plans(task["id"], {"status": "answered", "sentences": [], "note": "查过正文。"})
+        self.assertEqual(answer["note"], "查过正文。 " + assistant_proposals.PLAN_LINE)
+        self.assertEqual(self.ordinals(task), [(1, "resolve_thread")], "the card is left as it is")
+
+    def test_plan_words_that_ask_for_no_plan_leave_the_answer_alone(self):
+        for question in ("罗盘那条线最后一章已经收了", "按计划罗盘那条线最后一章已经收了"):
+            with self.subTest(question=question):
+                task = self.change_task(*self.resolving(), question=question)
+                answer = {"status": "answered", "sentences": [], "note": "查过正文。"}
+                self.assertIs(self.engine._without_plans(task["id"], answer), answer)
+
+    def test_plan_requests(self):
+        for text in ("新增第11章计划：温岚把罗盘交还苏岑", "计划里加一条", "把这件事写进第三章的计划", "给第12章加个计划"):
+            self.assertTrue(assistant_proposals.PLAN_ASKED.search(text), text)
+        for text in ("按计划他该回来了", "计划外的雾钟响了，记进事实", "她的计划落空了"):
+            self.assertFalse(assistant_proposals.PLAN_ASKED.search(text), text)
 
 
 if __name__ == "__main__":

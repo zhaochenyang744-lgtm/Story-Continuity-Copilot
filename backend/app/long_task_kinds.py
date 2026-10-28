@@ -229,12 +229,14 @@ class ThreadAudit:
             report.append({"thread": item["thread"], "verdict": item["verdict"], "refs": refs, "note": note})
         # One passage that settles two threads usually settles one: "最后一个人已被接回" closed the empty sledge's rounds and was
         # taken for the sister who never came back too (A3 first formal run and its regression, every reading). Asked once; a
-        # second answer that keeps both stands.
+        # second answer that keeps both stands. One sentence that names both and says both are settled keeps both (V03: "蓝盒为何
+        # 发声、红灯为何不能信，两件事至此都已弄清" lost the second thread to the second answer).
         settled = [entry for entry in report if entry["verdict"] == "resolved"]
         shared = sorted({ref for entry in settled for ref in entry["refs"] if sum(ref in other["refs"] for other in settled) > 1})
         if shared and not keep_valid:
             problems.append(Problem("one_passage_two_threads", f"{'、'.join(shared)} 被当作两条伏笔收了的依据：一段原文通常只回答其中一条。"
-                                    "再看一遍，另一条要有直接写到它的段落才算收了，没有就写 open"))
+                                    "再看一遍：这段里如果有一句话分别点到了这两条伏笔、写明两件事都已了结（如「甲为何……、乙为何……，两件事至此都已弄清」），"
+                                    "两条都保留，note 里摘出那一句；否则另一条要有直接写到它的段落才算收了，没有就写 open"))
         if problems and not (keep_valid and report):  # kept only when something in it stands
             return None, problems
         # A thread the report left out is open as far as this step can tell.

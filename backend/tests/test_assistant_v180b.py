@@ -40,7 +40,7 @@ class SayTests(AssistantCase):
         self.register()
 
     def test_the_prompt_asks_for_a_line_and_is_version_p5(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p60")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p61")
         self.assertIn("content 里写一句话说明这一步具体要做什么", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词；只说打算，不下结论", SYSTEM_PROMPT)
         self.assertIn("不要只写文字", SYSTEM_PROMPT)
@@ -48,7 +48,7 @@ class SayTests(AssistantCase):
         self.assertIn("note 只列出查过哪些地方", SYSTEM_PROMPT)
         self.assertIn("不写 R 编号", SYSTEM_PROMPT)
         task = self.run_ask(read(9), cite(9))
-        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p60")
+        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p61")
         self.assertEqual(task["status"], "completed")
 
     def test_a_tool_round_keeps_its_line_before_its_steps_and_the_closing_round_keeps_none(self):
