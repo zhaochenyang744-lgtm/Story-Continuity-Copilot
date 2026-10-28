@@ -11,6 +11,10 @@ Amended on 2026-10-20 (SPEC addendum 13), before the fifth pair was authored: v1
 fifth formal set (route, suggest) and two bars for them (route accuracy 0.90, suggestion citation support 0.9, both
 set by the user); the eighteen earlier checks keep their numbers.
 
+Amended on 2026-10-28 (SPEC addendum 17), by the user's decision: fixes of issues already on record, made for v2.1, are
+verified by one pass over the spent fifth pair and the route retest set on the code that ships, every bar met (no number
+changes, no new sealed set).
+
 Change a number only before a run, dated and explained.
 """
 from __future__ import annotations
@@ -59,6 +63,11 @@ PRE_REGISTRATION = {
     "route_retest_run": "a1c-route-retest on 2026-10-22 (code a826400): route_accuracy 0.978 (88 of 90; the two misses "
                         "were one item whose chapter check did not report its finding in two passes, issue_from_check_miss); "
                         "passed. With the fifth run's 19 audited checks, v1.9.0's assistant gate PASSED",
+    "post_gate_fixes": "SPEC addendum 17 (2026-10-28, user decided): code changed only to fix issues on record (Desktop "
+                       "v2.1任务 records 37, 37b, 37d, 37f, or a failure a regression finds) is verified by one pass on the "
+                       "code that ships: eval_set_a1c5_formal + eval_set_a1cs5_formal against the 19 checks of the v1.9 gate, "
+                       "eval_set_a1cr6_formal for route_accuracy; every bar met, no number changed, no new sealed set. "
+                       "Three-pass checks are taken over the one pass; the run id and code commit are added here before release",
     "amended_on": "2026-10-16",
     "release_gate": "v1.8.0 ships when this evaluation passes; A1 and A1b are no longer release gates",
     "why": "A1 and A1b chapters are 450-700 characters; real chapters are 2,000-5,000. A1c checks reading a chapter in "
