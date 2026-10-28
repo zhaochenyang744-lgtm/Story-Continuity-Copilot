@@ -1,14 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { request } from "../../api";
 import type { Onboarding, Project, ProjectSummary, User } from "../../model";
 import { Arrow, bareChapterTitle, Button, type CheckUsage, formatCount, Num, pad2, SectionHead, Tag } from "../ui";
 import { CountUp } from "../motion";
+import { PRIVACY_UPDATED } from "./privacy";
 
 type Home = {
   continue_work?: { project_id: string; project_title: string; draft_title: string; chapter_number?: number; draft_chars?: number; open_issue_count?: number } | null;
 };
+
+const privacySeenKey = "story-continuity:privacy-seen";
+const privacyListeners = new Set<() => void>();
+let privacyDismissedHere = false;  // 知道了 holds for this visit even where storage is blocked
+const readPrivacySeen = () => {
+  if (privacyDismissedHere) return PRIVACY_UPDATED;
+  try { return window.localStorage.getItem(privacySeenKey); } catch { return null; }
+};
+const subscribePrivacySeen = (listener: () => void) => { privacyListeners.add(listener); return () => { privacyListeners.delete(listener); }; };
+
+/** A line under the greeting when the privacy page changed since this device last said 知道了 (the date it was changed is
+ * what is remembered, so the next change shows the line again). Hidden in the server render: storage is read in the browser. */
+function PrivacyNotice({ go }: { go: (href: string) => void }) {
+  const seen = useSyncExternalStore(subscribePrivacySeen, readPrivacySeen, () => PRIVACY_UPDATED);
+  if (seen === PRIVACY_UPDATED) return null;
+  const dismiss = () => {
+    privacyDismissedHere = true;
+    try { window.localStorage.setItem(privacySeenKey, PRIVACY_UPDATED); } catch { /* hidden for this visit only */ }
+    privacyListeners.forEach((listener) => listener());
+  };
+  return (
+    <p className="home-privacy" role="status">
+      <span>隐私说明在 {PRIVACY_UPDATED} 有更新：写明了长任务会保存什么，以及不含作品内容的使用统计。</span>
+      <span className="home-privacy-actions">
+        <button type="button" className="link" onClick={() => go("/privacy")}>查看</button>
+        <button type="button" className="link" onClick={dismiss}>知道了</button>
+      </span>
+    </p>
+  );
+}
 
 const isSample = (project: Pick<ProjectSummary, "data_origin">) => project.data_origin === "demo_seed" || project.data_origin === "tutorial_seed";
 
@@ -70,6 +101,7 @@ export function HomePage({ user, onboarding, usage, fail, go, reopenTutorial }: 
         <p className="label">{works.length ? "欢迎回来" : visitor ? "访客空间 · 24 小时" : "你好"}</p>
         <h1>{works.length || continuing ? "继续你的故事" : "从第一章开始"}</h1>
       </header>
+      <PrivacyNotice go={go} />
 
       {continuing && (
         <ContinueBand

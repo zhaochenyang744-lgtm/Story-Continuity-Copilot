@@ -10,6 +10,9 @@
 .home-works .work-list li { border-bottom-color: var(--c-line-soft); }
 .home-works .work-list li:last-child { border-bottom-color: transparent; }
 .home-note { margin-top: 24px; font-size: 17px; }
+/* The privacy-changed line: a quiet raised strip under the greeting, two text actions at its end. */
+.home-privacy { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 24px; padding: 12px 16px; border-radius: var(--r-md); background: var(--c-raised); color: var(--c-ink-2); font-size: var(--fs-13); }
+.home-privacy-actions { display: flex; gap: 16px; }
 /* The sample is one white card: the work, its one action and the note, the work and the action told apart by the faintest line. It stretches to the foot of the column. */
 .sample-box { display: grid; grid-template-rows: auto auto 1fr; flex: 1; justify-items: start; margin-top: 20px; padding: 0 24px 22px; border-radius: var(--r-lg); background: var(--c-surface); box-shadow: var(--ring-rest), 0 4px 16px rgba(17, 17, 17, .04); }
 .sample-card { display: grid; justify-items: start; gap: 4px; width: 100%; padding: 22px 0 16px; border: 0; border-bottom: 1px solid var(--c-line-soft); background: none; color: var(--c-ink); text-align: left; cursor: pointer; }
