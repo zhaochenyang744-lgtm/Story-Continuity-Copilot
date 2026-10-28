@@ -33,7 +33,7 @@ import { ThreeSquares } from "./assistant-process";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
 import { LongView } from "./assistant-long";
-import { active, isRecap, locateTarget, longLive, quotaReason, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, turnTime } from "./assistant-parts";
+import { active, isRecap, locateTarget, longLive, quotaReason, refusalText, RUNNING_NOW, spokenResult, TASK_CHARS, turnTime, visitorOutsideSample } from "./assistant-parts";
 import { noteLong, seenLong } from "./long-watch";
 import { RecapView } from "./assistant-recap";
 import { CHECK_QUESTION, type NewTask, OutOfScopeNote, RecapElsewhereNote, RerouteContext, type RerouteControl, routeInput, taskFor, type Use, USE_LABEL, wantRecapOnArrival } from "./assistant-route";
@@ -97,6 +97,16 @@ function useShown(target: { current: HTMLElement | null }) {
 }
 const PRIVACY_SEEN = "story-continuity:assistant-privacy-seen";
 
+/** The words typed in the box and not yet sent, kept per work for this visit (V01): closing the drawer or going to another page does not lose them.
+    Only the words: a picked passage, person or chapter is not restored. Storage that cannot be read or written is the same as nothing kept. */
+const unsentKey = (projectId: string) => `story-continuity:assistant-unsent:${projectId}`;
+export function readUnsent(projectId: string): string {
+  try { return window.sessionStorage.getItem(unsentKey(projectId)) ?? ""; } catch { return ""; }
+}
+export function keepUnsent(projectId: string, text: string) {
+  try { if (text) window.sessionStorage.setItem(unsentKey(projectId), text); else window.sessionStorage.removeItem(unsentKey(projectId)); } catch { /* not kept */ }
+}
+
 /** A task is being followed while it runs, and while one of its changes is being rechecked. */
 const watched = (task: AssistantTask) => active(task) || Boolean(task.proposals?.some((proposal) => proposal.recheck?.status === "running"));
 
@@ -158,7 +168,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const [loadError, setLoadError] = useState("");
   const [clearedNonce, setClearedNonce] = useState(0);
   const [legacy, setLegacy] = useState<WritingAnalysisRun[]>([]);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => readUnsent(projectId));
+  useEffect(() => { keepUnsent(projectId, text); }, [projectId, text]);
   const [mode, setMode] = useState<Mode>("auto");
   const [selection, setSelection] = useState("");
   const [followUp, setFollowUp] = useState<AssistantTask | null>(null);
@@ -285,6 +296,20 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         .then((next) => setTasks((current) => current && current.map((item) => (item.id === next.id ? next : item))), () => undefined);
     }
   }, [tasks, projectId]);
+  // The frame around the conversation (the drawer, the writing page's column) never scrolls: only the conversation does. The frames are
+  // overflow: clip, and nothing here focuses without preventScroll; if something still moved a frame, it is put back when the window changes
+  // size and when an answer has come in (V04, V10).
+  const settled = (tasks ?? []).filter((task) => !active(task) && !longLive(task)).length;
+  useEffect(() => {
+    const settle = () => {
+      const mine = root.current;
+      if (!mine || mine.getClientRects().length === 0) return;
+      for (const frame of [mine.closest<HTMLElement>(".assistant-drawer"), mine.closest<HTMLElement>("#writing-side")]) if (frame && frame.scrollTop !== 0) frame.scrollTop = 0;
+    };
+    settle();
+    window.addEventListener("resize", settle);
+    return () => window.removeEventListener("resize", settle);
+  }, [settled]);
   // The author has the assistant in front of them and the latest long task is waiting for an answer or is over: the top bar's dot has been seen.
   const shown = useShown(root);
   const lastLong = [...(tasks ?? [])].reverse().find((task) => task.kind === "long" && task.plan) ?? null;
@@ -423,7 +448,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setMode("auto");
     setChosen({ chapter: null, character: null });
     // The send button has just gone grey; keep the keyboard where the author is writing.
-    field.current?.focus();
+    field.current?.focus({ preventScroll: true });
   };
   const checkShort = (picked: string) => usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS) + writtenChars(picked);
   const shortOfCheck = () => setRefusal(refusalText({ code: "character_quota_exceeded", details: { remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : 0 } }, false));
@@ -591,7 +616,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       if (incoming.quick && !reason) { void ask({ kind: "ask", question: QUICK_QUESTION, context: build(incoming.text) }); return; }
       setSelection(incoming.text);
       if (incoming.quick) { setMode("ask"); setText(QUICK_QUESTION); setRefusal(reason); }
-      field.current?.focus();
+      field.current?.focus({ preventScroll: true });
     });
   }, [incoming]);
   useEffect(() => {
@@ -666,7 +691,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   };
   const startRefine = (issueId: string, number: number, manual = true) => {
     setRefine({ issueId, number, manual }); setFollowUp(null); setSelection(""); setMode("auto");
-    field.current?.focus();
+    field.current?.focus({ preventScroll: true });
   };
   const rerunRecap = () => {
     if (blocked) { setRefusal(blocked); return; }
@@ -680,7 +705,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     const last = [...(tasks ?? [])].reverse().find((task) => task.kind === "ask" && task.question && task.context.intent !== "check_selection");
     if (!last?.question) return;
     setText(last.question);
-    window.requestAnimationFrame(() => { const box = field.current; if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); } });
+    window.requestAnimationFrame(() => { const box = field.current; if (box) { box.focus({ preventScroll: true }); box.setSelectionRange(box.value.length, box.value.length); } });
   };
   const jumpToLatest = () => {
     const box = thread.current;
@@ -704,8 +729,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     characters: material.characters,
     issues: material.issues,
     issuesReason: material.issuesReason,
-    onChapter: (number) => { setChosen((all) => ({ ...all, chapter: number })); setDropped((all) => ({ ...all, chapter: false })); field.current?.focus(); },
-    onCharacter: (id, name) => { setChosen((all) => ({ ...all, character: { id, name } })); setDropped((all) => ({ ...all, character: false })); field.current?.focus(); },
+    onChapter: (number) => { setChosen((all) => ({ ...all, chapter: number })); setDropped((all) => ({ ...all, chapter: false })); field.current?.focus({ preventScroll: true }); },
+    onCharacter: (id, name) => { setChosen((all) => ({ ...all, character: { id, name } })); setDropped((all) => ({ ...all, character: false })); field.current?.focus({ preventScroll: true }); },
     onIssue: (issueId, number) => startRefine(issueId, number, false),
     onSelectHint: () => setTip("在正文里选中一段文字，再点浮出来的「问助手」，它就会带进这次提问。"),
   };
@@ -720,7 +745,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const canSend = !off && !busy && (asking ? Boolean(text.trim()) || (activeMode === "auto" && Boolean(selection) && onWriting && !visitor) : activeMode === "change" || activeMode === "long" ? Boolean(text.trim()) : activeMode === "recap" ? !recapReason : Boolean(selection));
   const changeMode = (next: Mode) => { setMode(next); };
   const edited = (next: string) => { setText(next); };
-  const starters = tasks?.length === 0 ? starterQuestions({
+  const starters = tasks?.length === 0 && !visitorOutsideSample(usage, sample) ? starterQuestions({
     lastChapter: project.current_draft.chapter_number > 1 ? project.current_draft.chapter_number - 1 : null,
     characters: material.characters,
     draftBody: material.draftBody,
@@ -731,7 +756,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     merge: (items) => mergeChanges(setTasks, items),
     written: bridge.materialsChanged,
     goMaterials: () => { onNavigate?.(); go(`/projects/${projectId}/memory`); },
-    followUp: (task) => { setFollowUp(task); setRefine(null); changeMode("auto"); field.current?.focus(); },
+    followUp: (task) => { setFollowUp(task); setRefine(null); changeMode("auto"); field.current?.focus({ preventScroll: true }); },
     regenerate: (task) => void regenerate(task),
     resend,
   };
@@ -754,7 +779,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
             if (stick.current) setUnseen(false);
           }
         }}>
-        <button type="button" className="a-skip" onClick={() => field.current?.focus()}>跳到输入框</button>
+        <button type="button" className="a-skip" onClick={() => field.current?.focus({ preventScroll: true })}>跳到输入框</button>
         {top}
         {privacy && <p className="a-privacy">使用助手会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</p>}
         {legacy.length > 0 && <LegacyQuestions runs={legacy} go={(href) => { onNavigate?.(); go(href); }} />}
@@ -774,7 +799,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
             ? <LongView task={task} handlers={handlers} usage={usage} project={project} usageChanged={bridge.usageChanged}
               maxChapter={material.chapters.length ? Math.max(...material.chapters.map((chapter) => chapter.number)) : null} />
             : task.kind === "recap"
-            ? <RecapView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)} openChapter={openChapter} rerun={onWriting ? rerunRecap : null} replace={replace} />
+            ? <RecapView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)} locate={locate} rerun={onWriting ? rerunRecap : null} replace={replace} />
             : task.kind === "fix_issue"
               ? <FixView task={task} projectId={projectId} visitor={visitor} stopping={stopping} stop={() => void stop(task)} retry={() => retry(task)}
                 openChapter={openChapter} locate={locate} link={writing} actions={actions} refine={onWriting ? startRefine : null} replace={replace} rise={asked.includes(task.id)} />
@@ -806,7 +831,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         stop={() => { const running = tasks?.find(active); if (running) void stop(running); }}
         canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable} />
-      {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus(), 0); }} />}
+      {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
     </div>
     </RerouteContext.Provider>
   );
@@ -847,12 +872,12 @@ function LegacyQuestions({ runs, go }: { runs: WritingAnalysisRun[]; go: (href: 
 function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => void }) {
   const first = useRef<HTMLButtonElement>(null);
   const last = useRef<HTMLButtonElement>(null);
-  useEffect(() => { first.current?.focus(); }, []);
+  useEffect(() => { first.current?.focus({ preventScroll: true }); }, []);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); cancel(); return; }
     if (event.key !== "Tab") return;
-    if (event.shiftKey && document.activeElement === first.current) { event.preventDefault(); last.current?.focus(); }
-    else if (!event.shiftKey && document.activeElement === last.current) { event.preventDefault(); first.current?.focus(); }
+    if (event.shiftKey && document.activeElement === first.current) { event.preventDefault(); last.current?.focus({ preventScroll: true }); }
+    else if (!event.shiftKey && document.activeElement === last.current) { event.preventDefault(); first.current?.focus({ preventScroll: true }); }
   };
   return (
     <div className="a-confirm" role="alertdialog" aria-modal="true" aria-labelledby="a-confirm-title" aria-describedby="a-confirm-body" onKeyDown={onKeyDown}>
@@ -971,7 +996,7 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check, bl
     const key = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setShown((current) => {
-        if (current && bar.current?.contains(document.activeElement)) document.querySelector<HTMLElement>(selector)?.focus();
+        if (current && bar.current?.contains(document.activeElement)) document.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
         return null;
       });
     };

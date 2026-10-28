@@ -19,7 +19,7 @@ import {
   stageLabel,
   worldTypeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, Chips, Num, PageHead, pad2, SectionHead, Tabs, Tag } from "../ui";
+import { bareChapterTitle, Button, chapterHeading, Chips, Num, PageHead, pad2, SectionHead, Tabs, Tag } from "../ui";
 import { AssistantBridge, useAssistantAnchor } from "./assistant";
 import { AssistantMark, ChangeLedger, type Marks, marksOf, useLedger } from "./change-ledger";
 import type { PageProps } from "./frame";
@@ -649,7 +649,7 @@ function ThreadsView({ p, go, marks }: { p: ProjectState; go: (href: string) => 
         <AssistantMark text={marks.threads.get(record.id)} />
         <span>{record.description}</span>
         <span className="thread-links">
-          {record.planted && <a href={record.planted.source_path} onClick={link(record.planted.source_path)}>埋下：第 {record.planted.chapter_number} 章{record.planted.source_label ? ` · ${record.planted.source_label}` : ""}</a>}
+          {record.planted && <a href={record.planted.source_path} onClick={link(record.planted.source_path)}>埋下：{chapterHeading(record.planted.chapter_number, p.chapters.find((chapter) => chapter.number === record.planted!.chapter_number)?.title ?? "")}</a>}
           {record.resolved && <a href={record.resolved.source_path} onClick={link(record.resolved.source_path)}>回收：第 {record.resolved.chapter_number} 章</a>}
         </span>
       </span>

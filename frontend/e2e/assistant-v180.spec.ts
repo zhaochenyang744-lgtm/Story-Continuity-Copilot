@@ -18,14 +18,15 @@ const setRollout = (page: Page, mode: string) => api(page).post(`/test/v180/assi
 const column = (page: Page) => thread(page).locator(".a-thread");
 
 test.describe("助手：过程", () => {
-  test("说明句和动作合成一行；没有「第几轮」；跑完折成「查了 N 处 · M 秒」，点开看到每一步和找到的片段", async ({ page }) => {
+  test("说明句和动作合成一行；没有「第几轮」；跑完折成「问作品 · M 秒」，点开看到每一步和找到的片段", async ({ page }) => {
     await setup(page);
     await serveTasks(page, () => [askView()]);
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    // Folded: how many places, how long (completed_at − started_at), and the first line it said.
-    const fold = task.getByRole("button", { name: /^问作品 · 查了 6 处 · 14 秒/ });
+    // Folded: how long (completed_at − started_at). 38a: no count of places on the line (「出处 N 处」 under the answer is the one number).
+    const fold = task.getByTestId("process-line").locator("button.a-fold");
+    await expect(fold).toHaveText(/^问作品 · 14 秒/);
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.locator(".a-say")).toHaveCount(0);
     await fold.click();
@@ -62,7 +63,7 @@ test.describe("助手：过程", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: /查了 2 处/ }).click();
+    await task.getByTestId("process-line").locator("button.a-fold").click();
     await expect(task.locator(".a-act.bad")).toHaveText("提出改法没通过：原句在草稿里出现了不止一次");
     expect(await task.locator(".a-act.bad .mk").evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"✕"');
     await expect(task.locator(".a-act.ok")).toHaveText(["提出了 2 个改法", "引用没对上，重新整理回答"]);
@@ -77,14 +78,14 @@ test.describe("助手：过程", () => {
     await ask(page, "E2E_BADREAD 苏岑是谁？");
     await finished(page);
     let task = tasks(page).first();
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await task.getByTestId("process-line").locator("button.a-fold").click();
     await expect(task.locator(".a-act.bad")).toHaveText("读第 999 章没通过：这一章不在可查范围内");
     await expect(task.locator(".a-act.ok").first()).toContainText("查了 1 条事实：苏岑");
     // An answer whose citation did not match is written again: one line says so, and the answer that follows is fine.
     await ask(page, "E2E_REPAIR 温岚是谁？");
     await finished(page, 2);
     task = tasks(page).last();
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await task.getByTestId("process-line").locator("button.a-fold").click();
     await expect(task.locator(".a-act.ok").filter({ hasText: "引用没对上，重新整理回答" })).toHaveCount(1);
     await expect(task.getByText("（示意回答）前文写过这件事。")).toBeVisible();
     // Cut short by the limit: a line above the answer says so, and 查过 / 没查 does not repeat it.
@@ -132,7 +133,7 @@ test.describe("助手：过程", () => {
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const first = tasks(page).first();
-    const fold = first.getByRole("button", { name: /查了 \d+ 处/ });
+    const fold = first.getByTestId("process-line").locator("button.a-fold");
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await fold.click();
     await ask(page, "E2E_SLOW 温岚是谁？");

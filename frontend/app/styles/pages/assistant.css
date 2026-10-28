@@ -144,10 +144,13 @@ button.a-fold:hover { color: var(--c-ink); }
 .a-pop-one + .a-pop-one { padding-top: 8px; border-top: 1px solid var(--c-line); }
 .a-pop .w { color: var(--c-muted); font: 500 var(--fs-11)/1.5 var(--font-mono); }
 .a-pop q { quotes: none; color: var(--c-ink-2); font: var(--fs-12)/1.75 var(--font-serif); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+/* 写前回顾: a source shown whole in the card, its own scroll, the sentence that says the same set apart. */
+.a-pop q.full { position: relative; display: block; max-height: 11.5em; overflow-y: auto; overscroll-behavior: contain; -webkit-line-clamp: unset; scrollbar-width: thin; }
+.a-pop q.full mark { background: var(--c-blue-tint); color: var(--c-ink); border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .a-pop .go { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-12); font-weight: 700; line-height: 1.6; cursor: pointer; }
 .a-pop .go:hover { text-decoration: underline; }
 /* 出处 N 处 ›, folded; opened, one line for each, and each opens to the original words. */
-.a-sources-wrap { display: grid; gap: 6px; justify-items: start; }
+.a-sources-wrap, .a-how-wrap { display: grid; gap: 6px; justify-items: start; }
 .a-sources-fold, .a-basis-fold { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; text-align: left; cursor: pointer; }
 .a-sources-fold:hover, .a-basis-fold:hover { color: var(--c-ink-2); }
 .a-sources { display: grid; gap: 4px; width: 100%; margin: 0; padding: 0; list-style: none; }
@@ -166,7 +169,6 @@ button.a-text { display: block; overflow: hidden; padding: 0; border: 0; backgro
 .a-source.lit .q { background-size: 100% 1.5px; }
 /* 查过……；没查：……, once, at the end. */
 .a-cover { color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
-.a-cover strong { color: var(--c-ink-2); font-weight: 700; }
 .a-note { color: var(--c-ink-2); font-size: var(--fs-13); line-height: 1.7; }
 
 /* Under a finished answer: copy, answer again, follow up, 有用 / 没用, and what it cost. */
@@ -196,17 +198,20 @@ button.a-text { display: block; overflow: hidden; padding: 0; border: 0; backgro
 
 /* 写前回顾: four small groups, each item a sentence with its passage under it, folded to a line. */
 .a-scope { margin-left: auto; color: var(--c-muted); font-size: var(--fs-11); }
-.a-recap-sec { display: grid; gap: var(--s-2); }
-.a-label { color: var(--c-muted); font-size: var(--fs-11); font-weight: 500; letter-spacing: .04em; }
-.a-ri { display: grid; gap: 2px; margin-top: 4px; }
-.a-ri > p { font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; }
-.a-ri-src { display: grid; }
-.a-ri-src .a-text { color: var(--c-muted); font-size: var(--fs-12); }
-.a-ri-src .a-quote-line:not(.wide) { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 写前回顾: a small grey title for each group (no bold, no spaced capitals); the first group is the opening in body size, the rest are lists
+   with a little space between items and no lines. */
+.a-recap-sec { display: grid; gap: var(--s-1); }
+.a-label { color: var(--c-muted); font-size: var(--fs-11); font-weight: 400; letter-spacing: 0; }
+.a-ri { font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }
+.a-ri.lead { margin: 0; }
+.a-ri-list { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.a-ri-list > li { position: relative; padding-left: 14px; }
+.a-ri-list > li::before { content: ""; position: absolute; left: 2px; top: .8em; width: 4px; height: 4px; border-radius: 50%; background: var(--c-muted); }
+.a-how { display: grid; gap: 6px; margin-top: 4px; }
+.a-how .a-proc { margin: 0; }
 .a-from { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); line-height: 1.6; text-align: left; }
 button.a-from { cursor: pointer; }
 button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
-.a-more { justify-self: start; }
 
 /* 帮我改这一处: the finding, the explanation, and each way out as its own block, set apart by space alone. */
 .a-issue { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; }
@@ -480,9 +485,9 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
    The column is one piece from the top bar to the bottom of the window (writing.css puts it there): the conversation scrolls in the middle and
    the box stays at its foot, so the box is on screen when the page opens. */
 #side-panel-assistant { min-height: 0; }
-.findings:has(#side-panel-assistant:not([hidden])) { display: flex; flex-direction: column; overflow: hidden; }
+.findings:has(#side-panel-assistant:not([hidden])) { display: flex; flex-direction: column; overflow: clip; }  /* clip, not hidden: nothing can scroll this frame, not even focus moving into the box (V10) */
 .findings:has(#side-panel-assistant:not([hidden])) > #side-panel-assistant { flex: 1; min-height: 0; height: auto; }
-.findings #side-panel-assistant:not([hidden]) { display: flex; flex-direction: column; }
+.findings #side-panel-assistant:not([hidden]) { display: flex; flex-direction: column; overflow: clip; }
 .assistant-column .a-bar,
 .assistant-column .a-thread,
 .assistant-column .a-compose,
@@ -496,6 +501,10 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 
 /* ── The drawer on the other pages ── */
 .assistant-drawer { width: min(100%, 400px); box-shadow: var(--elev-pop); }
+/* The frame never scrolls, only the conversation inside it: with clip a script (or the browser bringing the box into view) cannot move it either (V04). */
+.drawer.assistant-drawer, .assistant-drawer > .assistant { overflow: clip; }
+/* The drawer is a grid item of its layer: as a scroll container it could shrink to the window, as a clip it must be told to (min-height: 0), or it grows to its content. */
+.drawer.assistant-drawer { min-height: 0; max-height: 100%; }
 .a-drawer-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--c-line); }
 .a-drawer-head h2 { font-size: var(--fs-16); }
 .a-drawer-head kbd { color: var(--c-muted); font-size: var(--fs-11); }

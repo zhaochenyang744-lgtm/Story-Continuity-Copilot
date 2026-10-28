@@ -6,7 +6,8 @@
 // from the tool and the number of calls; nothing the model wrote reaches the author except its one line before each round of work.
 import { type ReactNode, useEffect, useId, useState } from "react";
 import type { AssistantSource, AssistantStep, AssistantTask } from "../../model";
-import { active, Fold, whereLabel } from "./assistant-parts";
+import { active, Fold, hitLimit, notChecked, sentencesOf, whereLabel } from "./assistant-parts";
+import { splitNote } from "./assistant-text";
 
 /** At most this many characters of a passage are shown on either side of the word that turned it up (or at the start, when no word is known). */
 // About a line and a half in the 340px right column (07g found 40/80 ran to three lines there).
@@ -195,10 +196,31 @@ function NowLine({ task }: { task: AssistantTask }) {
   );
 }
 
+/** The rows of a task's process: its narration, the actions it took (each opens to what it found) and the steps that failed. */
+function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<string, AssistantSource>; locate?: (source: AssistantSource) => void }) {
+  return (
+    <>
+      {rows.map((row) => {
+        if (row.type === "say") return <p key={row.key} className="a-say">{row.text}</p>;
+        if (row.type === "group") return <Action key={row.key} row={row} sources={sources} locate={locate} />;
+        return (
+          <div key={row.key} className={`a-act ${row.type === "fail" ? "bad" : "ok"}`}>
+            <span className="mk" aria-hidden="true" />
+            <span>{row.text}</span>
+            <span className="secs" />
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 /** The line above an answer: what the task is (问作品, 改资料 …), what it looked at and how long it took, in one small grey line that opens to
     the steps; `end` is what stands at its right end (改成 …, 停止). The steps are listed as they happen, then folded into the line. An author
     who opens the fold keeps it open. */
-export function Steps({ task, locate, lead, end }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode }) {
+export function Steps({ task, locate, lead, end, named = false }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
+  /** The folded line names what it opens: 「过程 · 8 秒」 (a 写前回顾, whose line already says what the task is). */
+  named?: boolean }) {
   const running = active(task);
   const [manual, setManual] = useState<boolean | null>(null);
   // The list folds by itself when the task ends; seen while this view was open, that moment is told by two figures settling into place.
@@ -217,12 +239,11 @@ export function Steps({ task, locate, lead, end }: { task: AssistantTask; locate
     const timer = window.setTimeout(() => setFolding(false), 600);
     return () => window.clearTimeout(timer);
   }, [folding]);
-  const looked = lookedAt(task.steps);
   const began = Date.parse(task.started_at ?? task.created_at);
   const ended = task.completed_at ? Date.parse(task.completed_at) : NaN;
   const took = Number.isFinite(began) && Number.isFinite(ended) ? Math.max(1, Math.round((ended - began) / 1000)) : null;
   const figure = (value: number, order: number) => <span className={justFolded ? "a-drop" : undefined} style={justFolded ? { animationDelay: `${order * 80}ms` } : undefined}>{value}</span>;
-  const tally = looked > 0 || took !== null;
+  const tally = named || took !== null;
   return (
     <div className="a-steps" role={running ? "status" : undefined}>
       <div className="a-process" data-testid="process-line">
@@ -230,7 +251,7 @@ export function Steps({ task, locate, lead, end }: { task: AssistantTask; locate
           : shownRows ? (
             <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
               <span className="lead">{lead}</span>
-              {tally && <span className="tally"> · {looked > 0 ? <>查了 {figure(looked, 0)} 处</> : "过程"}{took !== null && <> · {figure(took, looked > 0 ? 1 : 0)} 秒</>}</span>}
+              {tally && <span className="tally">{named && " · 过程"}{took !== null && <> · {figure(took, 0)} 秒</>}</span>}
               <Fold open={open} />
             </button>
           ) : <span className="a-fold static"><span className="lead">{lead}</span>{took !== null && <span className="tally"> · {figure(took, 0)} 秒</span>}</span>}
@@ -240,22 +261,44 @@ export function Steps({ task, locate, lead, end }: { task: AssistantTask; locate
         <div className={`a-proc-wrap${folding && !open ? " folding" : ""}${open && manual === true ? " unfolding" : ""}`}>
           <div className="a-proc-clip">
             <div className="a-proc">
-              {rows.map((row) => {
-                if (row.type === "say") return <p key={row.key} className="a-say">{row.text}</p>;
-                if (row.type === "group") return <Action key={row.key} row={row} sources={task.sources} locate={locate} />;
-                return (
-                  <div key={row.key} className={`a-act ${row.type === "fail" ? "bad" : "ok"}`}>
-                    <span className="mk" aria-hidden="true" />
-                    <span>{row.text}</span>
-                    <span className="secs" />
-                  </div>
-                );
-              })}
+              <ProcessRows rows={rows} sources={task.sources} locate={locate} />
               {running && <NowLine task={task} />}
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+/** 怎么查的 ›: under an answer, folded. Opened it holds the steps the task took and, in plain grey, 查过……；没查：……, then the sentences of the model's
+    note that tell where it looked (the rest of the note stays under the answer). The program's own 没查 line is lifted out under the answer, and the fold
+    leaves it out, when the answer found nothing (`onlyMissed`) or the task ran into its limit. */
+export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const panel = useId();
+  const left = notChecked(task);
+  const lifted = (onlyMissed || hitLimit(task)) && left.length > 0;
+  const done = task.coverage?.checked ?? [];
+  const rows = processRows(task.steps);
+  const noted = splitNote(sentencesOf(task)?.note).looked;
+  const line = [done.length > 0 ? `查过${done.join("、")}` : "", !lifted && left.length > 0 ? `没查：${left.join("、")}` : ""].filter(Boolean).join("；");
+  if (active(task)) return null;
+  return (
+    <>
+      {lifted && <p className="a-cover" data-testid="not-checked">没查：{left.join("、")}。</p>}
+      {(rows.length > 0 || line || noted.length > 0) && (
+        <div className="a-how-wrap" data-testid="how-checked">
+          <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>怎么查的<Fold open={open} /></button>
+          {open && (
+            <div id={panel} className="a-how">
+              {rows.length > 0 && <div className="a-proc"><ProcessRows rows={rows} sources={task.sources} /></div>}
+              {line && <p className="a-cover">{line}。</p>}
+              {noted.length > 0 && !line && <p className="a-cover">{noted.join("")}</p>}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

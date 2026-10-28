@@ -162,7 +162,8 @@ test("18 过程行：一行 11px 灰字，回答紧跟在问题下面；额度�
   await withThread(page, [listView]);
   const task = tasks(page).first();
   const line = task.getByTestId("process-line");
-  await expect(line).toHaveText(/^问作品 · 查了 6 处 · \d+ 秒/);
+  // 38a: no count of places on the line (it would sit next to 「出处 N 处」 and the two numbers would fight).
+  await expect(line).toHaveText(/^问作品 · \d+ 秒$/);
   expect(await style(line.locator(".a-fold"), "font-size")).toBe("11px");
   expect((await rect(line)).height).toBeLessThanOrEqual(24);
   // Only one line stands between the question and the answer (the kind of use is in it; nothing else is).
@@ -182,13 +183,18 @@ test("18 回答末尾：找不到时第一行由前端写，下面只有 note �
   const missing = tasks(page).nth(1);
   await expect(missing.getByTestId("not-found-line")).toHaveText("没有找到问题问到的内容。");
   expect(await style(missing.getByTestId("not-found-line"), "font-size")).toBe("14px");
-  await expect(missing.locator(".a-answer-note")).toHaveText("查过第 1–10 章正文（搜过「猫」「小时候」）和苏岑的事实，没有找到。");
-  await expect(missing.locator(".a-cover")).toHaveText("没查：本章草稿。");
-  expect(await style(missing.locator(".a-cover strong"), "font-weight")).toBe("700");
-  // A found answer has the two lines: the model's note (none here) and the program's 查过……；没查：……
+  // 38a: the model's 「查过……」 sentence goes under 「怎么查的」; an answer that found nothing says what was not looked at in plain grey, under the answer.
+  await expect(missing.locator(".a-answer-note")).toHaveCount(0);
+  await expect(missing.getByTestId("not-checked")).toHaveText("没查：本章草稿。");
+  expect(await style(missing.getByTestId("not-checked"), "font-weight")).not.toBe("700");
+  await missing.getByRole("button", { name: "怎么查的" }).click();
+  // The program's line says where it looked; the model's own sentence is not said a second time next to it.
+  await expect(missing.getByTestId("how-checked").locator(".a-cover")).toHaveText("查过第 1–10 章正文（搜过：猫、小时候）、苏岑的事实。");
+  // A found answer: 查过……；没查：…… is inside the fold, which is shut until it is asked for.
   const found = tasks(page).first();
+  await expect(found.locator(".a-cover")).toHaveCount(0);
+  await found.getByRole("button", { name: "怎么查的" }).click();
   await expect(found.locator(".a-cover")).toHaveText("查过第 1–10 章正文、伏笔记录；没查：本章草稿。");
-  await expect(found.locator(".a-cover")).toHaveCount(1);
   // Sources: folded to one line.
   const fold = found.getByRole("button", { name: /^出处 \d+ 处/ });
   await expect(fold).toHaveText("出处 5 处");
@@ -223,7 +229,7 @@ test("18 轮次：轮与轮之间一条细线，线上写时间；追问接在�
   expect(await style(follow, "border-left-width")).toBe("2px");
 });
 
-test("18 写前回顾：字号和普通回答一套，引文默认收成一行，点开看全文", async ({ page }) => {
+test("18 写前回顾：字号和普通回答一套，出处是句末的角标，点开看全文", async ({ page }) => {
   const recap = {
     ...askView({ id: "atask-recap", kind: "recap", question: null, context: { page: "writing" }, created_at: ago(60), completed_at: ago(50), started_at: ago(58), coverage: { checked: ["第 1–10 章正文"], not_checked: ["本章草稿"] } }),
     answer: {
@@ -244,15 +250,14 @@ test("18 写前回顾：字号和普通回答一套，引文默认收成一行�
   await openAssistantTab(page);
   const view = tasks(page).first();
   await expect(view.getByTestId("process-line")).toHaveText(/^写前回顾 · 第 11 章/);
-  expect(await style(view.locator(".a-ri > p").first(), "font-size")).toBe("14px");
-  const quote = view.locator(".a-ri-src .a-text").first();
+  expect(await style(view.locator(".a-ri").first(), "font-size")).toBe("14px");
+  // 38a: no grey quote line under an item; the passage is behind the mark at the end of the sentence, shown whole.
+  await expect(view.locator(".a-ri-src, .a-quote-line")).toHaveCount(0);
+  const mark = view.locator(".a-ri .a-cite > button").first();
+  await mark.click();
+  const quote = page.locator(".a-pop q").first();
   expect(await style(quote, "font-size")).toBe("12px");
-  const folded = await rect(quote);
-  expect(folded.height).toBeLessThanOrEqual(22);
-  expect(await style(quote, "white-space")).toBe("nowrap");
-  await quote.click();
-  expect((await rect(quote)).height).toBeGreaterThanOrEqual(folded.height);
-  expect(await style(quote, "white-space")).not.toBe("nowrap");
+  await expect(quote).toContainText("收进了外套内袋");
   await photograph(page, "06-写前回顾", async () => {
     await page.goto(`/projects/${id}/workspace`);
     await showAssistant(page);

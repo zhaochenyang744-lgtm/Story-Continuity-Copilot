@@ -93,7 +93,9 @@ test.describe("改资料：用法和菜单", () => {
     expect(judged).toBe(0);
     const task = tasks(page).last();
     await expect(task.getByTestId("process-line")).toContainText("改资料");
-    await expect(task.locator(".a-answer-note")).toContainText(`查过第 ${LAST_CHAPTER} 章正文，没有找到问题问到的内容。`);
+    // 38a: the model's 「查过……」 sentence is under 「怎么查的」; what stays under the answer is the rest of its note.
+    await expect(task.locator(".a-answer-note")).toHaveText("没有出卡片：正文里没找到能作依据的段落。");
+    await expect(task.getByTestId("how-checked")).toBeVisible();
     await expect(cardOf(page)).toHaveCount(0);
     await expect(modeButton(page, "自动")).toBeVisible();
   });
