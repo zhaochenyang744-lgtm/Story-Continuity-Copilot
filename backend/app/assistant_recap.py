@@ -38,6 +38,9 @@ INSTRUCTION = ("只用下面候选和补查的内容；每条概括必须能从�
                "「出场人物的最新状态」优先写到截止章为止发生过变化的状态：受伤或康复、身份或职务的变化、拿到或交出物件、学会或失去某种能力；写的必须是截止章为止最晚的那一条。"
                "每个人物候选的 facts 里，先列的是一直有效的状态（身份、职务、住处、持有物），后列的是最近的事；截止时仍然成立的身份或处境（例如「仍是临时工，没有正式工号」「已退租，住在姐姐家」「食堂已停业」）比最近一章里做了什么更要紧。"
                "这一栏写会延续到下一章的状态（例如「右膝受伤，还走不快」「仍是见习队员，还没转正」），不写上一章里的一个动作、表情或一句话（例如「把水壶递给同伴」「笑了一下」）。"
+               "同一样东西换过手或挪过地方，只写最后在谁手里、在哪里。更早的持有和位置不写进这一栏，哪怕写的是另一个人（例如「苏岑把罗盘放进内袋」已经被「温岚仍握着罗盘」取代，就不写前一条）。"
+               "「还不知道」「还没」这类状态，只有到截止章仍然成立才写；后文已经知道了、已经做了，就不写。已经列进「还没收的线」的事，这一栏不再重复。"
+               "概括里不写章号，出处会标。"
                "草稿里会出场的人物，每人至少写一条截至上一章仍然有效的状态（候选 facts 里排在前面的那几条）；写不下时，换掉一条只写了上一章里某个动作的。"
                "每条只写一件事，挂的出处要直接写着这件事；不要把不同出处里的两件事拼成一条。"
                "「还没收的线」每条同时挂这条线的伏笔记录（record）和埋下它的正文段落（source），照伏笔记录的说法写出悬着的是什么"
@@ -203,8 +206,56 @@ def within_limit(items: list, required: list[dict], limit: int) -> list:
     return [item for i, item in enumerate(items) if i in chosen]
 
 
+# Who holds a thing and where it is: when it changed hands or moved, only the last of these is still the state (H04, R5: the
+# recap listed "苏岑把罗盘放进内袋" beside "温岚仍握着罗盘").
+HOLDING_PREDICATES = frozenset({"possession", "location"})
+SUBJECT_PARTS = re.compile(r"[与和及、，,（）()\s]+|的")
+
+
+def fact_kinds(ctx: ToolContext) -> dict[str, dict]:
+    """For each fact the task has shown (by R number), the predicate and subject the guard `drop_superseded` needs."""
+    by_id = {fact["id"]: fact for fact in ctx.memory()}
+    return {ref: {"predicate": fact.get("predicate"), "subject": fact.get("subject") or ""} for ref, source in ctx.registry.rows.items()
+            if source["kind"] == "fact" and (fact := by_id.get(source["object_id"]))}
+
+
+def person_names(ctx: ToolContext) -> frozenset[str]:
+    """The names of the work's people (its character records and their aliases, and the people its facts are about)."""
+    with ctx.db.connection() as c:
+        names = {row[0] for row in c.execute("SELECT name FROM v2_characters WHERE project_id=?", (ctx.project_id,))}
+        names |= {row[0] for row in c.execute("SELECT alias FROM v2_character_aliases WHERE project_id=? AND status='active'", (ctx.project_id,))}
+    return frozenset(name for name in names | set(ctx.people()) if name)
+
+
+def object_names(subject: str, people: frozenset[str]) -> set[str]:
+    """The names of the thing a fact's subject names: the parts of the subject that are not people ("苏岑与黄铜罗盘" -> 黄铜罗盘), each
+    with its ends of two or more characters (罗盘, 铜罗盘): a thing's name ends in what it is."""
+    names: set[str] = set()
+    for part in SUBJECT_PARTS.split(subject):
+        if len(part) >= 2 and not any(person in part or part in person for person in people):
+            names |= {part[start:] for start in range(len(part) - 1)}
+    return names
+
+
+def drop_superseded(items: list[dict], sources: dict[str, dict], kinds: dict[str, dict], people: frozenset[str]) -> list[dict]:
+    """Of two items of `character_state` that cite only possession or location facts and whose summaries share the name of a
+    thing, only the one of the later chapter stays. Items it cannot be sure about stay: a fact it knows nothing of, a subject
+    with no thing in it, a summary without the name, two items of one chapter."""
+    held: list[tuple[int, set[str]] | None] = []
+    for item in items:
+        facts = [kinds.get(ref) for ref in item["refs"]]
+        if not facts or any(fact is None or fact["predicate"] not in HOLDING_PREDICATES for fact in facts):
+            held.append(None)
+            continue
+        held.append((max(sources[ref]["chapter_number"] or 0 for ref in item["refs"]),
+                     set().union(*(object_names(fact["subject"], people) for fact in facts))))
+    return [item for i, item in enumerate(items) if not (held[i] and any(
+        other and j != i and other[0] > held[i][0] and any(name in item["summary"] and name in items[j]["summary"] for name in held[i][1] & other[1])
+        for j, other in enumerate(held)))]
+
+
 def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, internal_id: Any, strict_ending: bool = True,
-             required: list[dict] | None = None):
+             required: list[dict] | None = None, kinds: dict[str, dict] | None = None, people: frozenset[str] = frozenset()):
     """`strict_ending`: the ending must cite one of the last two passages of the chapter before. Off once the one repair
     is spent, so a recap is not lost over it. `required`: the people the recap must write a lasting state of (see
     `candidates`); it is held to them only while `strict_ending` is on, so the same single repair covers both."""
@@ -263,4 +314,6 @@ def validate(arguments: Any, known: set[str], sources: dict[str, dict], n: int, 
             sections[name].append({"summary": summary.strip() if isinstance(summary, str) else "", "refs": list(dict.fromkeys(refs))})
     if strict_ending and required:
         errors += missing_people(arguments, required)
+    if not errors and kinds and "character_state" in sections:
+        sections["character_state"] = drop_superseded(sections["character_state"], sources, kinds, people)
     return (None, errors) if errors else ({"kind": "recap", "chapter_number": n, "sections": sections}, [])
