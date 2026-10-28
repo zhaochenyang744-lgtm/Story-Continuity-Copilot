@@ -194,7 +194,7 @@ if (typeof document !== "undefined") document.addEventListener("focusin", (event
 function restoreFocus(from: typeof lastFocus) {
   for (const element of [from?.element, from?.menuButton]) {
     if (!element?.isConnected) continue;
-    element.focus();
+    element.focus({ preventScroll: true });
     if (document.activeElement === element) return;
   }
 }
@@ -208,7 +208,7 @@ export function useFocusTrap<T extends HTMLElement>(close: () => void, closeDisa
     // A remount that follows straight after a cleanup (development's strict mode does this) must not have focus taken from it.
     window.clearTimeout(giveBack.current);
     const first = ref.current?.querySelector<HTMLElement>("[data-autofocus]") ?? ref.current?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled])');
-    first?.focus();
+    first?.focus({ preventScroll: true });
     return () => { giveBack.current = window.setTimeout(() => restoreFocus(from), 0); };
   }, [from]);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {

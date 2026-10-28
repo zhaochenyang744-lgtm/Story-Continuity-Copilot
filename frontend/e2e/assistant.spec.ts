@@ -24,7 +24,7 @@ test.describe("助手", () => {
     // (38a: no count of places on the line; 「出处 N 处」 under the answer is the one number.)
     await expect(task.getByTestId("process-line")).toHaveText(/^问作品 · \d+ 秒/);
     // The steps are folded into one line; opening it lists what was looked up.
-    const fold = task.getByTestId("process-line").locator("button.a-fold");
+    const fold = task.getByRole("button", { name: "怎么查的" });
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.getByText("查了 1 条事实：苏岑")).toHaveCount(0);
     await fold.click();
@@ -41,9 +41,6 @@ test.describe("助手", () => {
     await task.getByRole("button", { name: /^出处 \d+ 处/ }).click();
     await expect(task.getByRole("list", { name: "出处" }).getByRole("listitem")).toHaveCount(1);
     await expect(task).not.toContainText(/\bR\d+\b/);
-    // 查过……；没查：…… is inside 「怎么查的」, shut until asked for.
-    await expect(task).not.toContainText(/没查：/);
-    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task).toContainText(/查过.*已确认事实：苏岑/);
     await expect(task).toContainText(/没查：/);
     // Under the answer only what it cost: no count of steps, and no round.
@@ -144,6 +141,7 @@ test.describe("助手", () => {
     // The first line is the program's, in the answer's own type. 38a: the model's 「查过……」 sentence is under 「怎么查的」, not under the answer.
     await expect(task.getByTestId("not-found-line")).toHaveText("没有找到问题问到的内容。");
     await expect(task.getByText("查过前文，没有找到相关的写法。", { exact: true })).toHaveCount(0);
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
     await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.getByTestId("how-checked")).toContainText("查过");
     await expect(task.locator(".a-cite")).toHaveCount(0);
@@ -363,7 +361,7 @@ test.describe("助手", () => {
     await openAssistantTab(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
-    await tasks(page).first().getByTestId("process-line").locator("button.a-fold").click();
+    await tasks(page).first().getByRole("button", { name: "怎么查的" }).click();
     await theme(page, "night");
     await page.evaluate(() => window.scrollTo(0, 340));
     await shot(page, "assistant-writing-night", false);
@@ -716,7 +714,8 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await finished(page);
     const task = tasks(page).first();
     await expect(task.getByTestId("process-line")).toContainText("查前文矛盾");
-    await task.getByTestId("process-line").locator("button.a-fold").click();
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.getByText("定点检查了这一段")).toBeVisible();
     // The sentence is in the answer: either the first source of the check, or that it found nothing.
     await expect(task).toContainText(/（示意回答）选中的这段和前文有对不上的地方。|检查了选中的这段，没有发现和前文矛盾的地方。/);

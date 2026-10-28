@@ -4,7 +4,7 @@
 // ("查了 2 条事实：苏岑、黄铜罗盘", "搜了 2 处正文"), failed steps on their own line, and the step in progress with a three-square mark and
 // its seconds. Once the task is over the whole thing folds into one line, 「查了 N 处 · M 秒 ›」. The wording of an action is made here,
 // from the tool and the number of calls; nothing the model wrote reaches the author except its one line before each round of work.
-import { type ReactNode, useEffect, useId, useState } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useId, useState } from "react";
 import type { AssistantSource, AssistantStep, AssistantTask } from "../../model";
 import { active, Fold, hitLimit, notChecked, sentencesOf, whereLabel } from "./assistant-parts";
 import { splitNote } from "./assistant-text";
@@ -196,6 +196,9 @@ function NowLine({ task }: { task: AssistantTask }) {
   );
 }
 
+/** 去原文 for the passages a step found (the thread provides it): the steps under 「怎么查的」 are far from the thread's own handlers. */
+export const LocateContext = createContext<((source: AssistantSource) => void) | undefined>(undefined);
+
 /** The rows of a task's process: its narration, the actions it took (each opens to what it found) and the steps that failed. */
 function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<string, AssistantSource>; locate?: (source: AssistantSource) => void }) {
   return (
@@ -219,7 +222,8 @@ function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<s
     the steps; `end` is what stands at its right end (改成 …, 停止). The steps are listed as they happen, then folded into the line. An author
     who opens the fold keeps it open. */
 export function Steps({ task, locate, lead, end, named = false }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
-  /** The folded line names what it opens: 「过程 · 8 秒」 (a 写前回顾, whose line already says what the task is). */
+  /** The finished line opens to the steps and names what it opens: 「过程 · 8 秒 ›」 (a 写前回顾). Without it the finished line is a plain label,
+      「问作品 · 4 秒」: the steps of an answer are under it, in 「怎么查的 ›」 (CoverLine); while the task runs they are listed here either way. */
   named?: boolean }) {
   const running = active(task);
   const [manual, setManual] = useState<boolean | null>(null);
@@ -248,7 +252,7 @@ export function Steps({ task, locate, lead, end, named = false }: { task: Assist
     <div className="a-steps" role={running ? "status" : undefined}>
       <div className="a-process" data-testid="process-line">
         {running ? <span className="a-fold static"><span className="lead">{lead}</span> · 正在查</span>
-          : shownRows ? (
+          : shownRows && named ? (
             <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
               <span className="lead">{lead}</span>
               {tally && <span className="tally">{named && " · 过程"}{took !== null && <> · {figure(took, 0)} 秒</>}</span>}
@@ -275,6 +279,7 @@ export function Steps({ task, locate, lead, end, named = false }: { task: Assist
     note that tell where it looked (the rest of the note stays under the answer). The program's own 没查 line is lifted out under the answer, and the fold
     leaves it out, when the answer found nothing (`onlyMissed`) or the task ran into its limit. */
 export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
+  const locate = useContext(LocateContext);
   const [open, setOpen] = useState(false);
   const panel = useId();
   const left = notChecked(task);
@@ -292,7 +297,7 @@ export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; o
           <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>怎么查的<Fold open={open} /></button>
           {open && (
             <div id={panel} className="a-how">
-              {rows.length > 0 && <div className="a-proc"><ProcessRows rows={rows} sources={task.sources} /></div>}
+              {rows.length > 0 && <div className="a-proc"><ProcessRows rows={rows} sources={task.sources} locate={locate} /></div>}
               {line && <p className="a-cover">{line}。</p>}
               {noted.length > 0 && !line && <p className="a-cover">{noted.join("")}</p>}
             </div>

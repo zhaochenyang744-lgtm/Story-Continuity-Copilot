@@ -174,16 +174,14 @@ test.describe("07f 动效", () => {
     await expect(figures).toHaveCount(1);
     expect(await figures.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).animationDelay))).toEqual(["0s"]);
     expect(await figures.first().evaluate((node) => getComputedStyle(node).animationName)).toBe("a-drop-in");
-    await expect(task.getByTestId("process-line").locator("button.a-fold")).toBeVisible();
-    // Opening and closing by hand: the same height change, and the figures stay as they are.
-    await task.getByTestId("process-line").locator("button.a-fold").click();
-    await expect(task.locator(".a-proc-wrap")).toBeVisible();
-    await expect(task.locator(".a-proc-wrap")).toHaveClass(/unfolding/);
-    await expect(task.locator(".a-fold .a-drop")).toHaveCount(0);
-    await watch(page, ".a-proc-wrap.folding", "folds2");
-    await task.getByTestId("process-line").locator("button.a-fold").click();
-    await expect(task.locator(".a-proc-wrap")).toHaveCount(0, { timeout: 3_000 });
-    expect(await seen(page, "folds2")).toBeGreaterThan(0);
+    // 38a: the top line is a plain label once the task is over; the steps are under 「怎么查的」, which opens and shuts by hand.
+    await expect(task.getByTestId("process-line").locator("button.a-fold")).toHaveCount(0);
+    await expect(task.getByRole("button", { name: "怎么查的" })).toBeVisible();
+    await task.getByRole("button", { name: "怎么查的" }).click();
+    await expect(task.locator(".a-how .a-proc .a-act").first()).toBeVisible();
+    await expect(task.locator(".a-fold .a-drop")).toHaveCount(1);
+    await task.getByRole("button", { name: "怎么查的" }).click();
+    await expect(task.locator(".a-how")).toHaveCount(0);
     // A conversation read from the server again is simply folded, with nothing to settle.
     await page.reload();
     await openAssistantTab(page);

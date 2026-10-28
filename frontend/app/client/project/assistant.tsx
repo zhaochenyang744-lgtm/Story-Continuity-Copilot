@@ -29,7 +29,7 @@ import { type CheckUsage, clip, formatCount, isSampleWork, Menu, SAMPLE_FREE, us
 import { regenerateTask } from "./assistant-answer";
 import { mergeChanges } from "./assistant-change";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
-import { ThreeSquares } from "./assistant-process";
+import { LocateContext, ThreeSquares } from "./assistant-process";
 import { FixView, type ProposalActions, useProposalActions, type WritingLink } from "./assistant-fix";
 import { notFoundText, requestLocate } from "./assistant-locate";
 import { LongView } from "./assistant-long";
@@ -763,6 +763,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
 
   return (
     <RerouteContext.Provider value={rerouting}>
+    <LocateContext.Provider value={locate}>
     <div ref={root} className={`assistant assistant-${variant}`} data-testid="assistant-thread">
       <div className="a-bar">
         <span className="a-bar-note">只提建议，不改你的正文</span>
@@ -833,6 +834,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable} />
       {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
     </div>
+    </LocateContext.Provider>
     </RerouteContext.Provider>
   );
 }

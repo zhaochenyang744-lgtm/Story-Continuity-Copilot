@@ -172,8 +172,9 @@ test("18 过程行：一行 11px 灰字，回答紧跟在问题下面；额度�
   expect(first.top - question.bottom).toBeLessThanOrEqual(40);
   await expect(task.getByTestId("routed-line")).toHaveCount(0);
   await expect(task.locator(".a-kind, .a-head")).toHaveCount(0);
-  // The line opens to the steps.
-  await line.getByRole("button").click();
+  // 38a: the line is a plain label; the steps open under 「怎么查的」.
+  await expect(line.locator(".a-fold")).not.toHaveJSProperty("tagName", "BUTTON");
+  await task.getByRole("button", { name: "怎么查的" }).click();
   await expect(task.locator(".a-proc")).toBeVisible();
   await expect(task.locator(".a-proc .a-act").first()).toBeVisible();
 });
