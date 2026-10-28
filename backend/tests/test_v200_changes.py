@@ -275,6 +275,26 @@ class ConfirmTests(ChangeCase):
         first, second = task["changes"]
         self.confirm(task, accepted=[second["id"]])
         self.assertEqual((self.thread()["status"], self.thread(other)["status"]), ("planted", "resolved"))
+        self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["proposed", "applied"])  # V02: the rest keeps waiting
+        self.assertEqual([r["event"] for r in self.rows("SELECT event FROM assistant_change_events")], ["applied"])
+
+    def test_what_was_left_out_of_a_partial_confirm_can_be_confirmed_later(self):
+        other = self.new_thread("铜钥匙")
+        task = self.change_task(*(self.resolving(answer=False) + self.resolving(title="铜钥匙", words="已经收了")[1:]))
+        first, second = task["changes"]
+        self.confirm(task, accepted=[second["id"]])
+        self.confirm(task, accepted=[first["id"]])
+        self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["applied", "applied"])
+        self.assertEqual((self.thread()["status"], self.thread(other)["status"]), ("resolved", "resolved"))
+        self.confirm(task, expect=409)  # every item is decided now
+
+    def test_not_wanted_after_a_partial_confirm_turns_down_only_what_still_waits(self):
+        self.new_thread("铜钥匙")
+        task = self.change_task(*(self.resolving(answer=False) + self.resolving(title="铜钥匙", words="已经收了")[1:]))
+        first, second = task["changes"]
+        self.confirm(task, accepted=[second["id"]])
+        r = self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/reject", headers=self.idem(), json={})
+        self.assertEqual(r.status_code, 200, r.text)
         self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["rejected", "applied"])
 
     def test_a_record_changed_since_the_card_stops_the_whole_confirm(self):

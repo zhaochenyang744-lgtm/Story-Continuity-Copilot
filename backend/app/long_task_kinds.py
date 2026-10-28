@@ -70,11 +70,68 @@ def _chapter(refs: list[str], rows: dict[str, dict[str, Any]]) -> int | None:
     return max(numbers) if numbers else None
 
 
-def _option(key: str, refs: list[str], rows: dict[str, dict[str, Any]], value: str | None = None) -> dict[str, Any]:
+SENTENCE_END = re.compile(r"[。！？!?；;…]+[”’」』）)]*")
+
+
+def _locate(text: str, words: str) -> tuple[int, int] | None:
+    """Where `words` stand in `text` (punctuation and spaces aside, as `_quoted` reads them): the span in the text, or None."""
+    kept = [(at, ch) for at, ch in enumerate(text) if ch.isalnum()]
+    wanted = _squeezed(words)
+    found = "".join(ch for _, ch in kept).find(wanted) if len(wanted) >= 2 else -1
+    return (kept[found][0], kept[found + len(wanted) - 1][0] + 1) if found >= 0 else None
+
+
+def _sentence_spans(text: str) -> list[tuple[int, int]]:
+    spans, start = [], 0
+    for end in [m.end() for m in SENTENCE_END.finditer(text)] + [len(text)]:
+        if text[start:end].strip():
+            spans.append((start, end))
+        start = max(start, end)
+    return spans
+
+
+def _pairs(text: str) -> set[str]:
+    squeezed = _squeezed(text)
+    return {squeezed[at:at + 2] for at in range(len(squeezed) - 1)}
+
+
+def _around(text: str, start: int, end: int, limit: int) -> str:
+    """`limit` characters of `text` centred on the span, with an ellipsis on a side where the text goes on."""
+    first = max(0, min((start + end) // 2 - limit // 2, len(text) - limit))
+    last = min(len(text), first + limit)
+    return ("…" if first > 0 else "") + text[first:last].strip() + ("…" if last < len(text) else "")
+
+
+def conflict_quote(texts: list[str], anchors: list[str], hint: str = "", limit: int = QUOTE_MAX) -> str:
+    """The `limit` characters of a passage a question shows for one side of a disagreement (H07: the head of the passage is
+    often about something else). Centred on the words the finding itself reports (`anchors`: a state, a value) where they
+    stand in a passage; else on the sentence that shares most with `hint` (two-character pairs, the first on a tie); only
+    when neither is found, the head of the first passage."""
+    texts = [" ".join(text.split()) for text in texts if text]
+    for anchor in anchors:
+        for text in texts:
+            span = _locate(text, anchor)
+            if span:
+                return _around(text, *span, limit)
+    wanted = _pairs(" ".join([*anchors, hint]))
+    best, best_score = None, 0
+    for text in texts:
+        for start, end in _sentence_spans(text):
+            score = len(_pairs(text[start:end]) & wanted)
+            if score > best_score:
+                best, best_score = (text, start, end), score
+    if best:
+        return _around(best[0], best[1], best[2], limit)
+    return texts[0][:limit] if texts else ""
+
+
+def _option(key: str, refs: list[str], rows: dict[str, dict[str, Any]], value: str | None = None, anchors: list[str] | None = None,
+            hint: str = "") -> dict[str, Any]:
     first = rows[refs[0]]
     chapter = first.get("chapter_number")
+    same = [rows[ref]["text"] for ref in refs if ref in rows and rows[ref].get("chapter_number") == chapter]
     return {"key": key, "label": f"第 {chapter} 章" + (f"：{value}" if value else ""), "chapter": chapter,
-            "quote": " ".join(first["text"].split())[:QUOTE_MAX], "refs": refs, **({"value": value} if value else {})}
+            "quote": conflict_quote(same, anchors or ([value] if value else []), hint), "refs": refs, **({"value": value} if value else {})}
 
 
 def _refs_code(refs: list[str], passages: dict[str, Any]) -> str | None:
@@ -223,11 +280,21 @@ class ThreadAudit:
         return sections
 
 
+def _stated(states: list[dict[str, Any]], refs: list[str], what: str) -> list[str]:
+    """The states this step reported from the passages a side of a disagreement stands on, the one that says most of what
+    differs first: the words a question quotes for that side."""
+    mine = [s["state"] for s in states if set(s["refs"]) & set(refs)]
+    return sorted(mine, key=lambda state: -len(_pairs(state) & _pairs(what)))
+
+
 def _resolution(decisions: list[dict[str, Any]], decision_id: str) -> str:
-    """How a question was settled, for the report: the author's pick, or the latest chapter when the author left it to us."""
+    """How a question was settled, for the report: the author's pick, the author's word that both stand, or the latest chapter
+    when the author left it to us."""
     found = next((d for d in decisions if d["id"] == decision_id), None)
     if not found or not found.get("choice"):
         return ""
+    if found["choice"] == "both":
+        return "（你说两处都保留）"
     option = next(o for o in found["options"] if o["key"] == ("b" if found["choice"] == "you_decide" else found["choice"]))
     return f"（{'按最新一章' if found['choice'] == 'you_decide' else '你定的'}：以第 {option['chapter']} 章为准）"
 
@@ -308,15 +375,18 @@ class Trace:
             # The author wants one answer, or said to be asked first (A3 first formal run: "等我答过再下结论" on a chapter-by-chapter
             # report, never asked): which passage to go by is theirs.
             if plan.get("output") == "conclusion" or plan.get("ask_first"):
-                decisions.append(decision(f"{item['what']}：两处写法不同，以哪处为准？", _option("a", item["earlier"], rows), _option("b", item["later"], rows),
-                                          conflict=found["id"]))
+                sides = [_option(key, refs, rows, anchors=_stated(report["states"], refs, item["what"]), hint=item["what"])
+                         for key, refs in (("a", item["earlier"]), ("b", item["later"]))]
+                decisions.append(decision(f"{item['what']}：两处写法不同，怎么处理？", *sides, conflict=found["id"]))
         return {"states": states, "conflicts": conflicts}, [], decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:
         return []
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
-        states = [{"text": f"第 {s['chapter']} 章：「{s['state']}」", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"]}
+        # `handover` is for the page only: whether the state says a thing changed hands (the same test that keeps tidy from adding such a fact).
+        states = [{"text": f"第 {s['chapter']} 章：「{s['state']}」", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"],
+                   "handover": bool(HANDOVER.search(s["state"]))}
                   for output in outputs for s in output.get("states", [])]
         asked = {d.get("conflict"): d["id"] for d in decisions}
         conflicts = [{"text": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章：{c['what']}" + _resolution(decisions, asked.get(c["id"], "")),
@@ -477,13 +547,15 @@ class Tidy:
             output["conflicts"].append(found)
             about = subjects[item["fact"]]["text"] if item["fact"] else item["subject"]
             decisions.append(decision(f"{about}：{item['what'] or '两处写法不同'}，资料按哪处记？",
-                                      _option("a", item["earlier"]["refs"], rows, item["earlier"]["value"]),
-                                      _option("b", item["later"]["refs"], rows, item["later"]["value"]), conflict=found["id"],
+                                      _option("a", item["earlier"]["refs"], rows, item["earlier"]["value"], hint=item["what"]),
+                                      _option("b", item["later"]["refs"], rows, item["later"]["value"], hint=item["what"]), conflict=found["id"],
                                       fact=item["fact"], fields={k: item[k] for k in ("memory_type", "subject", "predicate")}))
         return output, proposals, decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:
-        """The card for a value the author picked (or the latest passage, when it was left to us)."""
+        """The card for a value the author picked (or the latest passage, when it was left to us); none when both stand."""
+        if choice == "both":
+            return []
         option = next(o for o in found["options"] if o["key"] == ("b" if choice == "you_decide" else choice))
         try:
             return [self._propose(ctx, found.get("fact"), found.get("fields") or {}, option["value"], option["refs"])]

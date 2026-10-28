@@ -866,10 +866,11 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
 
 def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id: str, task_id: str, accepted: list[str] | None,
            edits: dict[str, str] | None = None, within: list[str] | None = None) -> dict[str, Any]:
-    """Apply the accepted items of a card, with any value the author reworded, and turn down the rest (`accepted` None: turn
-    down all). All or nothing: when any accepted item's target no longer holds the values the card was made against, or a
-    review of the facts is still open for a fact item, nothing is written. A long task's card is decided a group at a time:
-    `within` names the group's items, and the rest of the card waits."""
+    """Apply the accepted items of a card, with any value the author reworded. The items not accepted stay proposed, to be
+    confirmed later or turned down; only `accepted` None (不要) turns down all that still waits. All or nothing: when any
+    accepted item's target no longer holds the values the card was made against, or a review of the facts is still open for a
+    fact item, nothing is written. A long task's card is decided a group at a time: `within` names the group's items, and the
+    rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
     if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
@@ -903,7 +904,7 @@ def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id:
             ACTIONS[row["kind"]].write(c, db, project_id, row["target_id"], json.loads(row["after_json"]), user_id, stamp)
             c.execute("UPDATE assistant_changes SET status='applied',decided_at=?,applied_at=? WHERE id=?", (stamp, stamp, row["id"]))
             _event(c, row, "applied", user_id, stamp, {"edited_by_author": True} if row["id"] in edits else None)
-        else:
+        elif accepted is None:  # 不要: what was not written is turned down. After a partial confirm the rest keeps waiting (V02)
             c.execute("UPDATE assistant_changes SET status='rejected',decided_at=? WHERE id=?", (stamp, row["id"]))
             _event(c, row, "rejected", user_id, stamp)
     return store.view(c, c.execute("SELECT * FROM assistant_tasks WHERE id=?", (task_id,)).fetchone(), user_id)

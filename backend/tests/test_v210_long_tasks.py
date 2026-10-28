@@ -308,6 +308,64 @@ class CardTests(LongCase):
         self.post(view["id"], "changes/confirm", {"accepted": give_up, "within": give_up}, expect=200)
         self.assertEqual(self.thread(self.second)["status"], "abandoned")
 
+    def two_resolved(self):
+        """A model that finds both threads resolved in its second step, in chapters 10 and 7 (one passage settles one thread): two items of one group."""
+        def decide(provider, messages):
+            threads, chapters = step_view(messages)
+            if 10 not in chapters:
+                return report()
+            return report({"thread": threads["罗盘下落"], "verdict": "resolved", "refs": [chapters[10][0]], "note": "交代了罗盘的下落。"},
+                          {"thread": threads["旧尺零点"], "verdict": "resolved", "refs": [chapters[7][0]], "note": "交代了零点。"})
+        return decide
+
+    def statuses(self, task_id):
+        return [item["status"] for item in self.view(task_id)["changes"]]
+
+    def test_the_items_not_ticked_stay_proposed_and_are_confirmed_later_or_undone_after(self):
+        # V02: a partial confirm used to turn the rest down, and the author could not decide it afterwards.
+        view = self.started(turns=[self.two_resolved()] * 2)
+        first, second = [item["id"] for item in view["changes"]]
+        self.post(view["id"], "changes/confirm", {"accepted": [first], "within": [first, second]}, expect=200)
+        self.assertEqual(self.statuses(view["id"]), ["applied", "proposed"])
+        self.assertEqual((self.thread()["status"], self.thread(self.second)["status"]), ("resolved", "planted"))
+        self.assertEqual([r["event"] for r in self.rows("SELECT event FROM assistant_change_events")], ["applied"])  # nothing was turned down
+        # the group is asked about again by what still waits in it, not by items already written
+        self.assertEqual(self.post(view["id"], "changes/confirm", {"accepted": [second], "within": [first, second]}).status_code, 422)
+        self.post(view["id"], "changes/confirm", {"accepted": [second], "within": [second]}, expect=200)
+        self.assertEqual(self.statuses(view["id"]), ["applied", "applied"])
+        self.assertEqual(self.thread(self.second)["status"], "resolved")
+        self.undo(first)
+        self.assertEqual(self.statuses(view["id"]), ["undone", "applied"])
+        self.assertEqual((self.thread()["status"], self.thread(self.second)["status"]), ("planted", "resolved"))
+        self.assertEqual(self.post(view["id"], "changes/confirm", {"accepted": [first], "within": [first]}).status_code, 422)  # an undone item is no longer proposed
+
+    def test_not_wanted_after_a_partial_confirm_turns_down_what_still_waits_and_keeps_what_was_written(self):
+        view = self.started(turns=[self.two_resolved()] * 2)
+        first, second = [item["id"] for item in view["changes"]]
+        self.post(view["id"], "changes/confirm", {"accepted": [first], "within": [first, second]}, expect=200)
+        self.post(view["id"], "changes/reject", {"within": [second]}, expect=200)
+        self.assertEqual(self.statuses(view["id"]), ["applied", "rejected"])
+        self.assertEqual((self.thread()["status"], self.thread(self.second)["status"]), ("resolved", "planted"))
+        self.assertEqual([r["event"] for r in self.rows("SELECT event FROM assistant_change_events ORDER BY created_at")], ["applied", "rejected"])
+        self.assertEqual(self.post(view["id"], "changes/reject", {"within": [second]}).status_code, 422)  # no longer waiting
+        self.assertEqual(self.post(view["id"], "changes/reject", {"within": []}).status_code, 400)
+
+    def test_not_wanted_on_a_group_touches_that_group_only(self):
+        view = self.started(turns=[self.audit_turns(abandon=True)] * 2)
+        by_kind = {item["kind"]: item["id"] for item in view["changes"]}
+        self.post(view["id"], "changes/reject", {"within": [by_kind["abandon_thread"]]}, expect=200)
+        states = {item["kind"]: item["status"] for item in self.view(view["id"])["changes"]}
+        self.assertEqual(states, {"resolve_thread": "proposed", "abandon_thread": "rejected"})
+        self.assertEqual(self.thread(self.second)["status"], "planted")
+
+    def test_a_confirm_of_a_card_with_nothing_ticked_is_refused_and_a_short_task_has_no_group_not_wanted(self):
+        view = self.started(turns=[self.two_resolved()] * 2)
+        ids = [item["id"] for item in view["changes"]]
+        self.assertEqual(self.post(view["id"], "changes/confirm", {"accepted": [], "within": ids}).status_code, 400)
+        task = self.change_task(*self.resolving())
+        r = self.post(task["id"], "changes/reject", {"within": [task["changes"][0]["id"]]})
+        self.assertEqual(r.status_code, 404, r.text)
+
     def test_a_short_task_card_cannot_be_decided_by_group(self):
         task = self.change_task(*self.resolving())
         r = self.client.post(f"/api/projects/{self.project_id}/assistant/long-tasks/{task['id']}/changes/confirm", headers=self.idem(),
@@ -420,7 +478,8 @@ class TraceTests(LongCase):
         view = self.trace(output="conclusion")
         self.assertEqual(view["status"], "waiting_author")
         [question] = view["questions"]
-        self.assertEqual((question["kind"], question["choices"]), ("decision", ["a", "b", "you_decide"]))
+        self.assertEqual((question["kind"], question["choices"]), ("decision", ["a", "b", "both", "you_decide"]))
+        self.assertTrue(question["text"].endswith("两处写法不同，怎么处理？"), question["text"])
         self.assertEqual([option["chapter"] for option in question["options"]], [3, 10])
         self.assertTrue(all(option["quote"] for option in question["options"]))
         self.post(view["id"], "answer", {"question_id": question["id"], "choice": "c"}, expect=422)
@@ -433,6 +492,36 @@ class TraceTests(LongCase):
         view = self.trace(output="conclusion")
         self.post(view["id"], "answer", {"question_id": view["questions"][0]["id"], "choice": "you_decide"}, expect=202)
         self.assertIn("（按最新一章：以第 10 章为准）", self.view(view["id"])["answer"]["sections"]["对不上的地方"][0]["text"])
+
+    def test_both_stand_is_an_answer_the_report_keeps_the_disagreement_and_no_card_comes_of_it(self):
+        # H08: a mystery author may mean both sayings. The report still lists them as two sayings that differ, and says what was answered.
+        view = self.trace(output="conclusion")
+        self.post(view["id"], "answer", {"question_id": view["questions"][0]["id"], "choice": "both"}, expect=202)
+        view = self.view(view["id"])
+        self.assertEqual((view["status"], view["changes"]), ("completed", []))
+        [conflict] = view["answer"]["sections"]["对不上的地方"]
+        self.assertEqual(conflict["text"], "第 3 章和第 10 章：罗盘在谁手上前后对不上（你说两处都保留）")
+        self.assertEqual(view["questions"][0]["answer"]["choice"], "both")
+
+    def test_with_the_questions_used_up_the_program_still_leaves_it_to_the_latest_chapter(self):
+        original = lt.MAX_QUESTIONS
+        lt.MAX_QUESTIONS = 0
+        self.addCleanup(setattr, lt, "MAX_QUESTIONS", original)
+        view = self.trace(output="conclusion")
+        self.assertEqual(view["status"], "completed")
+        self.assertEqual(view["questions"][0]["answer"], {"choice": "you_decide", "by": "program", "applied": True, "changes": []})
+        self.assertIn("（按最新一章：以第 10 章为准）", view["answer"]["sections"]["对不上的地方"][0]["text"])
+
+    def test_every_state_of_a_trace_says_whether_a_thing_changed_hands(self):
+        # H06: for the page only. The wording and the choice of the items are the model's and the checks', not touched.
+        from app.long_task_kinds import Trace
+        outputs = [{"states": [{"state": "苏岑把罗盘交给了温岚", "refs": ["R1"], "chapter": 3}, {"state": "指针转动时会滞住", "refs": ["R2"], "chapter": 4},
+                               {"state": "罗盘由温岚保管", "refs": ["R3"], "chapter": 6}, {"state": "她把罗盘放进外套内袋", "refs": ["R4"], "chapter": 7}], "conflicts": []}]
+        items = Trace().sections(outputs, [], {})["状态变化"]
+        self.assertEqual([item["handover"] for item in items], [True, False, True, False])
+        self.assertEqual([item["text"] for item in items], ["第 3 章：「苏岑把罗盘交给了温岚」", "第 4 章：「指针转动时会滞住」", "第 6 章：「罗盘由温岚保管」", "第 7 章：「她把罗盘放进外套内袋」"])
+        view = self.trace()
+        self.assertTrue(all(isinstance(item["handover"], bool) for item in view["answer"]["sections"]["状态变化"]))
 
     def test_a_disagreement_reaches_back_only_to_passages_earlier_steps_cited(self):
         uncited = self.tracing(earlier=lambda chapters: "R1")  # registered in step 1, never cited
@@ -825,3 +914,128 @@ class PlanRangeTests(unittest.TestCase):
         self.assertIsNone(lt._parse_plan('{"type": "trace", "chapters": [null, null]}')["chapters"])
         self.assertEqual(lt._chapters(None, 12), [1, 12])
         self.assertIn("六章到结尾", lt.PLAN_PROMPT)
+
+
+class PlanCardTests(LongCase):
+    """H05, H09: the plan carries what it is about and the thread names the author gave up, for the card to repeat. No step is told the names."""
+
+    GAVE_UP = ["白色渡船与失去的署名", "廊桥钥匙的指向"]
+
+    def test_a_trace_plan_keeps_what_it_traces_and_a_thread_audit_the_threads_the_author_gave_up(self):
+        self.provider.script_route({"type": "trace", "target": "黄铜罗盘的保管人和位置", "chapters": None, "output": "list", "abandon": self.GAVE_UP})
+        task = self.create("梳理黄铜罗盘的保管人和位置")
+        traced = self.view(task["id"])["plan"]["proposed"]
+        self.assertEqual((traced["target"], traced["abandon"]), ("黄铜罗盘的保管人和位置", []))  # only a thread audit has them
+        self.post(task["id"], "stop", expect=200)
+        self.provider.script_route({"type": "thread_audit", "target": None, "chapters": None, "output": "list", "abandon": ["  白色渡船与失去的署名 ", "廊桥钥匙的指向", "廊桥钥匙的指向", 7, "", None]})
+        audited = self.view(self.create("白色渡船与失去的署名、廊桥钥匙的指向我决定放弃了，把剩下的伏笔清点一遍")["id"])["plan"]["proposed"]
+        self.assertEqual(audited["abandon"], self.GAVE_UP)
+        self.assertEqual(lt._parse_plan('{"type": "thread_audit", "abandon": null}')["abandon"], [])
+        self.assertEqual(lt._parse_plan('{"type": "thread_audit", "abandon": "渡船"}')["abandon"], [])
+        many = lt._parse_plan(json.dumps({"type": "thread_audit", "abandon": [f"伏笔{n}" for n in range(8)]}, ensure_ascii=False))["abandon"]
+        self.assertEqual(many, [f"伏笔{n}" for n in range(5)])
+
+    def test_editing_the_range_keeps_the_names_and_no_step_is_told_them(self):
+        self.provider.script_route({"type": "thread_audit", "target": None, "chapters": None, "output": "list", "abandon": self.GAVE_UP})
+        task = self.create("那些旧伏笔我已经决定不追了，剩下的清点一遍")
+        edited = self.post(task["id"], "plan", {"chapters": [6, 10]}, expect=200).json()["data"]["plan"]["proposed"]
+        self.assertEqual(edited["abandon"], self.GAVE_UP)
+        self.provider.script(self.audit_turns())
+        self.post(task["id"], "start", expect=202)
+        self.assertEqual(self.view(task["id"])["status"], "completed")
+        seen = json.dumps([call["messages"] for call in self.provider.calls], ensure_ascii=False)
+        self.assertFalse(any(name in seen for name in self.GAVE_UP), "the names are the author's words, for the card only")
+        self.assertEqual([item["kind"] for item in self.view(task["id"])["changes"]], ["resolve_thread"])  # and no card to give a thread up comes of them
+
+    def test_the_plan_prompt_asks_for_the_names_and_changes_nothing_else(self):
+        self.assertIn("- abandon：thread_audit 时，作者在话里明确说要放弃、不追了的伏笔名字（照作者的说法写，最多 5 条），没有就写 null", lt.PLAN_PROMPT)
+        self.assertTrue(lt.PLAN_PROMPT.endswith('"ask_first": …, "focus": …, "abandon": …}'))
+        without = "\n".join(line for line in lt.PLAN_PROMPT.replace(', "abandon": …', "").splitlines() if not line.startswith("- abandon："))
+        self.assertIn("- focus：tidy 时", without)
+        self.assertEqual(without.count("abandon"), 0)
+
+
+class ConflictQuoteTests(unittest.TestCase):
+    """H07: the option of a question quotes the sentence that disagrees, not the head of its passage."""
+
+    @staticmethod
+    def chapter(number):
+        import pathlib
+        seed = json.loads((pathlib.Path(lt.__file__).parent / "seed" / "sample_work.json").read_text(encoding="utf-8"))
+        return " ".join(seed["chapters"][number - 1]["body"].split())
+
+    def test_the_words_the_finding_reports_are_where_the_quote_is_centred(self):
+        from app.long_task_kinds import conflict_quote
+        text = "下午老周送来一张补充申请回执，温岚问旧牌明早是否还在原位，老周说明早再申报。秋汛第十九日傍晚五点四十分，北潮闸没有关闭，雾钟却响了一次。工作本在她手里顿住。老周也抬起头，没有说话。"
+        quote = conflict_quote([text], ["北潮闸没有关闭，雾钟却响了一次"])
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", quote)
+        self.assertTrue(quote.startswith("…") and quote.endswith("…"))
+        self.assertLessEqual(len(quote.strip("…")), 60)
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", conflict_quote([text], ["北潮闸没有关闭雾钟却响了一次"]))  # punctuation aside, as a state is copied
+        self.assertTrue(conflict_quote([text], ["下午老周送来一张补充申请回执"]).startswith("下午老周"))  # at the head: no ellipsis in front
+
+    def test_without_the_words_the_sentence_sharing_most_with_the_hint_is_quoted_and_only_then_the_head(self):
+        from app.long_task_kinds import conflict_quote
+        text = "下午老周送来一张补充申请回执。温岚问旧牌明早是否还在原位。秋汛第十九日傍晚五点四十分，北潮闸没有关闭，雾钟却响了一次。老周也抬起头，没有说话。"
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", conflict_quote([text], ["这里没有的一句话"], "闸没关闭，钟却响了"))
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", conflict_quote([text], [], "闸没关闭，钟却响了"))
+        self.assertEqual(conflict_quote([text], [], "完全无关的话语"), text[:60])
+        self.assertEqual(conflict_quote([text], []), text[:60])
+        self.assertEqual(conflict_quote([], ["x"]), "")
+        self.assertEqual(conflict_quote(["短短一句。"], ["短短一句"]), "短短一句。")
+
+    def test_the_grey_harbour_example_the_option_of_chapter_10_holds_the_sentence_that_disagrees(self):
+        # H07: chapter 10's option showed the paragraph's head ("下午老周送来一张补充申请回执……") and not the sentence.
+        import types
+        from app.long_task_kinds import Trace
+        rows = {"R1": {"chapter_number": 1, "text": self.chapter(1)}, "R2": {"chapter_number": 10, "text": self.chapter(10)}}
+        ctx = types.SimpleNamespace(registry=types.SimpleNamespace(rows=rows))
+        found = {"states": [{"state": "北潮闸没有关闭，雾钟却响了一次", "refs": ["R2"]}],
+                 "conflicts": [{"earlier": ["R1"], "later": ["R2"], "what": "雾钟只在闸关后响，后文闸没关却响"}]}
+        _, _, [question] = Trace().apply(ctx, {}, {"output": "conclusion"}, found, {}, {})
+        earlier, later = question["options"]
+        self.assertNotEqual(later["quote"], rows["R2"]["text"][:60])
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", later["quote"])
+        self.assertIn("雾钟只在北潮闸完全关闭后敲响一次", earlier["quote"])
+        self.assertEqual((earlier["chapter"], later["chapter"]), (1, 10))
+        # without a state of its own the sentence is still found by what the disagreement says
+        found["states"] = []
+        _, _, [question] = Trace().apply(ctx, {}, {"output": "conclusion"}, found, {}, {})
+        self.assertIn("北潮闸没有关闭，雾钟却响了一次", question["options"][1]["quote"])
+
+
+class RepeatedAuditTests(LongCase):
+    """V03: the same text audited twice, with the cards confirmed and undone in between, must show the model the same thing. Where two
+    audits of unchanged text differ, the model's reading is what differs, not what the program handed it."""
+
+    THREAD_COLUMNS = "id,title,description,status,planted_chapter_id,planted_source_span_id,resolved_chapter_id,resolved_source_span_id,archived_at,created_at"
+
+    def threads(self):
+        return self.rows(f"SELECT {self.THREAD_COLUMNS} FROM v2_foreshadows WHERE project_id=? ORDER BY created_at,id", self.project_id)
+
+    def audit(self):
+        """One audit of the whole work with a model that closes 罗盘下落 in chapter 10 and gives 旧尺零点 up there; what the model was shown."""
+        self.plan()
+        task = self.create()
+        self.provider.script(self.audit_turns(abandon=True), self.audit_turns(abandon=True))  # scripting starts the record of calls afresh
+        self.post(task["id"], "start", expect=202)
+        view = self.view(task["id"])
+        self.assertEqual(view["status"], "completed", view)
+        self.assertEqual(len(self.provider.calls), 2)
+        return view, [call["messages"] for call in self.provider.calls]
+
+    def test_confirm_undo_and_audit_again_hands_the_model_the_same_messages_and_leaves_the_threads_as_they_were(self):
+        threads_before = self.threads()
+        first, shown_first = self.audit()
+        by_kind = {item["kind"]: item["id"] for item in first["changes"]}
+        self.assertEqual(set(by_kind), {"resolve_thread", "abandon_thread"})
+        for kind in ("resolve_thread", "abandon_thread"):
+            self.post(first["id"], "changes/confirm", {"accepted": [by_kind[kind]], "within": [by_kind[kind]]}, expect=200)
+        self.assertEqual({row["status"] for row in self.threads() if row["id"] in (self.thread_id, self.second)}, {"resolved", "abandoned"})
+        for change_id in by_kind.values():
+            self.client.post(f"/api/projects/{self.project_id}/assistant/changes/{change_id}/undo", headers=self.idem(), json={"confirm": True})
+        self.assertEqual(self.threads(), threads_before)  # every field the audit reads (and the rest but the version counters) is as it was
+        second, shown_second = self.audit()
+        self.assertEqual(shown_second, shown_first)  # the system rules, the thread lines, the digest and the chapters, word for word
+        self.assertEqual([item["kind"] for item in second["changes"]], [item["kind"] for item in first["changes"]])
+        self.assertEqual(second["answer"]["sections"], first["answer"]["sections"])

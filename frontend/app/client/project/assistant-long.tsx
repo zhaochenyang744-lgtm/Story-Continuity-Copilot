@@ -6,13 +6,13 @@
 // bold and one mark for its sources) with the changes it proposes under it, one card for each kind, a high-risk change on a card of its own.
 // The cards are the change card of 改资料 (assistant-change.tsx) with another title; nothing here writes the materials itself: it asks the
 // server, and shows the answer. The conversation (assistant.tsx) asks for a task that is being worked on every 2 seconds and hands the new view in.
-import { type CSSProperties, useId, useState } from "react";
+import { type CSSProperties, Fragment, type ReactNode, useId, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { AssistantChangeKind, AssistantSentence, AssistantSource, AssistantTask, LongPlanBody, LongQuestion, LongStepSpec } from "../../model";
 import { type CheckUsage, formatCount, isSampleWork } from "../ui";
 import { SentenceText } from "./assistant-answer";
 import { ChangeCard, type LongGroup } from "./assistant-change";
-import { citedRefs, sentencesOf, SourceList, sourceKey } from "./assistant-parts";
+import { citedRefs, Fold, sentencesOf, SourceList, sourceKey } from "./assistant-parts";
 import { ThreeSquares, useSecondsSince } from "./assistant-process";
 import { type AskHandlers, Question } from "./assistant-task";
 
@@ -20,6 +20,26 @@ const root = (projectId: string, taskId: string) => `/projects/${projectId}/assi
 
 /** 第 3 章, or 第 1–5 章. */
 export const chapterSpan = (low: number, high: number) => (low === high ? `第 ${low} 章` : `第 ${low}–${high} 章`);
+/** What the server adds to a plan and to a trace's report items for this page (the shared model types do not carry them). */
+type PlanOf = LongPlanBody & { abandon?: string[] };
+type ReportItem = AssistantSentence & { handover?: boolean };
+
+/** Said on every plan card: what a long task does not read. */
+export const SCOPE_NOTE = "长任务只读已写章节的正文，不对照本章草稿和计划。";
+
+/** 要理的：…  /  要清点的：…: what the plan is about, so the author sees it before starting. The target is the author's own wording of it. */
+export function planSubject(plan: PlanOf): string | null {
+  if (plan.type === "trace") return plan.target ? `要理的：${plan.target}` : null;
+  if (plan.type === "thread_audit") return "要清点的：还没收的伏笔";
+  return null;
+}
+
+/** The threads the author named as given up: a long task goes by the text only, and says how to have them marked. */
+export function abandonNote(names: string[] | undefined): string | null {
+  if (!names?.length) return null;
+  return `你点名放弃的${names.map((name) => `「${name}」`).join("")}：长任务只按正文判断。要直接标放弃，发一句「把「${names[0]}」标为放弃」，我给你改资料的卡片。`;
+}
+
 const yuan = (value: number) => `¥${value.toFixed(2)}`;
 /** A ceiling is a round figure: ¥2, ¥0.5. */
 const ceiling = (value: number) => `¥${Number(value.toFixed(2))}`;
@@ -79,7 +99,7 @@ function StepList({ steps, produces }: { steps: LongStepSpec[]; produces: string
 
 /** 约读 N 字 · 预计 ¥x · 上限 ¥y 调整, and (below it) what that is against the day's allowance. */
 function PlanCard({ task, plan, handlers, usage, sample, maxChapter, usageChanged }: {
-  task: AssistantTask; plan: LongPlanBody; handlers: AskHandlers; usage: CheckUsage | null; sample: boolean; maxChapter: number | null; usageChanged: () => void;
+  task: AssistantTask; plan: PlanOf; handlers: AskHandlers; usage: CheckUsage | null; sample: boolean; maxChapter: number | null; usageChanged: () => void;
 }) {
   const { projectId, replace } = handlers;
   const cap = task.plan?.cap_cny ?? 2;
@@ -122,6 +142,7 @@ function PlanCard({ task, plan, handlers, usage, sample, maxChapter, usageChange
   return (
     <section className="a-card a-long-plan" aria-label="长任务计划" data-testid="long-plan">
       <div className="a-card-head"><strong>长任务 · 计划</strong><span>点「开始」才读正文</span></div>
+      {planSubject(plan) && <p className="a-long-quota" data-testid="long-subject">{planSubject(plan)}</p>}
       <StepList steps={plan.steps} produces={plan.produces} />
       <div className="a-long-est" data-testid="long-estimate">
         <span>约读 {formatCount(plan.est_chars)} 字 · 预计 {yuan(plan.est_cny)} · 上限 {ceiling(cap)}</span>
@@ -133,6 +154,8 @@ function PlanCard({ task, plan, handlers, usage, sample, maxChapter, usageChange
             : short ? `要读约 ${formatCount(plan.est_chars)} 字，你今天只剩 ${formatCount(remaining)} 字，不够读完。缩小章节范围再开始。`
               : `要读约 ${formatCount(plan.est_chars)} 字，你今天还剩 ${formatCount(remaining)} 字。`}
       </p>
+      <p className="a-long-quota" data-testid="long-scope">{SCOPE_NOTE}</p>
+      {abandonNote(plan.abandon) && <p className="a-long-quota" data-testid="long-abandon">{abandonNote(plan.abandon)}</p>}
       {form && (
         <form id={form_id} className="a-long-form" onSubmit={submit} aria-label="调整计划">
           <div className="row">
@@ -238,7 +261,8 @@ function AskCard({ task, question, handlers }: { task: AssistantTask; question: 
               {option.quote && <small>「{option.quote}」</small>}
             </button>
           ))}
-          {question.choices.includes("you_decide") && <button type="button" className="a-long-option plain" disabled={locked} onClick={() => void answer("you_decide")}>你定</button>}
+          {question.choices.includes("both") && <button type="button" className="a-long-option plain" data-key="both" disabled={locked} onClick={() => void answer("both")}>两处都保留（是有意的）</button>}
+          {question.choices.includes("you_decide") && <button type="button" className="a-long-option plain" data-key="you_decide" disabled={locked} onClick={() => void answer("you_decide")}>你定（按最新一章）</button>}
         </div>
       )}
       {problem && <p className="a-note a-long-problem" role="alert">{problem}</p>}
@@ -246,13 +270,23 @@ function AskCard({ task, question, handlers }: { task: AssistantTask; question: 
   );
 }
 
+/** What the author answered to a question about two sayings that differ, in the report's words. "你定" goes by the later of the two (the program's
+    pick, option b) and says so. */
+export function decisionLine(item: LongQuestion): string {
+  const choice = item.answer?.choice;
+  if (choice === "both") return "中途问过一处：你说两处都保留。";
+  const option = item.options?.find((entry) => entry.key === choice);
+  if (option) return `中途问过一处：你选了「${option.label}」。`;
+  const latest = item.options?.find((entry) => entry.key === "b")?.chapter;
+  return `中途问过一处：你让助手定${latest ? `，按第 ${latest} 章为准` : ""}。`;
+}
+
 /** What was asked on the way and what the author said, one quiet line each. */
 function Asked({ task }: { task: AssistantTask }) {
   const lines = (task.questions ?? []).filter((item) => item.answer).map((item) => {
     const choice = item.answer!.choice;
     if (item.kind === "budget") return { key: item.id, text: choice === "continue" ? `中途问过费用：提高上限到 ${ceiling(item.answer!.cap_cny ?? task.plan?.cap_cny ?? 0)} 接着做了。` : "中途问过费用：你选了到此为止。" };
-    const option = item.options?.find((entry) => entry.key === choice);
-    return { key: item.id, text: `中途问过一处：${option ? `你选了「${option.label}」` : "你让助手定"}。` };
+    return { key: item.id, text: decisionLine(item) };
   });
   if (!lines.length) return null;
   return <>{lines.map((line) => <p key={line.key} className="a-limit" data-testid="long-asked">{line.text}</p>)}</>;
@@ -295,34 +329,82 @@ function Cover({ task }: { task: AssistantTask }) {
 const pointOf = (item: AssistantSentence): AssistantSentence =>
   item.label && item.text.startsWith(`${item.label}：`) ? { ...item, text: `${item.label}${item.text.slice(item.label.length + 1)}` } : item;
 
-/** The report: a line that counts what is below it (the program's, from the sections), a bold title for each section, its items as points, then
-    what was looked at, the sources folded, and the server's note (中途停下了 …). */
+/** The sections of a trace's report in the order they are read (H06): where the two sayings differ, then what changed hands or place, then the rest
+    folded. Null for a report that is not a trace's, or one made before the server marked the items (it keeps its own sections). */
+export const HANDOVER_TITLE = "换手和挪地方";
+export const OTHER_TITLE = "其他描写";
+export function traceSections(sections: Record<string, AssistantSentence[]> | undefined): Record<string, AssistantSentence[]> | null {
+  const states = (sections?.["状态变化"] ?? []) as ReportItem[];
+  if (!states.length || states.every((item) => item.handover === undefined)) return null;
+  const handover = states.filter((item) => item.handover);
+  const other = states.filter((item) => !item.handover);
+  const differ = sections?.["对不上的地方"] ?? [];
+  return { ...(differ.length ? { 对不上的地方: differ } : {}), ...(handover.length ? { [HANDOVER_TITLE]: handover } : {}), ...(other.length ? { [OTHER_TITLE]: other } : {}) };
+}
+
+/** 最后写到：第 10 章，右手仍托着罗盘 — made from the last state of the report, whose text is 「第 N 章：「…」」. */
+export function lastWritten(states: AssistantSentence[] | undefined): string | null {
+  const last = states?.[states.length - 1];
+  const found = last ? /^(第 \d+ 章)：「([\s\S]*)」$/.exec(last.text) : null;
+  return found ? `最后写到：${found[1]}，${found[2]}` : null;
+}
+
+/** 其他描写 N 条 ›: the items that are neither a handover nor a change of place, closed until the author opens them. */
+function Collapsed({ title, children, count }: { title: string; children: ReactNode; count: number }) {
+  const [open, setOpen] = useState(false);
+  const panel = useId();
+  return (
+    <section className="a-long-section" aria-label={title} data-testid="long-other">
+      <div className="a-sources-wrap">
+        <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>{title} {count} 条<Fold open={open} /></button>
+        {open && <div id={panel}>{children}</div>}
+      </div>
+    </section>
+  );
+}
+
+/** The report: a line that counts what is below it (the program's, from the sections) — for a trace the last state it wrote instead — a bold title
+    for each section, its items as points, then what was looked at, the sources folded, and the server's note (中途停下了 …). */
 function Report({ task, handlers }: { task: AssistantTask; handlers: AskHandlers }) {
-  const answer = sentencesOf(task);
+  const original = sentencesOf(task);
+  const traced = task.plan?.approved?.type === "trace" ? traceSections(original?.sections) : null;
+  // A trace's report is shown in the order it is read, so the numbers of the marks follow it.
+  const shown = traced && original ? { ...task, answer: { ...original, sections: traced } } : task;
+  const answer = sentencesOf(shown);
   const sections = Object.entries(answer?.sections ?? {}).filter(([, items]) => items.length > 0);
-  const refs = citedRefs(task);
+  const refs = citedRefs(shown);
   const total = sections.reduce((sum, [, items]) => sum + items.length, 0);
   let order = 0;
   const locate = (source: AssistantSource) => handlers.locate(source);
+  const points = (items: AssistantSentence[]) => (
+    <ul className="a-points">
+      {items.map((item, index) => <li key={index}><SentenceText task={shown} sentence={pointOf(item)} bold order={order++} refs={refs} locate={locate} /></li>)}
+    </ul>
+  );
+  const last = traced ? lastWritten(original?.sections?.["状态变化"]) : null;
+  const asked = <Asked task={task} />;
+  const askedHere = traced ? sections.findIndex(([title]) => title !== "对不上的地方") : -1;  // the questions come after where the sayings differ
   return (
     <div className="a-long-report" data-testid="long-report">
       <div className="a-answer">
         {total === 0
           ? <p className="a-lead" data-testid="not-found-line">没有找到问题问到的内容。</p>
-          : <p className="a-lead" data-testid="long-count">共 {total} 条：{sections.map(([title, items]) => `${title} ${items.length} 条`).join("，")}。</p>}
-        {sections.map(([title, items]) => (
-          <section key={title} className="a-long-section" aria-label={title}>
-            <h4>{title}</h4>
-            <ul className="a-points">
-              {items.map((item, index) => <li key={index}><SentenceText task={task} sentence={pointOf(item)} bold order={order++} refs={refs} locate={locate} /></li>)}
-            </ul>
-          </section>
+          : last ? <p className="a-lead" data-testid="long-last">{last}</p>
+            : <p className="a-lead" data-testid="long-count">共 {total} 条：{sections.map(([title, items]) => `${title} ${items.length} 条`).join("，")}。</p>}
+        {sections.map(([title, items], index) => (
+          <Fragment key={title}>
+            {traced && index === askedHere && asked}
+            {title === OTHER_TITLE && traced
+              ? <Collapsed title={title} count={items.length}>{points(items)}</Collapsed>
+              : <section className="a-long-section" aria-label={title}><h4>{title}</h4>{points(items)}</section>}
+          </Fragment>
         ))}
+        {traced && askedHere < 0 && asked}
         {answer?.note && <p className="a-answer-note" data-testid="long-note">{answer.note}</p>}
       </div>
-      <Asked task={task} />
+      {!traced && asked}
       <Cover task={task} />
-      <SourceList task={task} locate={locate} skip={new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)))} />
+      <SourceList task={shown} locate={locate} skip={new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)))} />
     </div>
   );
 }
@@ -337,10 +419,11 @@ function Groups({ task, handlers }: { task: AssistantTask; handlers: AskHandlers
   const risky = changes.filter((item) => item.risk === "high");
   const refresh = () => request<AssistantTask>(root(projectId, task.id));
   const confirm = (accepted: string[], within: string[]) => json<AssistantTask>(`${root(projectId, task.id)}/changes/confirm`, "POST", { accepted, within });
+  const reject = (within: string[]) => json<AssistantTask>(`${root(projectId, task.id)}/changes/reject`, "POST", { within });
   const kinds = [...new Set(plain.map((item) => item.kind))];
   const groups: (LongGroup & { key: string })[] = [
-    ...kinds.map((kind) => ({ key: kind, title: GROUP_TITLE[kind], items: plain.filter((item) => item.kind === kind), alone: false, confirm, refresh })),
-    ...risky.map((item, index) => ({ key: item.id, title: GROUP_TITLE[item.kind], items: [item], alone: true, ...(risky.length > 1 ? { place: `${index + 1}/${risky.length}` } : {}), confirm, refresh })),
+    ...kinds.map((kind) => ({ key: kind, title: GROUP_TITLE[kind], items: plain.filter((item) => item.kind === kind), alone: false, confirm, reject, refresh })),
+    ...risky.map((item, index) => ({ key: item.id, title: GROUP_TITLE[item.kind], items: [item], alone: true, ...(risky.length > 1 ? { place: `${index + 1}/${risky.length}` } : {}), confirm, reject, refresh })),
   ];
   return (
     <div className="a-long-groups" data-testid="long-groups">
