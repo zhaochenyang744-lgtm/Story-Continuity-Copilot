@@ -125,7 +125,7 @@ The audit overturned ten verdicts, two of them on safety items; the safety bar w
 
 ## Version and deployment
 
-Production runs **v2.1.0**, release `RELEASE_ID` ([deployment record](docs/DEPLOYMENT_RECORD)).
+Production runs **v2.1.0**, release `v210-d1b06f3-20261029` ([deployment record](docs/deployment-2026-10-29-v210.md)).
 
 - **v2.1.0:**
   - Long tasks: a thread audit or a trace across the whole book, with a plan the author approves first, a background run that can be stopped, questions when two chapters disagree, and a report with grouped changes that can be confirmed in part.
