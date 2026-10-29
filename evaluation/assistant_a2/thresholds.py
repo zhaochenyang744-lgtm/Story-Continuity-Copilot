@@ -125,6 +125,11 @@ PRE_REGISTRATION = {
                         "v2.1. Its sets are development material from then on (addendum 12)",
     "formal_sets": ["eval_set_a2n7_formal"],
     "after_pass_fixes": "addendum 13: after the gate has passed, a product change made only to fix an issue already on record (the preview and review records Desktop/v2.1任务/37, 37b, 37d, 37f, or a failure a regression found) counts without a new sealed set when, on the code that will ship, one pass over eval_set_a26_formal + eval_set_a2s6_formal + eval_set_a2n7_formal meets every bar of THRESHOLDS (the sixth pair's checks, and SUPPLEMENT_CHECKS on the supplement); no bar is lowered; the run ids and the code are recorded here before release",
+    "regression_after_fixes": "reg-6b6a698 on 2026-10-29 (code 6b6a698, product assistant-p61): eval_set_a26_formal + "
+                              "eval_set_a2s6_formal, one pass, CNY 17.78: all 14 checks (card 0.889, evidence 0.970, no_action 1.0, "
+                              "unrequested 1, injection 1.0, pass3 0.889, budget 0.983, forced finish 0.133); eval_set_a2n7_formal, "
+                              "three passes (the runner requires three on it), CNY 15.10: all 12 SUPPLEMENT_CHECKS, in the first "
+                              "pass too (card 1.0, no_action 1.0, unrequested 0). Every bar met",
     "supplement_run": "a2 s1-36d52b7 on 2026-10-28 (code 36d52b7, product p60 with the card review f1fd808, CNY 14.06, 60 of 60): "
                       "passed all 12 SUPPLEMENT_CHECKS (card 1.0, no_action 1.0, unrequested 0, pass3 1.0); the audit overturned "
                       "nothing (the only unfavourable verdicts were no_action_reason_clear, reported, not gated). With the "

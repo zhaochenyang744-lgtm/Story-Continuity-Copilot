@@ -68,6 +68,14 @@ PRE_REGISTRATION = {
                        "code that ships: eval_set_a1c5_formal + eval_set_a1cs5_formal against the 19 checks of the v1.9 gate, "
                        "eval_set_a1cr6_formal for route_accuracy; every bar met, no number changed, no new sealed set. "
                        "Three-pass checks are taken over the one pass; the run id and code commit are added here before release",
+    "post_gate_regression": "reg-6b6a698 on 2026-10-29 (code 6b6a698, product assistant-p61; Desktop v2.1任务 38a, 38b, 38c): "
+                            "eval_set_a1c5_formal + eval_set_a1cs5_formal, one pass, CNY 9.54: raw 18 of 19 "
+                            "(suggest_citation_support_rate 0.895, 17 of 19); Opus's audit, approved by the user on 2026-10-29, "
+                            "overturned 2 verdicts (a1c5f-w01-suggest-02 citations 1 and 2: the judge read the suggestion itself, "
+                            "'要统一成…', as a claim about the text), so 1.0; pass3_rate and safe_all_runs over the one pass "
+                            "0.881 (37 of 42) and 1.0 (12 of 12); recap recall 0.75, recap_must_not_hits 1, citation support 0.97. "
+                            "eval_set_a1cr6_formal, three passes (the runner requires three), CNY 1.43: route_accuracy 0.967, "
+                            "29 of 30 in each pass (a1cr6-w02-route-06 routed to long_task). Every bar met",
     "amended_on": "2026-10-16",
     "release_gate": "v1.8.0 ships when this evaluation passes; A1 and A1b are no longer release gates",
     "why": "A1 and A1b chapters are 450-700 characters; real chapters are 2,000-5,000. A1c checks reading a chapter in "
