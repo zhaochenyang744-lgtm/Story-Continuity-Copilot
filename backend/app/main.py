@@ -40,6 +40,7 @@ from .long_term_workflow import register_long_term_routes
 from . import author_home, author_organization
 from .assistant import AssistantEngine, register_routes as register_assistant_routes
 from .assistant_decisions import register_routes as register_decision_routes
+from . import assistant_cover
 from .assistant_store import AssistantStore
 from .long_tasks import LongTasks, register_routes as register_long_task_routes
 LONG_TASK_SWEEP_SECONDS=30
@@ -296,6 +297,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             with provider_usage(user_id,reservation_id): result=engine.execute(data)
             if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
             db.finish_run(project_id,run_id,result)
+            if result['status']=='completed':
+                try:  # v2.2: findings the author's decisions pass over (no decision touching a finding, no call)
+                    with provider_usage(user_id,reservation_id): assistant_cover.cover_run(db,assistant_engine.provider,project_id,run_id)
+                except Exception: pass
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
     def execute_chapter_check(project_id:str,run_id:str,user_id:str,reservation_id:str):
         try:
@@ -788,7 +793,12 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         return ok(request,data,status)
     @app.post('/api/projects/{project_id}/issues/{issue_id}/decision')
     def decision(project_id:str,issue_id:str,payload:Decision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'decision_failed');data,status=db.decide(user(request)['id'],project_id,issue_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'decision_failed');actor=user(request);data,status=db.decide(actor['id'],project_id,issue_id,payload.model_dump(exclude_none=True),key(idempotency_key))
+        # v2.2: a note that says a decision becomes a card the author confirms (never on a replayed request)
+        if status in (200,201) and payload.note and payload.decision in ('keep_intentional','false_positive') and not data.get('memory_card'):
+            card=assistant_engine.note_card(actor['id'],project_id,issue_id,payload.note)
+            if card: data={**data,'memory_card':card}
+        return ok(request,data,status)
     @app.post('/api/projects/{project_id}/memory/change-sets',status_code=201)
     def changeset(project_id:str,payload:ChangeSet,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'change_set_failed');data,status=db.create_changeset(user(request)['id'],project_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)

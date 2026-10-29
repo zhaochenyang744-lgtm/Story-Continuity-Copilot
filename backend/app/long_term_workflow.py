@@ -146,6 +146,11 @@ def _policy_view(c, row):
 def issue_reuse(c, issue, run):
     own = c.execute("SELECT * FROM v2_decision_reuse WHERE project_id=? AND issue_id=?", (issue["project_id"], issue["id"])).fetchone()
     result = {"reuse_policy": _policy_view(c, own) if own else None, "reused_decision": None}
+    from .assistant_cover import covering  # v2.2: a finding the author's decision passed over is decided as a reused one is
+    cover = covering(c, issue)
+    if cover:
+        result["reused_decision"] = cover
+        return result
     if not binding_is_current(c, run):
         return result
     bound = c.execute("SELECT binding_json FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
@@ -167,7 +172,9 @@ def open_issue_count(c, project_id, severity=None):
     issues = c.execute("SELECT * FROM v2_issues WHERE project_id=? AND status='open'", (project_id,)).fetchall()
     if severity:
         issues = [issue for issue in issues if issue["severity"] == severity]
-    if not c.execute("SELECT 1 FROM v2_decision_reuse WHERE project_id=? AND enabled=1", (project_id,)).fetchone():
+    has_covers = c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_issue_decision_covers'").fetchone() is not None
+    covers = has_covers and c.execute("SELECT 1 FROM v2_issue_decision_covers WHERE project_id=? LIMIT 1", (project_id,)).fetchone() is not None
+    if not covers and not c.execute("SELECT 1 FROM v2_decision_reuse WHERE project_id=? AND enabled=1", (project_id,)).fetchone():
         return len(issues)
     runs = {}
     count = 0
@@ -372,6 +379,9 @@ def commit_revision(db, user_id, project_id, change_id, payload, key):
                 c.execute("INSERT INTO v2_source_revision_reviews VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (_id("sourcereview"), project_id, change_id, chapter["id"], target, memory["id"], _json(memory), _json(impact["old_source_span_ids"]), span_id, "pending", 1, None, None, None, None, stamp, None))
             c.execute("UPDATE v2_projects SET source_revision=?,updated_at=? WHERE id=?", (target, stamp, project_id))
             author_home.record_writing(c, project, user_id, chapter["chapter_number"], db._project_word_count(c, project_id) - words_before, stamp, draft_save=False)
+            from .assistant_decisions import mark_stale  # v2.2: decisions standing on this chapter may be out of date now
+            if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone():
+                mark_stale(c, project_id, {chapter["chapter_number"]}, stamp)
             c.execute("UPDATE v2_source_change_sets SET status='committed',committed_at=? WHERE id=?", (stamp, change_id))
             audit = {"actor_user_id": user_id, "chapter_id": chapter["id"], "old_source_span_ids": impact["old_source_span_ids"], "new_source_span_id": span_id, "target_source_revision": target, "affected_memory_count": impact["affected_memory_count"], "affected_analysis_count": impact["affected_analysis_count"], "automatic_canon_changes": 0}
             c.execute("INSERT INTO v2_source_change_set_audits VALUES(?,?,?,?,?,?)", (_id("sourceaudit"), project_id, change_id, "revision_committed", _json(audit), stamp))

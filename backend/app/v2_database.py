@@ -343,7 +343,10 @@ class V2Database:
 
     def _create_sample_work(self, c: sqlite3.Connection, user_id: str, origin: str) -> str:
         """The one sample work (示例作品) an account has: a tutorial-origin copy for authors, a demo copy for visitors."""
-        return self._create_project(c, user_id, SAMPLE_PROJECT["title"], SAMPLE_PROJECT["genre"], SAMPLE_PROJECT["summary"], origin, "grey_harbor")
+        project_id = self._create_project(c, user_id, SAMPLE_PROJECT["title"], SAMPLE_PROJECT["genre"], SAMPLE_PROJECT["summary"], origin, "grey_harbor")
+        from .assistant_decisions import seed_sample  # v2.2: the sample work shows two of the author's decisions
+        seed_sample(c, project_id, utcnow())
+        return project_id
 
     def _migrate_v170_single_sample(self, c: sqlite3.Connection) -> None:
         """v1.7.0: every account keeps exactly one sample work, re-created from the current seed.

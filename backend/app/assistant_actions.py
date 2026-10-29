@@ -162,6 +162,9 @@ def _thread_label(status: str, chapter: int | None) -> str:
 
 
 def propose_resolve_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
+    with ctx.db.connection() as c:  # the author said to keep it open (v2.2): whatever the passages, it is not marked resolved
+        if target and target.get("object_id") in assistant_decisions.kept_open(c, ctx.project_id):
+            raise ToolError("change_thread_kept_open")
     evidence = evidence_of(ctx, args.get("evidence"))
     with ctx.db.connection() as c:
         row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (target["object_id"], ctx.project_id)).fetchone()

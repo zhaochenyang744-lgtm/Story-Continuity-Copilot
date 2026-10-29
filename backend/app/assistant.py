@@ -6,6 +6,7 @@ checks the numbers, quotes the registered text itself, and works out what was an
 """
 from __future__ import annotations
 
+import concurrent.futures
 import contextvars
 import json
 import re
@@ -28,7 +29,7 @@ from .problem_codes import Problem, codes_of, count as count_codes
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
-from . import assistant_consensus, assistant_proposals, assistant_review
+from . import assistant_consensus, assistant_decisions, assistant_proposals, assistant_recognize, assistant_review
 from .text_content import written_chars
 
 ASSISTANT_PROMPT_VERSION = "assistant-p61"
@@ -136,6 +137,9 @@ REVIEW_LINES = {"not_closed": "核对后去掉了一条：依据的原文没有�
 # What a change task with a card says in the program's words: nothing is written yet. "已提出按正文修正" was read as a change
 # already made, by the grader and plausibly by an author (A2 regression round 2, injection-05; the fourth formal run's audit).
 PENDING_LINE = "这些改动要等你在卡片上确认后才会写进资料。"
+# A decision the author's sentence said, put on the card (v2.2).
+DECISION_CARD_LINE = "你这句话里有一个以后也要照办的决定，卡片上附了一条，确认后才会记下。"
+NOTE_CARD_LINE = "你在检查里写的这句话可以记成一条以后也照办的决定，确认后才会记下。"
 # A sentence that says a change was proposed, when the task ends with no card: the clause goes (A2 fifth formal run: "我已按第15章
 # 提出改动，等你确认" with nothing to confirm, three times).
 CLAIMED_PROPOSAL = re.compile(r"[，,；;]?\s*(?:我[^，,。；;]{0,16}|已(?:经)?(?:按|照)[^，,。；;]{0,12})提出[^。；;]*")
@@ -527,6 +531,7 @@ class AssistantEngine:
         # A change task's hidden runs (`assistant_consensus`): those still running, by the author's task, and those that finished.
         self._shadows: dict[str, list[tuple[str, threading.Thread]]] = {}
         self._shadows_done: set[str] = set()
+        self._recognitions: dict[str, concurrent.futures.Future] = {}  # a task's decision recognition (v2.2), running beside it
         self._requests: dict[str, list[dict[str, Any]] | None] = {}  # a change task's request list, kept for its closing line
         self._reviewed: dict[str, set[str]] = {}  # why the card's second reader took items off a change task's card
 
@@ -752,6 +757,8 @@ class AssistantEngine:
             with provider_usage(row["user_id"], row["reservation_id"]):
                 if self._runs(row["kind"]) > 1 and row["status"] == "queued":
                     self._shadows[task_id] = self._start_shadows(row, self._runs(row["kind"]) - 1 - self._held_runs(row["kind"]))
+                if self.settings.assistant_recognize_decisions and row["kind"] in ("ask", "change") and row["status"] == "queued":
+                    self._recognitions[task_id] = self._start_recognition(row)
                 self._run(row)
                 if task_id in self._shadows:  # cancelled: the hidden runs stop with it, and go
                     self._agree(task_id, None)
@@ -761,6 +768,90 @@ class AssistantEngine:
                 self._fail(task_id, "internal_error", limited=False, internal_error_type=type(error).__name__)
             except Exception:
                 pass
+
+    def _start_recognition(self, row: Any) -> concurrent.futures.Future:
+        """Read the author's sentence for a decision beside the task (`assistant_recognize`); a failure only means no card."""
+        question = json.loads(row["input_json"]).get("question") or ""
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question)
+        pool.shutdown(wait=False)
+        return future
+
+    def _decision_card(self, task_id: str, answer: dict[str, Any]) -> dict[str, Any]:
+        """Put the decision the author's sentence said, if any, on the task's card, and add what the call cost to the task's."""
+        future = self._recognitions.pop(task_id, None)
+        if future is None:
+            return answer
+        try:
+            result = future.result(timeout=assistant_recognize.RECOGNIZE_TIMEOUT_SECONDS + 2)
+        except Exception:  # no recognition is no card
+            return answer
+        row = self.store.row(task_id)
+        found = assistant_recognize.parse((result.message or {}).get("content"))
+        with self.db.connection() as c:
+            c.execute("UPDATE assistant_tasks SET input_tokens=input_tokens+?,output_tokens=output_tokens+?,cost_cny=cost_cny+? WHERE id=?",
+                      (result.input_tokens or 0, result.output_tokens or 0, self._cost(result), task_id))
+            grounded = assistant_recognize.ground(c, row["project_id"], json.loads(row["input_json"]).get("question") or "", found,
+                                                  source_ref=task_id) if found else None
+            if grounded is None:
+                return answer
+            assistant_decisions.card_item(c, task_id, row["project_id"], *grounded)
+        return {**answer, "note": " ".join(part for part in (answer.get("note"), DECISION_CARD_LINE) if part)}
+
+    def note_card(self, user_id: str, project_id: str, issue_id: str, note: str | None) -> dict[str, Any] | None:
+        """A check decision's note (说一句为什么) read for a decision (v2.2): when it says one, a finished task holding only its
+        card, for the assistant panel to open. Its scope is the finding's when the note names nobody: the known names in the
+        finding's sentence, or else the chapter of its draft, never the whole work by default."""
+        if not (note or "").strip() or not self.settings.assistant_recognize_decisions or not self.provider.available:
+            return None
+        with self.db.connection() as c:  # a replayed decision request makes no second card
+            made = c.execute("SELECT task_id FROM assistant_changes WHERE project_id=? AND kind='add_decision' AND after_json LIKE ?",
+                             (project_id, f'%"source_ref": "{issue_id}"%')).fetchone()
+        if made:
+            return {"task_id": made["task_id"]}
+        try:
+            reservation_id = self.stage13.reserve_route(user_id, project_id)
+        except DomainError:
+            return None
+        cost = 0.0
+        try:
+            with provider_usage(user_id, reservation_id):
+                result = assistant_recognize.call_model(self.provider, note)
+            cost = self._cost(result)
+        except Exception:
+            return None
+        finally:
+            self.stage13.settle_reservation(reservation_id, int(round(cost * 1_000_000)))
+        found = assistant_recognize.parse((result.message or {}).get("content"))
+        if found is None:
+            return None
+        with self.db.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            grounded = assistant_recognize.ground(c, project_id, note, found, source="check_note", source_ref=issue_id)
+            issue = c.execute("SELECT i.id,cl.text AS claim,d.chapter_number FROM v2_issues i JOIN v2_run_claims cl ON cl.id=i.claim_span_id "
+                              "JOIN v2_runs r ON r.id=i.run_id LEFT JOIN v2_drafts d ON d.id=r.draft_id WHERE i.id=? AND i.project_id=?",
+                              (issue_id, project_id)).fetchone()
+            if grounded is None or issue is None:
+                return None
+            record, replaces = grounded
+            if not record["subjects"] and record["kind"] != "style":
+                names = {row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
+                record["subjects"] = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in (issue["claim"] or "")][:3]
+                if not record["subjects"] and not record["chapters"] and issue["chapter_number"]:
+                    record["chapters"] = [issue["chapter_number"], issue["chapter_number"]]
+            project = c.execute("SELECT * FROM v2_projects WHERE id=?", (project_id,)).fetchone()
+            last = c.execute("SELECT COALESCE(MAX(chapter_number),0) FROM v2_chapters WHERE project_id=?", (project_id,)).fetchone()[0]
+            task_id, stamp = store_module.new_task_id(), store_module.utcnow()
+            self.store.insert_task(c, {
+                "id": task_id, "project_id": project_id, "user_id": user_id, "kind": "ask", "status": "completed",
+                "input_json": json.dumps({"question": note.strip(), "context": {"page": "writing", "issue_id": issue_id}}, ensure_ascii=False),
+                "source_revision": project["source_revision"], "memory_version": project["current_memory_version"],
+                "author_context_version": project["author_context_version"], "scope_json": json.dumps({"max_chapter": last, "draft_readable": False}),
+                "answer_json": json.dumps({"status": "answered", "sentences": [], "note": NOTE_CARD_LINE}, ensure_ascii=False),
+                "coverage_json": json.dumps({"checked": [], "not_checked": []}), "cost_cny": cost,
+                "prompt_version": ASSISTANT_PROMPT_VERSION, "model_label": self.model_label(), "created_at": stamp, "started_at": stamp, "completed_at": stamp})
+            assistant_decisions.card_item(c, task_id, project_id, record, replaces)
+        return {"task_id": task_id}
 
     def _held_runs(self, kind: str) -> int:
         """The runs a change task starts only when the first two disagree (`assistant_change_early_agree`): two runs that
@@ -873,6 +964,13 @@ class AssistantEngine:
                 person = c.execute("SELECT name FROM v2_characters WHERE id=? AND project_id=?", (context["character_id"], row["project_id"])).fetchone()
             if person:
                 lines.append(f"作者正在看的人物卡：{person['name']}")
+        if ctx is not None:  # the author's decisions this task touches (v2.2), chosen by the program
+            with self.db.connection() as c:
+                chapter = context.get("chapter_number")
+                given = assistant_decisions.relevant(c, row["project_id"], task_input.get("question") or "", (chapter, chapter) if chapter else None)
+            refs = [ctx.registry.register("decision", item["id"], None, None, None, None, f"作者定过的决定（{item['kind_label']}）：{item['statement']}（{item['scope']}）")
+                    for item in given]
+            lines += assistant_decisions.prompt_lines(given, refs)
         scope_line = f"可查的范围：已写章节的正文（到第 {scope['max_chapter']} 章）、已确认事实、计划和伏笔记录。"
         scope_line += "可以读当前草稿和它最近一次的检查结果。" if scope.get("draft_readable") else "这次不能读当前草稿。"
         lines.append(scope_line)
@@ -1198,6 +1296,7 @@ class AssistantEngine:
             answer = self._without_plans(task_id, answer)
             answer = self._review(task_id, answer)
             answer = self._no_card_line(task_id, answer, proposed)
+        answer = self._decision_card(task_id, answer)
         self.store.finish(task_id, "completed", answer=answer, coverage=self._coverage(task_id, limited))
         self._settle(task_id)
 

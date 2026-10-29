@@ -158,7 +158,7 @@ class StepDetailTests(AssistantCase):
             # v2.1: the second batch of actions
             "change_thread_exists": "资料里已经有这条伏笔", "change_not_this_kind": "作者要的不是这种改动",
             # v2.2
-            "change_other_property": "改后的内容说的是另一个属性"})
+            "change_other_property": "改后的内容说的是另一个属性", "change_thread_kept_open": "作者定过这条伏笔先别收"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 

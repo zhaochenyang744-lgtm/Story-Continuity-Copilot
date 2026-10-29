@@ -15,6 +15,7 @@ import re
 import uuid
 from typing import Any
 
+from . import assistant_decisions
 from .assistant_actions import ACTIONS, EVIDENCE_MAX, FACT_TYPES, OPEN_THREAD
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, REF_FORMAT, ToolContext, ToolError, fact_items
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value
@@ -245,8 +246,12 @@ class ThreadAudit:
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
         items, proposals = [], []
+        with ctx.db.connection() as c:
+            kept = assistant_decisions.kept_open(c, ctx.project_id)
         for entry in report:
             thread = subjects[entry["thread"]]
+            if entry["verdict"] == "resolved" and thread["id"] in kept:  # the author said to keep it open (v2.2): open it stays
+                entry = {**entry, "verdict": "open", "note": "作者定过这条先别收。"}
             item = {"thread_id": thread["id"], "title": thread["title"], "verdict": entry["verdict"], "refs": entry["refs"], "note": entry["note"],
                     "chapter": max((passages[ref].chapter_number for ref in entry["refs"]), default=None)}
             kind = self.VERDICT_KIND.get(entry["verdict"])

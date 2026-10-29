@@ -144,5 +144,167 @@ class DecisionCardTests(AssistantCase):
             ACTIONS["add_decision"].propose(None, {}, None)
 
 
+class UseTests(AssistantCase):
+    """A decision in force reaches the tasks it touches: in the prompt, citable, and kept by the change card."""
+
+    def setUp(self):
+        self.start()
+        self.register()
+        self.name = self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=? LIMIT 1", self.project_id)[0]["subject"]
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-age", record(f"{self.name}前后年龄不同是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+
+    def test_the_decision_is_in_the_prompt_with_a_number_the_answer_may_cite(self):
+        def cite_decision(provider, messages):
+            first = next(m["content"] for m in messages if m["role"] == "user")
+            self.assertIn("作者定过的决定", first)
+            ref = first.split("[", 1)[1].split("]", 1)[0]
+            return turn(answer_call("answered", [("作者定过这处年龄不同是有意的。", [ref])]))
+        task = self.run_ask(cite_decision, question=f"{self.name}的年龄前后不一样吗？")
+        self.assertEqual(task["status"], "completed", task.get("error_code"))
+        self.assertEqual([s["kind"] for s in task["sources"].values()], ["decision"])
+
+    def test_a_question_about_someone_else_is_not_given_the_decision(self):
+        def look(provider, messages):
+            self.assertNotIn("作者定过的决定", next(m["content"] for m in messages if m["role"] == "user"))
+            return turn(call("read_chapter", chapter_number=9))
+        def cite(provider, messages):
+            return turn(answer_call("answered", [("第九章写到了。", [ref_of_chapter(messages, 9)])]))
+        self.run_ask(look, cite, question="第九章那个陌生人是谁？")
+
+    def test_a_thread_kept_open_is_not_marked_resolved(self):
+        from app.assistant_actions import propose_resolve_thread
+        from app.assistant_tools import ToolError
+        version = self.client.get(f"/api/projects/{self.project_id}/foreshadows").json()["data"]["foreshadow_version"]
+        chapter = self.rows("SELECT id FROM v2_chapters WHERE project_id=? ORDER BY chapter_number LIMIT 1", self.project_id)[0]["id"]
+        r = self.client.post(f"/api/projects/{self.project_id}/foreshadows", headers=self.idem(), json={
+            "base_foreshadow_version": version, "title": "冰下三声", "description": "三声敲击还没有交代", "status": "planted", "planted_chapter_id": chapter})
+        thread = r.json()["data"]["item"]["id"]
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-open", record("冰下三声先别收", kind="keep_open", subjects=("冰下三声",), chapters=None,
+                                                                              foreshadow_id=thread), self.user_id, "2026-10-30T00:00:01+00:00")
+        from types import SimpleNamespace
+        ctx = SimpleNamespace(db=self.db, project_id=self.project_id)
+        with self.assertRaises(ToolError) as raised:
+            propose_resolve_thread(ctx, {"evidence": []}, {"object_id": thread})
+        self.assertEqual(raised.exception.code, "change_thread_kept_open")
+
+
+class RecognitionTests(AssistantCase):
+    """The author's sentence read for a decision beside the task (`assistant_recognize`), the card the program makes of it."""
+
+    def setUp(self):
+        self.start(assistant_recognize_decisions=True)
+        self.register()
+        self.names = [row["subject"] for row in self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", self.project_id)]
+
+    def asked(self, question, decision):
+        self.provider.script_route({"decision": decision})
+
+        def cite(provider, messages):
+            return turn(answer_call("answered", [("第九章写到了这里。", [ref_of_chapter(messages, 9)])]))
+        return self.run_ask(turn(call("read_chapter", chapter_number=9)), cite, question=question)
+
+    def decision(self, name, **extra):
+        return {"kind": "intentional", "statement": f"{name}前后年龄不同是有意的", "words": "是故意的", "subjects": [name], "chapters": [3, 7], **extra}
+
+    def test_a_question_that_also_says_a_decision_gets_its_card_and_a_line(self):
+        name = self.names[0]
+        task = self.asked(f"{name}年龄前后不一样是故意的，你看看第九章还有哪里提到", self.decision(name))
+        self.assertEqual(task["status"], "completed")
+        self.assertEqual([(i["kind"], i["status"]) for i in task["changes"]], [("add_decision", "proposed")])
+        self.assertIn(name, task["changes"][0]["after"])
+        self.assertEqual(task["changes"][0]["quote"], f"{name}年龄前后不一样是故意的，你看看第九章还有哪里提到")
+        from app.assistant import DECISION_CARD_LINE
+        self.assertIn(DECISION_CARD_LINE, task["answer"]["note"])
+        recognized = self.provider.route_calls[0]["messages"][1]["content"]
+        self.assertIn("是故意的", recognized)
+        self.assertNotIn("第九章写到了", recognized)  # the call reads the author's words only
+
+    def test_no_decision_no_card(self):
+        task = self.asked("她的年龄前后不一样吗？", None)
+        self.assertNotIn("changes", task)
+
+    def test_words_that_are_not_the_authors_or_names_not_the_works_are_not_kept(self):
+        name = self.names[0]
+        task = self.asked(f"{name}的年龄你查一下", self.decision(name))  # "是故意的" is not in the sentence
+        self.assertNotIn("changes", task)
+        task = self.asked(f"{name}和花无影年龄不一样是故意的", self.decision(name, subjects=[name, "花无影"]))
+        self.assertEqual(task["changes"][0]["after"].count("花无影"), 0)  # a name the work does not have is left out
+
+    def test_a_preferred_chapter_must_be_the_works(self):
+        name = self.names[0]
+        task = self.asked(f"{name}的年龄以第九十九章为准", self.decision(name, kind="prefer", words="以第九十九章为准", prefer_chapter=99))
+        self.assertNotIn("changes", task)
+
+    def test_a_new_decision_about_the_same_name_replaces_the_old_one(self):
+        name = self.names[0]
+        task = self.asked(f"{name}年龄前后不一样是故意的", self.decision(name))
+        self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/confirm", headers=self.idem(),
+                         json={"accepted": [task["changes"][0]["id"]]})
+        task = self.asked(f"{name}的年龄还是以第三章为准吧", self.decision(name, kind="prefer", words="以第三章为准", prefer_chapter=3, statement=f"{name}的年龄以第三章为准"))
+        self.assertEqual(task["changes"][0]["replaces"], f"{name}前后年龄不同是有意的")
+
+
+class CheckTests(AssistantCase):
+    """The sample work's check, held against the author's decisions, and a check decision's note made into a card."""
+
+    def setUp(self):
+        self.start(assistant_recognize_decisions=True)
+        self.register()
+        project = self.client.get(f"/api/projects/{self.project_id}").json()["data"]
+        self.run = self.client.get(f"/api/projects/{self.project_id}/checks/{project['latest_run']['run_id']}?include=issues,evidence").json()["data"]
+        self.issue = next(issue for issue in self.run["issues"] if "keep_intentional" in (issue.get("available_actions") or []))
+        names = [row["subject"] for row in self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", self.project_id)]
+        self.name = next((n for n in sorted(names, key=len, reverse=True) if n in self.issue["claim_text"]), names[0])
+
+    def test_a_finding_a_decision_covers_is_passed_over_and_one_it_does_not_is_kept(self):
+        from app import assistant_cover
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-cover", record(f"{self.name}这处前后不同是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+        self.provider.script_route(*([{"covers": 1, "draft_follows_preferred": None}] * 20))
+        passed = assistant_cover.cover_run(self.db, self.provider, self.project_id, self.run["run_id"])
+        self.assertGreaterEqual(passed, 1)
+        issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
+        covered = next(issue for issue in issues if issue["id"] == self.issue["id"])
+        self.assertEqual((covered["reused_decision"]["status"], covered["reused_decision"]["statement"]), ("author_decision", f"{self.name}这处前后不同是有意的"))
+        messages = self.provider.route_calls[0]["messages"][1]["content"]
+        self.assertIn("作者定过的决定", messages)
+        # Deleted, the decision no longer passes the finding over.
+        listed = self.client.get(f"/api/projects/{self.project_id}/decisions").json()["data"]["decisions"][0]
+        self.client.post(f"/api/projects/{self.project_id}/decisions/{listed['id']}/delete", headers=self.idem(), json={"base_revision": listed["revision"]})
+        issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
+        self.assertIsNone(next(issue for issue in issues if issue["id"] == self.issue["id"])["reused_decision"])
+
+    def test_no_decision_no_call(self):
+        from app import assistant_cover
+        self.provider.script_route()
+        self.assertEqual(assistant_cover.cover_run(self.db, self.provider, self.project_id, self.run["run_id"]), 0)
+        self.assertEqual(self.provider.route_calls, [])
+
+    def test_a_note_that_says_a_decision_makes_a_card_once_scoped_to_the_finding(self):
+        self.provider.script_route({"decision": {"kind": "intentional", "statement": "这处前后不同是有意的", "words": "是故意这么写的", "subjects": [], "chapters": None}})
+        body = {"run_id": self.run["run_id"], "source_revision": self.run["source_revision"], "decision": "keep_intentional", "note": "这里是故意这么写的"}
+        headers = self.idem()
+        r = self.client.post(f"/api/projects/{self.project_id}/issues/{self.issue['id']}/decision", headers=headers, json=body)
+        self.assertIn(r.status_code, (200, 201), r.text)
+        card = r.json()["data"]["memory_card"]
+        task = self.task(card["task_id"])
+        item = task["changes"][0]
+        self.assertEqual((item["kind"], item["status"], item["quote"]), ("add_decision", "proposed", "这里是故意这么写的"))
+        self.assertNotIn("管：全书", item["after"])  # a note naming nobody is scoped to the finding (its names), never the whole work
+        again = self.client.post(f"/api/projects/{self.project_id}/issues/{self.issue['id']}/decision", headers=headers, json=body)
+        self.assertEqual(again.json()["data"].get("memory_card", card), card)
+        self.assertEqual(self.rows("SELECT COUNT(*) n FROM assistant_changes WHERE kind='add_decision'")[0]["n"], 1)
+
+    def test_a_note_that_says_no_decision_makes_no_card(self):
+        self.provider.script_route({"decision": None})
+        body = {"run_id": self.run["run_id"], "source_revision": self.run["source_revision"], "decision": "false_positive", "note": "看着像错其实没问题"}
+        r = self.client.post(f"/api/projects/{self.project_id}/issues/{self.issue['id']}/decision", headers=self.idem(), json=body)
+        self.assertNotIn("memory_card", r.json()["data"])
+
+
 if __name__ == "__main__":
     unittest.main()

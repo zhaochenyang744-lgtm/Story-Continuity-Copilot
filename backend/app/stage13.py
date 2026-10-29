@@ -107,6 +107,9 @@ class Stage13Settings:
     # card whatever a third proposes). About a third less cost, and a second wait on the one task in seven that disagrees
     # (the user's decision of 2026-10-30, with the change task's wait cap at p90 35 seconds).
     assistant_change_early_agree: bool = True
+    # v2.2: each question or change the author types is also read by a small call for a decision to remember (a card the
+    # author confirms). Off in the tests' settings, whose scripted model answers small calls in order.
+    assistant_recognize_decisions: bool = True
     assistant_project_token_limit: int = 3_000_000
     # v1.8.0 roll-out: `off` (nobody), `allowlist` (the accounts named), `registered` (every registered author, marked beta), `all` (visitors too).
     # `from_env` always sets it, and defaults to `off` there; a Stage13Settings built by hand (tests, the evaluation runner) is open.
@@ -264,6 +267,7 @@ class Stage13Settings:
             assistant_task_max_cny=assistant_task_max,
             assistant_change_runs=_positive_int(os.environ.get("ASSISTANT_CHANGE_RUNS"), 3, minimum=1, maximum=3),
             assistant_change_early_agree=os.environ.get("ASSISTANT_CHANGE_EARLY_AGREE", "1") == "1",
+            assistant_recognize_decisions=os.environ.get("ASSISTANT_RECOGNIZE_DECISIONS", "1") == "1",
             assistant_project_token_limit=_positive_int(os.environ.get("ASSISTANT_PROJECT_TOKEN_LIMIT_24H"), 3_000_000, minimum=1, maximum=1_000_000_000),
             assistant_rollout=rollout,
             assistant_allowlist=allowlist,
@@ -308,6 +312,7 @@ class Stage13Settings:
             assistant_rollout="all",
             # A scripted model answers turns in order, which runs side by side would share; tests that want three ask for them.
             assistant_change_runs=1,
+            assistant_recognize_decisions=False,
         )
 
     def assistant_access(self, account_name: str | None, account_type: str | None) -> dict[str, bool]:

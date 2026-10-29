@@ -161,6 +161,23 @@ def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[
     return picked
 
 
+def kept_open(c: sqlite3.Connection, project_id: str) -> set[str]:
+    """The threads the author said to keep open (a `keep_open` decision in force): nothing marks them resolved."""
+    if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone():
+        return set()
+    return {row[0] for row in c.execute("SELECT foreshadow_id FROM v2_author_decisions WHERE project_id=? AND archived_at IS NULL AND kind='keep_open' "
+                                        "AND status IN (?,?) AND foreshadow_id IS NOT NULL", (project_id, ACTIVE, STALE))}
+
+
+def prompt_lines(items: list[dict[str, Any]], refs: list[str]) -> list[str]:
+    """The decisions a task is given, for its first message: each with the number it is cited by."""
+    if not items:
+        return []
+    return ["作者定过的决定（作者自己确认过，照着办；回答里用到时引用它的编号，说明这是作者定过的）："] + [
+        f"[{ref}] {item['kind_label']}：{item['statement']}（{item['scope']}）" + ("（这条依据的章节后来改过，可能过时：照办前先告诉作者）" if item["status"] == STALE else "")
+        for item, ref in zip(items, refs)]
+
+
 def mark_stale(c: sqlite3.Connection, project_id: str, chapter_numbers: set[int], stamp: str) -> int:
     """A revision of the chapters a decision stands on leaves it possibly out of date (it is not deleted). Returns how many."""
     marked = 0
@@ -169,6 +186,27 @@ def mark_stale(c: sqlite3.Connection, project_id: str, chapter_numbers: set[int]
             c.execute("UPDATE v2_author_decisions SET status=?,updated_at=?,revision=revision+1 WHERE id=?", (STALE, stamp, row["id"]))
             marked += 1
     return marked
+
+
+SAMPLE = (  # the sample work's two (v2.2 plan 6.6): what the column looks like before an author has said any
+    {"kind": "keep_open", "thread": "廊桥钥匙的指向", "statement": "「廊桥钥匙的指向」先别收，后面还要写", "quote": "廊桥钥匙那条先别收，后面还要写"},
+    {"kind": "no_reminder", "subjects": ["旧潮位牌"], "statement": "旧潮位牌前后几种叫法（旧牌、潮位牌）不用提醒", "quote": "旧潮位牌叫法不统一不用提醒"},
+)
+
+
+def seed_sample(c: sqlite3.Connection, project_id: str, stamp: str) -> None:
+    """Put the sample work's decisions in, where the table is there (a migration may run before the assistant's tables)."""
+    if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone():
+        return
+    for item in SAMPLE:
+        thread = None
+        if item.get("thread"):
+            thread = c.execute("SELECT id FROM v2_foreshadows WHERE project_id=? AND title=? AND archived_at IS NULL", (project_id, item["thread"])).fetchone()
+        if item.get("thread") and thread is None:
+            continue
+        write(c, None, project_id, f"decision-{uuid.uuid4()}", {
+            "kind": item["kind"], "statement": item["statement"], "subjects": [item["thread"]] if thread else item["subjects"], "chapters": None,
+            "foreshadow_id": thread["id"] if thread else None, "prefer_chapter": None, "quote": item["quote"], "source": "box"}, "", stamp)
 
 
 def purge(c: sqlite3.Connection, project_id: str) -> None:
