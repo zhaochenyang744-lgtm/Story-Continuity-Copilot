@@ -73,7 +73,7 @@ class RegistrationTests(ThreadActionCase):
     def test_every_action_registers_its_risk_and_whether_it_needs_evidence(self):
         self.assertEqual({kind: (action.risk, action.evidence_required) for kind, action in ACTIONS.items()},
                          {"resolve_thread": ("low", True), "change_fact": ("low", True), "add_fact": ("low", True), "add_thread": ("low", True),
-                          "edit_thread": ("low", False), "abandon_thread": ("high", False)})
+                          "edit_thread": ("low", False), "abandon_thread": ("high", False), "add_decision": ("low", False)})
         self.assertEqual(assistant_actions.Action.__dataclass_fields__["risk"].default, "low")
         self.assertIs(assistant_actions.Action.__dataclass_fields__["evidence_required"].default, True)
 
@@ -539,7 +539,7 @@ class WantTests(ThreadActionCase):
         self.assertTrue({"new_thread", "thread_note", "abandon_thread"} <= set(assistant_requests.WANTS))
         self.assertEqual({kind: assistant_requests.ACTION_WANTS[kind] for kind in ("add_thread", "edit_thread", "abandon_thread")},
                          {"add_thread": "new_thread", "edit_thread": "thread_note", "abandon_thread": "abandon_thread"})
-        self.assertEqual(set(assistant_requests.ACTION_WANTS), set(ACTIONS))
+        self.assertEqual(set(assistant_requests.ACTION_WANTS), set(ACTIONS) - {"add_decision"})  # a decision is never the model's to propose
         self.assertNotIn("abandon_thread", WANT_REFUSALS)
         self.assertEqual(set(WANT_REFUSALS), {"look", "delete", "prose"})
         self.assertEqual(ERROR_TEXTS["change_not_this_kind"], "作者要的不是这种改动")

@@ -104,6 +104,8 @@ def new_task_id() -> str:
 def purge(c: sqlite3.Connection, project_id: str) -> None:
     """Delete a project's assistant rows, children first. A no-op where the tables do not exist yet."""
     existing = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+    if "v2_author_decisions" in existing:  # the author's decisions (v2.2) go with the work
+        c.execute("DELETE FROM v2_author_decisions WHERE project_id=?", (project_id,))
     if "assistant_tasks" not in existing:
         return
     ids = "SELECT id FROM assistant_tasks WHERE project_id=?"
@@ -126,6 +128,8 @@ class AssistantStore:
     def initialize(self) -> None:
         with self.db.connection() as c:
             c.executescript(SCHEMA)
+            from .assistant_decisions import SCHEMA as DECISIONS
+            c.executescript(DECISIONS)
             for table, added in ADDED_COLUMNS.items():
                 columns = {row[1] for row in c.execute(f"PRAGMA table_info({table})")}
                 for name, type_ in added:
@@ -322,7 +326,10 @@ class AssistantStore:
                 **({"proposals": [self.proposal_view(p) for p in c.execute("SELECT * FROM assistant_proposals WHERE task_id=? ORDER BY ordinal", (row["id"],))]}
                    if row["kind"] == "fix_issue" else {}),
                 **({"changes": change_views(c, self.db, row["id"]),
-                    "consensus": json.loads(row["consensus_json"]) if row["consensus_json"] else None} if row["kind"] == "change" else {})}
+                    "consensus": json.loads(row["consensus_json"]) if row["consensus_json"] else None} if row["kind"] == "change" else {}),
+                # v2.2: a question (or another use) whose words also said a decision carries its card
+                **({"changes": change_views(c, self.db, row["id"])} if row["kind"] not in ("change", "long")
+                   and c.execute("SELECT 1 FROM assistant_changes WHERE task_id=? LIMIT 1", (row["id"],)).fetchone() else {})}
 
     def chain_of(self, c: sqlite3.Connection, row: sqlite3.Row, viewer_id: str | None = None) -> list[dict[str, Any]]:
         """The tasks a task is tied to by 接着问 that were not cleared: the ones it follows, then the ones that follow it, oldest first.

@@ -36,7 +36,7 @@ from typing import Any, Callable
 from fastapi import Header, Request
 from pydantic import BaseModel, ConfigDict, Field
 
-from . import assistant_requests
+from . import assistant_decisions, assistant_requests
 from . import long_term_workflow as workflow
 from .assistant_store import utcnow
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, Outcome, ToolContext, ToolError, fact_items
@@ -514,6 +514,10 @@ def propose_add_fact(ctx: ToolContext, args: dict[str, Any], target: dict[str, A
     return {"target_id": fact_lineage(new_id("mem")), "before": None, "after": after, "evidence": evidence, "display": display}
 
 
+def propose_decision(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
+    raise ToolError("change_action_unknown")  # a decision comes from the author's words, put on the card by the program
+
+
 ACTIONS: dict[str, Action] = {action.kind: action for action in (
     Action("resolve_thread", "foreshadow", THREAD_FIELDS, propose_resolve_thread, read_thread, write_thread, record_kind="foreshadow"),
     Action("change_fact", "fact", FACT_FIELDS, propose_change_fact, read_fact, write_fact, editable=True),
@@ -524,6 +528,9 @@ ACTIONS: dict[str, Action] = {action.kind: action for action in (
            evidence_required=False, record_kind="foreshadow"),
     Action("abandon_thread", "foreshadow", THREAD_FIELDS, propose_abandon_thread, read_thread, write_thread, risk="high",
            evidence_required=False, record_kind="foreshadow"),
+    # v2.2: the author's decisions. The program puts them on a card from the author's own words; the model never proposes one.
+    Action("add_decision", None, assistant_decisions.FIELDS, propose_decision, assistant_decisions.read, assistant_decisions.write,
+           creates=True, editable=True, evidence_required=False, record_kind="decision", clash=assistant_decisions.clash),
 )}
 THREAD_KINDS = tuple(kind for kind, action in ACTIONS.items() if action.record_kind == "foreshadow")
 
@@ -811,8 +818,8 @@ def _current(c: sqlite3.Connection, db: Any, row: Any) -> dict[str, Any] | None:
 
 def _target(c: sqlite3.Connection, row: Any) -> dict[str, Any]:
     """What the page needs to find the record: a thread's id, or a fact's lineage and its record in the current version."""
-    if ACTIONS[row["kind"]].record_kind == "foreshadow":
-        return {"kind": "foreshadow", "id": row["target_id"]}
+    if ACTIONS[row["kind"]].record_kind in ("foreshadow", "decision"):
+        return {"kind": ACTIONS[row["kind"]].record_kind, "id": row["target_id"]}
     version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (row["project_id"],)).fetchone()[0]
     record = fact_at(c, row["project_id"], version, row["target_id"])
     return {"kind": "fact", "id": row["target_id"], "record_id": record["id"] if record else None}
@@ -828,6 +835,9 @@ def change_view(c: sqlite3.Connection, db: Any, row: Any) -> dict[str, Any]:
     return {"id": row["id"], "label": f"C{row['ordinal']}", "task_id": row["task_id"], "kind": row["kind"], "target": _target(c, row),
             "title": display["title"], "before": display["before"], "after": display["after"], "editable": action.editable,
             "request_words": display.get("request_words"), "risk": action.risk, "evidence_required": action.evidence_required,
+            # v2.2: a decision's card shows the author's own words it stands on, and the decision it replaces
+            **({"quote": display.get("quote"), "replaces": display.get("replaces")} if row["kind"] == "add_decision" else {}),
+            "rememberable": row["kind"] in REMEMBERABLE and row["status"] == "undone",
             "value":json.loads(row["after_json"]).get("value") if action.editable else None,
             "evidence": [{key: item[key] for key in ("chapter_number", "chapter_title", "start", "end", "text")} for item in json.loads(row["evidence_json"])],
             "status": row["status"], "edited_by_author": bool(row["edited_by_author"]),
@@ -853,7 +863,10 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
     except ToolError as error:
         raise DomainError(error.code, 422) from error
     after = {**json.loads(row["after_json"]), "value": value}
-    if row["kind"] in THREAD_KINDS:
+    if row["kind"] == "add_decision":
+        after["statement"] = value[:assistant_decisions.STATEMENT_MAX]
+        label = f"{after['statement']}（{assistant_decisions.scope_label(after)}）"
+    elif row["kind"] in THREAD_KINDS:
         after["description"] = value  # a thread's note is what is written; `value` is what the card edits
         planted = c.execute("SELECT chapter_number FROM v2_chapters WHERE id=?", (after.get("planted_chapter_id"),)).fetchone() if after.get("planted_chapter_id") else None
         label = _planted_label(planted["chapter_number"] if planted else None, value) if row["kind"] == "add_thread" else value
@@ -874,7 +887,10 @@ def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id:
     rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
-    if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
+    # A decision may stand on the card of any task the author's words went to (a question that also said a decision).
+    kinds = {row[0] for row in c.execute("SELECT kind FROM assistant_changes WHERE task_id=? AND status='proposed'", (task_id,))}
+    decisions_only = task is not None and kinds == {"add_decision"}
+    if not task or (task["kind"] not in ("change", "long") and not decisions_only) or (within is not None) != (task["kind"] == "long"):
         raise DomainError("resource_not_found", 404)
     if task["status"] != "completed" and not (task["kind"] == "long" and task["status"] == "stopped"):
         raise DomainError("change_task_not_completed", 409)
@@ -893,7 +909,7 @@ def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id:
                                                                             or _clashes(c, db, row))]
     if stale:
         raise DomainError("change_target_changed", 409, False, {"changes": stale})
-    if any(ACTIONS[row["kind"]].record_kind != "foreshadow" for row in rows if row["id"] in chosen):
+    if any(ACTIONS[row["kind"]].record_kind == "fact" for row in rows if row["id"] in chosen):
         review = memory_review_open(c, db, project_id)
         if review:
             raise DomainError("change_memory_review_pending", 409, False, {"review": review})
@@ -955,6 +971,31 @@ def undo(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_i
         c.execute("UPDATE assistant_changes SET status='undone',undone_at=? WHERE id=?", (stamp, item["id"]))
         _event(c, item, "undone", user_id, stamp, {"with": row["id"]} if item["id"] != row["id"] else {"over_author_edit": author_changed})
     return {"changes": [change_view(c, db, c.execute("SELECT * FROM assistant_changes WHERE id=?", (item["id"],)).fetchone()) for item in [row, *later]]}
+
+
+# v2.2: an undone thread item may be remembered: the author took back "resolved" or "given up", and is asked once whether the
+# thread should stay open from now on (continuous use u1, rounds 23 and 26: an undone resolve proposed again by a later audit).
+REMEMBERABLE = ("resolve_thread", "abandon_thread")
+
+
+def remember(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_id: str) -> dict[str, Any]:
+    """Put a "keep this thread open" decision on the card of the undone item's task, waiting for the author like any other."""
+    row = _owned_change(c, db, user_id, project_id, change_id)
+    if row["kind"] not in REMEMBERABLE or row["status"] != "undone":
+        raise DomainError("change_state_invalid", 409)
+    thread = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (row["target_id"], project_id)).fetchone()
+    if thread is None:
+        raise DomainError("change_target_missing", 409)
+    if c.execute("SELECT 1 FROM assistant_changes WHERE task_id=? AND kind='add_decision' AND status='proposed' AND after_json LIKE ?",
+                 (row["task_id"], f'%"foreshadow_id": "{thread["id"]}"%')).fetchone():
+        raise DomainError("change_already_decided", 409)
+    planted = c.execute("SELECT chapter_number FROM v2_chapters WHERE id=?", (thread["planted_chapter_id"],)).fetchone() if thread["planted_chapter_id"] else None
+    item_id = assistant_decisions.card_item(c, row["task_id"], project_id, {
+        "kind": "keep_open", "statement": f"「{thread['title']}」先别收，等我说收了再标", "subjects": [thread["title"]], "chapters": None,
+        "foreshadow_id": thread["id"], "prefer_chapter": None, "quote": "撤销了标成" + ("已回收" if row["kind"] == "resolve_thread" else "放弃") + "，并选了记下来",
+        "source": "undo", "source_ref": row["id"], "basis_chapter": planted["chapter_number"] if planted else None})
+    c.execute("UPDATE assistant_tasks SET hidden_at=NULL WHERE id=?", (row["task_id"],))
+    return {"task_id": row["task_id"], "change": change_view(c, db, c.execute("SELECT * FROM assistant_changes WHERE id=?", (item_id,)).fetchone())}
 
 
 def redo(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_id: str) -> dict[str, Any]:
@@ -1085,6 +1126,12 @@ def register_routes(app: Any, db: Any, user: Callable, csrf: Callable, key: Call
                     idempotency_key: str | None = Header(default=None, alias="Idempotency-Key")):
         return write("redo", request, idempotency_key, {},
                      lambda c, actor: redo(c, db, actor["id"], project_id, change_id), f"{project_id}:{change_id}")
+
+    @app.post(base + "/changes/{change_id}/remember")
+    def remember_change(project_id: str, change_id: str, request: Request, payload: ChangeAction | None = None,
+                        idempotency_key: str | None = Header(default=None, alias="Idempotency-Key")):
+        return write("remember", request, idempotency_key, {},
+                     lambda c, actor: remember(c, db, actor["id"], project_id, change_id), f"{project_id}:{change_id}")
 
     @app.get(base + "/changes")
     def list_changes(project_id: str, request: Request, limit: int = LEDGER_LIMIT, before: str | None = None):

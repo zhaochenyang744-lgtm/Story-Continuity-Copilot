@@ -20,6 +20,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import Response
 
 from . import author_organization as organization
+from .assistant_decisions import listing as decision_listing
 from .database import DomainError
 from .text_content import visible_draft_text
 from .v2_database import V2Database
@@ -184,6 +185,8 @@ def project_snapshot(db: V2Database, user_id: str, project_id: str, include_draf
                           resolved_source_span_id,version,archived_at FROM v2_foreshadows
                    WHERE project_id=? ORDER BY created_at,id""", (project_id,)
             )],
+            "decisions": decision_listing(c, project_id) if c.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone() else [],
             "revision_tasks": [dict(row) for row in c.execute(
                 """SELECT id,title,instruction,priority,position,status,version FROM v2_revision_tasks
                    WHERE project_id=? ORDER BY position,id""", (project_id,)
@@ -293,6 +296,11 @@ def materials_markdown(snapshot: dict) -> bytes:
             parts.append(f"- {_markdown_literal(item['subject'])} · {_markdown_literal(item['predicate'])}：{_markdown_literal(item['value'])}")
         if not snapshot[key]:
             parts.append("暂无记录。")
+    parts.append("## 作者的决定")
+    for item in snapshot.get("decisions", []):
+        parts.append(f"- {item['kind_label']}：{_markdown_literal(item['statement'])}（{_markdown_literal(item['scope'])}）")
+    if not snapshot.get("decisions"):
+        parts.append("暂无记录。")
     parts.append("## 其他资料\n\n章节大纲、已有角色卡与别名、世界条目、伏笔和修订任务完整保存在 snapshot.json。正文原始格式与版本号也在该文件中保留。")
     return ("\n\n".join(parts) + "\n").encode("utf-8")
 

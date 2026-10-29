@@ -39,6 +39,7 @@ from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
 from . import author_home, author_organization
 from .assistant import AssistantEngine, register_routes as register_assistant_routes
+from .assistant_decisions import register_routes as register_decision_routes
 from .assistant_store import AssistantStore
 from .long_tasks import LongTasks, register_routes as register_long_task_routes
 LONG_TASK_SWEEP_SECONDS=30
@@ -389,6 +390,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     assistant_engine=AssistantEngine(assistant_store,db,guarded_provider,stage13)
     app.state.assistant=assistant_engine
     register_assistant_routes(app, db, user, csrf, key, ok, operation, assistant_engine, executor)
+    register_decision_routes(app, db, user, csrf, key, ok, operation)
     long_tasks=LongTasks(db,assistant_store,guarded_provider,stage13,executor=executor)
     app.state.long_tasks=long_tasks
     register_long_task_routes(app, db, user, csrf, key, ok, operation, long_tasks, assistant_engine, executor)
