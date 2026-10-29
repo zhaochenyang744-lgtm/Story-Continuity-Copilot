@@ -69,12 +69,15 @@ ERROR_TEXTS = {
     "change_request_words_taken": "作者这几个字已经对应了另一条改动",
     "change_thread_exists": "资料里已经有这条伏笔",
     "change_not_this_kind": "作者要的不是这种改动",
+    "change_other_property": "改后的内容说的是另一个属性",
 }
 # What the model is told besides the code, when the code alone would not tell it what to do.
 ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。",
                "change_target_invalid": "target 要填这次查到的那条资料的编号：伏笔用 list_threads 返回的编号，事实用 lookup_facts 返回的编号。",
                "change_value_invalid": "value 要写成一句不超过 200 字的内容（subject 不超过 60 字），只写正文里写着的，不写编号。",
                "change_no_difference": "资料里这条事实已经是这样，不用改；在回答里引用那条事实告诉作者。",
+               "change_other_property": "改后的内容说的是这条事实以外的另一个属性，写进来会把这条原来记的内容盖掉：这条保持原样，"
+                                        "用 add_fact 另加一条说这个属性的事实；只是这条本身变了，就只写这条的新内容，不在开头写名称。",
                "change_fields_invalid": "memory_type 和 predicate 只能用工具说明里列出的值。",
                "change_fact_already_recorded": "资料里已经有这条事实，不用再加；在回答里引用那条事实告诉作者。",
                "change_request_words_taken": "作者这几个字已经对应了卡片上的另一条改动：一处要求只做一条改动。作者这句话里没有别的字指到这条资料，就不要提出。",

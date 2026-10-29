@@ -719,6 +719,24 @@ class SecondLookTests(FactCase):
         moved = {**restated, "target": fact, "evidence": [passage], "value": "鹦鹉螺号潜艇沉没"}
         self.assertEqual(run_propose_change(ctx, moved).result["change"], "C1")
 
+    def test_a_value_that_opens_with_the_facts_name_is_stored_bare_and_one_naming_another_property_is_refused(self):
+        # Continuous use u1, rounds 2 and 27: "三棱脂囊（封口状态）：……" kept the card's name in the value, and the holder was written
+        # over the seal's fact as "三棱脂囊（持有人与位置）：……".
+        from app.assistant_actions import _fact_title
+        name = self.fact["subject"]
+        label = _fact_title(self.fact).split("·", 1)[1]
+        task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
+        named = {"action": "change_fact", "target": fact, "value": f"{name}（{label}）：鹦鹉螺号潜艇沉没", "evidence": [passage], "request_words": name}
+        self.assertEqual(run_propose_change(ctx, named).result["change"], "C1")
+        with self.db.connection() as c:
+            stored = json.loads(c.execute("SELECT after_json FROM assistant_changes WHERE task_id=?", (task["id"],)).fetchone()[0])
+        self.assertEqual(stored["value"], "鹦鹉螺号潜艇沉没")
+        task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
+        other = {**named, "target": fact, "evidence": [passage], "value": f"{name}（持有人与位置）：由温岚持有"}
+        with self.assertRaises(ToolError) as raised:
+            run_propose_change(ctx, other)
+        self.assertEqual(raised.exception.code, "change_other_property")
+
     def test_words_that_share_nothing_with_the_record_are_held_back(self):
         task, ctx, passage, fact = self.setup_task("罗盘那条线最后一章已经收了")
         args = {"action": "change_fact", "target": fact, "value": "鹦鹉螺号潜艇沉没", "evidence": [passage], "request_words": "罗盘那条线"}

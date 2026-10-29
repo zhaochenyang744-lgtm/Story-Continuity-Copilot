@@ -417,6 +417,23 @@ def _fact_title(values: dict[str, Any]) -> str:
 
 
 VALUE_END = "。．.；;，,、"
+# A value the model opens with the fact's name, as a card shows it: "三棱脂囊（封口状态）：已从包堆取出" (continuous use u1, rounds 2 and
+# 27). The name is the card's to show; kept in the value it piles up with every change.
+NAMED_VALUE = re.compile(r"^\s*(?P<subject>[^（(·：:]{1,60})\s*(?:[（(]\s*(?P<paren>[^）)]{1,20})\s*[）)]|·\s*(?P<dot>[^：:]{1,20}))?\s*[：:]\s*")
+
+
+def _bare_value(value: str, subject: str) -> tuple[str, str | None]:
+    """The value without a leading name of its own subject (and property), and the property it named, if any."""
+    found = NAMED_VALUE.match(value)
+    if not found or "".join(found["subject"].split()) != "".join(str(subject).split()) or not value[found.end():].strip():
+        return value, None
+    return value[found.end():].strip(), (found["paren"] or found["dot"] or "").strip() or None
+
+
+def _same_property(named: str, values: dict[str, Any]) -> bool:
+    label = _fact_title(values).split("·", 1)[1]
+    a, b = "".join(named.split()), "".join(label.split())
+    return a == b or a in b or b in a
 
 
 def _fact_label(c: sqlite3.Connection, values: dict[str, Any]) -> str:
@@ -439,6 +456,11 @@ def propose_change_fact(ctx: ToolContext, args: dict[str, Any], target: dict[str
         current = read_fact(c, ctx.db, ctx.project_id, lineage)
         if current is None:
             raise ToolError("change_target_invalid")
+        value, named = _bare_value(value, current["subject"])
+        # A new value that names another property is another fact: written over this one, what this one said is lost
+        # (continuous use u1, round 27: the holder written over "三棱脂囊·封口状态", and the leak recorded there gone).
+        if named and not _same_property(named, current):
+            raise ToolError("change_other_property")
         if normalize_memory_value(value) == normalize_memory_value(current["value"]):
             raise ToolError("change_no_difference")
         _, span_id = _chapter_and_span(c, ctx.project_id, _latest(evidence))
@@ -458,7 +480,7 @@ def propose_add_fact(ctx: ToolContext, args: dict[str, Any], target: dict[str, A
     if memory_type not in FACT_TYPES or predicate not in CONTROLLED_PREDICATES:
         raise ToolError("change_fields_invalid")
     subject = _text(args.get("subject"), FACT_SUBJECT_MAX)
-    value = _text(args.get("value"), FACT_VALUE_MAX)
+    value, _ = _bare_value(_text(args.get("value"), FACT_VALUE_MAX), subject)
     with ctx.db.connection() as c:
         version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (ctx.project_id,)).fetchone()[0]
         confirmed = ctx.db._confirmed_memory(c, ctx.project_id, version)

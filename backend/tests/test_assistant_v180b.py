@@ -156,7 +156,9 @@ class StepDetailTests(AssistantCase):
             "change_not_requested": "作者的话里没有提到这条资料",
             "change_request_words_taken": "作者这几个字已经对应了另一条改动",
             # v2.1: the second batch of actions
-            "change_thread_exists": "资料里已经有这条伏笔", "change_not_this_kind": "作者要的不是这种改动"})
+            "change_thread_exists": "资料里已经有这条伏笔", "change_not_this_kind": "作者要的不是这种改动",
+            # v2.2
+            "change_other_property": "改后的内容说的是另一个属性"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 
