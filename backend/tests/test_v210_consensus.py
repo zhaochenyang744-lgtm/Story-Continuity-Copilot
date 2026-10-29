@@ -112,7 +112,8 @@ class EveryRun(list):
 
 class ThreeRunTests(ChangeCase):
     def three_runs(self):
-        self.engine.settings = dataclasses.replace(self.engine.settings, assistant_change_runs=3)
+        # All three at once, as before v2.2; `early_agree` holds the third back until the first two differ.
+        self.engine.settings = dataclasses.replace(self.engine.settings, assistant_change_runs=3, assistant_change_early_agree=False)
 
     def decide(self, provider, messages):
         done = [m for m in messages if m["role"] == "tool"]

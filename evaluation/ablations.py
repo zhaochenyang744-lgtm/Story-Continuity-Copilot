@@ -62,7 +62,7 @@ A3 = {
 }
 ABLATIONS = {**A2, **A3}
 VARIANTS = {
-    "early_agree": _settings(assistant_change_early_agree=True),  # two runs that agree, no third
+    "all_three": _settings(assistant_change_early_agree=False),  # three runs at once, as before v2.2 (early agreement is on)
     "window8": _set("app.long_tasks", "WINDOW_CHAPTERS", 8),
 }
 

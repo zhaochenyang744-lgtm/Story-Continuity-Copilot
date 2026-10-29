@@ -104,8 +104,9 @@ class Stage13Settings:
     # assistant_task_max_cny as its own ceiling, and the task reserves that many ceilings.
     assistant_change_runs: int = 3
     # v2.2: a change task runs twice at once, and a third time only when the two cards differ (two runs that agree decide the
-    # card whatever a third proposes). About a third less cost, and a second wait on the one task in seven that disagrees.
-    assistant_change_early_agree: bool = False
+    # card whatever a third proposes). About a third less cost, and a second wait on the one task in seven that disagrees
+    # (the user's decision of 2026-10-30, with the change task's wait cap at p90 35 seconds).
+    assistant_change_early_agree: bool = True
     assistant_project_token_limit: int = 3_000_000
     # v1.8.0 roll-out: `off` (nobody), `allowlist` (the accounts named), `registered` (every registered author, marked beta), `all` (visitors too).
     # `from_env` always sets it, and defaults to `off` there; a Stage13Settings built by hand (tests, the evaluation runner) is open.
@@ -262,7 +263,7 @@ class Stage13Settings:
             visitor_assistant_tasks=_positive_int(os.environ.get("VISITOR_ASSISTANT_TASKS_24H"), 3, minimum=1, maximum=1000),
             assistant_task_max_cny=assistant_task_max,
             assistant_change_runs=_positive_int(os.environ.get("ASSISTANT_CHANGE_RUNS"), 3, minimum=1, maximum=3),
-            assistant_change_early_agree=os.environ.get("ASSISTANT_CHANGE_EARLY_AGREE", "0") == "1",
+            assistant_change_early_agree=os.environ.get("ASSISTANT_CHANGE_EARLY_AGREE", "1") == "1",
             assistant_project_token_limit=_positive_int(os.environ.get("ASSISTANT_PROJECT_TOKEN_LIMIT_24H"), 3_000_000, minimum=1, maximum=1_000_000_000),
             assistant_rollout=rollout,
             assistant_allowlist=allowlist,

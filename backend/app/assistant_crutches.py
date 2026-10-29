@@ -36,7 +36,8 @@ class Crutch:
 SPENT_A2 = "the spent A2 pairs (one pass, with a same-time run of the shipped version)"
 
 CRUTCHES = (
-    Crutch("consensus", "assistant_consensus (Stage13Settings.assistant_change_runs)",
+    Crutch("consensus", "assistant_consensus (Stage13Settings.assistant_change_runs; from v2.2 the third run only when the first two "
+           "differ, assistant_change_early_agree)",
            "one run of a change task proposes an extra item or misses one on a few cards in every pass",
            "v2.1 p48–p52: unrequested items 3–4 a pass on the shipped prompt; three runs kept 1",
            f"{SPENT_A2}: unrequested items, no-action rate, card rate, cost and time", True),
