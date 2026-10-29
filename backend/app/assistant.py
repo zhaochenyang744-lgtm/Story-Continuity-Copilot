@@ -527,7 +527,6 @@ class AssistantEngine:
         # A change task's hidden runs (`assistant_consensus`): those still running, by the author's task, and those that finished.
         self._shadows: dict[str, list[tuple[str, threading.Thread]]] = {}
         self._shadows_done: set[str] = set()
-        self._stopped: set[str] = set()  # hidden runs told to stop because two runs already agree
         self._requests: dict[str, list[dict[str, Any]] | None] = {}  # a change task's request list, kept for its closing line
         self._reviewed: dict[str, set[str]] = {}  # why the card's second reader took items off a change task's card
 
@@ -752,7 +751,7 @@ class AssistantEngine:
         try:
             with provider_usage(row["user_id"], row["reservation_id"]):
                 if self._runs(row["kind"]) > 1 and row["status"] == "queued":
-                    self._shadows[task_id] = self._start_shadows(row, self._runs(row["kind"]) - 1)
+                    self._shadows[task_id] = self._start_shadows(row, self._runs(row["kind"]) - 1 - self._held_runs(row["kind"]))
                 self._run(row)
                 if task_id in self._shadows:  # cancelled: the hidden runs stop with it, and go
                     self._agree(task_id, None)
@@ -762,6 +761,11 @@ class AssistantEngine:
                 self._fail(task_id, "internal_error", limited=False, internal_error_type=type(error).__name__)
             except Exception:
                 pass
+
+    def _held_runs(self, kind: str) -> int:
+        """The runs a change task starts only when the first two disagree (`assistant_change_early_agree`): two runs that
+        propose the same card decide it whatever a third proposes, since an item stays when two runs proposed it."""
+        return self._runs(kind) - 2 if self.settings.assistant_change_early_agree and self._runs(kind) > 2 else 0
 
     def _start_shadows(self, row: Any, count: int) -> list[tuple[str, threading.Thread]]:
         """Start the hidden runs of a change task, each a copy of the task that runs the same loop at the same time; they keep no
@@ -793,14 +797,22 @@ class AssistantEngine:
         shadows = self._shadows.pop(task_id, [])
         if not shadows:
             return answer
-        if answer is not None and self.settings.assistant_change_early_agree and len(shadows) > 1:
-            self._agree_early(task_id, shadows)
         for _, thread in shadows:
             thread.join(timeout=ASSISTANT_TASK_TIMEOUT_SECONDS + 30)
+        row = self.store.row(task_id)
+        held = self._held_runs(row["kind"])
+        if held and answer is not None:
+            with self.db.connection() as c:
+                done = [shadow_id for shadow_id, _ in shadows if shadow_id in self._shadows_done]
+                agreed = len(done) == len(shadows) and all(assistant_consensus.agree(c, task_id, shadow_id) for shadow_id in done)
+            if not agreed:  # the runs held back break the tie, each a run of its own from the start
+                more = self._start_shadows(row, held)
+                for _, thread in more:
+                    thread.join(timeout=ASSISTANT_TASK_TIMEOUT_SECONDS + 30)
+                shadows = shadows + more
         ids = [shadow_id for shadow_id, _ in shadows]
         finished = [shadow_id for shadow_id in ids if shadow_id in self._shadows_done]
         self._shadows_done.difference_update(ids)
-        self._stopped.difference_update(ids)
         with self.db.connection() as c:
             marks = ",".join("?" for _ in ids)
             # What each run spent, the author's first (A2 addendum 7 holds the step and cost budget for each run).
@@ -817,23 +829,6 @@ class AssistantEngine:
         if changed and left:  # an emptied card has its own line (`_no_card_line`)
             answer = {**answer, "note": " ".join(part for part in (answer.get("note"), assistant_consensus.AGREED_NOTE) if part)}
         return answer
-
-    def _agree_early(self, task_id: str, shadows: list[tuple[str, threading.Thread]]) -> None:
-        """The first hidden run to finish is weighed against the author's run: when they proposed the same card, the other
-        hidden runs stop at their next round, and the card is the author's run's (`assistant_consensus.agree`). Otherwise
-        all runs finish and most of them decide, as before."""
-        deadline = time.monotonic() + ASSISTANT_TASK_TIMEOUT_SECONDS + 30
-        while time.monotonic() < deadline:
-            done = next((shadow_id for shadow_id, _ in shadows if shadow_id in self._shadows_done), None)
-            if done is not None:
-                with self.db.connection() as c:
-                    if assistant_consensus.agree(c, task_id, done):
-                        self._stopped.update(shadow_id for shadow_id, _ in shadows if shadow_id != done)
-                return
-            alive = [thread for _, thread in shadows if thread.is_alive()]
-            if not alive:
-                return
-            alive[0].join(timeout=0.2)
 
     def _request_list(self, row: Any) -> tuple[list[dict[str, str]] | None, Any]:
         """The pieces of the author's sentence a change task may act on (`assistant_requests`), read before anything of the
@@ -960,7 +955,7 @@ class AssistantEngine:
                 output_tokens += result.output_tokens or 0
                 cost += self._cost(result)
         for round_ in range(1, rounds + 1):
-            if self.store.status(lead or task_id) == "cancelled" or task_id in self._stopped:
+            if self.store.status(lead or task_id) == "cancelled":
                 self._settle(task_id)
                 return
             spent = should_force_answer(cost, last_call_cost, force_cost) or self.clock() - started > ASSISTANT_TASK_TIMEOUT_SECONDS

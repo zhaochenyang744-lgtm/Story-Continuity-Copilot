@@ -103,8 +103,8 @@ class Stage13Settings:
     # v2.1: how many runs a change task makes at once; an item goes on the card when most of them proposed it. Each run keeps
     # assistant_task_max_cny as its own ceiling, and the task reserves that many ceilings.
     assistant_change_runs: int = 3
-    # v2.2: once the author's run and one hidden run propose the same card, the other hidden runs stop (a third run only
-    # breaks a tie, and there is none). Off until the rule-cleanup regression shows it costs nothing.
+    # v2.2: a change task runs twice at once, and a third time only when the two cards differ (two runs that agree decide the
+    # card whatever a third proposes). About a third less cost, and a second wait on the one task in seven that disagrees.
     assistant_change_early_agree: bool = False
     assistant_project_token_limit: int = 3_000_000
     # v1.8.0 roll-out: `off` (nobody), `allowlist` (the accounts named), `registered` (every registered author, marked beta), `all` (visitors too).

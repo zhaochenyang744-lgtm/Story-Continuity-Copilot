@@ -295,6 +295,8 @@ def chapters(source):
 
 
 class Work:
+    PASSWORD = 'a1-local-evaluation-pass-123'  # a runner whose works register with another password names it (resume logs in again)
+
     def __init__(self, work, upto, provider, price, root=None):
         self.price = price
         self.ledger = getattr(provider, 'ledger', None)
@@ -314,7 +316,7 @@ class Work:
         self.project = self.lengths = None
         try:
             if state.get('registered'):
-                response_data(self.client.post('/api/auth/login', json={'account_name': self.account, 'password': 'a1-local-evaluation-pass-123'}))
+                response_data(self.client.post('/api/auth/login', json={'account_name': self.account, 'password': self.PASSWORD}))
             self.prepare(work, upto)
             state['registered'] = True
             self.persist()

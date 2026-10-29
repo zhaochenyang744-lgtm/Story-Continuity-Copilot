@@ -5,7 +5,6 @@ import dataclasses
 import json
 import sqlite3
 import threading
-import time
 import unittest
 from unittest.mock import patch
 
@@ -153,31 +152,45 @@ class ThreeRunTests(ChangeCase):
         # Each run's steps and cost, the author's first, kept for the evaluation's budget per run (A2 addendum 7).
         self.assertEqual([(run["steps"], round(run["cost_cny"], 6)) for run in task["consensus"]["run_usage"]], [(3, 0.03)] * 3)
 
-    def test_when_the_authors_run_and_one_hidden_run_agree_the_other_hidden_run_stops(self):
-        one = self.run_task()
-        self.reject(one)
+    def early_agree(self):
         self.three_runs()
         self.engine.settings = dataclasses.replace(self.engine.settings, assistant_change_early_agree=True)
-        decide = self.decide
 
-        def slow_second_shadow(provider, messages):
-            deadline = time.monotonic() + 5
-            while not self.engine._shadows and time.monotonic() < deadline:
-                time.sleep(0.01)
-            shadows = [thread for runs in list(self.engine._shadows.values()) for _, thread in runs]
-            if len(shadows) > 1 and threading.current_thread() is shadows[1]:
-                while not self.engine._stopped and time.monotonic() < deadline + 5:
-                    time.sleep(0.01)
-            return decide(provider, messages)
-
-        self.decide = slow_second_shadow
+    def test_two_runs_that_agree_make_the_card_without_a_third(self):
+        one = self.run_task()
+        self.reject(one)
+        self.early_agree()
         task = self.run_task()
         self.assertEqual([item["kind"] for item in task["changes"]], ["resolve_thread"])
-        self.assertEqual(task["consensus"]["runs"], 2)  # the author's run and the hidden run that agreed with it
+        self.assertEqual(task["consensus"]["runs"], 2)
+        self.assertEqual(len(task["consensus"]["run_usage"]), 2)
         self.assertEqual(self.rows("SELECT COUNT(*) n FROM assistant_tasks WHERE status=?", assistant_consensus.SHADOW_STATUS)[0]["n"], 0)
-        self.assertEqual(self.engine._stopped, set())
         usage = {row["id"]: row["input_tokens"] for row in self.rows("SELECT id,input_tokens FROM assistant_tasks WHERE id IN (?,?)", one["id"], task["id"])}
-        self.assertLess(usage[task["id"]], 3 * usage[one["id"]])  # the stopped run made one call of its three
+        self.assertEqual(usage[task["id"]], 2 * usage[one["id"]])
+
+    def test_two_runs_that_differ_start_a_third_and_most_of_three_decide(self):
+        decide, start, first = self.decide, self.engine._start_shadows, []
+
+        def started(row, count):
+            runs = start(row, count)
+            if not first:
+                first.extend(thread for _, thread in runs)
+            return runs
+
+        def first_hidden_run_reads_only(provider, messages):
+            # The hidden run started with the task closes without proposing; the author's run and the third (started once the
+            # first two differ) propose the thread.
+            if threading.current_thread() in first and any(m["role"] == "tool" for m in messages):
+                return turn(answer_call("answered", [("最后一章写到了这条线的结果。", [refs(messages, self.last)[0]])]))
+            return decide(provider, messages)
+
+        self.early_agree()
+        self.decide = first_hidden_run_reads_only
+        with patch.object(self.engine, "_start_shadows", started):
+            task = self.run_task()
+        self.assertEqual(task["consensus"]["runs"], 3)
+        self.assertEqual([item["kind"] for item in task["changes"]], ["resolve_thread"])  # two of the three proposed it
+        self.assertEqual(self.rows("SELECT COUNT(*) n FROM assistant_tasks WHERE status=?", assistant_consensus.SHADOW_STATUS)[0]["n"], 0)
 
     def reject(self, task):
         r = self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/reject", headers=self.idem(), json={})

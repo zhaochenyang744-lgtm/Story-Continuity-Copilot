@@ -24,6 +24,9 @@ from evaluation.assistant_a2 import score as a2_score
 from evaluation.assistant_a3 import run as a3
 from evaluation.assistant_a3 import score as a3_score
 
+# A2's works register with A2's password, and a resumed run logs in again with it (to move into assistant_a2/run.py once no
+# cleanup run is left to resume: that file is in the runs' code fingerprint).
+a2.Work.PASSWORD = a2.PASSWORD
 SUBSETS = ROOT / "evaluation/cleanup_subsets.json"
 RUNNERS = {"a2": (a2, a2_score), "a3": (a3, a3_score)}
 # The measures read off one pass, and which way is better.
