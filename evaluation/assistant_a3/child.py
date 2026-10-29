@@ -16,6 +16,7 @@ import os
 import pathlib
 import sys
 
+from evaluation import ablations
 from evaluation.assistant_a1.run import Ledger, PricedProvider, rates, write_json
 from evaluation.assistant_a3.run import KILLED, Recorder, settings_for
 
@@ -41,6 +42,7 @@ def main():
     p.add_argument("--label", default="")
     p.add_argument("--provider", default="priced")
     args = p.parse_args()
+    ablations.from_env()  # the development run's switches, as in the process that started this one
     ledger = Ledger(args.max_cny, args.rates, args.rates)
     ledger.category, ledger.phase = "assistant", "assistant"
     recorder = Recorder(provider_for(args.provider, ledger), args.label)

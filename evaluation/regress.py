@@ -13,10 +13,10 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
-import re
 import sys
 from types import SimpleNamespace
 
+from evaluation import ablations
 from evaluation.assistant_a1.run import ROOT, Ledger, PricedProvider, rates
 from evaluation.assistant_a2 import run as a2
 from evaluation.assistant_a2 import score
@@ -49,41 +49,12 @@ MEASURES = (("action_card_correct_rate", "卡片条目对", 1), ("action_evidenc
 NOW_SUPPORTED = {("eval_set_a22_formal", "a22f-w02-no-action-06"), ("eval_set_a23_formal", "a23f-w01-no-action-06"),
                  ("eval_set_a24_formal", "a24f-w02-no-06")}
 
-NEVER = re.compile(r"(?!)")
-
-
-def _off(module, name, value):
-    def apply():
-        import importlib
-        setattr(importlib.import_module(module), name, value)
-    return apply
-
-
-def _one_run():
-    """The product's settings for the run with one run of a change task (no majority)."""
-    import dataclasses
-    made = a2.settings
-    a2.settings = lambda price: dataclasses.replace(made(price), assistant_change_runs=1)
-
-
-def _no_split(provider, question):
-    raise RuntimeError("request list switched off")
-
-
-# Crutches a development run may switch off, by their names in app.assistant_crutches (each switchable one has one here).
-# The word lists (prose_subject, read_only, give_up, fact_not_thread) were switched off in g1 and taken out in v2.1 A.
-ABLATIONS = {
-    "consensus": _one_run,
-    "request_list": _off("app.assistant_requests", "call_model", _no_split),
-    "second_look": _off("app.assistant_actions", "_second_look", lambda ctx, action, args, proposal, request_words: None),
-    "author_value": _off("app.assistant_actions", "_author_value_missing", lambda ctx, args, proposal: None),
-    "value_numbers": _off("app.assistant_actions", "numbers_in", lambda text: set()),  # change_value_not_in_evidence
-}
+# Crutches a development run may switch off (`evaluation.ablations`, by their names in app.assistant_crutches).
+ABLATIONS = ablations.A2
 
 
 def ablate(names):
-    for name in names:
-        ABLATIONS[name]()
+    ablations.apply(names)
 
 
 def passes(reports):

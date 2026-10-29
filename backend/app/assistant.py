@@ -527,6 +527,7 @@ class AssistantEngine:
         # A change task's hidden runs (`assistant_consensus`): those still running, by the author's task, and those that finished.
         self._shadows: dict[str, list[tuple[str, threading.Thread]]] = {}
         self._shadows_done: set[str] = set()
+        self._stopped: set[str] = set()  # hidden runs told to stop because two runs already agree
         self._requests: dict[str, list[dict[str, Any]] | None] = {}  # a change task's request list, kept for its closing line
         self._reviewed: dict[str, set[str]] = {}  # why the card's second reader took items off a change task's card
 
@@ -792,11 +793,14 @@ class AssistantEngine:
         shadows = self._shadows.pop(task_id, [])
         if not shadows:
             return answer
+        if answer is not None and self.settings.assistant_change_early_agree and len(shadows) > 1:
+            self._agree_early(task_id, shadows)
         for _, thread in shadows:
             thread.join(timeout=ASSISTANT_TASK_TIMEOUT_SECONDS + 30)
         ids = [shadow_id for shadow_id, _ in shadows]
         finished = [shadow_id for shadow_id in ids if shadow_id in self._shadows_done]
         self._shadows_done.difference_update(ids)
+        self._stopped.difference_update(ids)
         with self.db.connection() as c:
             marks = ",".join("?" for _ in ids)
             # What each run spent, the author's first (A2 addendum 7 holds the step and cost budget for each run).
@@ -813,6 +817,23 @@ class AssistantEngine:
         if changed and left:  # an emptied card has its own line (`_no_card_line`)
             answer = {**answer, "note": " ".join(part for part in (answer.get("note"), assistant_consensus.AGREED_NOTE) if part)}
         return answer
+
+    def _agree_early(self, task_id: str, shadows: list[tuple[str, threading.Thread]]) -> None:
+        """The first hidden run to finish is weighed against the author's run: when they proposed the same card, the other
+        hidden runs stop at their next round, and the card is the author's run's (`assistant_consensus.agree`). Otherwise
+        all runs finish and most of them decide, as before."""
+        deadline = time.monotonic() + ASSISTANT_TASK_TIMEOUT_SECONDS + 30
+        while time.monotonic() < deadline:
+            done = next((shadow_id for shadow_id, _ in shadows if shadow_id in self._shadows_done), None)
+            if done is not None:
+                with self.db.connection() as c:
+                    if assistant_consensus.agree(c, task_id, done):
+                        self._stopped.update(shadow_id for shadow_id, _ in shadows if shadow_id != done)
+                return
+            alive = [thread for _, thread in shadows if thread.is_alive()]
+            if not alive:
+                return
+            alive[0].join(timeout=0.2)
 
     def _request_list(self, row: Any) -> tuple[list[dict[str, str]] | None, Any]:
         """The pieces of the author's sentence a change task may act on (`assistant_requests`), read before anything of the
@@ -939,7 +960,7 @@ class AssistantEngine:
                 output_tokens += result.output_tokens or 0
                 cost += self._cost(result)
         for round_ in range(1, rounds + 1):
-            if self.store.status(lead or task_id) == "cancelled":
+            if self.store.status(lead or task_id) == "cancelled" or task_id in self._stopped:
                 self._settle(task_id)
                 return
             spent = should_force_answer(cost, last_call_cost, force_cost) or self.clock() - started > ASSISTANT_TASK_TIMEOUT_SECONDS

@@ -1,0 +1,357 @@
+{
+ "made": "2026-10-29, before any run of the v2.2 rule cleanup (Desktop/v2.2任务/02-规则清理方案.md). A2: from the v2.1 runs of the spent pairs (p57 over pairs 1-4, p58-p60 over pair 5, p60-p61 over pair 6), the tasks where a crutch was seen at work in the author's run, and those the crutches were added for (app.assistant_crutches). A3: the second formal set's long tasks and six injections.",
+ "a2": [
+  {
+   "set": "eval_set_a2s2_formal",
+   "id": "a2s2-w01-injection-07",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w02-no-action-06",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w01-no-action-01",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w02-no-action-02",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a23_formal",
+   "id": "a23f-w02-no-action-02",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w02-action-10",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a23_formal",
+   "id": "a23f-w02-action-10",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w02-no-action-04",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w01-no-action-03",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a2_formal",
+   "id": "a2f-w01-action-12",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a2_formal",
+   "id": "a2f-w02-action-12",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w01-no-01",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-no-01",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w01-no-04",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-no-04",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a2s5_formal",
+   "id": "a2s5-w01-injection-05",
+   "why": "added for"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w01-action-03",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w02-action-08",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w01-no-action-06",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a24_formal",
+   "id": "a24f-w02-action-01",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a24_formal",
+   "id": "a24f-w02-no-05",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a25_formal",
+   "id": "a25f-w01-action-17",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a25_formal",
+   "id": "a25f-w02-action-01",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a25_formal",
+   "id": "a25f-w02-action-11",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w01-action-16",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-action-17",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-no-02",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a2_formal",
+   "id": "a2f-w02-action-10",
+   "why": "request_list at work"
+  },
+  {
+   "set": "eval_set_a24_formal",
+   "id": "a24f-w02-action-05",
+   "why": "request_words at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-action-04",
+   "why": "request_words at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-no-05",
+   "why": "request_words at work"
+  },
+  {
+   "set": "eval_set_a23_formal",
+   "id": "a23f-w01-action-03",
+   "why": "value_numbers at work"
+  },
+  {
+   "set": "eval_set_a22_formal",
+   "id": "a22f-w01-no-action-04",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a23_formal",
+   "id": "a23f-w01-no-action-04",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a23_formal",
+   "id": "a23f-w02-no-action-04",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a25_formal",
+   "id": "a25f-w02-action-05",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w01-action-15",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a25_formal",
+   "id": "a25f-w02-no-01",
+   "why": "consensus dropped or added an item"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w01-action-01",
+   "why": "second_look at work"
+  },
+  {
+   "set": "eval_set_a26_formal",
+   "id": "a26f-w02-action-01",
+   "why": "second_look at work"
+  },
+  {
+   "set": "eval_set_a24_formal",
+   "id": "a24f-w01-action-07",
+   "why": "second_look at work"
+  },
+  {
+   "set": "eval_set_a2s5_formal",
+   "id": "a2s5-w01-injection-01",
+   "why": "second_look at work"
+  },
+  {
+   "set": "eval_set_a2s_formal",
+   "id": "a2s-w01-injection-03",
+   "why": "injection, one more per support set"
+  },
+  {
+   "set": "eval_set_a2s3_formal",
+   "id": "a2s3-w01-injection-01",
+   "why": "injection, one more per support set"
+  },
+  {
+   "set": "eval_set_a2s4_formal",
+   "id": "a2s4-w01-injection-01",
+   "why": "injection, one more per support set"
+  },
+  {
+   "set": "eval_set_a2s6_formal",
+   "id": "a2s6-w01-injection-02",
+   "why": "injection, one more per support set"
+  }
+ ],
+ "a3": [
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-trace-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-trace-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-trace-03",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-thread-audit-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-thread-audit-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-ask-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-ask-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-narrowed-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w01-narrowed-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-trace-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-trace-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-trace-03",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-thread-audit-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-thread-audit-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-ask-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-ask-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-narrowed-01",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3f2_formal",
+   "id": "a3f2-w02-narrowed-02",
+   "why": "every long task of the second formal set"
+  },
+  {
+   "set": "eval_set_a3s2_formal",
+   "id": "a3s2-w01-injection-01",
+   "why": "injection, every third of the two safety sets"
+  },
+  {
+   "set": "eval_set_a3s2_formal",
+   "id": "a3s2-w01-injection-04",
+   "why": "injection, every third of the two safety sets"
+  },
+  {
+   "set": "eval_set_a3s2_formal",
+   "id": "a3s2-w01-injection-07",
+   "why": "injection, every third of the two safety sets"
+  },
+  {
+   "set": "eval_set_a3s3_formal",
+   "id": "a3s3-w01-injection-02",
+   "why": "injection, every third of the two safety sets"
+  },
+  {
+   "set": "eval_set_a3s3_formal",
+   "id": "a3s3-w01-injection-05",
+   "why": "injection, every third of the two safety sets"
+  },
+  {
+   "set": "eval_set_a3s3_formal",
+   "id": "a3s3-w01-injection-08",
+   "why": "injection, every third of the two safety sets"
+  }
+ ]
+}

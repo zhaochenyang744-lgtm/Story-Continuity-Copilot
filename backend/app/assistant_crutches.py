@@ -4,7 +4,8 @@ Each was added after a failure the evaluation found, and each costs something (r
 models get better some stop paying for themselves, so each is listed with the weakness it makes up for, the failure that
 brought it in, how to tell whether it is still needed, and the switch the development regression (`evaluation/regress.py
 --ablate`) turns it off with. When a model changes (the procedure in Desktop/agent规划/03-换模型流程.md), every switchable one is
-run off on the spent sets against a same-time run with all on; one that no longer moves a measure is taken out.
+run off on the spent sets against a same-time run with all on; one that no longer moves a measure is taken out. The switches
+are in `evaluation/ablations.py` (A2's also through `regress.py`, the v2.2 rule cleanup's through `cleanup.py`).
 
 Not listed, because they hold whatever the model: a source must be a passage the task read; a record must exist and be one
 the task saw; nothing changes before the author confirms; undo restores exactly. Those are the product, not crutches. New
@@ -52,7 +53,19 @@ CRUTCHES = (
     Crutch("request_words", "assistant_actions._request_words and change_request_words_taken",
            "the model proposes a change the author's sentence has no words for, or two changes on one piece of it",
            "A2 development round 2, no-action-05; A2 first formal run, w01/w02-action-12",
-           f"{SPENT_A2}: unrequested items", False),
+           f"{SPENT_A2}: unrequested items", True),
+    Crutch("alias", "assistant_actions._said_under_full_name (ALIAS_RESTATED) and change_fact_already_recorded",
+           "the model adds under a nickname a fact the materials hold under the full name",
+           "A2 regression round 2 on the sixth pair, w01-no-01 (held once, proposed again, put on the card)",
+           f"{SPENT_A2}: no-action rate (already-recorded tasks); whether card_review catches the same items", True),
+    Crutch("negated", "assistant_actions.NEGATED_CLAUSE in _second_look",
+           "a changed fact that says the old value is no longer so reads as keeping it, and is held back for nothing",
+           "A2 fifth formal run (82b2301: a new value saying the old no longer holds was held as saying it again)",
+           f"{SPENT_A2}: card rate, rounds used", True),
+    Crutch("title_shared", "assistant_actions.TITLE_SHARED in _grounded",
+           "the request list calls a thing of the story a fact, and the thread the author's words name is refused as not a fact",
+           "A2 regression tune1b, a2s5 injection-05 (three edits of the thread refused)",
+           f"{SPENT_A2}: card rate on thread items", True),
     Crutch("held_answer", "assistant.py: an answer is refused while an item is held back (change_held_back)",
            "the model closes the task in the round an item was held back, and the card comes out empty",
            "A2 second formal run: three empty cards whose answers said a change was proposed",
@@ -65,11 +78,11 @@ CRUTCHES = (
            "the model keeps searching and does not close within the budget",
            "A1c first formal run (budget), A2 third formal run (an item restated in round 7)",
            "A1c and A2 development sets: forced-finish rate, budget, card rate", False),
-    # Long tasks (v2.1 B, design 14 section 11). No switch yet: the A3 runner that would turn them off is still to be written.
+    # Long tasks (v2.1 B, design 14 section 11), switched off through the A3 runner (`evaluation/cleanup.py --path a3`).
     Crutch("step_window", "long_tasks.WINDOW_CHAPTERS (a step reads about five chapters)",
            "a model asked about many chapters at once misses what is in them",
            "design 14 (v2.1 B), from the A1c real-length runs, where answers over many chapters lost points",
-           "the A3 development set: trace recall and card rate with wider windows, and cost", False),
+           "the A3 development set: trace recall and card rate with wider windows (variant window8), and cost", True),
     Crutch("step_digest", "long_tasks._findings / the digest of earlier steps the program writes into a step",
            "a summary the model writes loses its sources and can be steered by words hidden in the text",
            "design 14 (v2.1 B): compaction is the program's, the rules, request and step list are never summarised",
@@ -77,7 +90,13 @@ CRUTCHES = (
     Crutch("step_repair", "long_tasks._run_step: one more call when a step's report does not validate, then the items that still do not are left out",
            "the model cites a passage outside its step or leaves a verdict without a passage",
            "design 14 (v2.1 B), as answer_repair for questions",
-           "the A3 development set: failed tasks and evidence support with no repair", False),
+           "the A3 development set: failed tasks and evidence support with no repair", True),
+    Crutch("first_time", "long_task_kinds.NOT_YET / FIRST_TIME in the trace's contradiction check",
+           "the model calls \"never opened ... then opened for the first time\" a contradiction",
+           "A3 dev-2 round 2", "the A3 sets: false contradictions of traces", True),
+    Crutch("no_news", "long_task_kinds.NO_NEWS / THREAD_TALK",
+           "the model reports \"not mentioned again\" as a thread's state, or a line of inquiry let go as a fact",
+           "A3 dev-2 round 2", "the A3 sets: evidence support and card item rate", True),
     Crutch("tidy_majority", "long_task_kinds.Tidy.runs / majority: a tidy step is read three times, the facts list in another order each time, and keeps what most readings found",
            "one reading proposes facts the author did not ask for, and not the same ones from reading to reading",
            "A3 dev rounds 2 and 3 (v2.1 B); the user's decision of 2026-10-26, for tidy only",
@@ -91,7 +110,7 @@ CRUTCHES = (
            "restated under a nickname, a thread marked resolved on the author's word when the passage settles another thing",
            "A2 sixth formal run, w01/w02-no-01 and w01/w02-no-04 (addendum 12)",
            f"{SPENT_A2}: no-action rate (already-recorded and no-evidence tasks), card rate, cost and time; whether second_look "
-           "and the nickname check (_said_under_full_name) still move a measure with it on", False),
+           "and the nickname check (_said_under_full_name) still move a measure with it on", True),
 )
 
 BY_NAME = {crutch.name: crutch for crutch in CRUTCHES}

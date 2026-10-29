@@ -76,6 +76,19 @@ def _groups(question: str, rows: dict[str, list[Any]]) -> list[dict[str, Any]]:
     return groups
 
 
+def _question(c: sqlite3.Connection, task_id: str) -> str:
+    task = c.execute("SELECT input_json FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()
+    return "".join(str((json.loads(task["input_json"]) if task and task["input_json"] else {}).get("question") or "").split())
+
+
+def agree(c: sqlite3.Connection, task_id: str, other_id: str) -> bool:
+    """Whether the author's run and another run proposed the same card: each change either proposed, the other did too (v2.2,
+    `assistant_change_early_agree`: two runs that agree leave no tie for a third to break). Two empty cards agree."""
+    rows = {run: c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (run,)).fetchall()
+            for run in (task_id, other_id)}
+    return all(len(set(group["runs"])) == 2 for group in _groups(_question(c, task_id), rows))
+
+
 def merge(c: sqlite3.Connection, task_id: str, other_ids: list[str]) -> bool:
     """Put on the author's task the items most of the runs proposed (the author's task and `other_ids`, each run that finished),
     in the order the author's run proposed them, then those it lacked. Returns whether the card differs from what the author's
@@ -83,9 +96,7 @@ def merge(c: sqlite3.Connection, task_id: str, other_ids: list[str]) -> bool:
     kept is recorded with the task (`consensus_json`), so a run of the evaluation shows what the majority dropped and added."""
     rows = {run: c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (run,)).fetchall()
             for run in [task_id, *other_ids]}
-    task = c.execute("SELECT input_json FROM assistant_tasks WHERE id=?", (task_id,)).fetchone()
-    question = "".join(str((json.loads(task["input_json"]) if task and task["input_json"] else {}).get("question") or "").split())
-    groups = _groups(question, rows)
+    groups = _groups(_question(c, task_id), rows)
     majority = len(rows) >= 3
     tried = bool(rows[task_id]) or c.execute("SELECT 1 FROM assistant_steps WHERE task_id=? AND tool_name='propose_change' LIMIT 1",
                                              (task_id,)).fetchone() is not None

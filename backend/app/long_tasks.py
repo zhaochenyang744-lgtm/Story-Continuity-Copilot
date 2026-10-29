@@ -50,6 +50,7 @@ NOT_OFFERED_TIDY = ("把资料和正文整体对一遍，这一版还做不了�
                     "某一条资料要补或要改，直接告诉我那一条。")
 NOT_A_LONG_TASK = "这类长任务现在还做不了。现在能做的是：清点还没收的伏笔、梳理一样东西或一件事在全书的变化。"
 WINDOW_CHAPTERS = 5  # crutch `step_window`: a model asked about many chapters at once misses what is in them
+STEP_TRIES = 2  # crutch `step_repair`: a step whose report does not validate is asked once more
 LEASE_SECONDS = 90
 MAX_QUESTIONS = 3
 CAP_DEFAULT, CAP_MIN, CAP_MAX = 2.0, 0.5, 5.0
@@ -554,7 +555,7 @@ class LongTasks:
         does not is left out (A3 dev round 1). Returns the report (None when nothing in it stands), the rules that failed, the
         calls made and the rules of the items left out."""
         report, problems, problem_codes, calls_made, args = None, [], [], 0, None
-        for _ in range(2):
+        for _ in range(STEP_TRIES):
             calls_made += 1
             try:
                 with provider_usage(row["user_id"], row["reservation_id"]):

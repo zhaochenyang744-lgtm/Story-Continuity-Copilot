@@ -4,6 +4,8 @@ from __future__ import annotations
 import dataclasses
 import json
 import sqlite3
+import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -90,6 +92,14 @@ class MergeTests(unittest.TestCase):
         self.assertFalse(assistant_consensus.merge(self.c, "T", ["S1"]))
         self.assertEqual(self.card(), [("change_fact", "B", 1)])
 
+    def test_two_runs_agree_when_each_proposed_what_the_other_did(self):
+        # v2.2 (`assistant_change_early_agree`): two runs that agree leave no tie for a third run to break.
+        self.put(item("T", 1, "change_fact", "A"), item("T", 2, "add_fact", subject="甄 宿微"), item("S1", 1, "add_fact", subject="甄宿微"),
+                 item("S1", 2, "change_fact", "A"), item("S2", 1, "change_fact", "A"))
+        self.assertTrue(assistant_consensus.agree(self.c, "T", "S1"))
+        self.assertFalse(assistant_consensus.agree(self.c, "T", "S2"))
+        self.assertTrue(assistant_consensus.agree(self.c, "E1", "E2"))  # two empty cards
+
 
 class EveryRun(list):
     """Turns for a model that several runs share: whichever run asks gets the turn its conversation calls for."""
@@ -142,6 +152,32 @@ class ThreeRunTests(ChangeCase):
         self.assertEqual(settled[0]["reserved_microunits"], round(9 * 0.01 * 1_000_000))  # three runs of three turns each
         # Each run's steps and cost, the author's first, kept for the evaluation's budget per run (A2 addendum 7).
         self.assertEqual([(run["steps"], round(run["cost_cny"], 6)) for run in task["consensus"]["run_usage"]], [(3, 0.03)] * 3)
+
+    def test_when_the_authors_run_and_one_hidden_run_agree_the_other_hidden_run_stops(self):
+        one = self.run_task()
+        self.reject(one)
+        self.three_runs()
+        self.engine.settings = dataclasses.replace(self.engine.settings, assistant_change_early_agree=True)
+        decide = self.decide
+
+        def slow_second_shadow(provider, messages):
+            deadline = time.monotonic() + 5
+            while not self.engine._shadows and time.monotonic() < deadline:
+                time.sleep(0.01)
+            shadows = [thread for runs in list(self.engine._shadows.values()) for _, thread in runs]
+            if len(shadows) > 1 and threading.current_thread() is shadows[1]:
+                while not self.engine._stopped and time.monotonic() < deadline + 5:
+                    time.sleep(0.01)
+            return decide(provider, messages)
+
+        self.decide = slow_second_shadow
+        task = self.run_task()
+        self.assertEqual([item["kind"] for item in task["changes"]], ["resolve_thread"])
+        self.assertEqual(task["consensus"]["runs"], 2)  # the author's run and the hidden run that agreed with it
+        self.assertEqual(self.rows("SELECT COUNT(*) n FROM assistant_tasks WHERE status=?", assistant_consensus.SHADOW_STATUS)[0]["n"], 0)
+        self.assertEqual(self.engine._stopped, set())
+        usage = {row["id"]: row["input_tokens"] for row in self.rows("SELECT id,input_tokens FROM assistant_tasks WHERE id IN (?,?)", one["id"], task["id"])}
+        self.assertLess(usage[task["id"]], 3 * usage[one["id"]])  # the stopped run made one call of its three
 
     def reject(self, task):
         r = self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/reject", headers=self.idem(), json={})
