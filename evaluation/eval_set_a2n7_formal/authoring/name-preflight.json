@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "names": 22,
+  "names_overlap": 0,
+  "name_indices": [],
+  "ordinary_overlap": 0,
+  "sealed_overlap": 0,
+  "names_text_files": 760,
+  "candidate_names_sha256": "3065d79871951c3610ebea2ed7e799742ea7de8c781d76da3493570d25a05dc0",
+  "blocked_directories_accessed": 0
+}

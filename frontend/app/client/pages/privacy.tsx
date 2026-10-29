@@ -5,7 +5,7 @@
 // the day they were last changed.
 import { Button } from "../ui";
 
-export const PRIVACY_UPDATED = "2026 年 10 月 27 日";
+export const PRIVACY_UPDATED = "2026 年 10 月 29 日";
 export const PRIVACY_CONTACT = "zcy4711@gmail.com";
 const DEEPSEEK_POLICY = "https://cdn.deepseek.com/policies/zh-CN/deepseek-privacy-policy.html";
 

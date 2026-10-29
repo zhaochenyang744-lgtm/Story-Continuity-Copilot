@@ -8,7 +8,7 @@
 .chapter-row-head { min-height: 0; padding: 10px 0; border-bottom: 1px solid var(--c-rule); color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); }
 .chapter-item { border-bottom: 1px solid var(--c-line); scroll-margin-top: calc(var(--topbar-h) + 40px); }
 .chapter-item.picked { background: var(--c-surface); }
-.chapter-item.draft { border-bottom: 2px solid var(--c-rule); background: var(--c-blue-tint); }
+.chapter-item.draft { background: var(--c-blue-tint); }
 .chapter-item:focus-visible { outline: 3px solid var(--c-blue); outline-offset: -3px; }
 .chapter-pick { display: grid; place-items: center; }
 .chapter-pick input { width: 22px; height: 22px; cursor: pointer; }
@@ -23,7 +23,7 @@
 .status-mark.checked { background: var(--c-ink); }
 .status-mark.basis_changed,
 .status-mark.edited_unchecked { background: linear-gradient(135deg, transparent 50%, var(--c-ink) 50%); }
-.chapter-passages { margin: 0 0 16px 132px; padding-left: 20px; border-left: 2px solid var(--c-rule); }
+.chapter-passages { margin: 0 0 16px 132px; padding: 8px 20px; background: var(--c-raised); }
 .chapter-passages li { display: grid; padding: 8px 0; }
 .chapter-passages li strong { font-size: 13px; }
 .chapter-passages li span { color: var(--c-ink-2); font-family: var(--font-serif); font-size: calc(15px * var(--reading-scale)); line-height: 1.8; }
@@ -65,12 +65,12 @@
 .revise-impact .num { font-size: 28px; }
 .revise-preview { display: grid; gap: 14px; }
 .prose-input { font-family: var(--font-serif); font-size: 16px; line-height: 1.9; }
-.prose-pre { max-height: 360px; overflow: auto; padding: 12px; border: 1px solid var(--c-line); background: var(--c-surface); font-family: var(--font-serif); font-size: calc(14px * var(--reading-scale)); line-height: 1.8; }
+.prose-pre { max-height: 360px; overflow: auto; padding: 12px; border: 0; background: var(--c-raised); font-family: var(--font-serif); font-size: calc(14px * var(--reading-scale)); line-height: 1.8; }
 .fact-check { display: grid; gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--c-line); }
 .fact-check details > summary { display: inline-block; border-bottom: 1px solid currentColor; font-size: 13px; }
 .fact-check details[open] > summary { margin-bottom: 8px; }
-.reuse { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--c-rule); }
-.reuse > summary { display: flex; align-items: baseline; gap: 16px; font-size: 20px; font-weight: 900; }
+.reuse { margin-top: 48px; padding: 16px 20px; background: var(--c-raised); }
+.reuse > summary { display: flex; align-items: baseline; gap: 16px; font-size: 20px; font-weight: 700; }
 .reuse[open] > summary { margin-bottom: 8px; }
 .reuse-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
 .reuse-text { display: grid; flex: 1 1 320px; }

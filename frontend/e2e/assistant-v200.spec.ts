@@ -93,7 +93,9 @@ test.describe("改资料：用法和菜单", () => {
     expect(judged).toBe(0);
     const task = tasks(page).last();
     await expect(task.getByTestId("process-line")).toContainText("改资料");
-    await expect(task.locator(".a-answer-note")).toContainText(`查过第 ${LAST_CHAPTER} 章正文，没有找到问题问到的内容。`);
+    // 38a: the model's 「查过……」 sentence is under 「怎么查的」; what stays under the answer is the rest of its note.
+    await expect(task.locator(".a-answer-note")).toHaveText("没有出卡片：正文里没找到能作依据的段落。");
+    await expect(task.getByTestId("how-checked")).toBeVisible();
     await expect(cardOf(page)).toHaveCount(0);
     await expect(modeButton(page, "自动")).toBeVisible();
   });
@@ -143,7 +145,7 @@ test.describe("改资料：标伏笔已回收", () => {
     expect((await posted).postDataJSON()).toEqual({ accepted: [expect.any(String)], edits: {} });
     const done = itemOf(cardOf(page));
     await expect(done).toHaveAttribute("data-status", "applied");
-    await expect(stateOf(done)).toHaveText("已执行");
+    await expect(stateOf(done)).toHaveText("已写入");
     await expect(confirmButton(cardOf(page))).toHaveCount(0);
     await expect(cardOf(page).getByTestId("change-written")).toContainText("已写入资料");
     await expect(undoOf(cardOf(page))).toBeVisible();
@@ -159,7 +161,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await expect(row).toContainText(change.title);
     await expect(row).toContainText("已埋设");
     await expect(row).toContainText(`已回收（第 ${LAST_CHAPTER} 章）`);
-    await expect(row).toContainText("已执行");
+    await expect(row).toContainText("已写入");
     await expect(row.getByRole("button", { name: "撤销", exact: true })).toBeVisible();
     await expect(row.getByRole("button", { name: "看对话", exact: true })).toBeVisible();
 
@@ -190,13 +192,13 @@ test.describe("改资料：标伏笔已回收", () => {
     await expect(ring.first()).toBeInViewport();
   });
 
-  test("不要：整张卡片变成没有执行，资料不变；改动记录是空的；别处已经决定过的卡片再点确认，显示提示、卡片换成现在的样子、页面不崩", async ({ page }) => {
+  test("不要：整张卡片变成没要，资料不变；改动记录是空的；别处已经决定过的卡片再点确认，显示提示、卡片换成现在的样子、页面不崩", async ({ page }) => {
     const id = await setup(page);
     const { card, change } = await openCard(page, id, THREAD_ASK);
     await card.getByRole("button", { name: "不要", exact: true }).click();
     const item = itemOf(cardOf(page));
     await expect(item).toHaveAttribute("data-status", "rejected");
-    await expect(stateOf(item)).toHaveText("没有执行");
+    await expect(stateOf(item)).toHaveText("没要");
     await expect(confirmButton(cardOf(page))).toHaveCount(0);
     expect(await threadStatus(page, id, change.target.id)).toBe("planted");
     // Deciding it again is refused by the server.
@@ -247,7 +249,7 @@ test.describe("改资料：标伏笔已回收", () => {
     await page.reload();
     await openAssistantTab(page);
     const item = itemOf(cardOf(page));
-    await expect(stateOf(item)).toHaveText("已执行");
+    await expect(stateOf(item)).toHaveText("已写入");
     await undoOf(cardOf(page)).click();
     const prompt = item.getByRole("alert").filter({ hasText: "撤销会把这些后来的修改一起退回。" });
     await expect(prompt).toContainText("你后来也改过这条资料。");
@@ -423,12 +425,12 @@ test.describe("改资料：资料页", () => {
     await expect(ledger.locator("li").first()).toContainText(change.title);
     const threadItem = ledger.locator("li").filter({ hasText: change.title });
     const factItem = ledger.locator("li").filter({ hasText: ADDED_VALUE });
-    await expect(threadItem).toContainText("已执行");
+    await expect(threadItem).toContainText("已写入");
     await expect(factItem).toContainText("加事实");
     await expect(factItem).toContainText("资料里没有");
     await expect(factItem).toContainText("已撤销");
     await factItem.getByRole("button", { name: "恢复", exact: true }).click();
-    await expect(factItem).toContainText("已执行");
+    await expect(factItem).toContainText("已写入");
     await page.getByRole("navigation", { name: "资料分类" }).getByRole("button", { name: /^事实/ }).click();
     await expect(factRow(page, ADDED_VALUE)).toContainText("助手按你的确认添加");
     await page.getByRole("navigation", { name: "资料分类" }).getByRole("button", { name: /^伏笔/ }).click();
@@ -591,7 +593,7 @@ test.describe("改资料 截图", () => {
   };
   const fact = (over: Record<string, unknown> = {}) => factChange({ title: "罗盘·持有者", before: "由苏岑保管（第 1 章）", after: "由温岚保管（第 10 章）", value: "由温岚保管", request_words: "罗盘现在在温岚手里", ...over });
 
-  test("卡片：待确认、改内容展开、已执行和已撤销和没有执行", async ({ page }) => {
+  test("卡片：待确认、改内容展开、已写入和已撤销和没要", async ({ page }) => {
     await setup(page);
     let list: unknown[] = [changeView([
       changeItem({ id: "a-1", label: "C1" }),
@@ -614,7 +616,7 @@ test.describe("改资料 截图", () => {
     ])];
     await page.reload();
     await openAssistantTab(page);
-    await both(page, (value) => snap(thread(page), "03-已执行、已撤销、没有执行", value));
+    await both(page, (value) => snap(thread(page), "03-已写入、已撤销、没要", value));
   });
 
   test("冲突提示、改动记录、资料页的标记", async ({ page }) => {

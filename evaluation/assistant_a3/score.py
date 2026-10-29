@@ -22,7 +22,7 @@ from evaluation.assistant_a2 import score as a2
 from evaluation.assistant_a2.judge import change_material
 
 from .judge import ask
-from .thresholds import _CHECKS as CHECKS, PRE_REGISTRATION, THRESHOLDS, evaluate
+from .thresholds import _CHECKS as CHECKS, PRE_REGISTRATION, SUPPLEMENT_CHECKS, SUPPLEMENT_REQUIRED, THRESHOLDS, evaluate
 
 LONG_SUITES = ("trace", "thread_audit", "tidy", "ask", "narrowed", "injection")
 CARD_SUITES = ("thread_audit", "tidy", "ask", "narrowed")
@@ -416,7 +416,8 @@ def _by_kind(rows):
 def refresh(report):
     values, reported = metrics(report)
     report["metrics"], report["reported"] = values, reported
-    report["gate"] = evaluate(values)
+    supplement = sorted(report.get("sets", [])) == sorted(PRE_REGISTRATION["formal_sets"])  # addendum 5: the formal set is the supplement
+    report["gate"] = evaluate(values, only=SUPPLEMENT_CHECKS, required=SUPPLEMENT_REQUIRED) if supplement else evaluate(values)
     formal = sorted(report.get("sets", [])) == sorted(PRE_REGISTRATION["formal_sets"]) and report.get("runs") == 3 and report.get("complete")
     report["gate_decision"] = report["gate"]["status"] if formal else "not_a_formal_run:" + report["gate"]["status"]
     return report

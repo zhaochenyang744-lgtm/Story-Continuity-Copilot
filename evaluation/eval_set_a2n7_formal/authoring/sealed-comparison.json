@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "candidate_sha256": {
+    "materials/w01-facts.json": "b74a05d49904b47a594c2c0f67eb1abe7f59a5d4c0e78ae820599c4f301c46f9",
+    "materials/w01-foreshadows.json": "234eefc91b3655dd788dc4dd9b76292981095027e3c31e3285e38cce17de7c61",
+    "tasks.json": "0cea82fc932573d147582b828783926ec1aaeb8d48b4bb8ad4a2c0d9a292fa01",
+    "works/w01.md": "9fc5d31ffb6b549dc14a916273e03bc4c8854eaaaf40c44c34c68ec95b947a3d"
+  },
+  "names_overlap": 0,
+  "novelty_errors": 0,
+  "source_hashes": {
+    "evaluation/eval_set_v13_authoring/README.md": "0a1c1b8b1bd063c711a8606db1bdeb22b8a5e5115f205f2f659764455665ea99",
+    "evaluation/eval_set_v13_authoring/cases.json": "56751379d8781b61118b46d02f97e7ab4567b0197ac094ecf6eee16ff2553484",
+    "evaluation/eval_set_v13_authoring/authoring/assertion-audit.json": "55957e5e275b9c7ccc69ffed9925bef8f95f3ee0530622f0820f9e36af426ee3",
+    "evaluation/eval_set_v13_authoring/authoring/closeout.json": "c279edecebb33b082c6f5979ebb1348089ff08bd3a9dd4387cfbee97f6ef1afd",
+    "evaluation/eval_set_v13_authoring/authoring/content-review.json": "7e23c309fd85e09484b0a51029da6d28921b75276a5099aeaa8ae6c1bfc669a8",
+    "evaluation/eval_set_v13_authoring/authoring/cross-review-a.md": "89008f3729b5371fdff65c48aaa095711cf6482de861f7dc964d4a8a10942758",
+    "evaluation/eval_set_v13_authoring/authoring/delivery-report.md": "e59e37c0b49d7892ce0e891ea09cbe9c39d367f9172a2d822baf3ad1fde2b658",
+    "evaluation/eval_set_v13_authoring/authoring/final-novelty-snapshot.json": "3d1dbcc204ac5541c4c1d1441210fa7927cbd9c5711a7dae329b87e5a35c6493",
+    "evaluation/eval_set_v13_authoring/authoring/names-check.json": "898e0d6528ca656126bfb52a70ff3d22f1b7b981af666a58660c4b7b9f9de4c0",
+    "evaluation/eval_set_v13_authoring/authoring/novelty-review.md": "75476543a8a4084add637e42266e95c59be131a66a7d576c57a83947dae03cf0",
+    "evaluation/eval_set_v13_authoring/authoring/pair-a.json": "e3f215336ae1237213f036f9f35c8e348fc1ecd0587b89e652bf627e0cc09d31",
+    "evaluation/eval_set_v13_authoring/authoring/pair-b.json": "2a92a031d483e3fb88397e7a8450c9fc130a1961bf628d151e57dc0c6615f8f2",
+    "evaluation/eval_set_v13_authoring/authoring/pair-c.json": "5a4309877d197d32f3a4b625e07ad8b2b7f0acbcee1c312581fc2ccee7188552",
+    "evaluation/eval_set_v13_authoring/authoring/scope-baseline.json": "3581db71e9721e9798082e0baed035e95f3eb58509a14811fcd70e0ac0f4bc41",
+    "evaluation/eval_set_v13_authoring/sources/dunwex_balloon_day.md": "14fc8bfa32f099c7d5a10bab9338a18c883a258e198248a8f17d9cb0bacbd551",
+    "evaluation/eval_set_v13_authoring/sources/jixie_spiral_chess.md": "f8acc21b15f06894fa0ff9d2c8a203c05b9fb971466fa5ccac281fe9d1d24823",
+    "evaluation/eval_set_v13_authoring/sources/orvessa_observatory.md": "269b58633da14974c40a1019378c9380e7f4b269b32311f905c754e5f8191985",
+    "evaluation/eval_set_v13_authoring/sources/qisui_fourth_bowl.md": "52ec7c8944072b4a869c1e9e3543296bbf84794a5ff4b11526960450607e5f08",
+    "evaluation/eval_set_v13_authoring/sources/varnock_fossil_picnic.md": "1b728b7b9c9a7b9b7fc5d91b8b52b7878c2ff0c736d6163056bc7e5c45c3051d",
+    "evaluation/eval_set_v13_authoring/sources/yanjia_apiary.md": "d1e9acb8213c242cb736bc22450d3de7963fe546ac5ee1c137a95c824c96c0f3"
+  },
+  "excluded_directories": [
+    "eval_set_a1_reserve",
+    "eval_set_a1b_reserve",
+    "eval_set_v13_authoring"
+  ],
+  "reference_counts": {
+    "source_files": 0,
+    "normalized_inputs": 0,
+    "names_text_files": 20
+  }
+}

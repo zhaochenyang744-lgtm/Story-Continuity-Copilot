@@ -410,7 +410,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         return JSONResponse(status_code=200 if required_ready else 503,content={'status':'ready' if required_ready else 'not_ready','capabilities':capabilities,'security_error_code':None if required_ready else 'required_capability_unavailable'})
     @app.post('/api/auth/visitor',status_code=201)
     def visitor(request:Request):
-        csrf(request); data=stage13.create_visitor(request.cookies.get(COOKIE)); return session_response(request,data,201)
+        # The account as every other sign-in returns it, with whether the assistant is open to it: without that the 助手 button
+        # stayed hidden until the page was loaded again (v2.1 preview).
+        csrf(request); data=stage13.create_visitor(request.cookies.get(COOKIE)); data['user']=stage13.safe_user(data['user']['id']); return session_response(request,data,201)
     @app.post('/api/auth/register',status_code=201)
     def register(payload:Register,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'registration_failed'); replay_key=key(idempotency_key)

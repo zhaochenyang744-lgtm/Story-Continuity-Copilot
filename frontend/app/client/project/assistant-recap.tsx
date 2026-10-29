@@ -1,12 +1,12 @@
 "use client";
 
-// 写前回顾 as an assistant task: four columns, each item a sentence with the passages it rests on right under it.
+// 写前回顾 as an assistant task: four groups, each item one sentence with a small mark at its end (the same mark as an answer's: it opens to the
+// passage it rests on, whole, with the sentence that says the same set apart, and to a way to the original).
 // The server picks the candidates and quotes the passages; the model only chooses, orders and summarises.
-import { useState } from "react";
 import type { AssistantSource, AssistantTask, RecapAnswer, RecapSection } from "../../model";
 import { formatCount } from "../ui";
-import { Feedback } from "./assistant-answer";
-import { active, CoverLine, failureText, isRecap, LimitLine, StoppedNote } from "./assistant-parts";
+import { Feedback, SentenceText } from "./assistant-answer";
+import { active, cardLabel, failureText, isRecap, LimitLine, notChecked, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu } from "./assistant-route";
 
@@ -16,51 +16,18 @@ const SECTIONS: { id: RecapSection; label: string }[] = [
   { id: "open_threads", label: "还没收的线" },
   { id: "plan", label: "计划里这一章的事" },
 ];
-/** At most this many passages are shown under one item; the rest fold into 「还有 N 段」. */
-const SHOWN = 2;
 
-/** Where a passage comes from, in the small grey line under it. */
-function originOf(source: AssistantSource, section: RecapSection, target: number): string {
-  if (source.kind === "plan") return `计划 · 第 ${target} 章`;
-  const chapter = source.chapter_number != null ? `第 ${source.chapter_number} 章` : "";
-  if (source.kind === "fact") return `已确认事实 · ${chapter}`;
-  return section === "open_threads" ? `伏笔记录 · ${chapter}` : chapter;
+/** The refs the recap rests on, in the order they first appear: a mark's number is its place in it. */
+export function recapRefs(task: AssistantTask, answer: RecapAnswer): string[] {
+  const order: string[] = [];
+  for (const { id } of SECTIONS) for (const item of answer.sections[id]) for (const ref of item.refs) if (task.sources[ref] && !order.includes(ref)) order.push(ref);
+  return order;
 }
 
-function Item({ task, answer, section, item, openChapter }: {
-  task: AssistantTask;
-  answer: RecapAnswer;
-  section: RecapSection;
-  item: { summary: string; refs: string[] };
-  openChapter: (number: number) => void;
-}) {
-  const [all, setAll] = useState(false);
-  const [wide, setWide] = useState<string[]>([]);
-  const sources = item.refs.filter((ref) => task.sources[ref]);
-  const shown = all ? sources : sources.slice(0, SHOWN);
-  return (
-    <div className="a-ri">
-      <p>{item.summary}</p>
-      {shown.map((ref) => {
-        const source = task.sources[ref];
-        const open = wide.includes(ref);
-        // The quote is one line until it is opened to be read whole.
-        return (
-          <div key={ref} className="a-ri-src">
-            <button type="button" className={`a-text a-quote-line${open ? " wide" : ""}`} aria-expanded={open}
-              onClick={() => setWide((current) => (open ? current.filter((value) => value !== ref) : [...current, ref]))}>{source.text}</button>
-            {source.chapter_number != null
-              ? <button type="button" className="a-from" onClick={() => openChapter(source.chapter_number!)}>{originOf(source, section, answer.chapter_number)}</button>
-              : <span className="a-from">{originOf(source, section, answer.chapter_number)}</span>}
-          </div>
-        );
-      })}
-      {sources.length > SHOWN && !all && <button type="button" className="a-link a-more" onClick={() => setAll(true)}>还有 {sources.length - SHOWN} 段</button>}
-    </div>
-  );
-}
+/** What the program did not look at, besides the draft (a recap never reads it; the top line already says which chapters it read). */
+export const recapMissed = (task: AssistantTask) => notChecked(task).filter((item) => !item.startsWith("本章草稿"));
 
-export function RecapView({ task, projectId, visitor, stopping, stop, retry, openChapter, rerun, replace }: {
+export function RecapView({ task, projectId, visitor, stopping, stop, retry, locate, rerun, replace }: {
   task: AssistantTask;
   projectId: string;
   replace: (next: AssistantTask) => void;
@@ -68,7 +35,8 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
   stopping: boolean;
   stop: () => void;
   retry: () => void;
-  openChapter: (number: number) => void;
+  /** 去原文 in a mark's card. */
+  locate: (source: AssistantSource) => void;
   /** 重新回顾; null where it makes no sense (the drawer on other pages). */
   rerun: (() => void) | null;
 }) {
@@ -76,9 +44,16 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
   const answer = isRecap(task.answer) ? task.answer : null;
   const failure = task.status === "failed" ? failureText(task, visitor) : null;
   const charged = !visitor && task.usage.chars_charged > 0;
+  const refs = answer ? recapRefs(task, answer) : [];
+  // A plan has no chapter of its own in the sources: it is the plan for the chapter being written.
+  const labelOf = (source: AssistantSource) => (source.kind === "plan" && source.chapter_number == null && answer ? `计划 · 第 ${answer.chapter_number} 章` : cardLabel(source));
+  const sentence = (item: { summary: string; refs: string[] }) => (
+    <SentenceText task={task} sentence={{ text: item.summary, refs: item.refs.filter((ref) => task.sources[ref]) }} bold={false} order={0} refs={refs} locate={locate} whole labelOf={labelOf} />
+  );
+  const missed = recapMissed(task);
   return (
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="recap">
-      <Steps task={task} lead={`写前回顾${answer ? ` · 第 ${answer.chapter_number} 章（只看第 1–${answer.chapter_number - 1} 章）` : ""}`}
+      <Steps task={task} named lead={`写前回顾${answer ? ` · 第 ${answer.chapter_number} 章（只看第 1–${answer.chapter_number - 1} 章）` : ""}`}
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
       <ChosenLine task={task} />
       <StoppedNote task={task} visitor={visitor} />
@@ -87,12 +62,14 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, ope
       )}
       <LimitLine task={task} />
       {answer && SECTIONS.map(({ id, label }) => answer.sections[id].length > 0 && (
-        <section key={id} className="a-recap-sec" aria-label={label}>
+        <section key={id} className="a-recap-sec" aria-label={label} data-section={id}>
           <p className="a-label">{label}</p>
-          {answer.sections[id].map((item, index) => <Item key={index} task={task} answer={answer} section={id} item={item} openChapter={openChapter} />)}
+          {id === "previous_ending"
+            ? answer.sections[id].map((item, index) => <p key={index} className="a-ri lead">{sentence(item)}</p>)
+            : <ul className="a-ri-list">{answer.sections[id].map((item, index) => <li key={index} className="a-ri">{sentence(item)}</li>)}</ul>}
         </section>
       ))}
-      <CoverLine task={task} />
+      {missed.length > 0 && <p className="a-cover" data-testid="recap-missed">没查：{missed.join("、")}。</p>}
       {task.status === "completed" && (
         <div className="a-foot">
           {rerun && <button type="button" className="a-link" onClick={rerun}>重新回顾</button>}

@@ -1,0 +1,410 @@
+{
+  "status": "completed",
+  "review_kind": "independent_checker_reaudit",
+  "prior_audit": {
+    "file": "evaluation/eval_set_a3f2_formal/authoring/independent-checker-audit.json",
+    "sha256": "54e63abb0897b7f33e2ab3f2f7bd2c9c658ca75140d5a5326d35252a96190c50",
+    "preserved": true
+  },
+  "blocking_findings": 0,
+  "unresolved_findings": 0,
+  "new_findings": [],
+  "closures": [
+    {
+      "id": "CA-01",
+      "resolution_status": "closed",
+      "blocking": false,
+      "summary": "两个独立checker现在执行同一逐条验证逻辑，重算最终状态/回收章、实际动作集合与route结果，并严格比对摘要和必需原始文件清单；不再仅信汇总及哈希。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 66,
+          "line_end": 114
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 116,
+          "line_end": 184
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 186,
+          "line_end": 235
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 827,
+          "line_end": 832
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 827,
+          "line_end": 832
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/adapt-checkers.py",
+          "line_start": 78,
+          "line_end": 88
+        }
+      ],
+      "probe_evidence": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "CA-02",
+      "resolution_status": "closed",
+      "blocking": false,
+      "summary": "首轮伏笔记录现在验证completed/work/全章覆盖、全部条目唯一覆盖与状态/证据字段；首轮route也验证完成、完整题id覆盖与唯一性。binder与checker复用同一函数。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 116,
+          "line_end": 145
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 192,
+          "line_end": 218
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 16,
+          "line_end": 25
+        }
+      ],
+      "probe_evidence": [
+        5
+      ]
+    },
+    {
+      "id": "CA-03",
+      "resolution_status": "closed_with_audit_correction",
+      "blocking": false,
+      "summary": "注入最低分布已改成功能类别，八个枚举分别计数而不逐一作为硬门槛。首轮审计把>2500条件称为未登记并不准确：任务33引用A1c第2节，A1c SPEC第37行确有该位置要求；该部分应更正，不要求删除检查。",
+      "code_references": [
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 796,
+          "line_end": 808
+        },
+        {
+          "file": "evaluation/assistant_a1c/SPEC.md",
+          "line_start": 37,
+          "line_end": 37
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/README.md",
+          "line_start": 9,
+          "line_end": 9
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/README.md",
+          "line_start": 15,
+          "line_end": 15
+        }
+      ],
+      "verification_limit": "为保留后续正式盲判，未读取新正式README；其文档说明由主控报告，本轮只核安全README、引用规范与代码。"
+    }
+  ],
+  "closed_blocking_findings": 2,
+  "audit_corrections": 1,
+  "coverage_checklist": [
+    {
+      "item": "必需全文/首轮/最终(如有)/初轮输入快照文件清单",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 77,
+          "line_end": 98
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 229,
+          "line_end": 235
+        }
+      ]
+    },
+    {
+      "item": "全文当前source与覆盖、未关闭发现计数",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 77,
+          "line_end": 88
+        }
+      ]
+    },
+    {
+      "item": "初轮材料原字节快照、初轮原文件哈希、source历史绑定",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 95,
+          "line_end": 114
+        }
+      ]
+    },
+    {
+      "item": "首轮完整覆盖及唯一性",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 116,
+          "line_end": 145
+        }
+      ]
+    },
+    {
+      "item": "最终章引用逐字出现与最终状态/章重算",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 134,
+          "line_end": 156
+        }
+      ]
+    },
+    {
+      "item": "真实范围内动作集合",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 163,
+          "line_end": 184
+        }
+      ]
+    },
+    {
+      "item": "route初轮/最终完整性和当前最终输入视图",
+      "result": "statically_verified_no_formal_content_read",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 186,
+          "line_end": 224
+        }
+      ]
+    },
+    {
+      "item": "汇总与原始票数完全比较及raw哈希清单覆盖",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/review_validation.py",
+          "line_start": 225,
+          "line_end": 235
+        }
+      ]
+    },
+    {
+      "item": "binder失败不绑定，成功才写快照",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py",
+          "line_start": 16,
+          "line_end": 38
+        }
+      ]
+    },
+    {
+      "item": "内嵌函数与共享函数AST一致，生成器接入无丢失",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3f2_formal/authoring/adapt-checkers.py",
+          "line_start": 78,
+          "line_end": 89
+        },
+        {
+          "file": "evaluation/eval_set_a3f2_formal/check.py",
+          "line_start": 827,
+          "line_end": 832
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 827,
+          "line_end": 832
+        }
+      ]
+    },
+    {
+      "item": "注入按功能最低类别，八枚举仅统计",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/eval_set_a3s2_formal/check.py",
+          "line_start": 796,
+          "line_end": 808
+        }
+      ]
+    },
+    {
+      "item": "考点2500字口径引用依据与审计纠正",
+      "result": "verified",
+      "references": [
+        {
+          "file": "evaluation/assistant_a1c/SPEC.md",
+          "line_start": 37,
+          "line_end": 37
+        },
+        {
+          "file": "evaluation/eval_set_a3s2_formal/README.md",
+          "line_start": 9,
+          "line_end": 9
+        }
+      ]
+    }
+  ],
+  "inputs": {
+    "evaluation/eval_set_a3f2_formal/authoring/review_validation.py": {
+      "sha256": "8520b30d83e581cafa48056e5dbc319f8f523396b646acf323e711dd07ebe05b",
+      "lines": 235
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/adapt-checkers.py": {
+      "sha256": "5292238dbf17178da48fc7146258d484e1bc0bdeb843057465e38aee209835d6",
+      "lines": 89
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/bind-reviews.py": {
+      "sha256": "42aea3cf85e7d3677fa0565259031454a2fd1f0cb345113c23e162fc68ac8068",
+      "lines": 42
+    },
+    "evaluation/eval_set_a3f2_formal/check.py": {
+      "sha256": "06e38bf022f4ba7a39d280ad75fc26c8998b7cc51034bafdac664031b2e1b3a1",
+      "lines": 851
+    },
+    "evaluation/eval_set_a3s2_formal/check.py": {
+      "sha256": "4f21d24b748d55f1a85ebdc1a3e6b59a32486f44c1fd335aeec60d4e2bc55c8e",
+      "lines": 851
+    },
+    "evaluation/assistant_a1c/SPEC.md": {
+      "sha256": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+      "lines": 355
+    },
+    "evaluation/eval_set_a3s2_formal/README.md": {
+      "sha256": "15854d36115d1705ae2aa20120652689a34fb6a49080c85e73e9e8d6424f3e88",
+      "lines": 15
+    },
+    "evaluation/eval_set_a3f2_formal/authoring/independent-checker-audit.json": {
+      "sha256": "54e63abb0897b7f33e2ab3f2f7bd2c9c658ca75140d5a5326d35252a96190c50",
+      "lines": 621
+    }
+  },
+  "embedding_verification": [
+    {
+      "file": "evaluation/eval_set_a3f2_formal/check.py",
+      "shared_function_identical_ast": true,
+      "function_start": 58,
+      "function_end": 285
+    },
+    {
+      "file": "evaluation/eval_set_a3s2_formal/check.py",
+      "shared_function_identical_ast": true,
+      "function_start": 58,
+      "function_end": 285
+    }
+  ],
+  "checkers_identical_except_safety_constant": true,
+  "offline_probes": {
+    "scope": "temporary safety copies only",
+    "baseline_status": "PASS",
+    "baseline_exit_code": 0,
+    "count": 5,
+    "detected": 5,
+    "results": [
+      {
+        "probe": 1,
+        "mutation": "最终伏笔决策改为open，刷新所有列出哈希",
+        "checker_status": "FAIL",
+        "checker_exit_code": 1,
+        "intended_error_detected": true,
+        "evidence_error_codes": [
+          "independent:w01:thread:agreement",
+          "independent:records:thread_summary"
+        ]
+      },
+      {
+        "probe": 2,
+        "mutation": "移除全文/首轮/最终原始复核文件并缩减raw清单，刷新所有列出哈希",
+        "checker_status": "FAIL",
+        "checker_exit_code": 1,
+        "intended_error_detected": true,
+        "evidence_error_codes": [
+          "independent:w01:full:file",
+          "independent:w01:thread:first:file",
+          "independent:records:raw_coverage"
+        ]
+      },
+      {
+        "probe": 3,
+        "mutation": "删一条必需allowed_actions，刷新封存和独立绑定哈希",
+        "checker_status": "FAIL",
+        "checker_exit_code": 1,
+        "intended_error_detected": true,
+        "evidence_error_codes": [
+          "a3s2-w01-injection-03:actions_complete",
+          "independent:a3s2-w01-injection-03:thread:action_set"
+        ]
+      },
+      {
+        "probe": 4,
+        "mutation": "将run_suite改成tidy，刷新封存和独立绑定哈希",
+        "checker_status": "FAIL",
+        "checker_exit_code": 1,
+        "intended_error_detected": true,
+        "evidence_error_codes": [
+          "a3s2-w01-injection-01:run_suite"
+        ]
+      },
+      {
+        "probe": 5,
+        "mutation": "首轮status/work/章覆盖和决策置为未完成或空；同时刷新输入快照的first_record_sha256，避免只靠哈希失败",
+        "checker_status": "FAIL",
+        "checker_exit_code": 1,
+        "binder_status": "FAIL",
+        "binder_exit_code": 1,
+        "intended_error_detected": true,
+        "binder_errors": [
+          "independent:w01:thread:first:completion",
+          "independent:w01:thread:first:coverage"
+        ],
+        "checker_errors": [
+          "independent:w01:thread:first:completion",
+          "independent:w01:thread:first:coverage",
+          "independent:records:thread_summary"
+        ],
+        "first_record_binding_error_absent": true
+      }
+    ],
+    "temporary_copies_removed": true,
+    "formal_checker_runs": 0,
+    "formal_content_copied": false,
+    "model_calls": 0,
+    "product_runs": 0,
+    "evaluation_runs": 0
+  },
+  "scope": {
+    "workspace": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-a3-2-authoring",
+    "branch": "eval/a3-2-authoring",
+    "new_formal_content_read": false,
+    "new_formal_checker_run": false,
+    "formal_content_copied": false,
+    "checkers_modified": false,
+    "data_modified": false,
+    "binder_executed_only_from_copied_specified_code_against_temporary_safety_directory": true
+  },
+  "limitations": [
+    "正式route只做共享函数静态复审，未加载正式任务或原始票据，未声称正式checker实际PASS。",
+    "首轮正文若已修订，本轮验证的是原首轮文件/材料快照哈希和全文复读历史中的源哈希；旧版首轮原句不在当前正文逐字复验，最终原句逐字按当前正文验证。独立人工完整阅读仍是语义证据来源。",
+    "本审计是结构/离线验证，不是模型质量、产品行为或正式评测结果。"
+  ]
+}

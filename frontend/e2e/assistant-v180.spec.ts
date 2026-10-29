@@ -18,14 +18,15 @@ const setRollout = (page: Page, mode: string) => api(page).post(`/test/v180/assi
 const column = (page: Page) => thread(page).locator(".a-thread");
 
 test.describe("助手：过程", () => {
-  test("说明句和动作合成一行；没有「第几轮」；跑完折成「查了 N 处 · M 秒」，点开看到每一步和找到的片段", async ({ page }) => {
+  test("说明句和动作合成一行；没有「第几轮」；跑完折成「问作品 · M 秒」，点开看到每一步和找到的片段", async ({ page }) => {
     await setup(page);
     await serveTasks(page, () => [askView()]);
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    // Folded: how many places, how long (completed_at − started_at), and the first line it said.
-    const fold = task.getByRole("button", { name: /^问作品 · 查了 6 处 · 14 秒/ });
+    // The line: how long (completed_at − started_at). 38a: no count of places on it, and it is a plain label; the steps are under 「怎么查的」.
+    await expect(task.getByTestId("process-line")).toHaveText(/^问作品 · 14 秒$/);
+    const fold = task.getByRole("button", { name: "怎么查的" });
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.locator(".a-say")).toHaveCount(0);
     await fold.click();
@@ -62,7 +63,8 @@ test.describe("助手：过程", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: /查了 2 处/ }).click();
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.locator(".a-act.bad")).toHaveText("提出改法没通过：原句在草稿里出现了不止一次");
     expect(await task.locator(".a-act.bad .mk").evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"✕"');
     await expect(task.locator(".a-act.ok")).toHaveText(["提出了 2 个改法", "引用没对上，重新整理回答"]);
@@ -77,14 +79,16 @@ test.describe("助手：过程", () => {
     await ask(page, "E2E_BADREAD 苏岑是谁？");
     await finished(page);
     let task = tasks(page).first();
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.locator(".a-act.bad")).toHaveText("读第 999 章没通过：这一章不在可查范围内");
     await expect(task.locator(".a-act.ok").first()).toContainText("查了 1 条事实：苏岑");
     // An answer whose citation did not match is written again: one line says so, and the answer that follows is fine.
     await ask(page, "E2E_REPAIR 温岚是谁？");
     await finished(page, 2);
     task = tasks(page).last();
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.locator(".a-act.ok").filter({ hasText: "引用没对上，重新整理回答" })).toHaveCount(1);
     await expect(task.getByText("（示意回答）前文写过这件事。")).toBeVisible();
     // Cut short by the limit: a line above the answer says so, and 查过 / 没查 does not repeat it.
@@ -132,7 +136,7 @@ test.describe("助手：过程", () => {
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const first = tasks(page).first();
-    const fold = first.getByRole("button", { name: /查了 \d+ 处/ });
+    const fold = first.getByRole("button", { name: "怎么查的" });
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await fold.click();
     await ask(page, "E2E_SLOW 温岚是谁？");
@@ -640,13 +644,14 @@ test.describe("助手：输入框", () => {
     await expect(send(page)).toBeEnabled();
   });
 
-  test("输入框和全站的输入框是同一套：白底、1px 细边框、聚焦变蓝不加光晕", async ({ page }) => {
+  test("输入框和全站的输入框是同一套：白底、没有边框，平时一圈淡环加淡影，悬停和聚焦各深一档，聚焦不再变蓝", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     const frame = thread(page).locator("form.cx");
     // The fields ease between their states; what is read here is the state they arrive at.
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
-    const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, border: style.borderTopColor, shadow: style.boxShadow, radius: style.borderTopLeftRadius }; };
+    const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, border: style.borderTopWidth, shadow: style.boxShadow, radius: style.borderTopLeftRadius }; };
+    const shadows = () => page.evaluate(() => { const read = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }; return { rest: read("--ring-rest"), hover: read("--ring-hover"), focus: read("--ring-focus") }; });
     const quiet = await frame.evaluate(read);
     await page.mouse.move(2, 2);
     await frame.hover();
@@ -654,17 +659,19 @@ test.describe("助手：输入框", () => {
     await box(page).focus();
     const focused = await frame.evaluate(read);
     const tokens = await page.evaluate(() => { const root = getComputedStyle(document.documentElement); const colour = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `color: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).color; probe.remove(); return value; }; return { sunken: colour("--c-sunken"), line: colour("--c-line"), surface: colour("--c-surface"), blue: colour("--c-blue"), tint: colour("--c-blue-tint"), md: root.getPropertyValue("--r-md").trim() }; });
-    // (v2.1) the box is white with a 1px line from the start, as the form fields of the other pages are; pointing at it darkens the line,
-    // focus turns it blue, and nothing glows around it.
+    // (v2.1, soft look) the box is a white well with no border: a faint inner ring and a soft shadow at rest, a step deeper when pointed at, deeper
+    // again with a pale halo when focused. Nothing turns blue.
+    const ring = await shadows();
     expect(quiet.background).toBe(tokens.surface);
-    expect(quiet.border).toBe(tokens.line);
-    expect(hovered.border).not.toBe(tokens.line);
+    expect(quiet.border).toBe("0px");
+    expect(quiet.shadow).toBe(ring.rest);
+    expect(hovered.shadow).toBe(ring.hover);
     expect(focused.background).toBe(tokens.surface);
-    expect(focused.border).toBe(tokens.blue);
-    expect(focused.shadow).toBe("none");
+    expect(focused.border).toBe("0px");
+    expect(focused.shadow).toBe(ring.focus);
+    expect(focused.shadow).not.toContain(tokens.blue);
     expect(focused.radius).toBe(tokens.md);
-    // An ordinary form field of another page (the account settings' password form) since v2.1: white with a 1px hairline from the
-    // start, the line turns blue when focused, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
+    // An ordinary form field of another page (the account settings' password form) since v2.1: white, no border, the same rings, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
     await page.goto("/settings/account");
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
     await page.locator(".row").filter({ hasText: "密码" }).first().getByRole("button", { name: "修改密码", exact: true }).click();
@@ -674,11 +681,12 @@ test.describe("助手：输入框", () => {
     await field.focus();
     const after = await field.evaluate(read);
     expect(before.background).toBe(tokens.surface);
-    expect(before.border).toBe(tokens.line);
+    expect(before.border).toBe("0px");
+    expect(before.shadow).toBe(ring.rest);
     expect(before.radius).toBe("6px");
     expect(after.background).toBe(tokens.surface);
-    expect(after.border).toBe(tokens.blue);
-    expect(after.shadow).toContain(tokens.tint);
+    expect(after.border).toBe("0px");
+    expect(after.shadow).toBe(ring.focus);
   });
 });
 
@@ -875,7 +883,7 @@ test.describe("助手：开关、测试版、隐私", () => {
     await other.goto("/privacy");
     await expect(other.getByRole("heading", { level: 1, name: "隐私说明" })).toBeVisible();
     await expect(other).toHaveURL(/\/privacy$/);
-    await expect(other.getByText("最近更新：2026 年 10 月 27 日")).toBeVisible();
+    await expect(other.getByText("最近更新：2026 年 10 月 29 日")).toBeVisible();
     // v2.1: the usage statistics, what they are used for, and how their summaries are kept.
     await expect(other.getByText("这些只有数字和代码，不包含你的作品内容、你的问题和助手的回答。", { exact: false })).toBeVisible();
     await expect(other.getByText("做这件事时我们只看汇总的数字，不读你的作品、你的问题和助手的回答。", { exact: false })).toBeVisible();

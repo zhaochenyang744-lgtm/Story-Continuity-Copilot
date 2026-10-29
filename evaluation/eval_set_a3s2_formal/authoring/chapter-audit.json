@@ -1,0 +1,72 @@
+{
+  "w01": {
+    "sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5",
+    "chapters": [
+      {
+        "chapter": 1,
+        "han": 2977,
+        "paragraphs": 30
+      },
+      {
+        "chapter": 2,
+        "han": 3101,
+        "paragraphs": 26
+      },
+      {
+        "chapter": 3,
+        "han": 3059,
+        "paragraphs": 28
+      },
+      {
+        "chapter": 4,
+        "han": 3103,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 5,
+        "han": 2934,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 6,
+        "han": 3138,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 7,
+        "han": 3006,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 8,
+        "han": 3051,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 9,
+        "han": 3043,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 10,
+        "han": 3055,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 11,
+        "han": 2949,
+        "paragraphs": 27
+      },
+      {
+        "chapter": 12,
+        "han": 3097,
+        "paragraphs": 28
+      }
+    ],
+    "total_han": 36513,
+    "duplicate_paragraphs": 0,
+    "bom": false,
+    "crlf": 0,
+    "replacement_characters": 0
+  }
+}

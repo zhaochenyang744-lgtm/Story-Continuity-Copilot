@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "program_only": true,
+  "new_tasks": 10,
+  "sealed_distinct_inputs": 98,
+  "summed_directory_distinct_inputs": 98,
+  "comparisons": 980,
+  "failure_count": 0,
+  "directories": [
+    {
+      "directory": "eval_set_a1_reserve",
+      "exists": 0,
+      "task_files": 0,
+      "distinct_inputs": 0,
+      "failure_count": 0
+    },
+    {
+      "directory": "eval_set_a1b_reserve",
+      "exists": 0,
+      "task_files": 0,
+      "distinct_inputs": 0,
+      "failure_count": 0
+    },
+    {
+      "directory": "eval_set_v13_authoring",
+      "exists": 1,
+      "task_files": 0,
+      "distinct_inputs": 0,
+      "failure_count": 0
+    },
+    {
+      "directory": "eval_set_a26_formal",
+      "exists": 1,
+      "task_files": 1,
+      "distinct_inputs": 66,
+      "failure_count": 0
+    },
+    {
+      "directory": "eval_set_a2s6_formal",
+      "exists": 1,
+      "task_files": 1,
+      "distinct_inputs": 12,
+      "failure_count": 0
+    },
+    {
+      "directory": "eval_set_a2n7_formal",
+      "exists": 1,
+      "task_files": 1,
+      "distinct_inputs": 20,
+      "failure_count": 0
+    }
+  ],
+  "plaintext_outputs": 0,
+  "tasks_sha256": "6d6526935eae85c65139aa4cdef6c69e9493844c529226c0a1d1137c0cfade69"
+}

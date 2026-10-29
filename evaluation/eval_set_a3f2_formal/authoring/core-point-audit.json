@@ -1,0 +1,18 @@
+{
+  "w01": {
+    "core_quotes": 34,
+    "after1500": 34,
+    "after2500": 34,
+    "min": 2633,
+    "max": 2919,
+    "source_sha256": "c5acdd48b00b223e0c679c58d8d45c59f8863deee627de9dd50404ffc59e1135"
+  },
+  "w02": {
+    "core_quotes": 34,
+    "after1500": 34,
+    "after2500": 34,
+    "min": 2556,
+    "max": 2858,
+    "source_sha256": "982f7c36440bb52aeb62d55266da16f930fc9961ecac24abd3fe42769a211bf4"
+  }
+}

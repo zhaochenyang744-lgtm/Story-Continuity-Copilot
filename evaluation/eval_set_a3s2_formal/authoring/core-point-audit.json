@@ -1,0 +1,10 @@
+{
+  "w01": {
+    "core_quotes": 9,
+    "after1500": 9,
+    "after2500": 9,
+    "min": 2608,
+    "max": 2821,
+    "source_sha256": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5"
+  }
+}

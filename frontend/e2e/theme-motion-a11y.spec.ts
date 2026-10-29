@@ -20,7 +20,7 @@ test("12 Q 夜间勾选栏禁用按钮透明底和弱描边", async ({ page }) =
 });
 
 test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
-  for (const [scheme, value, background] of [["dark", "night", "rgb(17, 17, 17)"], ["light", "day", "rgb(244, 244, 241)"]] as const) {
+  for (const [scheme, value, background] of [["dark", "night", "rgb(19, 19, 19)"], ["light", "day", "rgb(243, 243, 240)"]] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/login");
     await expect(page.locator("html")).toHaveAttribute("data-theme", value);
@@ -34,7 +34,7 @@ test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("night");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
-  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(17, 17, 17)");
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(19, 19, 19)");
   await button(page, "切换到日间模式").click();
   await expect(button(page, "切换到夜间模式")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("day");
@@ -186,7 +186,7 @@ test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜
     await theme(page, value);
     await page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("tab", { name: "助手", exact: true }).click();
     await expect(completed()).toHaveCount(1);
-    await page.getByTestId("assistant-thread").getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await page.getByTestId("assistant-thread").getByRole("button", { name: "怎么查的" }).click();
     await scan("写作页助手标签", value);
     await openTab(page, id, "sources");
     await page.locator("#assistant-open").click();

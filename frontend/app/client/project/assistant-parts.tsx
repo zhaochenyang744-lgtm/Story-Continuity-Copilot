@@ -12,7 +12,8 @@ export const LIMIT_MARK = "步数或预算已到";
 export const LIMIT_LINE = "查到上限了，先按已找到的回答。";
 export const OUT_OF_SCOPE_TEXT = "我只能查这部作品里写过的内容，可以换个关于作品的问题。";
 export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果" };
-export const VISITOR_USED_UP = "访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
+export const VISITOR_SAMPLE_ONLY = "访客只能在示例作品上用助手。注册后可以在自己的作品上用。";
+export const VISITOR_USED_UP ="访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
 export const RUNNING_NOW = "上一个问题还在查";
 export const FOLLOW_UP_LIMIT_TEXT = "这一串已经追问两次了，可以问一个新问题";
 /** What a task costs before anything is added: 500 characters (the server reads the figure from the usage). */
@@ -32,9 +33,15 @@ export const allSentences = (answer: AssistantAnswer | null) => [...(answer?.sen
 
 export const whereLabel = (source: AssistantSource) =>
   source.chapter_number != null ? chapterHeading(source.chapter_number, source.chapter_title ?? "") : SOURCE_KIND[source.kind] ?? "资料";
-/** The label on a citation card: a fact says it is a summary (it is not the author's own words), a passage names its chapter. */
-export const cardLabel = (source: AssistantSource) =>
-  source.kind === "fact" && source.chapter_number != null ? `事实摘要 · 第 ${source.chapter_number} 章` : whereLabel(source);
+/** The label on a citation card, by what the source really is: a passage names its chapter and title, a fact says it is a summary (it is not
+    the author's own words), a foreshadow record and a plan say so and name their chapter. */
+export function cardLabel(source: AssistantSource): string {
+  const chapter = source.chapter_number != null ? ` · 第 ${source.chapter_number} 章` : "";
+  if (source.kind === "fact" && chapter) return `事实摘要${chapter}`;
+  if (source.kind === "foreshadow") return `伏笔记录${chapter}`;
+  if (source.kind === "plan") return `计划${chapter}`;
+  return whereLabel(source);
+}
 /** Where 去原文 takes the author, and what to look for there: the passage itself, or for a fact the passage it was taken from.
     Null when the source has no chapter. A fact without a source passage still opens its chapter, with nothing to find. */
 export function locateTarget(source: AssistantSource): { chapter: number; text: string } | null {
@@ -52,9 +59,12 @@ export function quotaReason(usage: CheckUsage | null, sample: boolean): string {
   if (usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS)) {
     return `${refusalText({ code: "character_quota_exceeded", details: { remaining: usage.check_chars_remaining } }, false)}用掉的额度 24 小时后陆续返还。`;
   }
+  if (usage?.account_type === "visitor" && !sample) return VISITOR_SAMPLE_ONLY;
   if (usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0) return VISITOR_USED_UP;
   return "";
 }
+/** A visitor on a work of their own: the assistant is not there to use, and the box says so from the start (V11). */
+export const visitorOutsideSample = (usage: CheckUsage | null, sample: boolean) => usage?.account_type === "visitor" && !sample;
 
 /** The time on the line between two turns: 今天 21:40, or 10月25日 21:40 for another day. */
 export function turnTime(iso: string, now = new Date()): string {
@@ -188,21 +198,12 @@ export function SourceList({ task, locate, skip }: { task: AssistantTask; locate
   );
 }
 
-/** 查过……；没查：……: the program's one note on what the task looked at and what it did not. When nothing was found, only what it did not look at. */
-export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
-  // 「步数或预算已到」 is said once, above the answer, as 「查到上限了」; it is not repeated here.
-  const left = (task.coverage?.not_checked ?? []).filter((item) => !item.includes(LIMIT_MARK));
-  const done = onlyMissed ? [] : task.coverage?.checked ?? [];
-  if (!done.length && !left.length) return null;
-  return (
-    <p className="a-cover">
-      {done.length > 0 && <>查过{done.join("、")}</>}
-      {done.length > 0 && left.length > 0 && "；"}
-      {left.length > 0 && <strong>没查：{left.join("、")}</strong>}
-      。
-    </p>
-  );
-}
+/** 怎么查的 ›: under an answer, folded; opened it holds the steps taken and 查过……；没查：……. Lives with the steps (assistant-process.tsx). */
+export { CoverLine } from "./assistant-process";
+/** What the task did not look at, for the line that says so: the program's note, without 「步数或预算已到」 (said once, above the answer, as 「查到上限了」). */
+export const notChecked = (task: AssistantTask) => (task.coverage?.not_checked ?? []).filter((item) => !item.includes(LIMIT_MARK));
+/** True when the task ended because its steps or its budget ran out. */
+export const hitLimit = (task: AssistantTask) => (task.coverage?.not_checked ?? []).some((item) => item.includes(LIMIT_MARK));
 
 /** A task that was stopped: it says what the stop cost (the words spent up to then are not given back). */
 export function StoppedNote({ task, visitor }: { task: AssistantTask; visitor: boolean }) {
@@ -213,6 +214,6 @@ export function StoppedNote({ task, visitor }: { task: AssistantTask; visitor: b
 
 /** Said above the answer when the task ended because the steps or the budget ran out, not because it was finished. */
 export function LimitLine({ task }: { task: AssistantTask }) {
-  if (!(task.coverage?.not_checked ?? []).some((item) => item.includes(LIMIT_MARK))) return null;
+  if (!hitLimit(task)) return null;
   return <p className="a-limit">{LIMIT_LINE}</p>;
 }

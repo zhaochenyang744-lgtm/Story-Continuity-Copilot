@@ -1,0 +1,47 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 12
+  },
+  "unresolved_findings": 0,
+  "blind_rounds": 2,
+  "source_reports": {
+    "w01": "authoring/full-source-review.json"
+  },
+  "blind_all": {
+    "total": 20,
+    "initial_agreement": 20,
+    "final_agreement": 20,
+    "unresolved": 0
+  },
+  "new_action_blind": {
+    "total": 2,
+    "initial_agreement": 2,
+    "final_agreement": 2,
+    "unresolved": 0
+  },
+  "sha256": {
+    "materials/w01-facts.json": "b74a05d49904b47a594c2c0f67eb1abe7f59a5d4c0e78ae820599c4f301c46f9",
+    "materials/w01-foreshadows.json": "234eefc91b3655dd788dc4dd9b76292981095027e3c31e3285e38cce17de7c61",
+    "tasks.json": "0cea82fc932573d147582b828783926ec1aaeb8d48b4bb8ad4a2c0d9a292fa01",
+    "works/w01.md": "9fc5d31ffb6b549dc14a916273e03bc4c8854eaaaf40c44c34c68ec95b947a3d"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "3bca9b7db3a1c74c8d6ad407dbe64d2935110425edccb496ee7e9178e3120e81",
+    "authoring/self-review.md": "6c75574abc5027d7e6d00a01ecd711ddcb5dfc9a7a505ae8d2a04008c5bf2554",
+    "authoring/novelty-reference.json": "b82770e25638c43316f27bc92c0411ee2bb5ffd48edb6d15eab0007b63c3c735",
+    "authoring/sealed-comparison.json": "15093b71a90f34493ddfbba9e1790df2b336c014e40069bc37397d3f2510e9d5"
+  },
+  "reports": {
+    "authoring/full-source-review.json": "a377f38f2bd33d92231de83e589f8f21983443ecee12e8451ca497c39d9f965d",
+    "authoring/blind-packet.json": "c7b472b6c4eef03d07d30465b971a89dad391f7ebe3c1a2629a18231a47153c5",
+    "authoring/blind-key.json": "768e42bb2c2b91b4a6fcf6bc6de2005e1bd32c92efa5f93f1517002e51856087",
+    "authoring/blind-verdicts.json": "2494c2fdf8e876a3cf0fe49e644238a228789317013c0f033e9f8b079beddced",
+    "authoring/blind-comparison.json": "9836f28fb6122b28745a3e23f90fb766dde07f26cd3da0d0e005f672e9e780dd",
+    "authoring/blind-packet.initial.json": "6cc87acc69084cabae79efebcd4b34fce136d1a47a1b60b668cbdd8ffd0abc6d",
+    "authoring/blind-key.initial.json": "768e42bb2c2b91b4a6fcf6bc6de2005e1bd32c92efa5f93f1517002e51856087",
+    "authoring/blind-verdicts.initial.json": "2494c2fdf8e876a3cf0fe49e644238a228789317013c0f033e9f8b079beddced",
+    "authoring/blind-rereview.json": "b5f2be5c3b45bb407f831b9b1dad6b8eef37a695a0a20876128ef3ffbb2fe4f8",
+    "authoring/revision-log.json": "c9db78b10f886d86097a05f8bb3ddfbd44d30ccadf35e1afa839a94d0044469d"
+  }
+}

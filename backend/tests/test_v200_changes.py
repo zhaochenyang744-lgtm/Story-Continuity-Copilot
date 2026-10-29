@@ -275,6 +275,26 @@ class ConfirmTests(ChangeCase):
         first, second = task["changes"]
         self.confirm(task, accepted=[second["id"]])
         self.assertEqual((self.thread()["status"], self.thread(other)["status"]), ("planted", "resolved"))
+        self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["proposed", "applied"])  # V02: the rest keeps waiting
+        self.assertEqual([r["event"] for r in self.rows("SELECT event FROM assistant_change_events")], ["applied"])
+
+    def test_what_was_left_out_of_a_partial_confirm_can_be_confirmed_later(self):
+        other = self.new_thread("铜钥匙")
+        task = self.change_task(*(self.resolving(answer=False) + self.resolving(title="铜钥匙", words="已经收了")[1:]))
+        first, second = task["changes"]
+        self.confirm(task, accepted=[second["id"]])
+        self.confirm(task, accepted=[first["id"]])
+        self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["applied", "applied"])
+        self.assertEqual((self.thread()["status"], self.thread(other)["status"]), ("resolved", "resolved"))
+        self.confirm(task, expect=409)  # every item is decided now
+
+    def test_not_wanted_after_a_partial_confirm_turns_down_only_what_still_waits(self):
+        self.new_thread("铜钥匙")
+        task = self.change_task(*(self.resolving(answer=False) + self.resolving(title="铜钥匙", words="已经收了")[1:]))
+        first, second = task["changes"]
+        self.confirm(task, accepted=[second["id"]])
+        r = self.client.post(f"/api/projects/{self.project_id}/assistant/tasks/{task['id']}/changes/reject", headers=self.idem(), json={})
+        self.assertEqual(r.status_code, 200, r.text)
         self.assertEqual([item["status"] for item in self.task(task["id"])["changes"]], ["rejected", "applied"])
 
     def test_a_record_changed_since_the_card_stops_the_whole_confirm(self):
@@ -698,6 +718,10 @@ class SecondLookTests(FactCase):
         task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
         moved = {**restated, "target": fact, "evidence": [passage], "value": "鹦鹉螺号潜艇沉没"}
         self.assertEqual(run_propose_change(ctx, moved).result["change"], "C1")
+        # A new value naming the old only to say it no longer holds keeps nothing of it (A2 fifth formal run, w01-action-08).
+        task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
+        replaced = {**restated, "target": fact, "evidence": [passage], "value": f"鹦鹉螺号潜艇，{self.fact['value']}的说法不再成立"}
+        self.assertEqual(run_propose_change(ctx, replaced).result["change"], "C1")
 
     def test_words_that_share_nothing_with_the_record_are_held_back(self):
         task, ctx, passage, fact = self.setup_task("罗盘那条线最后一章已经收了")
@@ -906,9 +930,11 @@ class RequestListTests(GroundedTests):
     def test_the_change_task_splits_the_sentence_once_before_reading(self):
         self.provider.script_route({"items": [{"about": "罗盘那条线", "ask": "最后一章已经收了", "want": "resolve_thread"}]})
         task = self.change_task(*self.resolving(words="罗盘那条线"), question="罗盘那条线最后一章已经收了")
-        self.assertEqual(task["changes"][0]["kind"], "resolve_thread")
-        self.assertEqual(len(self.provider.route_calls), 1)
-        self.assertIn("罗盘那条线最后一章已经收了", self.provider.route_calls[0]["messages"][-1]["content"])
+        self.assertEqual(task["changes"][0]["kind"], "resolve_thread")  # the card's review was not scripted: a failed review keeps the item
+        splits = [call for call in self.provider.route_calls if call["messages"][0]["content"] == assistant_requests.REQUEST_SYSTEM_PROMPT]
+        self.assertEqual(len(splits), 1)
+        self.assertIs(self.provider.route_calls[0], splits[0])
+        self.assertIn("罗盘那条线最后一章已经收了", splits[0]["messages"][-1]["content"])
 
 
 class DisplayTests(unittest.TestCase):

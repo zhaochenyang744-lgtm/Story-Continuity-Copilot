@@ -11,6 +11,10 @@ Amended on 2026-10-20 (SPEC addendum 13), before the fifth pair was authored: v1
 fifth formal set (route, suggest) and two bars for them (route accuracy 0.90, suggestion citation support 0.9, both
 set by the user); the eighteen earlier checks keep their numbers.
 
+Amended on 2026-10-28 (SPEC addendum 17), by the user's decision: fixes of issues already on record, made for v2.1, are
+verified by one pass over the spent fifth pair and the route retest set on the code that ships, every bar met (no number
+changes, no new sealed set).
+
 Change a number only before a run, dated and explained.
 """
 from __future__ import annotations
@@ -59,6 +63,19 @@ PRE_REGISTRATION = {
     "route_retest_run": "a1c-route-retest on 2026-10-22 (code a826400): route_accuracy 0.978 (88 of 90; the two misses "
                         "were one item whose chapter check did not report its finding in two passes, issue_from_check_miss); "
                         "passed. With the fifth run's 19 audited checks, v1.9.0's assistant gate PASSED",
+    "post_gate_fixes": "SPEC addendum 17 (2026-10-28, user decided): code changed only to fix issues on record (Desktop "
+                       "v2.1任务 records 37, 37b, 37d, 37f, or a failure a regression finds) is verified by one pass on the "
+                       "code that ships: eval_set_a1c5_formal + eval_set_a1cs5_formal against the 19 checks of the v1.9 gate, "
+                       "eval_set_a1cr6_formal for route_accuracy; every bar met, no number changed, no new sealed set. "
+                       "Three-pass checks are taken over the one pass; the run id and code commit are added here before release",
+    "post_gate_regression": "reg-6b6a698 on 2026-10-29 (code 6b6a698, product assistant-p61; Desktop v2.1任务 38a, 38b, 38c): "
+                            "eval_set_a1c5_formal + eval_set_a1cs5_formal, one pass, CNY 9.54: raw 18 of 19 "
+                            "(suggest_citation_support_rate 0.895, 17 of 19); Opus's audit, approved by the user on 2026-10-29, "
+                            "overturned 2 verdicts (a1c5f-w01-suggest-02 citations 1 and 2: the judge read the suggestion itself, "
+                            "'要统一成…', as a claim about the text), so 1.0; pass3_rate and safe_all_runs over the one pass "
+                            "0.881 (37 of 42) and 1.0 (12 of 12); recap recall 0.75, recap_must_not_hits 1, citation support 0.97. "
+                            "eval_set_a1cr6_formal, three passes (the runner requires three), CNY 1.43: route_accuracy 0.967, "
+                            "29 of 30 in each pass (a1cr6-w02-route-06 routed to long_task). Every bar met",
     "amended_on": "2026-10-16",
     "release_gate": "v1.8.0 ships when this evaluation passes; A1 and A1b are no longer release gates",
     "why": "A1 and A1b chapters are 450-700 characters; real chapters are 2,000-5,000. A1c checks reading a chapter in "

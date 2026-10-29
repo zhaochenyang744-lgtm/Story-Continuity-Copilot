@@ -1,0 +1,1413 @@
+{
+  "schema_version": 1,
+  "reading_completed": true,
+  "scope": {
+    "worktree": "C:/Users/赵晨阳/Documents/ChatGPT/Agent 搭建/Story-Continuity-Copilot/产出/交付物/story-continuity-a3-3-authoring",
+    "branch": "eval/a3-3-authoring",
+    "chapter_range": [
+      1,
+      3
+    ],
+    "excluded_directory_paths": [
+      "evaluation/eval_set_a1_reserve",
+      "evaluation/eval_set_a1b_reserve",
+      "evaluation/eval_set_v13_authoring",
+      "evaluation/eval_set_a2n7_formal",
+      "evaluation/eval_set_a3s3_formal"
+    ],
+    "excluded_directory_content_reads": 0,
+    "source_edits": 0
+  },
+  "counts": {
+    "readme_files": 43,
+    "work_files": 109,
+    "unique_first_three_sources": 99,
+    "unique_chapters_read": 297,
+    "direct_full_read_source_files": 99,
+    "equivalent_source_files": 10,
+    "uncovered_work_files": 0
+  },
+  "first_three_hash_definition": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "chapter_heading_regex": "(?m)^# .+$",
+    "text_range": "file start through immediately before the fourth matching chapter heading",
+    "normalization_regex": "\\s",
+    "normalization_replacement": ""
+  },
+  "readme_entries": [
+    {
+      "path": "evaluation/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs3_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs4_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs5_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a22_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a23_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a24_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a25_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a26_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s3_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s4_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s5_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s6_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2t_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3d2_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3f2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3s_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3s2_formal/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/README.md",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/README.md",
+      "reading_completed": true
+    }
+  ],
+  "source_entries": [
+    {
+      "path": "evaluation/eval_set_a1_dev/works/d01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "51050e2d6b38026b8642208719b83ff8a34923424ab9453eafa3f7e62adcb1cb",
+      "read_source_path": "evaluation/eval_set_a1_dev/works/d01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_dev/works/d02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e2523bc959fdfafb2b382771a2b4736a7b5c67bd4ba3067d33fa8e94108f9d51",
+      "read_source_path": "evaluation/eval_set_a1_dev/works/d02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "a089b51dc7a321f9714b454184c12f25a1a9fbf107ccb0b81421d354cd62c480",
+      "read_source_path": "evaluation/eval_set_a1_formal/works/f01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1f8f1c65d2d3322496b7feaacd17db63a4f156f9b8db3ddb59a3cc04b56ce040",
+      "read_source_path": "evaluation/eval_set_a1_formal/works/f02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f03.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "364ffe2065ea8b45a665347fc4aea007bd3f7e4dc4332c33b14d2c8b93359ed6",
+      "read_source_path": "evaluation/eval_set_a1_formal/works/f03.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f04.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "0a2fdf2f234ce0228099a79e65712f74483b56c1addc2f176c8d95d3a4770fa8",
+      "read_source_path": "evaluation/eval_set_a1_formal/works/f04.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1_formal/works/f05.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "3ac010b8f0a6c6c44496136a5e55f8322d47008852b297f57bdaf36532f4bb66",
+      "read_source_path": "evaluation/eval_set_a1_formal/works/f05.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/works/l1.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "058e8e57d1ae9f497ac4da212385230701fd4d8dbbf99c2c0516367ca8efe82f",
+      "read_source_path": "evaluation/eval_set_a1b_dev/works/l1.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_dev/works/s1.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "18b222bbec15a243d55ac9eee810add20f9cb3f28e99a01b0e51c3fd97836ee3",
+      "read_source_path": "evaluation/eval_set_a1b_dev/works/s1.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/l2.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "7a0bf0b7bd08d1b0d1f988f224f171f5058b8789e84c6c4b8a8d45c8a49d5a78",
+      "read_source_path": "evaluation/eval_set_a1b_formal/works/l2.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/n.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b604b5dd20d6db32e035adbfc957fadc8727c364aaf503a52b8917bde8c21a27",
+      "read_source_path": "evaluation/eval_set_a1b_formal/works/n.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1b_formal/works/s2.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "57fa947a739c797aac43a3aa09385bed9ed273a6c0ed9d25536628c91a66de23",
+      "read_source_path": "evaluation/eval_set_a1b_formal/works/s2.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c_dev/works/race.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "2b5d38349e93ff6f66659d2153398dd4675a852487fdaf530fcb807d069518b7",
+      "read_source_path": "evaluation/eval_set_a1c_dev/works/race.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/works/f1.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9c4da197f3ad052841a8a5697db39576ab5b4c2e7d8f1687ab2260d3ff4a861f",
+      "read_source_path": "evaluation/eval_set_a1c_formal/works/f1.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c_formal/works/f2.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "cd016464fa206439bf02aee75ddeeef77210374a6aed0ea944cf6c8b245af80e",
+      "read_source_path": "evaluation/eval_set_a1c_formal/works/f2.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6b2f38e367b96eaf988713726c6700425a832687616f63bc1e1dd8766b7db556",
+      "read_source_path": "evaluation/eval_set_a1c2_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c2_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "d93502cbe0167e8707b53a66eb82073b0fa492e8be7ca11711fc1327d7b69199",
+      "read_source_path": "evaluation/eval_set_a1c2_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "8bc0ce48c283aa1f857553d2936beadc14d4a083ff79b26ca87f93336bbeed97",
+      "read_source_path": "evaluation/eval_set_a1c3_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c3_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b3af8f012d44ed6032cea01fb8c5f9e3ce4c89d9c57b56b5aa5e56a9f44ca403",
+      "read_source_path": "evaluation/eval_set_a1c3_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "64a0bf311cb1a2c14f5ea679b9e38a1db9ccb622c8e1fda68a6c2a52639f510f",
+      "read_source_path": "evaluation/eval_set_a1c4_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c4_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b10905210a0d2fc3b56b01658dd362c84e4216a3efd29ddb72c96395253988d7",
+      "read_source_path": "evaluation/eval_set_a1c4_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b023f49cfc7f5062ed3c0ced5bc469f64582dd8f29d4d69104be5601e135e0f1",
+      "read_source_path": "evaluation/eval_set_a1c5_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1c5_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "63940847f75025b3d8ea05de399806e5eb18768874d8ff4b5a7b4178ada60d0c",
+      "read_source_path": "evaluation/eval_set_a1c5_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b023f49cfc7f5062ed3c0ced5bc469f64582dd8f29d4d69104be5601e135e0f1",
+      "read_source_path": "evaluation/eval_set_a1c5_formal/works/w01.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cr6_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "63940847f75025b3d8ea05de399806e5eb18768874d8ff4b5a7b4178ada60d0c",
+      "read_source_path": "evaluation/eval_set_a1c5_formal/works/w02.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs_formal/works/lumen.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "af89af70a883ead235a903667740ec4266cf6f60074d886e32fe2746c20cb789",
+      "read_source_path": "evaluation/eval_set_a1cs_formal/works/lumen.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs2_formal/works/safe.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "17686fd9c14e1f287b4a0f5a423a2f33f44df9c5a9b3225a9631a78498b4ccc7",
+      "read_source_path": "evaluation/eval_set_a1cs2_formal/works/safe.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs3_formal/works/safe.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "541c355e410524b6d8da63134dec958448d59b8b179c4801b9641efc3565699c",
+      "read_source_path": "evaluation/eval_set_a1cs3_formal/works/safe.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs4_formal/works/w03.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "31259f2bd7c185c83c07b53663993b0de5f09382e20e73bf2b1ebde96af0ef62",
+      "read_source_path": "evaluation/eval_set_a1cs4_formal/works/w03.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cs5_formal/works/w03.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "3fddf151166989ca27c66fdfed8850c0639faebaaa77a8bd22aa86b96854e578",
+      "read_source_path": "evaluation/eval_set_a1cs5_formal/works/w03.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/cistern.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "31d77d2ee2135fbf424d035b17a44a067f60e15ecb1c511173036b6ddb3cc6f8",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/cistern.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/folio.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "03093003fae72f3151d04962fb11fea684b6b1ac5232c928c36e1b518200451d",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/folio.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cx_dev/works/moriri.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "95aec20bb4f75a4e7a0e43cefdae3c343f8e4ab414d40db1f119265b18664ae6",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/moriri.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "64a0bf311cb1a2c14f5ea679b9e38a1db9ccb622c8e1fda68a6c2a52639f510f",
+      "read_source_path": "evaluation/eval_set_a1c4_formal/works/w01.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b10905210a0d2fc3b56b01658dd362c84e4216a3efd29ddb72c96395253988d7",
+      "read_source_path": "evaluation/eval_set_a1c4_formal/works/w02.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a1cy_dev/works/w03.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "31259f2bd7c185c83c07b53663993b0de5f09382e20e73bf2b1ebde96af0ef62",
+      "read_source_path": "evaluation/eval_set_a1cs4_formal/works/w03.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2_dev/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "0838b78af90a6a6b412e9b469de19eb079ba7da85c8ac69ad1522ce5b2038cb9",
+      "read_source_path": "evaluation/eval_set_a2_dev/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "5c274ff8d84ead071ae93e18d46c5616c1a013a29e15234ac3bf505b0398de82",
+      "read_source_path": "evaluation/eval_set_a2_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e96bbf1d32d1135d6201db77510f4077c842fa98aa6290e027b0925e520e7c86",
+      "read_source_path": "evaluation/eval_set_a2_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a22_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "23ec9627419106f7500ff61edbfb367ca2bdcd45dbf73f9b2c44ba82109f20e7",
+      "read_source_path": "evaluation/eval_set_a22_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a22_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6fb1cb112da6f27c77824d73696588174c01d0b57b40ab634eb378065a5465dc",
+      "read_source_path": "evaluation/eval_set_a22_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a23_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9a368858c896190298a11aee2ba1067a541c839f451b7b2d724e7de4dc0f79be",
+      "read_source_path": "evaluation/eval_set_a23_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a23_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6a41abf440caf9b4bc8a38a2ca308539e96dc12d13513d2aa703045eb5279fc1",
+      "read_source_path": "evaluation/eval_set_a23_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a24_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ae49a156f11e691d457a9b5df14e8ebeee7fd831b503f890322c7f9957a4d3f9",
+      "read_source_path": "evaluation/eval_set_a24_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a24_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "31154015001bf2347bcca020952fa76a855a9509c8b11357f974399d980b0f66",
+      "read_source_path": "evaluation/eval_set_a24_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a25_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "88f844c459c26735aa37d588fdb5cca121e43fb6231a3f83422e33b9da06299e",
+      "read_source_path": "evaluation/eval_set_a25_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a25_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ceafa5cc58107d54e62c7d68cf10933c6950bf68376aa37a2f096caf0f79b12f",
+      "read_source_path": "evaluation/eval_set_a25_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a26_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "cca3eb05d9ec830aaef5d4a496bcd7e1f8a28d693861b02312f7d2423de0cdba",
+      "read_source_path": "evaluation/eval_set_a26_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a26_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6ecf127e8e03d8170728a3652779941bd2037e39f977b51f4e6616d41358bdd9",
+      "read_source_path": "evaluation/eval_set_a26_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "76c71d7073f0330182726515c082440282f19964005fb5efeaa1759b2ee7eea9",
+      "read_source_path": "evaluation/eval_set_a2s_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s2_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1092c72ce2a2ce62a8e7161ca26203e8a1ef6a1c481ae6e81ab490ed85f27236",
+      "read_source_path": "evaluation/eval_set_a2s2_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s3_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "f7b06fc6dd5eca33ae088dbee67d5b5586ba5957eda1d23243f418f8298e2c49",
+      "read_source_path": "evaluation/eval_set_a2s3_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s4_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "2418e2093489fa5d955037463aeae56a606c76531c4a8117efc0edacacf1334c",
+      "read_source_path": "evaluation/eval_set_a2s4_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s5_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "d68265aa07bae290c1e01ca4f3297e38e959260ae6e4c72fd07846e984f5bc57",
+      "read_source_path": "evaluation/eval_set_a2s5_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2s6_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "4b314d64ca92931d5532cf34eb0a9c2811ab181439c4cf95f0c0acbb0562c32b",
+      "read_source_path": "evaluation/eval_set_a2s6_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2t_dev/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9a368858c896190298a11aee2ba1067a541c839f451b7b2d724e7de4dc0f79be",
+      "read_source_path": "evaluation/eval_set_a23_formal/works/w01.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a2t_dev/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ae49a156f11e691d457a9b5df14e8ebeee7fd831b503f890322c7f9957a4d3f9",
+      "read_source_path": "evaluation/eval_set_a24_formal/works/w01.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3_dev/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e9958f9e085281ba0a12bacf79c5bd110cc0f13066e81ca5cfc8cceb282c31e9",
+      "read_source_path": "evaluation/eval_set_a3_dev/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "fd017f9cbe514bb3497ef482bc4f87e712b4566411f84e5c1bebb16f1d4d8c0f",
+      "read_source_path": "evaluation/eval_set_a3_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1642f6ca69c2ec86c588d350c23c22584d1ecfa3001b5b34f892d8284a8e4392",
+      "read_source_path": "evaluation/eval_set_a3_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3d2_dev/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "f122bf49813e980d9f10e0123a544ac1d37d4bf53f701cea37eb4cee132fbf58",
+      "read_source_path": "evaluation/eval_set_a3d2_dev/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3f2_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "2dbc8c3f6d1dc6a7c18f6c539141d8c823366259608689b12196dcfbd85146bb",
+      "read_source_path": "evaluation/eval_set_a3f2_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3f2_formal/works/w02.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b18418f839dedca91bda00e39e019fc6cb7f189504ec997a9dfd7d38b4bf8404",
+      "read_source_path": "evaluation/eval_set_a3f2_formal/works/w02.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3s_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "091f49da0686e68792b6f396f13013c50e9abd0634887a11e898c60397b9d255",
+      "read_source_path": "evaluation/eval_set_a3s_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_a3s2_formal/works/w01.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6c665d556f0bf98013e71328e1e4861ec9915422cb6496abf7ebb139617a7db4",
+      "read_source_path": "evaluation/eval_set_a3s2_formal/works/w01.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/chaochi_letters.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9a6a6ade8e25c58661769074e0ee288a529047618ddaca890bdaa03319d2ab8a",
+      "read_source_path": "evaluation/eval_set_lf1_dev/works/chaochi_letters.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/shahai_error.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ab129dc7868d096461852cdac7934ee13fbdbb27ef8154b6bcbe4cb6ad85b782",
+      "read_source_path": "evaluation/eval_set_lf1_dev/works/shahai_error.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/yechu_orders.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e1ee67151de1faa75aa76a683477c26c16abdf590d372ae5a6f119da3abd4b7f",
+      "read_source_path": "evaluation/eval_set_lf1_dev/works/yechu_orders.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "f181c24537657865855359f3b2a05f684c936551218672d5ef1d7b08a0230d5b",
+      "read_source_path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e76c98a3dd7b0522987da0b38bd600eff4319cecde0d457ce09cce0ea5c01485",
+      "read_source_path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9d2f86999ec6292bc669ec429447d076f4857d8611f3e7cd4ffbda37547f11c4",
+      "read_source_path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "5a668e2f540296a7ae343144503f9d6c8ab784efb6a8b5b3318389f0e82b3717",
+      "read_source_path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/works/moriri_cleaner.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "95aec20bb4f75a4e7a0e43cefdae3c343f8e4ab414d40db1f119265b18664ae6",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/moriri.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/folded_folio.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "03093003fae72f3151d04962fb11fea684b6b1ac5232c928c36e1b518200451d",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/folio.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/resonant_cistern.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "31d77d2ee2135fbf424d035b17a44a067f60e15ecb1c511173036b6ddb3cc6f8",
+      "read_source_path": "evaluation/eval_set_a1cx_dev/works/cistern.md",
+      "coverage_method": "normalized_sha256_equivalent",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/switchyard_fern.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "60097a119a59d45798dad8a6ae486a49df413e70bfdc002ac67e4c99ee805303",
+      "read_source_path": "evaluation/eval_set_lf2_formal/works/switchyard_fern.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf2_formal/works/upland_fieldnotes.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "12ae9e46480c4e8eba6ae974654975f114a4d29d03b120207c70bb8044e09204",
+      "read_source_path": "evaluation/eval_set_lf2_formal/works/upland_fieldnotes.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/felt_ferry.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b4c6114d8c516c3f03130d12a28e1bbbf1984a31a33d28cfb4ec97c80e94744a",
+      "read_source_path": "evaluation/eval_set_lf3_formal/works/felt_ferry.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/sand_sail.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "a870a7feffbe884089ffc5cff0ec13703a75da218e363f9de3ca2085ce25723d",
+      "read_source_path": "evaluation/eval_set_lf3_formal/works/sand_sail.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/spore_circuit.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "8bd03d5ea846fa9eed3bd7755695c917f679534041aae591892ebf7ad87ad5dc",
+      "read_source_path": "evaluation/eval_set_lf3_formal/works/spore_circuit.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf3_formal/works/submerged_room.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "6b361ec3b4e6e87c2c5aac72b9f642a2bda5030c362de776a0a73ac49685db3e",
+      "read_source_path": "evaluation/eval_set_lf3_formal/works/submerged_room.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/chaomu.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b890e0051bcbe2327e6a90e4469cd27a3b725948c736862409cd5fe9e2fef9c7",
+      "read_source_path": "evaluation/eval_set_lf4_formal/works/chaomu.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/chiji.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "4ca6eedbca2e99c2a696054728bde342e741da17acc115aec7136739cb057ccc",
+      "read_source_path": "evaluation/eval_set_lf4_formal/works/chiji.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/weiwan.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b4544cb86afc5a6fabad8801ecf47b9371cdb1d61abb9e1980fce77f4d0cb75a",
+      "read_source_path": "evaluation/eval_set_lf4_formal/works/weiwan.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf4_formal/works/zhuxiang.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ff570b5aab4f95d0c92ab723763d4edb1934d1047fbc635c50eccb4b9760a2fa",
+      "read_source_path": "evaluation/eval_set_lf4_formal/works/zhuxiang.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/huli_mail.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "c0b417364e3981dcc9ffe81f8a3e8fedc94d78e171c0f03839e57dec45ee28a4",
+      "read_source_path": "evaluation/eval_set_lf5_formal/works/huli_mail.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/rongji_stage.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "39fe6c80d6ba6b2061f89b233a650a365a72f539ab5b6b5cf086cbfc673a25a3",
+      "read_source_path": "evaluation/eval_set_lf5_formal/works/rongji_stage.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/taijie_rain.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "54fa957e5fc0354e0d36647d3ffce4dd65614b385ef8a6340caa747eab435394",
+      "read_source_path": "evaluation/eval_set_lf5_formal/works/taijie_rain.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf5_formal/works/xiuzi_school.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "50d5476daf4bc9062a1e8460b52c08b17874169b55e6019c6b405485ecbae239",
+      "read_source_path": "evaluation/eval_set_lf5_formal/works/xiuzi_school.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/fengnang.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1d40586afbdb32773085b9ecfda031c1f719e4e2c0ca33a67b56656c36385fff",
+      "read_source_path": "evaluation/eval_set_lf6_formal/works/fengnang.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/hanceng.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "a7d9920b50880e1eb57c3ae5c9007248b13b7679b3b6b15d0e94d3bb58cab4f0",
+      "read_source_path": "evaluation/eval_set_lf6_formal/works/hanceng.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/rongwen.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1462a0eede43621806b919e5bfd143a0b7f79e732702fba31853a36672dbced3",
+      "read_source_path": "evaluation/eval_set_lf6_formal/works/rongwen.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf6_formal/works/yingxiang.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "19ef260044fd40aba3b8b1ae05a16c5ebe66d1987422267997c69c56a6823f9d",
+      "read_source_path": "evaluation/eval_set_lf6_formal/works/yingxiang.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/huixiang.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "eb4a4e1c3ca1ed8866aeb2ed3fa06272354cffbe9ae57fc5ab0b9b8ec44048dd",
+      "read_source_path": "evaluation/eval_set_lf7_formal/works/huixiang.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/juzao.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "c250121821b1d2ae5cdd6e7bc8c92d6f15f35e860ed1d26a64cfd3c6fc3cd3b2",
+      "read_source_path": "evaluation/eval_set_lf7_formal/works/juzao.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/yishou.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ddc3217111820f6011d80322defe855f82aaeefb44c32e4eee09b7ba6488bdad",
+      "read_source_path": "evaluation/eval_set_lf7_formal/works/yishou.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_lf7_formal/works/yueji.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "19bd042db908ea85da632f8f28c160cea5ac8699e6773fb166383af43a62c8bd",
+      "read_source_path": "evaluation/eval_set_lf7_formal/works/yueji.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/huangting_recording.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "9d156e0347ff87ed903496b4c739a2918d287200d749b666cb54550c2f250efd",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/huangting_recording.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/jinyu_credit_market.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ba6178c64a0bb3d8982e449c08c33c5debdd9e1ea718532fc7a5632720d73a2f",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/jinyu_credit_market.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/luliao_last_collection.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "81206b64d0ad7f36ecc21c83b6a11dcdb289fd0e57ae39d3b4d4090256f00d26",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/luliao_last_collection.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/mosswick_costume_rental.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e4bb1b774958607a9b15dfafbe25d122878c43b32cc7eac4dceae339d46ea31d",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/mosswick_costume_rental.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/sablefen_translation_residency.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "e1ca377be632b32adb559aceb8f00d0cbc37e5d5637c2c9eb93e2914958ac8a3",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/sablefen_translation_residency.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/ternhollow_model_railway.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "a4dc114f07d02540b33ba6d290a7a8e965a187c64108106a6069caa3ad798198",
+      "read_source_path": "evaluation/eval_set_v11_authoring/sources/ternhollow_model_railway.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/brambletide_aquarium_census.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ca6db1fd7201d56d20ef67f7118ac6c7a785482c69144ab619f39dcb9f2453ff",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/brambletide_aquarium_census.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/calverin_rag_paper_mill.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "ee79c11f30f0a44e1743d051ab1c6039a0a52d49be6cc56bed422fc8661691d4",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/calverin_rag_paper_mill.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/elmrake_hotel_repairs.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "8c5105917a72d5d7ea04042c0429fe95e682b751a9c6a07d1f853f7073801c88",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/elmrake_hotel_repairs.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/puling_refraction_festival.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "b1b1ff78629e09d95d329e8be29e519aee6ba369869bd06ff53c582776751e05",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/puling_refraction_festival.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/shengxiu_score_library.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "1afe63177b6c31a93dd0084e12de3a49c85406b947c29ddb6498bcc141e6bcf4",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/shengxiu_score_library.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/tiaojin_rainworks.md",
+      "chapter_range": [
+        1,
+        3
+      ],
+      "first_three_normalized_sha256": "17bbf87202d8af937522ba1e220a4e57d76a5f1b3b36ddf8af7c0cc931b0e35a",
+      "read_source_path": "evaluation/eval_set_v12_authoring/sources/tiaojin_rainworks.md",
+      "coverage_method": "direct_full_read",
+      "reading_completed": true
+    }
+  ]
+}

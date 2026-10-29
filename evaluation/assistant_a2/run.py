@@ -73,6 +73,12 @@ def set_names_arg(value):
     return value
 
 
+def workspaces(out):
+    """Where a run keeps its works' files: a short name beside the results (as A3's). Named after the checkpoint, a run over three
+    spent sets passed Windows' 260-character limit and its database would not open (regression tune1-p58, 2026-10-27)."""
+    return out["checkpoint"].parent / ("ws-" + hashlib.sha256(out["checkpoint"].name.encode("utf-8")).hexdigest()[:12])
+
+
 def readable(name):
     return name in DEV_SETS or name in SPENT_SETS
 
@@ -124,7 +130,7 @@ def preflight(args, provider, output=None):
     if args.resume:
         if not out["checkpoint"].exists():
             raise ValueError("resume_checkpoint_missing")
-    elif any(p.exists() for p in out.values()) or out["checkpoint"].with_suffix(".workspaces").exists():
+    elif any(p.exists() for p in out.values()) or workspaces(out).exists():
         raise FileExistsError("run_output_already_exists")
     for name in names:
         validate_set(name)
@@ -341,7 +347,7 @@ def execute(args, datasets, provider, judge, ledger, out):
                    "manifests": {n: datasets[n].get("manifest_sha256") for n in names},
                    "code_sha256": hashlib.sha256(b"".join(p.read_bytes() for directory in (ROOT / "backend/app", ROOT / "evaluation/assistant_a2")
                                                           for p in sorted(directory.glob("*.py")))).hexdigest()}
-    state_root = out["checkpoint"].with_suffix(".workspaces")
+    state_root = workspaces(out)
     if args.resume:
         report = json.loads(out["checkpoint"].read_text(encoding="utf-8"))
         if report["environment"] != fingerprint:

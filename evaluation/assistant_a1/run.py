@@ -35,7 +35,8 @@ from ..models import REGISTERED_MODELS
 from .judge import Judge, grade
 from .score import refresh, audit, markdown, SPENT_FORMAL_SETS, SPENT_GATE_DECISION
 
-RETRY_ERRORS = {'provider_timeout', 'provider_unavailable', 'provider_error'}
+# The product names a failed model call provider_failure (A2 addendum 9: it is the registered provider_error).
+RETRY_ERRORS = {'provider_timeout', 'provider_unavailable', 'provider_error', 'provider_failure'}
 CONFLICTS = {'confirmed_conflict', 'possible_conflict'}
 WRITE_LOCK = threading.RLock()
 

@@ -148,7 +148,7 @@ export function Flow({ before, after, className = "a-chg-flow" }: { before: stri
   );
 }
 
-const STATE_TEXT = { applied: "已执行", rejected: "没有执行", undone: "已撤销" } as const;
+const STATE_TEXT = { applied: "已写入", rejected: "没要", undone: "已撤销" } as const;
 
 /** The server leaves a fact's closing full stop off before "（第 N 章）"; the preview of a rewording does the same. */
 const VALUE_END = /[。．.；;，,、]+$/;
@@ -309,6 +309,8 @@ export type LongGroup = {
   alone: boolean;
   place?: string;
   confirm: (accepted: string[], within: string[]) => Promise<AssistantTask>;
+  /** 不要: turns down what of the group still waits (what was written stays). */
+  reject: (within: string[]) => Promise<AssistantTask>;
   refresh: () => Promise<AssistantTask>;
 };
 
@@ -335,8 +337,10 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
   const decide = async (step: "confirm" | "reject") => {
     setBusy(step); setProblem(null);
     try {
+      // After a partial confirm the items written are done: the server is told only about the ones that still wait.
+      const waitingIds = items.filter((item) => item.status === "proposed").map((item) => item.id);
       const next = group
-        ? await group.confirm(chosen.map((item) => item.id), items.map((item) => item.id))
+        ? (step === "confirm" ? await group.confirm(chosen.map((item) => item.id), waitingIds) : await group.reject(waitingIds))
         : await json<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}/changes/${step}`, "POST", step === "confirm" ? { accepted: chosen.map((item) => item.id), edits } : {});
       replace(next);
       if (step === "confirm") written();
@@ -371,8 +375,8 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
       ))}
       {waiting && (
         <div className="a-chg-foot">
-          {!group && <button type="button" className="a-btn quiet" disabled={Boolean(busy) || readOnly} title={why || undefined} onClick={() => void decide("reject")}>不要</button>}
-          <button type="button" className="a-btn" disabled={Boolean(busy) || readOnly || chosen.length === 0 || emptied} title={why || undefined} onClick={() => void decide("confirm")}>{group?.alone ? "确认这一条" : `确认 ${chosen.length} 条`}</button>
+          {!group?.alone && <button type="button" className="a-btn quiet" disabled={Boolean(busy) || readOnly} title={why || undefined} onClick={() => void decide("reject")}>不要</button>}
+          <button type="button" className="a-btn" disabled={Boolean(busy) || readOnly || chosen.length === 0 || emptied} title={why || undefined} onClick={() => void decide("confirm")}>{group?.alone ? "确认这一条" : writtenItems.length > 0 ? "确认选中的" : `确认 ${chosen.length} 条`}</button>
         </div>
       )}
       {problem && (

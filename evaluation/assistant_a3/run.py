@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import dataclasses
+import difflib
 import hashlib
 import json
 import math
@@ -48,6 +49,9 @@ from .thresholds import PRE_REGISTRATION
 
 DEV_SETS = ("eval_set_a3d2_dev",)  # addendum 1: the first dev set used its 3 runs and is not run again
 FORMAL_SETS = tuple(PRE_REGISTRATION["formal_sets"])
+# Addendum 3: the first formal pair ran (failed) and both dev sets are used; all are development material, in any combination.
+SPENT_SETS = tuple(PRE_REGISTRATION["first_formal_sets"]) + ("eval_set_a3_dev",) + tuple(PRE_REGISTRATION["second_formal_sets"])  # addendum 5
+SPENT_SETS += tuple(PRE_REGISTRATION["first_supplement_sets"])  # addendum 6
 RESUME_SEED = 20261024
 KILLED = 86  # the runner process's exit code when it died as planned
 CHECK_CHARS = 100_000_000  # three passes of 32 long tasks read about nine million characters; A1's settings allow ten
@@ -69,7 +73,7 @@ def set_names(value):
     names = value.split(",")
     if len(names) != len(set(names)):
         raise ValueError("invalid_sets")
-    if (len(names) == 1 and names[0] in DEV_SETS) or sorted(names) == sorted(FORMAL_SETS):
+    if all(readable(name) for name in names) or sorted(names) == sorted(FORMAL_SETS):
         return names
     raise ValueError("invalid_sets")
 
@@ -83,7 +87,7 @@ def set_names_arg(value):
 
 
 def readable(name):
-    return name in DEV_SETS
+    return name in DEV_SETS or name in SPENT_SETS
 
 
 def load_set(name):
@@ -203,15 +207,32 @@ def author_choice(task, question, points):
     """The scripted author's answer to a decision question: the side `author_replies.decision` picks, when the question is the
     task's decision point; '你定' to anything else."""
     point = decision_point_of(task, question, points)
-    found = CHOICE.search((task.get("author_replies") or {}).get("decision") or "")
-    if point is None or not found:
+    reply = (task.get("author_replies") or {}).get("decision") or ""
+    found = CHOICE.search(reply)
+    side = found.group(1).lower() if found else side_named(reply, point) if point is not None else None
+    if point is None or side is None:
         return "you_decide", point is not None
-    wanted = point[found.group(1).lower()]
+    wanted = point[side]
     options = [o for o in question["options"] if o.get("chapter") == wanted["chapter"]]
     if len(options) > 1:  # both passages in one chapter: the one that quotes the chosen side
         options = [o for o in options if squeezed(wanted["quote"])[:QUOTE_PROBE] in squeezed(o["quote"])
                    or squeezed(o["quote"])[:QUOTE_PROBE] in squeezed(wanted["quote"])] or options
     return options[0]["key"], True
+
+
+def side_named(reply, point):
+    """The side of a decision point a reply in the author's words picks (A3 addendum 5): the side some of whose own words
+    (where its passage differs from the other's: "七次" against "九次") the reply holds, when the other's it does not; else None.
+    The registered sets wrote "采用十七岁", "这次原约定按七次敲节" where the SPEC asked for a or b, and the runner read every
+    such reply as "你定" (A3 regression of f1fd808, a3s2-w01-injection-05)."""
+    a, b, said = squeezed(point["a"]["quote"]), squeezed(point["b"]["quote"]), squeezed(reply)
+    own = {"a": [], "b": []}
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
+        if tag != "equal":
+            own["a"].append(a[i1:i2])
+            own["b"].append(b[j1:j2])
+    named = [side for side in ("a", "b") if any(words and words in said for words in own[side])]
+    return named[0] if len(named) == 1 else None
 
 
 def squeezed(text):

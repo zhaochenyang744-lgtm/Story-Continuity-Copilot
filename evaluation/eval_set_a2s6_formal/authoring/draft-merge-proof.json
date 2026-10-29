@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "works": [
+    {
+      "work": "w01",
+      "equal": true,
+      "body_utf8_sha256": "476a46ed12a76b8a9c2bf6675bc483360e8750e377f269d044e0cd3a376f039c"
+    }
+  ]
+}

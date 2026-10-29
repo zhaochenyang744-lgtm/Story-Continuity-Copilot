@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "branch": "eval/a2-6-authoring",
+  "outside_scope": 0,
+  "protected_files": 5,
+  "protected_changes": 0,
+  "encoding_errors": 0,
+  "new_files": 89,
+  "attributes_added": 2,
+  "manifests": [
+    {
+      "set": "eval_set_a26_formal",
+      "data_files": 7,
+      "hash_errors": 0
+    },
+    {
+      "set": "eval_set_a2s6_formal",
+      "data_files": 4,
+      "hash_errors": 0
+    }
+  ],
+  "committed_check": false
+}

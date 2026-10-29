@@ -309,7 +309,7 @@ test.describe("访客改资料", () => {
     // The ledger of the demo work shows it, and the visitor's characters were never touched (a visitor has none; only the task counts).
     await openTab(page, id, "memory");
     await openLedger(page);
-    await expect(ledgerOf(page).locator("li[data-change]").first()).toContainText("已执行");
+    await expect(ledgerOf(page).locator("li[data-change]").first()).toContainText("已写入");
     const after = await usageOf(page);
     expect(after.assistant_tasks_remaining).toBe(before.assistant_tasks_remaining - 1);
     expect(after.checks_remaining).toBe(before.checks_remaining);

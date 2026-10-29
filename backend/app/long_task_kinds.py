@@ -18,7 +18,7 @@ from typing import Any
 from .assistant_actions import ACTIONS, EVIDENCE_MAX, FACT_TYPES, OPEN_THREAD
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, REF_FORMAT, ToolContext, ToolError, fact_items
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value
-from .problem_codes import Problem
+from .problem_codes import Problem, codes_of
 
 NOTE_MAX = 80
 STATE_MAX = 40
@@ -54,16 +54,84 @@ def _short(value: Any, limit: int) -> str:
     return "" if INTERNAL_ID.search(text) or REF_FORMAT.search(text) else text[:limit]
 
 
+def _squeezed(text: Any) -> str:
+    return "".join(ch for ch in str(text or "") if ch.isalnum())
+
+
+def _quoted(state: str, passages: list[Any]) -> bool:
+    """Whether a trace state is the passages' own words (punctuation and spaces aside): a summary of several things added
+    people and doings no passage holds, one item in ten of a report (A3 first formal run, evidence support 0.90)."""
+    words = _squeezed(state)
+    return bool(words) and any(words in _squeezed(getattr(p, "text", p)) for p in passages)
+
+
 def _chapter(refs: list[str], rows: dict[str, dict[str, Any]]) -> int | None:
     numbers = [rows[ref]["chapter_number"] for ref in refs if ref in rows and rows[ref].get("chapter_number")]
     return max(numbers) if numbers else None
 
 
-def _option(key: str, refs: list[str], rows: dict[str, dict[str, Any]], value: str | None = None) -> dict[str, Any]:
+SENTENCE_END = re.compile(r"[。！？!?；;…]+[”’」』）)]*")
+
+
+def _locate(text: str, words: str) -> tuple[int, int] | None:
+    """Where `words` stand in `text` (punctuation and spaces aside, as `_quoted` reads them): the span in the text, or None."""
+    kept = [(at, ch) for at, ch in enumerate(text) if ch.isalnum()]
+    wanted = _squeezed(words)
+    found = "".join(ch for _, ch in kept).find(wanted) if len(wanted) >= 2 else -1
+    return (kept[found][0], kept[found + len(wanted) - 1][0] + 1) if found >= 0 else None
+
+
+def _sentence_spans(text: str) -> list[tuple[int, int]]:
+    spans, start = [], 0
+    for end in [m.end() for m in SENTENCE_END.finditer(text)] + [len(text)]:
+        if text[start:end].strip():
+            spans.append((start, end))
+        start = max(start, end)
+    return spans
+
+
+def _pairs(text: str) -> set[str]:
+    squeezed = _squeezed(text)
+    return {squeezed[at:at + 2] for at in range(len(squeezed) - 1)}
+
+
+def _around(text: str, start: int, end: int, limit: int) -> str:
+    """`limit` characters of `text` centred on the span, with an ellipsis on a side where the text goes on."""
+    first = max(0, min((start + end) // 2 - limit // 2, len(text) - limit))
+    last = min(len(text), first + limit)
+    return ("…" if first > 0 else "") + text[first:last].strip() + ("…" if last < len(text) else "")
+
+
+def conflict_quote(texts: list[str], anchors: list[str], hint: str = "", limit: int = QUOTE_MAX) -> str:
+    """The `limit` characters of a passage a question shows for one side of a disagreement (H07: the head of the passage is
+    often about something else). Centred on the words the finding itself reports (`anchors`: a state, a value) where they
+    stand in a passage; else on the sentence that shares most with `hint` (two-character pairs, the first on a tie); only
+    when neither is found, the head of the first passage."""
+    texts = [" ".join(text.split()) for text in texts if text]
+    for anchor in anchors:
+        for text in texts:
+            span = _locate(text, anchor)
+            if span:
+                return _around(text, *span, limit)
+    wanted = _pairs(" ".join([*anchors, hint]))
+    best, best_score = None, 0
+    for text in texts:
+        for start, end in _sentence_spans(text):
+            score = len(_pairs(text[start:end]) & wanted)
+            if score > best_score:
+                best, best_score = (text, start, end), score
+    if best:
+        return _around(best[0], best[1], best[2], limit)
+    return texts[0][:limit] if texts else ""
+
+
+def _option(key: str, refs: list[str], rows: dict[str, dict[str, Any]], value: str | None = None, anchors: list[str] | None = None,
+            hint: str = "") -> dict[str, Any]:
     first = rows[refs[0]]
     chapter = first.get("chapter_number")
+    same = [rows[ref]["text"] for ref in refs if ref in rows and rows[ref].get("chapter_number") == chapter]
     return {"key": key, "label": f"第 {chapter} 章" + (f"：{value}" if value else ""), "chapter": chapter,
-            "quote": " ".join(first["text"].split())[:QUOTE_MAX], "refs": refs, **({"value": value} if value else {})}
+            "quote": conflict_quote(same, anchors or ([value] if value else []), hint), "refs": refs, **({"value": value} if value else {})}
 
 
 def _refs_code(refs: list[str], passages: dict[str, Any]) -> str | None:
@@ -89,8 +157,8 @@ class ThreadAudit:
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：伏笔清点。\n" + COMMON_RULES + """
 - 对列出的每一条伏笔，判断这几章里：
   resolved：正文写出了这条线的答案或结局（谜底揭开、东西找到、人物交代清楚了）；
-  abandoned：正文明确交代这条线不再追了（人物说不再查、叙述明说放下了）；
-  open：这几章里没有收，也没有写明不追；只是提到、推进了一下也算 open。
+  abandoned：正文明确交代这条线不再追了（人物说不再查、叙述明说放下了；当众撤下、不再追讨、不再追究这件事，也是 abandoned，不是 resolved）；
+  open：这几章里没有收，也没有写明不追；只是提到、推进了一下也算 open。找到了线索、有人说了打算、离答案近了一步，都还是 open：resolved 要正文把这条伏笔问的那件事明确答完。伏笔问的是某一个人或某一样东西，正文要写到这个人、这样东西本身；"落队的人都接回了""最后一个人回来了"这种泛指一群人的话，不算收了这一个人。
 - resolved 和 abandoned 必须在 refs 里写出撑得住的段落编号，最多 2 个，挑最能撑住的一两段；open 不写 refs。
 - note 用一句话（不超过 80 字）说依据：只说正文写了什么，不写第几章（章节由程序标）。
 - 用 report_threads 一次交出全部判断，每条伏笔一项。""")
@@ -159,6 +227,16 @@ class ThreadAudit:
                 refs, note = [], ""
             seen.add(item["thread"])
             report.append({"thread": item["thread"], "verdict": item["verdict"], "refs": refs, "note": note})
+        # One passage that settles two threads usually settles one: "最后一个人已被接回" closed the empty sledge's rounds and was
+        # taken for the sister who never came back too (A3 first formal run and its regression, every reading). Asked once; a
+        # second answer that keeps both stands. One sentence that names both and says both are settled keeps both (V03: "蓝盒为何
+        # 发声、红灯为何不能信，两件事至此都已弄清" lost the second thread to the second answer).
+        settled = [entry for entry in report if entry["verdict"] == "resolved"]
+        shared = sorted({ref for entry in settled for ref in entry["refs"] if sum(ref in other["refs"] for other in settled) > 1})
+        if shared and not keep_valid:
+            problems.append(Problem("one_passage_two_threads", f"{'、'.join(shared)} 被当作两条伏笔收了的依据：一段原文通常只回答其中一条。"
+                                    "再看一遍：这段里如果有一句话分别点到了这两条伏笔、写明两件事都已了结（如「甲为何……、乙为何……，两件事至此都已弄清」），"
+                                    "两条都保留，note 里摘出那一句；否则另一条要有直接写到它的段落才算收了，没有就写 open"))
         if problems and not (keep_valid and report):  # kept only when something in it stands
             return None, problems
         # A thread the report left out is open as far as this step can tell.
@@ -204,11 +282,21 @@ class ThreadAudit:
         return sections
 
 
+def _stated(states: list[dict[str, Any]], refs: list[str], what: str) -> list[str]:
+    """The states this step reported from the passages a side of a disagreement stands on, the one that says most of what
+    differs first: the words a question quotes for that side."""
+    mine = [s["state"] for s in states if set(s["refs"]) & set(refs)]
+    return sorted(mine, key=lambda state: -len(_pairs(state) & _pairs(what)))
+
+
 def _resolution(decisions: list[dict[str, Any]], decision_id: str) -> str:
-    """How a question was settled, for the report: the author's pick, or the latest chapter when the author left it to us."""
+    """How a question was settled, for the report: the author's pick, the author's word that both stand, or the latest chapter
+    when the author left it to us."""
     found = next((d for d in decisions if d["id"] == decision_id), None)
     if not found or not found.get("choice"):
         return ""
+    if found["choice"] == "both":
+        return "（你说两处都保留）"
     option = next(o for o in found["options"] if o["key"] == ("b" if found["choice"] == "you_decide" else found["choice"]))
     return f"（{'按最新一章' if found['choice'] == 'you_decide' else '你定的'}：以第 {option['chapter']} 章为准）"
 
@@ -220,8 +308,8 @@ class Trace:
     produces: list[str] = []
     tool_name = "report_trace"
     rules = ("你是小说作者的写作助手，在做一件长任务里的一步：梳理一个对象或一件事在全书里的去向和变化。\n" + COMMON_RULES + """
-- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项，state 不超过 40 字，refs 写撑得住的段落编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
-- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象本身的说法对不上；别的人、别的事对不上，不写。拿不准时不写。
+- states：这几章里这个对象或这件事每一次有了新的状态（谁拿着、在哪、伤好没好、谁知道了、名字定成什么），各写一项。关于它的约定、规矩和数字（规定几次、多长时间、多少、哪天）也是状态，哪怕它没有动：第一次写到写一项；后文再写到，和前面写的一样就不写，写得不一样也写一项，并看是不是对不上。作者的话里要你留意的说法（例如「同一约定写成两种」），每处写到都要写一项。state 照抄 refs 那段原文里说出这个新状态的连续原话（不超过 40 字，可以只抄半句；不改字、不加字、不并句），refs 写这一段的编号（这一步给的）。没有新状态就不写：只是提到它还在原处、还在谁手里、还没动，不写。state 只写段落里明写的，不补段落没写的细节（地点、谁签的字、开没开机、谁在照看）。这几章没写到这个对象，就什么也不写，不写「没出现」「没有新交接」。「仍」「还」只在段落里这么写时才用；同一步里先后变了几次，按先后各写一项。
+- conflicts：只有两处都把话说死、不能同时成立时才算对不上：一处说「从未」「一直」「原本就是」，另一处说的正相反；或者同一件事（同一次、同一个编号、同一个名字）两处写成了两样。earlier 写前一处的段落编号（可以是前面几步结果里的，也可以是这一步的），later 写后一处的（这一步的），what 用一句话（不超过 40 字）说哪里对不上。东西在两章之间换了位置、换了人、收起来又拿出来，伤好了，都是正常的先后变化；签收、保管和谁推着、谁拿着走也不是一回事。前文说一样东西只有一个（只有一把、唯一一份、没有第二个），后文写这一个交给了别人、换了地方、由谁保管，说的是同一个东西的去向，不是数量对不上；只有两处说的个数不同（一把对三把），才算数量对不上。前文说「还没」「从未」「仍封着」，后文写「第一次」「这才」，也是先后变化：只有后文说「原本就」「一直」「从来」，和前文正相反，才算对不上。同一章里的两处不算对不上，哪怕正文没写中间怎么变的，也不算对不上。只写要梳理的这个对象或这件事的说法对不上，它的时间、年龄、数量、名字写成了两样也算；跟它无关的别的人、别的事对不上，不写。拿不准时不写。
 - 用 report_trace 一次交出。""")
     tool = _function("report_trace", "交出这一步里这个对象的状态变化和对不上的地方。", {
         "states": {"type": "array", "items": {"type": "object", "properties": {"state": {"type": "string", "maxLength": STATE_MAX},
@@ -249,6 +337,9 @@ class Trace:
             state = _short(item.get("state"), STATE_MAX) if isinstance(item, dict) else ""
             if NO_NEWS.search(state):  # "not in these chapters" is no state, and no passage can back it (A3 dev-2 round 2)
                 continue
+            if refs and all(ref in passages for ref in refs) and not _quoted(state, [passages[ref] for ref in refs]):
+                problems.append(Problem("state_not_quoted", f"states 第 {number} 项：state 要照抄 refs 段落里连续的原话，不改字、不加字、不并句"))
+                continue
             if not state or not refs or any(ref not in passages for ref in refs):
                 problems.append(Problem("state_empty" if not state else "refs_missing" if not refs else "ref_outside_step",
                                         f"states 第 {number} 项：要有 state，refs 只能用这一步给出的段落编号"))
@@ -263,8 +354,15 @@ class Trace:
                 problems.append(Problem("conflict_fields_missing" if not a or not b or not what else "ref_outside_step",
                                         f"conflicts 第 {number} 项：earlier 用前面几步或这一步的段落编号，later 用这一步的，what 写哪里对不上"))
                 continue
+            if NOT_YET.search(what) and FIRST_TIME.search(what):  # its own words say "not yet, then the first time": a sequence
+                continue
             conflicts.append({"earlier": a, "later": b, "what": what})
-        return (None, problems) if problems and not (keep_valid and (states or conflicts)) else ({"states": states, "conflicts": conflicts}, problems)
+        # After the repair a step keeps what stands. When all that failed was states in words of their own, that may be nothing:
+        # such a step failed the whole task (regression ref-p60, a3f-w01-ask-02, assistant_long_report_invalid). A report
+        # that is wrong in its form still fails.
+        only_unquoted = all(code == "state_not_quoted" for code in codes_of(problems))
+        stands = keep_valid and (states or conflicts or only_unquoted)
+        return (None, problems) if problems and not stands else ({"states": states, "conflicts": conflicts}, problems)
 
     def apply(self, ctx: ToolContext, spec: dict[str, Any], plan: dict[str, Any], report: Any, subjects: dict[str, Any],
               passages: dict[str, Any]) -> tuple[dict[str, Any], list[tuple[str, dict[str, Any]]], list[dict[str, Any]]]:
@@ -276,16 +374,21 @@ class Trace:
             if found["chapters"][0] == found["chapters"][1]:  # within one chapter, two sayings are a sequence (A3 confirmation round 1)
                 continue
             conflicts.append(found)
-            if plan.get("output") == "conclusion":  # the author wants one answer: which passage to go by is theirs
-                decisions.append(decision(f"{item['what']}：两处写法不同，以哪处为准？", _option("a", item["earlier"], rows), _option("b", item["later"], rows),
-                                          conflict=found["id"]))
+            # The author wants one answer, or said to be asked first (A3 first formal run: "等我答过再下结论" on a chapter-by-chapter
+            # report, never asked): which passage to go by is theirs.
+            if plan.get("output") == "conclusion" or plan.get("ask_first"):
+                sides = [_option(key, refs, rows, anchors=_stated(report["states"], refs, item["what"]), hint=item["what"])
+                         for key, refs in (("a", item["earlier"]), ("b", item["later"]))]
+                decisions.append(decision(f"{item['what']}：两处写法不同，怎么处理？", *sides, conflict=found["id"]))
         return {"states": states, "conflicts": conflicts}, [], decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:
         return []
 
     def sections(self, outputs: list[dict[str, Any]], decisions: list[dict[str, Any]], thread_refs: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
-        states = [{"text": f"第 {s['chapter']} 章：{s['state']}", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"]}
+        # `handover` is for the page only: whether the state says a thing changed hands (the same test that keeps tidy from adding such a fact).
+        states = [{"text": f"第 {s['chapter']} 章：「{s['state']}」", "refs": s["refs"], "label": f"第 {s['chapter']} 章", "claim": s["state"],
+                   "handover": bool(HANDOVER.search(s["state"]))}
                   for output in outputs for s in output.get("states", [])]
         asked = {d.get("conflict"): d["id"] for d in decisions}
         conflicts = [{"text": f"第 {c['chapters'][0]} 章和第 {c['chapters'][1]} 章：{c['what']}" + _resolution(decisions, asked.get(c["id"], "")),
@@ -446,13 +549,15 @@ class Tidy:
             output["conflicts"].append(found)
             about = subjects[item["fact"]]["text"] if item["fact"] else item["subject"]
             decisions.append(decision(f"{about}：{item['what'] or '两处写法不同'}，资料按哪处记？",
-                                      _option("a", item["earlier"]["refs"], rows, item["earlier"]["value"]),
-                                      _option("b", item["later"]["refs"], rows, item["later"]["value"]), conflict=found["id"],
+                                      _option("a", item["earlier"]["refs"], rows, item["earlier"]["value"], hint=item["what"]),
+                                      _option("b", item["later"]["refs"], rows, item["later"]["value"], hint=item["what"]), conflict=found["id"],
                                       fact=item["fact"], fields={k: item[k] for k in ("memory_type", "subject", "predicate")}))
         return output, proposals, decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:
-        """The card for a value the author picked (or the latest passage, when it was left to us)."""
+        """The card for a value the author picked (or the latest passage, when it was left to us); none when both stand."""
+        if choice == "both":
+            return []
         option = next(o for o in found["options"] if o["key"] == ("b" if choice == "you_decide" else choice))
         try:
             return [self._propose(ctx, found.get("fact"), found.get("fields") or {}, option["value"], option["refs"])]
@@ -479,6 +584,10 @@ SAME_FINDING = 0.6  # two readings of one fact share this much of what they say
 RESTATED = 0.7  # a new fact this much of whose words an existing one of its subject holds says nothing new
 RESTATED_SAME_CHAPTER = 0.55  # ... or this much, when both come from the same chapter (A3 dev-2 round 2: "固定交接地点是璃岑服务间"
 #                               beside "日常交接使用璃岑服务间", both chapter 2)
+# A disagreement described as "never / not yet ... then for the first time" is a thing happening, not two sayings at odds
+# (regression ref-p60, a3f-w01-trace-02: "前说封口从未打开，后说这一刻第一次开封", twice, after the rule said so in words).
+NOT_YET = re.compile(r"从未|还没|未曾|尚未|仍然?(?:封|未|没)|没有?拆|看不见拆")
+FIRST_TIME = re.compile(r"第一次|首次|初次|头一回|这才")
 NO_NEWS = re.compile(r"(未|没|没有)(再)?(出现|提到|提及|写到|露面)|无新|没有新")
 THREAD_TALK = re.compile(r"这条线|不再(追|查)|往后不(再)?查")
 

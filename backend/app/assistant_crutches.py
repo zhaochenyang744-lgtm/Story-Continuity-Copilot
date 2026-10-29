@@ -86,6 +86,12 @@ CRUTCHES = (
            "each rule was added after a failure (the commit that added it names the task)",
            "v1.8–v2.1 development rounds",
            "per-rule switch-off on the spent sets, as the word lists were in g1", False),
+    Crutch("card_review", "assistant_review (assistant.py _review): one small call per fact or thread item after the runs agree",
+           "the model that proposed an item, asked to look again, proposes it once more: a fact the materials state under the full name "
+           "restated under a nickname, a thread marked resolved on the author's word when the passage settles another thing",
+           "A2 sixth formal run, w01/w02-no-01 and w01/w02-no-04 (addendum 12)",
+           f"{SPENT_A2}: no-action rate (already-recorded and no-evidence tasks), card rate, cost and time; whether second_look "
+           "and the nickname check (_said_under_full_name) still move a measure with it on", False),
 )
 
 BY_NAME = {crutch.name: crutch for crutch in CRUTCHES}

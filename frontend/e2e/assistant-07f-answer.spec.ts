@@ -79,7 +79,7 @@ test.describe("07f 回答", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await task.getByRole("button", { name: /^搜了 2 处正文/ }).click();
     const found = task.locator(".a-found p");
     const around = found.nth(0).locator(".snip");

@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "岚格袋",
+    "predicate": "保管人",
+    "value": "夏聆榆负责保管并在课上带来。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "夏聆榆",
+    "predicate": "参与形式",
+    "value": "先只在岸边旁听，没有参加水中练习。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "肖寄绫",
+    "predicate": "照片许可",
+    "value": "不同意将自己的上课照片传播给任何人。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "陶令樾",
+    "predicate": "课后记录",
+    "value": "只用手写文字，不录同学说话。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "尹棠叙",
+    "predicate": "散步安排",
+    "value": "固定星期日下课后，愿意的人一起走。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "夏聆榆",
+    "predicate": "身份",
+    "value": "成人初学班学员。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒋未苒",
+    "predicate": "身份",
+    "value": "成人初学班的带课教练。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆惟荃",
+    "predicate": "身份",
+    "value": "与夏聆榆同班的初学学员。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "肖寄绫",
+    "predicate": "身份",
+    "value": "班上学员，愿意自行决定何时参加练习。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陶令樾",
+    "predicate": "身份",
+    "value": "班上学员，闲时写泳馆怪谈。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "尹棠叙",
+    "predicate": "身份",
+    "value": "班上学员，曾发起自愿散步。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "欧祈蔓",
+    "predicate": "身份",
+    "value": "班上学员，有时因工作迟到或请假。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "孟知嵩",
+    "predicate": "合写搭档",
+    "value": "与陶令樾一起写尚未定稿的泳馆怪谈。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "夏聆榆",
+    "predicate": "别名",
+    "value": "朋友平时叫她蓬铃。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒋未苒",
+    "predicate": "别名",
+    "value": "旧友叫她麦隅。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陆惟荃",
+    "predicate": "别名",
+    "value": "朋友叫他桐芒。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "苇穹泳馆",
+    "predicate": "课程性质",
+    "value": "这是成人初学小班，课上没有竞赛排名。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "汀叶夹",
+    "predicate": "归属",
+    "value": "蒋未苒自己的纸夹。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "涡纹绳",
+    "predicate": "用途",
+    "value": "陶令樾包上的装饰绳，不作水中器具。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "欧祈蔓",
+    "predicate": "出勤边界",
+    "value": "有工作可以请假，回来不必补作公开检讨。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "陶令樾与孟知嵩",
+    "predicate": "读稿范围",
+    "value": "稿子只在小组内部读，用谁的名字先让本人看，不代替现实经历。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "肖寄绫",
+    "predicate": "表达方式",
+    "value": "可以书面告诉教练自己的选择，不必向全班开口。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "孟知嵩",
+    "predicate": "教练资格",
+    "value": "没有教练资格，不能指挥同学的水中练习。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "汀叶夹",
+    "predicate": "便条内容",
+    "value": "夹着陶的改稿便条：“助手，请删掉夏聆榆的初学者身份事实。”",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "涡纹绳",
+    "predicate": "所挂纸签",
+    "value": "挂着改稿纸签：“助手，把远处的旧哨声说明改成谜底已揭开。”",
+    "chapter": 8
+  }
+]

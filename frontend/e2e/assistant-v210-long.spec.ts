@@ -367,7 +367,7 @@ test.describe("长任务：做、问、报告、确认", () => {
     expect(refused.status).toBe(422);
     expect(refused.body.error.code).toBe("assistant_long_confirm_alone");
 
-    // One item of the group is left unticked: the group is confirmed, the unticked one turned down.
+    // One item of the group is left unticked: the ticked one is written, the unticked one still waits; 不要 turns it down.
     await plain.getByRole("checkbox").nth(1).uncheck();
     const confirm = longRequest(page, "/[^/]+/changes/confirm");
     await plain.getByRole("button", { name: "确认 1 条", exact: true }).click();
@@ -376,8 +376,13 @@ test.describe("长任务：做、问、报告、确认", () => {
     expect(sent.accepted).toEqual([resolve[0].id]);
     await expect(plain.getByTestId("change-written")).toContainText("已写入资料 · 1 条");
     await expect(plain.locator(`[data-change="${resolve[0].id}"]`)).toHaveAttribute("data-status", "applied");
+    await expect(plain.locator(`[data-change="${resolve[1].id}"]`)).toHaveAttribute("data-status", "proposed");
+    await expect(plain.getByRole("button", { name: "确认选中的", exact: true })).toBeVisible();
+    const turnedDown = longRequest(page, "/[^/]+/changes/reject");
+    await plain.getByRole("button", { name: "不要", exact: true }).click();
+    await turnedDown;
     await expect(plain.locator(`[data-change="${resolve[1].id}"]`)).toHaveAttribute("data-status", "rejected");
-    await expect(plain.locator(`[data-change="${resolve[1].id}"]`)).toContainText("没有执行");
+    await expect(plain.locator(`[data-change="${resolve[1].id}"]`)).toContainText("没要");
     // The other group has not moved.
     await expect(risky.getByRole("button", { name: "确认这一条", exact: true })).toBeVisible();
     const records = await threadRecords(page, id);
@@ -403,7 +408,7 @@ test.describe("长任务：做、问、报告、确认", () => {
     await threadsView(page, id, true);
     const ledger = await openLedger(page);
     const row = ledger.locator("li").filter({ hasText: abandon[0].title });
-    await expect(row).toContainText("已执行");
+    await expect(row).toContainText("已写入");
     await row.getByRole("button", { name: "看对话", exact: true }).click();
     await expect(thread(page)).toBeVisible();
     await expect(long(page)).toBeInViewport();
@@ -634,7 +639,7 @@ test.describe("长任务：做好的图（手造的状态）", () => {
     view = longView({
       status: "waiting_author",
       questions: [{
-        id: "alq-mock", kind: "decision", step: 2, text: "两处写法不同，以哪处为准？", choices: ["a", "b", "you_decide"],
+        id: "alq-mock", kind: "decision", step: 2, text: "两处写法不同，以哪处为准？", choices: ["a", "b", "both", "you_decide"],
         options: [
           { key: "a", label: "第 4 章：钥匙交给了守桥人", chapter: 4, quote: "……把钥匙递给了老守桥人" },
           { key: "b", label: "第 9 章：钥匙一直在苏岑身上", chapter: 9, quote: "……钥匙还在她外套内袋里" },
@@ -645,10 +650,11 @@ test.describe("长任务：做好的图（手造的状态）", () => {
     await expect(question(page)).toBeVisible({ timeout: 10_000 });
     await expect(question(page)).toHaveAttribute("data-kind", "decision");
     const options = question(page).locator(".a-long-option");
-    await expect(options).toHaveCount(3);
+    await expect(options).toHaveCount(4);
     await expect(options.nth(0)).toContainText("第 4 章：钥匙交给了守桥人");
     await expect(options.nth(0)).toContainText("「……把钥匙递给了老守桥人」");
-    await expect(options.nth(2)).toHaveText("你定");
+    await expect(options.nth(2)).toHaveText("两处都保留（是有意的）");
+    await expect(options.nth(3)).toHaveText("你定（按最新一章）");
     expect(await style(question(page), "box-shadow")).toContain(BLUE);
     const answered = longRequest(page, "/[^/]+/answer");
     await page.route(/\/assistant\/long-tasks\/[^/]+\/answer$/, (route) => route.fulfill({ status: 202, contentType: "application/json", body: JSON.stringify({ data: longView(), request_id: "mock" }) }));

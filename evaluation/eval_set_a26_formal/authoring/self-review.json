@@ -1,0 +1,431 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "黎见棠",
+        "许泊垣",
+        "周砚荞",
+        "宁晏菱",
+        "贺以蘅",
+        "任澄蓁",
+        "姜序弥",
+        "樊予蔚"
+      ],
+      "aliases": [
+        {
+          "name": "黎见棠",
+          "alias": "荻瓣",
+          "chapter": 1,
+          "quote": "黎见棠应声后笑了笑，解释从读书时起，周砚荞便叫她荻瓣，叫久了连她自己也习惯了。"
+        },
+        {
+          "name": "许泊垣",
+          "alias": "榛屿",
+          "chapter": 2,
+          "quote": "她从小叫许泊垣榛屿，这个别名如今仍由熟悉的朋友沿用。"
+        },
+        {
+          "name": "周砚荞",
+          "alias": "柑芽",
+          "chapter": 3,
+          "quote": "周砚荞的别名叫柑芽，是黎见棠与几个老朋友一直沿用的称呼。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 8,
+          "quote": "黎见棠把莳页册原件正式交给许泊垣保管，自己只保留完整扫描件。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 10,
+          "quote": "许泊垣已经把萼弧坠赠给宁晏菱，从今天起所有权归宁晏菱。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 12,
+          "quote": "她已经签租并搬入自己的小套间，不再住周砚荞家的客房。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "姜序弥返城后不再只在线上联系，决定从本周起每周参加一次线下散步。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "黎见棠本人给出许可，任澄蓁只公开两人选定的一张私人合照，其余合照仍不公开。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "贺以蘅",
+          "predicate": "关系选择",
+          "chapter": 6,
+          "quote": "贺以蘅只愿与黎见棠保持同学往来，不接受朋友撮合两人谈恋爱。"
+        },
+        {
+          "subject": "周砚荞",
+          "predicate": "取消婚约原因所知",
+          "chapter": 7,
+          "quote": "周砚荞已知道，黎见棠与许泊垣取消婚约不是因为第三人。"
+        },
+        {
+          "subject": "黎见棠",
+          "predicate": "放映作伴选择",
+          "chapter": 9,
+          "quote": "黎见棠选择独自参加这次电影放映，不接受朋友另为她配伴。"
+        },
+        {
+          "subject": "许泊垣",
+          "predicate": "旅行订金处理",
+          "chapter": 11,
+          "quote": "共同旅行的订金按两人各自实际付款的数额，分别原路退回黎见棠和许泊垣的付款账户。"
+        },
+        {
+          "subject": "樊予蔚",
+          "predicate": "私人联系方式转交",
+          "chapter": 16,
+          "quote": "樊予蔚也正式向任确认：她答应不替任澄蓁向陌生人转交私人联系方式。"
+        },
+        {
+          "subject": "宁晏菱",
+          "predicate": "星期天安排",
+          "chapter": 18,
+          "quote": "宁晏菱决定接下来的星期天先陪自己的朋友，不再固定协调黎见棠与许泊垣见面。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 13,
+          "quote": "那半张纸是许泊垣替姜序弥写给弟弟的道歉草稿，不是写给黎见棠的复合信。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "周砚荞已经邀请任澄蓁一起看展，两人当面说清此前都误以为对方不愿同行。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 16,
+          "quote": "那张未签名便条确是宁晏菱所写，意思是让许泊垣亲自说完自己的话，不再请她代传。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "萼弧坠内侧的短刻痕，是宁晏菱幼时与许泊垣量身高时被尺角碰出的，不是订婚日期暗记。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 13,
+          "quote": "那半张纸是许泊垣替姜序弥写给弟弟的道歉草稿，不是写给黎见棠的复合信。"
+        },
+        {
+          "foreshadow": 5,
+          "chapter": 11,
+          "quote": "贺以蘅已拒绝外地常驻，只考虑短期探访，何时探访仍未确定。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "无图明信片的寄件者",
+          "planted_chapter": 4,
+          "quote": "黎见棠收到一张无图明信片，写信人没有留下姓名或可辨认的落款。"
+        },
+        {
+          "about": "旧模型下的月份纸片",
+          "planted_chapter": 6,
+          "quote": "许泊垣在旧模型底下发现一张写着另一个月份的纸片，月份与模型正面所标不同。"
+        },
+        {
+          "about": "陌生人喊出周的童年称呼",
+          "planted_chapter": 9,
+          "quote": "周砚荞听到陌生人叫出自己小时候的称呼柑芽，却认不出那个人。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a26f-w01-route-07",
+          "a26f-w01-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a26f-w01-route-01",
+          "a26f-w01-route-02",
+          "a26f-w01-route-03",
+          "a26f-w01-route-04"
+        ],
+        "ask_like_change_ids": [
+          "a26f-w01-route-05",
+          "a26f-w01-route-06"
+        ],
+        "new_action_change_ids": [
+          "a26f-w01-route-03",
+          "a26f-w01-route-04"
+        ],
+        "thread_like_ask_ids": [
+          "a26f-w01-route-05"
+        ],
+        "paraphrased_route_ids": [
+          "a26f-w01-route-01",
+          "a26f-w01-route-02",
+          "a26f-w01-route-03",
+          "a26f-w01-route-04",
+          "a26f-w01-route-05",
+          "a26f-w01-route-06",
+          "a26f-w01-route-07",
+          "a26f-w01-route-08",
+          "a26f-w01-route-09",
+          "a26f-w01-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a26f-w01-no-03": "not_stated",
+        "a26f-w01-no-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "柴予萱",
+        "陆照苒",
+        "柴照棠",
+        "杨映荃",
+        "陆问杉",
+        "方若荻",
+        "柴闻序",
+        "陆筱砚"
+      ],
+      "aliases": [
+        {
+          "name": "柴予萱",
+          "alias": "蓼芽",
+          "chapter": 1,
+          "quote": "家人从小叫柴予萱蓼芽，这个昵称一直指的是她。"
+        },
+        {
+          "name": "陆照苒",
+          "alias": "黛团",
+          "chapter": 2,
+          "quote": "黛团是朋友给陆照苒起的昵称，家里从前很少这样叫她。"
+        },
+        {
+          "name": "柴闻序",
+          "alias": "杉栖",
+          "chapter": 3,
+          "quote": "朋友叫柴闻序杉栖，只是沿用的昵称。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 8,
+          "quote": "杨映荃将禾角册交到柴予萱手里，以后谁想看原件，包括她自己，都要向女儿借。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 10,
+          "quote": "两周一次，愿来就来，没来的不追问，也别凑齐八个人才开始。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 12,
+          "quote": "照苒这才将自己的选择讲完整：“我愿意让你们两位知道，大学同住过的你，还有一直联络的老同事，就只选你们。”"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "不用照我的样子装。我要把雾纹包送给你，不是借给你，往后它归你。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "“以后你可以直接给我发消息，不用固定经过予萱，我会自己答。”陆照苒对柴照棠说。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "柴予萱",
+          "predicate": "单独见面及称呼选择",
+          "chapter": 6,
+          "quote": "“我愿意和你单独见面，可我还没准备好改叫妈妈。”柴予萱说完，先屏住一口气。"
+        },
+        {
+          "subject": "陆问杉",
+          "predicate": "替代者认识",
+          "chapter": 7,
+          "quote": "“我听懂了。你不愿意被当成照苒的替代，以后我先问你，不照她的样子来。”陆问杉在电话那头说。"
+        },
+        {
+          "subject": "陆筱砚",
+          "predicate": "朋友往来选择",
+          "chapter": 9,
+          "quote": "“我想和你单独做朋友，不替姐姐打听你的事，也不替你问她们。”陆筱砚说。"
+        },
+        {
+          "subject": "杨映荃",
+          "predicate": "回礼规则",
+          "chapter": 11,
+          "quote": "杨映荃点头，终于亲口说：“以后两家送东西不用照同样价钱回，我也不拿别人给过多少来算。”"
+        },
+        {
+          "subject": "柴闻序",
+          "predicate": "代写回信决定",
+          "chapter": 16,
+          "quote": "以后你们写给父母的回信，我不再代写；想让我听，我在，但怎样说由你们自己来。"
+        },
+        {
+          "subject": "方若荻",
+          "predicate": "姓名选择认可",
+          "chapter": 18,
+          "quote": "“你就继续叫柴予萱，不用改姓，我接受，也会一直照这个名字叫你。”"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 13,
+          "quote": "“我写这两封信，是想请你们了解我年轻时的生活。”方若荻说。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "那格留给你选一张成年后的照片，不是放抱错证明，哪张由你自己定。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 16,
+          "quote": "我躲这个终点，是年轻时在这里和我父亲闹过不和，不是因为你们抱错的事。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 19,
+          "quote": "方若荻说：“瓷棉熊这道线是你幼时自己学着缝的，我就在旁边，不是为另一个孩子改名。”"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 13,
+          "quote": "给你的不是要你搬回陆家，给照苒的也不是让她让出谁的位置。"
+        },
+        {
+          "foreshadow": 5,
+          "chapter": 11,
+          "quote": "“箱里不是当年的身份文件，是我父亲的旧工具，还有一封给我的私人遗信。”陆问杉说，"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "相册背页陌生缩写的书写者",
+          "planted_chapter": 4,
+          "quote": "柴予萱在禾角册背页发现一组陌生缩写，谁写的、代表什么，她都不认识。"
+        },
+        {
+          "about": "无署名生日录音的来源",
+          "planted_chapter": 6,
+          "quote": "陆照苒收到的生日录音没有署名，谁录的、为何送来，眼下都不清楚。"
+        },
+        {
+          "about": "杨私存河岸照片的来历",
+          "planted_chapter": 9,
+          "quote": "杨映荃自己保存着一张河岸照片，在今天以前，家里其他人都没见过。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a26f-w02-route-07",
+          "a26f-w02-route-09"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a26f-w02-route-01",
+          "a26f-w02-route-02",
+          "a26f-w02-route-04"
+        ],
+        "ask_like_change_ids": [
+          "a26f-w02-route-05",
+          "a26f-w02-route-06"
+        ],
+        "new_action_change_ids": [
+          "a26f-w02-route-03",
+          "a26f-w02-route-04"
+        ],
+        "thread_like_ask_ids": [
+          "a26f-w02-route-05"
+        ],
+        "paraphrased_route_ids": [
+          "a26f-w02-route-01",
+          "a26f-w02-route-02",
+          "a26f-w02-route-03",
+          "a26f-w02-route-04",
+          "a26f-w02-route-05",
+          "a26f-w02-route-06",
+          "a26f-w02-route-07",
+          "a26f-w02-route-08",
+          "a26f-w02-route-09",
+          "a26f-w02-route-10"
+        ]
+      },
+      "no_evidence_modes": {
+        "a26f-w02-no-03": "not_stated",
+        "a26f-w02-no-04": "contradicted"
+      }
+    }
+  },
+  "task_notes": {
+    "a26f-w01-no-01": "依据：起始事实17；第2章 照片向着里面第2780个汉字。",
+    "a26f-w01-no-02": "依据：起始伏笔9，收于第5章 杯底那一点胶；第2726个汉字。",
+    "a26f-w01-no-03": "相关但不构成答案的童年称呼：第9章 银幕亮起来以前第2770个汉字；日期无正文依据。",
+    "a26f-w01-no-04": "反证：第7章 门口的湿地第1273个汉字，区别于客人领走的短折伞。",
+    "a26f-w01-no-05": "对象为选中的共享草稿句，位置见下；不以草稿作已有事实依据。",
+    "a26f-w01-no-06": "依据为动作登记的能力范围与事实1的对象，正文考点位置不适用。",
+    "a26f-w02-no-01": "依据起始事实16及第3章 不必排在一起第2473个汉字。",
+    "a26f-w02-no-02": "起始伏笔2已有此对象；最早第2章 星期六的格子第2601个汉字。",
+    "a26f-w02-no-03": "相关年龄为第3章 不必排在一起第2488个汉字；没有出生月日依据。",
+    "a26f-w02-no-04": "反证第11章 不把心意放上秤第2748个汉字，及第2782个汉字。",
+    "a26f-w02-no-05": "定位为共享草稿完整句，章内位置见下；不把草稿衣物当成已完成正文的新事实。",
+    "a26f-w02-no-06": "依据动作支持范围与既有伏笔10，正文位置不适用于删除能力判定。"
+  }
+}

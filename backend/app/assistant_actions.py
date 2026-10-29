@@ -61,6 +61,10 @@ SUBJECT_PARTS = re.compile(r"[（）()、，,与和及/]+")
 # pair stood at 0.194 under p42). Measured over every card of every A2 run so far, the looks below keep the cases they were
 # made for and drop most of those that only cost a round.
 SECOND_LOOK_KEPT = 0.7  # share of the old value's character pairs a new value keeps when it only says the old fact again
+# A clause of the new value that says the old one no longer holds names the old one without keeping it ("在折榆庭侧室举行，南穗辩护所
+# 不再承办这轮会谈" beside "在南穗辩护所举行": held as saying it again, A2 fifth formal run, w01-action-08, both passes).
+NEGATED_CLAUSE = re.compile(r"不再|不是|并非|而非|已不|不算|取消|作废|撤销|改掉")
+CLAUSE_BREAK = re.compile(r"[，,；;。！？!?]")
 # (at 0.6: 70 of 273 changes asked for were held, 8 of 30 that should not have been made; at 0.7: 26 and 5)
 SECOND_LOOK_SAME = 0.5  # share of an existing fact's character pairs a new fact repeats when it may say the same matter
 # The same, for a fact filed under the very same subject: "双齿筹不会因换手便成为所有权证明" was added beside "双齿筹（用途）：
@@ -601,6 +605,7 @@ def numbers_in(text: str) -> set[int]:
 # ("只能手动锁" for "只作手动锁定"), and no count of shared characters tells the two apart: as a refusal the check stopped 57
 # proposals of 14 tasks that were asked for, against 10 where the author had it wrong (second pair, p40). So it holds the
 # item back for a second look, once, and the model decides.
+TITLE_SHARED = 3  # character pairs of the author's words a thread's title must hold for them to point at the thread
 AUTHOR_VALUE_MAX = 40
 AUTHOR_VALUE_FOUND = 0.5
 # What a piece of the request list asks for, when it is not a change of the kind proposed on it.
@@ -627,6 +632,11 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
     split failed, are not refused on their kind."""
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
     want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+    # The list can take a thing in the story for a fact: "第10章寓言草稿旁的退休说明，请据实修正未递交的缘由" is about the thread
+    # "褚镜薰扣住的退休说明" (A2 regression tune1b, injection-05: three edits of the thread refused as "a fact, not a thread"). Words
+    # of the author's that the thread's own title holds point at the thread.
+    if want == "fact" and action.record_kind == "foreshadow" and len(_pairs(request_words) & _pairs(proposal["display"].get("title") or "")) >= TITLE_SHARED:
+        want = None
     if want is not None:
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
     if action.record_kind == "foreshadow":
@@ -696,7 +706,8 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
                            "是正文后来变了、旧的那条已经不对，就用 change_fact 改那条。")
     else:
         old = _pairs(proposal["before"]["value"])
-        if old and len(old & _pairs(after["value"])) / len(old) >= SECOND_LOOK_KEPT:
+        affirmed = "".join(part for part in CLAUSE_BREAK.split(after["value"]) if not NEGATED_CLAUSE.search(part))
+        if old and len(old & _pairs(affirmed)) / len(old) >= SECOND_LOOK_KEPT:
             look["current"] = proposal["display"]["before"]
             reasons.append("改后的内容大半还是这条事实原来的话。原来的话已经说了作者要的意思（只是简略些、措辞不同），就不要改，在回答里引用这条事实。")
     display = proposal["display"]
@@ -712,6 +723,35 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
     ctx.held_now += 1
     return {"status": "second_look", **look,
             "message": "这条改动还没有放进卡片。" + "".join(reasons) + "确实需要，就原样再提出一次，会放进卡片。"}
+
+
+ALIAS_RESTATED = 0.8  # share of a new fact's words that one fact of the full name (with its alias fact) holds
+FILLER = set("是的了在和与也就")
+
+
+def _said_under_full_name(ctx: ToolContext, after: dict[str, Any]) -> bool:
+    """A new fact under a nickname that a fact of the full name says already: "绛穗·身份：她是本案辩护人" beside 简迭微's
+    "本案辩护人" and her alias fact "别名绛穗" (A2 regression round 2, w01-no-01: held once, proposed again, put on the card).
+    Measured against one fact of the full name at a time, with the alias fact, so a full name with many facts does not cover
+    everything new."""
+    subject = "".join(ch for ch in after["subject"] if ch.isalnum())
+    facts = ctx.memory()
+    squeeze = lambda text: "".join(ch for ch in str(text or "") if ch.isalnum())
+    aliases = [fact for fact in facts if subject and subject in squeeze(fact["value"]) and squeeze(fact["subject"]) != subject]
+    if not aliases:
+        return False
+    names = set(subject) | {ch for fact in aliases for ch in squeeze(fact["subject"])}
+    said = {ch for ch in squeeze(after["value"]) if ch not in names and ch not in FILLER}
+    if len(said) < 3:
+        return False
+    for alias in aliases:
+        owner = squeeze(alias["subject"])
+        for fact in facts:
+            if fact is not alias and squeeze(fact["subject"]) == owner:
+                held = set(squeeze(fact["value"])) | set(squeeze(alias["value"]))
+                if len(said & held) / len(said) >= ALIAS_RESTATED:
+                    return True
+    return False
 
 
 def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
@@ -743,6 +783,8 @@ def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     shown = {"action": action.kind, "target": args.get("target") if action.target_kind else None, "evidence": [item["ref"] for item in proposal["evidence"]],
              "request_words": request_words}
     # The second look weighs a fact item against the facts the materials hold; a thread item has none to be weighed against.
+    if action.kind == "add_fact" and _said_under_full_name(ctx, proposal["after"]):
+        raise ToolError("change_fact_already_recorded")
     look = _second_look(ctx, action, args, proposal, request_words) if action.record_kind == "fact" else None
     if look is not None:
         return Outcome(look, shown, 0)
@@ -824,10 +866,11 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
 
 def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id: str, task_id: str, accepted: list[str] | None,
            edits: dict[str, str] | None = None, within: list[str] | None = None) -> dict[str, Any]:
-    """Apply the accepted items of a card, with any value the author reworded, and turn down the rest (`accepted` None: turn
-    down all). All or nothing: when any accepted item's target no longer holds the values the card was made against, or a
-    review of the facts is still open for a fact item, nothing is written. A long task's card is decided a group at a time:
-    `within` names the group's items, and the rest of the card waits."""
+    """Apply the accepted items of a card, with any value the author reworded. The items not accepted stay proposed, to be
+    confirmed later or turned down; only `accepted` None (不要) turns down all that still waits. All or nothing: when any
+    accepted item's target no longer holds the values the card was made against, or a review of the facts is still open for a
+    fact item, nothing is written. A long task's card is decided a group at a time: `within` names the group's items, and the
+    rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
     if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
@@ -861,7 +904,7 @@ def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id:
             ACTIONS[row["kind"]].write(c, db, project_id, row["target_id"], json.loads(row["after_json"]), user_id, stamp)
             c.execute("UPDATE assistant_changes SET status='applied',decided_at=?,applied_at=? WHERE id=?", (stamp, stamp, row["id"]))
             _event(c, row, "applied", user_id, stamp, {"edited_by_author": True} if row["id"] in edits else None)
-        else:
+        elif accepted is None:  # 不要: what was not written is turned down. After a partial confirm the rest keeps waiting (V02)
             c.execute("UPDATE assistant_changes SET status='rejected',decided_at=? WHERE id=?", (stamp, row["id"]))
             _event(c, row, "rejected", user_id, stamp)
     return store.view(c, c.execute("SELECT * FROM assistant_tasks WHERE id=?", (task_id,)).fetchone(), user_id)

@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "total": 12,
+  "initial_agreement": 12,
+  "final_agreement": 12,
+  "unresolved": 0,
+  "disagreement_ids": [],
+  "closed_ids": [],
+  "unchanged_initial_carried_forward": true,
+  "scope": "author_intent_and_object_only",
+  "new_object_equivalence_confirmed_by_lead": [
+    "a26f-w01-action-13",
+    "a26f-w01-action-14",
+    "a26f-w02-action-13",
+    "a26f-w02-action-14"
+  ],
+  "rows": [
+    {
+      "id": "a26f-w02-action-16",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w02-action-15",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-13",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-18",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w02-action-14",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w02-action-17",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-14",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-15",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w02-action-13",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-17",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w01-action-16",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    },
+    {
+      "id": "a26f-w02-action-18",
+      "kind_and_object_agreement": true,
+      "chapter_scored": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "candidate_names": 19,
+  "candidate_names_sha256": "53af0351d7b3f56bc63e7d8ee758aad215cf768618cb1f5eaf561fa5a0f528b3",
+  "plaintext_outputs": 0,
+  "readable": {
+    "files": 919,
+    "bytes": 26077598,
+    "matched_names": 0,
+    "matched_files": 0,
+    "occurrences": 0,
+    "undecodable_files": 0,
+    "corpus_sha256": "551733f64e0c96c9b243b0be012df9496c177fc172e95cbabae56344fbeb4dde"
+  },
+  "sealed_program_only": {
+    "files": 151,
+    "bytes": 2835107,
+    "matched_names": 0,
+    "matched_files": 0,
+    "occurrences": 0,
+    "undecodable_files": 0,
+    "corpus_sha256": "03d96f1a5990ffcf12f4dc56051e80597d6c3200dd17459b48088847a59a4f55"
+  }
+}

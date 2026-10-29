@@ -1,0 +1,1124 @@
+{
+  "work": "w02",
+  "source_file": "works/w02.md",
+  "status": "complete_waiting_independent_full_review",
+  "completed_chapters": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "source_sha256": "587f782975e0308e726b8b283c877f178ef290870cbe90dc2a747107641260d8",
+  "writing_method": "逐章直接人工原创；工具仅保存字面量、计数、定位、查重复和哈希。",
+  "chapter_counts": [
+    {
+      "chapter": 1,
+      "title": "回来的那把椅子",
+      "han": 2887
+    },
+    {
+      "chapter": 2,
+      "title": "星期六的格子",
+      "han": 2941
+    },
+    {
+      "chapter": 3,
+      "title": "不必排在一起",
+      "han": 2890
+    },
+    {
+      "chapter": 4,
+      "title": "照片没有拍到的雨",
+      "han": 2986
+    },
+    {
+      "chapter": 5,
+      "title": "把袋底翻过来",
+      "han": 2982
+    },
+    {
+      "chapter": 6,
+      "title": "一个称呼以前",
+      "han": 2964
+    },
+    {
+      "chapter": 7,
+      "title": "从各自的门口出发",
+      "han": 2993
+    },
+    {
+      "chapter": 8,
+      "title": "带上楼的重量",
+      "han": 2937
+    },
+    {
+      "chapter": 9,
+      "title": "两个人也可以约",
+      "han": 3003
+    },
+    {
+      "chapter": 10,
+      "title": "空出来的星期六",
+      "han": 2976
+    },
+    {
+      "chapter": 11,
+      "title": "不把心意放上秤",
+      "han": 2986
+    },
+    {
+      "chapter": 12,
+      "title": "可以讲给谁听",
+      "han": 3127
+    },
+    {
+      "chapter": 13,
+      "title": "信封不必一样重",
+      "han": 3006
+    },
+    {
+      "chapter": 14,
+      "title": "这一页由谁来选",
+      "han": 2986
+    },
+    {
+      "chapter": 15,
+      "title": "包空下来的时候",
+      "han": 2995
+    },
+    {
+      "chapter": 16,
+      "title": "到终点以后",
+      "han": 2991
+    },
+    {
+      "chapter": 17,
+      "title": "不必再经过谁",
+      "han": 2958
+    },
+    {
+      "chapter": 18,
+      "title": "写在纸上的名字",
+      "han": 2850
+    },
+    {
+      "chapter": 19,
+      "title": "不一样长的针脚",
+      "han": 3004
+    },
+    {
+      "chapter": 20,
+      "title": "今天来的这些人",
+      "han": 2917
+    }
+  ],
+  "proper_names_used": [
+    "柴予萱",
+    "予萱",
+    "陆照苒",
+    "照苒",
+    "柴照棠",
+    "杨映荃",
+    "陆问杉",
+    "方若荻",
+    "柴闻序",
+    "陆筱砚",
+    "蓼芽",
+    "黛团",
+    "杉栖",
+    "筠洄市",
+    "禾角册",
+    "瓷棉熊",
+    "雾纹包"
+  ],
+  "new_proper_names_outside_bible": [],
+  "ordinary_objects_added": [
+    "豆浆杯",
+    "垫椅脚纸片",
+    "纸锉",
+    "鞋带",
+    "围裙",
+    "床单",
+    "布熊围巾",
+    "相片纸封",
+    "里布",
+    "普通公交车票",
+    "旧工具箱（未打开）",
+    "指甲油和棉片",
+    "电子贺卡及生日录音",
+    "松过的眼镜架",
+    "普通快递纸盒和夹子",
+    "杨映荃圈日期的旧票",
+    "两人试过但未买的鞋",
+    "杨自留纸盒里的河岸照片",
+    "方送柴家的普通薄毯",
+    "普通小凳",
+    "旧工具与未拆私人遗信",
+    "送修的裙子",
+    "两位老朋友带来的点心盒",
+    "两封分别写给27岁女儿的私人信",
+    "成年镜前自拍洗印件",
+    "母女私下合照",
+    "取照片另存的方自用大盒",
+    "筱砚装进包里的本子和薄外套",
+    "柴闻序曾协助润改但由本人发送的回信草稿",
+    "公交终点旧站牌位置的铺砖（无新地名）",
+    "普通街景照片与手机号（直接联络）",
+    "杨借予萱的伞（后续尚待归还）",
+    "新买空信封",
+    "修紧的旧凳和小螺丝",
+    "母女各选的点心",
+    "普通餐桌收据与外套",
+    "草稿杨带的橘子与放皮小碟"
+  ],
+  "timepoints": [
+    {
+      "chapter": 1,
+      "time": "首次八人相认见面翌日，午前至午后；无绝对日期。"
+    },
+    {
+      "chapter": 2,
+      "time": "后续星期六第一次按整齐桌次同聚；在这次散场前八人同意每周星期六见。"
+    },
+    {
+      "chapter": 3,
+      "time": "下一次星期六前的一次下班后傍晚，四名成年子女单独散步；不设绝对日期。"
+    },
+    {
+      "chapter": 4,
+      "time": "下一次星期六同聚之前的上午至午后；相册、洗衣、理发店外谈话、八人午饭。"
+    },
+    {
+      "chapter": 5,
+      "time": "第4章相聚后的普通工作日，母女买布、歇息后回陆家；不设绝对日期。"
+    },
+    {
+      "chapter": 6,
+      "time": "非两家固定同聚的休息日；筱砚单独去照苒租处，予萱后来短访；傍晚约定与方另一个工作日单独见。"
+    },
+    {
+      "chapter": 7,
+      "time": "约好的工作日傍晚，予萱与方单独散步；陆父事先告知后仅来接妻子，后因替代者话题当夜通话。"
+    },
+    {
+      "chapter": 8,
+      "time": "另一工作日下班后，杨带禾角册到柴予萱租处，正式移交；后续星期六仍按原安排未修改。"
+    },
+    {
+      "chapter": 9,
+      "time": "普通工作日，筱砚与闻序下班后商场买鞋未买成；同日下午予萱回杨处还包布并见到河岸照片。"
+    },
+    {
+      "chapter": 10,
+      "time": "下一次原定星期六八人聚饭，从本次相聚结束起改变频率。"
+    },
+    {
+      "chapter": 11,
+      "time": "改频率后的一次普通日子，杨与女儿逛店后顺路去陆家，与方/陆父/照苒相见，不是强制八人全员聚会。"
+    },
+    {
+      "chapter": 12,
+      "time": "周五接约，第二天是空出的星期六；照苒与两位旧友见面，后来三人在大学室友住处私下谈。"
+    },
+    {
+      "chapter": 13,
+      "time": "两位27岁女儿与方分别约定同一工作日傍晚到方住处，陆父自行外出，三人接信。信中年轻过往与照苒二十岁独自看电影仅作私下回忆，不新增绝对日期。"
+    },
+    {
+      "chapter": 14,
+      "time": "一次休息日，杨到柴予萱租处借看相册，母女下楼洗照片后仍回予萱处装片。"
+    },
+    {
+      "chapter": 15,
+      "time": "另一次普通日子，筱砚看母亲旧包、母女出门后回家清空照片，再赠包；不绑两周聚会要求。"
+    },
+    {
+      "chapter": 16,
+      "time": "先前通过予萱分别约好两个日期；第一天下午柴父与予萱去终点，另一天傍晚与照苒再走一次，同章明确完成两次；哥不代回信的决定在第一次路途中收到。"
+    },
+    {
+      "chapter": 17,
+      "time": "先普通日子两主角相约散步并遇筱砚；后约父亲在下一次碰面早到一点，当面同意直接联络；不是突然跳回未确认相认。"
+    },
+    {
+      "chapter": 18,
+      "time": "一次写回信后的下午到傍晚，先去杨处还夹子，后与方约见看订位并买信封，雨中谈保留姓名；夜回自己租处完成落款。"
+    },
+    {
+      "chapter": 19,
+      "time": "一次女儿下班后的晚饭前后，带熊去陆父母处、母女下楼取东西买点心，饭后回忆背线，之后自行带熊回租处；与方另约后天挑衣服。"
+    },
+    {
+      "chapter": 20,
+      "time": "隔周自愿小聚的星期六，早晨各人自己安排，午饭七人参加、陆问杉缺席；非每周八人齐聚恢复。"
+    }
+  ],
+  "continuity_notes": [
+    "第17章起由陆照苒本人明确允许柴照棠直接发消息，不再固定通过柴予萱；许可前最后一次安排仍由予萱转达，许可后父亲才直接发会合地点。第20章父亲给照苒直接发到门口的信息，照苒自行出去接。",
+    "第18章方亲口接受柴予萱保留原姓名、不改姓；母亲承认见面前曾想象另一个姓，但明确收回对女儿的期待，不以暂时接受保留日后劝改。予萱自己完成回信署名。",
+    "第19章方指出瓷棉熊背线是陆照苒幼时自己学缝，她当年坐旁陪伴；照苒经灯、纸、结头的动作提醒后明确想起自己缝歪不肯拆，不是方代缝，也不是替另一孩子改名。熊仍由照苒自行带回自己住处。伏笔4收束。",
+    "第20章陆问杉明确不来，其他人只答下回再见、不追问；七人平常吃饭，空椅移走，想走路者单约、不把饭后活动强制全员。两周自愿频率不反转；最后各回各处。",
+    "开放线5遗信在19章仍未拆；6筱砚未发语音在17章只见列表、未播放也未删除；7闻序陪朋友看远方房间在20章仍未定日期，不是搬家、未说朋友目的；8杨旧票圈日在20章仍由她保存并待她以后想讲再讲。",
+    "三条未记线分散重现：17章生日录音仍无落款、作者缘由未知且未转发；18章相册缩写仍原位、写者含义未知；18章杨自留河岸照片仍在自己的盒中，未说明地点缘由、未转进相册。不在末章集体解谜。",
+    "禾角册仍柴予萱保管，第20章她自行决定不带到小聚；方全部私人照片仍另存，雾纹包归筱砚且装筱砚自己的衣物水杯；照苒公众公开范围不扩大，仍仅亲选两位老友；两女各自独租，不改姓、不互换、不迁入父母家。",
+    "第21章共享草稿是隔几天的一次自愿私人来访，原相册由予萱从自己柜里取出、留自己膝上；筱砚自有雾纹包装自己的外套；杨只是受邀来坐，不发生相册回转或照片转赠。草稿未并入20章正式作品。",
+    "前1—16章60条已交接引句及其汉字位置均未改；无新增专名。第1章“给这张表取什么题目”是人物为便笺表命名的故事内用词，并非评测题目或叙事外元语言，未改原文，交全文审读确认。"
+  ],
+  "evidence": [
+    {
+      "label": "thread1",
+      "chapter": 1,
+      "quote": "我确实写了两封，一样的信封，还没有寄。",
+      "characters": 19,
+      "position_han": 2104
+    },
+    {
+      "label": "fact1",
+      "chapter": 1,
+      "quote": "禾角册还由我保管，你们要看就来找我。",
+      "characters": 18,
+      "position_han": 2216
+    },
+    {
+      "label": "fact3",
+      "chapter": 1,
+      "quote": "我现在不想向家里以外的人公开抱错的经历。",
+      "characters": 20,
+      "position_han": 2364
+    },
+    {
+      "label": "thread10",
+      "chapter": 1,
+      "quote": "八个人已经当面否决了互换童年房间的提议，今后不再照办。",
+      "characters": 27,
+      "position_han": 2466
+    },
+    {
+      "label": "fact18",
+      "chapter": 1,
+      "quote": "她仍独自租住，认亲不会使她搬进任何一对父母的家。",
+      "characters": 24,
+      "position_han": 2538
+    },
+    {
+      "label": "alias1",
+      "chapter": 1,
+      "quote": "家人从小叫柴予萱蓼芽，这个昵称一直指的是她。",
+      "characters": 22,
+      "position_han": 2674
+    },
+    {
+      "label": "fact25",
+      "chapter": 1,
+      "quote": "她和陆照苒都在二十七岁相认，此前各自在原来的家庭长大。",
+      "characters": 27,
+      "position_han": 2757
+    },
+    {
+      "label": "fact20",
+      "chapter": 1,
+      "quote": "那份确认抱错的记录，八个人早已认可，今天没有人需要重查真假。",
+      "characters": 30,
+      "position_han": 2782
+    },
+    {
+      "label": "family1",
+      "chapter": 1,
+      "quote": "柴照棠和杨映荃养育了柴予萱，陆问杉与方若荻生下了她。",
+      "characters": 26,
+      "position_han": 2809
+    },
+    {
+      "label": "fact5",
+      "chapter": 2,
+      "quote": "眼下柴照棠只通过柴予萱向陆照苒转达消息，不直接联系她。",
+      "characters": 27,
+      "position_han": 2272
+    },
+    {
+      "label": "fact2",
+      "chapter": 2,
+      "quote": "两家暂定每周星期六八个人一起见面，眼下先照这个频率来。",
+      "characters": 27,
+      "position_han": 2372
+    },
+    {
+      "label": "alias2",
+      "chapter": 2,
+      "quote": "黛团是朋友给陆照苒起的昵称，家里从前很少这样叫她。",
+      "characters": 25,
+      "position_han": 2490
+    },
+    {
+      "label": "thread2",
+      "chapter": 2,
+      "quote": "禾角册里空出的位置没有照片，杨映荃暂时未说准备放什么。",
+      "characters": 27,
+      "position_han": 2601
+    },
+    {
+      "label": "fact17",
+      "chapter": 2,
+      "quote": "瓷棉熊是陆照苒童年的布熊，一直归她所有，不因相认转送给柴予萱。",
+      "characters": 31,
+      "position_han": 2728
+    },
+    {
+      "label": "family2",
+      "chapter": 2,
+      "quote": "陆问杉和方若荻养育了陆照苒，柴照棠与杨映荃生下了她；",
+      "characters": 26,
+      "position_han": 2773
+    },
+    {
+      "label": "fact19",
+      "chapter": 2,
+      "quote": "她也独自租住，不与柴予萱交换住房。",
+      "characters": 17,
+      "position_han": 2815
+    },
+    {
+      "label": "occupations2",
+      "chapter": 2,
+      "quote": "陆问杉在汽车维修店工作，方若荻是服装公司的样衣助理，",
+      "characters": 26,
+      "position_han": 2866
+    },
+    {
+      "label": "fact4",
+      "chapter": 3,
+      "quote": "方若荻把个人照片放进雾纹包，包和照片眼下都由她拿着。",
+      "characters": 26,
+      "position_han": 2192
+    },
+    {
+      "label": "fact24",
+      "chapter": 3,
+      "quote": "雾纹包是她用来装自己保存的家庭照片的布包，不是两家共用的收纳袋。",
+      "characters": 32,
+      "position_han": 2216
+    },
+    {
+      "label": "fact22",
+      "chapter": 3,
+      "quote": "我不会替任何一位姐姐决定对外讲到哪里。",
+      "characters": 19,
+      "position_han": 2327
+    },
+    {
+      "label": "family3",
+      "chapter": 3,
+      "quote": "陆筱砚是陆问杉和方若荻的小女儿，今年二十三岁。",
+      "characters": 23,
+      "position_han": 2371
+    },
+    {
+      "label": "alias3",
+      "chapter": 3,
+      "quote": "朋友叫柴闻序杉栖，只是沿用的昵称。",
+      "characters": 17,
+      "position_han": 2473
+    },
+    {
+      "label": "family4",
+      "chapter": 3,
+      "quote": "柴闻序三十一岁，是柴照棠与杨映荃的长子。",
+      "characters": 20,
+      "position_han": 2488
+    },
+    {
+      "label": "fact21",
+      "chapter": 3,
+      "quote": "你们不必都叫我哥哥。",
+      "characters": 10,
+      "position_han": 2554
+    },
+    {
+      "label": "thread3",
+      "chapter": 3,
+      "quote": "柴照棠总绕开那处公交终点，问到缘故时，只说以后再讲。",
+      "characters": 26,
+      "position_han": 2715
+    },
+    {
+      "label": "occupation1",
+      "chapter": 3,
+      "quote": "我爸是公交驾驶员，熟路却不一定肯走每条路。",
+      "characters": 21,
+      "position_han": 2770
+    },
+    {
+      "label": "occupation2",
+      "chapter": 3,
+      "quote": "她的母亲杨映荃只是图书发行公司的普通职员，",
+      "characters": 21,
+      "position_han": 2801
+    },
+    {
+      "label": "fact23",
+      "chapter": 4,
+      "quote": "我只把自己拍的照片给别人，别人的原件我不会替人处分。",
+      "characters": 26,
+      "position_han": 2400
+    },
+    {
+      "label": "missing_thread1",
+      "chapter": 4,
+      "quote": "柴予萱在禾角册背页发现一组陌生缩写，谁写的、代表什么，她都不认识。",
+      "characters": 33,
+      "position_han": 2582
+    },
+    {
+      "label": "thread4",
+      "chapter": 4,
+      "quote": "瓷棉熊背后有一道改过的线，针脚忽疏忽密，陆照苒不记得是谁缝的。",
+      "characters": 31,
+      "position_han": 2800
+    },
+    {
+      "label": "resolved_thread9",
+      "chapter": 5,
+      "quote": "雾纹包底下的第二层口袋，是我自己缝的，平时只放普通车票。",
+      "characters": 28,
+      "position_han": 2510
+    },
+    {
+      "label": "thread5",
+      "chapter": 5,
+      "quote": "陆问杉一直不肯打开那只旧工具箱，也没有说明里面留着什么。",
+      "characters": 28,
+      "position_han": 2913
+    },
+    {
+      "label": "thread6",
+      "chapter": 6,
+      "quote": "陆筱砚把录好的语音留着，没有发送，也还不愿放给任何人听。",
+      "characters": 28,
+      "position_han": 2431
+    },
+    {
+      "label": "missing_fact1",
+      "chapter": 6,
+      "quote": "我愿意和你单独见面，可我还没准备好改叫妈妈。",
+      "characters": 22,
+      "position_han": 2594
+    },
+    {
+      "label": "missing_thread2",
+      "chapter": 6,
+      "quote": "陆照苒收到的生日录音没有署名，谁录的、为何送来，眼下都不清楚。",
+      "characters": 31,
+      "position_han": 2856
+    },
+    {
+      "label": "missing_fact2",
+      "chapter": 7,
+      "quote": "我听懂了。你不愿意被当成照苒的替代，以后我先问你，不照她的样子来。",
+      "characters": 33,
+      "position_han": 2508
+    },
+    {
+      "label": "thread7_context",
+      "chapter": 7,
+      "quote": "不是搬家看房。朋友为什么想去，我也还没听他讲清。",
+      "characters": 24,
+      "position_han": 2853
+    },
+    {
+      "label": "thread7",
+      "chapter": 7,
+      "quote": "柴闻序答应陪看远方的房间，却没有说明那间房与朋友的关系。",
+      "characters": 28,
+      "position_han": 2874
+    },
+    {
+      "label": "changed_fact1",
+      "chapter": 8,
+      "quote": "杨映荃将禾角册交到柴予萱手里，以后谁想看原件，包括她自己，都要向女儿借。",
+      "characters": 36,
+      "position_han": 2563
+    },
+    {
+      "label": "thread8",
+      "chapter": 8,
+      "quote": "杨映荃在一张旧票上圈了一个日子，为什么圈着，她还没有讲。",
+      "characters": 28,
+      "position_han": 2757
+    },
+    {
+      "label": "missing_fact3",
+      "chapter": 9,
+      "quote": "“我想和你单独做朋友，不替姐姐打听你的事，也不替你问她们。”陆筱砚说。",
+      "characters": 35,
+      "position_han": 2529
+    },
+    {
+      "label": "missing_thread3",
+      "chapter": 9,
+      "quote": "杨映荃自己保存着一张河岸照片，在今天以前，家里其他人都没见过。",
+      "characters": 31,
+      "position_han": 2759
+    },
+    {
+      "label": "changed_fact2",
+      "chapter": 10,
+      "quote": "两周一次，愿来就来，没来的不追问，也别凑齐八个人才开始。",
+      "characters": 28,
+      "position_han": 2515
+    },
+    {
+      "label": "changed_fact2_agreement",
+      "chapter": 10,
+      "quote": "照苒和筱砚先答应，闻序说自己照办，两位父亲与两位母亲也各自说了好。",
+      "characters": 33,
+      "position_han": 2550
+    },
+    {
+      "label": "missing_fact4",
+      "chapter": 11,
+      "quote": "杨映荃点头，终于亲口说：“以后两家送东西不用照同样价钱回，我也不拿别人给过多少来算。”",
+      "characters": 43,
+      "position_han": 2505
+    },
+    {
+      "label": "stale_note5",
+      "chapter": 11,
+      "quote": "“箱里不是当年的身份文件，是我父亲的旧工具，还有一封给我的私人遗信。”陆问杉说，",
+      "characters": 40,
+      "position_han": 2748
+    },
+    {
+      "label": "stale_note5_unread",
+      "chapter": 11,
+      "quote": "信没拆，我现在也不想拆。",
+      "characters": 12,
+      "position_han": 2782
+    },
+    {
+      "label": "changed_fact3_friends",
+      "chapter": 12,
+      "quote": "照苒这才将自己的选择讲完整：“我愿意让你们两位知道，大学同住过的你，还有一直联络的老同事，就只选你们。”",
+      "characters": 52,
+      "position_han": 2535
+    },
+    {
+      "label": "changed_fact3_nonpublic",
+      "chapter": 12,
+      "quote": "“我不想对公众讲，不放到网上，也不让这件事从你们这里传给其他人。”陆照苒补上一句。",
+      "characters": 41,
+      "position_han": 2657
+    },
+    {
+      "label": "resolved_thread1",
+      "chapter": 13,
+      "quote": "“我写这两封信，是想请你们了解我年轻时的生活。”方若荻说。",
+      "characters": 29,
+      "position_han": 2535
+    },
+    {
+      "label": "stale_note1",
+      "chapter": 13,
+      "quote": "给你的不是要你搬回陆家，给照苒的也不是让她让出谁的位置。",
+      "characters": 28,
+      "position_han": 2649
+    },
+    {
+      "label": "thread1_delay",
+      "chapter": 13,
+      "quote": "我一直没寄，是怕邀请写得像一个不能拒绝的要求。",
+      "characters": 23,
+      "position_han": 2690
+    },
+    {
+      "label": "thread1_received",
+      "chapter": 13,
+      "quote": "两人读过，分别将信收好。",
+      "characters": 12,
+      "position_han": 2889
+    },
+    {
+      "label": "resolved_thread2",
+      "chapter": 14,
+      "quote": "那格留给你选一张成年后的照片，不是放抱错证明，哪张由你自己定。",
+      "characters": 31,
+      "position_han": 2511
+    },
+    {
+      "label": "thread2_filled",
+      "chapter": 14,
+      "quote": "那一格终于有了她自己选中的成年模样。",
+      "characters": 18,
+      "position_han": 2694
+    },
+    {
+      "label": "changed_fact4",
+      "chapter": 15,
+      "quote": "不用照我的样子装。我要把雾纹包送给你，不是借给你，往后它归你。",
+      "characters": 31,
+      "position_han": 2675
+    },
+    {
+      "label": "changed_fact4_photos",
+      "chapter": 15,
+      "quote": "照片已经全部取出来，仍由我自己收着，不随包送走。",
+      "characters": 24,
+      "position_han": 2766
+    },
+    {
+      "label": "missing_fact5",
+      "chapter": 16,
+      "quote": "以后你们写给父母的回信，我不再代写；想让我听，我在，但怎样说由你们自己来。",
+      "characters": 37,
+      "position_han": 1914
+    },
+    {
+      "label": "resolved_thread3",
+      "chapter": 16,
+      "quote": "我躲这个终点，是年轻时在这里和我父亲闹过不和，不是因为你们抱错的事。",
+      "characters": 34,
+      "position_han": 2495
+    },
+    {
+      "label": "thread3_both_walked",
+      "chapter": 16,
+      "quote": "两位女儿各自与他走过这一段，回避终点的缘由已经由柴照棠亲口讲清；",
+      "characters": 32,
+      "position_han": 2909
+    },
+    {
+      "label": "changed_fact5",
+      "chapter": 17,
+      "quote": "“以后你可以直接给我发消息，不用固定经过予萱，我会自己答。”陆照苒对柴照棠说。",
+      "characters": 39,
+      "position_han": 2609
+    },
+    {
+      "label": "missing_fact6",
+      "chapter": 18,
+      "quote": "“你就继续叫柴予萱，不用改姓，我接受，也会一直照这个名字叫你。”",
+      "characters": 32,
+      "position_han": 2535
+    },
+    {
+      "label": "resolved_thread4",
+      "chapter": 19,
+      "quote": "方若荻说：“瓷棉熊这道线是你幼时自己学着缝的，我就在旁边，不是为另一个孩子改名。”",
+      "characters": 41,
+      "position_han": 2653
+    },
+    {
+      "label": "thread4_recalled",
+      "chapter": 19,
+      "quote": "“我想起来了，是我自己缝的，后来还不让你拆。”陆照苒望着方若荻说。",
+      "characters": 33,
+      "position_han": 2688
+    },
+    {
+      "label": "voluntary_meeting_realized",
+      "chapter": 20,
+      "quote": "陆问杉今天没有来，桌边七个人也没有替他的缺席追问缘由。",
+      "characters": 27,
+      "position_han": 2629
+    }
+  ],
+  "position_counts": {
+    "total": 65,
+    "after1500": 65,
+    "after2500": 48
+  },
+  "audit": {
+    "chapters_2800_3150": true,
+    "total_body_han": 59377,
+    "quote_substrings_unique": true,
+    "quote_10_60_characters": true,
+    "duplicate_complete_sentences_han16_or_more": [],
+    "narrative_chapter_meta_hits": 0,
+    "story_internal_title_word_occurrences": 1,
+    "story_internal_title_word_note": "第1章人物给便笺表取题目，非叙事外评测元话语；待独立全文审读。",
+    "utf8_bom": false,
+    "cr_bytes": 0,
+    "old_60_evidence_and_positions_unchanged": true
+  },
+  "batches": [
+    {
+      "chapters": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "status": "accepted_by_lead_inventory_check",
+      "source_sha256_at_handoff": "9ccb841f087a6ca626d288078f9aa404dace6e1aebbc5e2fc9dcfa768950840b",
+      "chapter_counts": [
+        {
+          "chapter": 1,
+          "title": "回来的那把椅子",
+          "han": 2887
+        },
+        {
+          "chapter": 2,
+          "title": "星期六的格子",
+          "han": 2941
+        },
+        {
+          "chapter": 3,
+          "title": "不必排在一起",
+          "han": 2890
+        },
+        {
+          "chapter": 4,
+          "title": "照片没有拍到的雨",
+          "han": 2986
+        }
+      ],
+      "evidence_labels": [
+        "thread1",
+        "fact1",
+        "fact3",
+        "thread10",
+        "fact18",
+        "alias1",
+        "fact25",
+        "fact20",
+        "family1",
+        "fact5",
+        "fact2",
+        "alias2",
+        "thread2",
+        "fact17",
+        "family2",
+        "fact19",
+        "occupations2",
+        "fact4",
+        "fact24",
+        "fact22",
+        "family3",
+        "alias3",
+        "family4",
+        "fact21",
+        "thread3",
+        "occupation1",
+        "occupation2",
+        "fact23",
+        "missing_thread1",
+        "thread4"
+      ]
+    },
+    {
+      "chapters": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "status": "awaiting_lead_bible_update",
+      "source_sha256_at_handoff": "0551bd97b4bb20fb7c51c8f4a2f979d8d724a466b3f5b89ce084ea301da07c33",
+      "chapter_counts": [
+        {
+          "chapter": 5,
+          "title": "把袋底翻过来",
+          "han": 2982
+        },
+        {
+          "chapter": 6,
+          "title": "一个称呼以前",
+          "han": 2964
+        },
+        {
+          "chapter": 7,
+          "title": "从各自的门口出发",
+          "han": 2993
+        },
+        {
+          "chapter": 8,
+          "title": "带上楼的重量",
+          "han": 2937
+        }
+      ],
+      "evidence_labels": [
+        "resolved_thread9",
+        "thread5",
+        "thread6",
+        "missing_fact1",
+        "missing_thread2",
+        "missing_fact2",
+        "thread7_context",
+        "thread7",
+        "changed_fact1",
+        "thread8"
+      ]
+    },
+    {
+      "chapters": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "status": "awaiting_lead_bible_update",
+      "source_sha256_at_handoff": "8860e0b758a456013714790de1c8211788de1393545097dc0657af0b3b6aa377",
+      "chapter_counts": [
+        {
+          "chapter": 9,
+          "title": "两个人也可以约",
+          "han": 3003
+        },
+        {
+          "chapter": 10,
+          "title": "空出来的星期六",
+          "han": 2976
+        },
+        {
+          "chapter": 11,
+          "title": "不把心意放上秤",
+          "han": 2986
+        },
+        {
+          "chapter": 12,
+          "title": "可以讲给谁听",
+          "han": 3127
+        }
+      ],
+      "evidence_labels": [
+        "missing_fact3",
+        "missing_thread3",
+        "changed_fact2",
+        "changed_fact2_agreement",
+        "missing_fact4",
+        "stale_note5",
+        "stale_note5_unread",
+        "changed_fact3_friends",
+        "changed_fact3_nonpublic"
+      ]
+    },
+    {
+      "chapters": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "status": "awaiting_lead_bible_update",
+      "source_sha256_at_handoff": "22524e91ecf16099fe8e996fce200a2bb20034bdec567bc4cc3c01f77ef1ac29",
+      "chapter_counts": [
+        {
+          "chapter": 13,
+          "title": "信封不必一样重",
+          "han": 3006
+        },
+        {
+          "chapter": 14,
+          "title": "这一页由谁来选",
+          "han": 2986
+        },
+        {
+          "chapter": 15,
+          "title": "包空下来的时候",
+          "han": 2996
+        },
+        {
+          "chapter": 16,
+          "title": "到终点以后",
+          "han": 2991
+        }
+      ],
+      "evidence_labels": [
+        "resolved_thread1",
+        "stale_note1",
+        "thread1_delay",
+        "thread1_received",
+        "resolved_thread2",
+        "thread2_filled",
+        "changed_fact4",
+        "changed_fact4_photos",
+        "missing_fact5",
+        "resolved_thread3",
+        "thread3_both_walked"
+      ]
+    },
+    {
+      "chapters": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "status": "complete_waiting_independent_full_review",
+      "source_sha256_at_handoff": "492b8989747f084fcfd5568e439b6ab63ed26d84326550eb9bcb9b58227148a2",
+      "chapter_counts": [
+        {
+          "chapter": 17,
+          "title": "不必再经过谁",
+          "han": 2958
+        },
+        {
+          "chapter": 18,
+          "title": "写在纸上的名字",
+          "han": 2847
+        },
+        {
+          "chapter": 19,
+          "title": "不一样长的针脚",
+          "han": 3004
+        },
+        {
+          "chapter": 20,
+          "title": "今天来的这些人",
+          "han": 2917
+        }
+      ],
+      "evidence_labels": [
+        "changed_fact5",
+        "missing_fact6",
+        "resolved_thread4",
+        "thread4_recalled",
+        "voluntary_meeting_realized"
+      ]
+    }
+  ],
+  "clarifications_resolved": [
+    {
+      "initial_question": "第19章熊改线的中央设定措辞“陆照苒幼时自己学着修补”可能指陆照苒本人幼时学缝，也可能指方若荻在女儿幼时学缝；1—4章没有锁定缝者，留主控明确。",
+      "resolution": "主控已明确：第19章缝者为陆照苒本人幼时学缝，方若荻在旁陪伴；本批未提前揭晓。"
+    }
+  ],
+  "pending_clarification": [],
+  "historical_continuity_notes": [
+    "柴予萱仍独自租住；柴杨养育、陆方所生。",
+    "陆照苒仍独自租住；陆方养育、柴杨所生。",
+    "柴闻序31岁，柴杨长子；予萱为养育关系妹妹、照苒为亲妹妹。",
+    "陆筱砚23岁，陆方小女儿；对照苒有共同成长经历、与予萱从当前相处开始。",
+    "三组别名已在1/2/3章分别明示。",
+    "禾角册仍由杨映荃保管；第4章相片复制件的分享不构成相册交接。",
+    "每周星期六八人同聚是当前已认可安排，不能提前写成已改为自愿小聚。",
+    "陆照苒仍仅家庭内公开；没有向任何家庭外的人公开。",
+    "柴照棠仅经柴予萱转达给陆照苒，尚未获得直接联络同意。",
+    "雾纹包目前归方若荻拿着，装她个人保存的照片；没有赠与筱砚。",
+    "瓷棉熊始终归陆照苒，她在4章带出但自行带走。",
+    "互换童年房间的提议在首次见面时八人已否决，不是待回收/待放弃线。",
+    "第2章布包底层口袋已埋但尚未解释，留给第5章回收。",
+    "双份信不解释用途；公交终点不解释旧事；熊改线不揭作者；相册陌生缩写不揭来源。",
+    "第5章包底第二层口袋已由方翻开，明确自己缝来放普通车票；这条线回收，包仍归方持有。",
+    "第5章陆父旧工具箱仅出现且不肯打开；照苒关于身份文件的想法明确为她的猜想，未被陆父承认，尚不澄清箱内。",
+    "第6章柴予萱已亲口同意与方单独见面，但未准备改叫妈妈；第7章完成单独散步。",
+    "第6章筱砚录好的语音未发未听，仍由她自己决定何时播放。",
+    "第6章照苒收到未落款电子贺卡内的生日录音，作者/用途未知；未转给别人求认，没有推翻抱错确认。",
+    "第7章陆父亲口确认已听懂柴予萱不愿作照苒替代，将先认识她本人而非照照苒旧习惯要求她。",
+    "第7章柴闻序答应陪朋友去远方看房间，不是搬家计划；缘由与房间关系未知，未成行。",
+    "第8章禾角册原件正式交柴予萱保管，其他人包括杨自己以后只向她借看；借来的他人照片原件不在册里，仍由杨另收，不随册转交。",
+    "第8章空相格与背页陌生缩写均未解释。",
+    "第8章杨映荃旧票的圈日首次出现，票由杨自己带回、承诺以后自己讲，未解释与谁何事有关。",
+    "本批没有改变见面频率/陆照苒公开范围/柴父联络方式/雾纹包持有人/两主角租住安排。",
+    "第9章筱砚主动与柴闻序交朋友，双方不替姐姐/对方打听，两人无恋爱线；父亲曾托话但筱砚未接。",
+    "第9章杨的河岸照片首次被予萱看见；在杨自留薄盒中，不在禾角册，也不是借来的原件，地点/缘由未解释，仍由杨保留。",
+    "第10章八人分别明确同意从每周齐聚改成每两周一次自愿小聚；不要求八人齐到，缺席不追问，另有个人相约仍各自问意愿。",
+    "第11章杨亲口同意两家互赠不按同样价钱回礼，方也回应接受；普通毯子仍在柴家日常使用。",
+    "第11章陆父打开工具箱外层，明说不是当年身份文件而是父亲留下的旧工具和给他的私人遗信；内信未拆、内容与不愿拆的缘由仍未知，不可全线标回收。",
+    "第12章照苒主动选择仅向两位指定老朋友讲抱错经历：大学同住过的室友、旧工作处一直联络的同事；未命名，不计新增专名。",
+    "第12章三人在大学室友的私人住处谈；没有在临街廊下对公众讲，也未上传照片、录音或证明；两朋友明确不转述。方在电话中承认只按照苒选择的两位范围来。",
+    "1—8章正文与原40条引句均未改动；因容量中断续写时只完成第9章并补足，未覆盖旧章。",
+    "两封信、空相格、公交终点、熊针迹均未提前收；未发语音、生日录音、远方房间、圈日旧票、缩写与河岸照片也仍悬着。",
+    "第13章两封信分别给予萱/照苒，方明确邀请了解自己年轻生活，不要予萱搬回陆家、不要照苒让位；未寄缘由是怕邀请像不能拒绝的要求。两位分别自愿接读、现场各读开头并自行带走，意图与迟疑已讲清，伏笔1收束并推翻说明1。",
+    "第14章原件全程在予萱住处，杨只借看；空格明确给予萱自主选择成年照，不是抱错证明。予萱自己选镜前自拍并亲手放入格子，伏笔2收束。另拍母女合照只私下发杨，不顶替自拍，不公开。",
+    "第15章雾纹包原所有人仍为方直到全部照片/票/纸都取出，照片原件与复制件分别另收；她将包明确赠筱砚，非借用，照片仍方保留，不随包赠与。筱砚装自己的东西带走，没被委派看守照片。",
+    "第16章柴父先带予萱走一次旧终点，另选傍晚再带照苒走一次；第二次仍由予萱转达时间，未提前改成直接联系照苒。",
+    "第16章柴父亲口讲清：年轻时与自己的父亲在旧站牌处因职业选择不和，因不愿想起旧别扭才绕开，不是抱错秘密。两位各自听过当事人说明，伏笔3收束；不把它写成父子关系已全面和解。",
+    "第16章柴闻序向两位妹妹明确决定不再代写给父母的回信，仍可以听她们说，但怎样表述各人自定。",
+    "本批没有收熊针迹；第19章仍按陆本人幼时学缝、方陪伴提醒才记起。",
+    "工具箱遗信未拆；未发语音、远方房间、圈日旧票、相册缩写、生日录音、河岸照片仍不揭缘由；13/14章没有误收这些线。",
+    "此前1—12章正文与49条原引句、位置均未变；未新增专名。"
+  ],
+  "current_state": {
+    "album_keeper": "柴予萱（第8章起）；14章自主选成年自拍填空格；20章原册仍存自己柜中；草稿21章仍由她取出保管，杨只借看。",
+    "meeting": "每两周一次自愿小聚，不要求八人齐到、缺席不追问（第10章起）；第20章陆问杉缺席其余七人照常小聚。",
+    "publicity": "仅陆照苒亲选大学室友和旧同事两位老友（12章），仍不面向公众；后段及草稿不扩大。",
+    "pouch_keeper": "陆筱砚所有（15章方赠与，非借）；方的全部私人照片事先全部取出由方另存；筱砚装自己的衣物/水杯。",
+    "father_contact": "17章陆照苒本人允许柴照棠直接发消息，不再以柴予萱固定中转；20章实际直接联系。",
+    "homes": "两主角各自独租；不交换住房、不迁往父母家。",
+    "name": "柴予萱保留姓名不改姓；18章方若荻明确接受，不是暂缓再劝。",
+    "bear": "瓷棉熊始终陆照苒所有；19章确认陆本人幼时学缝留下背线、方陪伴；陆经提醒后记起，不为他孩改名。",
+    "toolbox": "旧工具与未拆私人遗信；身份文件误会11章已推翻；19章信仍未读，整线仍开放。",
+    "resolved_threads": "1双份信13章、2空格14章、3终点16章、4熊线19章；9口袋5章已收；10换房提议早已放弃。",
+    "open_threads": "5遗信未拆、6语音未发未听、7远方房间缘由未明、8旧票圈日未讲，四条均到20章仍开放。",
+    "unrecorded_threads": "相册陌生缩写写者/含义、无落款生日录音作者/缘由、杨自留河岸照片地点/缘由三条均未揭。",
+    "reply_writing": "柴闻序16章决定不代两位主角写给父母的回信；18章予萱自行落款。"
+  },
+  "shared_draft": {
+    "source_file": "authoring/w02-shared-draft.txt",
+    "chapter": 21,
+    "chapter_title": "窗边的下午",
+    "body_only": true,
+    "han": 719,
+    "sha256": "7ac2a2dd9de3986cda2cecfac2c6dbc1e833e84393fd969f8355707a6582b642",
+    "selection_candidates": [
+      "陆筱砚将雾纹包挂在椅背，取出里面属于自己的薄外套。",
+      "柴予萱把禾角册放在自己的膝头，轻轻抚平封角。"
+    ],
+    "utf8_bom": false,
+    "cr_bytes": 0
+  },
+  "open_thread_reappearance_chapters": {
+    "thread5": [
+      19
+    ],
+    "thread6": [
+      17
+    ],
+    "thread7": [
+      20
+    ],
+    "thread8": [
+      20
+    ],
+    "missing_thread1": [
+      18
+    ],
+    "missing_thread2": [
+      17
+    ],
+    "missing_thread3": [
+      18
+    ]
+  },
+  "lead_revisions": [
+    {
+      "id": "W2-P1",
+      "chapter": 15,
+      "before": "小时候也常等姐姐们走远",
+      "after": "小时候也常等姐姐走远",
+      "reason": "Only one sister shared childhood before the adult reunion.",
+      "source_before": "492b8989747f084fcfd5568e439b6ab63ed26d84326550eb9bcb9b58227148a2",
+      "source_after": "5a85f88147d0f97ba88b226489f9d12d7c012ef4e4673c571421c3ba406fa90f"
+    },
+    {
+      "id": "W2-P2",
+      "chapter": 18,
+      "before": "是不是从杨家拿的",
+      "after": "是不是从杨映荃那里拿的",
+      "source_before": "5a85f88147d0f97ba88b226489f9d12d7c012ef4e4673c571421c3ba406fa90f",
+      "source_after": "587f782975e0308e726b8b283c877f178ef290870cbe90dc2a747107641260d8"
+    },
+    {
+      "id": "W2-P3",
+      "location": "shared_draft",
+      "before": "outside the bag until entering",
+      "after": "folded and put inside downstairs before entry"
+    }
+  ]
+}

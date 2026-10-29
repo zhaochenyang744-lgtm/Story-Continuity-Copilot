@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "total": 20,
+  "initial_agreement": 20,
+  "final_agreement": 20,
+  "unresolved": 0,
+  "disagreement_ids": [],
+  "closed_ids": [],
+  "unchanged_initial_carried_forward": true
+}

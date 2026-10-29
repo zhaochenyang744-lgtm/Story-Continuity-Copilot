@@ -65,7 +65,7 @@ function useMenu(close: () => void, anchor: RefObject<HTMLElement | null>) {
     if (!items.length) return;
     event.preventDefault();
     const at = items.indexOf(document.activeElement as HTMLElement);
-    items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
+    items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus({ preventScroll: true });
   };
   return { list, onKeyDown };
 }
@@ -237,8 +237,8 @@ export function Composer(props: ComposerProps) {
     event.preventDefault();
     send();
   };
-  const closePlus = () => { setOpen(null); window.setTimeout(() => plusButton.current?.focus(), 0); };
-  const closeMode = () => { setOpen(null); window.setTimeout(() => modeButton.current?.focus(), 0); };
+  const closePlus = () => { setOpen(null); window.setTimeout(() => plusButton.current?.focus({ preventScroll: true }), 0); };
+  const closeMode = () => { setOpen(null); window.setTimeout(() => modeButton.current?.focus({ preventScroll: true }), 0); };
   return (
     <div className="a-compose">
       <form className={`cx${off ? " off" : ""}`} onSubmit={(event) => { event.preventDefault(); if (!running) send(); }} aria-label="向助手提问" ref={frame}>

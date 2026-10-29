@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "chapter_coverage": {
+    "w01": 30,
+    "w02": 30
+  },
+  "sha256": {
+    "materials/w01-facts.json": "d625a1902053e4971f54a3c1d34f1f3b2f8fc5560fc1cba7038e2695645cdeab",
+    "materials/w01-foreshadows.json": "c72aad36b39dc9282656cdb5a56ffcf12560f0a6298bd2f2f0971c27a8608c46",
+    "materials/w02-facts.json": "d6c711969792e3d0a6b8f3864993aec51130b584640b42f8e2fa04bf3e8e5147",
+    "materials/w02-foreshadows.json": "6f4e9d4390d5df1958c0f7c7de52613bb01b4fecf2552ab7897fdc3e2849ef24",
+    "tasks.json": "de7f72211e47c586df9574460acba3baa3e4e2b8589cd07a89298b86e449e21e",
+    "works/w01.md": "c5acdd48b00b223e0c679c58d8d45c59f8863deee627de9dd50404ffc59e1135",
+    "works/w02.md": "982f7c36440bb52aeb62d55266da16f930fc9961ecac24abd3fe42769a211bf4"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "754e80506e12b6965feb70c021eb10f86c92d772185177ec2f6eececac755eb0",
+    "authoring/self-review.md": "6708f49e174b8ac5cb18c5c636bb15d5d110f1d8118031d752b943fc2958a7a4",
+    "authoring/novelty-reference.json": "49da9f8be69a42c703586da09db8537609e5e372dc320e9086c73780c81f2146"
+  },
+  "review_files_sha256": {
+    "authoring/blind-route-inputs.json": "0be8c7952af68578ff340f71dd058f0a8b500c82589ebb228dad9e2df20ee49f",
+    "authoring/blind-thread-input-w01.json": "426d2e8bd344976deafc0e9bf643f71bef5c605a95151279dcd2853f14b97c72",
+    "authoring/blind-thread-input-w02.json": "0c89388918a5b26139e5176f9dfa31483eba530fb3ffd548687fd2139f80a85f",
+    "authoring/independent-full-reading-w01.json": "83357036a88ae5f4e08ce6e96a94b5d9fc8fa444cde443d8cbd727302ee7116a",
+    "authoring/independent-full-reading-w02.json": "8e0d6dfc286e23234d0f9736c58f7f00d2b20f790d051aec04ad327d533b74ee",
+    "authoring/independent-route.json": "4b7af90c5bd4c7bcfd8cc533c7c8fe79128b3e267e49e0596ad1b02e0c5c77fe",
+    "authoring/independent-thread-w01-final.json": "891d61d8cbfd5ef5f068bee169e0a390815063be5801de41f368f26d66367f44",
+    "authoring/independent-thread-w01.json": "d8157b603cbca0699080f5b306f990cc96777c5c2934d0dc9032536f5e354da8",
+    "authoring/independent-thread-w02-final.json": "191c091b5591a2971c67fdb0977d758a85365f72e328106c290cc60254b104d5",
+    "authoring/independent-thread-w02.json": "ef229753aee088b0be9820ccc94bc1269fe41726f8725b81b132c4c06b805e16"
+  },
+  "blind_threads": {
+    "total": 18,
+    "first_agreement": 18,
+    "final_agreement": 18,
+    "unresolved": 0,
+    "action_sets": 6,
+    "action_set_agreement": 6,
+    "works": {
+      "w01": {
+        "total": 9,
+        "first_agreement": 9,
+        "final_agreement": 9
+      },
+      "w02": {
+        "total": 9,
+        "first_agreement": 9,
+        "final_agreement": 9
+      }
+    }
+  },
+  "checker_sha256": "06e38bf022f4ba7a39d280ad75fc26c8998b7cc51034bafdac664031b2e1b3a1",
+  "blind_route": {
+    "total": 20,
+    "first_agreement": 20,
+    "final_agreement": 20,
+    "unresolved": 0
+  }
+}

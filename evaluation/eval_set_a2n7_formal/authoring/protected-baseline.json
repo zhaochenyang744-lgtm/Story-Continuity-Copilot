@@ -1,0 +1,12 @@
+{
+  "branch": "eval/a2-7-authoring",
+  "head": "4f90ded395bcf3a7ed53a7ca69306837c95870a5",
+  "protected": {
+    "evaluation/assistant_a2/SPEC.md": "99f232a3b374d6dc467e4cde64fa83f8244c3a92f1b71a6d6353a825970c8ce3",
+    "evaluation/assistant_a2/thresholds.py": "2724730da732c590209c8ac762e6908b8f92425ad8310a33b480c12fb6dfbb21",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+    "backend/app/assistant_actions.py": "e5413b01f3eda02a698642760e84541ec155f3f865eafb86550caaca704988e4"
+  },
+  "gitattributes_sha256": "ba6b1acf1ca7f47199757cb6a5ffdad55919f033ac2b08b40dc7dce0bb0c3966"
+}

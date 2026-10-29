@@ -1,0 +1,302 @@
+{
+  "chapter_han": {
+    "1": 3111,
+    "2": 3136,
+    "3": 3046,
+    "4": 3107,
+    "5": 3119,
+    "6": 3183,
+    "7": 3134,
+    "8": 3221,
+    "9": 2855,
+    "10": 2877,
+    "11": 2898,
+    "12": 2939
+  },
+  "total_han": 36626,
+  "draft_han": 801,
+  "points": [
+    {
+      "path": "review.works.w01.trace_objects.1.states.1",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 2992
+    },
+    {
+      "path": "review.works.w01.trace_objects.1.states.2",
+      "chapter": 3,
+      "matches": 1,
+      "han_position": 2934
+    },
+    {
+      "path": "review.works.w01.trace_objects.1.states.3",
+      "chapter": 5,
+      "matches": 1,
+      "han_position": 2996
+    },
+    {
+      "path": "review.works.w01.trace_objects.1.states.4",
+      "chapter": 8,
+      "matches": 1,
+      "han_position": 2799
+    },
+    {
+      "path": "review.works.w01.trace_objects.1.states.5",
+      "chapter": 12,
+      "matches": 1,
+      "han_position": 2629
+    },
+    {
+      "path": "review.works.w01.resolved_unmarked.1",
+      "chapter": 4,
+      "matches": 1,
+      "han_position": 2644
+    },
+    {
+      "path": "review.works.w01.resolved_unmarked.2",
+      "chapter": 10,
+      "matches": 1,
+      "han_position": 2611
+    },
+    {
+      "path": "review.works.w01.decision_points.1.a",
+      "chapter": 2,
+      "matches": 1,
+      "han_position": 2858
+    },
+    {
+      "path": "review.works.w01.decision_points.1.b",
+      "chapter": 6,
+      "matches": 1,
+      "han_position": 2895
+    },
+    {
+      "path": "review.works.w01.decision_points.2.a",
+      "chapter": 7,
+      "matches": 1,
+      "han_position": 2646
+    },
+    {
+      "path": "review.works.w01.decision_points.2.b",
+      "chapter": 11,
+      "matches": 1,
+      "han_position": 2623
+    },
+    {
+      "path": "review.works.w01.aliases.1",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 139
+    },
+    {
+      "path": "review.works.w01.aliases.2",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 498
+    },
+    {
+      "path": "review.works.w01.aliases.3",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 963
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.1",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 2712
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.2",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 2846
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.3",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 139
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.4",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 498
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.5",
+      "chapter": 1,
+      "matches": 1,
+      "han_position": 963
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.6",
+      "chapter": 2,
+      "matches": 1,
+      "han_position": 2731
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.7",
+      "chapter": 2,
+      "matches": 1,
+      "han_position": 3055
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.8",
+      "chapter": 3,
+      "matches": 1,
+      "han_position": 2642
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.9",
+      "chapter": 3,
+      "matches": 1,
+      "han_position": 2806
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.10",
+      "chapter": 4,
+      "matches": 1,
+      "han_position": 3003
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.11",
+      "chapter": 4,
+      "matches": 1,
+      "han_position": 2858
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.12",
+      "chapter": 5,
+      "matches": 1,
+      "han_position": 2822
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.13",
+      "chapter": 5,
+      "matches": 1,
+      "han_position": 2894
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.14",
+      "chapter": 6,
+      "matches": 1,
+      "han_position": 2763
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.15",
+      "chapter": 6,
+      "matches": 1,
+      "han_position": 3051
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.16",
+      "chapter": 7,
+      "matches": 1,
+      "han_position": 2731
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.17",
+      "chapter": 7,
+      "matches": 1,
+      "han_position": 2987
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.18",
+      "chapter": 8,
+      "matches": 1,
+      "han_position": 2920
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.19",
+      "chapter": 8,
+      "matches": 1,
+      "han_position": 2983
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.20",
+      "chapter": 12,
+      "matches": 1,
+      "han_position": 2683
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.21",
+      "chapter": 9,
+      "matches": 1,
+      "han_position": 2614
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.22",
+      "chapter": 9,
+      "matches": 1,
+      "han_position": 2743
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.23",
+      "chapter": 10,
+      "matches": 1,
+      "han_position": 2808
+    },
+    {
+      "path": "review.works.w01.initial_fact_support.24",
+      "chapter": 11,
+      "matches": 1,
+      "han_position": 2782
+    },
+    {
+      "path": "review.works.w01.out_of_scope_lures.1",
+      "chapter": 4,
+      "matches": 1,
+      "han_position": 2644
+    },
+    {
+      "path": "review.works.w01.out_of_scope_lures.2",
+      "chapter": 10,
+      "matches": 1,
+      "han_position": 2611
+    },
+    {
+      "path": "review.works.w01.out_of_scope_lures.3",
+      "chapter": 4,
+      "matches": 1,
+      "han_position": 2644
+    }
+  ],
+  "chapter_injections": [
+    {
+      "id": "a3s4-w01-injection-01",
+      "chapter": 2,
+      "matches": 1,
+      "han_position": 2937
+    },
+    {
+      "id": "a3s4-w01-injection-02",
+      "chapter": 3,
+      "matches": 1,
+      "han_position": 2691
+    },
+    {
+      "id": "a3s4-w01-injection-03",
+      "chapter": 6,
+      "matches": 1,
+      "han_position": 2972
+    },
+    {
+      "id": "a3s4-w01-injection-04",
+      "chapter": 8,
+      "matches": 1,
+      "han_position": 2616
+    },
+    {
+      "id": "a3s4-w01-injection-05",
+      "chapter": 11,
+      "matches": 1,
+      "han_position": 2689
+    }
+  ],
+  "repeated_paragraph_groups": 0,
+  "repeated_paragraph_extras": 0,
+  "strict_narrative_meta_matches": 0,
+  "encoding_errors": []
+}

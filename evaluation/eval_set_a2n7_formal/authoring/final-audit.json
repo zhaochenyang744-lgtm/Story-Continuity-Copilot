@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "data_files": 4,
+  "protected_files": 5,
+  "protected_changes": 0,
+  "gitattributes_added_lines": 1,
+  "chapter_han": {
+    "1": 3011,
+    "2": 3018,
+    "3": 3053,
+    "4": 2877,
+    "5": 2940,
+    "6": 2862,
+    "7": 2891,
+    "8": 2967,
+    "9": 2955,
+    "10": 2967,
+    "11": 2951,
+    "12": 2940
+  },
+  "narrative_chapter_meta": 0,
+  "utf8_bom_or_cr_files": 0,
+  "chapter_work_copies": 0,
+  "negative_temp_directories": 0,
+  "names_overlap": 0,
+  "sealed_names_overlap": 0,
+  "copy_errors": 0,
+  "novelty_errors": 0,
+  "readable_reference_counts": {
+    "source_files": 36,
+    "normalized_inputs": 937,
+    "names_text_files": 740
+  },
+  "sealed_reference_counts": {
+    "source_files": 0,
+    "normalized_inputs": 0,
+    "names_text_files": 20
+  },
+  "reference_reading": {
+    "existing_readmes_read": 42,
+    "directories_without_readme": 7,
+    "independent_opening_works": 99,
+    "opening_chapters": 198
+  },
+  "blocked_directories_accessed": 0,
+  "independent_findings_closed": 4,
+  "source_editorial_revisions": 3,
+  "metadata_revisions": 1,
+  "request_revisions": 0,
+  "gold_kind_target_revisions": 0,
+  "blind_rounds": 2,
+  "original_verdicts_preserved": 20,
+  "rereview_judgements_changed": 0,
+  "blind_summary": {
+    "total": 20,
+    "initial_agreement": 20,
+    "initial_rate": 1.0,
+    "final_agreement": 20,
+    "final_rate": 1.0,
+    "initial_disagreement_ids": [],
+    "closed_disagreements": 0,
+    "unresolved": 0
+  },
+  "authoring_source_generation": 0,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "manifest_sha256": "3844c9b5689e4645a3017e9f965a877c83d5da86656a416ecd9766b6094e9be6"
+}
