@@ -158,7 +158,7 @@ test.describe("07f 动效", () => {
     await expect.poll(size).toBe("0% 1.5px");
   });
 
-  test("M4 过程收起：跑完自动折叠时按高度收起并淡出，「查了 N 处 · M 秒」的两个数字依次落位；手动展开 / 收起也按高度，数字不再重播", async ({ page }) => {
+  test("M4 过程收起：跑完自动折叠时按高度收起并淡出，「问作品 · M 秒」的秒数落位；手动展开 / 收起也按高度，数字不再重播", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     await motion(page);
@@ -170,19 +170,18 @@ test.describe("07f 动效", () => {
     expect(await seen(page, "folds")).toBeGreaterThan(0);
     await expect(task.locator(".a-proc-wrap")).toHaveCount(0, { timeout: 3_000 });
     const figures = task.locator(".a-fold .a-drop");
-    await expect(figures).toHaveCount(2);
-    expect(await figures.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).animationDelay))).toEqual(["0s", "0.08s"]);
+    // 38a: the line no longer counts places (「出处 N 处」 is the one number), so only the seconds settle into place.
+    await expect(figures).toHaveCount(1);
+    expect(await figures.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).animationDelay))).toEqual(["0s"]);
     expect(await figures.first().evaluate((node) => getComputedStyle(node).animationName)).toBe("a-drop-in");
-    await expect(task.getByRole("button", { name: /查了 \d+ 处 · \d+ 秒/ })).toBeVisible();
-    // Opening and closing by hand: the same height change, and the figures stay as they are.
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
-    await expect(task.locator(".a-proc-wrap")).toBeVisible();
-    await expect(task.locator(".a-proc-wrap")).toHaveClass(/unfolding/);
-    await expect(task.locator(".a-fold .a-drop")).toHaveCount(0);
-    await watch(page, ".a-proc-wrap.folding", "folds2");
-    await task.getByRole("button", { name: /查了 \d+ 处/ }).click();
-    await expect(task.locator(".a-proc-wrap")).toHaveCount(0, { timeout: 3_000 });
-    expect(await seen(page, "folds2")).toBeGreaterThan(0);
+    // 38a: the top line is a plain label once the task is over; the steps are under 「怎么查的」, which opens and shuts by hand.
+    await expect(task.getByTestId("process-line").locator("button.a-fold")).toHaveCount(0);
+    await expect(task.getByRole("button", { name: "怎么查的" })).toBeVisible();
+    await task.getByRole("button", { name: "怎么查的" }).click();
+    await expect(task.locator(".a-how .a-proc .a-act").first()).toBeVisible();
+    await expect(task.locator(".a-fold .a-drop")).toHaveCount(1);
+    await task.getByRole("button", { name: "怎么查的" }).click();
+    await expect(task.locator(".a-how")).toHaveCount(0);
     // A conversation read from the server again is simply folded, with nothing to settle.
     await page.reload();
     await openAssistantTab(page);

@@ -7,6 +7,7 @@ import { json, labelError, request } from "../../api";
 import type { AssistantFeedbackReason, AssistantSentence, AssistantSource, AssistantTask } from "../../model";
 import { clip, formatCount, writtenChars } from "../ui";
 import { active, cardLabel, citedRefs, FOLLOW_UP_LIMIT_TEXT, OUT_OF_SCOPE_TEXT, refusalText, sentencesOf, spokenWhere, TASK_CHARS, whereLabel } from "./assistant-parts";
+import { relevantSentence, splitNote, walksChapters } from "./assistant-text";
 
 /** True once a task has been seen to run and then finish while this view was open: only such an answer fades in. */
 export function useJustFinished(task: AssistantTask): boolean {
@@ -33,12 +34,19 @@ export function citeLabel(numbers: number[]): string {
   return runs.join("、");
 }
 
+/** A passage shown whole, with the sentence that says what `summary` says set apart (and brought into view by the card). */
+export function WholeQuote({ text, summary }: { text: string; summary: string }) {
+  const cut = relevantSentence(text, summary);
+  return <q className="full">{cut ? <>{cut.before}<mark>{cut.hit}</mark>{cut.after}</> : text}</q>;
+}
+
 /** A citation mark: one for a sentence, however many sources it rests on. Hovering or focusing it (a tap on a phone) opens a card with
     the chapter, the quoted words and a way to the original for each source; the card stays for 300 ms after the pointer leaves, so the
     pointer can get into it. */
-function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSource) => void }) {
+function Cite({ marks, locate, summary, labelOf = cardLabel }: { marks: Mark[]; locate: (source: AssistantSource) => void; /** The words on top of a source in the card (the default names the kind and the chapter). */ labelOf?: (source: AssistantSource) => string; /** The sentence the mark stands after: when given, the card shows each source whole and sets the sentence that says the same apart (写前回顾). */ summary?: string }) {
   const [at, setAt] = useState<{ left: number; top?: number; bottom?: number } | null>(null);
   const button = useRef<HTMLButtonElement>(null);
+  const pop = useRef<HTMLSpanElement>(null);
   const mark = useRef<HTMLElement>(null);
   const timer = useRef(0);
   // Whether the last pointer on this mark was a finger or a pen. A touch screen sends a mouse-over and a mouse-out after a tap;
@@ -58,12 +66,22 @@ function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSour
     lines.forEach((line) => line?.classList.add("lit"));
     return () => lines.forEach((line) => line?.classList.remove("lit"));
   }, [shown, ids]);
+  // The set-apart sentence of a long passage is brought into view inside the card (the card's own scroll, never the page's).
+  useEffect(() => {
+    if (!shown || summary === undefined) return;
+    pop.current?.querySelectorAll<HTMLElement>("q.full").forEach((quote) => {
+      const hit = quote.querySelector<HTMLElement>("mark");
+      if (hit) quote.scrollTop = Math.max(0, hit.offsetTop - 24);
+    });
+  }, [shown, summary]);
   const open = () => {
     window.clearTimeout(timer.current);
     const box = button.current?.getBoundingClientRect();
     if (!box) return;
     const left = Math.min(Math.max(box.left + box.width / 2 - CARD_WIDTH / 2, 8), window.innerWidth - CARD_WIDTH - 8);
-    setAt(box.top < 210 ? { left, top: box.bottom + 8 } : { left, bottom: window.innerHeight - box.top + 8 });
+    // A card that shows its sources whole is tall: it goes to the side of the mark with more room.
+    const below = summary !== undefined ? window.innerHeight - box.bottom > box.top : box.top < 210;
+    setAt(below ? { left, top: box.bottom + 8 } : { left, bottom: window.innerHeight - box.top + 8 });
   };
   const closeSoon = () => {
     window.clearTimeout(timer.current);
@@ -71,10 +89,10 @@ function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSour
   };
   const keep = () => window.clearTimeout(timer.current);
   useEffect(() => () => window.clearTimeout(timer.current), []);
-  // Scrolling anywhere moves the mark out from under a fixed card.
+  // Scrolling anywhere moves the mark out from under a fixed card (the card's own scroll, through a long passage, does not).
   useEffect(() => {
     if (!shown) return;
-    const hide = () => setAt(null);
+    const hide = (event: Event) => { if (!pop.current?.contains(event.target as Node)) setAt(null); };
     // A tap anywhere else shuts the card (a finger on some phones never gives the mark focus, so no blur would).
     const away = (event: PointerEvent) => { if (!mark.current?.contains(event.target as Node)) setAt(null); };
     window.addEventListener("scroll", hide, true);
@@ -87,7 +105,7 @@ function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSour
     event.stopPropagation();
     setAt(null);
     quiet.current = true;
-    button.current?.focus();
+    button.current?.focus({ preventScroll: true });
     quiet.current = false;
   };
   const text = citeLabel(marks.map((item) => item.n));
@@ -99,12 +117,12 @@ function Cite({ marks, locate }: { marks: Mark[]; locate: (source: AssistantSour
         onFocus={() => { if (!quiet.current) open(); }} onBlur={closeSoon}
         onClick={() => { if (touch.current && wasOpen.current) setAt(null); else open(); }}>{text}</button>
       {at && (
-        <span className="a-pop" role="group" aria-label={`出处 ${text}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH } as CSSProperties}
+        <span ref={pop} className="a-pop" role="group" aria-label={`出处 ${text}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH } as CSSProperties}
           onPointerEnter={pointer} onMouseEnter={keep} onMouseLeave={() => { if (!touch.current) closeSoon(); }} onFocus={keep} onBlur={closeSoon}>
           {marks.map((item) => (
             <span key={item.n} className="a-pop-one">
-              <span className="w">{cardLabel(item.source)}</span>
-              <q>{clip(item.source.text, 150)}</q>
+              <span className="w">{labelOf(item.source)}</span>
+              {summary === undefined ? <q>{clip(item.source.text, 150)}</q> : <WholeQuote text={item.source.text} summary={summary} />}
               {(item.source.chapter_number != null || item.source.anchor) && <button type="button" className="go" onClick={() => { setAt(null); locate(item.source); }}>去原文 →</button>}
             </span>
           ))}
@@ -124,8 +142,11 @@ export const labelled = (sentence: AssistantSentence) => Boolean(sentence.label)
 
 /** One sentence as it is laid out: its words (the label in bold when `bold`), then one mark that names its sources. `refs` is the task's cited
     refs in order (a mark's number is its place in it); `order` staggers the fade-in of a sentence that has just arrived. */
-export function SentenceText({ task, sentence, bold, order, refs, locate }: {
+export function SentenceText({ task, sentence, bold, order, refs, locate, whole = false, labelOf }: {
   task: AssistantTask; sentence: AssistantSentence; bold: boolean; order: number; refs: string[]; locate: (source: AssistantSource) => void;
+  /** The card of the mark shows each source whole, with the sentence that says what this one says set apart (写前回顾). */
+  whole?: boolean;
+  labelOf?: (source: AssistantSource) => string;
 }) {
   const number = (ref: string) => refs.indexOf(ref) + 1;
   const marks = sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => ({ n: number(ref), source: task.sources[ref], sourceId: `a-src-${task.id}-${number(ref)}` }));
@@ -144,7 +165,7 @@ export function SentenceText({ task, sentence, bold, order, refs, locate }: {
   return (
     <span className="a-s" style={{ "--i": order } as CSSProperties}>
       {pieces.map((piece, index) => (piece.text ? (piece.bold ? <b key={index}>{piece.text}</b> : <Fragment key={index}>{piece.text}</Fragment>) : null))}
-      {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} /></span>}
+      {marks.length > 0 && <span className="a-tail">{tail}<Cite marks={marks} locate={locate} summary={whole ? sentence.text : undefined} labelOf={labelOf} /></span>}
     </span>
   );
 }
@@ -159,19 +180,29 @@ export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantT
   const refs = citedRefs(task);
   const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
   const rest = lead ? answer.sentences.slice(1) : answer.sentences;
-  const points = rest.filter(labelled).length >= POINTS_FROM;
+  const byChapter = layoutOf(rest) === "chapters";
+  const points = byChapter || layoutOf(rest) === "points";
   let order = 0;
-  const sentenceOf = (sentence: AssistantSentence, bold: boolean) => <SentenceText task={task} sentence={sentence} bold={bold} order={order++} refs={refs} locate={locate} />;
+  // Points set their label in bold; an answer laid out by chapter has no labels, so nothing in it is bold.
+  const sentenceOf = (sentence: AssistantSentence, bold: boolean) => <SentenceText task={task} sentence={sentence} bold={bold && !byChapter} order={order++} refs={refs} locate={locate} />;
+  const looseNote = splitNote(answer.note).rest;
   return (
-    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={points ? "points" : "paragraph"}>
+    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={byChapter ? "chapters" : points ? "points" : "paragraph"}>
       {answer.status === "not_found" && <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>}
       {lead && <p className="a-lead">{sentenceOf(lead, false)}</p>}
       {rest.length > 0 && (points
         ? <ul className="a-points">{rest.map((sentence, index) => <li key={index}>{sentenceOf(sentence, true)}</li>)}</ul>
         : <p className="a-body">{rest.map((sentence, index) => <Fragment key={index}>{sentenceOf(sentence, false)}</Fragment>)}</p>)}
-      {answer.note && <p className="a-answer-note">{answer.note}</p>}
+      {looseNote && <p className="a-answer-note">{looseNote}</p>}
     </div>
   );
+}
+
+/** How the sentences after the lead are laid out: as points when enough of them name what they are about, as points without labels when they
+    walk through the chapters one by one (each names a different one), otherwise as one paragraph. */
+export function layoutOf(rest: AssistantSentence[]): "points" | "chapters" | "paragraph" {
+  if (rest.filter(labelled).length >= POINTS_FROM) return "points";
+  return walksChapters(rest) ? "chapters" : "paragraph";
 }
 
 /** The answer as text to paste: its sentences with [n] after each source and the sources listed at the end; only the words with Shift. */
@@ -183,8 +214,9 @@ export function answerText(task: AssistantTask, withSources: boolean): string {
   const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
   const rest = lead ? answer.sentences.slice(1) : answer.sentences;
   // Points are copied one to a line, the way they are read.
-  const body = [answer.status === "not_found" ? NOT_FOUND_TEXT : "", lead ? line(lead) : "", rest.filter(labelled).length >= POINTS_FROM ? rest.map(line).join("\n") : rest.map(line).join("")].filter(Boolean).join("\n");
-  const parts = [body, answer.note ?? ""].filter(Boolean);
+  // Where it looked and what it did not look at is not part of the answer to paste.
+  const body = [answer.status === "not_found" ? NOT_FOUND_TEXT : "", lead ? line(lead) : "", layoutOf(rest) !== "paragraph" ? rest.map(line).join("\n") : rest.map(line).join("")].filter(Boolean).join("\n");
+  const parts = [body, splitNote(answer.note).rest].filter(Boolean);
   if (withSources && refs.length) parts.push(refs.map((ref, index) => `[${index + 1}] ${whereLabel(task.sources[ref])}`).join("\n"));
   return parts.join("\n\n");
 }
