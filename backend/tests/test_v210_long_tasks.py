@@ -691,16 +691,14 @@ class SameFactTests(unittest.TestCase):
         self.assertFalse(restates(self.fact("滕书蔚", "rule", "预约变化由他逐个通知租用者"), existing))
         self.assertFalse(restates(self.fact("屈予葭", "rule", "负责送取"), existing))  # another subject
 
-    def test_from_the_same_chapter_half_the_words_restate_and_a_thread_or_no_news_is_no_finding(self):
-        from app.long_task_kinds import NO_NEWS, THREAD_TALK, restates
+    def test_from_the_same_chapter_half_the_words_restate_and_a_line_of_inquiry_is_no_fact(self):
+        from app.long_task_kinds import THREAD_TALK, restates
         held = {"subject": "周转站", "predicate": "日常交接地点", "value": "日常交接使用璃岑服务间。", "chapter": 2}
         self.assertTrue(restates({**self.fact("周转站", "location", "固定交接地点是璃岑服务间"), "chapter": 2}, held))
         self.assertFalse(restates({**self.fact("周转站", "location", "固定交接地点是璃岑服务间"), "chapter": 9}, held))
         self.assertFalse(restates({**self.fact("周转站", "rule", "周五上午的体验接待放在璃岑服务间，不与日常交接混用"), "chapter": 8}, held))
         self.assertTrue(THREAD_TALK.search("不再追问旧租单上的模糊收件人，这条线到此为止"))
         self.assertFalse(THREAD_TALK.search("每次续租都须本人确认"))
-        self.assertTrue(NO_NEWS.search("推车未在这几章出现，无新交接"))
-        self.assertFalse(NO_NEWS.search("推车交给牟宛歧保管"))
 
     def test_one_passage_settling_two_threads_is_asked_about_once(self):
         # A3 first formal run: "最后一个人已被接回" closed the empty sledge's rounds and was taken for the missing sister too.
@@ -714,15 +712,13 @@ class SameFactTests(unittest.TestCase):
         report, problems = ThreadAudit().validate(args, subjects, passages, set(), keep_valid=True)
         self.assertEqual(([entry["verdict"] for entry in report], problems), (["resolved", "resolved"], []))
 
-    def test_a_repaired_trace_step_keeps_what_stands_even_nothing_and_drops_not_yet_then_first_time(self):
+    def test_a_repaired_trace_step_keeps_what_stands_even_nothing(self):
         from app.long_task_kinds import Trace
         passages = {"R1": "罗盘仍在苏岑手里。", "R2": "温岚第一次打开罗盘。"}
         own_words = {"states": [{"state": "罗盘被人悄悄拿走了", "refs": ["R1"]}], "conflicts": []}
         self.assertIsNone(Trace().validate(own_words, {}, passages, set())[0])
         # Regression ref-p60, a3f-w01-ask-02: after the repair a step with nothing standing failed the whole task.
         self.assertEqual(Trace().validate(own_words, {}, passages, set(), keep_valid=True)[0], {"states": [], "conflicts": []})
-        sequence = {"states": [], "conflicts": [{"earlier": ["R1"], "later": ["R2"], "what": "前说封口从未打开，后说这一刻第一次开封"}]}
-        self.assertEqual(Trace().validate(sequence, {}, passages, set())[0]["conflicts"], [])
         at_odds = {"states": [], "conflicts": [{"earlier": ["R1"], "later": ["R2"], "what": "一处说十七岁，一处说十八岁"}]}
         self.assertEqual(len(Trace().validate(at_odds, {}, passages, set())[0]["conflicts"]), 1)
 

@@ -140,7 +140,7 @@ PENDING_LINE = "这些改动要等你在卡片上确认后才会写进资料。"
 # 提出改动，等你确认" with nothing to confirm, three times).
 CLAIMED_PROPOSAL = re.compile(r"[，,；;]?\s*(?:我[^，,。；;]{0,16}|已(?:经)?(?:按|照)[^，,。；;]{0,12})提出[^。；;]*")
 NO_CARD_RECORDED = {"change_no_difference", "change_fact_already_recorded", "change_thread_exists", "change_thread_not_open"}
-NO_CARD_UNSUPPORTED = {"change_value_not_in_evidence", "change_evidence_invalid", "change_evidence_before_planted"}
+NO_CARD_UNSUPPORTED = {"change_evidence_invalid", "change_evidence_before_planted"}
 CHANGE_STATUS_PROBLEM = Problem("change_status_mismatch", "提出了资料改动时，status 用 answered，用一两句带出处的话说明依据")
 FORCE_NOTICE = "步数或预算已到，不能再查了。请现在调用 answer，用已经查到的内容回答，并在 note 里说明还没查完的部分。"
 CHANGE_FORCE_NOTICE = ("步数或预算已到，不能再查了。已经查到依据、要提出的改动，现在用 propose_change 提出，并在同一轮用 answer 收尾；"

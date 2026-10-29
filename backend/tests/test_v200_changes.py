@@ -718,10 +718,6 @@ class SecondLookTests(FactCase):
         task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
         moved = {**restated, "target": fact, "evidence": [passage], "value": "鹦鹉螺号潜艇沉没"}
         self.assertEqual(run_propose_change(ctx, moved).result["change"], "C1")
-        # A new value naming the old only to say it no longer holds keeps nothing of it (A2 fifth formal run, w01-action-08).
-        task, ctx, passage, fact = self.setup_task(f"{name}这条资料按最后一章改")
-        replaced = {**restated, "target": fact, "evidence": [passage], "value": f"鹦鹉螺号潜艇，{self.fact['value']}的说法不再成立"}
-        self.assertEqual(run_propose_change(ctx, replaced).result["change"], "C1")
 
     def test_words_that_share_nothing_with_the_record_are_held_back(self):
         task, ctx, passage, fact = self.setup_task("罗盘那条线最后一章已经收了")
@@ -770,13 +766,6 @@ class GroundedTests(SecondLookTests):
         with self.assertRaises(ToolError) as raised:
             self.adding(ctx, passage, **fields)
         return raised.exception.code
-
-    def test_a_number_the_evidence_does_not_state_is_refused(self):
-        # w01-no-action-03: a birthday the text never gives, added on an unrelated passage.
-        task, ctx, _, _ = self.setup_task("鹦鹉螺号的生日按八月十二号加进去")
-        self.assertEqual(self.refused(ctx, self.passage(ctx, "她总把拓纸带在身上。"), value="生日是八月十二号"), "change_value_not_in_evidence")
-        stated = self.passage(ctx, "鹦鹉螺号的生日是8月12日，那天下了雨。")  # figures and Chinese numerals are the same numbers
-        self.assertEqual(self.adding(ctx, stated, value="生日是八月十二号")["change"], "C1")
 
     def test_a_chapter_mentioned_in_the_value_is_not_a_number_it_states(self):
         task, ctx, _, _ = self.setup_task("鹦鹉螺号现在停在北港")

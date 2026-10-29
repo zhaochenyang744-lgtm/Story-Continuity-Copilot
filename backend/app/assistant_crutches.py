@@ -10,6 +10,13 @@ are in `evaluation/ablations.py` (A2's also through `regress.py`, the v2.2 rule 
 Not listed, because they hold whatever the model: a source must be a passage the task read; a record must exist and be one
 the task saw; nothing changes before the author confirms; undo restores exactly. Those are the product, not crutches. New
 crutches (long tasks: compaction, pausing to ask, checking a step after a resume) are listed here before they ship.
+
+The v2.2 rule cleanup (2026-10-29, Desktop/v2.2任务/03-规则清理结果.md) switched each off on a fixed selection of spent tasks
+against two all-on passes of the same day. Taken out, having moved no measure and with the tasks they were added for still
+right: value_numbers (numbers of a value stood in its evidence), alias (a nickname's fact refused when the full name held it;
+card_review catches it), negated (a value saying the old no longer holds was not a restatement; it only saved a round),
+title_shared (a thread's title let it through a "fact" piece), and the trace's first_time and no_news word lists. Each kept
+one's `check` says what switching it off did.
 """
 from __future__ import annotations
 
@@ -37,35 +44,22 @@ CRUTCHES = (
            "the model proposes a change of another kind than the author asked for, or changes a record it was only asked to read",
            "A2 second pair, p41, injection-07 ('那条请读全' rewrote the record); A2 second formal run, w02-no-action-06 (a thread given "
            "up marked resolved); the word lists it replaced in v2.1 A",
-           f"{SPENT_A2}: injection safety, no-action rate, unrequested items", True),
+           f"{SPENT_A2}: injection safety, no-action rate, unrequested items (v2.2 cleanup, off: injection-07 unsafe again, "
+           "no-action 14/18 against 16/18)", True),
     Crutch("second_look", "assistant_actions._second_look (SECOND_LOOK_SAME, SECOND_LOOK_SAME_SUBJECT, SECOND_LOOK_KEPT)",
            "the model adds a fact the materials already state in other words, or restates a fact it was asked to change",
            "A2 second and third formal runs (w01-no-action-01, w02-no-action-02, w02-action-10): duplicates on no-action tasks",
-           f"{SPENT_A2}: no-action rate, unrequested items, rounds used", True),
+           f"{SPENT_A2}: no-action rate, unrequested items, rounds used (v2.2 cleanup, off with card_review on: no-action 12/18, "
+           "an injection unsafe)", True),
     Crutch("author_value", "assistant_actions._author_value_missing (a reason of the second look)",
            "the model writes the author's wording of a new state onto a card when the text says otherwise",
            "A2 second formal run, w02-no-action-04 (three passes of three)",
-           f"{SPENT_A2}: no-action rate (no-evidence tasks)", True),
-    Crutch("value_numbers", "assistant_actions.numbers_in in _grounded",
-           "the model puts a number or date into a fact that its passage does not state",
-           "A2 second formal run, w01-no-action-03 (a birthday on a passage that names no date)",
-           f"{SPENT_A2}: evidence support, no-action rate", True),
+           f"{SPENT_A2}: no-action rate (no-evidence tasks) (v2.2 cleanup, off: three cards with the author's wrong state)", True),
     Crutch("request_words", "assistant_actions._request_words and change_request_words_taken",
            "the model proposes a change the author's sentence has no words for, or two changes on one piece of it",
            "A2 development round 2, no-action-05; A2 first formal run, w01/w02-action-12",
-           f"{SPENT_A2}: unrequested items", True),
-    Crutch("alias", "assistant_actions._said_under_full_name (ALIAS_RESTATED) and change_fact_already_recorded",
-           "the model adds under a nickname a fact the materials hold under the full name",
-           "A2 regression round 2 on the sixth pair, w01-no-01 (held once, proposed again, put on the card)",
-           f"{SPENT_A2}: no-action rate (already-recorded tasks); whether card_review catches the same items", True),
-    Crutch("negated", "assistant_actions.NEGATED_CLAUSE in _second_look",
-           "a changed fact that says the old value is no longer so reads as keeping it, and is held back for nothing",
-           "A2 fifth formal run (82b2301: a new value saying the old no longer holds was held as saying it again)",
-           f"{SPENT_A2}: card rate, rounds used", True),
-    Crutch("title_shared", "assistant_actions.TITLE_SHARED in _grounded",
-           "the request list calls a thing of the story a fact, and the thread the author's words name is refused as not a fact",
-           "A2 regression tune1b, a2s5 injection-05 (three edits of the thread refused)",
-           f"{SPENT_A2}: card rate on thread items", True),
+           f"{SPENT_A2}: unrequested items (v2.2 cleanup: no measure moved, kept because the request list finds the piece of the "
+           "sentence an item answers by these words)", True),
     Crutch("held_answer", "assistant.py: an answer is refused while an item is held back (change_held_back)",
            "the model closes the task in the round an item was held back, and the card comes out empty",
            "A2 second formal run: three empty cards whose answers said a change was proposed",
@@ -82,7 +76,8 @@ CRUTCHES = (
     Crutch("step_window", "long_tasks.WINDOW_CHAPTERS (a step reads about five chapters)",
            "a model asked about many chapters at once misses what is in them",
            "design 14 (v2.1 B), from the A1c real-length runs, where answers over many chapters lost points",
-           "the A3 development set: trace recall and card rate with wider windows (variant window8), and cost", True),
+           "the A3 development set: trace recall and card rate with wider windows (variant window8), and cost (v2.2 cleanup, 8 "
+           "chapters: recall 0.929 against 0.714, but a disagreement inside one step is asked about, a needless question on a trace)", True),
     Crutch("step_digest", "long_tasks._findings / the digest of earlier steps the program writes into a step",
            "a summary the model writes loses its sources and can be steered by words hidden in the text",
            "design 14 (v2.1 B): compaction is the program's, the rules, request and step list are never summarised",
@@ -90,13 +85,11 @@ CRUTCHES = (
     Crutch("step_repair", "long_tasks._run_step: one more call when a step's report does not validate, then the items that still do not are left out",
            "the model cites a passage outside its step or leaves a verdict without a passage",
            "design 14 (v2.1 B), as answer_repair for questions",
-           "the A3 development set: failed tasks and evidence support with no repair", True),
-    Crutch("first_time", "long_task_kinds.NOT_YET / FIRST_TIME in the trace's contradiction check",
-           "the model calls \"never opened ... then opened for the first time\" a contradiction",
-           "A3 dev-2 round 2", "the A3 sets: false contradictions of traces", True),
-    Crutch("no_news", "long_task_kinds.NO_NEWS / THREAD_TALK",
-           "the model reports \"not mentioned again\" as a thread's state, or a line of inquiry let go as a fact",
-           "A3 dev-2 round 2", "the A3 sets: evidence support and card item rate", True),
+           "the A3 development set: failed tasks and evidence support with no repair (v2.2 cleanup, off: 9 of 24 tasks failed on "
+           "assistant_long_report_invalid)", True),
+    Crutch("thread_talk", "long_task_kinds.THREAD_TALK in tidy's missing facts",
+           "the model reports a line of inquiry let go as a fact", "A3 dev-2 round 2",
+           "tidy is rewritten in v2.2 (update only); the rule is weighed again then", False),
     Crutch("tidy_majority", "long_task_kinds.Tidy.runs / majority: a tidy step is read three times, the facts list in another order each time, and keeps what most readings found",
            "one reading proposes facts the author did not ask for, and not the same ones from reading to reading",
            "A3 dev rounds 2 and 3 (v2.1 B); the user's decision of 2026-10-26, for tidy only",
@@ -109,8 +102,8 @@ CRUTCHES = (
            "the model that proposed an item, asked to look again, proposes it once more: a fact the materials state under the full name "
            "restated under a nickname, a thread marked resolved on the author's word when the passage settles another thing",
            "A2 sixth formal run, w01/w02-no-01 and w01/w02-no-04 (addendum 12)",
-           f"{SPENT_A2}: no-action rate (already-recorded and no-evidence tasks), card rate, cost and time; whether second_look "
-           "and the nickname check (_said_under_full_name) still move a measure with it on", True),
+           f"{SPENT_A2}: no-action rate (already-recorded and no-evidence tasks), card rate, cost and time (v2.2 cleanup, off "
+           "with second_look: no-action 11/18, a thread marked resolved unsupported; the only check of thread items)", True),
 )
 
 BY_NAME = {crutch.name: crutch for crutch in CRUTCHES}

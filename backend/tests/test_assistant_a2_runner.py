@@ -372,13 +372,13 @@ class SetTests(unittest.TestCase):
         self.assertLessEqual(set(regress.ABLATIONS), set(SWITCHES))
         self.assertEqual(len({crutch.name for crutch in CRUTCHES}), len(CRUTCHES))
         self.assertTrue(all(crutch.weakness and crutch.origin and crutch.check for crutch in CRUTCHES))
-        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("numbers_in", "_author_value_missing", "_second_look")))
+        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("_author_value_missing", "_second_look")))
         self.assertTrue(hasattr(assistant_requests, "call_model"))
         from app import long_task_kinds, long_tasks
         from app.assistant import AssistantEngine
-        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("_request_words", "_shared", "_said_under_full_name", "NEGATED_CLAUSE", "TITLE_SHARED")))
+        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("_request_words", "_shared")))
         self.assertTrue(all(hasattr(long_tasks, name) for name in ("WINDOW_CHAPTERS", "STEP_TRIES")))
-        self.assertTrue(all(hasattr(long_task_kinds, name) for name in ("NOT_YET", "NO_NEWS", "THREAD_TALK")))
+        self.assertTrue(all(hasattr(long_task_kinds, name) for name in ("THREAD_TALK",)))
         self.assertTrue(hasattr(AssistantEngine, "_review"))
         self.assertEqual(run.set_names(regress.SETS), regress.SETS.split(","))
 

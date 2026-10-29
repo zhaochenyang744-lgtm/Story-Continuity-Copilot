@@ -10,10 +10,8 @@ from __future__ import annotations
 import dataclasses
 import importlib
 import os
-import re
 
 ENV = "EVALUATION_ABLATE"
-NEVER = re.compile(r"(?!)")
 
 
 def _set(module, name, value):
@@ -47,33 +45,20 @@ def _any_request_words():
     actions._shared = lambda question, one, other: False
 
 
-def _all(*steps):
-    def apply():
-        for step in steps:
-            step()
-    return apply
-
-
 # Change tasks (the A2 path). The word lists (prose_subject, read_only, give_up, fact_not_thread) were switched off in g1 and
-# taken out in v2.1 A.
+# taken out in v2.1 A; value_numbers, alias, negated and title_shared (and A3's first_time and no_news) in the v2.2 cleanup.
 A2 = {
     "consensus": _settings(assistant_change_runs=1),
     "request_list": _set("app.assistant_requests", "call_model", _no_split),
     "second_look": _set("app.assistant_actions", "_second_look", lambda ctx, action, args, proposal, request_words: None),
     "author_value": _set("app.assistant_actions", "_author_value_missing", lambda ctx, args, proposal: None),
-    "value_numbers": _set("app.assistant_actions", "numbers_in", lambda text: set()),  # change_value_not_in_evidence
     "card_review": _no_review,
     "request_words": _any_request_words,
-    "alias": _set("app.assistant_actions", "_said_under_full_name", lambda ctx, after: False),
-    "negated": _set("app.assistant_actions", "NEGATED_CLAUSE", NEVER),
-    "title_shared": _set("app.assistant_actions", "TITLE_SHARED", 10 ** 6),
 }
 # Long tasks (the A3 path).
 A3 = {
     "step_window": _set("app.long_tasks", "WINDOW_CHAPTERS", 10 ** 6),
     "step_repair": _set("app.long_tasks", "STEP_TRIES", 1),
-    "first_time": _set("app.long_task_kinds", "NOT_YET", NEVER),
-    "no_news": _all(_set("app.long_task_kinds", "NO_NEWS", NEVER), _set("app.long_task_kinds", "THREAD_TALK", NEVER)),
 }
 ABLATIONS = {**A2, **A3}
 VARIANTS = {

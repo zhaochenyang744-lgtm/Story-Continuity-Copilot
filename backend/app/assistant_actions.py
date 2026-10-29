@@ -61,10 +61,6 @@ SUBJECT_PARTS = re.compile(r"[（）()、，,与和及/]+")
 # pair stood at 0.194 under p42). Measured over every card of every A2 run so far, the looks below keep the cases they were
 # made for and drop most of those that only cost a round.
 SECOND_LOOK_KEPT = 0.7  # share of the old value's character pairs a new value keeps when it only says the old fact again
-# A clause of the new value that says the old one no longer holds names the old one without keeping it ("在折榆庭侧室举行，南穗辩护所
-# 不再承办这轮会谈" beside "在南穗辩护所举行": held as saying it again, A2 fifth formal run, w01-action-08, both passes).
-NEGATED_CLAUSE = re.compile(r"不再|不是|并非|而非|已不|不算|取消|作废|撤销|改掉")
-CLAUSE_BREAK = re.compile(r"[，,；;。！？!?]")
 # (at 0.6: 70 of 273 changes asked for were held, 8 of 30 that should not have been made; at 0.7: 26 and 5)
 SECOND_LOOK_SAME = 0.5  # share of an existing fact's character pairs a new fact repeats when it may say the same matter
 # The same, for a fact filed under the very same subject: "双齿筹不会因换手便成为所有权证明" was added beside "双齿筹（用途）：
@@ -568,12 +564,8 @@ def _related(held: str, name: str) -> bool:
     return len(held) >= 2 and (held in name or name in held)
 
 
-# Numbers a value states must stand in its evidence (A2 second formal run, w01-no-action-03: "生日是八月十二号" added on a
-# passage that names no date). Chapter mentions ("自第18章起") are where, not what, and are left out.
-CHAPTER_MENTION = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百千]+\s*[章回节卷]")
+# A chapter number written in figures or in Chinese ("第十二章" and "第12章" are one chapter).
 CHAPTER_NUMBER_IN = re.compile(r"第\s*([0-9０-９零〇一二两三四五六七八九十百千]+)\s*章")
-NUMBER_WORDS = re.compile(r"万一|一一|十分|千万|万万|三三两两|七七八八|一五一十|十全十美|百分之百")
-NUMBERS = re.compile(r"[0-9０-９]+|[零〇一二两三四五六七八九十百千万]{2,}|[零〇一二两三四五六七八九十百千](?=[年月日号岁点时])")
 DIGITS = {ch: i for i, ch in enumerate("零一二三四五六七八九")} | {"〇": 0, "两": 2}
 UNITS = {"十": 10, "百": 100, "千": 1000, "万": 10000}
 
@@ -593,19 +585,12 @@ def _number(token: str) -> int:
     return total + section + (digit or 0)
 
 
-def numbers_in(text: str) -> set[int]:
-    """The numbers a text states, written in figures or in Chinese ("十二" and "12" are one number)."""
-    text = NUMBER_WORDS.sub("", CHAPTER_MENTION.sub("", "".join(text.split())))
-    return {_number(token.translate(str.maketrans("０１２３４５６７８９", "0123456789"))) for token in NUMBERS.findall(text)}
-
-
 # What the author says the new state is should be in the evidence: an author who names a place the text does not ("写成服务台
 # 后面的抽屉" where the text has the bell on the duty desk) is told what the text says, not handed a card with the text's value
 # (A2 second formal run, w02-no-action-04, three passes of three). Authors put the text's state in words of their own as often
 # ("只能手动锁" for "只作手动锁定"), and no count of shared characters tells the two apart: as a refusal the check stopped 57
 # proposals of 14 tasks that were asked for, against 10 where the author had it wrong (second pair, p40). So it holds the
 # item back for a second look, once, and the model decides.
-TITLE_SHARED = 3  # character pairs of the author's words a thread's title must hold for them to point at the thread
 AUTHOR_VALUE_MAX = 40
 AUTHOR_VALUE_FOUND = 0.5
 # What a piece of the request list asks for, when it is not a change of the kind proposed on it.
@@ -623,29 +608,18 @@ def _wrong_kind(want: str, action: Action) -> str:
 
 
 def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: dict[str, Any], request_words: str) -> None:
-    """What an item says must come from its evidence, and from the author only what the evidence bears out; what the author
-    asked done with the record must be a change of this kind, by the request list (`assistant_requests`).
+    """What the author asked done with the record must be a change of this kind, by the request list (`assistant_requests`).
+    (Until v2.2 the numbers of a fact's value had to stand in its evidence, and a thread whose title shared three character
+    pairs with the author's words was let through a "fact" piece: neither moved a measure when switched off in the v2.2 rule
+    cleanup, Desktop/v2.2任务/03-规则清理结果.md, and both went.)
 
     Until v2.1 word lists guessed the second from the author's clause (a give-up word, a read-only word, a fact word without a
     thread word, a subject that names a sentence of the text); the request list says it of every piece of the sentence, and
     they were taken out (v2.1 A, after the list held on every spent A2 pair). Words the list does not hold, or a task whose
     split failed, are not refused on their kind."""
-    evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
     want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
-    # The list can take a thing in the story for a fact: "第10章寓言草稿旁的退休说明，请据实修正未递交的缘由" is about the thread
-    # "褚镜薰扣住的退休说明" (A2 regression tune1b, injection-05: three edits of the thread refused as "a fact, not a thread"). Words
-    # of the author's that the thread's own title holds point at the thread.
-    if want == "fact" and action.record_kind == "foreshadow" and len(_pairs(request_words) & _pairs(proposal["display"].get("title") or "")) >= TITLE_SHARED:
-        want = None
     if want is not None:
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
-    if action.record_kind == "foreshadow":
-        return
-    # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).
-    subject = "".join(proposal["after"]["subject"].split())
-    known = "".join(fact["value"] for fact in ctx.memory() if "".join(fact["subject"].split()) == subject)
-    if not numbers_in(proposal["after"]["value"]) <= numbers_in(evidence) | numbers_in(known):
-        raise ToolError("change_value_not_in_evidence")
 
 
 def _author_value_missing(ctx: ToolContext, args: dict[str, Any], proposal: dict[str, Any]) -> str | None:
@@ -706,8 +680,7 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
                            "是正文后来变了、旧的那条已经不对，就用 change_fact 改那条。")
     else:
         old = _pairs(proposal["before"]["value"])
-        affirmed = "".join(part for part in CLAUSE_BREAK.split(after["value"]) if not NEGATED_CLAUSE.search(part))
-        if old and len(old & _pairs(affirmed)) / len(old) >= SECOND_LOOK_KEPT:
+        if old and len(old & _pairs(after["value"])) / len(old) >= SECOND_LOOK_KEPT:
             look["current"] = proposal["display"]["before"]
             reasons.append("改后的内容大半还是这条事实原来的话。原来的话已经说了作者要的意思（只是简略些、措辞不同），就不要改，在回答里引用这条事实。")
     display = proposal["display"]
@@ -723,35 +696,6 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
     ctx.held_now += 1
     return {"status": "second_look", **look,
             "message": "这条改动还没有放进卡片。" + "".join(reasons) + "确实需要，就原样再提出一次，会放进卡片。"}
-
-
-ALIAS_RESTATED = 0.8  # share of a new fact's words that one fact of the full name (with its alias fact) holds
-FILLER = set("是的了在和与也就")
-
-
-def _said_under_full_name(ctx: ToolContext, after: dict[str, Any]) -> bool:
-    """A new fact under a nickname that a fact of the full name says already: "绛穗·身份：她是本案辩护人" beside 简迭微's
-    "本案辩护人" and her alias fact "别名绛穗" (A2 regression round 2, w01-no-01: held once, proposed again, put on the card).
-    Measured against one fact of the full name at a time, with the alias fact, so a full name with many facts does not cover
-    everything new."""
-    subject = "".join(ch for ch in after["subject"] if ch.isalnum())
-    facts = ctx.memory()
-    squeeze = lambda text: "".join(ch for ch in str(text or "") if ch.isalnum())
-    aliases = [fact for fact in facts if subject and subject in squeeze(fact["value"]) and squeeze(fact["subject"]) != subject]
-    if not aliases:
-        return False
-    names = set(subject) | {ch for fact in aliases for ch in squeeze(fact["subject"])}
-    said = {ch for ch in squeeze(after["value"]) if ch not in names and ch not in FILLER}
-    if len(said) < 3:
-        return False
-    for alias in aliases:
-        owner = squeeze(alias["subject"])
-        for fact in facts:
-            if fact is not alias and squeeze(fact["subject"]) == owner:
-                held = set(squeeze(fact["value"])) | set(squeeze(alias["value"]))
-                if len(said & held) / len(said) >= ALIAS_RESTATED:
-                    return True
-    return False
 
 
 def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
@@ -783,8 +727,6 @@ def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     shown = {"action": action.kind, "target": args.get("target") if action.target_kind else None, "evidence": [item["ref"] for item in proposal["evidence"]],
              "request_words": request_words}
     # The second look weighs a fact item against the facts the materials hold; a thread item has none to be weighed against.
-    if action.kind == "add_fact" and _said_under_full_name(ctx, proposal["after"]):
-        raise ToolError("change_fact_already_recorded")
     look = _second_look(ctx, action, args, proposal, request_words) if action.record_kind == "fact" else None
     if look is not None:
         return Outcome(look, shown, 0)
