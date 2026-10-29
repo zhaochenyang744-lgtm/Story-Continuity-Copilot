@@ -1,0 +1,212 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "隙纹赎牌",
+    "predicate": "保管人",
+    "value": "阚蔚烬",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "濮箴柘",
+    "predicate": "别名",
+    "value": "赤辙",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "赫辕沙垒",
+    "predicate": "地形",
+    "value": "建在两道干河之间",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "仵韫砺",
+    "predicate": "身份",
+    "value": "归俘代表",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "扈绫珉",
+    "predicate": "能力",
+    "value": "读两军文字",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "赤脉水玺",
+    "predicate": "封套",
+    "value": "未拆",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "阚蔚烬",
+    "predicate": "别名",
+    "value": "烬侯",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "夔伽蔓",
+    "predicate": "别名",
+    "value": "弦使",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "褶日隘",
+    "predicate": "通道",
+    "value": "马车不能并行",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "祁琮黛",
+    "predicate": "身份",
+    "value": "随俘医者",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "铜睫营",
+    "predicate": "入内资格",
+    "value": "仅准军方见证",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蔺鹜禾",
+    "predicate": "职责",
+    "value": "看管等候水桶",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "訚砚虔",
+    "predicate": "身份",
+    "value": "守泉人",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蟹钩使函",
+    "predicate": "用途",
+    "value": "验明停战使者身份",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "羿缄泉",
+    "predicate": "取水规矩",
+    "value": "夜间不得吊桶",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "翟孚菱",
+    "predicate": "职责",
+    "value": "接待寻亲者",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "祝骁棠",
+    "predicate": "身份",
+    "value": "双方约定的传旗人",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "濮箴柘",
+    "predicate": "权限",
+    "value": "不能独改赎价",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "夔伽蔓",
+    "predicate": "装备",
+    "value": "佩无锋短剑",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "仵韫砺",
+    "predicate": "习惯",
+    "value": "让未识字者口述",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "阚蔚烬",
+    "predicate": "承诺",
+    "value": "不拿亲属抵押",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "扈绫珉",
+    "predicate": "核名方式",
+    "value": "先问原名再问军名",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "祁琮黛",
+    "predicate": "照料原则",
+    "value": "先看重伤者",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蔺鹜禾",
+    "predicate": "水桶标记",
+    "value": "桶柄绑白布",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "翟孚菱",
+    "predicate": "记录工具",
+    "value": "用炭写木片",
+    "chapter": 5
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "祝骁棠",
+    "predicate": "旗语",
+    "value": "两次横摆表示暂候",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "仵韫砺",
+    "predicate": "拒绝事项",
+    "value": "不替死者收赎身钱",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "赫辕沙垒",
+    "predicate": "外帐安排",
+    "value": "病者住背风侧",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "訚砚虔",
+    "predicate": "守泉原则",
+    "value": "不让武器靠井沿",
+    "chapter": 6
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "铜睫营",
+    "predicate": "出帐规矩",
+    "value": "交谈者可自行离席",
+    "chapter": 6
+  }
+]

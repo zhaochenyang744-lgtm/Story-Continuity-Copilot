@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "reviewer_not_author": true,
+  "review_phase": "full_body_materials_shared_draft_and_all_18_task_gold",
+  "completed_at_utc": "2026-10-23T20:39:25Z",
+  "finalized_at_utc": "2026-10-23T20:47:05Z",
+  "supplemental_reviews": [{"at_utc":"2026-10-23T20:42:29Z","chapter":27,"change":"主作者将当年那两个停顿改为当时那两个停顿","reread":"本人补读目标段及前后各一段，权限、时间推进和回收状态均相容；旧措辞0处、新措辞1处，89849汉字不变。","result":"IR-ADVISORY-01已采纳关闭；仅更新正文绑定，其他已审文件未变。"},{"at_utc":"2026-10-23T20:47:05Z","change":"完成18题全部金标与有效范围复核，并补核主作者收紧正式试听限定后的卡片","result":"IR-TASK-01已采纳关闭；self-review.md全文及41行位置表通过；路由盲判输入与当前题逐字相符，10/10一致；草稿迁入tasks文本相同，最终换绑tasks并扩至10份语义文件。"}],
+  "method": "审读者本人按每两章完整输出，逐段读完全部30章；每5章写逐章状态记录。正文完整阅读后才打开两份材料、自查与共享草稿；没有按关键词抽样，没有分派分章拼读。主作者出题后完整独立复核18题请求、上下文、解释、范围和全部动作金标，再读task-intents及另一审读者的盲判证据。脚本只做结构、计数、逐字引用、范围枚举、位置与哈希核验。",
+  "coverage": {
+    "chapters": {"expected": 30, "read_in_full": 30, "indices": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], "source_han": 89849, "truncation_events": 0},
+    "facts": {"expected": 30, "reviewed": 30, "indices": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]},
+    "foreshadows": {"expected": 9, "reviewed": 9, "indices": [1,2,3,4,5,6,7,8,9]},
+    "self_review": {"reviewed_in_full": true, "quotes_checked_verbatim": 41, "quote_errors": 0, "trace_objects": 3, "trace_states": 15, "designed_trace_contradictions": 3, "decision_points": 2, "stale_facts": 3, "missing_facts": 6, "decoys": 3},
+    "self_review_md": {"reviewed_in_full":true,"position_table_rows_checked":41,"position_errors":0,"position_min":2602,"position_max":3028,"note":"30章、材料、考点、18题、动作统计、范围、修订关闭、盲判结果与冻结口径均相符。"},
+    "shared_draft": {"reviewed_in_full": true, "chapter": 31, "han_without_heading": 738, "canonical_storage":"tasks.json works[0].shared_draft", "embedded_body_equal_to_reviewed_working_copy":true, "working_copy_deleted_by_author":true},
+    "names": {"registry": "tasks.json works[0].names plus authoring/name-audit.json candidates and authoring/self-review.json characters", "registered_body_names":24,"registered_candidates_including_work_title": 25, "unregistered_names_detected": [], "unregistered_count": 0, "note": "按完整正文及草稿核登记专名，未发现新增未登记人名、别名、地名、机构、专用设备名或题名；未将作者已有的跨题集名称扫描报告冒充本审读者重新运行的跨题集审计。"},
+    "tasks": {"reviewed":true,"expected":18,"count":18,"long_tasks":8,"route_tasks":10,"action_evidence_quotes_checked":18,"action_evidence_errors":0,"scope_action_counts":[4,3,9,2],"all_request_input_context_why_reviewed":true,"all_expected_and_allowed_actions_reviewed":true,"note":"独立完整金标审读，非本审读者盲判；另一路由盲判材料已对齐当前10题，初判10/10一致。"},
+    "route_blind_evidence": {"input_items":10,"result_items":10,"input_context_mismatches":0,"gold_disagreements":0,"reported_initial_agreement":1.0,"reviewer_is_separate_from_this_full_reader":true}
+  },
+  "fact_checks": [
+    {"fact":1,"support_chapters":[1,6],"status":"intentional_stale","note":"第1章周二午休初始安排有据，第6章明确改周三晚饭后且周二不再开，旧值应保留供题目修改。"},
+    {"fact":2,"support_chapters":[2,8],"status":"intentional_stale","note":"第2章暂用槐序楼二层有据，第8章正式试听改苇屏室且旧处不再承接；第18章回旧处查声源不构成恢复试听。"},
+    {"fact":3,"support_chapters":[3,10],"status":"intentional_stale","note":"第3章陆兼终混与外采有据，第10章终混改江，陆只做外采；后来陆只提听感或照灯，无重接终混事实。"},
+    {"fact":4,"support_chapters":[4,28],"status":"supported","note":"读第三年的传媒学生且采编课未结，后续课程及暑期实习讨论相容。"},
+    {"fact":5,"support_chapters":[7,23,30],"status":"supported","note":"谢负责领还登记而非受访内容决定，后文接线核查未越权成为采编决定。"},
+    {"fact":6,"support_chapters":[9,22,28,30],"status":"supported","note":"柏仅建议无学生投票权，后来反馈与试读均非最终裁定。"},
+    {"fact":7,"support_chapters":[1,8,25,30],"status":"supported","note":"禾灯称呼及常留最后一盏灯的缘由明确。"},
+    {"fact":8,"support_chapters":[1],"status":"supported","note":"许砚弥的熟人称呼弥弥明确。"},
+    {"fact":9,"support_chapters":[1],"status":"supported","note":"陆泊弦介绍外采队称弦哥。"},
+    {"fact":10,"support_chapters":[1],"status":"supported","note":"写标签时明示惯用右手，后文无反向惯用手断言。"},
+    {"fact":11,"support_chapters":[1],"status":"supported","note":"澄络市明确。"},
+    {"fact":12,"support_chapters":[1],"status":"supported","note":"晏汀大学与声隙编辑部筹备声音特刊明确。"},
+    {"fact":13,"support_chapters":[1,9,15,21,28,30],"status":"supported","note":"双格盘限定获准工作样本；交接时持续排除私人来电、身份记录及撤回段落。"},
+    {"fact":14,"support_chapters":[1,6,9,13],"status":"supported","note":"唐召集约时追进度，不独替所有采编意见定案，后文让本人/具体负责人决定相容。"},
+    {"fact":15,"support_chapters":[1],"status":"supported","note":"许圈出告白，邀请改成可有不同内容的毕业前一段声音。"},
+    {"fact":16,"support_chapters":[1],"status":"supported","note":"庄演示音频文件姓名与另纸电话号码的转发风险，报名和录音分开。"},
+    {"fact":17,"support_chapters":[1],"status":"supported","note":"谢清点线、电池、转接头，线材分袋标签。"},
+    {"fact":18,"support_chapters":[1],"status":"supported","note":"陆播放宿舍至教学楼脚步、推门试音，未先定节目用途。"},
+    {"fact":19,"support_chapters":[1],"status":"supported","note":"唐切出室友问晚饭半句话存私件，公共仅走廊脚步。"},
+    {"fact":20,"support_chapters":[1,11],"status":"supported","note":"初次小范围试录不承诺所有来稿进节目，报名页亦未扩成全收承诺。"},
+    {"fact":21,"support_chapters":[1,7,10],"status":"supported","note":"首晚普通耳塞少胶套并登记；后来找回是时间推进，初次事件记载不因此过时。"},
+    {"fact":22,"support_chapters":[2,5,14],"status":"supported","note":"廖可问场地但不保证全部时段；避雨回执和平台候选皆未虚化为保证。"},
+    {"fact":23,"support_chapters":[2,10],"status":"supported","note":"江愿听剪辑但接入节目先看授权，后续接手终混仍核用途。"},
+    {"fact":24,"support_chapters":[3],"status":"supported","note":"两轨门声争执后江提出可先做粗剪。"},
+    {"fact":25,"support_chapters":[3],"status":"supported","note":"首次匿名私谈明确不录，只记边界、具体经历不写。"},
+    {"fact":26,"support_chapters":[3,19],"status":"supported","note":"最初旧食堂广播开场者未知有据；第19章放弃寻找并未反转为找到人。"},
+    {"fact":27,"support_chapters":[4,27],"status":"supported","note":"初见匿名勘误纸由庄加衬纸、不猜笔迹，后续认领不使这个历史事件失实。"},
+    {"fact":28,"support_chapters":[2],"status":"supported","note":"廖回答提纲练习后明确这段未开录音。"},
+    {"fact":29,"support_chapters":[2],"status":"supported","note":"唐拦住丢桌腿垫纸并拍照记录，免后来误认损坏。"},
+    {"fact":30,"support_chapters":[10],"status":"supported","note":"谢在卡住椅缝摸回首晚胶套，核对归盒，明确不是折翼耳机部件。"}
+  ],
+  "foreshadow_checks": [
+    {"foreshadow":1,"status_in_material":"planted","actual_status":"resolved","resolution_chapter":12,"assessment":"intentional_unmarked_resolution","note":"导出保留位经测试和说明查明，不缺受访者。"},
+    {"foreshadow":2,"status_in_material":"developing","actual_status":"resolved","resolution_chapter":18,"assessment":"intentional_unmarked_resolution","note":"自助打印机双响现场正常速度复现，并核机器位置与旧记录。"},
+    {"foreshadow":3,"status_in_material":"planted","actual_status":"resolved","resolution_chapter":27,"assessment":"intentional_unmarked_resolution","note":"方本人认领，原始草稿两处位置内容核对一致，不靠字迹猜测。"},
+    {"foreshadow":4,"status_in_material":"developing","actual_status":"abandoned","resolution_chapter":19,"assessment":"intentional_unmarked_abandonment","note":"明说不再寻找、这条线放弃、不续查；身份仍未知不是已解决。"},
+    {"foreshadow":5,"status_in_material":"planted","actual_status":"open","support_chapters":[2,20,29,30],"assessment":"supported_open","note":"内部知情与出席活动均没有代替毕业后正式具名采访决定，最后仍未想好。"},
+    {"foreshadow":6,"status_in_material":"developing","actual_status":"open","support_chapters":[5,30],"assessment":"supported_open","note":"跨校样本互换许可仍无回信，没有交换文件事实。"},
+    {"foreshadow":7,"status_in_material":"planted","actual_status":"open","support_chapters":[6,30],"assessment":"supported_open","note":"匿名捐赠身份和秋季用途均未确定，未进可花预算。"},
+    {"foreshadow":8,"status_in_material":"developing","actual_status":"open","support_chapters":[9,28,30],"assessment":"supported_open","note":"秋季校外合办方式未答复，未借本期结束宣布合作。"},
+    {"foreshadow":9,"status_in_material":"resolved","actual_status":"resolved","resolution_chapter":10,"assessment":"correctly_resolved","note":"胶套找到并核对归盒，与折翼分开，不应再出回收卡。"}
+  ],
+  "intentional_design_preserved": {
+    "trace_contradictions": [
+      {"object":"苔点录音机","chapters":[10,22],"assessment":"两处均明确同一台设备原铭牌从未更换，六三九与九三六不能同时成立；中间保管转手不解释铭牌变化。"},
+      {"object":"折翼监听耳机","chapters":[7,24],"assessment":"同一从未更换的原装左耳罩，一处方框、一处圆环且从未方框；不是耳罩并存标记或换件。"},
+      {"object":"匿名嘉宾真名知情范围","chapters":[8,26],"supporting_chapter":20,"assessment":"两句都锚定周三第一次正式试听结束，前文穷尽名单排除庄，后文说庄已知；第20章这天才准许庄是同一历史矛盾的支持，不额外计第四处。"}
+    ],
+    "decision_points": [
+      {"chapters":[11,13],"assessment":"同一次首次正式报名页的正式题名分别为把停顿留给你与下一句等你，双方均称此后未改名，不能解释成临时草稿/后改名。"},
+      {"chapters":[23,25],"assessment":"同一次尚未举行的首次公开播放的最初预约分别周六/周日下午两点，内测和摆椅不算另一场；第30章未自行选定其中一说。"}
+    ],
+    "missing_facts": {"indices":[1,2,3,4,5,6],"assessment":"庄的本人文字授权、闻的私电禁传、90秒上限、方转写职责及逐段确认、谢外借核电、专项交通来源均有明确正文句，30条资料没有同义记载；缺漏真实。"},
+    "decoys": {"fact_indices":[4,5,6],"assessment":"大三/读第三年、设备借还/领还管理不定采编、指导仅建议不投票三组是同义已记内容，均非应新增事实。"}
+  },
+  "continuity_checks": {
+    "recorder_chain": "第1章唐→第5章许→第10章陆→第16章庄入柜→第28章唐；第18/20/22/23/24/25/26章明确柜中未外借，29/30/31章唐持有且不开录。除设计铭牌冲突外无无交代换手。",
+    "headphone_chain": "第2章陆→第7章谢回设备架→第12章闻→第18章方→第30章陆；各中间章独听/不转借与链一致，第31章陆带来。除设计原装图案冲突外无额外保管矛盾。",
+    "sample_drive_chain": "第1章桌面示范→第9章谢交江→第15章江交方→第21章方交庄→第30章庄带走；盘仅许可样本，撤回段、真名和私电持续排除。",
+    "identity_and_public_boundary": "第3章唐独知、第8章许获本人许可、第14章陆获许可、第20章庄获许可、第29章全编辑部获本人许可；第26章回顾与第8章冲突按设计单列。内部知情不等于公开署名、开放原声或未来具名采访。",
+    "courses_and_dates": "唐传媒三年级仍上课、改作业及准备暑期实习，与被采访者毕业不混同。周二改周三有明确过渡；首次公开周六/周日按设计待定。未见其他明确不能共真的日期或课程状态。",
+    "chapter30_activity": "仅公开许可且每段不超90秒的短样本进入播放，匿名工作原声留内部；郁只是普通听众，不当众对应匿名身份，不向缺席者或网络另发完整文件。",
+    "shared_draft": "第31章早餐后再聚，陆带折翼、唐苔点留包，方仅电脑笔记，庄带轻纸箱没有宣称移交样本盘。未恢复三条已收伏笔、未重启广播、不替四条开放线定案，也不替题名/预约选边。与第30章最终设备及权限状态相容。"
+  },
+  "task_checks": [
+    {"id":"a3d-trace-01","status":"PASS","effective_scope":[1,30],"trace_object":1,"action_count":0,"assessment":"请求全书追踪苔点交接并列冲突；五状态与10/22铭牌冲突均相符，overview不缩范围。报告型，allowed_actions空，无自动资料改动；why正确。"},
+    {"id":"a3d-trace-02","status":"PASS","effective_scope":[1,30],"trace_object":2,"action_count":0,"assessment":"请求耳机借还全过程与冲突；五状态及7/24原装图案冲突相符，当前章30不缩全书。报告不替作者选图案，allowed_actions空；why正确。"},
+    {"id":"a3d-thread-01","status":"PASS","effective_scope":[1,30],"action_count":4,"action_targets":["resolve_thread:1","resolve_thread:2","resolve_thread:3","abandon_thread:4"],"assessment":"全书恰三回收一放弃；开放5—8和正确回收9不出卡。四卡after_points与12/18/27/19章出处逐字及语义均正确，why相符。"},
+    {"id":"a3d-thread-02","status":"PASS","effective_scope":[12,20],"action_count":3,"action_targets":["resolve_thread:1","resolve_thread:2","abandon_thread:4"],"assessment":"按状态变化章完整枚举12/18回收及19放弃，27回收范围外；不要求埋线章落在scope。三卡内容和证据正确，why相符。"},
+    {"id":"a3d-tidy-01","status":"PASS","effective_scope":[1,10],"action_count":9,"action_targets":["add_fact:庄予栖|授权接收条件","add_fact:闻筱旻|私人来电处理规则","add_fact:声隙编辑部|公开样本长度上限","add_fact:方南汐|文字转写职责","add_fact:谢临荔|外借电量核验","add_fact:声隙编辑部|外采交通费用来源","change_fact:1","change_fact:2","change_fact:3"],"assessment":"六漏三旧全部命中，无decoy4/5/6卡。九卡对象、after_points、章节与证据语义正确，正式试听限定已收紧补核，why相符。"},
+    {"id":"a3d-ask-01","status":"PASS","effective_scope":[11,13],"decision_point":1,"action_count":0,"assessment":"首次报名题名两说且均未改名，范围内正好决策1，应问。作者单选a仅统一叙述，初始材料无同一题名槽且请求是对照报告，expected_actions空正确。"},
+    {"id":"a3d-ask-02","status":"PASS","effective_scope":[23,25],"decision_point":2,"action_count":0,"assessment":"首次公开的最初预约周六/周日两说，正好决策2，不是两场活动。作者单选b且资料不动，初始无预约槽，expected_actions空正确，why相符。"},
+    {"id":"a3d-narrowed-01","status":"PASS","initial_scope":[1,30],"effective_scope":[18,20],"action_count":2,"action_targets":["resolve_thread:2","abandon_thread:4"],"assessment":"plan_edit替代初始全书范围，仅18回收2和19放弃4，两卡after_points/证据正确；12及27范围外，allowed_actions空，why相符。"},
+    {"id":"a3d-route-01","status":"PASS","independent_judgment":"long_task","assessment":"整本翻一遍并交设备经过和冲突，执行任务明确；overview与why相符。"},
+    {"id":"a3d-route-02","status":"PASS","independent_judgment":"long_task","assessment":"要求从头到尾执行线索状态审阅分类，materials页不使之成为单条change，why相符。"},
+    {"id":"a3d-route-03","status":"PASS","independent_judgment":"long_task","assessment":"问句后明确全书逐处核对并交时间表，chapters当前29不缩输入范围，why相符。"},
+    {"id":"a3d-route-04","status":"PASS","independent_judgment":"long_task","assessment":"明确全书任务先审计划再执行，plan页及产物均相符，非即时单条改动。"},
+    {"id":"a3d-route-05","status":"PASS","independent_judgment":"change","assessment":"第6章新时段替换一条旧事实，目标与依据明确，materials页单项修改，why相符。"},
+    {"id":"a3d-route-06","status":"PASS","independent_judgment":"change","assessment":"已知第12章一条伏笔回收，要求单项状态修改，不需跨书查漏，why相符。"},
+    {"id":"a3d-route-07","status":"PASS","independent_judgment":"ask","assessment":"只问时间表做法并明确先问问，未要求执行全书审阅，why相符。"},
+    {"id":"a3d-route-08","status":"PASS","independent_judgment":"ask","assessment":"materials无正文选区，片段指代无法确定，应澄清或一般答复，不得臆造待查段落；登记规则拿不准按ask，why与盲判理由相符。"},
+    {"id":"a3d-route-09","status":"PASS","independent_judgment":"check_passage","assessment":"与08输入逐字相同，但writing31明确选中共享草稿完整句；应核该段连续性，选区逐字存在且唐持机与28/30相容，why正确。"},
+    {"id":"a3d-route-10","status":"PASS","independent_judgment":"recap","assessment":"下笔前回顾当前人物处境与未完事，overview可直接recap，不是全书审计，why相符。"}
+  ],
+  "findings": [
+    {"id":"IR-ADVISORY-01","severity":"advisory","chapter":27,"original_quote":"当年那两个停顿若是旁人指出的","quote":"当时那两个停顿若是旁人指出的","issue":"原当年一词容易使本学期连续叙事被误读为相隔多年；不构成新增状态矛盾。","suggestion":"当年改为当时；不影响任何设计考点。","resolution":"主作者已采纳；审读者补读目标段与前后各一段确认相容，已关闭。","status":"closed_accepted","requires_revision":false,"unresolved":false},
+    {"id":"IR-TASK-01","severity":"precision","task":"a3d-tidy-01","target":"change_fact:2","evidence_chapter":8,"quote":"今后的正式试听统一改在苇屏室，槐序楼二层不再承接试听。","original_after_point":"往后试听只用苇屏室","current_after_point":"往后正式试听只用苇屏室","issue":"原要点省去正式限定，容易扩大为所有非正式复听或试音。","suggestion":"保留正式限定。","resolution":"主作者已收紧当前after_points[0]；独立复核者补核整条卡与原文、scope相符，已关闭。","status":"closed_accepted","requires_revision":false,"unresolved":false}
+  ],
+  "unresolved_count": 0,
+  "bindings": {
+    "works/w01.md": "25c020a0ddd97ad3771c7d5fba459bdfa5afd2b1caf3f9e4455295597945b8aa",
+    "materials/w01-facts.json": "f3f7fa83c7c3f8a63f6f5d7799025f0859b994fe9ec16e1cb210c57a5be8d3c2",
+    "materials/w01-foreshadows.json": "4f37000008f461900974e2238511d7c890be00691b7dcb943bcc6d31d1cee2d2",
+    "tasks.json": "dffcb2eb53e86939a49dfe5cfbe62b5ee0ad8ca2ff9f44b1df8a9f1fe2af38eb",
+    "authoring/self-review.json": "9ca13a9ed480dc730dcf9de19a3bd3e9ce62a16950cea2f042ce22de43ffdd79",
+    "authoring/self-review.md": "eba85ddb3b006a37db6f2b90b156775e84df96ba3831b7ff5690c202797089dc",
+    "authoring/task-intents.json": "29414c6f15bda04d44e702488629870039f235ff255d069d842dc657fcbe927c",
+    "authoring/route-blind-input.json": "86705aad835974473b6bb76c45830c399934d6b8f2c5cf9d702dbecb63cba634",
+    "authoring/route-blind-review.json": "f3e3459a4851270f494deb4465e58018ce3d370fa570a78fc782e0e53e54b041",
+    "authoring/name-audit.json": "bdd5622a91ab25ed3aef40e6ea5351ec995d94af18b8f29a7f5273dbb4233f37"
+  },
+  "limits": "本结论是独立子代理全文语义复核、18题金标复核与引用核验，不是模型质量、评测结果或产品验证。本复核者核对了另一路由盲判证据，但自身未声称盲判。后续正文、材料、题目或自查有实质改动需补核并更新绑定；新颖性全旧集复扫及负向结果仍以主作者后续实际证据为准。"
+}

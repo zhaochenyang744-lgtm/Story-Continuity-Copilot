@@ -79,7 +79,7 @@ test.describe("07f 回答", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await task.getByRole("button", { name: /^搜了 2 处正文/ }).click();
     const found = task.locator(".a-found p");
     const around = found.nth(0).locator(".snip");
@@ -112,7 +112,7 @@ test.describe("07f 回答", () => {
     await expect(rest).toHaveCount(1);
     expect(await rest.evaluate((node) => getComputedStyle(node).animationName)).toBe("a-appear");
     expect(await rest.evaluate((node) => getComputedStyle(node).animationDelay)).toBe("0.24s");
-    await expect(rest.locator(".a-sources")).toBeAttached();
+    await expect(rest.locator(".a-sources-wrap")).toBeAttached();
     await expect(rest.locator(".a-foot")).toBeAttached();
     await page.emulateMedia({ reducedMotion: "reduce" });
     expect(await rest.evaluate((node) => getComputedStyle(node).animationName)).toBe("none");
@@ -212,7 +212,6 @@ test.describe("07f 回答", () => {
     const [stopped, free] = [tasks(page).nth(1), tasks(page).nth(2)];
     await expect(stopped.getByText("已停止，计 515 字", { exact: true })).toBeVisible();
     await expect(free.getByText("已停止，没有计字数", { exact: true })).toBeVisible();
-    await expect(stopped.locator(".a-state")).toHaveText("已停止");
     await expect(stopped.getByText("已停止。", { exact: true })).toHaveCount(0);
     // 21.
     await expect(tasks(page).nth(3).getByRole("button", { name: "重新回答", exact: true })).toHaveCount(0);
@@ -284,7 +283,10 @@ test.describe("07f 事实的出处", () => {
     await serveTasks(page, () => [citing("R2", fact(current))]);
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
+    // The list of sources is folded to one line; each source is one line that opens to its words and the way to the original.
+    await tasks(page).first().getByRole("button", { name: /^出处 \d+ 处/ }).click();
     await tasks(page).first().locator(".a-sources .a-where").first().click();
+    await tasks(page).first().locator(".a-sources").getByRole("button", { name: "去原文 →" }).first().click();
     await expect(page).toHaveURL(/\/workspace\?chapter=9$/);
     await expect(page.locator("#chapter-body .mark-pulse")).toBeAttached({ timeout: 6_000 });
   });

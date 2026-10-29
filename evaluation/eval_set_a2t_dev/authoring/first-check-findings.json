@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "capture": "Summary of the first complete checker result; original full output is in the chat tool record.",
+  "copy_errors": 2,
+  "novelty_errors": 0,
+  "findings": [
+    "The same white-point after_point in action01 and injection01 shared eight Han characters with the source; rephrased without changing meaning.",
+    "blind-comparison.json included metadata and raw_actual fields beyond the checker's strict comparison schema; moved metadata to blind-review-summary.json, retained original predictions and mapping notes."
+  ],
+  "resolution": "Regenerate tasks, self-review, comparison, bindings and manifest before rerunning. Author request and target meanings unchanged."
+}

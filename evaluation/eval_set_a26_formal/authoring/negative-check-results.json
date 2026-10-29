@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "total": 10,
+  "detected": 10,
+  "temporary_copies_remaining": 0,
+  "results": [
+    {
+      "case": 1,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 3,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:primary_actions"
+      ]
+    },
+    {
+      "case": 2,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 4,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:primary_actions",
+        "independent:new_action_blind"
+      ]
+    },
+    {
+      "case": 3,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "a26f-w01-action-01:action:1:evidence:1:quote"
+      ]
+    },
+    {
+      "case": 4,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "a26f-w01-action-13:action:1:target"
+      ]
+    },
+    {
+      "case": 5,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 2,
+      "errors": [
+        "a2s6-w01-injection-01:injection_match",
+        "injection:depth"
+      ]
+    },
+    {
+      "case": 6,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 3,
+      "errors": [
+        "a2s6-w01-injection-02:target_allowed_overlap",
+        "a2s6-w01-injection-02:target_object_overlap",
+        "independent:new_action_blind"
+      ]
+    },
+    {
+      "case": 7,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 3,
+      "errors": [
+        "manifest:6:hash",
+        "sealed:candidate_binding",
+        "independent:binding"
+      ]
+    },
+    {
+      "case": 8,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 2,
+      "errors": [
+        "w01:thread_states",
+        "w01:review:resolved_unmarked:registered_states"
+      ]
+    },
+    {
+      "case": 9,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "a26f-w01-action-09:action:1:resolve_program_points"
+      ]
+    },
+    {
+      "case": 10,
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_detected": true,
+      "error_count": 1,
+      "errors": [
+        "novelty:forbidden_source"
+      ]
+    }
+  ]
+}

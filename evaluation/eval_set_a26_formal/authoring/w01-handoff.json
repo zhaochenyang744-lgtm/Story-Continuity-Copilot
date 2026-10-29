@@ -1,0 +1,965 @@
+{
+  "work": "w01",
+  "stage": "chapters_01_20_and_shared_draft",
+  "status": "complete_prose_repaired_awaiting_independent_recheck",
+  "canonical_source": "works/w01.md",
+  "source_sha256": "23ae404bdf315b2e84b1dc3921f879b0985b876d20f720b479f04e145ea39235",
+  "manual_original_prose": true,
+  "chapter_han": {
+    "1": 2861,
+    "2": 2909,
+    "3": 2878,
+    "4": 2943,
+    "5": 2983,
+    "6": 2906,
+    "7": 2917,
+    "8": 3056,
+    "9": 2986,
+    "10": 2914,
+    "11": 2897,
+    "12": 2903,
+    "13": 2896,
+    "14": 2864,
+    "15": 2848,
+    "16": 2842,
+    "17": 2873,
+    "18": 2824,
+    "19": 2930,
+    "20": 2942
+  },
+  "total_han": 58172,
+  "chapters": {
+    "1": {
+      "title": "第1章 少买的那一份"
+    },
+    "2": {
+      "title": "第2章 照片向着里面"
+    },
+    "3": {
+      "title": "第3章 不坐成一圈"
+    },
+    "4": {
+      "title": "第4章 话停在谁手里"
+    },
+    "5": {
+      "title": "第5章 杯底那一点胶"
+    },
+    "6": {
+      "title": "第6章 搬一张空桌子"
+    },
+    "7": {
+      "title": "第7章 门口的湿地"
+    },
+    "8": {
+      "title": "第8章 页边也要留下"
+    },
+    "9": {
+      "title": "第9章 银幕亮起来以前"
+    },
+    "10": {
+      "title": "第10章 把绳结松开"
+    },
+    "11": {
+      "title": "第11章 从各自付出的地方"
+    },
+    "12": {
+      "title": "第12章 第一晚不借宿"
+    },
+    "13": {
+      "title": "第13章 那个称呼写给谁"
+    },
+    "14": {
+      "title": "第14章 从包里拿出来"
+    },
+    "15": {
+      "title": "第15章 走得到的那一段"
+    },
+    "16": {
+      "title": "第16章 字是自己的"
+    },
+    "17": {
+      "title": "第17章 只取这一张"
+    },
+    "18": {
+      "title": "第18章 泳池那端的约"
+    },
+    "19": {
+      "title": "第19章 尺旁的小划痕"
+    },
+    "20": {
+      "title": "第20章 门开到下午"
+    }
+  },
+  "new_names": [
+    "黎见棠",
+    "许泊垣",
+    "周砚荞",
+    "宁晏菱",
+    "贺以蘅",
+    "任澄蓁",
+    "姜序弥",
+    "樊予蔚",
+    "荻瓣",
+    "榛屿",
+    "柑芽",
+    "澜苒市",
+    "莳页册",
+    "萼弧坠",
+    "卷云杯"
+  ],
+  "new_names_outside_bible": [],
+  "named_objects": {
+    "莳页册": "仍许保管完整原件，黎仅有完整扫描件；姜草稿15已取走，未重新夹入",
+    "萼弧坠": "仍归宁所有，内侧旧痕19章解释为幼时量身高尺角碰出；未磨去",
+    "卷云杯": "仍归周自用，杯修补5已收，未再误转给黎"
+  },
+  "unnamed_objects": [
+    "退回信封及半张纸",
+    "周包里的两张票",
+    "书架下未签名便条",
+    "无图明信片",
+    "被淋湿后难合平的一本书",
+    "未拆的蓝色画纸及朋友寄来私人画作",
+    "模型底月份纸片",
+    "花店门口反复出现的深色长伞",
+    "客人自行领回的红袋短折伞（与深色伞不是同一件）",
+    "客房窄桌（周所有，第12章明确借黎在新住处先用，非赠与）",
+    "新房钥匙（棉绳区分），周家钥匙第12章归还",
+    "旅行预订凭据及两人不同的实付记录（第11章各自原路退款）",
+    "姜给弟弟的旧道歉草稿（第13章许存来件袋，第15章姜返城领取）",
+    "周任用过的两张展览票与周自己买的复制画卡（第14章）"
+  ],
+  "timepoints": [
+    "取消婚约当日为第一章；未曾登记婚姻",
+    "第二章发生在下一次双方约定的取物时段，未设精确日历日",
+    "第三章是朋友分开来访的一个白天",
+    "第四章与首次朋友来访相隔不作精确日期绑定，发生舞课、午茶及傍晚直接交谈",
+    "第5章从早晨雨到晚间朋友碰面，许未参加该次线下聚会。",
+    "第6章白天帮助任拍摄，夜间贺与黎直接说清；未绑定确切月日。",
+    "第7章跨一个白天及次日上午，陌生长伞第二次出现在门口。",
+    "第8章是双方原先约好的周末扫描时段，姜仍在远方视频。",
+    "第9章黎独自看放映，当天周走旧街并遇陌生人喊旧称；未绑定具体影片/月日。",
+    "第10章宁跳舞、退未外穿新鞋、借工具、受赠坠并修柜，均同一日。",
+    "第11章取消未出发旅行并分别收到退款，下午再看房尚未签租；贺当日说清常驻与短访。",
+    "第12章再量房后签租，当天搬家，当晚独住新屋；四周主线中的具体日历日期仍不强绑。",
+    "第13章翌日归还普通杯，并在许处电话确认草稿来由；当天姜还在外地。",
+    "第14章周任当天看展并当面说清误会。",
+    "第15章姜因工作安排告段返城，不是赴远方邀见；当天先取草稿再首次散步。",
+    "第16章宁当面与许确认便条，樊同日确认联系方式不代转；未绑定确切日历日期。",
+    "正文从取消婚约当日展开，第20章明确已过四周；中间只使用自然相对先后，不强绑具体月日。",
+    "第17章任获黎本人单张许可后公开，当日仍未拆蓝画、明信片仍无主。",
+    "第18章是宁与朋友实际游泳的星期天，同日确定之后周日优先安排；第20章是后续一次普通星期天。",
+    "第19章幼时旧纸触发银坠来由，下午买普通绿植，晚饭后许再看月份纸但未解。"
+  ],
+  "evidence": [
+    {
+      "chapter": 1,
+      "role": "alias",
+      "about": "黎见棠",
+      "quote": "黎见棠应声后笑了笑，解释从读书时起，周砚荞便叫她荻瓣，叫久了连她自己也习惯了。",
+      "unicode_length": 39,
+      "han_position": 2520
+    },
+    {
+      "chapter": 1,
+      "role": "initial_fact",
+      "about": "莳页册保管",
+      "quote": "莳页册的原件暂由黎见棠保管，许泊垣需要照片时先向她问。",
+      "unicode_length": 27,
+      "han_position": 2626
+    },
+    {
+      "chapter": 1,
+      "role": "initial_fact",
+      "about": "婚姻状态",
+      "quote": "今天他们取消了婚约，两人此前没有登记结婚。",
+      "unicode_length": 21,
+      "han_position": 2677
+    },
+    {
+      "chapter": 1,
+      "role": "abandoned_initial_thread",
+      "about": "周年照",
+      "quote": "原先约着共同拍周年照的打算也一并作罢，不再留作一次将来还得赴的约。",
+      "unicode_length": 33,
+      "han_position": 2696
+    },
+    {
+      "chapter": 1,
+      "role": "initial_fact",
+      "about": "周住处边界",
+      "quote": "客房你先住着。你和许泊垣要说的话，直接跟他说，我不替你们转。",
+      "unicode_length": 30,
+      "han_position": 2755
+    },
+    {
+      "chapter": 1,
+      "role": "initial_fact",
+      "about": "黎暂住",
+      "quote": "她暂住周砚荞家的客房，却不必连朋友的每个晚上也借过来。",
+      "unicode_length": 27,
+      "han_position": 2794
+    },
+    {
+      "chapter": 1,
+      "role": "first_plant",
+      "about": "未写完称呼",
+      "quote": "册页里夹着一只退回的信封，封口没有粘。她抽出半张纸，开头只有一个未写完的称呼，下面的字被折痕压住。",
+      "unicode_length": 49,
+      "han_position": 2345
+    },
+    {
+      "chapter": 2,
+      "role": "alias",
+      "about": "许泊垣",
+      "quote": "她从小叫许泊垣榛屿，这个别名如今仍由熟悉的朋友沿用。",
+      "unicode_length": 26,
+      "han_position": 2650
+    },
+    {
+      "chapter": 2,
+      "role": "initial_fact",
+      "about": "表亲",
+      "quote": "宁晏菱是许泊垣的表姐，几岁年长并没有使她总能替他把路看得更远。",
+      "unicode_length": 31,
+      "han_position": 2674
+    },
+    {
+      "chapter": 2,
+      "role": "initial_fact",
+      "about": "萼弧坠归属",
+      "quote": "萼弧坠仍由许泊垣佩戴保管，那是他自己的银坠，今晚没有交给别人。",
+      "unicode_length": 31,
+      "han_position": 2731
+    },
+    {
+      "chapter": 2,
+      "role": "initial_fact",
+      "about": "杯归属",
+      "quote": "卷云杯已经赠给周砚荞，归周砚荞所有，不是借放在这里的物件。",
+      "unicode_length": 29,
+      "han_position": 2780
+    },
+    {
+      "chapter": 2,
+      "role": "initial_fact",
+      "about": "合照公开",
+      "quote": "任澄蓁与黎见棠的私人合照暂不公开。",
+      "unicode_length": 17,
+      "han_position": 2820
+    },
+    {
+      "chapter": 2,
+      "role": "first_plant",
+      "about": "两张票",
+      "quote": "两张票一直没送出去，她想邀请的人还不知道。",
+      "unicode_length": 21,
+      "han_position": 2451
+    },
+    {
+      "chapter": 2,
+      "role": "first_plant",
+      "about": "杯修补",
+      "quote": "她问这里是不是裂过，周砚荞隔着水声答修过，回来时却被一根断在内衬的线头岔开了话。",
+      "unicode_length": 40,
+      "han_position": 2550
+    },
+    {
+      "chapter": 3,
+      "role": "alias",
+      "about": "周砚荞",
+      "quote": "周砚荞的别名叫柑芽，是黎见棠与几个老朋友一直沿用的称呼。",
+      "unicode_length": 28,
+      "han_position": 2545
+    },
+    {
+      "chapter": 3,
+      "role": "initial_fact",
+      "about": "旧同学",
+      "quote": "贺以蘅是黎见棠从前的同学，两人毕业以后仍有来往。",
+      "unicode_length": 24,
+      "han_position": 2644
+    },
+    {
+      "chapter": 3,
+      "role": "initial_fact",
+      "about": "姜参与",
+      "quote": "姜序弥眼下只通过朋友群线上联系，还没有回来参加线下相聚。",
+      "unicode_length": 28,
+      "han_position": 2790
+    },
+    {
+      "chapter": 3,
+      "role": "first_plant",
+      "about": "未签名便条",
+      "quote": "纸上只留着一句：“留给她的话，自己站到她面前说完。”没有落款，也没写那个她是谁。",
+      "unicode_length": 40,
+      "han_position": 1689
+    },
+    {
+      "chapter": 4,
+      "role": "first_missing_thread_plant",
+      "about": "无图明信片",
+      "quote": "黎见棠收到一张无图明信片，写信人没有留下姓名或可辨认的落款。",
+      "unicode_length": 30,
+      "han_position": 2556
+    },
+    {
+      "chapter": 4,
+      "role": "first_plant",
+      "about": "银坠刻痕",
+      "quote": "萼弧坠的内侧留着一道短刻痕，位置偏在边沿，许泊垣还说不清它为何在那里。",
+      "unicode_length": 35,
+      "han_position": 2682
+    },
+    {
+      "chapter": 4,
+      "role": "initial_fact",
+      "about": "传话原则",
+      "quote": "宁晏菱只转达说话人明确同意转给对方的内容，不替任何人补说意图。",
+      "unicode_length": 31,
+      "han_position": 2817
+    },
+    {
+      "chapter": 5,
+      "role": "initial_fact",
+      "about": "许独立工作",
+      "quote": "许泊垣会继续做建筑模型师，不会为了争取复合而辞掉现在的工作。",
+      "unicode_length": 30,
+      "han_position": 2619
+    },
+    {
+      "chapter": 5,
+      "role": "resolution",
+      "about": "杯自行磕坏修补",
+      "quote": "卷云杯是周砚荞自己意外磕坏后找人修好的，并非许泊垣损坏。",
+      "unicode_length": 28,
+      "han_position": 2726
+    },
+    {
+      "chapter": 5,
+      "role": "initial_fact",
+      "about": "杯用途",
+      "quote": "卷云杯只供周砚荞自己使用，不用来证明黎见棠与许泊垣的关系。",
+      "unicode_length": 29,
+      "han_position": 2779
+    },
+    {
+      "chapter": 5,
+      "role": "first_plant",
+      "about": "贺外地邀约",
+      "quote": "贺以蘅对外地邀约迟疑，尚未向朋友说明最后会怎样安排。",
+      "unicode_length": 26,
+      "han_position": 2894
+    },
+    {
+      "chapter": 6,
+      "role": "missing_fact",
+      "about": "拒绝撮合",
+      "quote": "贺以蘅只愿与黎见棠保持同学往来，不接受朋友撮合两人谈恋爱。",
+      "unicode_length": 29,
+      "han_position": 2534
+    },
+    {
+      "chapter": 6,
+      "role": "first_plant",
+      "about": "蓝色画纸未打开",
+      "quote": "朋友寄来的私人画作折在蓝色画纸里，任澄蓁至今没有打开。",
+      "unicode_length": 27,
+      "han_position": 2651
+    },
+    {
+      "chapter": 6,
+      "role": "first_missing_thread_plant",
+      "about": "旧模型底月份纸片",
+      "quote": "许泊垣在旧模型底下发现一张写着另一个月份的纸片，月份与模型正面所标不同。",
+      "unicode_length": 36,
+      "han_position": 2787
+    },
+    {
+      "chapter": 7,
+      "role": "missing_fact",
+      "about": "周得知取消婚约非第三人",
+      "quote": "周砚荞已知道，黎见棠与许泊垣取消婚约不是因为第三人。",
+      "unicode_length": 26,
+      "han_position": 2548
+    },
+    {
+      "chapter": 7,
+      "role": "first_plant",
+      "about": "陌生伞",
+      "quote": "樊予蔚店门口反复出现一把陌生伞，她至今不知道伞主是谁。",
+      "unicode_length": 27,
+      "han_position": 2830
+    },
+    {
+      "chapter": 8,
+      "role": "fact_transition",
+      "about": "相册原件保管",
+      "quote": "黎见棠把莳页册原件正式交给许泊垣保管，自己只保留完整扫描件。",
+      "unicode_length": 30,
+      "han_position": 2522
+    },
+    {
+      "chapter": 8,
+      "role": "first_plant",
+      "about": "姜远方见面未答",
+      "quote": "姜序弥尚未答应那场远方见面，对方具体想谈什么也没有交代。",
+      "unicode_length": 28,
+      "han_position": 2910
+    },
+    {
+      "chapter": 9,
+      "role": "missing_fact",
+      "about": "独自参加电影",
+      "quote": "黎见棠选择独自参加这次电影放映，不接受朋友另为她配伴。",
+      "unicode_length": 27,
+      "han_position": 2631
+    },
+    {
+      "chapter": 9,
+      "role": "first_missing_thread_plant",
+      "about": "陌生人喊旧称",
+      "quote": "周砚荞听到陌生人叫出自己小时候的称呼柑芽，却认不出那个人。",
+      "unicode_length": 29,
+      "han_position": 2770
+    },
+    {
+      "chapter": 10,
+      "role": "fact_transition",
+      "about": "银坠所有权赠宁",
+      "quote": "许泊垣已经把萼弧坠赠给宁晏菱，从今天起所有权归宁晏菱。",
+      "unicode_length": 27,
+      "han_position": 2536
+    },
+    {
+      "chapter": 11,
+      "role": "missing_fact",
+      "about": "旅行订金退款",
+      "quote": "共同旅行的订金按两人各自实际付款的数额，分别原路退回黎见棠和许泊垣的付款账户。",
+      "unicode_length": 39,
+      "han_position": 2518
+    },
+    {
+      "chapter": 11,
+      "role": "stale_note_correction",
+      "about": "贺非外地常驻且探访日期未定",
+      "quote": "贺以蘅已拒绝外地常驻，只考虑短期探访，何时探访仍未确定。",
+      "unicode_length": 28,
+      "han_position": 2670
+    },
+    {
+      "chapter": 12,
+      "role": "fact_transition",
+      "about": "搬入自租小套间",
+      "quote": "她已经签租并搬入自己的小套间，不再住周砚荞家的客房。",
+      "unicode_length": 26,
+      "han_position": 2696
+    },
+    {
+      "chapter": 13,
+      "role": "resolution_and_stale_note_correction",
+      "about": "未完称呼非复合信",
+      "quote": "那半张纸是许泊垣替姜序弥写给弟弟的道歉草稿，不是写给黎见棠的复合信。",
+      "unicode_length": 34,
+      "han_position": 2653
+    },
+    {
+      "chapter": 13,
+      "role": "resolution_detail",
+      "about": "空封退还及黎未读",
+      "quote": "黎见棠当时只帮忙找过空信封，没有读过代拟草稿；姜退还的是借了未用的空封，也不是邮政退回的信件。",
+      "unicode_length": 47,
+      "han_position": 2685
+    },
+    {
+      "chapter": 14,
+      "role": "resolution",
+      "about": "两张票的同行误会",
+      "quote": "周砚荞已经邀请任澄蓁一起看展，两人当面说清此前都误以为对方不愿同行。",
+      "unicode_length": 34,
+      "han_position": 2624
+    },
+    {
+      "chapter": 14,
+      "role": "resolution_detail",
+      "about": "两张票原想邀任",
+      "quote": "任确认自己愿意与周相约，并非在替谁补上一个空位，周也明确那两张票从买来便是想邀她一起用。",
+      "unicode_length": 44,
+      "han_position": 2656
+    },
+    {
+      "chapter": 15,
+      "role": "fact_transition",
+      "about": "姜改为每周线下",
+      "quote": "姜序弥返城后不再只在线上联系，决定从本周起每周参加一次线下散步。",
+      "unicode_length": 32,
+      "han_position": 2580
+    },
+    {
+      "chapter": 16,
+      "role": "resolution",
+      "about": "宁承认便条及原意",
+      "quote": "那张未签名便条确是宁晏菱所写，意思是让许泊垣亲自说完自己的话，不再请她代传。",
+      "unicode_length": 38,
+      "han_position": 2601
+    },
+    {
+      "chapter": 16,
+      "role": "resolution_detail",
+      "about": "不是替黎催复合",
+      "quote": "宁承认作者身份，也明确并非替黎催复合。",
+      "unicode_length": 19,
+      "han_position": 2636
+    },
+    {
+      "chapter": 16,
+      "role": "missing_fact",
+      "about": "樊不转任私号",
+      "quote": "樊予蔚也正式向任确认：她答应不替任澄蓁向陌生人转交私人联系方式。",
+      "unicode_length": 32,
+      "han_position": 2696
+    },
+    {
+      "chapter": 17,
+      "role": "fact_transition",
+      "about": "仅一张合照公开",
+      "quote": "黎见棠本人给出许可，任澄蓁只公开两人选定的一张私人合照，其余合照仍不公开。",
+      "unicode_length": 37,
+      "han_position": 2607
+    },
+    {
+      "chapter": 18,
+      "role": "missing_fact",
+      "about": "宁周日先陪自身朋友",
+      "quote": "宁晏菱决定接下来的星期天先陪自己的朋友，不再固定协调黎见棠与许泊垣见面。",
+      "unicode_length": 36,
+      "han_position": 2622
+    },
+    {
+      "chapter": 19,
+      "role": "resolution",
+      "about": "童年量身高碰痕",
+      "quote": "萼弧坠内侧的短刻痕，是宁晏菱幼时与许泊垣量身高时被尺角碰出的，不是订婚日期暗记。",
+      "unicode_length": 40,
+      "han_position": 2563
+    }
+  ],
+  "evidence_summary": {
+    "total": 49,
+    "after1500": 49,
+    "after2500": 46
+  },
+  "resolved_in_this_batch": [
+    {
+      "about": "萼弧坠内侧短刻痕",
+      "planted_chapter": 4,
+      "resolved_chapter": 19,
+      "explanation": "宁幼时与许量身高时尺角碰出的旧痕，非订婚日期暗记"
+    }
+  ],
+  "future_resolutions_only": {
+    "无图明信片": "保持无图、无署名，后续只回应悬念，不解释来源",
+    "外地邀约": "第11章已明确拒绝常驻，只有短访尚在考虑，日期未定；不能登记成已离城或整体回收",
+    "蓝色画纸": "仍未打开，后续只回应未拆状态，不回收",
+    "陌生伞": "仍无主人认领，红袋短折伞另属客人，不是线索回收",
+    "模型月份纸片": "仅发现月份不同，原因未明，后续保持悬而未决",
+    "远方见面": "姜未答应，对方谈话内容未交代，不等于已见面",
+    "陌生人喊旧称": "第9章陌生男子喊柑芽，周不识其人，男子乘车离开；第18–20章可自然再回应但身份不解释"
+  },
+  "do_not_register_as_fact": [
+    "退回信封与未写完称呼不是复合信的已知事实",
+    "未签名便条的她具体指谁仍未由作者身份确认",
+    "宁对刻痕有所联想不能当成已解释",
+    "明信片从旧住处转到黎手里，不意味着寄件人知道周家地址"
+  ],
+  "continuity_notes": [
+    "黎与许在第4章直接谈话，不代表恢复婚约或答应复合。",
+    "姜仍在远处，仅群聊/语音参与，不能写成已返回。",
+    "任的合照公开权限仍未改变；未公开不等于照片未拍过。",
+    "贺和樊的普通邀约/来访不构成新恋爱；第6章才明确拒撮合。",
+    "宁已有自己的舞课与朋友午饭，但第18章才确定接下来星期天不再固定协调见面。",
+    "第5章任误将送黎回家凑成合拍的话，第6章贺当面与任、黎说清拒撮合；不新增恋爱。",
+    "任借出的手套第6章由贺暂借，第8章完整归还；未另造具名物件。",
+    "第7章第一次看房未签约，黎仍住周客房，搬家留第12章。",
+    "第8章落出未写完称呼的信封后按原样夹回原件，随相册到许手中；身份来由留第13章。",
+    "第8章只私存完整扫描件及裁图备份，原件照片未撕去，私人照片仍未获公开许可。",
+    "卷云杯第5章已收束；票、便条作者、银坠刻痕均未额外回收。",
+    "第9章影院中的影片不具名，未引用已出版台词、诗歌、歌词；电影独票与周包内未送出的两张票是不同物件。",
+    "第9章陌生人喊的是既有别名柑芽，也是周小时候的称呼；没有新增昵称、地点名或人物专名。",
+    "第10章赠坠是许将自己所有物明确赠给表姐宁，非借看、代保管或婚恋信物；柜门先以为修好又下坠，视频后调整内侧螺钉才稳，非前后自相矛盾。",
+    "第11章旅行订金两人按各自实付分别退到各自原支付账户，没有平分、互转补差或继续共同旅行。",
+    "第11章贺已拒外地常驻，仅考虑短期探访且未定日期，伏笔5仍保留未来行程的悬处。",
+    "第12章黎签租入住并归还周家钥匙，以后到周家须敲门或预先联系。黎不再客住；周仍是朋友而非房东。",
+    "第12章明确周先借客房窄桌给黎，所有权仍归周；第9章将自己那张窄桌改为常用的窄桌以避免无交代的所有权。",
+    "第12章两只随行普通杯待归还周，卷云杯始终在周处，不能误把它写成搬入黎新家。",
+    "莳页册及信封原件仍在许；第12章许拍平放书架给黎看，黎仅查看扫描件。",
+    "无图明信片第12章随黎的书搬到新住处，仍无新文字或作者身份；模型月份纸片留许处。",
+    "第13章开头两只普通杯已完整归还周；黎按门铃进周家，未继续持有旧钥匙。",
+    "退回信封指姜出城前将借而未寄的空封托人退许，非邮政退件；黎当初只找空封；许后来按姜电话代拟道歉，半张未完草稿误夹照片册。",
+    "第13章姜仅线上电话，与第15章实体返城严格分开；第13章新拟的是给弟弟的道歉，不能当成黎许复合信。",
+    "第14章周任朋友同行看展、双方误会明确解开，没有宣布恋爱、约会或婚恋关系。",
+    "第15章姜实体返城后取走旧稿，从本周起每周参加一次线下散步；8章另一场远方邀见仍未答应、内容未交代，不能把返城当赴邀。",
+    "第16章宁明确承认未签便条由自己写，劝许亲自说完而非代传、不是替黎催复合；便条实物仍许持有。",
+    "第16章樊明确不把任私人联系方式交陌生人；可转任同意公开的工作说明与客人项目需求，不代任保证接单或回复。",
+    "原相册仍在许，黎仅完整扫描件；13章信封和草稿已从相册取出另存给姜，15章姜已领取。",
+    "蓝画、伞、姜远方邀见、明信片、模型月份、陌生人喊柑芽保持未解；最后四章应分散自然回应，不排尾章库存清单。",
+    "第17章公开的是任与黎自己的私人合照，仅选定一张；其余不公开，不涉及公开黎许旅行照片或姜稿。",
+    "第18章宁把接下来星期天先留给自身朋友，不再固定协调黎许；不是断绝所有朋友来往。",
+    "第19章童年碰痕由宁的在场记忆、旧纸尺及许确认共同支持，不写似乎或推测；银坠当年许自有，10赠宁后仍由宁持。",
+    "第20章黎许分别明确不恢复婚约，偶遇选椅互帮不等于复合；黎买一把窄椅，周下午到新屋坐，未筹备家宴。",
+    "新椅归黎，借窄桌仍归周；不再给黎周家钥匙。",
+    "开放7线分布17/18/19/20具体行动回应，未在结尾清单式罗列，也不额外收线。"
+  ],
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "batches": [
+    {
+      "stage": "chapters_01_04",
+      "source_sha256": "f6b2e8fb1f4eb84af4778c626d5f7ce204c19ae2df05d46f04c29214cca6cba1",
+      "chapter_han": {
+        "1": 2861,
+        "2": 2909,
+        "3": 2877,
+        "4": 2943
+      },
+      "total_han": 11590,
+      "evidence_count": 21,
+      "lead_status": "accepted",
+      "resolved": []
+    },
+    {
+      "stage": "chapters_05_08",
+      "source_sha256": "909e12aad942c32e4034414f114770809da604b0487584585f18ebad274144ce",
+      "chapter_han": {
+        "5": 2983,
+        "6": 2906,
+        "7": 2907,
+        "8": 3056
+      },
+      "total_han": 11852,
+      "evidence_count": 11,
+      "evidence_summary": {
+        "total": 11,
+        "after1500": 11,
+        "after2500": 11
+      },
+      "lead_status": "accepted",
+      "resolved": [
+        {
+          "about": "卷云杯把手修补",
+          "planted_chapter": 2,
+          "resolved_chapter": 5,
+          "explanation": "周自己意外磕坏后找人修好，许未损坏"
+        }
+      ]
+    },
+    {
+      "stage": "chapters_09_12",
+      "source_sha256": "32a84b512df094f2a1c069da8913458736785cdc17da96fc4c109804b4776c47",
+      "chapter_han": {
+        "9": 2986,
+        "10": 2914,
+        "11": 2897,
+        "12": 2903
+      },
+      "total_han": 11700,
+      "evidence_count": 6,
+      "evidence_summary": {
+        "total": 6,
+        "after1500": 6,
+        "after2500": 6
+      },
+      "lead_status": "accepted",
+      "resolved": [],
+      "stale_notes_corrected": [
+        {
+          "about": "贺外地常驻计划",
+          "chapter": 11,
+          "future_visit_remains_open": true
+        }
+      ]
+    },
+    {
+      "stage": "chapters_13_16",
+      "source_sha256": "5f993be1cbc04274a939458ea0cea2b2599f3070835a6e430507f1c0349ebd15",
+      "chapter_han": {
+        "13": 2889,
+        "14": 2864,
+        "15": 2848,
+        "16": 2842
+      },
+      "total_han": 11443,
+      "evidence_count": 8,
+      "evidence_summary": {
+        "total": 8,
+        "after1500": 8,
+        "after2500": 8
+      },
+      "lead_status": "accepted",
+      "resolved": [
+        {
+          "about": "未写完称呼",
+          "planted_chapter": 1,
+          "resolved_chapter": 13,
+          "stale_note_corrected": true
+        },
+        {
+          "about": "周包里两张票",
+          "planted_chapter": 2,
+          "resolved_chapter": 14
+        },
+        {
+          "about": "未签名便条",
+          "planted_chapter": 3,
+          "resolved_chapter": 16
+        }
+      ]
+    },
+    {
+      "stage": "chapters_17_20",
+      "source_sha256": "53142c97d1a1b637e4be7c4b31fb255c94990b401d2c02d560acbdda716a3dfc",
+      "chapter_han": {
+        "17": 2868,
+        "18": 2824,
+        "19": 2930,
+        "20": 2942
+      },
+      "total_han": 11564,
+      "evidence_count": 3,
+      "evidence_summary": {
+        "total": 3,
+        "after1500": 3,
+        "after2500": 3
+      },
+      "lead_status": "pending",
+      "resolved": [
+        {
+          "about": "萼弧坠内侧短刻痕",
+          "planted_chapter": 4,
+          "resolved_chapter": 19,
+          "explanation": "宁幼时与许量身高时尺角碰出的旧痕，非订婚日期暗记"
+        }
+      ]
+    }
+  ],
+  "chapter_han_min": 2824,
+  "chapter_han_max": 3056,
+  "current_residence": "黎自租小套间，周家钥匙12已归还，窄桌仍是周暂借",
+  "relationship_end_state": "第20章黎与许明确不再恢复婚约，各自仍可正常同朋友往来，无新恋爱设定",
+  "open_thread_responses": [
+    {
+      "about": "任私人画未拆",
+      "chapter": 17,
+      "state": "蓝色画纸仍放背光柜格，未打开，也不因公开一张合照而拆开"
+    },
+    {
+      "about": "无图明信片",
+      "chapter": 17,
+      "state": "任仅看纸纹而无法辨寄件人；黎仍夹书，不认定任何人"
+    },
+    {
+      "about": "陌生人喊柑芽",
+      "chapter": 18,
+      "state": "周重经旧街问过摊主，无新认人信息，未群发模糊背影冒认"
+    },
+    {
+      "about": "贺短访未定",
+      "chapter": 18,
+      "state": "轻便袋属日常用品，并非迁走；常驻已拒，短访时间仍未定"
+    },
+    {
+      "about": "旧模型月份纸片",
+      "chapter": 19,
+      "state": "仍与正面月份对不上，另袋保存，未编来由"
+    },
+    {
+      "about": "陌生深色伞",
+      "chapter": 19,
+      "state": "仍无人认领；樊拒把无主深色伞借客，另借店自用伞，未混作回收"
+    },
+    {
+      "about": "姜远方邀见",
+      "chapter": 20,
+      "state": "已追问来意但对方未说明，姜未答应，日历未为它假留日期"
+    }
+  ],
+  "shared_draft": {
+    "chapter_title": "第21章 桌边的一点空处",
+    "source_file": "authoring/w01-shared-draft.txt",
+    "han": 748,
+    "sha256": "31695476422f0005d264e8840b56daef1beb5cf8760220eabf08520de36a1864",
+    "selection_candidates": [
+      "黎见棠将新买的椅子推到窄桌旁，先放下早餐，才去拉开窗帘。",
+      "莳页册平放在书架下层，原件仍由许泊垣保管。",
+      "姜序弥在朋友群问下一次散步有谁愿意来，说明自己仍按每周一次出门，不需要大家为了凑齐另改安排。"
+    ]
+  },
+  "byte_audit": {
+    "source_utf8_no_bom": true,
+    "source_crlf": 0,
+    "draft_utf8_no_bom": true,
+    "draft_crlf": 0,
+    "handoff_utf8_no_bom": true,
+    "handoff_crlf": 0,
+    "narrative_meta_hits": 0
+  },
+  "batch_records_are_historical": true,
+  "revision_history": [
+    {
+      "revision": "independent_reading_minimal_fixes_01",
+      "utc": "2026-10-27T09:25:45.192357+00:00",
+      "source_sha256_before": "53142c97d1a1b637e4be7c4b31fb255c94990b401d2c02d560acbdda716a3dfc",
+      "source_sha256_after": "23ae404bdf315b2e84b1dc3921f879b0985b876d20f720b479f04e145ea39235",
+      "manual_targeted_edits": [
+        {
+          "chapter": 3,
+          "before": "下午还了书",
+          "after": "下午拿回了书",
+          "reason": "纠正取回借书的方向"
+        },
+        {
+          "chapter": 7,
+          "before": "贺今天与自己讲清",
+          "after": "贺昨晚与自己讲清",
+          "reason": "与早晨消息所指前夜一致"
+        },
+        {
+          "chapter": 7,
+          "before": "路过小超市时又买了一盒。",
+          "after": "路过小超市时又买了一盒，临结账又拿了一小盒。",
+          "reason": "同一次购买补清第二盒蛋来源"
+        },
+        {
+          "chapter": 13,
+          "before": "那晚她后来还给他拍了建筑照片，忙着避反光，根本没再读纸。",
+          "after": "那晚她先给他拍了建筑照片，忙着避反光，后来才看见那个称呼，没有再展开纸。",
+          "reason": "与首章先拍照后发现称呼的顺序一致"
+        },
+        {
+          "chapter": 7,
+          "before": "说你昨天还教黎先量桌子",
+          "after": "提醒她买之前总该先量尺寸",
+          "reason": "改为当面一般尺寸提醒"
+        },
+        {
+          "chapter": 15,
+          "before": "自己刚才录过的声音",
+          "after": "自己先前录过的声音",
+          "reason": "取消刚刚录音的错误时间指向"
+        },
+        {
+          "chapter": 17,
+          "before": "答不是贺搬家",
+          "after": "答不是庆贺你搬家的礼物",
+          "reason": "消除人物姓氏歧义"
+        }
+      ],
+      "unchanged_registered_quote_count": 49,
+      "evidence_summary_after": {
+        "total": 49,
+        "after1500": 49,
+        "after2500": 46
+      },
+      "evidence_position_changes": [
+        {
+          "chapter": 3,
+          "role": "initial_fact",
+          "about": "旧同学",
+          "before": 2643,
+          "after": 2644
+        },
+        {
+          "chapter": 3,
+          "role": "initial_fact",
+          "about": "姜参与",
+          "before": 2789,
+          "after": 2790
+        },
+        {
+          "chapter": 7,
+          "role": "missing_fact",
+          "about": "周得知取消婚约非第三人",
+          "before": 2538,
+          "after": 2548
+        },
+        {
+          "chapter": 7,
+          "role": "first_plant",
+          "about": "陌生伞",
+          "before": 2820,
+          "after": 2830
+        },
+        {
+          "chapter": 13,
+          "role": "resolution_and_stale_note_correction",
+          "about": "未完称呼非复合信",
+          "before": 2646,
+          "after": 2653
+        },
+        {
+          "chapter": 13,
+          "role": "resolution_detail",
+          "about": "空封退还及黎未读",
+          "before": 2678,
+          "after": 2685
+        },
+        {
+          "chapter": 17,
+          "role": "fact_transition",
+          "about": "仅一张合照公开",
+          "before": 2602,
+          "after": 2607
+        }
+      ],
+      "chapter_han_before": {
+        "1": 2861,
+        "2": 2909,
+        "3": 2877,
+        "4": 2943,
+        "5": 2983,
+        "6": 2906,
+        "7": 2907,
+        "8": 3056,
+        "9": 2986,
+        "10": 2914,
+        "11": 2897,
+        "12": 2903,
+        "13": 2889,
+        "14": 2864,
+        "15": 2848,
+        "16": 2842,
+        "17": 2868,
+        "18": 2824,
+        "19": 2930,
+        "20": 2942
+      },
+      "chapter_han_after": {
+        "1": 2861,
+        "2": 2909,
+        "3": 2878,
+        "4": 2943,
+        "5": 2983,
+        "6": 2906,
+        "7": 2917,
+        "8": 3056,
+        "9": 2986,
+        "10": 2914,
+        "11": 2897,
+        "12": 2903,
+        "13": 2896,
+        "14": 2864,
+        "15": 2848,
+        "16": 2842,
+        "17": 2873,
+        "18": 2824,
+        "19": 2930,
+        "20": 2942
+      },
+      "historical_batches_preserved": true,
+      "draft_unchanged": true,
+      "independent_recheck_status": "pending"
+    }
+  ]
+}

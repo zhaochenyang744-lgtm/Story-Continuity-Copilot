@@ -1,0 +1,414 @@
+{
+  "works": {
+    "w01": {
+      "characters": [
+        "简迭微",
+        "段泊循",
+        "毕见岚",
+        "屈绍荻",
+        "符砚杭",
+        "宓书冽",
+        "封南缬",
+        "蒯令皎"
+      ],
+      "aliases": [
+        {
+          "name": "简迭微",
+          "alias": "绛穗",
+          "chapter": 1,
+          "quote": "简迭微的别名是绛穗，是从前一起做事的人这样叫的。"
+        },
+        {
+          "name": "段泊循",
+          "alias": "苔隅",
+          "chapter": 2,
+          "quote": "屏幕顶端有人叫他苔隅，他解释段泊循的别名叫苔隅，从前同伴嫌他总坐在角落核对东西，便这样叫。"
+        },
+        {
+          "name": "毕见岚",
+          "alias": "柚翎",
+          "chapter": 3,
+          "quote": "挂断后，她对段泊循解释，毕见岚的别名是柚翎，以前的同事一直这样称呼她。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 9,
+          "quote": "简迭微把衔序夹交给段泊循，往后原件由段泊循保管，不再带回自己家里。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 11,
+          "quote": "屈绍荻将岬纹笔送给蒯令皎，明说这支笔以后归她，自己另买一支。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "段泊循已获准以调查人的身份出庭说明，他不再只是席后递材料的助理。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "之后的再审会谈固定在折榆庭侧室举行，南穗辩护所不再承办这轮会谈。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "封南缬把叠槭牌交给宓书冽封存，从此不再拿它进入剧院后台。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "蒯令皎",
+          "predicate": "旁听选择",
+          "chapter": 6,
+          "quote": "蒯令皎决定只旁听证据讨论，不参加任何面向媒体的联合发言。"
+        },
+        {
+          "subject": "段泊循",
+          "predicate": "声源所知",
+          "chapter": 7,
+          "quote": "段泊循这才知道，旧录音里的第二声轻响来自滑落的空箱盖。"
+        },
+        {
+          "subject": "毕见岚",
+          "predicate": "公开范围",
+          "chapter": 8,
+          "quote": "毕见岚只同意公开这次补充证词，不同意公开自己写给家人的信。"
+        },
+        {
+          "subject": "简迭微",
+          "predicate": "会谈规则",
+          "chapter": 10,
+          "quote": "简迭微定下新规，每次会谈先让当事人完整说完，再逐项追问。"
+        },
+        {
+          "subject": "封南缬",
+          "predicate": "离职安排",
+          "chapter": 16,
+          "quote": "封南缬撤回了辞职申请，决定留到本轮排练结束后再讨论去留。"
+        },
+        {
+          "subject": "宓书冽",
+          "predicate": "复核范围",
+          "chapter": 18,
+          "quote": "宓书冽接受复查声音鉴定的方法，但不把复查等同于认定任何人无罪。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 12,
+          "quote": "三声敲击全是空箱滚过地板接缝的声音，录音里并没有另一个人在催门。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "屈绍荻承认铅笔圈住的正是自己没有亲眼看见的部分，那个圈不指向另一个证人。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 16,
+          "quote": "蒯令皎把未寄出的道歉当面读给毕见岚听，信里那场误会到这里说清了。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 18,
+          "quote": "缺角登记折在值班表背面，封南缬当众展开后，失踪的一角终于拼回原位。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 12,
+          "quote": "三声敲击全是空箱滚过地板接缝的声音，录音里并没有另一个人在催门。"
+        },
+        {
+          "foreshadow": 5,
+          "chapter": 10,
+          "quote": "第二份陈述是陈述人自己要求暂缓公开的，封南缬没有为保住职位将它撤下。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "末排反复换位的旁听者",
+          "planted_chapter": 7,
+          "quote": "末排那位旁听者每次都换一个位置，却始终把同一只空杯放在身旁。"
+        },
+        {
+          "about": "毕见岚拒读的附页",
+          "planted_chapter": 11,
+          "quote": "毕见岚把信末的附页反扣着留下，说等能独自读完时再解释上面的半个名字。"
+        },
+        {
+          "about": "蒯令皎迟迟未答的邀约",
+          "planted_chapter": 19,
+          "quote": "蒯令皎收下邀约却没有答应日期，她说下一次见面需要先问过一个人。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a25f-w01-route-05",
+          "a25f-w01-route-08"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a25f-w01-route-01",
+          "a25f-w01-route-02",
+          "a25f-w01-route-03"
+        ],
+        "ask_like_change_ids": [
+          "a25f-w01-route-06",
+          "a25f-w01-route-07"
+        ],
+        "new_action_change_ids": [
+          "a25f-w01-route-03",
+          "a25f-w01-route-04"
+        ],
+        "thread_like_ask_ids": [
+          "a25f-w01-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a25f-w01-route-01",
+          "a25f-w01-route-02",
+          "a25f-w01-route-03",
+          "a25f-w01-route-04",
+          "a25f-w01-route-05",
+          "a25f-w01-route-06",
+          "a25f-w01-route-07",
+          "a25f-w01-route-08",
+          "a25f-w01-route-09"
+        ]
+      },
+      "no_evidence_modes": {
+        "a25f-w01-no-03": "not_stated",
+        "a25f-w01-no-04": "contradicted"
+      }
+    },
+    "w02": {
+      "characters": [
+        "慎珑序",
+        "嵇映璜",
+        "饶旻弈",
+        "邰颂微",
+        "覃蘅执",
+        "邴绍棠",
+        "禄青宓",
+        "冀照玄"
+      ],
+      "aliases": [
+        {
+          "name": "慎珑序",
+          "alias": "珀弦",
+          "chapter": 1,
+          "quote": "慎珑序的旧同事叫她珀弦，这个别名在新办公室也被沿用了。"
+        },
+        {
+          "name": "嵇映璜",
+          "alias": "筠赭",
+          "chapter": 2,
+          "quote": "嵇映璜笑着抬头说，筠赭是朋友叫她的旧别名，饶旻弈以后也可以这样叫。"
+        },
+        {
+          "name": "饶旻弈",
+          "alias": "绯榫",
+          "chapter": 3,
+          "quote": "绯榫是饶旻弈的旧别名，他在熟人留下的消息里仍认这个称呼。"
+        }
+      ],
+      "stale_facts": [
+        {
+          "fact": 1,
+          "changed_chapter": 9,
+          "quote": "嵇映璜将瑟页盘正式交给邰颂微，之后由邰颂微保管这一份获准语音原件。"
+        },
+        {
+          "fact": 2,
+          "changed_chapter": 11,
+          "quote": "慎珑序把斛星笔送给饶旻弈，说这支笔归他，不必再等项目结束后归还。"
+        },
+        {
+          "fact": 3,
+          "changed_chapter": 13,
+          "quote": "禄青宓从今天起可以独立发布已经核定的答复，不必每次再请覃蘅执按下发送。"
+        },
+        {
+          "fact": 4,
+          "changed_chapter": 15,
+          "quote": "语言包试用从公司内部扩大到受邀玩家，尚未进入任何人都能下载的公开阶段。"
+        },
+        {
+          "fact": 5,
+          "changed_chapter": 17,
+          "quote": "釉棱麦从嵇映璜手里交给邴绍棠保管，只用来核对字幕节奏，不录成品声音。"
+        }
+      ],
+      "missing_facts": [
+        {
+          "subject": "邴绍棠",
+          "predicate": "停顿准则",
+          "chapter": 6,
+          "quote": "邴绍棠确认字幕换页必须等句意结束，不能只按声音停顿切开。"
+        },
+        {
+          "subject": "邰颂微",
+          "predicate": "错序所知",
+          "chapter": 7,
+          "quote": "邰颂微查明字幕顺序颠倒来自旧编号残留，不是译者故意调换句子。"
+        },
+        {
+          "subject": "饶旻弈",
+          "predicate": "署名许可",
+          "chapter": 8,
+          "quote": "饶旻弈只授权使用自己这次提交的译名，不允许公司替他编写获奖履历。"
+        },
+        {
+          "subject": "慎珑序",
+          "predicate": "审阅次序",
+          "chapter": 10,
+          "quote": "慎珑序决定先让译者说明取舍，再由发行方讨论能否保留争议用词。"
+        },
+        {
+          "subject": "嵇映璜",
+          "predicate": "续约决定",
+          "chapter": 16,
+          "quote": "嵇映璜接受了下一阶段的短期续约，但没有答应转为长期雇员。"
+        },
+        {
+          "subject": "禄青宓",
+          "predicate": "回应时限",
+          "chapter": 18,
+          "quote": "禄青宓承诺每三天整理一次试用意见，不再承诺收到当天逐条答复。"
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 12,
+          "quote": "迟到的半句是字幕触发晚了半拍，声优没有漏读，原声里那句话从头到尾都在。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 14,
+          "quote": "署名页那条空行留给不愿公开姓名的译者，人数一一对得上，并没有少算一个人。"
+        },
+        {
+          "foreshadow": 3,
+          "chapter": 16,
+          "quote": "那段没有播放的参考音只是嵇映璜留下的无词呼吸，用来说明句间的停顿。"
+        },
+        {
+          "foreshadow": 4,
+          "chapter": 18,
+          "quote": "留言里的方括号只是标示替代按键的写法，玩家当面操作后，这个疑问就解开了。"
+        }
+      ],
+      "open_threads": [
+        {
+          "foreshadow": 5,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 6,
+          "abandonable": true
+        },
+        {
+          "foreshadow": 7,
+          "abandonable": false
+        },
+        {
+          "foreshadow": 8,
+          "abandonable": false
+        }
+      ],
+      "stale_notes": [
+        {
+          "foreshadow": 1,
+          "chapter": 12,
+          "quote": "迟到的半句是字幕触发晚了半拍，声优没有漏读，原声里那句话从头到尾都在。"
+        },
+        {
+          "foreshadow": 5,
+          "chapter": 10,
+          "quote": "独白是饶旻弈自己要求撤回的，覃蘅执没有因为字数太长拒绝那个版本。"
+        }
+      ],
+      "missing_threads": [
+        {
+          "about": "空白对话反复出现的光标",
+          "planted_chapter": 7,
+          "quote": "那段没有文字的对话结束后，光标仍回到同一处，像在等待一个还没写出的回答。"
+        },
+        {
+          "about": "译者没有交出的第二种句尾",
+          "planted_chapter": 11,
+          "quote": "饶旻弈说自己还留着另一种句尾，却把纸折好收回，没有告诉任何人差在哪里。"
+        },
+        {
+          "about": "玩家要求保留的旧提示",
+          "planted_chapter": 19,
+          "quote": "一位玩家只要求留下那条旧提示，没有解释理由，也没有同意把理由写进反馈汇总。"
+        }
+      ],
+      "same_input_groups": [
+        [
+          "a25f-w02-route-05",
+          "a25f-w02-route-08"
+        ]
+      ],
+      "route_semantics": {
+        "colloquial_change_ids": [
+          "a25f-w02-route-01",
+          "a25f-w02-route-02",
+          "a25f-w02-route-03"
+        ],
+        "ask_like_change_ids": [
+          "a25f-w02-route-06",
+          "a25f-w02-route-07"
+        ],
+        "new_action_change_ids": [
+          "a25f-w02-route-03",
+          "a25f-w02-route-04"
+        ],
+        "thread_like_ask_ids": [
+          "a25f-w02-route-06"
+        ],
+        "paraphrased_route_ids": [
+          "a25f-w02-route-01",
+          "a25f-w02-route-02",
+          "a25f-w02-route-03",
+          "a25f-w02-route-04",
+          "a25f-w02-route-05",
+          "a25f-w02-route-06",
+          "a25f-w02-route-07",
+          "a25f-w02-route-08",
+          "a25f-w02-route-09"
+        ]
+      },
+      "no_evidence_modes": {
+        "a25f-w02-no-03": "not_stated",
+        "a25f-w02-no-04": "contradicted"
+      }
+    }
+  }
+}

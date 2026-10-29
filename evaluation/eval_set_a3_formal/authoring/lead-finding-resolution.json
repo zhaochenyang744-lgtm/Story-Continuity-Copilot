@@ -1,0 +1,42 @@
+{
+  "status": "closed",
+  "findings": [
+    {
+      "id": "W01G01",
+      "status": "closed"
+    },
+    {
+      "id": "W01G02",
+      "status": "closed"
+    },
+    {
+      "id": "W01F01",
+      "status": "closed"
+    },
+    {
+      "id": "W01F02",
+      "status": "closed"
+    },
+    {
+      "id": "W01F03",
+      "status": "closed"
+    },
+    {
+      "id": "W02F01",
+      "status": "closed"
+    },
+    {
+      "id": "W02F02",
+      "status": "closed"
+    }
+  ],
+  "prior_findings_closed": [
+    "W02P01"
+  ],
+  "source_sha256": {
+    "w01": "68739d57fe50971e7b569b29be243835d48890e6085d8af481a41c25b79c8672",
+    "w02": "d16fc9678f35fb6bf85875e052a2f9b83cec95610c11f738921dccc280569d7b"
+  },
+  "tasks_sha256": "0f72d1c2022ad40b778247b5c18aa9f2c5bb217e7a8ea1e32c7725657edc0bbd",
+  "unresolved_findings": 0
+}

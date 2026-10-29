@@ -1,0 +1,17 @@
+{
+  "tasks": 10,
+  "reference_inputs": 915,
+  "external_failures": [],
+  "external_failure_count": 0,
+  "internal_failure_pairs": [],
+  "internal_failure_count": 0,
+  "maximum_external_similarity": 0.5588235294117647,
+  "maximum_internal_similarity": 0.3880597014925373,
+  "copy_pending_source_completion": false,
+  "candidate_binding_count": 18,
+  "strict_names_audit_count": 19,
+  "source_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c",
+  "tasks_sha256": "6d6526935eae85c65139aa4cdef6c69e9493844c529226c0a1d1137c0cfade69",
+  "request_copy_errors": 0,
+  "after_points_copy_errors": 0
+}

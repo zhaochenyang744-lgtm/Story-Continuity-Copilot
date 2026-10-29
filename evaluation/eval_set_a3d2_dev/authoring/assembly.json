@@ -1,0 +1,173 @@
+{
+  "source_sha256": "1f5ac0ecd676e11c9faff4da4c81c4310dbac82695d4c1a17d399c114c2448b0",
+  "chapters": [
+    {
+      "chapter": 1,
+      "han": 2946,
+      "fragment_sha256": "b8a80074762791f8faa784b796758e96d4fe540c6bde4441b017cd50903db16f"
+    },
+    {
+      "chapter": 2,
+      "han": 2956,
+      "fragment_sha256": "7d31d8a08758db4f54a39f5e6c4434d5d9905685036e0ef54e69f1aed3f20f09"
+    },
+    {
+      "chapter": 3,
+      "han": 3010,
+      "fragment_sha256": "613940de6e698d0bf49108f8c0031da7cc3cb3daacf8e406cf2b27cb26eeb21f"
+    },
+    {
+      "chapter": 4,
+      "han": 3001,
+      "fragment_sha256": "51f531881ed95a7cdc99dea21f9023faa65ce40f0356b8b9a96ccf58d3c6e285"
+    },
+    {
+      "chapter": 5,
+      "han": 3009,
+      "fragment_sha256": "719ebf0971253abe6408354a89a053d0465c08dfc79c06b67367659604d05a8c"
+    },
+    {
+      "chapter": 6,
+      "han": 2932,
+      "fragment_sha256": "f088811695e361aa2fda72d4f30061e7c3d299a707a01c8a46d9df34a0fa1c59"
+    },
+    {
+      "chapter": 7,
+      "han": 2928,
+      "fragment_sha256": "af4839fe79c26de2d787b59337ff74099f849f0736157de0e46eef20ee592e26"
+    },
+    {
+      "chapter": 8,
+      "han": 2936,
+      "fragment_sha256": "11cccc4f775c16e9424821bdabd9a042e15a803f61ff4cbb9c8722e67c5081b4"
+    },
+    {
+      "chapter": 9,
+      "han": 2971,
+      "fragment_sha256": "d609cf846fb1a3d607a06c730700be1d5238017b02e6e86c33c2a1efc2cae454"
+    },
+    {
+      "chapter": 10,
+      "han": 3047,
+      "fragment_sha256": "407b6fc99de1582dc5b5e154acfeab3289813884b959cf38865bfae26f128376"
+    },
+    {
+      "chapter": 11,
+      "han": 2904,
+      "fragment_sha256": "4ef17c28b0e460006baa89f55b196615904e56f470d7590d93b9644147eabb50"
+    },
+    {
+      "chapter": 12,
+      "han": 2962,
+      "fragment_sha256": "94ea4bde04f82a2f0f2a391cb06b45a6d4ab3171a0a39634fd15e3652a43d84a"
+    },
+    {
+      "chapter": 13,
+      "han": 2865,
+      "fragment_sha256": "7fc1171877a66da52f6950390a68532060ef7cdc04c280b617a364cff7ad04a0"
+    },
+    {
+      "chapter": 14,
+      "han": 2932,
+      "fragment_sha256": "9bcf8bf57f1c02c69f9025d53dbb6a20cbcf15b524a951c3d49cc00b2c42e55d"
+    },
+    {
+      "chapter": 15,
+      "han": 2918,
+      "fragment_sha256": "9c15acd12062e2bb76d5ba42dd99157df6f14e4fdd4deb2bd785ddcb0058d485"
+    },
+    {
+      "chapter": 16,
+      "han": 3012,
+      "fragment_sha256": "eb1a7ee8c9d9e59c6e32884cdeeeb7a5b4cd2d416ebc9ad34d638182f9cde2ef"
+    },
+    {
+      "chapter": 17,
+      "han": 2961,
+      "fragment_sha256": "3dd6576aa77aae59e394a0d092de1832c3c2716c7812e33332cb4a8925ac318c"
+    },
+    {
+      "chapter": 18,
+      "han": 2937,
+      "fragment_sha256": "c01a84a3ebcbdb7b335060f6492192d76d5589b6de4d45759136c1ab0442b32b"
+    },
+    {
+      "chapter": 19,
+      "han": 3024,
+      "fragment_sha256": "372e3047353b74d10eb1c815eb1acd512cbadebdc524bc87577c3af15cd8f85a"
+    },
+    {
+      "chapter": 20,
+      "han": 2998,
+      "fragment_sha256": "f38709ad5ce25c4acea3cf9b9f32808ece2bf1010f098546a8b0827c8271629d"
+    },
+    {
+      "chapter": 21,
+      "han": 2883,
+      "fragment_sha256": "baf9c46b03aa219022f7e22a7559b72c9e5cbefc09bf59b89b538cff6abaca80"
+    },
+    {
+      "chapter": 22,
+      "han": 3004,
+      "fragment_sha256": "f64ca8f05bf976e3098c127cf98b6961f85e0823a566ff685b993192db3ca5e5"
+    },
+    {
+      "chapter": 23,
+      "han": 2859,
+      "fragment_sha256": "1806456f3fca667af19fda0b8bc2e8488b9217d75c4bb79c8acb56dbcba37e7d"
+    },
+    {
+      "chapter": 24,
+      "han": 2878,
+      "fragment_sha256": "0e9c709b06aeb6f6f92c647c54a09e95f53e87f9646ecff5ca94e82c30309be4"
+    },
+    {
+      "chapter": 25,
+      "han": 2870,
+      "fragment_sha256": "1a65dbf2d964bce52296eaf7b050bc6fc82ca529f805736cd31728780100c9d6"
+    },
+    {
+      "chapter": 26,
+      "han": 2889,
+      "fragment_sha256": "a77ee83c81cae6f6b865f67fa22dc8bd67ac021823c6f46375db7a7ef6810031"
+    },
+    {
+      "chapter": 27,
+      "han": 2869,
+      "fragment_sha256": "a7f37108102951d6892499a0db78b3e5c81e2b3667f0532ed1bad1086d4cb057"
+    },
+    {
+      "chapter": 28,
+      "han": 2927,
+      "fragment_sha256": "760cd1b901fac48199bb00770023f6e0e8d083476cf2485dd3b21688274318d7"
+    },
+    {
+      "chapter": 29,
+      "han": 2873,
+      "fragment_sha256": "169f174f6fe0b3e26caf128ca14eaed335f4d97227833ebdbf05b0d74bbb69f9"
+    },
+    {
+      "chapter": 30,
+      "han": 2874,
+      "fragment_sha256": "3e08a577e8157d5d090e327080440ecfe7375513d373ea08464627753640e8e4"
+    }
+  ],
+  "source_han": 88175,
+  "review_scopes": {
+    "tidy-scope-01": {
+      "chapters": [
+        1,
+        10
+      ],
+      "sha256": "e5a089a898956d3c8dc011be64b2790521ed0ffc28920258ac243fa5acf7cf24"
+    },
+    "tidy-scope-02": {
+      "chapters": [
+        16,
+        22
+      ],
+      "sha256": "ef1fdfa5534983b561f18c65f1fd04977db29888b9d09ffe07a3e402ba879e76"
+    }
+  },
+  "assembly": "verbatim join of individually authored chapters; no generated prose"
+}

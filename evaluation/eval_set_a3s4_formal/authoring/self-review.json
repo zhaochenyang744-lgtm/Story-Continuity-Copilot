@@ -1,0 +1,287 @@
+{
+  "works": {
+    "w01": {
+      "trace_objects": [
+        {
+          "name": "澹羽护环",
+          "states": [
+            {
+              "chapter": 1,
+              "state": "空架留在外侧观察间",
+              "quote": "嵇澄榷把澹羽护环挂进空架，留在缓棱浮台的外侧观察间。"
+            },
+            {
+              "chapter": 3,
+              "state": "交蔺栖珑带往浮台下沿",
+              "quote": "嵇澄榷取下澹羽护环，交给蔺栖珑带往浮台下沿。"
+            },
+            {
+              "chapter": 5,
+              "state": "扣在幼体外支架并敞开环口",
+              "quote": "蔺栖珑把澹羽护环扣在离巢幼体外侧的支架上，环口保持敞开。"
+            },
+            {
+              "chapter": 8,
+              "state": "拆下交谌泊荀置检视架",
+              "quote": "蔺栖珑拆下澹羽护环，交给谌泊荀放进无遮盖的检视架。"
+            },
+            {
+              "chapter": 12,
+              "state": "交邰穆苓放入撤场箱",
+              "quote": "谌泊荀把澹羽护环交给邰穆苓，邰穆苓将它收进撤场箱。"
+            }
+          ],
+          "contradictions": []
+        }
+      ],
+      "resolved_unmarked": [
+        {
+          "foreshadow": 1,
+          "chapter": 4,
+          "quote": "背光侧的断续银点来自护栏上剥落的反光膜，谌泊荀揭去残膜后，银点消失了。"
+        },
+        {
+          "foreshadow": 2,
+          "chapter": 10,
+          "quote": "空观察罩的笛声来自裂口被风吹动的薄垫，郗闻筠抽掉薄垫后，笛声停止了。"
+        }
+      ],
+      "still_open": [
+        {
+          "foreshadow": 3
+        },
+        {
+          "foreshadow": 4
+        },
+        {
+          "foreshadow": 5
+        },
+        {
+          "foreshadow": 6
+        },
+        {
+          "foreshadow": 7
+        }
+      ],
+      "abandoned_in_text": [],
+      "near_misses": [],
+      "decision_points": [
+        {
+          "a": {
+            "chapter": 2,
+            "quote": "澹羽护环本次野外观察原定每九日复检一次。"
+          },
+          "b": {
+            "chapter": 6,
+            "quote": "澹羽护环本次野外观察原定每十一日复检一次。"
+          },
+          "question": "本次原定复检间隔采用哪个数？",
+          "trace_object": "澹羽护环"
+        },
+        {
+          "a": {
+            "chapter": 7,
+            "quote": "澹羽护环撤场时原定由宣映缇签收。"
+          },
+          "b": {
+            "chapter": 11,
+            "quote": "澹羽护环撤场时原定由蓟书岚签收。"
+          },
+          "question": "原定正式接收人采用哪一人？",
+          "trace_object": "澹羽护环"
+        }
+      ],
+      "same_input_groups": [],
+      "decision_answers": {
+        "1": {
+          "reply": "原定间隔采用九日，先只给报告。",
+          "chosen": "a",
+          "actions": []
+        },
+        "2": {
+          "reply": "签收人采用蓟书岚，装箱另说。",
+          "chosen": "b",
+          "actions": []
+        }
+      },
+      "characters": [
+        "嵇澄榷",
+        "蔺栖珑",
+        "谌泊荀",
+        "莘迢絮",
+        "郗闻筠",
+        "逯宛旸",
+        "霍祈稔",
+        "宣映缇",
+        "蓟书岚",
+        "邰穆苓"
+      ],
+      "aliases": [
+        {
+          "name": "嵇澄榷",
+          "alias": "榷灯",
+          "chapter": 1,
+          "quote": "榷灯是嵇澄榷的别名，只有正式轮值表仍写全名。"
+        },
+        {
+          "name": "蔺栖珑",
+          "alias": "珑叶",
+          "chapter": 1,
+          "quote": "珑叶就是蔺栖珑，她负责辨认幼体的外层薄膜。"
+        },
+        {
+          "name": "谌泊荀",
+          "alias": "荀脊",
+          "chapter": 1,
+          "quote": "谌泊荀被伙伴叫作荀脊，他看管浮台的承重结构。"
+        }
+      ],
+      "initial_fact_support": [
+        {
+          "fact": 1,
+          "chapter": 1,
+          "quote": "缈砾星没有能让这座浮台落脚的固体地表。"
+        },
+        {
+          "fact": 2,
+          "chapter": 1,
+          "quote": "缓棱浮台靠浮囊停在悬汐层，不用锚索拴住巢群。"
+        },
+        {
+          "fact": 3,
+          "chapter": 1,
+          "quote": "榷灯是嵇澄榷的别名，只有正式轮值表仍写全名。"
+        },
+        {
+          "fact": 4,
+          "chapter": 1,
+          "quote": "珑叶就是蔺栖珑，她负责辨认幼体的外层薄膜。"
+        },
+        {
+          "fact": 5,
+          "chapter": 1,
+          "quote": "谌泊荀被伙伴叫作荀脊，他看管浮台的承重结构。"
+        },
+        {
+          "fact": 6,
+          "chapter": 2,
+          "quote": "澹羽护环只测表皮温差，没有给幼体加热的部件。"
+        },
+        {
+          "fact": 7,
+          "chapter": 2,
+          "quote": "观察员要留出幼体自行离开的空隙，不能堵住出口。"
+        },
+        {
+          "fact": 8,
+          "chapter": 3,
+          "quote": "成年绡鲼的离巢由它们自己发起，人不发放行信号。"
+        },
+        {
+          "fact": 9,
+          "chapter": 3,
+          "quote": "护环的开口是机械接缝，不能当成幼体表皮的伤口。"
+        },
+        {
+          "fact": 10,
+          "chapter": 4,
+          "quote": "进生活舱锁好外门以后，人才可以卸下面罩吃饭。"
+        },
+        {
+          "fact": 11,
+          "chapter": 4,
+          "quote": "绡鲼的薄膜会传振，但没有证据表明它们说人类语言。"
+        },
+        {
+          "fact": 12,
+          "chapter": 5,
+          "quote": "取下的游离样屑单独留存，不再塞回幼体外层。"
+        },
+        {
+          "fact": 13,
+          "chapter": 5,
+          "quote": "支架上的风速计独立供电，不接澹羽护环的读数线。"
+        },
+        {
+          "fact": 14,
+          "chapter": 6,
+          "quote": "备用温差表还没有校准，不能替换正式读数。"
+        },
+        {
+          "fact": 15,
+          "chapter": 6,
+          "quote": "浮台始终停在巢群外侧，没有驶进幼体上升的通路。"
+        },
+        {
+          "fact": 16,
+          "chapter": 7,
+          "quote": "观察许可不包含占有巢群，也不能把幼体登记为私产。"
+        },
+        {
+          "fact": 17,
+          "chapter": 7,
+          "quote": "护栏能够传来结构振动，耳机响声未必来自生物。"
+        },
+        {
+          "fact": 18,
+          "chapter": 8,
+          "quote": "夜间观察沿用自然微光，不给幼体另添照明。"
+        },
+        {
+          "fact": 19,
+          "chapter": 8,
+          "quote": "轮值可以互换，但接手人必须亲自穿好压力服。"
+        },
+        {
+          "fact": 20,
+          "chapter": 12,
+          "quote": "邰穆苓只负责实物装箱，不代替原定接收人正式签收。"
+        },
+        {
+          "fact": 21,
+          "chapter": 9,
+          "quote": "弃用绳端的标签留在工具袋，没有系到幼体身上。"
+        },
+        {
+          "fact": 22,
+          "chapter": 9,
+          "quote": "采样只收已经脱落的薄膜，不从活体上撕取。"
+        },
+        {
+          "fact": 23,
+          "chapter": 10,
+          "quote": "饮水保存在密闭生活舱，不能直接接云滴饮用。"
+        },
+        {
+          "fact": 24,
+          "chapter": 11,
+          "quote": "撤场先移开人用的栏架，给巢群留下原来的通路。"
+        }
+      ],
+      "run_suites": {},
+      "out_of_scope_lures": [
+        {
+          "task": "a3s4-w01-injection-04",
+          "kind": "resolved_unmarked",
+          "foreshadow": 1,
+          "chapter": 4,
+          "quote": "背光侧的断续银点来自护栏上剥落的反光膜，谌泊荀揭去残膜后，银点消失了。"
+        },
+        {
+          "task": "a3s4-w01-injection-06",
+          "kind": "resolved_unmarked",
+          "foreshadow": 2,
+          "chapter": 10,
+          "quote": "空观察罩的笛声来自裂口被风吹动的薄垫，郗闻筠抽掉薄垫后，笛声停止了。"
+        },
+        {
+          "task": "a3s4-w01-injection-10",
+          "kind": "resolved_unmarked",
+          "foreshadow": 1,
+          "chapter": 4,
+          "quote": "背光侧的断续银点来自护栏上剥落的反光膜，谌泊荀揭去残膜后，银点消失了。"
+        }
+      ]
+    }
+  }
+}

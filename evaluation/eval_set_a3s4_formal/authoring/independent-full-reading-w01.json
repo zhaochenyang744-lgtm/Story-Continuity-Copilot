@@ -1,0 +1,82 @@
+{
+  "status": "completed",
+  "work": "w01",
+  "chapter_coverage": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "source_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c",
+  "reviewed_source_versions": [
+    {"source_sha256": "77b367f44aa044febc236f4d2a11a87f0fcbfe46fc88acb66784c5c94c0fd482"},
+    {"source_sha256": "9dbbbda96cf61393d3687fc725d3125dab61d1614586a4998666a5bce533c79c"}
+  ],
+  "unresolved_findings": 0,
+  "unresolved_findings_meaning": "首轮发现中没有尚未处理的非设计问题；两处原定安排冲突已核实为预登记决定点并保留，任务执行时仍须先问作者，不能当作已在正文中选定一侧。",
+  "findings": [
+    {
+      "id": "w01-stage1-01",
+      "resolution_status": "designed",
+      "chapters": [2, 6],
+      "resolution": "首轮独立发现的九日与十一日原定复检周期冲突，逐字对应self-review.json中decision_points第1项。两句同指本次野外观察，不是先后检查动作；按登记保留为需要作者拿主意的差异。",
+      "final_semantic_check": "第3题范围1至6完整覆盖两侧，作者请求明说先问；回答只选九日。正文夹条要求最近页直接定不能覆盖提问义务。"
+    },
+    {
+      "id": "w01-stage1-02",
+      "resolution_status": "designed",
+      "chapters": [7, 11, 12],
+      "resolution": "首轮独立发现的两个原定正式签收人逐字对应decision_points第2项；第12章实物装箱被明确排除为正式签收，故不是临时持有自然变化。两侧按预登记保留。",
+      "final_semantic_check": "第5题范围7至12覆盖两侧，需问作者；回答选蓟书岚，装箱另说。就近页碰巧同侧也不能免除先问。"
+    },
+    {
+      "id": "w01-stage1-03",
+      "resolution_status": "closed",
+      "chapters": [6],
+      "final_quote": "壳旁那片已经取出的软衬被她的袖口带落到地上。",
+      "resolution": "最终第6章把软衬位置写在壳旁，并补出袖口带落的动作；不再从已取空的壳内凭空掉出，与前句已经取出相容。"
+    },
+    {
+      "id": "w01-stage1-04",
+      "resolution_status": "closed",
+      "chapters": [8],
+      "final_quote": "回生活舱那段暗路，两人仍得结伴慢慢认着走。",
+      "resolution": "最终明确总同行人数为两人，接着写嵇澄榷送莘迢絮、蔺栖珑留在下沿；不再容易误读为两名陪同者。"
+    },
+    {
+      "id": "w01-stage1-05",
+      "resolution_status": "closed",
+      "chapters": [8],
+      "final_quote": "嵇澄榷尚未回到下沿，蔺栖珑蹲在原处，将手套上的一处皱褶反复抹开。",
+      "resolution": "最终把蔺栖珑与谌泊荀的试握及对话定位在等待期间，之后才写嵇澄榷返回，消除了两次到场而无离场的时间歧义。"
+    },
+    {
+      "id": "w01-stage1-06",
+      "resolution_status": "closed",
+      "chapters": [12],
+      "final_quote": "若有人再叫自己撑袋，请让他先睡完这一觉再说。",
+      "resolution": "最终改成睡完，与前句回去想先睡一觉的动作一致，措辞疑点闭环。"
+    }
+  ],
+  "full_reading_review": {
+    "method": "最终版本按第1至2、3至4、5至6、7至8、9至10、11至12章六批完整读取，均无截断；在此之前首轮也曾完整通读12章。最后重判7条伏笔并人工逐题核对10题及全部登记依据。",
+    "characters_and_pronouns": "10名具名人物、3组别名均有直接介绍，后文使用相容；多人物对话逐段核过，未发现新的明确代词或身份冲突。",
+    "equipment_and_actions": "护环五条登记状态均由原文支持，观察间挂架、下沿暂放、敞口支架、无遮盖检视架、实物入箱可以接通；中途检查未擅自改成重新安装，装箱未写成正式签收。",
+    "life_support": "外侧观察间保持室外条件，饮水进食与卸面罩安排在密闭生活舱，穿衣间内处理手套；第12章只脱外护套时贴身压力手套仍在。夜间自然微光与白日照器材不构成冲突。",
+    "time_and_locations": "修订后的第8章等待、送回与返回次序清楚；全作没有足以确证的新时间硬冲突，不把章序机械等同于连续自然日。",
+    "foreshadows": "最终两条有直接因果解释与消除后复核，另外五条仍缺来源、去向或形成原因；正文未明示放弃，撤场也不自动把它们标为放弃。",
+    "shared_draft": "完整阅读第13章开头801汉字，承接生活舱内收物与合影，不改变登记伏笔状态或裁决两个决定点。该开头不是已完成正文，不把到结尾的范围补到13。",
+    "new_findings": 0,
+    "first_round_records_preserved": true,
+    "gold_changes_required": 0,
+    "source_edits_by_reviewer": 0,
+    "model_api_calls": 0,
+    "product_runs": 0,
+    "formal_evaluation_runs": 0
+  },
+  "supporting_input_sha256": {
+    "materials/w01-facts.json": "62f8b7eafe3fedf7c8f252170b3314bf1789dd827a4fb84f2da9d837bb1c81c6",
+    "materials/w01-foreshadows.json": "a116a51c6f993bec8e055bcc6af650fde135e32a0024252f45986c47da807241",
+    "tasks.json": "6d6526935eae85c65139aa4cdef6c69e9493844c529226c0a1d1137c0cfade69",
+    "authoring/self-review.json": "4574098f060104b711497af62b37f4f9d7add0f558a96a3b952136de212f463d",
+    "authoring/independent-continuity-notes-w01-stage1.json": "cb2d9941acd906151306b58809d715e4b97dd4eb4ae2afc3dca54ac717af1890",
+    "authoring/independent-thread-w01.json": "216a8a75e55ff09955eac8d24cfb446f929f9bbb69669d27a0640625343e4c29",
+    "authoring/independent-thread-w01-final.json": "12cf70a75ee28fa3111690c04f1faa123d8a7c15d12bff82c5f1f14598a4d32c",
+    "authoring/independent-gold-audit.json": "320e8f25982cee177873a2801231c3c7131223bf634cf7d229027c629de42c62"
+  }
+}

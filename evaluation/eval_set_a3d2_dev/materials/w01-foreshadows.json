@@ -1,0 +1,11 @@
+[
+  {"title":"运单预留空行","description":"坡板运单的编号栏留有一行空白，第一批收件时没有说明原因，大家还不知道是否另有一件未交到的坡板。","status":"planted","planted_chapter":1},
+  {"title":"推车袋角的异色布","description":"推车收纳袋角贴着一小片颜色不同的布，初次看见时没认出来历，暂时和包装留在一起等待后续解释。","status":"developing","planted_chapter":2},
+  {"title":"匿名改字便条","description":"有人留下修改登记用语的便条而未署名，便条指出了租用者可能误解的字句，初次发现时没有认出作者。","status":"planted","planted_chapter":4},
+  {"title":"旧租单的模糊收件人","description":"早期讨论中出现一份旧租单，收件人字迹模糊，几个人曾想追问其身份，最初还没有决定是否继续。","status":"developing","planted_chapter":3},
+  {"title":"夜间送取的楼内许可","description":"夜间送取能否得到大厦许可仍在等答复，眼前可以白天送取并不代表夜间也已经获得同意。","status":"planted","planted_chapter":5},
+  {"title":"秋季合作能否延长","description":"供应方是否愿意延长秋季合作尚未回信，本次试办继续推进不代表供应方已经答应下一阶段安排。","status":"developing","planted_chapter":6},
+  {"title":"连照棠的公开经验分享","description":"连照棠是否愿意参加后续公开经验分享仍未决定，租用者代表身份不等于同意公开讲述自己的经历。","status":"planted","planted_chapter":9},
+  {"title":"跨楼互设归还点","description":"能否和另一座大厦互设归还点要等对方答复，当前跨楼展示与未来归还点的合作不是同一件事。","status":"developing","planted_chapter":16},
+  {"title":"普通挂绳去向","description":"首批收件时普通挂绳不见了，后来从旧纸套卷起的内层掉出，嵇沐乔认出并找回，不需要再追。","status":"resolved","planted_chapter":1,"resolved_chapter":10}
+]

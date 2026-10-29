@@ -2,32 +2,46 @@
 
 // What every kind of assistant task shares: how a refusal or a failure is worded, the numbered sources under an answer, and
 // the 查过 / 没查 line. The views for each kind (ask, 写前回顾, 帮我改这一处) are built from these.
-import { useState } from "react";
+import { useId, useState } from "react";
 import { labelError, type ApiFailure } from "../../api";
 import type { AssistantAnswer, AssistantSource, AssistantTask, RecapAnswer } from "../../model";
-import { bareChapterTitle, chapterHeading, formatCount } from "../ui";
+import { bareChapterTitle, type CheckUsage, chapterHeading, formatCount } from "../ui";
 
 /** The phrase the 查过 / 没查 line carries when a task was cut short; it is said as a line of its own above the answer. */
 export const LIMIT_MARK = "步数或预算已到";
 export const LIMIT_LINE = "查到上限了，先按已找到的回答。";
 export const OUT_OF_SCOPE_TEXT = "我只能查这部作品里写过的内容，可以换个关于作品的问题。";
 export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果" };
-export const VISITOR_USED_UP = "访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
+export const VISITOR_SAMPLE_ONLY = "访客只能在示例作品上用助手。注册后可以在自己的作品上用。";
+export const VISITOR_USED_UP ="访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
 export const RUNNING_NOW = "上一个问题还在查";
 export const FOLLOW_UP_LIMIT_TEXT = "这一串已经追问两次了，可以问一个新问题";
 /** What a task costs before anything is added: 500 characters (the server reads the figure from the usage). */
 export const TASK_CHARS = 500;
 
 export const active = (task: AssistantTask) => task.status === "queued" || task.status === "running";
+/** A long task (v2.1 B) the program is working on by itself: the plan is being made, or the steps are being taken. It is asked for every 2 seconds. */
+export const LONG_LIVE: AssistantTask["status"][] = ["planning", "long_queued", "long_running"];
+export const longLive = (task: AssistantTask) => task.kind === "long" && LONG_LIVE.includes(task.status);
+/** A long task that has come to a stop the author should see: it asks, or it is over. */
+export const longSettled = (status: string) => ["waiting_author", "completed", "stopped", "failed"].includes(status);
 export const isRecap = (answer: AssistantTask["answer"]): answer is RecapAnswer => Boolean(answer && "kind" in answer && answer.kind === "recap");
 /** The answer of an ask or a fix_issue task (a recap's answer has another shape). */
 export const sentencesOf = (task: AssistantTask): AssistantAnswer | null => (task.answer && !isRecap(task.answer) ? task.answer : null);
+/** Every sentence an answer holds: its own, then those of a long task's report sections, in the order they are shown. */
+export const allSentences = (answer: AssistantAnswer | null) => [...(answer?.sentences ?? []), ...Object.values(answer?.sections ?? {}).flat()];
 
 export const whereLabel = (source: AssistantSource) =>
   source.chapter_number != null ? chapterHeading(source.chapter_number, source.chapter_title ?? "") : SOURCE_KIND[source.kind] ?? "资料";
-/** The label on a citation card: a fact says it is a summary (it is not the author's own words), a passage names its chapter. */
-export const cardLabel = (source: AssistantSource) =>
-  source.kind === "fact" && source.chapter_number != null ? `事实摘要 · 第 ${source.chapter_number} 章` : whereLabel(source);
+/** The label on a citation card, by what the source really is: a passage names its chapter and title, a fact says it is a summary (it is not
+    the author's own words), a foreshadow record and a plan say so and name their chapter. */
+export function cardLabel(source: AssistantSource): string {
+  const chapter = source.chapter_number != null ? ` · 第 ${source.chapter_number} 章` : "";
+  if (source.kind === "fact" && chapter) return `事实摘要${chapter}`;
+  if (source.kind === "foreshadow") return `伏笔记录${chapter}`;
+  if (source.kind === "plan") return `计划${chapter}`;
+  return whereLabel(source);
+}
 /** Where 去原文 takes the author, and what to look for there: the passage itself, or for a fact the passage it was taken from.
     Null when the source has no chapter. A fact without a source passage still opens its chapter, with nothing to find. */
 export function locateTarget(source: AssistantSource): { chapter: number; text: string } | null {
@@ -40,11 +54,32 @@ export function locateTarget(source: AssistantSource): { chapter: number; text: 
 /** "第 9 章 仓道的高台", the way a screen reader gets it. */
 export const spokenWhere = (source: AssistantSource) =>
   source.chapter_number != null ? `第 ${source.chapter_number} 章${bareChapterTitle(source.chapter_title ?? "") ? ` ${bareChapterTitle(source.chapter_title ?? "")}` : ""}` : SOURCE_KIND[source.kind] ?? "资料";
+/** Why no new question can be asked at all (the day's allowance is used up), or empty: said inside the box, on the buttons that would ask, and in the bar over picked words. */
+export function quotaReason(usage: CheckUsage | null, sample: boolean): string {
+  if (usage?.account_type === "registered" && !sample && usage.check_chars_remaining < (usage.assistant_task_chars ?? TASK_CHARS)) {
+    return `${refusalText({ code: "character_quota_exceeded", details: { remaining: usage.check_chars_remaining } }, false)}用掉的额度 24 小时后陆续返还。`;
+  }
+  if (usage?.account_type === "visitor" && !sample) return VISITOR_SAMPLE_ONLY;
+  if (usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined && usage.assistant_tasks_remaining <= 0) return VISITOR_USED_UP;
+  return "";
+}
+/** A visitor on a work of their own: the assistant is not there to use, and the box says so from the start (V11). */
+export const visitorOutsideSample = (usage: CheckUsage | null, sample: boolean) => usage?.account_type === "visitor" && !sample;
+
+/** The time on the line between two turns: 今天 21:40, or 10月25日 21:40 for another day. */
+export function turnTime(iso: string, now = new Date()): string {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return "";
+  const clock = at.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+  const same = at.getFullYear() === now.getFullYear() && at.getMonth() === now.getMonth() && at.getDate() === now.getDate();
+  return same ? `今天 ${clock}` : `${at.getMonth() + 1}月${at.getDate()}日 ${clock}`;
+}
+
 /** The refs a task's answer cites, in the order they first appear: their position is the number shown. `sources` holds every
     passage the task turned up, cited or not, so a source only counts here when the answer's sentences name it and it is marked cited. */
 export function citedRefs(task: AssistantTask): string[] {
   const order: string[] = [];
-  for (const sentence of sentencesOf(task)?.sentences ?? []) for (const ref of sentence.refs) if (!order.includes(ref) && task.sources[ref] && task.sources[ref].cited !== false) order.push(ref);
+  for (const sentence of allSentences(sentencesOf(task))) for (const ref of sentence.refs) if (!order.includes(ref) && task.sources[ref] && task.sources[ref].cited !== false) order.push(ref);
   return order;
 }
 /** What a screen reader hears when a task has finished. */
@@ -77,15 +112,20 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
     case "assistant_issue_not_current": return "这条检查结果已经过时了。再检查一次后，再让助手给改法。";
     case "assistant_kind_unavailable": return "这个功能需要更新后的页面才能使用。";
     case "assistant_not_available": return "助手暂时还没有对你的账号开放。";
+    case "assistant_route_input_required": return "先写下想问或想改的话，再发送。";
+    case "invalid_request": return "这次的内容不完整，没有开始，也没有计字数。刷新页面后再试一次。";
     case "assistant_regenerate_invalid": return "这个回答不能重新回答了，换个问法再问一次。";
     case "assistant_edit_invalid": return "原来的问题已经不在了，直接重新提问吧。";
     case "assistant_task_not_completed": return "这个回答还没有结束。";
     case "provider_unavailable": return "助手暂时不可用，这次没有开始，也没有计字数。稍后再试。";
+    case "assistant_long_task_active": return "已经有一个长任务在做（或在等你确认计划），先处理它，再开新的。";
+    case "assistant_long_visitor_forbidden": return "访客不能用长任务，注册账号后可以用。";
+    case "assistant_long_no_chapters": return "这部作品还没有章节，长任务没有可读的内容。";
     default: return labelError(cause);
   }
 }
 
-const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法", change: "回答和改动" };
+const NOUN: Record<AssistantTask["kind"], string> = { ask: "回答", recap: "回顾", fix_issue: "回答和改法", change: "回答和改动", long: "报告" };
 
 /** What went wrong with a task that ended without an answer; "没有计字数" only when nothing was charged. */
 export function failureText(task: AssistantTask, visitor: boolean): { text: string; retry: boolean } {
@@ -106,44 +146,64 @@ export function failureText(task: AssistantTask, visitor: boolean): { text: stri
   }
 }
 
+/** The one line a source takes in the list under an answer (and in a change card's 依据): 第 3 章 · 章名. */
+export const sourceRow = whereLabel;
+
+/** A source in the list: its one line, which opens to the original words (in the serif face) and the way to them. */
 export function SourceItem({ id, n, source, locate }: { id: string; n: number; source: AssistantSource; locate: (source: AssistantSource) => void }) {
-  const [wide, setWide] = useState(false);
+  const [open, setOpen] = useState(false);
+  const panel = useId();
   return (
     <li id={id} tabIndex={-1} className="a-source">
       <b aria-hidden="true">{n}</b>
       <span>
-        {source.chapter_number != null
-          ? <button type="button" className="a-where" onClick={() => locate(source)}>{whereLabel(source)}</button>
-          : <span className="a-where">{whereLabel(source)}</span>}
-        <button type="button" className={`a-text${wide ? " wide" : ""}`} aria-expanded={wide} onClick={() => setWide((value) => !value)}><span className="q">{source.text}</span></button>
+        <button type="button" className="a-where" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>
+          {sourceRow(source)}<Fold open={open} />
+        </button>
+        {open && (
+          <span id={panel} className="a-source-body">
+            <span className="a-text q">{source.text}</span>
+            {source.chapter_number != null && <button type="button" className="a-go" onClick={() => locate(source)}>去原文 →</button>}
+          </span>
+        )}
       </span>
     </li>
   );
 }
 
-export function SourceList({ task, locate }: { task: AssistantTask; locate: (source: AssistantSource) => void }) {
-  const refs = citedRefs(task);
-  if (!refs.length) return null;
+/** The small › that turns to point down when its line is open. */
+export function Fold({ open }: { open: boolean }) {
+  return <svg className={`a-fold-mark${open ? " open" : ""}`} width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><path d="M2 1l3 3-3 3" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>;
+}
+
+/** What a source is, for telling two of them apart: the same chapter and words. */
+export const sourceKey = (source: { chapter_number?: number | null; text: string }) => `${source.chapter_number ?? ""}:${source.text}`;
+
+/** 出处 N 处 ›: folded to one line; opened, one line for each source. `skip` leaves out sources that something else on the screen already shows
+    (a change card's 依据); the numbers stay the ones the marks in the answer carry. */
+export function SourceList({ task, locate, skip }: { task: AssistantTask; locate: (source: AssistantSource) => void; skip?: Set<string> }) {
+  const [open, setOpen] = useState(false);
+  const panel = useId();
+  const shown = citedRefs(task).map((ref, index) => ({ ref, n: index + 1 })).filter(({ ref }) => !skip?.has(sourceKey(task.sources[ref])));
+  if (!shown.length) return null;
   return (
-    <ol className="a-sources" aria-label="出处">
-      {refs.map((ref, index) => <SourceItem key={ref} id={`a-src-${task.id}-${index + 1}`} n={index + 1} source={task.sources[ref]} locate={locate} />)}
-    </ol>
+    <div className="a-sources-wrap">
+      <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>出处 {shown.length} 处<Fold open={open} /></button>
+      {open && (
+        <ol id={panel} className="a-sources" aria-label="出处">
+          {shown.map(({ ref, n }) => <SourceItem key={ref} id={`a-src-${task.id}-${n}`} n={n} source={task.sources[ref]} locate={locate} />)}
+        </ol>
+      )}
+    </div>
   );
 }
 
-/** 查过 / 没查: what the task looked at and what it did not. */
-export function CoverLine({ task }: { task: AssistantTask }) {
-  // 「步数或预算已到」 is said once, above the answer, as 「查到上限了」; it is not repeated here.
-  const left = (task.coverage?.not_checked ?? []).filter((item) => !item.includes(LIMIT_MARK));
-  const done = task.coverage?.checked ?? [];
-  if (!done.length && !left.length) return null;
-  return (
-    <p className="a-cover">
-      {done.length > 0 && <>查过：{done.join("、")}。</>}
-      {left.length > 0 && <>没查：{left.join("、")}。</>}
-    </p>
-  );
-}
+/** 怎么查的 ›: under an answer, folded; opened it holds the steps taken and 查过……；没查：……. Lives with the steps (assistant-process.tsx). */
+export { CoverLine } from "./assistant-process";
+/** What the task did not look at, for the line that says so: the program's note, without 「步数或预算已到」 (said once, above the answer, as 「查到上限了」). */
+export const notChecked = (task: AssistantTask) => (task.coverage?.not_checked ?? []).filter((item) => !item.includes(LIMIT_MARK));
+/** True when the task ended because its steps or its budget ran out. */
+export const hitLimit = (task: AssistantTask) => (task.coverage?.not_checked ?? []).some((item) => item.includes(LIMIT_MARK));
 
 /** A task that was stopped: it says what the stop cost (the words spent up to then are not given back). */
 export function StoppedNote({ task, visitor }: { task: AssistantTask; visitor: boolean }) {
@@ -154,6 +214,6 @@ export function StoppedNote({ task, visitor }: { task: AssistantTask; visitor: b
 
 /** Said above the answer when the task ended because the steps or the budget ran out, not because it was finished. */
 export function LimitLine({ task }: { task: AssistantTask }) {
-  if (!(task.coverage?.not_checked ?? []).some((item) => item.includes(LIMIT_MARK))) return null;
+  if (!hitLimit(task)) return null;
   return <p className="a-limit">{LIMIT_LINE}</p>;
 }

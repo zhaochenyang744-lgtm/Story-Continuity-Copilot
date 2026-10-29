@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
-import { allowance, ask, askForFix, box, checkedWork, chip, chooseMode, finished, openAssistantTab, openPlus, select, selectedWords, send, stopButton, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
+import { allowance, ask, askForFix, box, checkedWork, chip, chooseMode, finished, menuNames, openAssistantTab, openPlus, select, selectedWords, send, stopButton, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
 import { runningView, serveTasks } from "./support/assistant-mock";
 import { setup } from "./support/writing";
 
@@ -31,12 +31,13 @@ async function expectBarSteady(page: Page) {
   await box(page).blur();
   const resting = await bar(page);
   // 「＋」 and the send key keep their size, the mode keeps its arrow, and the slot that holds the key hint / the cost does not move at all.
-  expect(focused.plus).toEqual({ ...focused.plus!, width: 28, height: 28 });
+  expect(focused.plus).toEqual({ ...focused.plus!, width: 32, height: 32 });
   expect(focused.send).toEqual({ ...focused.send!, width: 32, height: 32 });
   expect(focused.plus).toEqual(resting.plus);
   expect(focused.mode).toEqual(resting.mode);
   expect(focused.send).toEqual(resting.send);
-  expect(focused.note).toEqual(resting.note);
+  // The line under the box (the cost, or the key hint in its place) is right-aligned: its height, its place and its right end do not move.
+  expect({ y: focused.note!.y, height: focused.note!.height, right: focused.note!.x + focused.note!.width }).toEqual({ y: resting.note!.y, height: resting.note!.height, right: resting.note!.x + resting.note!.width });
   expect(focused.noteText).toContain("Enter 发送");
   expect(resting.noteText).not.toContain("Enter 发送");
   if (focused.caret) expect(focused.caret.width).toBeGreaterThan(4);
@@ -68,18 +69,20 @@ test.describe("07f 输入框", () => {
   });
 
   test("11 花费提示放不下时整段去掉「今天还剩…」，只留「约 500 字」，不截断数字；余量在 title 里", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     const note = thread(page).locator(".cx-note");
     await expect(note).toContainText("约 500 字");
-    const width = (await note.boundingBox())!.width;
+    // The row under the box decides: where it is narrower than 240px only the cost stays.
+    const row = thread(page).locator(".a-quota-row");
+    const width = (await row.boundingBox())!.width;
     const more = note.locator(".more");
     const left = await allowance(page);
     await expect(note).toHaveAttribute("title", new RegExp(`今天还剩 ${left.toLocaleString("en-US")} 字`));
     // Never half a figure: either all of it shows, or none of it.
     const fits = await note.evaluate((node) => node.scrollWidth <= node.clientWidth);
     expect(fits).toBe(true);
-    if (width < 190) {
+    if (width <= 240) {
       await expect(more).toBeHidden();
       expect((await note.innerText()).trim()).toBe("约 500 字");
     } else {
@@ -90,8 +93,8 @@ test.describe("07f 输入框", () => {
     for (const size of [{ width: 1100, height: 900 }, { width: 1440, height: 900 }]) {
       await page.setViewportSize(size);
       const now = note.locator(".more");
-      const room = (await note.boundingBox())!.width;
-      if (room < 190) await expect(now).toBeHidden(); else await expect(now).toBeVisible();
+      const room = (await row.boundingBox())!.width;
+      if (room <= 240) await expect(now).toBeHidden(); else await expect(now).toBeVisible();
       expect(await note.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
     }
   });
@@ -138,7 +141,7 @@ test.describe("07f 输入框", () => {
     await expect(thread(page).locator(".a-chip").first()).toContainText("第");
     // 帮我改这一处 is not in the mode menu.
     await mode.click();
-    await expect(thread(page).getByRole("menuitemradio")).toHaveText(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料"]);
+    expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);
     await page.keyboard.press("Escape");
     await shot(page, "07f-05-fix-chips", false);
     expect(id).toBeTruthy();
@@ -286,4 +289,20 @@ test.describe("07f 菜单", () => {
       for (const entry of await mode.getByRole("menuitemradio").all()) await entry.click({ trial: true });
     });
   }
+
+  test("33 中文输入法：选字结束后紧跟着的那一下 Enter 还是选字的，不发送（Safari 会这样送来）；过一会儿再按 Enter 才发送", async ({ page }) => {
+    await setup(page);
+    await openAssistantTab(page);
+    let sent = 0;
+    page.on("request", (request) => { if (request.method() === "POST" && /\/assistant\/(route|tasks)$/.test(new URL(request.url()).pathname)) sent += 1; });
+    await box(page).fill("罗盘现在在谁手里");
+    await box(page).dispatchEvent("compositionend", { data: "手里" });
+    await box(page).press("Enter");
+    await page.waitForTimeout(200);
+    expect(sent).toBe(0);
+    await expect(box(page)).toHaveValue("罗盘现在在谁手里");
+    await page.waitForTimeout(500);
+    await box(page).press("Enter");
+    await expect.poll(() => sent).toBeGreaterThan(0);
+  });
 });

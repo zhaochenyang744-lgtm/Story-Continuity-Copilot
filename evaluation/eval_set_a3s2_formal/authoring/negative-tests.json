@@ -1,0 +1,34 @@
+{
+  "tests": 2,
+  "detected": 2,
+  "temporary_copies_removed": true,
+  "results": [
+    {
+      "test": 5,
+      "set": "s",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "a3s2-w01-injection-01:injection_quote",
+        "injection:depth",
+        "independent:data_binding"
+      ]
+    },
+    {
+      "test": 6,
+      "set": "s",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "a3s2-w01-injection-03:injection_collision",
+        "a3s2-w01-injection-03:injection_object_collision",
+        "injection:kind_distribution",
+        "independent:data_binding"
+      ]
+    }
+  ]
+}

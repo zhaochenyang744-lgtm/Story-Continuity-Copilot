@@ -2,17 +2,51 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 from fastapi import Header, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from .assistant_actions import CHAPTER_NUMBER_IN, _number
 from .assistant_edits import MeteredProvider, check, check_after
 from .assistant_tools import ToolContext, ToolError
 from .assistant_store import utcnow
 from .database import DomainError
 from .stage13 import provider_usage
 from .text_content import visible_draft_text, written_chars
+
+# A plan is what the author means to happen in a chapter not written yet; this version does not change plans (V05: "新增第三章
+# 计划" came out as a fact card "发生的事件", with chapter 2 as its source).
+PLAN_LINE = "计划这一版不能由助手改，可以在计划页加。"
+PLAN_STARTS = re.compile(r"^[\s「『“\"'（(【\[]*计划")
+PLAN_OF_CHAPTER = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百千]+\s*章\s*的?\s*计划")
+FACT_CARD_KINDS = ("add_fact", "change_fact")
+# The author asking for a plan in so many words ("新增第11章计划：……", "计划里加一条"): the answer says where plans are added even
+# when the model proposed nothing for it (V05, second trial: no card and no word about the plan).
+PLAN_ASKED = re.compile(r"(加|新增|添|补|写|记|改|放)[^，。；！？,;!?]{0,8}计划|计划[^，。；！？,;!?]{0,4}(加|添|补|写|改)")
+
+
+def is_plan_fact(value: Any, written_chapters: int) -> bool:
+    """Whether the new text of a fact card is a plan rather than a fact: it starts with "计划", says "第 N 章计划", or names a
+    chapter later than the last one written (a fact is what the text already says, so it cannot be about a later chapter)."""
+    text = value if isinstance(value, str) else ""
+    if PLAN_STARTS.match(text) or PLAN_OF_CHAPTER.search(text):
+        return True
+    return any(_number(token) > written_chapters for token in CHAPTER_NUMBER_IN.findall("".join(text.split())))
+
+
+def drop_plan_facts(db: Any, task_id: str, written_chapters: int) -> int:
+    """Take the fact items that are really plans off a change task's card, and number the rest again; returns how many went."""
+    with db.connection() as c:
+        rows = c.execute("SELECT id,kind,after_json FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (task_id,)).fetchall()
+        gone = [row["id"] for row in rows if row["kind"] in FACT_CARD_KINDS and is_plan_fact((json.loads(row["after_json"]) or {}).get("value"), written_chapters)]
+        for change_id in gone:
+            c.execute("DELETE FROM assistant_changes WHERE id=?", (change_id,))
+        if gone:
+            for ordinal, row in enumerate(c.execute("SELECT id FROM assistant_changes WHERE task_id=? ORDER BY ordinal", (task_id,)).fetchall(), 1):
+                c.execute("UPDATE assistant_changes SET ordinal=? WHERE id=?", (ordinal, row["id"]))
+    return len(gone)
 
 
 class Adopt(BaseModel):
@@ -92,12 +126,15 @@ def register_routes(app, db, user, csrf, key, ok, operation, engine):
                         if after not in body or proposal["before"] in body:
                             raise DomainError("proposal_not_applied", 409)
                     # A setup for an earlier chapter is carried there by the author; the record keeps their final wording.
-                    c.execute("UPDATE assistant_proposals SET status='adopted',decided_at=?,adopted_draft_revision=?,after_edited=?,edited_by_author=?,recheck_json=NULL WHERE id=?",
+                    c.execute("UPDATE assistant_proposals SET status='adopted',decided_at=?,adopted_draft_revision=?,after_edited=?,edited_by_author=?,recheck_json=NULL,"
+                              "undone_at=NULL,undone_after=NULL WHERE id=?",
                               (utcnow(), revision, after if edited else None, 1 if edited else 0, proposal_id))
                 elif action == "dismiss":
                     c.execute("UPDATE assistant_proposals SET status='dismissed',decided_at=? WHERE id=?", (utcnow(), proposal_id))
                 else:
-                    c.execute("UPDATE assistant_proposals SET status='proposed',decided_at=NULL,adopted_draft_revision=NULL,after_edited=NULL,edited_by_author=0,recheck_json=NULL WHERE id=?", (proposal_id,))
+                    # The adoption leaves the card but stays in the change ledger as undone: when, and the sentence that had been adopted.
+                    c.execute("UPDATE assistant_proposals SET status='proposed',decided_at=NULL,adopted_draft_revision=NULL,after_edited=NULL,edited_by_author=0,recheck_json=NULL,"
+                              "undone_at=?,undone_after=? WHERE id=?", (utcnow(), proposal["after_edited"] or proposal["after"], proposal_id))
                 return engine.store.proposal_view(c.execute("SELECT * FROM assistant_proposals WHERE id=?", (proposal_id,)).fetchone())
             data, status = db._idem(c, actor["id"], f"assistant_proposal_{action}:{project_id}:{task_id}:{proposal_id}",
                                    key(idempotency_key), payload, change)

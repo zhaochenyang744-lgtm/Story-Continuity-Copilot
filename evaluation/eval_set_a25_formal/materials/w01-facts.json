@@ -1,0 +1,177 @@
+[
+  {
+    "memory_type": "dynamic_state",
+    "subject": "衔序夹",
+    "predicate": "保管人",
+    "value": "由简迭微保管原件。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "岬纹笔",
+    "predicate": "持有人",
+    "value": "由屈绍荻持有。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "段泊循",
+    "predicate": "发言职责",
+    "value": "只做调查，不出庭陈述。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "再审会谈",
+    "predicate": "固定地点",
+    "value": "在南穗辩护所举行。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "dynamic_state",
+    "subject": "叠槭牌",
+    "predicate": "保管人",
+    "value": "由封南缬保管并使用。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "简迭微",
+    "predicate": "身份",
+    "value": "本案辩护人。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "段泊循",
+    "predicate": "身份",
+    "value": "调查助理。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "毕见岚",
+    "predicate": "案件地位",
+    "value": "申诉人。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "屈绍荻",
+    "predicate": "职业",
+    "value": "灯光师。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "符砚杭",
+    "predicate": "职业",
+    "value": "声音鉴定人。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "宓书冽",
+    "predicate": "职责",
+    "value": "复核新证据的检察人员。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "封南缬",
+    "predicate": "职业",
+    "value": "剧院排练统筹。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒯令皎",
+    "predicate": "关系",
+    "value": "受伤的剧院服装工的姐姐。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "简迭微",
+    "predicate": "别名",
+    "value": "别名是绛穗。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "段泊循",
+    "predicate": "别名",
+    "value": "别名是苔隅。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "毕见岚",
+    "predicate": "别名",
+    "value": "别名是柚翎。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "衔序夹",
+    "predicate": "外观",
+    "value": "深绿硬封，内有三层纸袋。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "岬纹笔",
+    "predicate": "外观",
+    "value": "笔杆上有斜刻的浅线。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "叠槭牌",
+    "predicate": "用途",
+    "value": "只能开排练后台门，不能开储物间。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "折榆庭",
+    "predicate": "位置",
+    "value": "在芥衡市东区。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "南穗辩护所",
+    "predicate": "设施",
+    "value": "有一间不带录音设备的小会谈室。",
+    "chapter": 1
+  },
+  {
+    "memory_type": "event_timeline",
+    "subject": "毕见岚",
+    "predicate": "旧判所依据",
+    "value": "旧录音中的一个撞击声。",
+    "chapter": 4
+  },
+  {
+    "memory_type": "character_knowledge",
+    "subject": "屈绍荻",
+    "predicate": "原证词范围",
+    "value": "只说自己听见响声，没有亲眼见到袭击。",
+    "chapter": 2
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "蒯令皎",
+    "predicate": "称呼要求",
+    "value": "要求完整称呼受伤的弟弟，不接受只叫案中人。",
+    "chapter": 3
+  },
+  {
+    "memory_type": "static_canon",
+    "subject": "符砚杭",
+    "predicate": "工作边界",
+    "value": "只判断声音的可区分性，不判断谁有罪。",
+    "chapter": 4
+  }
+]

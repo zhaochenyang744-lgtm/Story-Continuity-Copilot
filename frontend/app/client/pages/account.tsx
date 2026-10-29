@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import { type CSSProperties, KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 import { request } from "../../api";
 import type { AuthorHome, HomeEvent, User } from "../../model";
 import { agoLabel, feedDayLabel, joinedLabel, localDay, monthDayLabel, shiftDay, weekdayOf } from "../day";
@@ -69,8 +69,25 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
     });
     return [...totals];
   }, [calendar]);
-  // Newest days are on the right: start the row there when it is wider than the room.
-  useEffect(() => { if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth; }, [calendar]);
+  // Newest days are on the right: the row starts there when it is wider than the room, and stays there while the page settles
+  // (the side gutters and the fonts change the room after the first paint) until the reader slides it themselves.
+  const following = useRef(true);
+  useEffect(() => {
+    const row = scroller.current;
+    if (!row) return;
+    const toEnd = () => { if (following.current) row.scrollLeft = row.scrollWidth; };
+    // The reader's own hand (wheel, touch, a press on the bar) ends the following; the row's own scrolls do not, since by the time
+    // their scroll event arrives the room may already have changed again.
+    const release = () => { following.current = false; };
+    following.current = true;
+    toEnd();
+    const hands = ["wheel", "touchstart", "pointerdown"] as const;
+    for (const name of hands) row.addEventListener(name, release, { passive: true });
+    const observer = new ResizeObserver(toEnd);
+    observer.observe(row);
+    if (row.firstElementChild) observer.observe(row.firstElementChild);
+    return () => { for (const name of hands) row.removeEventListener(name, release); observer.disconnect(); };
+  }, [calendar]);
   const move = (event: KeyboardEvent<HTMLDivElement>) => {
     const steps: Record<string, number> = { ArrowRight: 7, ArrowLeft: -7, ArrowDown: 1, ArrowUp: -1 };
     let next: number | null = null;
@@ -81,12 +98,13 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
     event.preventDefault();
     setActive(next);
   };
-  const place = (index: number) => ({ left: Math.floor((index + offset) / 7) * 12 + 5, top: ((index + offset) % 7) * 12 });
+  const place = (index: number) => ({ "--col": Math.floor((index + offset) / 7), "--row": (index + offset) % 7 }) as CSSProperties;
   return (
     <div className="heat">
       <div className="heat-scroll" ref={scroller}>
         <div
           className="heat-body"
+          style={{ "--cols": columns } as CSSProperties}
           role="group"
           tabIndex={0}
           aria-label="写作日历，过去 12 个月，方向键可以逐日查看"
@@ -96,7 +114,7 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
           onBlur={() => setActive(null)}
         >
           <div className="heat-days" aria-hidden="true"><span /><span>一</span><span /><span>三</span><span /><span>五</span><span /></div>
-          <div className="heat-months" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${columns}, 10px)` }}>
+          <div className="heat-months" aria-hidden="true">
             {months.map((mark) => <span key={mark.column} style={{ gridColumn: mark.column + 1 }}>{mark.label}</span>)}
           </div>
           <div className="heat-grid" onMouseLeave={() => setActive(null)}>

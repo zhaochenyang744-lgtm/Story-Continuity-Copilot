@@ -1,0 +1,84 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 20,
+    "w02": 20
+  },
+  "task_coverage": 68,
+  "facts_coverage": {
+    "w01": 25,
+    "w02": 25
+  },
+  "foreshadow_coverage": {
+    "w01": 10,
+    "w02": 10
+  },
+  "shared_draft_coverage": {
+    "w01": 1,
+    "w02": 1
+  },
+  "findings": 2,
+  "closed_findings": 2,
+  "unresolved_findings": 0,
+  "method": "author-independent full prose and materials reading; separate blind route and new-action judgments; independent task semantics review",
+  "model_api_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0,
+  "reports": {
+    "authoring/independent-checker-review.md": "4f66beaa50dff56c34cc1dba4d23c524ae41ab94351d4477d3dd901ae1cfccc9",
+    "authoring/independent-task-review.md": "00ff25e52d3d6d2b58ec36cfc29341a338eadd417ec1c5a38859faa175d2a745",
+    "authoring/independent-w01-review.md": "5497f8eaa8b69995a47e344e38574e5df38c677a2515d7b79abfdb972c5f2711",
+    "authoring/independent-w02-review.md": "f89db65f2a58b7fa864c8637c2f14675b6981469cb3ab11d76ef20b55e2a18d3",
+    "authoring/new-action-blind-comparison.json": "027d3119c29072cfeb108f5ef1a9f13a4787e29964f0663d3ac41b87582a9717",
+    "authoring/new-action-blind-input.initial.json": "86282792d718338197ae4d6f89f4538bf20531e58219dcb87dc95516ac418728",
+    "authoring/new-action-blind-input.json": "86282792d718338197ae4d6f89f4538bf20531e58219dcb87dc95516ac418728",
+    "authoring/new-action-blind-review.final.json": "7a004f57b6b8dc264590c5e754a5ddae813818913f529cea0c38e50f4d07ca5f",
+    "authoring/new-action-blind-review.initial.json": "84bfcf09e0dd713051baf1a6bfbbb5db71295d6a2eb11c66801f1089bf900bf6",
+    "authoring/route-blind-comparison.json": "96b60d5ecbd6dc087e5b0b01a0453455d572f8f480a80094df2e7d8a75a349e2",
+    "authoring/route-blind-input.initial.json": "d31c587897da7bf0345c97cc17949de2228de767171b5003d684f078a99201b0",
+    "authoring/route-blind-input.json": "d31c587897da7bf0345c97cc17949de2228de767171b5003d684f078a99201b0",
+    "authoring/route-blind-review.final.json": "abad7eeb86ab25b63e7a8a298e5c0a358a96f3babf4bdc50fc6d913f3d07d7ea",
+    "authoring/route-blind-review.initial.json": "c0517279866a110199a4b2d0c8e1e8983df505ed5b0a0586ede7b6f356d3e0fb"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "4dfb4afdb7591d7a5fc704de2ede9a695d21a2fe2475fb648c79b8193e29470f",
+    "materials/w01-foreshadows.json": "a7ab66ff015a4f87491758da0e776f06f545272bd986b3192b90d80f54457f00",
+    "materials/w02-facts.json": "d3a029ebdb778d422444703255547647e47b2faa3909138336d54941bf2411d3",
+    "materials/w02-foreshadows.json": "22cdd0419aa0f9932fe7e0005a105863e24e5573c82564da0ea361b83ebe39a7",
+    "tasks.json": "b539d1f0934247fc4721d10d92e551bee224b0db8c14bb8f6b2ac8a4af42515f",
+    "works/w01.md": "1af20081b85cf0c9f6d025fa67b0ed1f369b1794a670e075c6bac2d195e66c28",
+    "works/w02.md": "0360733336dcc46f4d0b8135c8850b960f69ef729c10191429cd833f0530238e"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "bc47d2c074ee51d94b33f2354cad65456d249e0bdc1beaee03ce89af8bedb9a7",
+    "authoring/self-review.md": "6a280954839436870c649628ef5a89932c0d540075c26aa224505583867ec0f7",
+    "authoring/novelty-reference.json": "a8e28778ab84a54102feca42cf0a320a498a6f021449a7b3721636abf4397a68",
+    "authoring/sealed-comparison.json": "1c5d77140eadc4f74ef1a24a775b041833307c22d3a6fd0515ce57e3d2a540e5"
+  },
+  "new_action_blind": {
+    "total": 12,
+    "initial_agreement": 12,
+    "final_agreement": 12,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  },
+  "blind_route": {
+    "total": 20,
+    "initial_agreement": 20,
+    "final_agreement": 20,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  },
+  "checker_review": {
+    "covered_checkers": 2,
+    "findings": 1,
+    "closed_findings": 1,
+    "unresolved_findings": 0
+  }
+}

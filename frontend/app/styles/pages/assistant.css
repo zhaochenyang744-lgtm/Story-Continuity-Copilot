@@ -1,62 +1,81 @@
-/* 助手 (v1.8.0). A quiet column: no card frames, no rules between steps and sources. Hierarchy comes from
-   space, type size and the ink steps; the only fills are the author's own question and the box they write in.
+/* 助手 (v1.8.0, laid out again in v2.1). A quiet column: the answer is plain text on the page with no frame; the things that write to the
+   materials (the change card) are the one framed thing, and the box the author writes in is the other. Hierarchy comes from space and
+   four sizes only: 14 the answer, 13 what explains it, 12 quotes and the note on what was looked at, 11 labels and the line above the answer.
    Colours, sizes and timing are the tokens; corners come from radius.css and the tokens. */
 .assistant { position: relative; display: flex; flex-direction: column; min-height: 0; height: 100%; font-size: var(--fs-14); }
 .a-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-4) 0; }
 .a-bar-note { color: var(--c-muted); font-size: var(--fs-12); }
 .a-privacy { margin-top: calc(var(--s-2) * -1); color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
 .a-privacy a { color: var(--c-blue-text); border-bottom: 1px solid currentColor; }
-.assistant .menu > summary { min-height: 32px; padding: 0 var(--s-2); border: 0; color: var(--c-muted); font-size: var(--fs-12); }
+.assistant .menu > summary { min-height: 32px; padding: 0 var(--s-2); border: 0; background: transparent; color: var(--c-muted); font-size: var(--fs-12); }
 .assistant .menu > summary:hover,
 .assistant .menu[open] > summary { background: var(--c-sunken); color: var(--c-ink); }
-.a-beta { margin-left: 6px; padding: 0 5px; border-radius: var(--r-xs); background: var(--c-blue-tint); color: var(--c-blue-text); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; line-height: 1.6; vertical-align: 2px; }
+.a-beta { margin-left: 6px; padding: 0 5px; border-radius: var(--r-xs); background: var(--c-blue-tint); color: var(--c-blue-text); font-size: var(--fs-11); font-weight: 700; letter-spacing: .04em; line-height: 1.6; vertical-align: 2px; }
+
+/* A thin scrollbar of our own, dark where the page is dark (the conversation and the box). */
+.a-thread, .cx-text, .cx-menu.constrained, .cx-menu .scroll { scrollbar-width: thin; scrollbar-color: var(--c-line) transparent; }
+.a-thread::-webkit-scrollbar, .cx-text::-webkit-scrollbar { width: 6px; height: 6px; }
+.a-thread::-webkit-scrollbar-thumb, .cx-text::-webkit-scrollbar-thumb { border-radius: 3px; background: var(--c-line); }
+.a-thread::-webkit-scrollbar-track, .cx-text::-webkit-scrollbar-track { background: transparent; }
 
 /* ── The conversation ── */
-.a-thread { flex: 1; min-height: 0; display: grid; align-content: start; gap: 26px; padding: var(--s-4); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.a-thread { flex: 1; min-height: 0; display: grid; align-content: start; gap: 20px; padding: var(--s-4); overflow-y: auto; overscroll-behavior: contain; }
 .a-skip { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; border: 0; clip-path: inset(50%); white-space: nowrap; }
-.a-skip:focus { position: static; width: auto; height: auto; justify-self: start; padding: 4px 8px; clip-path: none; background: var(--c-blue); color: var(--c-on-blue); font-size: 12px; font-weight: 700; border-radius: var(--r-sm); }
-.a-quiet, .a-intro { color: var(--c-muted); font-size: var(--fs-13); line-height: 1.8; }
-.a-group { display: grid; gap: 10px; min-width: 0; }
-.a-task { display: grid; gap: 10px; min-width: 0; }
-.a-ask { position: relative; justify-self: end; max-width: 88%; padding: 8px 12px; background: var(--c-sunken); color: var(--c-ink); font-size: var(--fs-13); line-height: 1.6; overflow-wrap: anywhere; }
+.a-skip:focus { position: static; width: auto; height: auto; justify-self: start; padding: 4px 8px; clip-path: none; background: var(--c-blue); color: var(--c-on-blue); font-size: var(--fs-12); font-weight: 700; border-radius: var(--r-sm); }
+.a-quiet, .a-intro { color: var(--c-muted); font-size: var(--fs-13); line-height: 1.7; }
+.a-group { display: grid; gap: 8px; min-width: 0; }
+.a-task { display: grid; gap: 8px; min-width: 0; }
+/* The line between two turns, with the time on it. */
+.a-turn-rule { display: flex; align-items: center; gap: 8px; margin: 4px 0; color: var(--c-faint-text); font-size: var(--fs-11); }
+.a-turn-rule::before, .a-turn-rule::after { content: ""; flex: 1; height: 1px; background: var(--c-line-soft); }
+/* A question that follows the one above it hangs from it: in 12px, with a line down its left. */
+.a-follow { margin-left: 12px; padding-left: 12px; border-left: 2px solid var(--c-line); }
+.a-ask { position: relative; justify-self: end; max-width: 88%; padding: 8px 12px; background: var(--c-sunken); color: var(--c-ink); font-size: var(--fs-14); line-height: 1.6; overflow-wrap: anywhere; }
 .a-ask.rise { animation: a-rise .34s var(--ease) backwards; }
 @keyframes a-rise { from { opacity: 0; transform: translateY(14px); } }
-.a-ask-edit { position: absolute; top: 6px; left: -34px; padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: 11.5px; opacity: 0; cursor: pointer; transition: opacity var(--dur-fast) var(--ease); }
+.a-ask-edit { position: absolute; top: 6px; left: -34px; padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-11); opacity: 0; cursor: pointer; transition: opacity var(--dur-fast) var(--ease); }
 .a-ask:hover .a-ask-edit,
 .a-ask:focus-within .a-ask-edit,
 .a-ask-edit:focus-visible { opacity: 1; }
 .a-resend { display: grid; gap: 6px; }
-.a-resend-row { display: flex; gap: 12px; align-items: center; justify-content: flex-end; font-size: 12px; }
+.a-resend-row { display: flex; gap: 12px; align-items: center; justify-content: flex-end; font-size: var(--fs-12); }
 .a-edit { min-height: 54px; padding: 8px 10px; font-size: var(--fs-13); line-height: 1.6; resize: vertical; }
 .a-quote { display: block; margin-bottom: 4px; padding-left: 7px; border-left: 2px solid var(--c-line); color: var(--c-muted); font-family: var(--font-serif); font-size: var(--fs-12); }
-.a-head { display: flex; align-items: baseline; gap: 10px; }
-.a-kind { color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .08em; }
 .a-state { font-size: var(--fs-11); }
 .a-state.blue { color: var(--c-blue-text); }
 .a-state.quiet { color: var(--c-muted); }
-.a-link { padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: 11.5px; line-height: 1.8; cursor: pointer; }
+.a-link { padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-12); line-height: 1.8; cursor: pointer; }
 .a-link:hover:not(:disabled) { text-decoration: underline; }
 .a-link:disabled { color: var(--c-muted); cursor: not-allowed; }
-.a-stop { margin-left: auto; }
+.a-stop { margin-left: auto; font-size: var(--fs-11); }
 /* Folded answers (the earlier ones to the same question, and a question that was reworded): a line with ›, which turns to ⌃ when open.
    Open, they sit one step in from the current answer behind a thin rule, a shade quieter, so the two cannot be mistaken for each other. */
-.a-older, .a-reworded { color: var(--c-muted); font-size: 11.5px; }
+.a-older, .a-reworded { color: var(--c-muted); font-size: var(--fs-11); }
 .a-older > summary, .a-reworded > summary { color: var(--c-muted); }
 .a-older > summary::after, .a-reworded > summary::after { content: " ›"; }
 .a-older[open] > summary::after, .a-reworded[open] > summary::after { content: " ⌃"; }
 .a-older > summary:hover, .a-reworded > summary:hover { color: var(--c-ink-2); }
 .a-older[open], .a-reworded[open] { display: grid; gap: 10px; }
 .a-older[open] > summary, .a-reworded[open] > summary { margin-bottom: 4px; }
-.a-fold-body { display: grid; gap: 26px; margin-left: 10px; padding-left: 10px; border-left: 2px solid var(--c-line); color: var(--c-ink-2); }
+.a-fold-body { display: grid; gap: 20px; margin-left: 10px; padding-left: 10px; border-left: 2px solid var(--c-line); color: var(--c-ink-2); }
 .a-fold-body .a-answer { color: var(--c-ink-2); }
-.a-fold-body .a-ask { background: transparent; border: 1px solid var(--c-line); }
+.a-fold-body .a-ask { background: var(--c-raised); }
 
-/* The process: the model's line before each round of work, the actions grouped by kind, the step in progress. Folded once the task is over. */
-.a-steps { color: var(--c-muted); font-size: 11.5px; }
-.a-fold { display: inline-flex; align-items: baseline; gap: 8px; max-width: 100%; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: 11.5px; cursor: pointer; }
-.a-fold:hover { color: var(--c-ink-2); }
-.a-fold .tally { flex: none; white-space: nowrap; }
-.a-fold .first { min-width: 0; max-width: 22ch; overflow: hidden; color: var(--c-muted); text-overflow: ellipsis; white-space: nowrap; }
+/* The line above an answer: what it was, what it looked at, how long it took; ⋯ and 停止 at its right end. Opened, the steps. */
+.a-steps { color: var(--c-faint-text); font-size: var(--fs-11); }
+.a-process { display: flex; align-items: center; gap: 6px; min-height: 20px; }
+.a-process-end { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; }
+.a-fold { display: inline-flex; align-items: center; gap: 4px; min-width: 0; max-width: 100%; padding: 0; border: 0; background: none; color: var(--c-faint-text); font-size: var(--fs-11); text-align: left; cursor: pointer; }
+.a-fold.static { cursor: default; }
+button.a-fold:hover { color: var(--c-ink); }
+.a-fold .tally { white-space: nowrap; font-variant-numeric: tabular-nums; }  /* a long task's step, cost and minutes change every two seconds: the line does not shift */
+.a-fold-mark { flex: none; transition: transform var(--dur-fast) var(--ease); }
+.a-fold-mark.open { transform: rotate(90deg); }
+.a-process .menu > summary { min-height: 20px; padding: 0 var(--s-2); font-size: var(--fs-12); letter-spacing: 2px; }
+.a-process .menu-list { min-width: 160px; }
+.a-process .menu-list button { min-height: 32px; padding: 0 12px; font-size: var(--fs-12); }
+.menu-head { padding: 4px 12px 2px; color: var(--c-muted); font-size: var(--fs-11); }
+.a-routed { color: var(--c-muted); font-size: var(--fs-11); }
 /* The list of steps folds away by height (and fades) when a task ends, and unfolds the same way when the author opens it. */
 .a-proc-wrap { display: grid; grid-template-rows: 1fr; }
 .a-proc-wrap.folding { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .36s var(--ease), opacity .36s var(--ease); }
@@ -67,23 +86,23 @@
 /* The two figures of 「查了 N 处 · M 秒」 settle one after the other when the list has just folded by itself. */
 .a-drop { display: inline-block; animation: a-drop-in .3s var(--ease) backwards; }
 @keyframes a-drop-in { from { opacity: 0; transform: translateY(-7px); } }
-.a-say { margin-top: 4px; color: var(--c-ink-2); font-size: 12.5px; line-height: 1.6; animation: a-appear .32s var(--ease) backwards; }
+.a-say { margin-top: 4px; color: var(--c-ink-2); font-size: var(--fs-12); line-height: 1.6; animation: a-appear .32s var(--ease) backwards; }
 .a-say:first-child { margin-top: 0; }
-.a-act { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 6px; align-items: baseline; padding-left: 2px; color: var(--c-muted); font-size: 11.5px; animation: a-appear .32s var(--ease) backwards; }
+.a-act { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 6px; align-items: baseline; padding-left: 2px; color: var(--c-muted); font-size: var(--fs-11); animation: a-appear .32s var(--ease) backwards; }
 .a-act > .mk { align-self: center; }
-.a-act.ok > .mk::before { content: "✓"; color: var(--c-blue-text); font-size: 11px; font-weight: 700; }
-.a-act.bad > .mk::before { content: "✕"; color: var(--c-red-text); font-size: 11px; font-weight: 700; }
+.a-act.ok > .mk::before { content: "✓"; color: var(--c-blue-text); font-size: var(--fs-11); font-weight: 700; }
+.a-act.bad > .mk::before { content: "✕"; color: var(--c-red-text); font-size: var(--fs-11); font-weight: 700; }
 .a-act.bad { color: var(--c-red-text); }
 .a-act.now { color: var(--c-ink-2); }
 .a-act .open { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .a-act .open:hover { color: var(--c-ink-2); }
 .a-act .more { color: var(--c-muted); }
-.a-act .secs { color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+.a-act .secs { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); font-variant-numeric: tabular-nums; }
 .a-found-wrap { grid-column: 2 / -1; }
 .a-found { display: grid; gap: 6px; margin: 4px 0 6px; padding-left: 10px; border-left: 2px solid var(--c-line); }
-.a-found p { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
-.a-found .a-from { display: inline; font-family: var(--font-mono); font-size: 10.5px; white-space: nowrap; }
-.a-found .w { display: block; color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; }
+.a-found p { color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-12); line-height: 1.7; overflow-wrap: anywhere; }
+.a-found .a-from { display: inline; font-family: var(--font-mono); font-size: var(--fs-11); white-space: nowrap; }
+.a-found .w { display: block; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); }
 .a-found .unused { color: var(--c-muted); }
 /* Three small squares step along: the product's own 已保存 square, in a row. */
 .a-three { display: inline-grid; grid-auto-flow: column; gap: 2px; align-items: center; height: 10px; }
@@ -92,76 +111,107 @@
 .a-three i:nth-child(3) { animation-delay: .7s; }
 @keyframes a-step { 0% { opacity: 1; transform: scaleY(1.6); } 33.3% { opacity: .25; transform: none; } }
 @keyframes a-appear { from { opacity: 0; transform: translateY(3px); } }
-.a-limit { color: var(--c-muted); font-size: 12px; }
+.a-limit { color: var(--c-muted); font-size: var(--fs-12); }
 
 /* The answer and where it comes from. Its sentences fade in one after another once it has passed its checks. */
-.a-answer { display: grid; gap: var(--s-2); color: var(--c-ink); font-size: var(--fs-14); line-height: 1.85; overflow-wrap: anywhere; }
+.a-answer { display: grid; gap: var(--s-2); color: var(--c-ink); font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }  /* fewer lines ending on one character; ignored where unsupported */
+.a-answer p { margin: 0; }
 .a-answer.a-fade .a-s { animation: a-appear .45s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 120ms); }
-.a-answer-note { color: var(--c-muted); font-size: var(--fs-13); }
+.a-answer b { margin-right: .4em; font-weight: 700; }
+/* The last two characters of a sentence and its mark are one piece that does not break: the mark never stands alone on a line. */
+.a-tail { white-space: nowrap; }
+/* Points: one layer, a small round mark at the left, 6px between them; the label in bold, then the sentence as it was written. */
+.a-points { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.a-points li { position: relative; padding-left: 14px; }
+.a-points li::before { content: ""; position: absolute; left: 2px; top: .8em; width: 4px; height: 4px; border-radius: 50%; background: var(--c-muted); }
+.a-answer-note { color: var(--c-muted); font-size: var(--fs-13); line-height: 1.7; text-wrap: pretty; }
 /* What the answer rests on and the row of actions: they appear after the last sentence has begun to (--n sentences x 0.12 s). */
-.a-rest { display: grid; gap: 10px; }
+.a-rest { display: grid; gap: 8px; }
 .a-rest:empty { display: none; }
 .a-rest.a-fade { animation: a-appear .45s var(--ease) backwards; animation-delay: calc(var(--n, 0) * 120ms); }
 .a-fixed { padding: 9px 12px; border-radius: var(--r-sm); background: var(--c-sunken); color: var(--c-ink-2); font-size: var(--fs-13); line-height: 1.7; }
+/* The mark after a sentence: pale until it is pointed at or focused, then blue on a light blue wash. */
 .a-cite { position: relative; margin-left: 1px; line-height: 0; }
-.a-cite button { position: relative; min-width: 12px; padding: 0 2px; line-height: 1; border: 0; background: none; color: var(--c-blue-text); font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; cursor: pointer; }
-/* The mark stays small; the finger gets at least 24 x 24 px around it without the line growing. */
-.a-cite button::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 24px); height: 24px; transform: translate(-50%, -50%); }
+.a-cite button { position: relative; min-width: 12px; padding: 0 2px; line-height: 1.2; border: 0; background: none; color: var(--c-faint-text); font-family: var(--font-mono); font-size: var(--fs-11); font-weight: 500; cursor: pointer; }
 .a-cite button:hover,
-.a-cite button[aria-expanded="true"] { background: var(--c-blue); color: var(--c-on-blue); }
-.a-pop { position: fixed; z-index: 80; display: grid; gap: 6px; padding: 10px 12px; border: 1px solid var(--c-rule); border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-pop); color: var(--c-ink); font: 400 12px/1.6 var(--font-sans); letter-spacing: 0; line-height: 1.6; text-align: left; vertical-align: baseline; white-space: normal; }
-.a-pop .w { color: var(--c-muted); font: 500 10.5px/1.5 var(--font-mono); }
-.a-pop q { quotes: none; color: var(--c-ink-2); font: 12.5px/1.75 var(--font-serif); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden; }
-.a-pop .go { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-blue-text); font-size: 11.5px; font-weight: 700; line-height: 1.6; cursor: pointer; }
+.a-cite button:focus-visible,
+.a-cite button[aria-expanded="true"] { background: var(--c-blue-tint); color: var(--c-blue-text); }
+.a-cite button:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 1px; }
+/* The mark stays small; the pointer gets at least 24 x 24 px around it (40 x 40 on a phone, below) without the line growing. */
+.a-cite button::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 24px); height: 24px; transform: translate(-50%, -50%); }
+.a-pop { position: fixed; z-index: 80; display: grid; gap: 8px; padding: 10px 12px; border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-pop); color: var(--c-ink); font: 400 var(--fs-12)/1.6 var(--font-sans); letter-spacing: 0; text-align: left; vertical-align: baseline; white-space: normal; }
+.a-pop-one { display: grid; gap: 4px; }
+.a-pop-one + .a-pop-one { padding-top: 8px; border-top: 1px solid var(--c-line); }
+.a-pop .w { color: var(--c-muted); font: 500 var(--fs-11)/1.5 var(--font-mono); }
+.a-pop q { quotes: none; color: var(--c-ink-2); font: var(--fs-12)/1.75 var(--font-serif); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+/* 写前回顾: a source shown whole in the card, its own scroll, the sentence that says the same set apart. */
+.a-pop q.full { position: relative; display: block; max-height: 11.5em; overflow-y: auto; overscroll-behavior: contain; -webkit-line-clamp: unset; scrollbar-width: thin; }
+.a-pop q.full mark { background: var(--c-blue-tint); color: var(--c-ink); border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.a-pop .go { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-12); font-weight: 700; line-height: 1.6; cursor: pointer; }
 .a-pop .go:hover { text-decoration: underline; }
-.a-sources { display: grid; gap: 7px; }
+/* 出处 N 处 ›, folded; opened, one line for each, and each opens to the original words. */
+.a-sources-wrap, .a-how-wrap { display: grid; gap: 6px; justify-items: start; }
+.a-sources-fold, .a-basis-fold { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; text-align: left; cursor: pointer; }
+.a-sources-fold:hover, .a-basis-fold:hover { color: var(--c-ink-2); }
+.a-sources { display: grid; gap: 4px; width: 100%; margin: 0; padding: 0; list-style: none; }
 .a-source { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 4px; }
-.a-source > b { color: var(--c-blue-text); font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; line-height: 1.9; }
+.a-source > b { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); font-weight: 500; line-height: 1.9; }
 .a-source > span { display: grid; min-width: 0; }
-.a-where { padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; text-align: left; }
-button.a-where { cursor: pointer; justify-self: start; }
-button.a-where:hover { color: var(--c-blue-text); text-decoration: underline; }
-.a-text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; padding: 0; border: 0; background: none; color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-12); line-height: 1.7; text-align: left; cursor: pointer; }
-.a-text.wide { -webkit-line-clamp: unset; display: block; }
+.a-where { display: inline-flex; align-items: center; gap: 4px; justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; text-align: left; cursor: pointer; }
+.a-where:hover { color: var(--c-blue-text); }
+.a-source-body { display: grid; gap: 4px; margin: 2px 0 4px; padding-left: 10px; border-left: 2px solid var(--c-line); }
+.a-text { color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-12); line-height: 1.7; text-align: left; overflow-wrap: anywhere; }
+button.a-text { display: block; overflow: hidden; padding: 0; border: 0; background: none; cursor: pointer; }
+.a-go { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-12); cursor: pointer; }
+.a-go:hover { text-decoration: underline; }
 /* 牵线: the quoted words are underlined, drawn from the left, while the mark in the answer that cites them is pointed at. */
 .a-source .q { background-image: linear-gradient(var(--c-blue), var(--c-blue)); background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1.5px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .28s var(--ease); }
 .a-source.lit .q { background-size: 100% 1.5px; }
-.a-cover { color: var(--c-muted); font-size: 11.5px; line-height: 1.7; }
+/* 查过……；没查：……, once, at the end. */
+.a-cover { color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
 .a-note { color: var(--c-ink-2); font-size: var(--fs-13); line-height: 1.7; }
 
 /* Under a finished answer: copy, answer again, follow up, 有用 / 没用, and what it cost. */
-.a-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; color: var(--c-muted); font-size: 11.5px; }
-.a-foot .a-link { font-family: var(--font-sans); }
+.a-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; color: var(--c-muted); font-size: var(--fs-12); }
+.a-foot .a-link { padding: 0; color: var(--c-muted); font-family: var(--font-sans); }
+.a-foot .a-link:hover:not(:disabled) { color: var(--c-ink); text-decoration: none; }
+.a-foot .a-link:disabled { color: var(--c-faint); }
 .a-foot .a-copy { min-width: 3.8em; text-align: left; }
 .a-regen { display: inline-flex; align-items: baseline; gap: 4px; }
-.a-hint { color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; }
+.a-hint { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); }
 .a-rest.a-fade .a-cost-line { animation: fade-in var(--dur-mid) var(--ease) backwards; animation-delay: calc(var(--n, 0) * 120ms + 600ms); }
-.a-cost-line { order: 1; margin-left: auto; color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; }
-.a-thumbs { display: inline-flex; gap: 2px; }
-.a-thumbs button { display: inline-grid; place-items: center; width: 26px; height: 24px; padding: 0; border: 0; border-radius: var(--r-xs); background: none; color: var(--c-faint); cursor: pointer; }
+.a-cost-line { order: 1; margin-left: auto; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); }
+/* 有用 / 没用: line icons in the same grey as the words beside them (the blue one is the verdict that was given). */
+.a-thumbs { display: inline-flex; gap: 6px; margin-left: auto; }
+.a-thumbs button { display: inline-grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--r-xs); background: none; color: var(--c-muted); cursor: pointer; }
 .a-thumbs button:hover { color: var(--c-ink); }
 .a-thumbs button[aria-pressed="true"] { color: var(--c-blue-text); }
 .a-thumbs svg { width: 14px; height: 14px; }
-.a-why-not { order: 2; display: flex; flex-wrap: wrap; flex-basis: 100%; align-items: center; gap: 6px; color: var(--c-muted); font-size: 11.5px; }
-.a-why-not button { padding: 1px 8px; border: 1px solid var(--c-line); border-radius: var(--r-xs); background: var(--c-surface); color: var(--c-ink-2); cursor: pointer; }
-.a-why-not button[aria-pressed="true"] { border-color: var(--c-blue); background: var(--c-blue-tint); color: var(--c-blue-text); }
-.a-noted { order: 2; flex-basis: 100%; color: var(--c-muted); font-size: 11.5px; }
+.a-why-not { order: 2; display: flex; flex-wrap: wrap; flex-basis: 100%; align-items: center; gap: 6px; color: var(--c-muted); font-size: var(--fs-12); }
+.a-why-not button { padding: 1px 8px; border: 0; border-radius: var(--r-xs); background: var(--c-fill); color: var(--c-ink-2); cursor: pointer; }
+.a-why-not button:hover:not([aria-pressed="true"]) { background: var(--c-fill-hover); }
+.a-why-not button[aria-pressed="true"] { background: var(--c-blue-tint); color: var(--c-blue-text); }
+.a-noted { order: 2; flex-basis: 100%; color: var(--c-muted); font-size: var(--fs-12); }
 /* The short 谢谢 after 有用 stays beside the icons instead of opening a line that pushes the conversation down. */
 .a-noted.inline { order: 0; flex-basis: auto; }
-.a-warn-text { order: 2; flex-basis: 100%; color: var(--c-red-text); font-size: 11.5px; }
+.a-warn-text { order: 2; flex-basis: 100%; color: var(--c-red-text); font-size: var(--fs-12); }
 
-/* 写前回顾: four small groups, each item a sentence with its passage right under it (no rule, no left bar). */
+/* 写前回顾: four small groups, each item a sentence with its passage under it, folded to a line. */
 .a-scope { margin-left: auto; color: var(--c-muted); font-size: var(--fs-11); }
-.a-recap-sec { display: grid; gap: var(--s-2); }
-.a-label { color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .04em; }
-.a-ri { display: grid; gap: 2px; margin-top: 4px; }
-.a-ri > p { font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
-.a-ri-src { display: grid; }
-.a-ri-src .a-text { color: var(--c-muted); font-size: 11.5px; }
-.a-from { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-family: var(--font-mono); font-size: 10px; line-height: 1.6; text-align: left; }
+/* 写前回顾: a small grey title for each group (no bold, no spaced capitals); the first group is the opening in body size, the rest are lists
+   with a little space between items and no lines. */
+.a-recap-sec { display: grid; gap: var(--s-1); }
+.a-label { color: var(--c-muted); font-size: var(--fs-11); font-weight: 400; letter-spacing: 0; }
+.a-ri { font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }
+.a-ri.lead { margin: 0; }
+.a-ri-list { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.a-ri-list > li { position: relative; padding-left: 14px; }
+.a-ri-list > li::before { content: ""; position: absolute; left: 2px; top: .8em; width: 4px; height: 4px; border-radius: 50%; background: var(--c-muted); }
+.a-how { display: grid; gap: 6px; margin-top: 4px; }
+.a-how .a-proc { margin: 0; }
+.a-from { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); line-height: 1.6; text-align: left; }
 button.a-from { cursor: pointer; }
 button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
-.a-more { justify-self: start; }
 
 /* 帮我改这一处: the finding, the explanation, and each way out as its own block, set apart by space alone. */
 .a-issue { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; }
@@ -173,30 +223,32 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 .a-opt + .a-opt { margin-top: 8px; }
 .a-opt-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .a-opt-h strong { font-size: var(--fs-13); }
-.a-opt-note { color: var(--c-muted); font-size: 10.5px; }
-.a-edited { color: var(--c-blue-text); font-family: var(--font-mono); font-size: 10.5px; }
-.a-why { color: var(--c-muted); font-size: 11.5px; line-height: 1.7; overflow-wrap: anywhere; }
+.a-opt-note { color: var(--c-muted); font-size: var(--fs-11); }
+.a-edited { color: var(--c-blue-text); font-size: var(--fs-11); }
+.a-why { color: var(--c-muted); font-size: var(--fs-12); line-height: 1.7; overflow-wrap: anywhere; }
 .a-why.a-warn { color: var(--c-ink); }
 /* A change as words: struck where the old words go, green where the new ones come. */
-.a-diff { font-family: var(--font-serif); font-size: 13.5px; line-height: 1.95; overflow-wrap: anywhere; }
+.a-diff { font-family: var(--font-serif); font-size: var(--fs-13); line-height: 1.95; overflow-wrap: anywhere; }
 .a-diff.whole { display: grid; gap: 2px; }
 .a-diff del { padding: 1px; border-radius: 2px; background: var(--c-red-tint); color: var(--c-ink); text-decoration: line-through; text-decoration-color: var(--c-red-text); text-decoration-thickness: 1.5px; }
 .a-diff ins { padding: 1px; border-radius: 2px; background: var(--c-ins); color: var(--c-ins-text); font-weight: 600; text-decoration: none; }
 .a-diff .a-ctx { color: var(--c-muted); }
-.a-setup-at { color: var(--c-muted); font-family: var(--font-serif); font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.a-setup-at { color: var(--c-muted); font-family: var(--font-serif); font-size: var(--fs-13); line-height: 1.8; overflow-wrap: anywhere; }
 .a-opt.dismissed .a-diff del { background: none; color: var(--c-muted); text-decoration-color: var(--c-muted); }
 .a-opt.dismissed .a-diff ins { background: var(--c-sunken); color: var(--c-muted); font-weight: 400; }
 .a-opt.dismissed .a-opt-h strong { color: var(--c-muted); font-weight: 500; }
-.a-whole { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: 11.5px; cursor: pointer; }
+.a-whole { justify-self: start; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: var(--fs-12); cursor: pointer; }
 .a-whole:hover { color: var(--c-ink-2); }
-.a-whole-body { display: grid; gap: 2px; font: 12px/1.8 var(--font-serif); }
+.a-whole-body { display: grid; gap: 2px; font: var(--fs-12)/1.8 var(--font-serif); }
 .a-whole-body .b { padding: 0 4px; border-radius: 2px; background: var(--c-red-tint); }
 .a-whole-body .f { padding: 0 4px; border-radius: 2px; background: var(--c-ins); }
 .a-opt-a { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-.a-btn { min-height: 28px; padding: 0 10px; border: 0; background: var(--c-blue); color: var(--c-on-blue); font-size: 11.5px; font-weight: 700; cursor: pointer; }
+.a-btn { min-height: 32px; padding: 0 14px; border: 0; border-radius: var(--r-sm); background: var(--c-blue); color: var(--c-on-blue); font-size: var(--fs-13); font-weight: 700; cursor: pointer; }
 .a-btn:hover:not(:disabled) { background: var(--c-blue-hover); }
 .a-btn:disabled { background: var(--c-sunken); color: var(--c-muted); cursor: not-allowed; }
-.a-btn-quiet { min-height: 28px; padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: 11.5px; font-weight: 700; cursor: pointer; }
+.a-btn.quiet { background: var(--c-fill); color: var(--c-ink); font-weight: 400; }
+.a-btn.quiet:hover:not(:disabled) { background: var(--c-fill-hover); }
+.a-btn-quiet { min-height: 28px; padding: 0 var(--s-1); border: 0; background: none; color: var(--c-blue-text); font-size: var(--fs-12); font-weight: 700; cursor: pointer; }
 .a-btn-quiet:hover:not(:disabled) { text-decoration: underline; }
 .a-btn-quiet:disabled { color: var(--c-muted); cursor: not-allowed; }
 .a-recheck { display: grid; gap: 6px; }
@@ -206,36 +258,119 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 .a-recheck-issue > p { font-size: var(--fs-12); line-height: 1.7; }
 .a-evidence { display: grid; gap: 4px; width: 100%; }
 .a-evidence li { display: grid; gap: 1px; }
-.a-evidence-where { font-size: 11px; font-weight: 700; }
-.a-evidence-text { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 12px; line-height: 1.7; }
+.a-evidence-where { font-size: var(--fs-11); font-weight: 700; }
+.a-evidence-text { color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-12); line-height: 1.7; }
 
-/* 改资料 (v2.0): the card under a change task's answer. Each item is set apart by space alone, as the ways out of 帮我改这一处 are;
-   before → after is plain words, the old ones quiet. The same pair of words is used in the materials page's ledger. */
-.a-chg-card { display: grid; gap: 14px; min-width: 0; }
-.a-chg-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+/* 改资料 (v2.0, a card since v2.1): the one framed thing in the conversation, because it is the one thing that writes to the materials.
+   A line of title above, a thin rule between items, the buttons at the foot. Before → after is plain words for a short change; a long one
+   is one text with the added words on a pale green wash and the removed ones struck. The same words are used in the materials page's ledger. */
+.a-chg-card { display: grid; min-width: 0; overflow: hidden; border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--ring-rest); }
+.a-chg-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; padding: 10px 12px; border-bottom: 1px solid var(--c-line-soft); }
 .a-chg-head strong { font-size: var(--fs-13); }
-.a-chg-pick { display: inline-flex; align-items: center; align-self: center; cursor: pointer; }
-.a-chg-pick input { width: 16px; height: 16px; }
-.a-chg-flow, .ledger-flow { font-family: var(--font-serif); font-size: 13.5px; line-height: 1.9; overflow-wrap: anywhere; }
+.a-chg-note-r { color: var(--c-muted); font-size: var(--fs-11); }
+.a-chg-done { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 12px; background: var(--c-blue-tint); color: var(--c-ink); font-size: var(--fs-12); }
+.a-chg { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--c-line-soft); }
+.a-chg.plain { grid-template-columns: minmax(0, 1fr); }
+.a-chg[data-risk="high"] { box-shadow: inset 3px 0 0 var(--c-red-text); }
+.a-chg-main { display: grid; gap: 4px; min-width: 0; }
+.a-chg-pick { display: inline-flex; align-items: flex-start; padding-top: 2px; cursor: pointer; }
+.a-chg-pick input { width: 16px; height: 16px; margin: 0; }
+.a-chg-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.a-chg-line strong { font-size: var(--fs-13); }
+.a-chg-kind { padding: 0 5px; border: 0; border-radius: var(--r-xs); background: var(--c-fill); color: var(--c-muted); font-size: var(--fs-11); line-height: 18px; }
+.a-chg-state { font-size: var(--fs-11); font-weight: 700; color: var(--c-ink); }
+.a-chg-state.applied { color: var(--c-blue-text); }
+.a-chg-flow, .ledger-flow { font-family: var(--font-serif); font-size: var(--fs-13); line-height: 1.8; overflow-wrap: anywhere; }
+.a-chg-flow { margin: 0; }
 .chg-before { color: var(--c-muted); }
 .chg-arrow { margin: 0 6px; color: var(--c-muted); font-family: var(--font-sans); }
 .chg-after { color: var(--c-ink); font-weight: 600; }
-.a-chg.dismissed { opacity: .6; }
-.a-chg.dismissed .chg-after { color: var(--c-muted); font-weight: 400; }
+.a-chg-diff { margin: 0; color: var(--c-ink-2); font-size: var(--fs-13); line-height: 1.7; overflow-wrap: anywhere; }
+.a-chg-diff ins { padding: 0 1px; border-radius: 2px; background: var(--c-ins); color: var(--c-ins-text); text-decoration: none; }
+.a-chg-diff del { color: var(--c-muted); text-decoration: line-through; }
+.a-chg-diff[data-diff="whole"] ins { margin-left: 4px; }
+/* Not done, or taken back: the words go quiet but stay readable; the word for what became of the item keeps its full strength. */
+.a-chg.dismissed .a-chg-diff, .a-chg.dismissed .chg-after, .a-chg.dismissed .a-chg-line strong { color: var(--c-muted); font-weight: 400; }
+.a-chg.dismissed .a-chg-diff ins { background: var(--c-sunken); color: var(--c-muted); }
+.a-chg.dismissed .a-chg-line strong { font-weight: 500; }
 .a-edited.warn { color: var(--c-red-text); }
-.a-chg-asked, .a-chg-same { margin-top: -3px; }
-.a-chg-actions { margin-top: 2px; }
+.a-chg-asked, .a-chg-same, .a-chg-note { margin: 0; }
+.a-basis { display: grid; gap: 4px; justify-items: start; }
+.a-basis-body { display: grid; gap: 4px; width: 100%; }
+.a-chg-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 12px; }
+.a-chg-problem { margin: 0; padding: 0 12px 10px; }
 .a-chg-conflict { display: grid; gap: 4px; padding: 8px 10px; border-left: 3px solid var(--c-yellow); background: var(--c-sunken); font-size: var(--fs-12); line-height: 1.7; overflow-wrap: anywhere; }
 .a-chg-conflict ul { display: grid; gap: 2px; padding-left: var(--s-3); list-style: disc; }
 .a-spin { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border: 2px solid var(--c-blue); border-right-color: transparent; border-radius: 50%; animation: a-spin 900ms linear infinite; }
 @keyframes a-spin { to { transform: rotate(360deg); } }
+/* The ledger on the materials page keeps both times of an entry: when it was written, and when it was taken back. */
+.ledger-time .ledger-at { display: block; }
+
+/* ── 长任务 (v2.1 B) ──
+   The plan card and the question card are the change card's own container (one frame, 1px line, the same corner): the cards that change data or need
+   the author all look alike. The progress is the line above an answer with a thin bar under it. The report is the answer's own layout (points, bold
+   labels, one mark each) under a bold section title. */
+.a-card { display: grid; min-width: 0; overflow: hidden; border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--ring-rest); }
+.a-card-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; padding: 10px 12px; border-bottom: 1px solid var(--c-line-soft); }
+.a-card-head strong { font-size: var(--fs-13); }
+.a-card-head span { color: var(--c-muted); font-size: var(--fs-11); }
+.a-card-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 10px 12px; }
+.a-long-steps { display: grid; margin: 0; padding: 4px 0; list-style: none; }
+.a-long-steps li { display: grid; grid-template-columns: 18px auto minmax(0, 1fr); gap: 4px 8px; padding: 5px 12px; font-size: var(--fs-13); line-height: 1.6; }
+.a-long-steps .n { color: var(--c-faint-text); font-family: var(--font-mono); font-size: var(--fs-12); }
+.a-long-steps .where { color: var(--c-ink); white-space: nowrap; }
+.a-long-steps .what { color: var(--c-muted); font-size: var(--fs-12); overflow-wrap: anywhere; }
+.a-long-est { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; padding: 8px 12px 2px; border-top: 1px solid var(--c-line-soft); color: var(--c-muted); font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+.a-long-est .a-link { padding: 0 var(--s-1); }
+.a-long-quota { margin: 0; padding: 0 12px 8px; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
+.a-long-quota:empty { display: none; }
+.a-long-quota.warn { color: var(--c-red-text); }
+.a-long-form { display: grid; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--c-line-soft); background: var(--c-ground); }
+.a-long-form .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.a-long-form .row.end { justify-content: flex-end; }
+.a-long-form label { display: inline-flex; align-items: center; gap: 6px; color: var(--c-ink-2); font-size: var(--fs-13); white-space: nowrap; }
+.a-long-form .hint, .a-long-choice .hint { margin: 0; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
+.a-field { width: 4.6em; min-height: 32px; padding: 0 8px; font-size: var(--fs-13); text-align: center; }
+.a-select { width: auto; min-height: 32px; padding: 0 30px 0 10px; font-size: var(--fs-13); }
+.a-long-problem { margin: 0; padding: 0 12px 8px; color: var(--c-red-text); }
+/* Progress: the process line, a thin bar, 停止 at the right. */
+.a-long-progress { display: grid; gap: 6px; }
+.a-long-progress .a-fold.static { align-items: center; }
+.a-long-bar { height: 3px; overflow: hidden; border-radius: 2px; background: var(--c-sunken); }
+.a-long-bar i { display: block; height: 100%; background: var(--c-blue); transition: width .6s var(--ease); }
+/* The question: the same card with a blue edge. */
+.a-long-ask { box-shadow: var(--ring-rest), inset 3px 0 0 var(--c-blue); }
+.a-long-q { margin: 0; padding: 10px 12px 0; font-size: var(--fs-14); line-height: 1.7; overflow-wrap: anywhere; }
+.a-long-choice { display: grid; gap: 6px; padding: 10px 12px; }
+.a-long-choice.row { display: flex; flex-wrap: wrap; align-items: center; }
+.a-long-raise { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.a-long-option { display: grid; gap: 2px; width: 100%; min-height: 40px; padding: 8px 10px; border: 0; border-radius: var(--r-sm); background: var(--c-fill); color: var(--c-ink); font-size: var(--fs-13); line-height: 1.6; text-align: left; cursor: pointer; transition: background-color var(--dur-fast) var(--ease); }
+.a-long-option small { color: var(--c-faint-text); font-size: var(--fs-11); line-height: 1.6; overflow-wrap: anywhere; }
+.a-long-option:hover:not(:disabled) { background: var(--c-blue-tint); }
+.a-long-option:disabled { color: var(--c-muted); cursor: not-allowed; }
+.a-block.a-long-failed { margin: 0; }
+/* The report: the line that ends the work, then sections. */
+.a-long-end { margin: 6px 0 2px; }
+.a-long-report { display: grid; gap: 8px; }
+.a-long-section { display: grid; gap: 6px; margin-top: var(--s-2); }
+.a-long-section h4 { margin: 0; font-size: var(--fs-13); font-weight: 700; }
+.a-long-groups { display: grid; gap: 10px; }
+.a-long-groups .a-chg-card { margin: 0; }
+.a-chg-card[data-risk="high"] { box-shadow: var(--ring-rest), inset 3px 0 0 var(--c-red-text); }
+/* The dot on the top bar's 助手 button: the long task waits for an answer or is over. */
+.topbar-assistant { position: relative; }
+.topbar-dot { position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c-red-text); box-shadow: 0 0 0 2px var(--c-fill); }
+.topbar-assistant:hover .topbar-dot { box-shadow: 0 0 0 2px var(--c-fill-hover); }
+.topbar-assistant[aria-expanded="true"] .topbar-dot { box-shadow: 0 0 0 2px var(--c-blue); }
+.cx-menu button[aria-disabled="true"] { color: var(--c-muted); cursor: not-allowed; }
+.cx-menu button[aria-disabled="true"]:hover { background: none; }
 
 /* 对照计划, folded into the first block of the column. */
 .a-plan { display: grid; gap: var(--s-2); padding-bottom: var(--s-4); border-bottom: 1px solid var(--c-line); }
 .a-plan-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
-.a-plan-head strong { color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .08em; }
+.a-plan-head strong { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); font-weight: 500; letter-spacing: .08em; }
 .a-plan .analysis { padding-top: 0; }
-.a-plan .analysis-summary { font-size: var(--fs-14); line-height: 1.8; }
+.a-plan .analysis-summary { font-size: var(--fs-14); line-height: 1.7; }
 .a-plan .analysis-items p { font-size: var(--fs-13); }
 
 /* Old 问一问 history, read only. */
@@ -246,7 +381,7 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 .a-old { display: grid; gap: 6px; padding: 0 0 var(--s-4); color: var(--c-ink-2); }
 .a-old-q { color: var(--c-ink); font-size: var(--fs-13); font-weight: 700; }
 .a-old-q span { color: var(--c-muted); font-weight: 400; }
-.a-old-a, .a-old-f p { font-size: var(--fs-13); line-height: 1.8; }
+.a-old-a, .a-old-f p { font-size: var(--fs-13); line-height: 1.7; }
 .a-old-f { display: grid; gap: 2px; }
 .a-old-f > span { color: var(--c-muted); font-size: var(--fs-11); }
 .a-old-f a { color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-12); line-height: 1.7; }
@@ -255,80 +390,88 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 /* An empty conversation: three questions to start from. */
 .a-start { display: grid; gap: 16px; }
 .a-starters { display: grid; border-top: 1px solid var(--c-line); }
-.a-starters button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; width: 100%; padding: 9px 0; border: 0; border-bottom: 1px solid var(--c-line); background: none; color: var(--c-ink); font-size: 13px; text-align: left; cursor: pointer; }
+.a-starters button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; width: 100%; padding: 9px 0; border: 0; border-bottom: 1px solid var(--c-line); background: none; color: var(--c-ink); font-size: var(--fs-13); text-align: left; cursor: pointer; }
 .a-starters button:hover { color: var(--c-blue-text); }
-.a-starters .why { color: var(--c-muted); font-size: 11px; }
+.a-starters .why { color: var(--c-muted); font-size: var(--fs-11); }
 .a-starters .arrow { color: var(--c-muted); font-family: var(--font-mono); }
-.a-recap-btn { justify-self: start; min-height: 32px; padding: 0 12px; border: 1.5px solid var(--c-rule); border-radius: var(--r-sm); background: var(--c-surface); color: var(--c-ink); font-size: 12px; font-weight: 700; cursor: pointer; }
-.a-recap-btn:hover:not(:disabled) { border-color: var(--c-blue); color: var(--c-blue-text); }
-.a-recap-btn:disabled { color: var(--c-muted); border-color: var(--c-line); cursor: not-allowed; }
+.a-recap-btn { justify-self: start; min-height: 32px; padding: 0 14px; border: 0; border-radius: var(--r-sm); background: var(--c-fill); color: var(--c-ink); font-size: var(--fs-12); font-weight: 700; cursor: pointer; transition: background-color var(--dur-fast) var(--ease); }
+.a-recap-btn:hover:not(:disabled) { background: var(--c-fill-hover); }
+.a-recap-btn:disabled { color: var(--c-muted); cursor: not-allowed; }
 
 /* Back to the newest answer, when the author is reading further up. */
-.a-jump { position: absolute; right: var(--s-4); bottom: 150px; z-index: 4; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 0; border-radius: var(--r-md); background: var(--c-inverse); box-shadow: var(--elev-pop); color: var(--c-on-inverse); font-size: 11.5px; cursor: pointer; }
+.a-jump { position: absolute; right: var(--s-4); bottom: 150px; z-index: 4; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 0; border-radius: var(--r-md); background: var(--c-inverse); box-shadow: var(--elev-pop); color: var(--c-on-inverse); font-size: var(--fs-12); cursor: pointer; }
 .a-jump .d { width: 6px; height: 6px; background: var(--c-blue); }
 
-/* ── Writing a question: one frame, the tags inside, a bar underneath ── */
-.a-compose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: var(--s-3) var(--s-4) var(--s-3); border-top: 1px solid var(--c-line); background: var(--c-ground); }
-.cx { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 10px 8px 8px 12px; border: 1px solid transparent; border-radius: var(--r-md); background: var(--c-sunken); transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
-.cx:hover { border-color: var(--c-line); }
-.cx:focus-within { border-color: var(--c-blue); background: var(--c-surface); box-shadow: 0 0 0 3px var(--c-blue-tint); }
-.cx.off { border: 1px dashed var(--c-line); background: transparent; box-shadow: none; }
+/* ── Writing a question: a white frame on the column's ground, the tags inside, a bar underneath ── */
+.a-compose { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: var(--s-2) var(--s-4) var(--s-3); background: var(--c-ground); }
+/* The box is one ring (rest, hover, focus within it); the text area inside it has none of its own. */
+.cx { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 10px 8px 8px 12px; border: 0; border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--ring-rest); transition: box-shadow var(--dur-mid) var(--ease); }
+.cx:hover { box-shadow: var(--ring-hover); }
+.cx:focus-within { box-shadow: var(--ring-focus); }
+/* Switched off: dashes, as for anything not available yet. */
+.cx.off { background: transparent; box-shadow: none; outline: 1px dashed var(--c-faint); outline-offset: -1px; }
 .cx.off .cx-text { color: var(--c-muted); }
 .cx-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.cx-chip, .a-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 1px 3px 1px 8px; background: var(--c-blue-tint); color: var(--c-blue-text); font-size: 11.5px; }
+.cx-chip, .a-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 1px 3px 1px 8px; background: var(--c-blue-tint); color: var(--c-blue-text); font-size: var(--fs-12); }
 .cx-chip.muted { background: transparent; border: 1px dashed var(--c-line); color: var(--c-muted); }
 .cx-chip.muted .label { text-decoration: line-through; }
-.cx-chip .apart { color: var(--c-muted); font-size: 10.5px; }
-.cx-chip.quote { border: 1px solid var(--c-line); background: transparent; color: var(--c-ink-2); font-family: var(--font-serif); }
+.cx-chip .apart { color: var(--c-muted); font-size: var(--fs-11); }
+.cx-chip.quote { border: 0; background: var(--c-sunken); color: var(--c-ink-2); font-family: var(--font-serif); }
 .cx-chip > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cx-chip button { display: inline-grid; place-items: center; width: 16px; height: 16px; padding: 0; border: 0; border-radius: 50%; background: none; color: inherit; opacity: .7; cursor: pointer; }
 .cx-chip button:hover { opacity: 1; }
-/* The text box is a plain area inside the frame: it takes the frame's fill, two lines high, growing to six. */
-.cx-text { width: 100%; min-height: calc(1.65em * 2); max-height: calc(1.65em * 6); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--c-ink); font-size: 13.5px; line-height: 1.65; resize: none; overflow-y: auto; field-sizing: content; }
-.cx-text:hover, .cx-text:focus { border: 0; background: transparent; box-shadow: none; }
+/* The text box is a plain area inside the frame: one line when empty, growing with what is written up to six, then it scrolls. */
+.cx-text { width: 100%; min-height: 1.65em; max-height: calc(1.65em * 6); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--c-ink); font-size: var(--fs-14); line-height: 1.65; resize: none; overflow-y: auto; field-sizing: content; }
+.cx .cx-text, .cx .cx-text:hover, .cx .cx-text:focus { border: 0; background: transparent; box-shadow: none; }
 .cx-text:read-only { color: var(--c-muted); }
 p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
-.cx-bar { display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 32px; }
+.cx-bar { display: flex; align-items: center; gap: 2px; min-width: 0; min-height: 32px; }
 .cx-fill { flex: 1 1 0; min-width: 0; }
-.cx-plus { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--c-line); border-radius: var(--r-sm); background: transparent; color: var(--c-ink-2); cursor: pointer; }
-.cx-plus:hover, .cx-plus[aria-expanded="true"] { border-color: var(--c-ink-2); color: var(--c-ink); }
+/* 「＋」 and the mode are one kind of small button: no frame, 32px, a pale fill when pointed at. */
+.cx-ghost { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 4px; height: 32px; min-width: 32px; padding: 0 8px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--c-muted); font-size: var(--fs-13); white-space: nowrap; cursor: pointer; }
+.cx-ghost:hover:not(:disabled), .cx-ghost[aria-expanded="true"] { background: var(--c-sunken); color: var(--c-ink); }
+.cx-ghost:disabled { color: var(--c-muted); cursor: default; }
 .cx-plus svg { width: 12px; height: 12px; }
-.cx-mode { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 28px; white-space: nowrap; padding: 0 8px; border: 1px solid transparent; border-radius: var(--r-sm); background: none; color: var(--c-ink-2); font-size: 12px; cursor: pointer; }
-.cx-mode:hover:not(:disabled), .cx-mode[aria-expanded="true"] { border-color: var(--c-line); }
-.cx-mode:disabled { color: var(--c-muted); cursor: default; }
-.cx-mode .caret { color: var(--c-muted); font-size: 9px; }
-/* One slot for the counter, the key hint and the cost; the bar around it never moves. Where the cost does not fit with what is left today,
-   only the cost is kept (what is left is in the slot's title, and the top bar says it too). Never cut a figure in half. */
-.cx-note { flex: 1 1 0; min-width: 0; container-type: inline-size; overflow: hidden; color: var(--c-muted); font-family: var(--font-mono); font-size: 10.5px; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
-.cx-note.warn { color: var(--c-red-text); }
-@container (max-width: 190px) { .cx-note .more { display: none; } }
-.cx-send { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--r-sm); background: var(--c-blue); color: var(--c-on-blue); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), transform .1s; }
+.cx-mode .caret { display: inline-flex; color: var(--c-muted); }
+/* The round send key: solid blue when it can send, a ring of the line colour when it cannot, a stop key while a task runs. */
+.cx-send { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; padding: 0; border: 1px solid var(--c-blue); border-radius: 50%; background: var(--c-blue); color: var(--c-on-blue); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform .1s; }
 .cx-send:hover:not(:disabled) { background: var(--c-blue-hover); }
 .cx-send:active:not(:disabled) { transform: translateY(1px); }
-.cx-send:disabled { background: var(--c-sunken); color: var(--c-muted); cursor: default; }
-.cx.off .cx-send:disabled, .cx:not(:focus-within) .cx-send:disabled { background: var(--c-line); }
-.cx-send.stop { background: var(--c-ink); color: var(--c-ground); }
-.cx-send.stop:hover:not(:disabled) { background: var(--c-ink-2); }
-.cx-send.stop:disabled { background: var(--c-ink); opacity: .5; }
+.cx-send:disabled { border-color: var(--c-line); background: transparent; color: var(--c-faint); cursor: default; }
+.cx-send.stop { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
+.cx-send.stop:hover:not(:disabled) { border-color: var(--c-ink-2); background: var(--c-ink-2); }
+.cx-send.stop:disabled { opacity: .5; }
 .cx-send svg { width: 16px; height: 16px; }
-.cx-menu { position: absolute; left: 8px; bottom: calc(100% + 6px); z-index: 6; display: grid; width: 240px; max-width: calc(100% - 16px); padding: 4px 0; overflow: hidden; border: 1px solid var(--c-rule); border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-pop); }
-.cx-menu.mode { left: 44px; width: 200px; }
+.cx-menu { position: absolute; left: 8px; bottom: calc(100% + 6px); z-index: 6; display: grid; width: 240px; max-width: calc(100% - 16px); padding: 4px 0; overflow: hidden; border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-pop); }
+.cx-menu.mode { left: 44px; width: 240px; }
 /* Opened downward when there is no room above (a short window): the box is then the menu's top edge. */
 .cx-menu.down { top: calc(100% + 6px); bottom: auto; }
 .cx-menu.constrained { overflow-y: auto; overscroll-behavior: contain; }
 .cx-menu.constrained .scroll { max-height: none; overflow: visible; }
-.cx-menu button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 7px 12px; border: 0; background: none; color: var(--c-ink); font-size: 12.5px; text-align: left; cursor: pointer; }
+.cx-menu button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 7px 12px; border: 0; background: none; color: var(--c-ink); font-size: var(--fs-13); text-align: left; cursor: pointer; }
 .cx-menu button:hover:not(:disabled), .cx-menu button:focus-visible { background: var(--c-sunken); }
 .cx-menu button:disabled { color: var(--c-muted); cursor: not-allowed; }
-.cx-menu .k { color: var(--c-muted); font: 10.5px var(--font-mono); }
+.cx-menu .k { color: var(--c-muted); font: var(--fs-11) var(--font-mono); }
 .cx-menu .sep { height: 1px; margin: 4px 0; background: var(--c-line); }
-.cx-menu .head { padding: 6px 12px 2px; color: var(--c-muted); font: 500 10px var(--font-mono); letter-spacing: .08em; }
+.cx-menu .head { padding: 6px 12px 2px; color: var(--c-muted); font: 500 var(--fs-11) var(--font-mono); letter-spacing: .08em; }
 .cx-menu .back { color: var(--c-muted); }
 .cx-menu .scroll { display: grid; max-height: 220px; overflow-y: auto; }
+.cx-menu .what { display: grid; gap: 1px; }
+.cx-menu .what .d { color: var(--c-muted); font-size: var(--fs-11); line-height: 1.5; }
 .cx-menu [aria-checked="true"]::after { content: "✓"; color: var(--c-blue-text); }
-.a-ai-note { color: var(--c-muted); font-size: 11px; line-height: 1.6; }
-.a-tip { padding: 0 var(--s-4) 6px; color: var(--c-muted); font-size: 12px; line-height: 1.6; }
+/* Under the frame: the cost (or the counter, or the key hint) at the right, in the body face, and under it the note on what wrote the answer. Two lines
+   always, so nothing moves when the key hint takes the cost's place. */
+.a-quota-row { container-type: inline-size; display: grid; }
+.a-ai-note { justify-self: start; margin: 0; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
+.cx-note { order: -1; justify-self: end; min-width: 0; min-height: 1.6em; color: var(--c-faint-text); font-family: var(--font-sans); font-size: var(--fs-12); line-height: 1.6; text-align: right; white-space: nowrap; }
+.cx-note.warn { color: var(--c-red-text); }
+/* Where the row has no room for what is left today beside the cost, only the cost stays (what is left is in the note's title). Never half a figure. */
+@container (max-width: 240px) { .cx-note .more { display: none; } }
+.a-tip { padding: 0 var(--s-4) 6px; color: var(--c-muted); font-size: var(--fs-12); line-height: 1.6; }
+/* A request that did not go through: red edge and words, with 重试; what was written stays in the box. */
 .a-block { margin: 0 var(--s-4) 6px; padding: 8px 12px; background: var(--c-sunken); color: var(--c-ink-2); font-size: var(--fs-12); line-height: 1.6; }
+.a-block.a-refused { border: 1px solid var(--c-red-text); background: transparent; color: var(--c-red-text); }
+.a-block .a-retry { color: var(--c-red-text); font-weight: 700; text-decoration: underline; }
 
 /* 清空对话 */
 .a-confirm { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; padding: var(--s-4); background: var(--c-veil); }
@@ -338,11 +481,13 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 .a-confirm-actions { display: flex; justify-content: flex-end; gap: var(--s-3); }
 .a-danger { min-height: 32px; padding: 0 var(--s-3); border: 0; background: var(--c-red); color: var(--c-on-finding); font-weight: 700; cursor: pointer; }
 
-/* ── In the writing page's right column ── */
-#side-panel-assistant { height: calc(100vh - var(--topbar-h) - 48px - var(--control-h) - var(--s-2)); min-height: 360px; }
-.findings:has(#side-panel-assistant:not([hidden])) { display: flex; flex-direction: column; overflow: hidden; }
+/* ── In the writing page's right column ──
+   The column is one piece from the top bar to the bottom of the window (writing.css puts it there): the conversation scrolls in the middle and
+   the box stays at its foot, so the box is on screen when the page opens. */
+#side-panel-assistant { min-height: 0; }
+.findings:has(#side-panel-assistant:not([hidden])) { display: flex; flex-direction: column; overflow: clip; }  /* clip, not hidden: nothing can scroll this frame, not even focus moving into the box (V10) */
 .findings:has(#side-panel-assistant:not([hidden])) > #side-panel-assistant { flex: 1; min-height: 0; height: auto; }
-.findings #side-panel-assistant:not([hidden]) { display: flex; flex-direction: column; }
+.findings #side-panel-assistant:not([hidden]) { display: flex; flex-direction: column; overflow: clip; }
 .assistant-column .a-bar,
 .assistant-column .a-thread,
 .assistant-column .a-compose,
@@ -350,33 +495,39 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 .assistant-column .a-block { padding-inline: 0; margin-inline: 0; }
 .assistant-column .a-jump { right: 0; }
 .side-title { position: sticky; top: 0; z-index: 2; display: flex; align-items: baseline; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-2) 0 0; border-bottom: 1px solid var(--c-line); background: var(--c-ground); font-size: var(--fs-15); font-weight: 700; }
-.side-tabs { border-bottom-width: 1px; border-bottom-color: var(--c-line); }
+.side-tabs { border-bottom-color: var(--c-line); }
 .side-tab { margin-bottom: -1px; }
 .side-tab[aria-selected="true"] { border-bottom: 3px solid var(--c-blue); }
 
 /* ── The drawer on the other pages ── */
-.assistant-drawer { width: min(100%, 400px); border-left: 1px solid var(--c-line); box-shadow: var(--elev-pop); }
+.assistant-drawer { width: min(100%, 400px); box-shadow: var(--elev-pop); }
+/* The frame never scrolls, only the conversation inside it: with clip a script (or the browser bringing the box into view) cannot move it either (V04). */
+.drawer.assistant-drawer, .assistant-drawer > .assistant { overflow: clip; }
+/* The drawer is a grid item of its layer: as a scroll container it could shrink to the window, as a clip it must be told to (min-height: 0), or it grows to its content. */
+.drawer.assistant-drawer { min-height: 0; max-height: 100%; }
 .a-drawer-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--c-line); }
 .a-drawer-head h2 { font-size: var(--fs-16); }
 .a-drawer-head kbd { color: var(--c-muted); font-size: var(--fs-11); }
 .assistant-drawer > .assistant { flex: 1; }
 
 /* ── The bar over selected text ── */
-.a-selpop { position: fixed; z-index: 35; display: flex; background: var(--c-inverse); color: var(--c-on-inverse); box-shadow: var(--elev-pop); font-size: var(--fs-12); white-space: nowrap; transform: translate(-50%, -100%); animation: fade var(--dur-fast) var(--ease) backwards; }
-.a-selpop.below { transform: translate(-50%, 0); }
+.a-selpop { position: fixed; z-index: 35; display: flex; background: var(--c-inverse); color: var(--c-on-inverse); box-shadow: var(--elev-pop); font-size: var(--fs-12); white-space: nowrap; animation: fade var(--dur-fast) var(--ease) backwards; }
+.a-selpop.above { transform: translateY(-100%); }
 .a-selpop button { min-height: 32px; padding: 0 var(--s-3); border: 0; border-right: 1px solid var(--c-on-inverse-3); background: none; color: inherit; cursor: pointer; }
 .a-selpop button:last-child { border-right: 0; }
-.a-selpop button:hover { background: var(--c-blue); color: var(--c-on-blue); }
+.a-selpop button:hover:not(:disabled) { background: var(--c-blue); color: var(--c-on-blue); }
+.a-selpop button:disabled { color: var(--c-on-inverse-3); cursor: not-allowed; }
 .a-selpop .first { background: var(--c-blue); color: var(--c-on-blue); font-weight: 700; }
+.a-selpop .first:disabled { background: transparent; color: var(--c-on-inverse-3); }
 .a-selpop button:focus-visible { outline-offset: -3px; outline-color: var(--c-on-inverse); }
 
 /* ── The top bar's button ── */
-.topbar-assistant { min-height: 36px; padding: 0 var(--s-3); border: 1.5px solid var(--c-rule); background: var(--c-surface); color: var(--c-ink); font-size: var(--fs-13); font-weight: 700; cursor: pointer; }
-.topbar-assistant:hover,
-.topbar-assistant[aria-expanded="true"] { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
+.topbar-assistant { min-height: 36px; padding: 0 var(--s-3); border: 0; background: var(--c-fill); color: var(--c-ink); font-size: var(--fs-13); font-weight: 700; cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.topbar-assistant:hover { background: var(--c-fill-hover); }
+.topbar-assistant[aria-expanded="true"] { background: var(--c-blue); color: var(--c-on-blue); }
 
 /* A line under results that an AI wrote (the findings, the assistant's box): small and quiet. */
-.ai-note { margin-top: 12px; color: var(--c-muted); font-size: 11px; line-height: 1.6; }
+.ai-note { margin-top: 12px; color: var(--c-muted); font-size: var(--fs-11); line-height: 1.6; }
 
 /* ── Narrow screens ── */
 @media (max-width: 1023px) {
@@ -396,19 +547,43 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
   .topbar-assistant { flex: none; min-height: 36px; padding: 0 10px; }
   .a-ask { max-width: 94%; }
   .a-ask-edit { opacity: 1; position: static; display: block; margin: 0 0 2px auto; }
-  .cx-menu { width: min(240px, calc(100% - 16px)); }
+  .cx-menu { width: min(260px, calc(100% - 16px)); }
+}
+/* A finger needs 40 x 40 px; the words stay the size they are. Marks inside a line get their room from a layer around them (the line does not
+   grow); buttons on their own line are made as tall and as wide as the finger needs. */
+@media (max-width: 720px) {
+  .a-cite button::after { width: max(100%, 40px); height: 40px; }
+  .a-foot .a-link, .a-opt-a .a-link, .a-btn-quiet, .a-process .a-link, .a-go, .a-chg-done .btn, .a-opt-a .btn, .a-resend-row .a-link { min-width: 40px; min-height: 40px; }
+  .a-foot .a-link { display: inline-flex; align-items: center; justify-content: center; }
+  .a-foot { gap: 0 6px; }
+  .a-thumbs { gap: 0; }
+  .a-thumbs button { width: 40px; height: 40px; }
+  .a-chg-pick { position: relative; }
+  .a-chg-pick input { width: 18px; height: 18px; }
+  .a-chg-pick::after { content: ""; position: absolute; top: -9px; left: -11px; width: 40px; height: 40px; }
+  .a-chg-foot .a-btn { min-height: 40px; }
+  .a-process .menu > summary { min-height: 40px; min-width: 40px; justify-content: center; }
+  .a-sources-fold, .a-basis-fold, .a-where { min-height: 40px; }
+  /* 长任务: every button, field and link of the cards is a finger's size. */
+  .a-card-foot .a-btn, .a-long-form .a-btn, .a-long-choice .a-btn, .a-long-option { min-height: 40px; }
+  .a-long-est .a-link, .a-long-form .a-link, .a-long-progress .a-link { min-width: 40px; min-height: 40px; }
+  .a-field, .a-select { min-height: 40px; }
+  .a-long-steps li { grid-template-columns: 18px minmax(0, 1fr); }
+  .a-long-steps .what { grid-column: 2; }
+  .cx-menu button[role="menuitemradio"] { min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .a-say, .a-act, .a-answer.a-fade .a-s, .a-selpop, .a-rest.a-fade, .a-rest.a-fade .a-cost-line, .a-ask.rise, .a-drop, .a-proc-wrap.unfolding { animation: none; }
+  .a-long-bar i { transition: none; }
   .a-three i { animation: none; opacity: 1; transform: none; }
   .a-three i:nth-child(2), .a-three i:nth-child(3) { opacity: .45; }
   .a-spin { animation: none; }
+  .a-fold-mark { transition: none; }
 }
 
-/* A short window (the column is a third of the screen high): the box gives up a line so the conversation keeps some room. */
+/* A short window (the column is a third of the screen high): the box gives up a little so the conversation keeps some room. */
 @media (min-width: 1024px) and (max-height: 520px) {
-  .cx-text { min-height: 1.65em; }
   .cx { padding-top: 8px; }
   .a-compose { padding-top: 8px; padding-bottom: 8px; }
 }

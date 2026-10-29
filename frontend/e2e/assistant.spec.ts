@@ -11,7 +11,7 @@ import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBod
 
 test.describe("助手", () => {
   test("写作页：提问得到带出处的回答，步骤折叠，扣 500 字，刷新后对话还在", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
     await expect(thread(page)).toContainText(/约 500 字 · 今天还剩 [\d,]+ 字/);
@@ -20,10 +20,11 @@ test.describe("助手", () => {
     await finished(page);
     const task = tasks(page).first();
     await expect(task).toContainText("苏岑知道罗盘被调包了吗？");
-    await expect(task.getByText("问作品", { exact: true })).toBeVisible();
-    await expect(task.getByText("有答案", { exact: true })).toBeVisible();
+    // One line above the answer says what it is, how many places it looked at and how long it took; nothing else stands between.
+    // (38a: no count of places on the line; 「出处 N 处」 under the answer is the one number.)
+    await expect(task.getByTestId("process-line")).toHaveText(/^问作品 · \d+ 秒/);
     // The steps are folded into one line; opening it lists what was looked up.
-    const fold = task.getByRole("button", { name: /^查了 \d+ 处/ });
+    const fold = task.getByRole("button", { name: "怎么查的" });
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.getByText("查了 1 条事实：苏岑")).toHaveCount(0);
     await fold.click();
@@ -35,9 +36,12 @@ test.describe("助手", () => {
     await expect(task.getByText("（示意回答）前文写过这件事。")).toBeVisible();
     await expect(task.locator(".a-cite button")).toHaveText(["1"]);
     await expect(task.getByRole("button", { name: /^出处 1：第 \d+ 章/ })).toBeVisible();
+    // The sources are one folded line; opened, one line each.
+    await expect(task.getByRole("list", { name: "出处" })).toHaveCount(0);
+    await task.getByRole("button", { name: /^出处 \d+ 处/ }).click();
     await expect(task.getByRole("list", { name: "出处" }).getByRole("listitem")).toHaveCount(1);
     await expect(task).not.toContainText(/\bR\d+\b/);
-    await expect(task).toContainText(/查过：.*已确认事实：苏岑/);
+    await expect(task).toContainText(/查过.*已确认事实：苏岑/);
     await expect(task).toContainText(/没查：/);
     // Under the answer only what it cost: no count of steps, and no round.
     await expect(task).toContainText("计 500 字");
@@ -59,10 +63,13 @@ test.describe("助手", () => {
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const task = tasks(page).first();
+    await task.getByRole("button", { name: /^出处 \d+ 处/ }).click();
     const item = task.getByRole("list", { name: "出处" }).getByRole("listitem").first();
     const chapter = item.getByRole("button", { name: /^第 \d+ 章/ });
     const number = Number((await chapter.innerText()).match(/^第 (\d+) 章/)![1]);
+    // The line opens to the words and the way to the original.
     await chapter.click();
+    await item.getByRole("button", { name: "去原文 →" }).click();
     await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace\\?chapter=${number}$`));
     await expect(page.getByRole("heading", { level: 1, name: new RegExp(`^第 ${number} 章`) })).toBeAttached();
   });
@@ -89,12 +96,12 @@ test.describe("助手", () => {
   });
 
   test("运行中：步骤和停止按钮，停止后显示已停止", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await openAssistantTab(page);
     await ask(page, "E2E_SLOW 苏岑现在在哪？");
     const task = tasks(page).first();
     await expect(task).toHaveAttribute("data-status", /^(queued|running)$/);
-    await expect(task.getByText("正在查", { exact: true })).toBeVisible();
+    await expect(task.getByTestId("process-line")).toContainText("正在查");
     await expect(thread(page).getByRole("status").first()).toBeVisible();
     // While it works the send square is a stop button, and the next question can be typed but not sent.
     await expect(send(page)).toHaveCount(0);
@@ -131,8 +138,12 @@ test.describe("助手", () => {
     await ask(page, "E2E_NOT_FOUND 苏岑的生日是哪天？");
     await finished(page);
     const task = tasks(page).first();
-    await expect(task.getByText("正文里找不到", { exact: true })).toBeVisible();
-    await expect(task.getByText("查过前文，没有找到相关的写法。", { exact: true })).toBeVisible();
+    // The first line is the program's, in the answer's own type. 38a: the model's 「查过……」 sentence is under 「怎么查的」, not under the answer.
+    await expect(task.getByTestId("not-found-line")).toHaveText("没有找到问题问到的内容。");
+    await expect(task.getByText("查过前文，没有找到相关的写法。", { exact: true })).toHaveCount(0);
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
+    await expect(task.getByTestId("how-checked")).toContainText("查过");
     await expect(task.locator(".a-cite")).toHaveCount(0);
   });
 
@@ -200,9 +211,14 @@ test.describe("助手", () => {
     if (await drawer.count()) await page.keyboard.press("Escape");
     await expect(drawer).toHaveCount(0);
     await expect(topbarAssistant(page)).toBeFocused();
-    // The writing page's own right column has the assistant, so its top bar has no such button.
+    // The writing page has the assistant in its own right column: its top bar has the same button, and it goes to the column.
     await openTab(page, id, "workspace");
-    await expect(topbarAssistant(page)).toHaveCount(0);
+    await expect(topbarAssistant(page)).toBeVisible();
+    await findings(page).getByRole("tab", { name: /^检查结果/ }).click();
+    await topbarAssistant(page).click();
+    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("dialog", { name: "助手", exact: true })).toHaveCount(0);
+    await expect(box(page)).toBeFocused();
   });
 
   test("资料页人物卡：抽屉里的上下文标签是「人物 · 某某」，请求体带 character_id", async ({ page }) => {
@@ -267,7 +283,7 @@ test.describe("助手", () => {
   });
 
   test("字数不够：框变成虚线，直接写明原因和恢复时间，发送键不可点", async ({ page }) => {
-    const id = await setup(page);
+    const id = await setup(page, true, true);
     const session = await api(page).get("/auth/session");
     const usage = await api(page).get("/account/usage");
     await api(page).post(`/test/v180/users/${session.user.id}/spend-characters/${usage.check_chars_remaining - 300}`);
@@ -279,7 +295,8 @@ test.describe("助手", () => {
     await expect(frame.getByText("今天的可检查字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。", { exact: true })).toBeVisible();
     await expect(box(page)).toHaveCount(0);
     await expect(send(page)).toBeDisabled();
-    expect(await frame.evaluate((node) => ({ style: getComputedStyle(node).borderStyle, fill: getComputedStyle(node).backgroundColor }))).toEqual({ style: "dashed", fill: "rgba(0, 0, 0, 0)" });
+    // (soft look) the box has no border; the dashes are an outline drawn just inside its edge.
+    expect(await frame.evaluate((node) => ({ style: getComputedStyle(node).outlineStyle, border: getComputedStyle(node).borderTopWidth, fill: getComputedStyle(node).backgroundColor }))).toEqual({ style: "dashed", border: "0px", fill: "rgba(0, 0, 0, 0)" });
     await expect(thread(page).locator(".a-block")).toHaveCount(0);
     // The server refuses it too, with the code the page turns into those words.
     const refused = await api(page).raw("POST", `/projects/${id}/assistant/tasks`, { kind: "ask", question: "苏岑是谁？", context: { page: "writing" } });
@@ -344,7 +361,7 @@ test.describe("助手", () => {
     await openAssistantTab(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
-    await tasks(page).first().getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await tasks(page).first().getByRole("button", { name: "怎么查的" }).click();
     await theme(page, "night");
     await page.evaluate(() => window.scrollTo(0, 340));
     await shot(page, "assistant-writing-night", false);
@@ -359,7 +376,7 @@ test.describe("助手", () => {
 // way out (E2E_SETUP in the sentence adds a setup for chapter 1); a check of a passage checks it once and cites its first source.
 test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", () => {
   test("写前回顾：按钮发起 recap 并切到助手；四栏有概括、原文和出处；扣 500 字；可以重新回顾", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     const before = await allowance(page);
     const request = taskPost(page);
     await button(page, "写前回顾").click();
@@ -367,25 +384,31 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
     await finished(page);
     const task = tasks(page).first();
-    await expect(task.getByText("写前回顾 · 第 11 章", { exact: true })).toBeVisible();
-    await expect(task.getByText("只看第 1–10 章", { exact: true })).toBeVisible();
+    await expect(task.getByTestId("process-line")).toContainText("写前回顾 · 第 11 章（只看第 1–10 章）");
     // The four columns that have anything in them; every item is a sentence with its passage and where it is from.
     const ending = task.getByRole("region", { name: "上一章停在哪", exact: true });
-    await expect(ending.getByText("（示意）上一章停在这里。", { exact: true })).toBeVisible();
-    await expect(ending.locator(".a-ri-src .a-text")).toHaveCount(1);
-    await expect(ending.locator(".a-ri-src .a-text")).not.toHaveText("");
-    await expect(ending.locator(".a-from")).toHaveText("第 10 章");
+    // 38a: one sentence and one mark at its end; the passage and where it is from are in the card the mark opens.
+    await expect(ending.locator(".a-ri")).toContainText("（示意）上一章停在这里。");
+    await expect(ending.locator(".a-ri-src, .a-quote-line, .a-from")).toHaveCount(0);
+    await expect(ending.locator(".a-cite")).toHaveCount(1);
+    await ending.locator(".a-cite > button").click();
+    await expect(task.locator(".a-pop .w")).toHaveText(/^第 10 章/);
+    await expect(task.locator(".a-pop q")).not.toHaveText("");
     const people = task.getByRole("region", { name: "出场人物的最新状态", exact: true });
     await expect(people.locator(".a-ri").first()).toContainText("（示意）");
     for (const item of await people.locator(".a-ri").all()) {
-      await expect(item.locator(".a-text").first()).not.toHaveText("");
-      await expect(item.locator(".a-from").first()).toHaveText(/^(已确认事实 · )?第 \d+ 章$/);
+      await expect(item.locator(".a-cite")).toHaveCount(1);
+      await item.locator(".a-cite > button").click();
+      await expect(task.locator(".a-pop .w").first()).toHaveText(/^(事实摘要 · )?第 \d+ 章/);
+      await expect(task.locator(".a-pop q").first()).not.toHaveText("");
     }
     // An empty column is not shown (the test model leaves 还没收的线 empty).
     await expect(task.getByRole("region", { name: "还没收的线", exact: true })).toHaveCount(0);
     await expect(task).not.toContainText(/\bR\d+\b/);
-    await expect(task).toContainText("查过：第 1–10 章正文、截至第 11 章的事实、伏笔记录、本章计划。");
-    await expect(task).toContainText("没查：本章草稿（写前回顾不看草稿）。");
+    // 38a: the top line already says which chapters it read; the draft is not listed again as not looked at.
+    await expect(task).not.toContainText("没查");
+    // (The test model's recap takes no steps, so there is no process to open: the line holds the seconds only.)
+    await expect(task.getByTestId("process-line")).toHaveText(/^写前回顾 · 第 11 章（只看第 1–10 章） · \d+ 秒$/);
     await expect(task).toContainText("计 500 字");
     await expect.poll(() => allowance(page)).toBe(before - 500);
     await shot(page, "assistant-recap-day", false);
@@ -452,7 +475,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
   });
 
   test("让助手给改法：请求不带 question；助手里是这一条和它的改法；没有改正文", async ({ page }) => {
-    const { id, issue } = await checkedWork(page);
+    const { id, issue } = await checkedWork(page, undefined, true);
     const original = await readDraftBody(page);
     const { body, task } = await askForFix(page, issue);
     expect(body).toEqual({ kind: "fix_issue", context: { page: "writing", issue_id: issue.id } });
@@ -578,7 +601,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
 
   test("复查这一句：按 after 的字数计，显示复查结果；复查不改变检查结果的状态", async ({ page }) => {
     test.setTimeout(150_000);
-    const { id, issue } = await checkedWork(page);
+    const { id, issue } = await checkedWork(page, undefined, true);
     const { task } = await askForFix(page, issue);
     const edit = proposal(task, "edit_this");
     // Not before the change is adopted.
@@ -676,7 +699,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
   });
 
   test("选中草稿里的文字：「查前文矛盾 · 约 N 字」发起检查，请求体带 intent；步骤里有定点检查", async ({ page }) => {
-    await setup(page);
+    await setup(page, true, true);
     await select(page, "#draft-body", 12);
     const picked = (await selectedWords(page)).trim();
     const check = toolbar(page).getByRole("button", { name: /^查前文矛盾/ });
@@ -690,8 +713,9 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
     await finished(page);
     const task = tasks(page).first();
-    await expect(task.getByText("查前文矛盾", { exact: true })).toBeVisible();
-    await task.getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await expect(task.getByTestId("process-line")).toContainText("查前文矛盾");
+    await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await expect(task.getByText("定点检查了这一段")).toBeVisible();
     // The sentence is in the answer: either the first source of the check, or that it found nothing.
     await expect(task).toContainText(/（示意回答）选中的这段和前文有对不上的地方。|检查了选中的这段，没有发现和前文矛盾的地方。/);

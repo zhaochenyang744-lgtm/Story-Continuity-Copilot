@@ -5,8 +5,9 @@ import { json, labelError, request, type ApiFailure } from "../../api";
 import type { Chapter, DraftBodyFormat } from "../../model";
 import { DraftWordCount, locateText, RichDraftEditor, WritingTools } from "../editor";
 import { Odometer } from "../motion";
-import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Num, pad2, writtenChars } from "../ui";
+import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, isSampleWork, Num, pad2, writtenChars } from "../ui";
 import { AssistantBridge, SelectionToolbar, useAssistantAnchor } from "./assistant";
+import { quotaReason } from "./assistant-parts";
 import { type LocateRequest, notFoundText, takeLocate } from "./assistant-locate";
 import type { PageProps } from "./frame";
 
@@ -91,7 +92,7 @@ export function ChapterRail({ chapters, current, draftNumber, draftTitle, linked
 /** A written chapter on the writing page: read it, or change it in the same editor as the draft.
     Before anything is replaced the author sees which confirmed facts it touches; the old text is
     kept as a revision. */
-export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PageProps, "p" | "user" | "go" | "notices"> & { number: number; open: (number: number | null) => void }) {
+export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<PageProps, "p" | "user" | "usage" | "go" | "notices"> & { number: number; open: (number: number | null) => void }) {
   const project = p.project!;
   const bridge = useContext(AssistantBridge);
   // A written chapter is read here, so the top bar offers the assistant with this chapter as its context.
@@ -260,7 +261,7 @@ export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PagePro
               <RichDraftEditor key={`${chapter.id}:${editing ? "edit" : "read"}`} id="chapter-body" label={`第 ${number} 章正文${editing ? "" : "（只读）"}`} value={shownBody} format={editing ? format : chapter.body_format ?? "plain_text"} disabled={!editing || Boolean(busy) || Boolean(preview)}
                 onChange={(next, nextFormat) => { setBody(next); setFormat(nextFormat); setPreview(null); }} />
             ) : <p className="findings-empty">{loadError || "正在读取这一章…"}</p>}
-            {user.assistant?.available && <SelectionToolbar selector="#chapter-body" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} />}
+            {user.assistant?.available && <SelectionToolbar selector="#chapter-body" onAsk={(text) => bridge.openDrawer({ text, quick: false })} onQuick={(text) => bridge.openDrawer({ text, quick: true })} blocked={quotaReason(usage, isSampleWork(project))} />}
           </div>
         </article>
 

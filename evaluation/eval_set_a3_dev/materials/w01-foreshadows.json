@@ -1,0 +1,11 @@
+[
+  {"title":"导出文件名的空白位","description":"首晚练习文件导出后，文件名尾部多出一格空白，大家不清楚是不是漏填了什么，暂时原样保留。","status":"planted","planted_chapter":1},
+  {"title":"试录里的双提示音","description":"试录末尾出现重复的两下短提示音，手机、门禁和音箱的试声都还没有解释原录音的来源。","status":"developing","planted_chapter":2},
+  {"title":"未署名的勘误纸","description":"稿堆里多了一张指出停顿误连的勘误纸，没有署名，庄予栖给它夹上衬纸，尚未认出作者。","status":"planted","planted_chapter":4},
+  {"title":"旧食堂广播的开场者","description":"筹备中留下一段旧食堂广播，开场者身份不明，大家最初想寻找说话的人，还未决定这条线怎样继续。","status":"developing","planted_chapter":3},
+  {"title":"毕业后的具名采访","description":"郁知遐对毕业后是否接受正式具名采访尚未答复，眼前的匿名参与不等于将来同意公开真名。","status":"planted","planted_chapter":2},
+  {"title":"跨校互换样本的许可","description":"许砚弥向外校学生团队询问能否互换经过授权的样本，目前没有回信，尚不能据此交换文件。","status":"developing","planted_chapter":5},
+  {"title":"匿名捐赠的秋季用途","description":"一笔匿名捐赠能否转作秋季项目支出尚待核实，捐赠者身份和款项用途都没有在筹备中确定。","status":"planted","planted_chapter":6},
+  {"title":"秋季合办声音展","description":"有人提出秋季与校外社团合办声音展，合作方式还待对方答复，毕业特刊的完成不能代替秋季合作决定。","status":"developing","planted_chapter":9},
+  {"title":"普通耳塞少的胶套","description":"首晚清点时普通耳塞少一只胶套，后来谢临荔在椅子缝里找回并核对归盒，缺件疑问已经消除。","status":"resolved","planted_chapter":1,"resolved_chapter":10}
+]

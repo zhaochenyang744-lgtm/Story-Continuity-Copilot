@@ -14,18 +14,20 @@
 
 /* sm */
 .btn, .chip, .select-go, .menu > summary, .tour-hint, .topbar-assistant, .writing-tool, .a-block, .a-btn, .a-danger,
-.finding-after, .candidate-quote, .latest-quote, .prose-pre, .password-toggle, .band-go, .skip { border-radius: var(--r-sm); }
+.finding-after, .candidate-quote, .latest-quote, .prose-pre, .password-eye, .band-go, .skip { border-radius: var(--r-sm); }
 .segmented { overflow: hidden; border-radius: var(--r-sm); }
 .btn-text, .btn-plain, .link { border-radius: 0; }
-.password-field { position: relative; }
-.password-field input { padding-right: 68px; }
-.password-toggle { position: absolute; top: 4px; right: 4px; bottom: 4px; min-width: 56px; border: 0; background: transparent; color: var(--c-muted); }
-.password-toggle:hover:not(:disabled) { background: var(--c-line); color: var(--c-ink); }
+/* Underline fields on the sign-in pages have no box, so no corners. */
+.line-field input { border-radius: 0; }
+
+/* pill: the sign-in pages' two full-width buttons */
+.btn.auth-submit, .btn.auth-second { border-radius: var(--r-pill); }
 
 /* md */
 .menu-list, .account-menu, .feedback, .a-ask, .a-selpop { border-radius: var(--r-md); }
 .menu-list, .account-menu, .a-selpop { overflow: hidden; }
-.note { border-radius: var(--r-md); }
+.note, .import-summary, .chapter-passages, .reuse, .ledger, .finding.open, .prose-pre { border-radius: var(--r-md); }
+.a-card, .a-chg-card { border-radius: var(--r-md); }
 
 /* lg */
 .dialog, .start-card, .plan-card, .confirm-block, .person-detail, .category-editor, .thread-form, .candidates, .dropzone,

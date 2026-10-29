@@ -5,13 +5,20 @@ export { api, expect, readDraftBody, setDraftBody, shot, test } from "./app";
 export const button = (page: Page, name: string) => page.getByRole("button", { name, exact: true });
 export const findings = (page: Page) => page.getByRole("complementary", { name: "检查与回顾", exact: true });
 export const finding = (page: Page, id: string) => page.getByTestId(`finding-${id}`);
-export async function setup(page: Page, sample = true) {
+/** `charged`: the sample work made an ordinary work of the author's own (see `ownWork`), for a test of what a check or a question costs. */
+export async function setup(page: Page, sample = true, charged = false) {
   await registerAccount(page, "writing");
   const id = sample ? await sampleWorkId(page) : await createWorkByApi(page, { title: "测试灯塔" });
   if (sample) await advanceTour(page, id, 4);
+  if (sample && charged) await ownWork(page, id);
   await openTab(page, id, "workspace");
   await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
   return id;
+}
+/** The sample work made an ordinary work of the author's own: a sample work takes no characters (v2.1), so a test of what a check or a
+    question costs runs on its chapters made ordinary. Call it before the page is opened. */
+export async function ownWork(page: Page, id: string) {
+  await api(page).post(`/test/v210/projects/${id}/own-work`);
 }
 export async function draft(page: Page, id: string) {
   const p = await api(page).get(`/projects/${id}`);

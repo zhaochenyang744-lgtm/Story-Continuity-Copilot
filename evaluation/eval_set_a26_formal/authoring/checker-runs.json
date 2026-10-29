@@ -1,0 +1,388 @@
+{
+  "root": {
+    "copy_errors": 0,
+    "errors": [],
+    "evaluation_runs": 0,
+    "independent_review": {
+      "chapter_coverage": {
+        "w01": 20,
+        "w02": 20
+      },
+      "new_action_final_agreement": 12,
+      "new_action_total": 12,
+      "new_action_unresolved": 0,
+      "route_final_agreement": 20,
+      "route_total": 20,
+      "route_unresolved": 0,
+      "unresolved_findings": 0
+    },
+    "model_calls": 0,
+    "novelty_errors": 0,
+    "novelty_reference_inputs": 871,
+    "product_runs": 0,
+    "scope": "this_set_only",
+    "sealed_reference_counts": {
+      "names_text_files": 22,
+      "normalized_inputs": 0,
+      "source_files": 0
+    },
+    "semantic_acceptance": false,
+    "status": "PASS",
+    "support_tasks": 0,
+    "tasks": 68,
+    "works": {
+      "w01": {
+        "abandonable": 2,
+        "aliases": 3,
+        "also_acceptable": 0,
+        "chapter_han_max": 3056,
+        "chapter_han_min": 2824,
+        "chapters": 20,
+        "characters": 8,
+        "draft_han": 748,
+        "edit_thread_modes": {
+          "author_words": 1,
+          "from_text": 1
+        },
+        "evidence_after1500": 40,
+        "evidence_han_max": 2787,
+        "evidence_han_min": 2518,
+        "evidence_occurrences": 40,
+        "evidence_position_buckets": {
+          "1501_2500": 0,
+          "1_1500": 0,
+          "2501_plus": 40
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 15,
+        "no_action_thread_types": {
+          "already_recorded": 1,
+          "no_evidence": 1
+        },
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "open_threads": 4,
+        "paraphrased": 13,
+        "paraphrased_routes": 10,
+        "primary_actions": {
+          "abandon_thread": 2,
+          "add_fact": 4,
+          "add_thread": 2,
+          "change_fact": 4,
+          "edit_thread": 2,
+          "resolve_thread": 4
+        },
+        "resolved_unmarked": 4,
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "suites": {
+          "action": 18,
+          "no_action": 6,
+          "route": 10
+        },
+        "total_han": 58172,
+        "two_actions": 2,
+        "unique_after1500": 22,
+        "unique_after2500": 22,
+        "unique_evidence": 22,
+        "vague": 3,
+        "vague_new_actions": 1
+      },
+      "w02": {
+        "abandonable": 2,
+        "aliases": 3,
+        "also_acceptable": 0,
+        "chapter_han_max": 3127,
+        "chapter_han_min": 2850,
+        "chapters": 20,
+        "characters": 8,
+        "draft_han": 719,
+        "edit_thread_modes": {
+          "author_words": 1,
+          "from_text": 1
+        },
+        "evidence_after1500": 46,
+        "evidence_han_max": 2909,
+        "evidence_han_min": 1914,
+        "evidence_occurrences": 46,
+        "evidence_position_buckets": {
+          "1501_2500": 6,
+          "1_1500": 0,
+          "2501_plus": 40
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 17,
+        "no_action_thread_types": {
+          "already_recorded": 1,
+          "no_evidence": 1,
+          "unsupported_kind": 1
+        },
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "open_threads": 4,
+        "paraphrased": 12,
+        "paraphrased_routes": 10,
+        "primary_actions": {
+          "abandon_thread": 2,
+          "add_fact": 4,
+          "add_thread": 2,
+          "change_fact": 4,
+          "edit_thread": 2,
+          "resolve_thread": 4
+        },
+        "resolved_unmarked": 4,
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "suites": {
+          "action": 18,
+          "no_action": 6,
+          "route": 10
+        },
+        "total_han": 59379,
+        "two_actions": 2,
+        "unique_after1500": 29,
+        "unique_after2500": 25,
+        "unique_evidence": 29,
+        "vague": 3,
+        "vague_new_actions": 1
+      }
+    }
+  },
+  "absolute": {
+    "copy_errors": 0,
+    "errors": [],
+    "evaluation_runs": 0,
+    "independent_review": {
+      "chapter_coverage": {
+        "w01": 20,
+        "w02": 20
+      },
+      "new_action_final_agreement": 12,
+      "new_action_total": 12,
+      "new_action_unresolved": 0,
+      "route_final_agreement": 20,
+      "route_total": 20,
+      "route_unresolved": 0,
+      "unresolved_findings": 0
+    },
+    "model_calls": 0,
+    "novelty_errors": 0,
+    "novelty_reference_inputs": 871,
+    "product_runs": 0,
+    "scope": "this_set_only",
+    "sealed_reference_counts": {
+      "names_text_files": 22,
+      "normalized_inputs": 0,
+      "source_files": 0
+    },
+    "semantic_acceptance": false,
+    "status": "PASS",
+    "support_tasks": 0,
+    "tasks": 68,
+    "works": {
+      "w01": {
+        "abandonable": 2,
+        "aliases": 3,
+        "also_acceptable": 0,
+        "chapter_han_max": 3056,
+        "chapter_han_min": 2824,
+        "chapters": 20,
+        "characters": 8,
+        "draft_han": 748,
+        "edit_thread_modes": {
+          "author_words": 1,
+          "from_text": 1
+        },
+        "evidence_after1500": 40,
+        "evidence_han_max": 2787,
+        "evidence_han_min": 2518,
+        "evidence_occurrences": 40,
+        "evidence_position_buckets": {
+          "1501_2500": 0,
+          "1_1500": 0,
+          "2501_plus": 40
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 15,
+        "no_action_thread_types": {
+          "already_recorded": 1,
+          "no_evidence": 1
+        },
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "open_threads": 4,
+        "paraphrased": 13,
+        "paraphrased_routes": 10,
+        "primary_actions": {
+          "abandon_thread": 2,
+          "add_fact": 4,
+          "add_thread": 2,
+          "change_fact": 4,
+          "edit_thread": 2,
+          "resolve_thread": 4
+        },
+        "resolved_unmarked": 4,
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "suites": {
+          "action": 18,
+          "no_action": 6,
+          "route": 10
+        },
+        "total_han": 58172,
+        "two_actions": 2,
+        "unique_after1500": 22,
+        "unique_after2500": 22,
+        "unique_evidence": 22,
+        "vague": 3,
+        "vague_new_actions": 1
+      },
+      "w02": {
+        "abandonable": 2,
+        "aliases": 3,
+        "also_acceptable": 0,
+        "chapter_han_max": 3127,
+        "chapter_han_min": 2850,
+        "chapters": 20,
+        "characters": 8,
+        "draft_han": 719,
+        "edit_thread_modes": {
+          "author_words": 1,
+          "from_text": 1
+        },
+        "evidence_after1500": 46,
+        "evidence_han_max": 2909,
+        "evidence_han_min": 1914,
+        "evidence_occurrences": 46,
+        "evidence_position_buckets": {
+          "1501_2500": 6,
+          "1_1500": 0,
+          "2501_plus": 40
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 17,
+        "no_action_thread_types": {
+          "already_recorded": 1,
+          "no_evidence": 1,
+          "unsupported_kind": 1
+        },
+        "no_action_types": {
+          "already_recorded": 2,
+          "no_evidence": 2,
+          "prose_edit": 1,
+          "unsupported_kind": 1
+        },
+        "open_threads": 4,
+        "paraphrased": 12,
+        "paraphrased_routes": 10,
+        "primary_actions": {
+          "abandon_thread": 2,
+          "add_fact": 4,
+          "add_thread": 2,
+          "change_fact": 4,
+          "edit_thread": 2,
+          "resolve_thread": 4
+        },
+        "resolved_unmarked": 4,
+        "routes": {
+          "ask": 3,
+          "change": 4,
+          "check_passage": 1,
+          "out_of_scope": 1,
+          "recap": 1
+        },
+        "same_input_groups": 1,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "suites": {
+          "action": 18,
+          "no_action": 6,
+          "route": 10
+        },
+        "total_han": 59379,
+        "two_actions": 2,
+        "unique_after1500": 29,
+        "unique_after2500": 25,
+        "unique_evidence": 29,
+        "vague": 3,
+        "vague_new_actions": 1
+      }
+    }
+  }
+}

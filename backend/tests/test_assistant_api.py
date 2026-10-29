@@ -18,7 +18,7 @@ class RouteTests(AssistantCase):
     def setUp(self):
         self.start(registered_workflows=200, registered_check_chars=1_000_000)
         self.register()
-
+        self.own_work()
     def url(self, suffix: str = "") -> str:
         return f"/api/projects/{self.project_id}/assistant/tasks{suffix}"
 
@@ -31,7 +31,7 @@ class RouteTests(AssistantCase):
         task = self.task(created["id"])
         self.assertEqual(task["status"], "completed")
         self.assertEqual(set(task), {"id", "kind", "status", "question", "context", "follow_up_of", "regenerated_from", "edited_from", "steps", "answer", "sources",
-                                       "follow_up_depth", "routed", "route_source", "routed_input", "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback",
+                                       "follow_up_depth", "routed", "route_source", "routed_input", "out_of_scope_text", "coverage", "usage", "phase", "phase_tool", "phase_chapter", "phase_started_at", "feedback", "models",
                                        "error_code", "created_at", "started_at", "completed_at"})
         self.assertNotIn("cost", json.dumps(task))
         message = self.provider.calls[0]["messages"][-1]["content"]
@@ -243,7 +243,9 @@ class ToolTests(AssistantCase):
 
 class CleanUpTests(AssistantCase):
     TABLES = ("assistant_tasks", "assistant_steps", "assistant_sources", "assistant_proposals", "assistant_feedback",
-              "assistant_changes", "assistant_change_events")
+              "assistant_changes", "assistant_change_events",
+              # v2.1 long tasks: the plan, steps, questions and booked calls go with the work too.
+              "assistant_long_plans", "assistant_long_steps", "assistant_long_questions", "assistant_long_calls")
 
     def seed_proposal(self):
         task_id = self.rows("SELECT id FROM assistant_tasks")[0]["id"]
@@ -260,6 +262,13 @@ class CleanUpTests(AssistantCase):
                                                          "applied", "2026-10-10T00:00:00+00:00"))
             c.execute("INSERT INTO assistant_change_events(id,change_id,project_id,event,actor_user_id,detail_json,created_at) VALUES(?,?,?,?,?,?,?)",
                       (f"achevent-{uuid.uuid4()}", change_id, project_id, "applied", self.user_id, "{}", "2026-10-10T00:00:00+00:00"))
+            # v2.1: a long task's plan, step, question and booked call (rows only; the purge does not look at their content).
+            stamp = "2026-10-10T00:00:00+00:00"
+            c.execute("INSERT INTO assistant_long_plans(task_id,cap_cny,created_at) VALUES(?,?,?)", (task_id, 2.0, stamp))
+            c.execute("INSERT INTO assistant_long_steps(task_id,ordinal,spec_json,status) VALUES(?,?,?,?)", (task_id, 1, "{}", "done"))
+            c.execute("INSERT INTO assistant_long_questions(id,task_id,step,kind,body_json,asked_at) VALUES(?,?,?,?,?,?)",
+                      (f"alq-{uuid.uuid4()}", task_id, 1, "budget", "{}", stamp))
+            c.execute("INSERT INTO assistant_long_calls VALUES(?,?,?,?,?,?,?,?,?,?)", (task_id, 1, 1, 1, "loop", None, 10, 5, 0.01, stamp))
 
     def counts(self):
         return {table: self.rows(f"SELECT COUNT(*) n FROM {table}")[0]["n"] for table in self.TABLES}
@@ -269,6 +278,15 @@ class CleanUpTests(AssistantCase):
         self.engine.store.initialize()
         self.engine.store.initialize()
         self.assertEqual({row["name"] for row in self.rows("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'assistant_%'")}, set(self.TABLES))
+
+    def test_a_new_visitor_is_told_the_assistant_is_open_to_them(self):
+        # The sign-in's own answer carries it, as login and registration do (the 助手 button waited for a reload before).
+        self.start()
+        data = self.client.post("/api/auth/visitor").json()["data"]
+        session = self.client.get("/api/auth/session").json()["data"]
+        self.assertEqual(data["user"]["assistant"], session["user"]["assistant"])
+        self.assertIn("available", data["user"]["assistant"])
+        self.assertEqual(data["user"]["account_type"], "visitor")
 
     def test_a_visitors_assistant_rows_go_with_the_visitor(self):
         self.start()
@@ -286,6 +304,7 @@ class CleanUpTests(AssistantCase):
     def test_purging_a_work_removes_only_its_rows(self):
         self.start()
         self.register()
+        self.own_work()
         mine = self.project_id
         self.run_ask(read(9), cite(9))
         other_project = self.client.post("/api/projects", headers=self.idem(), json={"title": "第二部"}).json()["data"]["project"]["id"]
@@ -301,6 +320,7 @@ class CleanUpTests(AssistantCase):
     def test_resetting_a_work_clears_the_conversation_but_not_the_characters_spent(self):
         self.start()
         self.register()
+        self.own_work()
         self.run_ask(read(9), cite(9))
         self.seed_proposal()
         response = self.client.post(f"/api/projects/{self.project_id}/reset", headers=self.idem(), json={"confirm": True, "reason": "fresh_start"})

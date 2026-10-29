@@ -1,0 +1,153 @@
+{
+  "work": "w01",
+  "scope": "w01 canonical source, shared draft, metadata, 25 facts, 10 foreshadows, 34 tasks and w01 self-review only; w02 content was not read or semantically reviewed",
+  "status": "completed",
+  "unresolved_findings": 0,
+  "reviewed_date": "2026-10-27",
+  "independent_of_creation_and_gold_authoring": true,
+  "chapters_read": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  "shared_draft_read": true,
+  "source_reading_method": "Sequential uninterrupted display and actual reading of all 20 chapters and the complete shared draft; searches were used only to locate findings after reading.",
+  "source_sha256": "23ae404bdf315b2e84b1dc3921f879b0985b876d20f720b479f04e145ea39235",
+  "draft_body_sha256": "8d04fcc791068e59e733676269e34e6c98768d1b3916f1f6fac58a45ff910e0b",
+  "draft_body_hash_definition": "SHA-256 of the w01 shared_draft.body string in tasks.json encoded as UTF-8, without adding a trailing newline",
+  "tasks_sha256": "7b473908e978c136275d50cd2a8ae0a7fd64f180dc1411b1e1292e1a3fd7bb6a",
+  "tasks_binding_scope": "Raw bytes of the assembled 68-task tasks.json; semantic review covers only its 34 w01 tasks",
+  "materials_sha256": {
+    "materials/w01-facts.json": "e866362f4cf1b1e853fce70536894a2c88dc28908f59b09ad7134a99acabef86",
+    "materials/w01-foreshadows.json": "83036b43fb137eafb8d1c4dd8b179006644189721c8a45d5893547e46d0b481c"
+  },
+  "w01_subset_sha256": "7bd5ec82f627f3f34e4916bd7074b6bea86cce88fa3ae95cfe03a3797869aa89",
+  "w01_metadata_sha256": "c9d588c50768720868c5d0dd7baac8ada5dac4b9d410525339cdfd1d7b14844e",
+  "w01_tasks_sha256": "98576d6bf7e7da2d52b49ae793fa08bc60565a8e3e456a0c0d6106c3cf518bc2",
+  "w01_materials_normalized_sha256": "2b3afc05a6b5e6d920aba9f8e593ae088c5be33232e7e13405c219db8f762a78",
+  "w01_self_review_sha256": "d3b4d664411f4556a94153b0fa7c6b0eed825b0ae7873f73b6c466b40ffb319c",
+  "normalized_subset_definition": "UTF-8 json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(',', ':')) without a trailing newline; obj={work: full metadata object with key w01, tasks: full task array filtered by work w01 preserving order, materials:{facts: parsed w01-facts array, foreshadows: parsed w01-foreshadows array}}",
+  "assembly_recheck": {
+    "assembled_task_count": 68,
+    "reviewed_task_count": 34,
+    "w01_subset_matches_reviewed_snapshot": true,
+    "w01_self_review_matches_reviewed_snapshot": true,
+    "source_and_material_hashes_match_reviewed_snapshot": true,
+    "differences_requiring_additional_semantic_reading": 0,
+    "note": "Only w01 normalized objects and raw binding hashes were inspected during the assembled-file recheck; w02 content was not output or read."
+  },
+  "review_counts": {
+    "facts": 25,
+    "intentional_stale_facts": 5,
+    "missing_facts": 6,
+    "foreshadows": 10,
+    "resolved_unmarked": 4,
+    "open_threads": 4,
+    "abandonable_threads": 2,
+    "stale_notes": 2,
+    "missing_threads": 3,
+    "action_tasks": 18,
+    "no_action_tasks": 6,
+    "route_tasks": 10,
+    "expected_action_entries": 20,
+    "independent_two_action_tasks": 2,
+    "paraphrased_action_tasks": 13,
+    "vague_action_tasks": 3,
+    "source_findings_and_suggestions_closed": 7,
+    "data_findings_closed": 1
+  },
+  "findings": [
+    {
+      "id": "P1",
+      "type": "source_continuity",
+      "confidence": "high",
+      "chapter": 3,
+      "finding": "黎向周说下午还了书，但当日是贺归还黎的书，借还方向反转。",
+      "resolution": "改为下午拿回了书。",
+      "status": "closed",
+      "verified_by": "Read the revised canonical paragraph and adjacent return-home paragraphs; checked against the earlier scene in which 贺递书给黎."
+    },
+    {
+      "id": "P2",
+      "type": "source_continuity",
+      "confidence": "high",
+      "chapter": 7,
+      "finding": "早晨消息说贺昨晚讲清，晚饭却说贺今天讲清，同一谈话日次错位。",
+      "resolution": "改为贺昨晚与自己讲清。",
+      "status": "closed",
+      "verified_by": "Read the revised dinner paragraph and adjacent paragraphs, and checked the chapter-morning message and prior chapter's evening conversation."
+    },
+    {
+      "id": "P3",
+      "type": "source_continuity",
+      "confidence": "high",
+      "chapter": 7,
+      "finding": "下午只写买一盒蛋，随后手提袋却有两盒，第二盒缺少来源。",
+      "resolution": "超市动作补明临结账又拿了一小盒。",
+      "status": "closed",
+      "verified_by": "Read the revised purchase paragraph with the preceding shopping context and following dinner scene; both carried boxes now have an explicit source."
+    },
+    {
+      "id": "P4",
+      "type": "source_continuity",
+      "confidence": "high",
+      "chapter": 13,
+      "finding": "回忆中先见草稿后拍建筑照片，与第1章先拍照后发现称呼的顺序相反。",
+      "resolution": "改为先拍建筑照片、后来才见称呼且未再展开纸。",
+      "status": "closed",
+      "verified_by": "Read the revised recollection and adjacent paragraphs; compared the new sequence with the independently read chapter 1 sequence."
+    },
+    {
+      "id": "P5",
+      "type": "source_time_reference_suggestion",
+      "confidence": "medium",
+      "chapter": 15,
+      "finding": "取稿午饭时的刚才录过没有本日录音动作可指，已展示录音在第13章。",
+      "resolution": "刚才改为先前。",
+      "status": "closed",
+      "verified_by": "Read the revised lunch paragraph and neighboring return-and-collection scene; the wording now permits the earlier recorded audio."
+    },
+    {
+      "id": "S1",
+      "type": "source_offscreen_event_suggestion",
+      "confidence": "low",
+      "chapter": 7,
+      "finding": "周说樊昨天教黎量桌子，但前章桌子现场没有樊，也未交代该场外交流。",
+      "resolution": "改成当面的一般尺寸提醒。",
+      "status": "closed",
+      "verified_by": "Read the revised flower-vase paragraph and adjacent flower-shop action; it no longer asserts an unshown prior teaching event."
+    },
+    {
+      "id": "S2",
+      "type": "source_wording_suggestion",
+      "confidence": "low",
+      "chapter": 17,
+      "finding": "不是贺搬家可能与贺姓人物混读，缺少庆贺及礼物宾语。",
+      "resolution": "改为不是庆贺你搬家的礼物。",
+      "status": "closed",
+      "verified_by": "Read the revised opening and next two paragraphs; the gift-purpose wording is explicit and the conversation remains coherent."
+    },
+    {
+      "id": "G1",
+      "type": "gold_wording",
+      "confidence": "medium",
+      "task_id": "a26f-w01-action-13",
+      "finding": "目标及题意是寄件者身份未知，原要点却偏为寄件人的来意待揭。",
+      "resolution": "第一条要点改为无图卡片无落款，寄件者身份待明。",
+      "status": "closed",
+      "verified_by": "Re-read the complete amended action-13 object and the corresponding self-review reason, point and source quote; identity wording matches request, target and evidence."
+    }
+  ],
+  "source_revision_history": {
+    "original_full_reading_source_sha256": "53142c97d1a1b637e4be7c4b31fb255c94990b401d2c02d560acbdda716a3dfc",
+    "revised_and_rechecked_source_sha256": "23ae404bdf315b2e84b1dc3921f879b0985b876d20f720b479f04e145ea39235",
+    "seven_targeted_changes_actually_reread": true,
+    "author_self_report_alone_used_for_closure": false
+  },
+  "limits": [
+    "The route review here saw expected_route and is not the separate blind input/context-only route adjudication.",
+    "This is semantic review of w01; it does not claim model quality, product acceptance or formal evaluation success.",
+    "This reviewer did not run the final checker, copy8 or novelty checks.",
+    "If tasks.json changes again, verify w01 normalized subset remains identical before refreshing the global tasks binding."
+  ],
+  "details_files": [
+    "authoring/independent-w01-prose-review.md",
+    "authoring/independent-w01-review.md"
+  ]
+}

@@ -174,7 +174,8 @@ class BrowserTestProvider:
 
     # 改资料 (v2.0): the request is the sentence after 「作者的要求：」. Round 1 lists the threads and reads the last written chapter; then,
     # by the marker in the sentence: E2E_CHANGE_THREAD marks the first thread that is not resolved as resolved, on the first passage read;
-    # E2E_CHANGE_FACT looks up 温岚 (the sample work has a fact with her alone as its subject) and changes the first fact about her; E2E_ADD_FACT adds a fact; with none of them
+    # E2E_CHANGE_FACT looks up 温岚 (the sample work has a fact with her alone as its subject) and changes the first fact about her; E2E_ADD_FACT adds a fact; E2E_ADD_THREAD adds a thread on the first passage read;
+    # E2E_EDIT_THREAD rewords the note of the first thread; E2E_ABANDON_THREAD marks the first thread still open as given up, with no evidence; with none of them
     # nothing is proposed and the task ends in "not found". A proposal ends in an answer that cites the passage read.
     CHANGE_MARKER = "作者的要求："
 
@@ -235,6 +236,21 @@ class BrowserTestProvider:
                            and "（已回收" not in item["text"].split("——", 1)[0] and "（已放弃" not in item["text"].split("——", 1)[0]), None)
             if thread and rounds_done == 1:
                 return self._tool_turn([("propose_change", {"action": "resolve_thread", "target": thread, "evidence": [passage], "request_words": words})], fixed, say="这条伏笔在最后一章收了，提出改动。")
+        elif "E2E_ADD_THREAD" in request and passage:
+            if rounds_done == 1:  # a thread the text lays that the materials lack, planted on the first passage read
+                return self._tool_turn([("propose_change", {"action": "add_thread", "title": "示意新伏笔：门后的叩响", "value": "（示意）门后传来三声叩响，没有人应。",
+                                                            "evidence": [passage], "request_words": words})], fixed, say="资料里没有这条悬念，提出加一条伏笔。")
+        elif "E2E_EDIT_THREAD" in request:
+            thread = next((item["ref"] for item in items if item["text"].startswith("伏笔：")), None)
+            if thread and rounds_done == 1:  # the first thread, whatever its status; no evidence: the author's word is the ground
+                return self._tool_turn([("propose_change", {"action": "edit_thread", "target": thread, "value": "（示意改后）这条伏笔的说明补了一句。", "evidence": [],
+                                                            "request_words": words})], fixed, say="按作者的话改这条伏笔的说明。")
+        elif "E2E_ABANDON_THREAD" in request:
+            thread = next((item["ref"] for item in items if item["text"].startswith("伏笔：")
+                           and "（已回收" not in item["text"].split("——", 1)[0] and "（已放弃" not in item["text"].split("——", 1)[0]), None)
+            if thread and rounds_done == 1:  # the first thread still open; no evidence
+                return self._tool_turn([("propose_change", {"action": "abandon_thread", "target": thread, "evidence": [], "request_words": words})], fixed,
+                                       say="作者说这条线不追了，提出标成放弃。")
         elif "E2E_CHANGE_FACT" in request and passage:
             if rounds_done == 1:
                 return self._tool_turn([("lookup_facts", {"name": self.ASSISTANT_NAMES[1]})], fixed, say=f"查一下{self.ASSISTANT_NAMES[1]}的已确认事实。")
@@ -251,8 +267,55 @@ class BrowserTestProvider:
             return answer([], "not_found", f"查过第 {last} 章正文，没有找到问题问到的内容。")
         return done or answer([], "not_found", f"查过第 {last} 章正文，没有找到问题问到的内容。")
 
+    # 长任务 (v2.1 B). The plan call (route with role="plan") answers a thread audit over the whole work; the author's sentence steers it:
+    # E2E_LONG_NONE is a kind that cannot be done ("none"), E2E_LONG_CH6 limits the chapters to 6–10. A step of the audit (a chat whose system
+    # prompt opens with LONG_STEP_OPENING) hands in one report_threads: the first thread it is shown is marked resolved on the first passage of the
+    # last chapter of the step; E2E_LONG_ABANDON also marks the second thread abandoned (on the last passage of that chapter); E2E_LONG_COSTLY makes
+    # the call cost 0.6 yuan (with the ceiling lowered to 0.5 the task stops and asks). So that a state can be looked at before it passes:
+    # E2E_LONG_PLAN_SLOW makes the plan call wait 3 s, E2E_LONG_SLOW makes each step wait 2.5 s; E2E_LONG_BAD hands in a report that cannot
+    # validate (twice, so the task fails with assistant_long_report_invalid).
+    LONG_STEP_OPENING = "你是小说作者的写作助手，在做一件长任务里的一步"
+
+    def _long_plan(self, messages):
+        asked = messages[-1]["content"]
+        if "E2E_LONG_PLAN_SLOW" in asked:
+            time.sleep(3)
+        plan = {"type": "none" if "E2E_LONG_NONE" in asked else "thread_audit", "target": None,
+                "chapters": [6, 10] if "E2E_LONG_CH6" in asked else None, "output": "list"}
+        return ChatResult(message={"content": json.dumps(plan), "tool_calls": []}, finish_reason="stop",
+                          input_tokens=60, output_tokens=24, cost_cny=0.0003, latency_ms=10)
+
+    def _long_step(self, messages):
+        # What the step showed the model: the threads by their R numbers (in the order listed) and the passages of each chapter (in reading order).
+        user = messages[1]["content"]
+        threads = re.findall(r"\[(R\d+)\] 伏笔：[^（]+（", user)
+        chapters, current = {}, None
+        for line in user.splitlines():
+            heading = re.match(r"## 第 (\d+) 章", line)
+            if heading:
+                current = int(heading.group(1))
+                continue
+            passage = re.match(r"\[(R\d+)\] ", line)
+            if passage and current is not None:
+                chapters.setdefault(current, []).append(passage.group(1))
+        if "E2E_LONG_SLOW" in user:
+            time.sleep(2.5)
+        items = []
+        if "E2E_LONG_BAD" in user:
+            items.append({"thread": "R999", "verdict": "resolved", "refs": ["R999"], "note": "（示意）编号不在这一步里。"})
+        elif threads and chapters:
+            last = chapters[max(chapters)]
+            items.append({"thread": threads[0], "verdict": "resolved", "refs": [last[0]], "note": "（示意）这一章交代了它的结局。"})
+            if "E2E_LONG_ABANDON" in user and len(threads) > 1:
+                items.append({"thread": threads[1], "verdict": "abandoned", "refs": [last[-1]], "note": "（示意）写明不再追查。"})
+        call = {"id": "e2e-long-call", "name": "report_threads", "arguments": json.dumps({"threads": items}, ensure_ascii=False)}
+        return ChatResult(message={"content": None, "tool_calls": [call]}, finish_reason="tool_calls", input_tokens=100, output_tokens=20,
+                          cost_cny=0.6 if "E2E_LONG_COSTLY" in user else 0.0004, latency_ms=10)
+
     def chat(self, messages, tools, tool_choice, max_tokens):
         self.calls += 1
+        if messages and messages[0].get("role") == "system" and (messages[0].get("content") or "").startswith(self.LONG_STEP_OPENING):
+            return self._long_step(messages)
         asked = next((item["content"] for item in messages if item.get("role") == "user" and "作者现在在：" in (item.get("content") or "")), "")
         question = asked.split("作者的问题：", 1)[-1].split("\n作者现在在：", 1)[0]
         fixed = dict(input_tokens=100, output_tokens=20, cost_cny=0.0004, latency_ms=10)
@@ -274,7 +337,9 @@ class BrowserTestProvider:
     ROUTE_MARKERS = (("E2E_ROUTE_OUT", "out_of_scope"), ("E2E_ROUTE_RECAP", "recap"), ("E2E_ROUTE_CHECK", "check_passage"),
                      ("E2E_ROUTE_CHANGE", "change"), ("E2E_ROUTE_FIX", "fix_issue"), ("E2E_ROUTE_ASK", "ask"))
 
-    def route(self, messages, max_tokens, timeout_seconds):
+    def route(self, messages, max_tokens, timeout_seconds, role=None):
+        if role == "plan":
+            return self._long_plan(messages)
         asked = messages[-1]["content"]
         self.route_log.append({"messages": messages, "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
         if "E2E_ROUTE_SLOW" in asked:
@@ -547,6 +612,15 @@ def spend_v180_check_characters(user_id: str, characters: int):
             (f"chars-e2e-{uuid.uuid4()}", user_id, None, None, "check", characters, datetime.now(timezone.utc).isoformat()),
         )
     return {"spent": characters}
+
+
+@app.post("/api/test/v210/projects/{project_id}/own-work")
+def make_v210_own_work(project_id: str):
+    """Turns a sample work into an ordinary work of the author's own. A sample work takes no characters (v2.1); the browser tests that
+    are about what a check or a question costs run on the sample's chapters made ordinary this way."""
+    with app.state.database.connection() as connection:
+        connection.execute("UPDATE v2_projects SET data_origin='v1_migrated' WHERE id=? AND data_origin IN ('demo_seed','tutorial_seed')", (project_id,))
+    return {"project_id": project_id}
 
 
 @app.post("/api/test/v180/users/{user_id}/writing-days")

@@ -190,7 +190,8 @@ test.describe("07f 空对话和全站", () => {
     const [blue, yellow, red] = [await colourOf(page, "var(--c-blue)"), await colourOf(page, "var(--c-yellow)"), await colourOf(page, "var(--c-red)")];
     for (const [name, colour] of [["info", blue], ["warn", yellow], ["error", red], ["toast", blue], ["toastError", red]] as const) {
       const item = seen[name];
-      expect(item.left, name).toBe("1px");
+      // (soft look) the box has no frame: the bar at its left is all there is.
+      expect(item.left, name).toBe("0px");
       expect(item.radius, name).toBe("10px");
       expect(item.width, name).toBe("4px");
       expect(item.barRadius, name).toBe("2px");

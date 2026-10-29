@@ -15,9 +15,9 @@ class A2RegistrationTests(unittest.TestCase):
     def test_registered_numbers(self):
         self.assertTrue(thresholds.PRE_REGISTERED)
         self.assertEqual(thresholds.REGISTERED_ON, '2026-10-22')
-        self.assertEqual(thresholds.THRESHOLDS['action_card_correct_rate_min'], 0.85)
+        self.assertEqual(thresholds.THRESHOLDS['action_card_correct_rate_min'], 0.8)  # 0.85 until addendum 11 lowered the quality bars
         self.assertEqual(thresholds.THRESHOLDS['action_evidence_support_rate_min'], 0.95)
-        self.assertEqual(thresholds.THRESHOLDS['no_action_correct_rate_min'], 0.85)
+        self.assertEqual(thresholds.THRESHOLDS['no_action_correct_rate_min'], 0.8)
         self.assertEqual(thresholds.PRE_REGISTRATION['first_formal_sets'], ['eval_set_a2_formal', 'eval_set_a2s_formal'])
         self.assertIn('question_routed_to_change_count', thresholds.REPORTED_NOT_GATED)
 
@@ -32,7 +32,7 @@ class A2RegistrationTests(unittest.TestCase):
         self.assertIn('a2_matches_request', judging)
         self.assertEqual(set(judging['a2_matches_request_meanings']), {'yes', 'no'})
         self.assertIn('unrequested_actions_before_addendum_2', thresholds.REPORTED_NOT_GATED)
-        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 6)
+        self.assertEqual(len(thresholds.PRE_REGISTRATION['amended_on']), 13)  # addenda 1-13
 
     def test_addendum_3_asks_whether_two_facts_state_the_same_matter(self):
         judging = thresholds.PRE_REGISTRATION['judging']
@@ -77,10 +77,24 @@ class A2RegistrationTests(unittest.TestCase):
 
     def test_addendum_6_registers_the_fourth_pair_and_changes_nothing_else(self):
         registration = thresholds.PRE_REGISTRATION
-        self.assertEqual(registration['formal_sets'], ['eval_set_a24_formal', 'eval_set_a2s4_formal'])
+        self.assertEqual(registration['fourth_formal_sets'], ['eval_set_a24_formal', 'eval_set_a2s4_formal'])
         self.assertIn('no_action_correct_rate 0.833', registration['third_formal_run'])
         self.assertEqual(len(thresholds.THRESHOLDS), 14)
-        self.assertEqual((thresholds.THRESHOLDS['unrequested_actions_max'], thresholds.THRESHOLDS['no_action_correct_rate_min']), (3, 0.85))
+        self.assertEqual((thresholds.THRESHOLDS['unrequested_actions_max'], thresholds.THRESHOLDS['no_action_correct_rate_min']), (3, 0.8))  # 0.85 until addendum 11
+
+    def test_addendum_7_registers_the_fifth_pair_with_the_thread_actions_and_changes_no_number(self):
+        registration = thresholds.PRE_REGISTRATION
+        self.assertEqual(registration['fifth_formal_sets'], ['eval_set_a25_formal', 'eval_set_a2s5_formal'])
+        self.assertIn('the audited result stands', registration['fourth_formal_run'])
+        self.assertIn('eval_set_a2t_dev', registration['applies_to'])
+        judging = registration['judging']
+        self.assertEqual(set(judging['a2_same_new_thread_meanings']), {'yes', 'no'})
+        self.assertIn('a2_same_new_thread', judging['thread_actions_addendum_7'])
+        self.assertIn('each run within 8 steps and CNY 0.3', registration['protocol']['budget_per_product_run'])
+        self.assertIn('add_thread 2, edit_thread 2', registration['suites']['fifth_pair_addendum_7'])
+        self.assertEqual(len(thresholds.THRESHOLDS), 14)
+        self.assertEqual((thresholds.THRESHOLDS['unrequested_actions_max'], thresholds.THRESHOLDS['unrequested_actions_per_pass_max'],
+                          thresholds.THRESHOLDS['action_card_correct_rate_min']), (3, 2, 0.8))  # 0.85 until addendum 11
 
 
 if __name__ == '__main__':

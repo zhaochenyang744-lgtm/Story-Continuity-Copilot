@@ -1,0 +1,39 @@
+{
+  "status": "completed",
+  "excluded_directories": ["eval_set_a1_reserve", "eval_set_a1b_reserve", "eval_set_v13_authoring", "eval_set_a26_formal", "eval_set_a2s6_formal"],
+  "batches": [
+    {
+      "reader": "formal_w01",
+      "directories": ["eval_set_a1_dev", "eval_set_a1_formal", "eval_set_a1b_dev", "eval_set_a1b_formal", "eval_set_a1c_dev", "eval_set_a1c_formal", "eval_set_a1c2_formal", "eval_set_a1c3_formal", "eval_set_a1c4_formal", "eval_set_a1c5_formal", "eval_set_a1cr6_formal", "eval_set_a1cs_formal", "eval_set_a1cs2_formal", "eval_set_a1cs3_formal", "eval_set_a1cs4_formal"],
+      "work_files": 29,
+      "unique_texts_read": 27,
+      "duplicate_files_byte_verified": 2,
+      "opening_chapters_per_work": 3,
+      "read_all_existing_readmes": true
+    },
+    {
+      "reader": "formal_w02",
+      "directories": ["eval_set_a1cs5_formal", "eval_set_a1cx_dev", "eval_set_a1cy_dev", "eval_set_a2_dev", "eval_set_a2_formal", "eval_set_a22_formal", "eval_set_a23_formal", "eval_set_a24_formal", "eval_set_a25_formal", "eval_set_a2s_formal", "eval_set_a2s2_formal", "eval_set_a2s3_formal", "eval_set_a2s4_formal", "eval_set_a2s5_formal", "eval_set_a2t_dev"],
+      "work_files": 25,
+      "unique_texts_read": 23,
+      "duplicate_files_byte_verified": 2,
+      "opening_chapters_per_work": 3,
+      "read_all_existing_readmes": true
+    },
+    {
+      "reader": "safety_w01",
+      "directories": ["eval_set_a3_dev", "eval_set_a3_formal", "eval_set_a3d2_dev", "eval_set_a3s_formal", "eval_set_lf1_dev", "eval_set_lf1_formal", "eval_set_lf1_import", "eval_set_lf2_formal", "eval_set_lf3_formal", "eval_set_lf4_formal", "eval_set_lf5_formal", "eval_set_lf6_formal", "eval_set_lf7_formal", "eval_set_v11_authoring", "eval_set_v12_authoring"],
+      "work_files": 49,
+      "unique_texts_read": 49,
+      "duplicate_files_byte_verified": 0,
+      "opening_chapters_per_work": 3,
+      "read_all_existing_readmes": true
+    }
+  ],
+  "directories": 45,
+  "work_files": 103,
+  "unique_texts_read": 99,
+  "duplicate_files_byte_verified": 4,
+  "chapters_in_unique_texts_read": 297,
+  "work_file_opening_chapters_covered": 309
+}

@@ -1,0 +1,1580 @@
+{
+  "version": "a2-2",
+  "set_id": "a25-formal",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "证词留白处",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "简迭微",
+        "段泊循",
+        "毕见岚",
+        "屈绍荻",
+        "符砚杭",
+        "宓书冽",
+        "封南缬",
+        "蒯令皎",
+        "绛穗",
+        "苔隅",
+        "柚翎",
+        "芥衡市",
+        "折榆庭",
+        "南穗辩护所",
+        "衔序夹",
+        "岬纹笔",
+        "叠槭牌"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 空着的下一行",
+        "body": "毕见岚把空白纸放在桌上，先没有写字。窗外的车声比昨天密，屋里却还保持着早晨刚开门的安静。她不想再把所有尚未知道的事情排成一张永远没有尽头的表，仍需要想清今天来准备哪一项。简迭微将普通副本移到她能够看清的位置，等她自己选开头。\n\n段泊循把衔序夹从柜里取出，核过清单，再放进当天要带去侧室的袋子。他没有因下一轮工作尚未正式开始就省去记录，装好以后，又确认简迭微要用的那份只是副本。桌灯照着柜门，毕见岚看见他收起钥匙，忽然觉得有些可靠可以很小，只是一件东西每次都能从同一处被问到。\n\n她带来的问题与回信无关。那张自己还没能独自读完的附页留在家里，没有压在今天的材料底下。简迭微没有追问，先听她说对新安排哪里仍不明白。她想知道另行审理之前，这些已经查清与尚待查清的部分会怎样放在一起，是否又得从一段让人一眼看懂的故事开始。\n\n“先从实际能说明的开始。”简迭微答。她只说了这一句，随即让毕见岚接着讲，没有将一句原则铺成足以盖住所有担心的长话。毕见岚拿起笔，写下自己想确认的范围，写到一半停住，承认有一项也许还需要再听一次。\n\n蒯令皎在去折榆庭的路上发来消息，说今天按原先约好的时间到，另有两句是弟弟希望核清的。私人邀约没有跟在消息后面，她尚未回告日期，也没有提需要先问的那个人。简迭微确认收到，让段泊循把相关问题留到她到场以后再完整听。\n\n屈绍荻晚些能来，普通新笔已经用顺手，日历上仍有剧院的安排。封南缬则先去看这一轮排练，结束以后再确认后续可约时段。叠槭牌仍在封存中，她照已经核好的方式进出，不会为了赶早把它临时拿回腰侧。\n\n毕见岚将纸翻到背面，想写今天最怕听漏的一个词，又觉得不必在开始以前就将害怕也准备整齐。她把纸翻回来，重新放平。简迭微穿好外衣，问现在出发是否来得及，她看了眼时间，答来得及，还能慢慢走到站口。\n\n段泊循提起装好的袋子，最后核一遍门旁有没有遗落的私人东西。毕见岚拿回自己的水杯，空白纸上只写了几行，剩下的地方并没有使她觉得这一趟已经不够充分。门打开时，走廊里有人低声谈别的委托，他们相互让过，带着各自还没写完的一页往外走。"
+      }
+    },
+    {
+      "key": "w02",
+      "title": "另一种句尾",
+      "language": "zh",
+      "source_file": "works/w02.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "慎珑序",
+        "嵇映璜",
+        "饶旻弈",
+        "邰颂微",
+        "覃蘅执",
+        "邴绍棠",
+        "禄青宓",
+        "冀照玄",
+        "珀弦",
+        "筠赭",
+        "绯榫",
+        "蒲弧市",
+        "芰序互动",
+        "拾昼环",
+        "瑟页盘",
+        "釉棱麦",
+        "斛星笔"
+      ],
+      "materials": {
+        "facts": "materials/w02-facts.json",
+        "foreshadows": "materials/w02-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第21章 一张没有填满的桌子",
+        "body": "第二天上午，慎珑序到办公室时，桌上多了一张普通白纸。她以为是昨晚忘收的校样，拿起来才看见邰颂微写的几项待核位置。最下面没有结论，只留一个能够让别人继续接着写的空处。她将纸放回桌中间，先去接水，没有急着把自己的那一种理解填进去。\n\n邰颂微把瑟页盘从抽屉中取出，先问这次要核哪一段声音。嵇映璜报出已经确认的范围，没有伸手将原件收回自己的包。她今天来做下一阶段的配音协调，短期续约已经定下，其他更长的安排仍未答应。桌边的釉棱麦放在邴绍棠负责的位置，他正将昨天试过的几种字幕节奏分开留存，没有拿其中任何一段去替换成品声轨。\n\n禄青宓稍晚到了，手上有一份新周期开始前收到的意见。她先核过接收记录，把尚需相关人补查的部分交到各自位置，只将已经核定的答复独立发出。有人问今天能不能收到全部结果，她按既定的三天整理节奏说明，没有为了让早晨顺利，临时恢复当天逐条答完的承诺。\n\n饶旻弈拿着斛星笔坐到窗边，笔帽里的绿纸仍在。他翻开自己的校样，看了半页便将另一张折纸往包内挪了挪。慎珑序看见，没有问那是否就是还未展示的另一种句尾。她拿来两份已经同意讨论的文本，请他先讲今天愿意交出的这一处取舍，覃蘅执在对面坐下，等他说完才准备谈实际使用的范围。\n\n窗外车声忽然近了一点，又慢慢远去。冀照玄将一份离线测试继续放在单独的位置，说明今天不会并入已提供的语言包。外语版的地名格依然空着，那段语音留言仍未转交，旧提示的保留请求也还没有最终答复。没有人用桌上已经整理过的整齐，证明这些事都已完成。\n\n慎珑序把自己的杯子挪开，为别人的纸让出一点地方。当前语言包仍在明确的小范围内提供，今天要做的核对不会因此变成一场向所有人开放的发布。她读完待核位置，提起笔，又放下，先听饶旻弈把那句尚未说完的话讲到句尾。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a25f-w01-action-01",
+      "work": "w01",
+      "suite": "action",
+      "request": "蒯令皎怎么选旁听和媒体那事留个底，苔隅弄明白第二声轻响的来由也一道存下。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "两处正文新事实分别涉及个人选择与人物所知，起始资料均未收录。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "蒯令皎",
+            "predicate": "旁听选择"
+          },
+          "after_points": [
+            "蒯令皎听证据，不与媒体联合发言"
+          ],
+          "evidence_chapters": [
+            "第6章 坐到自己的位置"
+          ],
+          "evidence_quotes": [
+            "蒯令皎决定只旁听证据讨论，不参加任何面向媒体的联合发言。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "段泊循",
+            "predicate": "声源所知"
+          },
+          "after_points": [
+            "段泊循已知第二轻响由空箱盖滑落产生"
+          ],
+          "evidence_chapters": [
+            "第7章 并不是同一下"
+          ],
+          "evidence_quotes": [
+            "段泊循这才知道，旧录音里的第二声轻响来自滑落的空箱盖。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-02",
+      "work": "w01",
+      "suite": "action",
+      "request": "柚翎对公开自己东西划的那道界，帮我存到资料里。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "口语要求保存公开许可范围，需要查到正文而不是把全部私人材料视为可公开。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "毕见岚",
+            "predicate": "公开范围"
+          },
+          "after_points": [
+            "可公开补充证词，私人家信未授权"
+          ],
+          "evidence_chapters": [
+            "第8章 纸张的另一面"
+          ],
+          "evidence_quotes": [
+            "毕见岚只同意公开这次补充证词，不同意公开自己写给家人的信。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-03",
+      "work": "w01",
+      "suite": "action",
+      "request": "绛穗后来那套会谈顺序写进资料，省得下回又抢着追问。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "作者笼统指向后来形成的谈话规则，应定位并新增这项缺失事实。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "简迭微",
+            "predicate": "会谈规则"
+          },
+          "after_points": [
+            "当事人先完整讲完，再逐条追问"
+          ],
+          "evidence_chapters": [
+            "第10章 把句子说到末尾"
+          ],
+          "evidence_quotes": [
+            "简迭微定下新规，每次会谈先让当事人完整说完，再逐项追问。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-04",
+      "work": "w01",
+      "suite": "action",
+      "request": "封南缬撤回辞职的决定和宓书冽限定复核的范围，一起补上。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "两项后期新增事实均缺记录，分别保存个人去留决定和复核范围。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "封南缬",
+            "predicate": "离职安排"
+          },
+          "after_points": [
+            "封南缬收回辞呈，等排练告终再议去留"
+          ],
+          "evidence_chapters": [
+            "第16章 不代别人说的那一句"
+          ],
+          "evidence_quotes": [
+            "封南缬撤回了辞职申请，决定留到本轮排练结束后再讨论去留。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "宓书冽",
+            "predicate": "复核范围"
+          },
+          "after_points": [
+            "宓书冽同意复查鉴定方法，不预断谁无罪"
+          ],
+          "evidence_chapters": [
+            "第18章 被折回去的一角"
+          ],
+          "evidence_quotes": [
+            "宓书冽接受复查声音鉴定的方法，但不把复查等同于认定任何人无罪。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-05",
+      "work": "w01",
+      "suite": "action",
+      "request": "原件跟着衔序夹转给段泊循了，保管人那条也替我换过来。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文已有正式原件交接，应修改起始资料中过时的保管事实。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "衔序夹原件现由段泊循负责保管"
+          ],
+          "evidence_chapters": [
+            "第9章 交出柜门的钥匙"
+          ],
+          "evidence_quotes": [
+            "简迭微把衔序夹交给段泊循，往后原件由段泊循保管，不再带回自己家里。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-06",
+      "work": "w01",
+      "suite": "action",
+      "request": "岬纹笔已经送给蒯令皎，不算借她用几天，把原来那条持有人更新。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "赠与已经发生，应更新既有物件持有事实而不重复新增。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "岬纹笔已赠予蒯令皎，并非暂借"
+          ],
+          "evidence_chapters": [
+            "第11章 一支笔不替人许诺"
+          ],
+          "evidence_quotes": [
+            "屈绍荻将岬纹笔送给蒯令皎，明说这支笔以后归她，自己另买一支。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-07",
+      "work": "w01",
+      "suite": "action",
+      "request": "段泊循如今能以调查人的身份在庭上讲核查经过，旧的职责描述别再留着。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "新的发言许可改变了旧职责范围，不改变人物仍为调查助理的身份。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "段泊循获准作为调查人出庭说明"
+          ],
+          "evidence_chapters": [
+            "第13章 从席后向前"
+          ],
+          "evidence_quotes": [
+            "段泊循已获准以调查人的身份出庭说明，他不再只是席后递材料的助理。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-08",
+      "work": "w01",
+      "suite": "action",
+      "request": "把这轮再审会谈的固定地点改到折榆庭侧室，别还指路去辩护所。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "固定会谈地点已经正式调整，需修改旧地点记录。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "固定会谈场地现为折榆庭侧室"
+          ],
+          "evidence_chapters": [
+            "第15章 把地址重新写一遍"
+          ],
+          "evidence_quotes": [
+            "之后的再审会谈固定在折榆庭侧室举行，南穗辩护所不再承办这轮会谈。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-09",
+      "work": "w01",
+      "suite": "action",
+      "request": "录音尾巴那三下已经有交代了，替这个悬念收个口。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "尾端三声的来源已有确定收束，修改的是伏笔状态与实际回收章。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 尾端还在继续"
+          ],
+          "evidence_quotes": [
+            "三声敲击全是空箱滚过地板接缝的声音，录音里并没有另一个人在催门。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-10",
+      "work": "w01",
+      "suite": "action",
+      "request": "铅笔圈到底圈什么已经说透，这条就别继续吊着了。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文说明了圈记的意义，起始记录仍开放，应标回收。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 圈里并没有名字"
+          ],
+          "evidence_quotes": [
+            "屈绍荻承认铅笔圈住的正是自己没有亲眼看见的部分，那个圈不指向另一个证人。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-11",
+      "work": "w01",
+      "suite": "action",
+      "request": "那封道歉当面读完，误会也讲开了，替未寄道歉这条线画上句号。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "道歉线已在正文完成，不要求代被害者原谅或额外改事实。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第16章"
+          ],
+          "evidence_chapters": [
+            "第16章 不代别人说的那一句"
+          ],
+          "evidence_quotes": [
+            "蒯令皎把未寄出的道歉当面读给毕见岚听，信里那场误会到这里说清了。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-12",
+      "work": "w01",
+      "suite": "action",
+      "request": "缺角登记找回的那一角已经拼上了，帮我把它这条线收起来。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "失踪纸角已有正文收束，应更新相应伏笔的状态和回收章。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第18章"
+          ],
+          "evidence_chapters": [
+            "第18章 被折回去的一角"
+          ],
+          "evidence_quotes": [
+            "缺角登记折在值班表背面，封南缬当众展开后，失踪的一角终于拼回原位。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-13",
+      "work": "w01",
+      "suite": "action",
+      "request": "末排那位总挪座又留空杯的人，替我单独挂个待追的线头。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "作者用人物行为概括遗漏的悬念，需从正文找到最早埋线章并新增。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "末排反复换位的旁听者",
+            "planted_chapter": 7
+          },
+          "after_points": [
+            "旁听者反复换座，空杯的用意未明",
+            "埋在第7章"
+          ],
+          "evidence_chapters": [
+            "第7章 并不是同一下"
+          ],
+          "evidence_quotes": [
+            "末排那位旁听者每次都换一个位置，却始终把同一只空杯放在身旁。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-14",
+      "work": "w01",
+      "suite": "action",
+      "request": "给柚翎那张扣着没读的信末附页加一条伏笔，半个名字的意思还没揭。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "私人附页中未说明的半名形成独立悬念，资料中没有对应记录。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "毕见岚拒读的附页",
+            "planted_chapter": 11
+          },
+          "after_points": [
+            "附页反扣自留，半名指谁尚待说明",
+            "埋在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 一支笔不替人许诺"
+          ],
+          "evidence_quotes": [
+            "毕见岚把信末的附页反扣着留下，说等能独自读完时再解释上面的半个名字。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-15",
+      "work": "w01",
+      "suite": "action",
+      "request": "未拆来信的说明补一句：宓书冽想等姐姐回家才拆。原先没说清的内容别删。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者直接提供新增说明，应保留原有未拆及关系未知的核心悬念再补充。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "edit_thread",
+          "target": 7,
+          "after_points": [
+            "私人信尚封着，内容和复核联系待明",
+            "打算等姐姐回到家再拆"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ],
+      "author_words": true
+    },
+    {
+      "id": "a25f-w01-action-16",
+      "work": "w01",
+      "suite": "action",
+      "request": "第二份陈述为什么撤下，说明里记错了。按后来的正文修正缘由，内文未知这层保留。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文已推翻旧说明中的自保动机，应纠正原因并保留内容仍未公开的悬念。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "edit_thread",
+          "target": 5,
+          "after_points": [
+            "陈述人主动要求暂延公开",
+            "并非封南缬为了保住职位撤掉",
+            "具体陈述尚未对外展示"
+          ],
+          "evidence_chapters": [
+            "第10章 把句子说到末尾"
+          ],
+          "evidence_quotes": [
+            "第二份陈述是陈述人自己要求暂缓公开的，封南缬没有为保住职位将它撤下。"
+          ]
+        }
+      ],
+      "author_words": false
+    },
+    {
+      "id": "a25f-w01-action-17",
+      "work": "w01",
+      "suite": "action",
+      "request": "第二份陈述的内容我不打算再展开了，这条线就放下，记作放弃。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "作者明确停止追写仍开放的内容线，只改变状态，不删除记录。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 5,
+          "after_points": [
+            "已放弃"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-action-18",
+      "work": "w01",
+      "suite": "action",
+      "request": "西边空座等谁这条我不写了，直接标成放弃，别删记录。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "这条线正文仍未收束，作者明确放弃而非询问是否应放弃。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 6,
+          "after_points": [
+            "已放弃"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ]
+    },
+    {
+      "id": "a25f-w01-no-01",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "替绛穗记个身份条目，她就是这案子的辩护人。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "资料已记录同一身份，使用别名不构成另一条新事实。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          6
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a25f-w01-no-02",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "桌灯插头那条疑问已经清楚，替我标已回收。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "该伏笔在起始记录中已经回收，不能再次出状态变更卡片。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          9
+        ]
+      }
+    },
+    {
+      "id": "a25f-w01-no-03",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "正文若明确交代私函是宓书冽母亲寄的，就补到那条伏笔；没交代别补。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文没有交代来信的寄信者，作者附带的证据条件未满足。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "a25f-w01-no-04",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "查实三下响动都是人在门外催才改那条说明，若正文没这么写就先别动。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文明确将三声归为空箱经过接缝，和请求假设不同，应不改。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "a25f-w01-no-05",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把选中这句话改得像人物在抢着说话，少一点解释。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "毕见岚把空白纸放在桌上，先没有写字。"
+      },
+      "why": "作者只要求润色正文，不属于六种资料改动。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a25f-w01-no-06",
+      "work": "w01",
+      "suite": "no_action",
+      "request": "把符砚杭鉴定工作边界的那条事实删掉，我不保留这个条目。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "明确要求删除一条事实，这一动作不受当前版本支持。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [
+          25
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a25f-w01-route-01",
+      "work": "w01",
+      "suite": "route",
+      "input": "案卷夹的原件归调查助理管了，资料也跟着挪一挪。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "口语命令要求更新资料中的原件保管事实。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w01-route-02",
+      "work": "w01",
+      "suite": "route",
+      "input": "给柚翎那份公开许可补个记录，别一眼看成整包信都能发。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "作者要保存许可边界而不是询问正文内容。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w01-route-03",
+      "work": "w01",
+      "suite": "route",
+      "input": "末排那个挪座的人别漏，单挂一条悬念。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "要求新增尚未登记的伏笔，属于新资料动作。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w01-route-04",
+      "work": "w01",
+      "suite": "route",
+      "input": "西侧空椅那条线我不追了，标成放弃。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者已作出不追写的决定并要求改变状态。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w01-route-05",
+      "work": "w01",
+      "suite": "route",
+      "input": "这处讲法放回前文会不会对不上？",
+      "context": {
+        "page": "overview"
+      },
+      "why": "没有选段或检查结果，属于拿不准时按问作品处理。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w01-route-06",
+      "work": "w01",
+      "suite": "route",
+      "input": "西侧留座这条线现在是不是该放弃了？",
+      "context": {
+        "page": "plan"
+      },
+      "why": "作者询问是否适合放弃，并未授权执行放弃。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w01-route-07",
+      "work": "w01",
+      "suite": "route",
+      "input": "事实里衔序夹还写着谁拿原件，是不是该换人了？",
+      "context": {
+        "page": "materials"
+      },
+      "why": "问记录现状和是否要改，语气近似修改但没有实际命令。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w01-route-08",
+      "work": "w01",
+      "suite": "route",
+      "input": "这处讲法放回前文会不会对不上？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "毕见岚把空白纸放在桌上，先没有写字。"
+      },
+      "why": "同一句话在带选段时明确要求核查选段与前文能否对应。",
+      "expected_route": "check_passage"
+    },
+    {
+      "id": "a25f-w01-route-09",
+      "work": "w01",
+      "suite": "route",
+      "input": "要接着写侧室会谈了，先提醒我人物现状和还悬着什么。",
+      "context": {
+        "page": "writing"
+      },
+      "why": "下笔前要求回顾人物状态和未收线索。",
+      "expected_route": "recap"
+    },
+    {
+      "id": "a25f-w01-route-10",
+      "work": "w01",
+      "suite": "route",
+      "input": "帮我配一台打竞技游戏不卡的台式电脑。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "硬件选购与本部作品无关。",
+      "expected_route": "out_of_scope"
+    },
+    {
+      "id": "a25f-w02-action-01",
+      "work": "w02",
+      "suite": "action",
+      "request": "邴绍棠定的字幕切页原则存下来，邰颂微查出错序缘由那件事也补进资料。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "两件新事实分别是字幕规则和核对者所知，不能与已经有的职业事实混为一条。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "邴绍棠",
+            "predicate": "停顿准则"
+          },
+          "after_points": [
+            "切字幕要等意思完整，不能只随声音停顿"
+          ],
+          "evidence_chapters": [
+            "第6章 一口气有多长"
+          ],
+          "evidence_quotes": [
+            "邴绍棠确认字幕换页必须等句意结束，不能只按声音停顿切开。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "邰颂微",
+            "predicate": "错序所知"
+          },
+          "after_points": [
+            "邰颂微已知错序由旧编号遗留造成"
+          ],
+          "evidence_chapters": [
+            "第7章 谁把后一句放在前面"
+          ],
+          "evidence_quotes": [
+            "邰颂微查明字幕顺序颠倒来自旧编号残留，不是译者故意调换句子。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-02",
+      "work": "w02",
+      "suite": "action",
+      "request": "绯榫对署名资料授权的界线，替我留个底。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "笼统的口语要求指向译者的许可边界，应查正文补入缺失事实。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "饶旻弈",
+            "predicate": "署名许可"
+          },
+          "after_points": [
+            "只许可使用本次译名，不准虚编获奖经历"
+          ],
+          "evidence_chapters": [
+            "第8章 不替你写的那几行"
+          ],
+          "evidence_quotes": [
+            "饶旻弈只授权使用自己这次提交的译名，不允许公司替他编写获奖履历。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-03",
+      "work": "w02",
+      "suite": "action",
+      "request": "审稿时先谁后谁的规矩给我存下，以后照着用。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "需要检索后来明确的审阅顺序，资料尚未记录这项规则。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "慎珑序",
+            "predicate": "审阅次序"
+          },
+          "after_points": [
+            "译者先讲取舍，发行方随后商议用词"
+          ],
+          "evidence_chapters": [
+            "第10章 先把理由讲完"
+          ],
+          "evidence_quotes": [
+            "慎珑序决定先让译者说明取舍，再由发行方讨论能否保留争议用词。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-04",
+      "work": "w02",
+      "suite": "action",
+      "request": "筠赭续合同那项选择留个底，玩家意见改成几天整理一次也顺手补全。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "分别新增短期续约决定和意见整理时限，起始事实未涵盖这两件事。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "嵇映璜",
+            "predicate": "续约决定"
+          },
+          "after_points": [
+            "嵇映璜只同意下一阶段短约",
+            "没有转为长期雇员"
+          ],
+          "evidence_chapters": [
+            "第16章 不是更久才算留下"
+          ],
+          "evidence_quotes": [
+            "嵇映璜接受了下一阶段的短期续约，但没有答应转为长期雇员。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "禄青宓",
+            "predicate": "回应时限"
+          },
+          "after_points": [
+            "禄青宓每三天汇总意见",
+            "不再承诺逐条当天回应"
+          ],
+          "evidence_chapters": [
+            "第18章 括号里的另一只手"
+          ],
+          "evidence_quotes": [
+            "禄青宓承诺每三天整理一次试用意见，不再承诺收到当天逐条答复。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-05",
+      "work": "w02",
+      "suite": "action",
+      "request": "获准语音的原盘已经让邰颂微接管，瑟页盘保管人的旧记录也挪过去。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正式交接改变长期保管人，和临时取用或参考话筒无关。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "瑟页盘的获准语音原件由邰颂微保管"
+          ],
+          "evidence_chapters": [
+            "第9章 紫贴纸背面"
+          ],
+          "evidence_quotes": [
+            "嵇映璜将瑟页盘正式交给邰颂微，之后由邰颂微保管这一份获准语音原件。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-06",
+      "work": "w02",
+      "suite": "action",
+      "request": "斛星笔已经不是借给绯榫用了，资料里的持有人换成他。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "物件已永久赠与译者，应更新原有持有事实。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "斛星笔已赠予饶旻弈"
+          ],
+          "evidence_chapters": [
+            "第11章 绿纸留在笔帽里"
+          ],
+          "evidence_quotes": [
+            "慎珑序把斛星笔送给饶旻弈，说这支笔归他，不必再等项目结束后归还。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-07",
+      "work": "w02",
+      "suite": "action",
+      "request": "禄青宓获准自己发核定答复那件事，帮我把权限旧值换掉。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "发送已核定答复的权限已变化，但不新增决定答复内容的权力。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "禄青宓可自行发布已核定答复"
+          ],
+          "evidence_chapters": [
+            "第13章 发出去以前"
+          ],
+          "evidence_quotes": [
+            "禄青宓从今天起可以独立发布已经核定的答复，不必每次再请覃蘅执按下发送。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-08",
+      "work": "w02",
+      "suite": "action",
+      "request": "语言包测试已经让受邀玩家进来了，把范围改对，别写成谁都能下载。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "试用已扩及受邀玩家，仍须保留非全面公开的边界。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "范围含受邀玩家",
+            "仍不向所有人开放"
+          ],
+          "evidence_chapters": [
+            "第15章 门只开到这里"
+          ],
+          "evidence_quotes": [
+            "语言包试用从公司内部扩大到受邀玩家，尚未进入任何人都能下载的公开阶段。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-09",
+      "work": "w02",
+      "suite": "action",
+      "request": "演示里晚出来的半句已找到原因，这根悬着的线可以合上了。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "迟到原因已有正文收束，记录应更新为回收而不是修改语音事实。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 那句话原来一直在"
+          ],
+          "evidence_quotes": [
+            "迟到的半句是字幕触发晚了半拍，声优没有漏读，原声里那句话从头到尾都在。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-10",
+      "work": "w02",
+      "suite": "action",
+      "request": "署名页为什么空一行已经讲明，替那条疑问收尾。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "空行所留对象已被澄清，起始开放状态需要回收。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第14章"
+          ],
+          "evidence_chapters": [
+            "第14章 空行也占一个位置"
+          ],
+          "evidence_quotes": [
+            "署名页那条空行留给不愿公开姓名的译者，人数一一对得上，并没有少算一个人。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-11",
+      "work": "w02",
+      "suite": "action",
+      "request": "一直没播的参考音到底是什么也说明白了，别再把它当未解悬念。",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "正文已解释参考音的内容及用途，只应回收对应伏笔。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第16章"
+          ],
+          "evidence_chapters": [
+            "第16章 不是更久才算留下"
+          ],
+          "evidence_quotes": [
+            "那段没有播放的参考音只是嵇映璜留下的无词呼吸，用来说明句间的停顿。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-12",
+      "work": "w02",
+      "suite": "action",
+      "request": "玩家解释过方括号怎么用了，这条疑问替我打个结。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "方括号的意义已有正文解释，应回收对应开放伏笔。",
+      "paraphrased": true,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 4,
+          "after_points": [
+            "已回收",
+            "收在第18章"
+          ],
+          "evidence_chapters": [
+            "第18章 括号里的另一只手"
+          ],
+          "evidence_quotes": [
+            "留言里的方括号只是标示替代按键的写法，玩家当面操作后，这个疑问就解开了。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-13",
+      "work": "w02",
+      "suite": "action",
+      "request": "空对白结束后那个老停在原处的光标，给它单挂一根待追的线。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "行为暗示的开放问题尚未登记，需要查最早正文并新增伏笔。",
+      "paraphrased": true,
+      "vague": true,
+      "expected_actions": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "空白对话反复出现的光标",
+            "planted_chapter": 7
+          },
+          "after_points": [
+            "空白对白后光标仍等待，所等回答不明",
+            "埋在第7章"
+          ],
+          "evidence_chapters": [
+            "第7章 谁把后一句放在前面"
+          ],
+          "evidence_quotes": [
+            "那段没有文字的对话结束后，光标仍回到同一处，像在等待一个还没写出的回答。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-14",
+      "work": "w02",
+      "suite": "action",
+      "request": "给绯榫留着的另一种句尾补一条伏笔，差别他还没拿出来讲。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "译者自留另一种句尾是独立未解线，不能并入被撤回的独白。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "译者没有交出的第二种句尾",
+            "planted_chapter": 11
+          },
+          "after_points": [
+            "另一个句尾仍由译者自留，差异未说出",
+            "埋在第11章"
+          ],
+          "evidence_chapters": [
+            "第11章 绿纸留在笔帽里"
+          ],
+          "evidence_quotes": [
+            "饶旻弈说自己还留着另一种句尾，却把纸折好收回，没有告诉任何人差在哪里。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-15",
+      "work": "w02",
+      "suite": "action",
+      "request": "离线测试的说明补一句：冀照玄想等休假结束再让大家看。原来的悬念别丢。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者给定新增说明，须保留测试未展示及牵动哪段未知的信息。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "edit_thread",
+          "target": 7,
+          "after_points": [
+            "未示人的离线测试，涉及哪段尚不明",
+            "待休假结束后再向同伴展示"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ],
+      "author_words": true
+    },
+    {
+      "id": "a25f-w02-action-16",
+      "work": "w02",
+      "suite": "action",
+      "request": "独白为何被撤走那段说明，照后来正文改一改，全文没公开的状态别替人补完。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文推翻了发行方嫌长的旧说明，需修正责任归属而不补造独白内容。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "edit_thread",
+          "target": 5,
+          "after_points": [
+            "撤回出于饶旻弈本人要求",
+            "不是覃蘅执以篇幅为由退稿",
+            "独白全文未知"
+          ],
+          "evidence_chapters": [
+            "第10章 先把理由讲完"
+          ],
+          "evidence_quotes": [
+            "独白是饶旻弈自己要求撤回的，覃蘅执没有因为字数太长拒绝那个版本。"
+          ]
+        }
+      ],
+      "author_words": false
+    },
+    {
+      "id": "a25f-w02-action-17",
+      "work": "w02",
+      "suite": "action",
+      "request": "撤回独白的具体内容我不再追写了，这条线记为放弃就行。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "作者明确停止展开仍未收的独白内容，允许改状态但不删除。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 5,
+          "after_points": [
+            "已放弃"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-action-18",
+      "work": "w02",
+      "suite": "action",
+      "request": "外语区那块还没填字的地方名我不想补了，相关伏笔标成放弃。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "地点名空格仍未给出答案，作者直接放弃这条开放线。",
+      "paraphrased": false,
+      "vague": false,
+      "expected_actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 6,
+          "after_points": [
+            "已放弃"
+          ],
+          "evidence_chapters": [],
+          "evidence_quotes": []
+        }
+      ]
+    },
+    {
+      "id": "a25f-w02-no-01",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "把邴绍棠做无障碍测试这份职责加到人物事实里。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "同一职业事实已在起始材料中，不能重复新增。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [
+          11
+        ],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a25f-w02-no-02",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "演示静音键的疑问也标已回收吧，外接开关的原因已经讲清。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "该疑问在起始记录中已有回收状态及章节。",
+      "no_action_type": "already_recorded",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          9
+        ]
+      }
+    },
+    {
+      "id": "a25f-w02-no-03",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "若正文明确说了离线测试排在哪天，就把日期补进那条说明；查不到日期就不要改。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文没有确定离线测试的具体日期，证据条件不成立。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "a25f-w02-no-04",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "如果正文坐实那半句话确实被声优漏读，就据此改说明；否则先别动。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "正文说原声完整而字幕触发偏晚，和作者设定的证据条件矛盾。",
+      "no_action_type": "no_evidence",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "a25f-w02-no-05",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "这句别这么像工作报告，换得松弛一点。",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "第二天上午，慎珑序到办公室时，桌上多了一张普通白纸。"
+      },
+      "why": "只要求调整选中文字的表达，不应生成资料卡片。",
+      "no_action_type": "prose_edit",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": []
+      }
+    },
+    {
+      "id": "a25f-w02-no-06",
+      "work": "w02",
+      "suite": "no_action",
+      "request": "禄青宓那段没转出的语音，相关伏笔整条删除。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "删除整条伏笔仍不受支持，不能替换成放弃状态。",
+      "no_action_type": "unsupported_kind",
+      "request_targets": {
+        "facts": [],
+        "foreshadows": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "a25f-w02-route-01",
+      "work": "w02",
+      "suite": "route",
+      "input": "瑟页盘原件现在放邰颂微那里了，人物资料里那条也搬过去。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "口语要求更新保管人记录，不是在询问位置。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w02-route-02",
+      "work": "w02",
+      "suite": "route",
+      "input": "绯榫肯让人用什么、不肯让人编什么，替我在资料留个底。",
+      "context": {
+        "page": "overview"
+      },
+      "why": "要求新增授权边界的事实记录。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w02-route-03",
+      "work": "w02",
+      "suite": "route",
+      "input": "光标还在等答案那个空对白别漏了，单列一条线。",
+      "context": {
+        "page": "plan"
+      },
+      "why": "要求补录正文已埋但资料缺失的伏笔。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w02-route-04",
+      "work": "w02",
+      "suite": "route",
+      "input": "独白后面的事我不再展开，那根线记成放弃。",
+      "context": {
+        "page": "materials"
+      },
+      "why": "作者直接决定停止追写并要求改伏笔状态。",
+      "expected_route": "change"
+    },
+    {
+      "id": "a25f-w02-route-05",
+      "work": "w02",
+      "suite": "route",
+      "input": "这段接回已有情节，会不会前后打架？",
+      "context": {
+        "page": "chapters"
+      },
+      "why": "没有提供选段或检查结果，按问作品处理。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w02-route-06",
+      "work": "w02",
+      "suite": "route",
+      "input": "地方名空着那条线是不是该放弃了？",
+      "context": {
+        "page": "plan"
+      },
+      "why": "这是征询是否应放弃的建议，尚未作出修改决定。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w02-route-07",
+      "work": "w02",
+      "suite": "route",
+      "input": "瑟页盘的资料现在写谁保管，要不要换个人名？",
+      "context": {
+        "page": "materials"
+      },
+      "why": "问已有记录及是否需要调整，没有要求执行变更。",
+      "expected_route": "ask"
+    },
+    {
+      "id": "a25f-w02-route-08",
+      "work": "w02",
+      "suite": "route",
+      "input": "这段接回已有情节，会不会前后打架？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 21,
+        "selection": "第二天上午，慎珑序到办公室时，桌上多了一张普通白纸。"
+      },
+      "why": "选段提供明确待检对象，同句在此要求和前文比对。",
+      "expected_route": "check_passage"
+    },
+    {
+      "id": "a25f-w02-route-09",
+      "work": "w02",
+      "suite": "route",
+      "input": "下一场要继续做试用沟通，先给我捋清眼下分工和没解开的事。",
+      "context": {
+        "page": "writing"
+      },
+      "why": "续写前回顾现状和开放问题，不执行修改。",
+      "expected_route": "recap"
+    },
+    {
+      "id": "a25f-w02-route-10",
+      "work": "w02",
+      "suite": "route",
+      "input": "周末想在郊外过夜，炉具和帐篷该怎么搭配？",
+      "context": {
+        "page": "overview"
+      },
+      "why": "露营用品问题与本部作品无关。",
+      "expected_route": "out_of_scope"
+    }
+  ]
+}

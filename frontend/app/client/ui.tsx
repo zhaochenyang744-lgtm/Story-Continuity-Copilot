@@ -123,9 +123,19 @@ export function Tabs<T extends string>({ items, value, onChange, label, size = "
   size?: "lg" | "md";
   trailing?: ReactNode;
 }) {
+  const nav = useRef<HTMLElement>(null);
+  // Where the row scrolls sideways (narrow screens), the chosen tab is slid into view; the page itself is not moved.
+  useEffect(() => {
+    const row = nav.current;
+    const chosen = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!row || !chosen || row.scrollWidth <= row.clientWidth) return;
+    const left = chosen.getBoundingClientRect().left - row.getBoundingClientRect().left + row.scrollLeft;
+    if (left < row.scrollLeft) row.scrollLeft = left;
+    else if (left + chosen.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollLeft = left + chosen.offsetWidth - row.clientWidth;
+  }, [value]);
   return (
     <div className={`tabs tabs-${size}`}>
-      <nav aria-label={label}>
+      <nav aria-label={label} ref={nav}>
         {items.map((item) => (
           <button key={item.id} type="button" className="tab" aria-current={item.id === value ? "page" : undefined} onClick={() => onChange(item.id)}>
             <span>{item.label}</span>
@@ -184,7 +194,7 @@ if (typeof document !== "undefined") document.addEventListener("focusin", (event
 function restoreFocus(from: typeof lastFocus) {
   for (const element of [from?.element, from?.menuButton]) {
     if (!element?.isConnected) continue;
-    element.focus();
+    element.focus({ preventScroll: true });
     if (document.activeElement === element) return;
   }
 }
@@ -198,7 +208,7 @@ export function useFocusTrap<T extends HTMLElement>(close: () => void, closeDisa
     // A remount that follows straight after a cleanup (development's strict mode does this) must not have focus taken from it.
     window.clearTimeout(giveBack.current);
     const first = ref.current?.querySelector<HTMLElement>("[data-autofocus]") ?? ref.current?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled])');
-    first?.focus();
+    first?.focus({ preventScroll: true });
     return () => { giveBack.current = window.setTimeout(() => restoreFocus(from), 0); };
   }, [from]);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
@@ -287,7 +297,7 @@ export function useMenuKeyboardMode() {
 }
 
 /** 更多: a small outlined button that opens a list of actions; dangerous ones sit below a rule. */
-export function Menu({ children, danger, label = "更多", buttonLabel }: { children: ReactNode; danger?: ReactNode; label?: string; buttonLabel?: string }) {
+export function Menu({ children, danger, label = "更多", buttonLabel, dots = false }: { children: ReactNode; danger?: ReactNode; label?: string; buttonLabel?: string; /** Just the label, no arrow: a small ⋯ at the end of a line. */ dots?: boolean }) {
   const menu = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const details = menu.current;
@@ -300,8 +310,8 @@ export function Menu({ children, danger, label = "更多", buttonLabel }: { chil
     return () => { details.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onPointer); };
   }, []);
   return (
-    <details className="menu" ref={menu}>
-      <summary aria-label={buttonLabel}>{label}<Chevron size={10} /></summary>
+    <details className={`menu${dots ? " menu-dots" : ""}`} ref={menu}>
+      <summary aria-label={buttonLabel}>{label}{!dots && <Chevron size={10} />}</summary>
       <div className="menu-list" role="menu" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>
         {children}
         {danger && <div className="menu-danger">{danger}</div>}
@@ -325,6 +335,10 @@ export function useUsage(refreshKey: string) {
   }, [refreshKey]);
   return usage;
 }
+/** 示例作品 (the demo work and the tutorial's): a check or an assistant task on it takes no characters, whatever the allowance. */
+export const isSampleWork = (project: { data_origin?: string } | null | undefined) => project?.data_origin === "demo_seed" || project?.data_origin === "tutorial_seed";
+export const SAMPLE_FREE = "示例作品不计字数";
+
 export const usageShort = (usage: CheckUsage | null) =>
   !usage ? "" : usage.account_type === "visitor" ? `还可检查 ${usage.checks_remaining} 次` : `可检查 ${usage.check_chars_remaining.toLocaleString("en-US")} 字`;
 

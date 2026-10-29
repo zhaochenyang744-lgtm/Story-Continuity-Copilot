@@ -4,9 +4,10 @@
 // ("查了 2 条事实：苏岑、黄铜罗盘", "搜了 2 处正文"), failed steps on their own line, and the step in progress with a three-square mark and
 // its seconds. Once the task is over the whole thing folds into one line, 「查了 N 处 · M 秒 ›」. The wording of an action is made here,
 // from the tool and the number of calls; nothing the model wrote reaches the author except its one line before each round of work.
-import { useEffect, useId, useState } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useId, useState } from "react";
 import type { AssistantSource, AssistantStep, AssistantTask } from "../../model";
-import { active, whereLabel } from "./assistant-parts";
+import { active, Fold, hitLimit, notChecked, sentencesOf, whereLabel } from "./assistant-parts";
+import { splitNote } from "./assistant-text";
 
 /** At most this many characters of a passage are shown on either side of the word that turned it up (or at the start, when no word is known). */
 // About a line and a half in the 340px right column (07g found 40/80 ran to three lines there).
@@ -195,8 +196,35 @@ function NowLine({ task }: { task: AssistantTask }) {
   );
 }
 
-/** The steps of a task: listed as they happen, then folded into one line. An author who opens the fold keeps it open. */
-export function Steps({ task, locate }: { task: AssistantTask; locate?: (source: AssistantSource) => void }) {
+/** 去原文 for the passages a step found (the thread provides it): the steps under 「怎么查的」 are far from the thread's own handlers. */
+export const LocateContext = createContext<((source: AssistantSource) => void) | undefined>(undefined);
+
+/** The rows of a task's process: its narration, the actions it took (each opens to what it found) and the steps that failed. */
+function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<string, AssistantSource>; locate?: (source: AssistantSource) => void }) {
+  return (
+    <>
+      {rows.map((row) => {
+        if (row.type === "say") return <p key={row.key} className="a-say">{row.text}</p>;
+        if (row.type === "group") return <Action key={row.key} row={row} sources={sources} locate={locate} />;
+        return (
+          <div key={row.key} className={`a-act ${row.type === "fail" ? "bad" : "ok"}`}>
+            <span className="mk" aria-hidden="true" />
+            <span>{row.text}</span>
+            <span className="secs" />
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+/** The line above an answer: what the task is (问作品, 改资料 …), what it looked at and how long it took, in one small grey line that opens to
+    the steps; `end` is what stands at its right end (改成 …, 停止). The steps are listed as they happen, then folded into the line. An author
+    who opens the fold keeps it open. */
+export function Steps({ task, locate, lead, end, named = false }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
+  /** The finished line opens to the steps and names what it opens: 「过程 · 8 秒 ›」 (a 写前回顾). Without it the finished line is a plain label,
+      「问作品 · 4 秒」: the steps of an answer are under it, in 「怎么查的 ›」 (CoverLine); while the task runs they are listed here either way. */
+  named?: boolean }) {
   const running = active(task);
   const [manual, setManual] = useState<boolean | null>(null);
   // The list folds by itself when the task ends; seen while this view was open, that moment is told by two figures settling into place.
@@ -215,42 +243,67 @@ export function Steps({ task, locate }: { task: AssistantTask; locate?: (source:
     const timer = window.setTimeout(() => setFolding(false), 600);
     return () => window.clearTimeout(timer);
   }, [folding]);
-  if (!shownRows && !running) return null;
-  const looked = lookedAt(task.steps);
   const began = Date.parse(task.started_at ?? task.created_at);
   const ended = task.completed_at ? Date.parse(task.completed_at) : NaN;
   const took = Number.isFinite(began) && Number.isFinite(ended) ? Math.max(1, Math.round((ended - began) / 1000)) : null;
-  const first = task.steps.find((step) => step.kind === "say")?.summary ?? "";
   const figure = (value: number, order: number) => <span className={justFolded ? "a-drop" : undefined} style={justFolded ? { animationDelay: `${order * 80}ms` } : undefined}>{value}</span>;
+  const tally = named || took !== null;
   return (
     <div className="a-steps" role={running ? "status" : undefined}>
-      {!running && (
-        <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
-          <span className="tally">{looked > 0 ? <>查了 {figure(looked, 0)} 处</> : "过程"}{took !== null && <> · {figure(took, looked > 0 ? 1 : 0)} 秒</>}</span>
-          {first && <span className="first">{first.replace(/[。.]$/, "")}</span>}
-          <span aria-hidden="true">{open ? "⌃" : "›"}</span>
-        </button>
-      )}
+      <div className="a-process" data-testid="process-line">
+        {running ? <span className="a-fold static"><span className="lead">{lead}</span> · 正在查</span>
+          : shownRows && named ? (
+            <button type="button" className="a-fold" aria-expanded={open} onClick={() => setManual(!open)}>
+              <span className="lead">{lead}</span>
+              {tally && <span className="tally">{named && " · 过程"}{took !== null && <> · {figure(took, 0)} 秒</>}</span>}
+              <Fold open={open} />
+            </button>
+          ) : <span className="a-fold static"><span className="lead">{lead}</span>{took !== null && <span className="tally"> · {figure(took, 0)} 秒</span>}</span>}
+        {end && <span className="a-process-end">{end}</span>}
+      </div>
       {(open || folding) && (
         <div className={`a-proc-wrap${folding && !open ? " folding" : ""}${open && manual === true ? " unfolding" : ""}`}>
           <div className="a-proc-clip">
             <div className="a-proc">
-              {rows.map((row) => {
-                if (row.type === "say") return <p key={row.key} className="a-say">{row.text}</p>;
-                if (row.type === "group") return <Action key={row.key} row={row} sources={task.sources} locate={locate} />;
-                return (
-                  <div key={row.key} className={`a-act ${row.type === "fail" ? "bad" : "ok"}`}>
-                    <span className="mk" aria-hidden="true" />
-                    <span>{row.text}</span>
-                    <span className="secs" />
-                  </div>
-                );
-              })}
+              <ProcessRows rows={rows} sources={task.sources} locate={locate} />
               {running && <NowLine task={task} />}
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+/** 怎么查的 ›: under an answer, folded. Opened it holds the steps the task took and, in plain grey, 查过……；没查：……, then the sentences of the model's
+    note that tell where it looked (the rest of the note stays under the answer). The program's own 没查 line is lifted out under the answer, and the fold
+    leaves it out, when the answer found nothing (`onlyMissed`) or the task ran into its limit. */
+export function CoverLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
+  const locate = useContext(LocateContext);
+  const [open, setOpen] = useState(false);
+  const panel = useId();
+  const left = notChecked(task);
+  const lifted = (onlyMissed || hitLimit(task)) && left.length > 0;
+  const done = task.coverage?.checked ?? [];
+  const rows = processRows(task.steps);
+  const noted = splitNote(sentencesOf(task)?.note).looked;
+  const line = [done.length > 0 ? `查过${done.join("、")}` : "", !lifted && left.length > 0 ? `没查：${left.join("、")}` : ""].filter(Boolean).join("；");
+  if (active(task)) return null;
+  return (
+    <>
+      {lifted && <p className="a-cover" data-testid="not-checked">没查：{left.join("、")}。</p>}
+      {(rows.length > 0 || line || noted.length > 0) && (
+        <div className="a-how-wrap" data-testid="how-checked">
+          <button type="button" className="a-sources-fold" aria-expanded={open} aria-controls={panel} onClick={() => setOpen((value) => !value)}>怎么查的<Fold open={open} /></button>
+          {open && (
+            <div id={panel} className="a-how">
+              {rows.length > 0 && <div className="a-proc"><ProcessRows rows={rows} sources={task.sources} locate={locate} /></div>}
+              {line && <p className="a-cover">{line}。</p>}
+              {noted.length > 0 && !line && <p className="a-cover">{noted.join("")}</p>}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

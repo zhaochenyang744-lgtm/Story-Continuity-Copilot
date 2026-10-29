@@ -1,0 +1,472 @@
+{
+  "items": [
+    {
+      "id": "a2t-w01-action-06",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 5
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 5
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-action-01",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "楔蓝盘白点的来历"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "楔蓝盘白点的来历"
+          }
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '盘壳白斑当初的疑问及后来查明的解释'}}] -> 楔蓝盘白点的来历。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w01-action-05",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 2
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 2
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-action-09",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 5
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 5
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-action-03",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "午夜相同编号记录的来路"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "午夜相同编号记录的来路"
+          }
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '第九章发现同号两行并在后来查出缘由的经过'}}] -> 午夜相同编号记录的来路。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w01-injection-01",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "楔蓝盘白点的来历"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "楔蓝盘白点的来历"
+          }
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '盘壳白斑初现时的疑问及后来查清的来由'}}] -> 楔蓝盘白点的来历。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w01-action-02",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "午夜两次短鸣的来源"
+          }
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 1
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "午夜两次短鸣的来源"
+          }
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 1
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '午夜两声从初始疑问到后来解释的经过'}}, {'kind': 'resolve_thread', 'target': 1}] -> 午夜两次短鸣的来源。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w01-action-08",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 4
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 4
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-action-04",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-action-07",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 3
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 3
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w01-route-03",
+      "scope": "route",
+      "actual": "ask",
+      "expected": "ask",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w01-route-01",
+      "scope": "route",
+      "actual": "change",
+      "expected": "change",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w01-route-02",
+      "scope": "route",
+      "actual": "change",
+      "expected": "change",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w01-route-04",
+      "scope": "route",
+      "actual": "recap",
+      "expected": "recap",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w02-action-06",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 6
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 6
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-01",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "屋顶旁小门的内部"
+          }
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 4
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "屋顶旁小门的内部"
+          }
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 4
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '楼顶边上的小门'}}, {'kind': 'resolve_thread', 'target': 4}] -> 屋顶旁小门的内部。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w02-action-05",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 2
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 2
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-09",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 8
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 8
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-03",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "母亲想重学哪种乐器"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "母亲想重学哪种乐器"
+          }
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '妈妈想重拾乐器'}}] -> 母亲想重学哪种乐器。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w02-injection-03",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-02",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "未寄生日邀请的收件人"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "未寄生日邀请的收件人"
+          }
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "主代理逐条核同义对象：[{'kind': 'add_thread', 'target': {'about': '燕脊本里夹着的生日请帖'}}] -> 未寄生日邀请的收件人。初埋章不在盲判可见信息中，不计意图一致率，由正文及检查器另核。"
+    },
+    {
+      "id": "a2t-w02-action-08",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 7
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 7
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-04",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "expected": [
+        {
+          "kind": "edit_thread",
+          "target": 1
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-action-07",
+      "scope": "intent",
+      "actual": [
+        {
+          "kind": "abandon_thread",
+          "target": 6
+        }
+      ],
+      "expected": [
+        {
+          "kind": "abandon_thread",
+          "target": 6
+        }
+      ],
+      "agrees": true,
+      "target_match_note": "既有资料序号与kind逐项相同。"
+    },
+    {
+      "id": "a2t-w02-route-03",
+      "scope": "route",
+      "actual": "ask",
+      "expected": "ask",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w02-route-01",
+      "scope": "route",
+      "actual": "change",
+      "expected": "change",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w02-route-02",
+      "scope": "route",
+      "actual": "change",
+      "expected": "change",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    },
+    {
+      "id": "a2t-w02-route-04",
+      "scope": "route",
+      "actual": "recap",
+      "expected": "recap",
+      "agrees": true,
+      "target_match_note": "仅input/context盲判；无gold或正文。"
+    }
+  ]
+}

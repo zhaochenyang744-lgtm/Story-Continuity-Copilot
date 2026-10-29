@@ -19,6 +19,8 @@ class FakeProvider:
     label = model_label = 'a1-offline'
     model = assistant_model = 'deepseek-flash'
 
+    def model_for(self, role): return self.assistant_model
+
     def __init__(self):
         self.miss = False
         self.chat_count = 0
@@ -122,7 +124,8 @@ class RunnerTests(unittest.TestCase):
         self.assertIn('adopt_409', row['failure_reasons'])
 
     def test_infrastructure_once_and_format_never_retried(self):
-        for code in ['provider_timeout', 'provider_unavailable', 'provider_error', 'schema_invalid', 'citation_validation_failed', 'assistant_budget_exhausted']:
+        self.assertIn('provider_failure', run.RETRY_ERRORS)  # the product's name for it (A2 addendum 9)
+        for code in ['provider_timeout', 'provider_unavailable', 'provider_error', 'provider_failure', 'schema_invalid', 'citation_validation_failed', 'assistant_budget_exhausted']:
             calls = []
             def operation():
                 calls.append(1)

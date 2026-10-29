@@ -22,7 +22,7 @@
 .fact-list.compact .num { font-size: 20px; }
 
 /* Confirmation blocks: imported facts, fact changes */
-.confirm-block { display: grid; gap: 16px; margin-bottom: 40px; padding: 24px; border: 2px solid var(--c-rule); background: var(--c-surface); }
+.confirm-block { display: grid; gap: 16px; margin-bottom: 40px; padding: 24px; background: var(--c-raised); }
 .confirm-block > .btn { justify-self: start; }
 .candidate { display: grid; gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--c-line); }
 .candidate header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
@@ -40,11 +40,11 @@
 .person-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; }
 .person-head h2 { font-size: 36px; line-height: 1.1; }
 .person-identity { color: var(--c-muted); font-size: 14px; }
-.alias-chip { padding: 0 6px; border: 1px solid var(--c-rule); font-family: var(--font-mono); font-size: 12px; }
+.alias-chip { padding: 0 6px; border: 0; background: var(--c-fill); font-family: var(--font-mono); font-size: 12px; }
 .person-facts { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 6px 16px; margin-top: 16px; font-size: 14px; }
 .person-facts dt { padding-top: 3px; color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; }
 .person-toggle { display: inline-block; margin-top: 14px; font-weight: 700; border-bottom-width: 2px; }
-.person-detail { display: grid; gap: 8px; margin-top: 16px; padding: 16px; border: 2px solid var(--c-rule); background: var(--c-surface); }
+.person-detail { display: grid; gap: 8px; margin-top: 16px; padding: 16px; background: var(--c-raised); }
 .person-detail > .label { margin-top: 8px; }
 .alias-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 6px 0; }
 .alias-list input { flex: 0 1 200px; min-height: 36px; padding: 4px 10px; }
@@ -55,7 +55,7 @@
 
 /* 设定 */
 .setting-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 32px 40px; }
-.setting-group-head { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 8px; border-bottom: 2px solid var(--c-rule); }
+.setting-group-head { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--c-line); }
 .setting-group-head h2 { font-size: 24px; }
 .setting-group-head .num { font-size: 22px; }
 .setting { border-bottom: 1px solid var(--c-line); }
@@ -66,7 +66,7 @@
 .setting.open .setting-name strong { color: var(--c-blue-text); }
 .setting-detail { display: grid; gap: 8px; padding: 0 0 14px; }
 .setting-empty { padding: 12px 0; }
-.category-editor { margin-bottom: 24px; padding: 16px; border: 2px solid var(--c-rule); background: var(--c-surface); }
+.category-editor { margin-bottom: 24px; padding: 16px; background: var(--c-raised); }
 .category-editor ul { margin: 12px 0; }
 .category-editor li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 6px 0; border-bottom: 1px solid var(--c-line); }
 .category-editor li input { flex: 0 1 220px; min-height: 36px; padding: 4px 10px; }
@@ -79,17 +79,23 @@
 .thread-planted .label { font-size: 11px; }
 .thread-planted .num { font-size: 48px; }
 .thread-copy { display: grid; gap: 4px; }
-.thread-copy strong { font-size: 22px; font-weight: 900; }
+.thread-copy strong { font-size: 22px; font-weight: 700; }
 .thread-copy > span:not(.thread-links) { color: var(--c-ink-2); font-size: 15px; }
 .thread-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px; font-size: 13px; }
 .thread-links a { border-bottom: 1px solid currentColor; }
 .thread-side { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .thread-age { font-size: 13px; font-weight: 700; }
 .thread-side .actions { gap: 4px 14px; }
-.thread-form { display: grid; gap: 14px; margin-bottom: 24px; padding: 20px; border: 2px solid var(--c-rule); background: var(--c-surface); }
-.candidates { display: grid; gap: 8px; margin-bottom: 32px; padding: 20px; border: 2px dashed var(--c-rule); }
+.thread-form { display: grid; gap: 14px; margin-bottom: 24px; padding: 20px; background: var(--c-raised); }
+/* Candidates are not yet confirmed, so they keep a dashed outline. */
+.candidates { display: grid; gap: 8px; margin-bottom: 32px; padding: 20px; border: 1.5px dashed var(--c-faint); }
 
 @media (max-width: 720px) {
+  /* The category tabs are one row that slides sideways, never a 3 + 1 wrap (as the settings sub-navigation does). */
+  .materials .tabs nav { flex: 1 1 100%; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .materials .tabs nav::-webkit-scrollbar { display: none; }
+  .materials .tabs .tab { flex: none; padding: 0 16px; white-space: nowrap; }
+  .materials .tabs .tab:focus-visible { outline-offset: -3px; }
   .fact-list li { grid-template-columns: 52px minmax(0, 1fr); }
   .fact-list li .tag { grid-column: 2; }
   .thread-list li { grid-template-columns: 64px minmax(0, 1fr); }
@@ -100,7 +106,7 @@
 
 /* 助手改动记录 */
 .assistant-mark { justify-self: start; margin-top: 4px; }
-.ledger { margin-top: 24px; padding: 20px; border: 2px solid var(--c-rule); background: var(--c-surface); }
+.ledger { margin-top: 24px; padding: 20px; background: var(--c-raised); }
 .ledger-list { margin-top: 4px; }
 .ledger-list li { display: grid; grid-template-columns: 150px minmax(0, 1fr) 200px; gap: 8px 24px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
 .ledger-list li.undone .ledger-flow { opacity: .65; }
@@ -110,6 +116,8 @@
 .ledger-flow { font-size: 15px; }
 .ledger-side { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .ledger-state { font-size: 13px; font-weight: 700; }
+.ledger-note { line-height: 1.5; }
+.ledger-more { margin-top: 14px; }
 .ledger-conflict { margin: 8px 0 0; }
 .ledger-conflict-text { display: grid; flex: 1 1 300px; gap: 4px; }
 .ledger-conflict-text ul { display: grid; gap: 2px; padding-left: 18px; list-style: disc; }

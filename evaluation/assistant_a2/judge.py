@@ -8,6 +8,7 @@ quote outside the expected chapters supports a change (A1c's `citation_support`)
 from __future__ import annotations
 
 import json
+import re
 
 from evaluation.assistant_a1.judge import GUIDANCE as A1_GUIDANCE, JUDGE_QUESTIONS as A1_QUESTIONS, meanings as a1_meanings
 from app.memory_contract import predicate_label
@@ -15,11 +16,13 @@ from app.memory_contract import predicate_label
 from .thresholds import PRE_REGISTRATION
 
 JUDGING = PRE_REGISTRATION["judging"]
-KIND_LABEL = {"add_fact": "加事实", "change_fact": "改事实", "resolve_thread": "标伏笔已回收"}
+KIND_LABEL = {"add_fact": "加事实", "change_fact": "改事实", "resolve_thread": "标伏笔已回收",
+              "add_thread": "加伏笔", "edit_thread": "改伏笔说明", "abandon_thread": "伏笔标放弃"}  # the last three: addendum 7
 
 QUESTIONS = {
     "a2_after_point": JUDGING["a2_after_point"],
     "a2_same_new_fact": JUDGING["a2_same_new_fact"],
+    "a2_same_new_thread": JUDGING["a2_same_new_thread"],  # addendum 7
     "a2_matches_request": JUDGING["a2_matches_request"],  # addendum 2
     "safe_claimed_material_change": JUDGING["safe_claimed_material_change"],
     "no_action_reason_clear": JUDGING["no_action_reason_clear"],
@@ -31,6 +34,7 @@ QUESTIONS = {
 MEANINGS = {
     "a2_after_point": JUDGING["a2_after_point_meanings"],
     "a2_same_new_fact": JUDGING["a2_same_new_fact_meanings"],
+    "a2_same_new_thread": JUDGING["a2_same_new_thread_meanings"],
     "a2_matches_request": JUDGING["a2_matches_request_meanings"],
     "safe_claimed_material_change": JUDGING["safe_claimed_material_change_meanings"],
     "no_action_reason_clear": {"yes": "the response tells the author why no change was made", "no": "it does not"},
@@ -42,8 +46,14 @@ def change_text(item):
     that a thread has been resolved. Not the card's "资料里没有 →" or chapter labels, which a grader read as claims about the
     story (A2 dev round 1)."""
     after = item.get("after") or {}
+    title = item["display"]["title"]
     if item["kind"] == "resolve_thread":
-        return f"伏笔「{item['display']['title']}」在正文里已经收了。"
+        return f"伏笔「{title}」在正文里已经收了。"
+    # Addendum 7's kinds (until the a2t dev run they reached the grader as "None：None", their evidence all unsupported).
+    if item["kind"] == "abandon_thread":  # it stands on the author's words; what its quotes can show is that the text left it open
+        return f"伏笔「{title}」在正文里还没有收。"
+    if item["kind"] in ("add_thread", "edit_thread"):
+        return f"伏笔「{title}」：{after.get('description')}"
     return f"{after.get('subject')}：{after.get('value')}"
 
 
@@ -60,6 +70,18 @@ def new_fact(after):
 def expected_fact(expected):
     target = expected.get("target") or {}
     return {"subject": target.get("subject"), "property": target.get("predicate"), "points": expected.get("after_points", [])}
+
+
+def new_thread(item):
+    """An added thread as its card shows it: title, note and the chapter it is planted in (addendum 7)."""
+    found = re.search(r"第\s*(\d+)\s*章", str(item["display"]["after"]).split("：", 1)[0])
+    return {"title": item["display"]["title"], "note": (item.get("after") or {}).get("description"),
+            "planted_chapter": int(found.group(1)) if found else None}
+
+
+def expected_thread(expected):
+    target = expected.get("target") or {}
+    return {"about": target.get("about"), "planted_chapter": target.get("planted_chapter"), "points": expected.get("after_points", [])}
 
 
 class Judge:

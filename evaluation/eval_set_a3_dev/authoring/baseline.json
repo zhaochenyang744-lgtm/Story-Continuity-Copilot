@@ -1,0 +1,11 @@
+{
+  "branch": "eval/a3-dev-authoring",
+  "head": "4ef15e4c754406e26e474fc646ef12f924f17243",
+  "protected": {
+    "evaluation/assistant_a3/SPEC.md": "ef7fa7a8286349bff8fd4158cc887091963832b71aa05c338039889fa6f77bf0",
+    "evaluation/assistant_a3/thresholds.py": "6df4d5b903c9f4c2516fb7a9d500f08b7ef5ff87472b73eb8114677c5974c1c1",
+    "evaluation/assistant_a2/SPEC.md": "5aabd5b78447e3b51ede47f628f71d4ca31b952c189221f15403b10bc1e2b87c",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512"
+  }
+}

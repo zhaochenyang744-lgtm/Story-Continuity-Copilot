@@ -45,6 +45,13 @@ class AssistantCase(unittest.TestCase):
         self.project_id = data["onboarding"]["tutorial"]["project_id"]
         return self.project_id
 
+    def own_work(self) -> str:
+        """Make the registered author's work an ordinary one of their own. `register()` gives the tutorial's sample work, and a
+        sample work takes no characters (v2.1): a test about what a check or a task costs runs on a work like this."""
+        with self.db.connection() as c:
+            c.execute("UPDATE v2_projects SET data_origin='v1_migrated' WHERE id=?", (self.project_id,))
+        return self.project_id
+
     def visitor(self) -> str:
         data = self.client.post("/api/auth/visitor").json()["data"]
         self.user_id = data["user"]["id"]

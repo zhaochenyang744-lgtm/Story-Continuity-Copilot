@@ -1,0 +1,244 @@
+{
+  "root": {
+    "change_tasks_with_new_actions": 3,
+    "chapter_injection_positions": [
+      {
+        "chapter": 1,
+        "han_position": 2902,
+        "id": "a2s6-w01-injection-01"
+      },
+      {
+        "chapter": 3,
+        "han_position": 2942,
+        "id": "a2s6-w01-injection-02"
+      },
+      {
+        "chapter": 5,
+        "han_position": 2794,
+        "id": "a2s6-w01-injection-03"
+      },
+      {
+        "chapter": 7,
+        "han_position": 2708,
+        "id": "a2s6-w01-injection-04"
+      },
+      {
+        "chapter": 9,
+        "han_position": 2757,
+        "id": "a2s6-w01-injection-05"
+      },
+      {
+        "chapter": 11,
+        "han_position": 2770,
+        "id": "a2s6-w01-injection-06"
+      }
+    ],
+    "copy_errors": 0,
+    "errors": [],
+    "evaluation_runs": 0,
+    "independent_review": {
+      "chapter_coverage": {
+        "w01": 12
+      },
+      "new_action_final_agreement": 3,
+      "new_action_total": 3,
+      "new_action_unresolved": 0,
+      "unresolved_findings": 0
+    },
+    "injection_locations": {
+      "chapter": 6,
+      "fact": 2,
+      "foreshadow": 2,
+      "selection": 2
+    },
+    "injection_targets": {
+      "abandon_thread": 1,
+      "add_fact": 2,
+      "add_thread": 1,
+      "change_fact": 2,
+      "delete_fact": 2,
+      "delete_thread": 2,
+      "edit_thread": 2
+    },
+    "model_calls": 0,
+    "novelty_errors": 0,
+    "novelty_reference_inputs": 925,
+    "product_runs": 0,
+    "run_kinds": {
+      "ask": 3,
+      "change": 6,
+      "recap": 3
+    },
+    "scope": "this_set_only",
+    "sealed_reference_counts": {
+      "names_text_files": 22,
+      "normalized_inputs": 0,
+      "source_files": 0
+    },
+    "semantic_acceptance": false,
+    "status": "PASS",
+    "support_tasks": 0,
+    "tasks": 12,
+    "works": {
+      "w01": {
+        "abandonable": 2,
+        "aliases": 3,
+        "chapter_han_max": 3055,
+        "chapter_han_min": 2837,
+        "chapters": 12,
+        "characters": 8,
+        "draft_han": 698,
+        "evidence_after1500": 28,
+        "evidence_han_max": 2877,
+        "evidence_han_min": 957,
+        "evidence_occurrences": 29,
+        "evidence_position_buckets": {
+          "1501_2500": 16,
+          "1_1500": 1,
+          "2501_plus": 12
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 16,
+        "open_threads": 4,
+        "resolved_unmarked": 4,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "total_han": 35810,
+        "unique_after1500": 23,
+        "unique_after2500": 11,
+        "unique_evidence": 24
+      }
+    }
+  },
+  "absolute": {
+    "change_tasks_with_new_actions": 3,
+    "chapter_injection_positions": [
+      {
+        "chapter": 1,
+        "han_position": 2902,
+        "id": "a2s6-w01-injection-01"
+      },
+      {
+        "chapter": 3,
+        "han_position": 2942,
+        "id": "a2s6-w01-injection-02"
+      },
+      {
+        "chapter": 5,
+        "han_position": 2794,
+        "id": "a2s6-w01-injection-03"
+      },
+      {
+        "chapter": 7,
+        "han_position": 2708,
+        "id": "a2s6-w01-injection-04"
+      },
+      {
+        "chapter": 9,
+        "han_position": 2757,
+        "id": "a2s6-w01-injection-05"
+      },
+      {
+        "chapter": 11,
+        "han_position": 2770,
+        "id": "a2s6-w01-injection-06"
+      }
+    ],
+    "copy_errors": 0,
+    "errors": [],
+    "evaluation_runs": 0,
+    "independent_review": {
+      "chapter_coverage": {
+        "w01": 12
+      },
+      "new_action_final_agreement": 3,
+      "new_action_total": 3,
+      "new_action_unresolved": 0,
+      "unresolved_findings": 0
+    },
+    "injection_locations": {
+      "chapter": 6,
+      "fact": 2,
+      "foreshadow": 2,
+      "selection": 2
+    },
+    "injection_targets": {
+      "abandon_thread": 1,
+      "add_fact": 2,
+      "add_thread": 1,
+      "change_fact": 2,
+      "delete_fact": 2,
+      "delete_thread": 2,
+      "edit_thread": 2
+    },
+    "model_calls": 0,
+    "novelty_errors": 0,
+    "novelty_reference_inputs": 925,
+    "product_runs": 0,
+    "run_kinds": {
+      "ask": 3,
+      "change": 6,
+      "recap": 3
+    },
+    "scope": "this_set_only",
+    "sealed_reference_counts": {
+      "names_text_files": 22,
+      "normalized_inputs": 0,
+      "source_files": 0
+    },
+    "semantic_acceptance": false,
+    "status": "PASS",
+    "support_tasks": 0,
+    "tasks": 12,
+    "works": {
+      "w01": {
+        "abandonable": 2,
+        "aliases": 3,
+        "chapter_han_max": 3055,
+        "chapter_han_min": 2837,
+        "chapters": 12,
+        "characters": 8,
+        "draft_han": 698,
+        "evidence_after1500": 28,
+        "evidence_han_max": 2877,
+        "evidence_han_min": 957,
+        "evidence_occurrences": 29,
+        "evidence_position_buckets": {
+          "1501_2500": 16,
+          "1_1500": 1,
+          "2501_plus": 12
+        },
+        "facts": 25,
+        "foreshadow_states": {
+          "abandoned": 1,
+          "developing": 2,
+          "planned": 1,
+          "planted": 5,
+          "resolved": 1
+        },
+        "foreshadows": 10,
+        "missing_facts": 6,
+        "missing_threads": 3,
+        "names": 16,
+        "open_threads": 4,
+        "resolved_unmarked": 4,
+        "stale_facts": 5,
+        "stale_notes": 2,
+        "total_han": 35810,
+        "unique_after1500": 23,
+        "unique_after2500": 11,
+        "unique_evidence": 24
+      }
+    }
+  }
+}

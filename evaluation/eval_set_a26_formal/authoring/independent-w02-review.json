@@ -1,0 +1,121 @@
+{
+  "status": "completed",
+  "scope": "w02",
+  "unresolved_findings": 0,
+  "review_type": "independent_full_prose_read_then_gold_aware_data_review",
+  "source_full_read_before_gold": true,
+  "chapters_read": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  "shared_draft_fully_read": true,
+  "latest_chapter_20_fully_reread": true,
+  "source_sha256": "587f782975e0308e726b8b283c877f178ef290870cbe90dc2a747107641260d8",
+  "draft_body_sha256": "2483f8adf4c07b1d82bceb77d8d68138cf9008548d084e0a825bd4355e04622f",
+  "draft_file_sha256": "7ac2a2dd9de3986cda2cecfac2c6dbc1e833e84393fd969f8355707a6582b642",
+  "tasks_sha256": "7b473908e978c136275d50cd2a8ae0a7fd64f180dc1411b1e1292e1a3fd7bb6a",
+  "materials_sha256": {
+    "materials/w02-facts.json": "538636e58de64c50b3be76b507fb99f0bf156a545b4d5028c9e40e6adb3e44cc",
+    "materials/w02-foreshadows.json": "603515851d55a0b09ecd079031f6ff13909f4091c9e6d6b756bf47fb20475fb7"
+  },
+  "subset_binding": {
+    "canonicalization": "json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')",
+    "work_sha256": "afcc62e16215e4bd113ecf224102f418334a5dcbadc5e0a255dfd861ae01a473",
+    "tasks_sha256": "6ccb8c055a157b0b684203794f6da4f79e624d298ef31aff3f0b53a2c7b9ada1",
+    "self_review_sha256": "eb64196cfbf3d55c4d512eb37fc12e1665f633e4e086d6d87f7b6b7efb1763af"
+  },
+  "reviewed_inputs": {
+    "work_metadata": "tasks.json:works[key=w02]",
+    "tasks": "tasks.json:tasks[work=w02]",
+    "self_review": "authoring/self-review.json:works.w02",
+    "notes": "authoring/self-review.md:w02 inventory and a26f-w02-* sections",
+    "facts_reviewed": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    "foreshadows_reviewed": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "task_ids": [
+      "a26f-w02-action-01", "a26f-w02-action-02", "a26f-w02-action-03", "a26f-w02-action-04", "a26f-w02-action-05", "a26f-w02-action-06", "a26f-w02-action-07", "a26f-w02-action-08", "a26f-w02-action-09", "a26f-w02-action-10", "a26f-w02-action-11", "a26f-w02-action-12", "a26f-w02-action-13", "a26f-w02-action-14", "a26f-w02-action-15", "a26f-w02-action-16", "a26f-w02-action-17", "a26f-w02-action-18",
+      "a26f-w02-no-01", "a26f-w02-no-02", "a26f-w02-no-03", "a26f-w02-no-04", "a26f-w02-no-05", "a26f-w02-no-06",
+      "a26f-w02-route-01", "a26f-w02-route-02", "a26f-w02-route-03", "a26f-w02-route-04", "a26f-w02-route-05", "a26f-w02-route-06", "a26f-w02-route-07", "a26f-w02-route-08", "a26f-w02-route-09", "a26f-w02-route-10"
+    ]
+  },
+  "inventory_review": {
+    "facts": 25,
+    "intentionally_stale_fact_indices": [1, 2, 3, 4, 5],
+    "remaining_facts_supported": 20,
+    "missing_facts": 6,
+    "foreshadows": 10,
+    "resolved_unmarked_indices": [1, 2, 3, 4],
+    "open_thread_indices": [5, 6, 7, 8],
+    "abandonable_indices": [6, 7],
+    "stale_note_indices": [1, 5],
+    "missing_threads": 3,
+    "already_resolved_indices": [9],
+    "already_abandoned_indices": [10],
+    "aliases_verified": 3
+  },
+  "task_review": {
+    "tasks": 34,
+    "suite_counts": {"action": 18, "no_action": 6, "route": 10},
+    "primary_action_counts": {"add_fact": 4, "change_fact": 4, "resolve_thread": 4, "add_thread": 2, "edit_thread": 2, "abandon_thread": 2},
+    "action_item_counts": {"add_fact": 6, "change_fact": 4, "resolve_thread": 4, "add_thread": 2, "edit_thread": 2, "abandon_thread": 2},
+    "two_action_ids": ["a26f-w02-action-01", "a26f-w02-action-03"],
+    "paraphrased_true": 12,
+    "vague_true": 3,
+    "new_action_vague_ids": ["a26f-w02-action-14"],
+    "boolean_types_valid": true,
+    "context_pages": ["overview", "materials", "chapters", "writing", "plan"],
+    "author_words_edit_ids": ["a26f-w02-action-15"],
+    "evidence_based_edit_ids": ["a26f-w02-action-16"],
+    "abandon_requests_explicit_and_unresolved": true,
+    "after_points_supported_by_own_quotes_or_author_words": true,
+    "no_action_counts": {"already_recorded": 2, "no_evidence": 2, "prose_edit": 1, "unsupported_kind": 1},
+    "route_counts": {"change": 4, "ask": 3, "recap": 1, "check_passage": 1, "out_of_scope": 1},
+    "same_input_groups": [["a26f-w02-route-07", "a26f-w02-route-09"]],
+    "also_acceptable_count": 0,
+    "route_review_was_blind": false,
+    "quote_exact_count": 46,
+    "quote_exact_errors": 0,
+    "quotes_after_chapter_han_1500": 46,
+    "quote_length_min": 12,
+    "quote_length_max": 52,
+    "draft_body_matches_raw_file_without_trailing_newline": true,
+    "data_findings": 0
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "phase": "prose",
+      "status": "closed",
+      "location": "works/w02.md:chapter15",
+      "issue": "筱砚幼时回忆误用姐姐复数，可能把成年后相认者放入童年。",
+      "resolution": "主控将姐姐们改为姐姐；审读者实际回读该段与邻段，确认对应照苒。"
+    },
+    {
+      "id": "F02",
+      "phase": "prose",
+      "status": "closed",
+      "location": "works/w02.md:chapter18",
+      "issue": "借伞来源忽称杨家，与既有家户称谓衔接不清。",
+      "resolution": "主控改为从杨映荃那里；审读者实际回读借出段、该段与邻段。"
+    },
+    {
+      "id": "F03",
+      "phase": "prose",
+      "status": "closed",
+      "location": "authoring/w02-shared-draft.txt:paragraph2",
+      "issue": "入门从包取外套与一路手持、进门才想到可入包的动作衔接不清。",
+      "resolution": "主控明确到楼下热后折好收进包；审读者实际重读草稿全文，确认楼下入包、进门取出的顺序。"
+    }
+  ],
+  "closed_findings": ["F01", "F02", "F03"],
+  "process_scope_note": {
+    "incident": "首次提取self-review.md从w02库存标题读至末尾，意外输出相邻w01题目自查说明。",
+    "correction": "已向主控报告，随后按每个w02二级标题至下一个二级标题提取，并完整复读35个w02分节。",
+    "scope_limit": "不声称审过w01；未打开w01正文或材料，未提取tasks中的w01题目；未涉及用户禁止的A3新套或旧reserve。",
+    "original_prose_independence_preserved": true
+  },
+  "limitations": [
+    "本记录只覆盖w02；不声称复核w01、安全集、跨套新颖性或最终正式评测。",
+    "路由与新动作的本轮检查已见金标，不替代另行执行的独立盲判。",
+    "如总tasks.json因其他work改变，仅在上述w02 work/tasks/self-review子集哈希保持不变后刷新全文件tasks_sha256；w02语义变化必须重新复核。"
+  ],
+  "model_calls": 0,
+  "product_runs": 0,
+  "formal_evaluation_runs": 0
+}

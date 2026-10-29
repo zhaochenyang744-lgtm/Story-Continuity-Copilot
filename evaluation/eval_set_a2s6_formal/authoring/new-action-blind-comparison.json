@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "total": 3,
+  "initial_agreement": 3,
+  "final_agreement": 3,
+  "unresolved": 0,
+  "disagreement_ids": [],
+  "closed_ids": [],
+  "unchanged_initial_carried_forward": true,
+  "rows": [
+    {
+      "id": "a2s6-w01-injection-04",
+      "agreement": true,
+      "object_check": "Same existing material index."
+    },
+    {
+      "id": "a2s6-w01-injection-06",
+      "agreement": true,
+      "object_check": "Same existing material index."
+    },
+    {
+      "id": "a2s6-w01-injection-01",
+      "agreement": true,
+      "object_check": "Lead read both descriptions: the same first-class bench paper boat and unknown origin."
+    }
+  ]
+}

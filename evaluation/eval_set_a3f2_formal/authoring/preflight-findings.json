@@ -1,0 +1,10 @@
+{
+  "reviewer": "lead",
+  "findings": [
+    {"id": "preflight-w01-01", "work": "w01", "chapter": 3, "kind": "unintended_quantity", "resolution_status": "closed", "resolution": "试法已从两行扩成三行，后文重复两行限定已改成写过试法的纸；考点未动。"},
+    {"id": "preflight-w02-01", "work": "w02", "chapter": 1, "kind": "unintended_timeline", "resolution_status": "closed", "resolution": "伴侣起点保留生父已故，删除女儿已成年限定；与离港小孩前提一致，事实4支持同步更新，考点未动。"}
+  ],
+  "total": 2,
+  "closed": 2,
+  "unresolved": 0
+}

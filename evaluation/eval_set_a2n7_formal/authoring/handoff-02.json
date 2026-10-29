@@ -1,0 +1,164 @@
+{
+  "segment": "05-08",
+  "status": "complete",
+  "new_named_people": 0,
+  "new_proper_names": [],
+  "new_common_objects": [
+    "横格观察本",
+    "迟测间门背方印",
+    "缺角目录",
+    "夹持垫",
+    "隔壁转椅"
+  ],
+  "time": "接续第1段的连续普通工作日，不添加具体公历日期。第5/6/7/8章各于本章末确定对应新状态。",
+  "chapters": [
+    {
+      "number": 5,
+      "file": "ch05.md",
+      "han": 2940,
+      "quotes": [
+        {
+          "group": "stale_facts",
+          "target": 5,
+          "quote": "从今天起，蒋珞岑只做观察记录，不再承担制样工作；这项职责变更已经确定，并非临时替班。",
+          "han_position": 2673,
+          "characters": 42
+        },
+        {
+          "group": "missing_facts",
+          "target": "蒋珞岑/观察用本",
+          "quote": "蒋珞岑的新观察用本是横格本，第一页从今天的上午写起。",
+          "han_position": 2737,
+          "characters": 26
+        },
+        {
+          "group": "missing_threads",
+          "target": "横格本浅划痕",
+          "quote": "横格本的边缘有一道浅划痕，蒋珞岑确定不是自己画的，却说不出谁在何时留下。",
+          "han_position": 2803,
+          "characters": 36
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "file": "ch06.md",
+      "han": 2862,
+      "quotes": [
+        {
+          "group": "stale_facts",
+          "target": 6,
+          "quote": "褚霁禾正式搬到漫照间工作，迟测间不再是她的工作房间；今后只是按需去旧屋查看材料。",
+          "han_position": 2608,
+          "characters": 40
+        },
+        {
+          "group": "missing_facts",
+          "target": "褚霁禾/旧样页存放",
+          "quote": "褚霁禾把所有旧样页都留在迟测间，一页也没有带去漫照间。",
+          "han_position": 2645,
+          "characters": 27
+        },
+        {
+          "group": "open_threads",
+          "target": 9,
+          "quote": "柜旁那张散纸是一页缺角目录，右下角少了一块，缺掉的部分原来写过什么，眼下仍没人知道。",
+          "han_position": 2670,
+          "characters": 42
+        },
+        {
+          "group": "missing_threads",
+          "target": "迟测间门背方印",
+          "quote": "临走将门合拢时，褚霁禾看见迟测间门背有一枚陌生方印。",
+          "han_position": 2731,
+          "characters": 26
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "file": "ch07.md",
+      "han": 2891,
+      "quotes": [
+        {
+          "group": "stale_facts",
+          "target": 7,
+          "quote": "灰芽膜从此交由郝宥弦保管，厉闻绡不再保管它，这次交接不是临时借用。",
+          "han_position": 2760,
+          "characters": 33
+        },
+        {
+          "group": "missing_facts",
+          "target": "郝宥弦/灰芽膜存放",
+          "quote": "郝宥弦把灰芽膜放进自己抽屉的最下层，众人都看清了位置。",
+          "han_position": 2790,
+          "characters": 27
+        },
+        {
+          "group": "resolved_unmarked",
+          "target": 1,
+          "quote": "双瓣样上的三个紫点原来是夹持垫留下的三点压痕，并非颜色自行移动。",
+          "han_position": 2643,
+          "characters": 32
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "file": "ch08.md",
+      "han": 2967,
+      "quotes": [
+        {
+          "group": "stale_facts",
+          "target": 8,
+          "quote": "范筠策从此把试次次序改为先看弧脉条，之后才看双瓣样，不再沿用先看双瓣样的旧次序。",
+          "han_position": 2825,
+          "characters": 40
+        },
+        {
+          "group": "missing_facts",
+          "target": "范筠策/试次时长",
+          "quote": "所有试次的长度统一为半小时，不因哪一片先显色就临时缩短，也不为等一张好看的图拖长。",
+          "han_position": 2862,
+          "characters": 41
+        },
+        {
+          "group": "resolved_unmarked",
+          "target": 2,
+          "quote": "低鸣来自隔壁转椅的椅脚与地面共振，声音沿地面传到空架旁，并非架子内部有东西。",
+          "han_position": 2709,
+          "characters": 38
+        },
+        {
+          "group": "resolution_check",
+          "target": 2,
+          "quote": "转椅移开那处接缝以后，低鸣彻底消失；搬回原位能重现，来源已经查清。",
+          "han_position": 2744,
+          "characters": 33
+        }
+      ]
+    }
+  ],
+  "final_states": {
+    "蒋珞岑": "仅做观察记录，不再制样；仍左手书写；横格本边缘陌生浅划痕未解",
+    "褚霁禾": "正式搬至漫照间，不再在迟测间工作；所有旧样页全部留迟测间；青布本未换",
+    "灰芽膜": "永久由郝宥弦保管，置于其抽屉最下层；厉闻绡不再保管；空白角未解",
+    "范筠策": "试次改为先弧脉条、后双瓣样；所有试次统一半小时；仍只喝温水",
+    "卫砚翎": "仍统筹报告；隔壁转椅最终移至不共振的位置",
+    "双瓣样三点痕": "第7章以夹持垫三点压痕解释，完全收束",
+    "空架低鸣": "第8章以隔壁转椅椅脚与地面共振解释，完全收束",
+    "昼纹片": "仍方形，仍未带出迟测间；待日光比较的期待未收",
+    "暮纹片": "仍圆形，慢退色原因未解，未带出迟测间",
+    "岔脊盒": "白线未拆，未打开，夹层问题未收",
+    "弧脉条": "暗纹来源未明，不提前解释是否自发光",
+    "缺角目录": "第6章新发现，缺失内容无人知晓，未收",
+    "迟测间门背方印": "第6章新发现，无人认得来源，未收",
+    "夜蓝反光": "沿用第4章已收状态",
+    "旧色谱重建": "仍已放弃，未重启"
+  },
+  "notes": [
+    "未读取主代理的共享草稿。",
+    "第7/8章以实物对照、实际移交及沿地面查声为主要行动。",
+    "未收束既定四条开放线及两条已埋未记新线。"
+  ]
+}

@@ -20,14 +20,25 @@ FEEDBACK_REASONS = ("wrong", "verbose", "not_found", "bad_source")
 # Columns added after v1.8.0 first shipped to developers; an older database gets them in `initialize()`.
 ADDED_COLUMNS = {
     "assistant_tasks": (("phase", "TEXT"), ("phase_tool", "TEXT"), ("phase_chapter", "INTEGER"), ("phase_started_at", "TEXT"),
-                        ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT")),
-    "assistant_steps": (("refs_json", "TEXT"),),
-    "assistant_proposals": (("recheck_json", "TEXT"), ("adopted_draft_revision", "INTEGER"), ("after_edited", "TEXT"), ("edited_by_author", "INTEGER")),
+                        ("regenerated_from", "TEXT"), ("edited_from", "TEXT"), ("internal_error_type", "TEXT"),
+                        # v2.1: what each run of a change task proposed and what the card kept (`assistant_consensus.merge`).
+                        ("consensus_json", "TEXT"),
+                        # v2.1: the model each role used for the task, e.g. {"loop": ..., "requests": ...} (`provider.model_for`).
+                        ("models_json", "TEXT")),
+    # `diagnostics_json` / `elapsed_ms` (v2.1 telemetry): on a step, how long it took and, on a repair (or the answer after one),
+    # {"problem_codes": [rule codes, one per time the rule failed], "repairs": repairs spent, "dropped": items the program left
+    # out after the repair, "dropped_codes": {code: times}} - codes and counts only, never the sentences sent back to the model.
+    "assistant_steps": (("refs_json", "TEXT"), ("diagnostics_json", "TEXT"), ("elapsed_ms", "INTEGER")),
+    # `undone_at` / `undone_after` (v2.1): when an adoption was undone and the sentence that had been adopted (the record is kept in the
+    # change ledger, while the proposal itself goes back to `proposed` with its adoption fields cleared).
+    "assistant_proposals": (("recheck_json", "TEXT"), ("adopted_draft_revision", "INTEGER"), ("after_edited", "TEXT"), ("edited_by_author", "INTEGER"),
+                            ("undone_at", "TEXT"), ("undone_after", "TEXT")),
 }
 # How much of a fact's source passage the page gets to find it by.
 ANCHOR_CHARS = 120
 TASK_KINDS = ("ask", "recap", "fix_issue", "change")
 ACTIVE_STATUSES = ("queued", "running")
+CHAIN_MAX = 8  # a question allows two follow-ups, so a chain is three tasks; the limit only guards a damaged one
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS assistant_tasks(
@@ -100,7 +111,9 @@ def purge(c: sqlite3.Connection, project_id: str) -> None:
     for table in ("assistant_change_events", "assistant_changes"):
         if table in existing:
             c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
-    for table in ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps"):
+    # A long task's plan, steps, questions and booked calls (v2.1 B) go with it too.
+    for table in ("assistant_feedback", "assistant_proposals", "assistant_sources", "assistant_steps",
+                  "assistant_long_plans", "assistant_long_steps", "assistant_long_questions", "assistant_long_calls"):
         if table in existing:
             c.execute(f"DELETE FROM {table} WHERE task_id IN ({ids})", (project_id,))
     c.execute("DELETE FROM assistant_tasks WHERE project_id=?", (project_id,))
@@ -124,7 +137,7 @@ class AssistantStore:
         return {"id": row["id"], "proposal": f"P{row['ordinal']}", "kind": row["kind"], "chapter_number": row["chapter_number"],
                 "before": row["before"], "after": row["after"], "rationale": row["rationale"], "status": row["status"],
                 "draft_id": row["draft_id"], "draft_revision": row["draft_revision"], "adopted_draft_revision": row["adopted_draft_revision"],
-                "decided_at": row["decided_at"], "recheck": json.loads(row["recheck_json"]) if row["recheck_json"] else None,
+                "decided_at": row["decided_at"], "undone_at": row["undone_at"], "recheck": json.loads(row["recheck_json"]) if row["recheck_json"] else None,
                 "after_edited": row["after_edited"], "edited_by_author": bool(row["edited_by_author"])}
 
     # --- creation and lookup ---------------------------------------------------------------------------------
@@ -182,13 +195,14 @@ class AssistantStore:
 
     def add_step(self, task_id: str, round_: int, kind: str, summary: str, *, tool_name: str | None = None,
                  args: dict[str, Any] | None = None, result_count: int | None = None, error_code: str | None = None,
-                 refs: list[str] | None = None) -> None:
+                 refs: list[str] | None = None, diagnostics: dict[str, Any] | None = None, elapsed_ms: int | None = None) -> None:
         with self.db.connection() as c:
             ordinal = c.execute("SELECT COALESCE(MAX(ordinal),0)+1 FROM assistant_steps WHERE task_id=?", (task_id,)).fetchone()[0]
-            c.execute("INSERT INTO assistant_steps(task_id,ordinal,round,kind,tool_name,args_json,summary,result_count,error_code,created_at,refs_json) "
-                      "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            c.execute("INSERT INTO assistant_steps(task_id,ordinal,round,kind,tool_name,args_json,summary,result_count,error_code,created_at,refs_json,"
+                      "diagnostics_json,elapsed_ms) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
                       (task_id, ordinal, round_, kind, tool_name, json.dumps(args, ensure_ascii=False) if args is not None else None,
-                       summary, result_count, error_code, utcnow(), json.dumps(refs) if refs is not None else None))
+                       summary, result_count, error_code, utcnow(), json.dumps(refs) if refs is not None else None,
+                       json.dumps(diagnostics) if diagnostics is not None else None, elapsed_ms))
 
     def steps(self, task_id: str) -> list[dict[str, Any]]:
         with self.db.connection() as c:
@@ -298,6 +312,7 @@ class AssistantStore:
                 "steps": steps, "answer": answer, "sources": sources,
                 "out_of_scope_text": OUT_OF_SCOPE_TEXT if answer and answer.get("status") == "out_of_scope" else None,
                 "coverage": json.loads(row["coverage_json"]) if row["coverage_json"] else None,
+                "models": json.loads(row["models_json"]) if row["models_json"] else None,
                 "usage": {"steps": row["steps_used"], "chars_charged": row["chars_charged"]},
                 "phase": row["phase"], "phase_tool": row["phase_tool"] if row["phase"] else None,
                 "phase_chapter": row["phase_chapter"] if row["phase"] == "tool" and row["phase_tool"] == "read_chapter" else None,
@@ -306,7 +321,29 @@ class AssistantStore:
                 "error_code": row["error_code"], "created_at": row["created_at"], "started_at": row["started_at"], "completed_at": row["completed_at"],
                 **({"proposals": [self.proposal_view(p) for p in c.execute("SELECT * FROM assistant_proposals WHERE task_id=? ORDER BY ordinal", (row["id"],))]}
                    if row["kind"] == "fix_issue" else {}),
-                **({"changes": change_views(c, self.db, row["id"])} if row["kind"] == "change" else {})}
+                **({"changes": change_views(c, self.db, row["id"]),
+                    "consensus": json.loads(row["consensus_json"]) if row["consensus_json"] else None} if row["kind"] == "change" else {})}
+
+    def chain_of(self, c: sqlite3.Connection, row: sqlite3.Row, viewer_id: str | None = None) -> list[dict[str, Any]]:
+        """The tasks a task is tied to by 接着问 that were not cleared: the ones it follows, then the ones that follow it, oldest first.
+        The page asks for it when it shows a task that is older than the conversation it has read."""
+        related: dict[str, sqlite3.Row] = {}
+        parent = row["follow_up_of"]
+        while parent and parent not in related and len(related) < CHAIN_MAX:
+            found = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (parent, row["project_id"])).fetchone()
+            if not found:
+                break
+            related[parent] = found
+            parent = found["follow_up_of"]
+        frontier = [row["id"]]
+        while frontier and len(related) < CHAIN_MAX:
+            marks = ",".join("?" for _ in frontier)
+            children = c.execute(f"SELECT * FROM assistant_tasks WHERE project_id=? AND hidden_at IS NULL AND follow_up_of IN ({marks}) "
+                                 "ORDER BY created_at,rowid", (row["project_id"], *frontier)).fetchall()
+            children = [child for child in children if child["id"] not in related and child["id"] != row["id"]][:CHAIN_MAX - len(related)]
+            related.update({child["id"]: child for child in children})
+            frontier = [child["id"] for child in children]
+        return [self.view(c, item, viewer_id) for item in sorted(related.values(), key=lambda item: item["created_at"])]
 
     def visible_tasks(self, c: sqlite3.Connection, project_id: str, limit: int, viewer_id: str | None = None) -> list[dict[str, Any]]:
         """The latest `limit` tasks that were not cleared, oldest first."""

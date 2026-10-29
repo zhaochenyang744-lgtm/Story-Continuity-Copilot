@@ -1,0 +1,231 @@
+{
+  "work": "w01",
+  "status": "completed",
+  "unresolved_findings": 0,
+  "independent_of_creation_and_gold_authoring": true,
+  "chapters_read": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "shared_draft_read": true,
+  "source_sha256": "9fc5d31ffb6b549dc14a916273e03bc4c8854eaaaf40c44c34c68ec95b947a3d",
+  "draft_body_sha256": "aec11d83106dde1aa9eb92b48764e12b016711d3183e133cdffb48a9609034d6",
+  "tasks_sha256": "0cea82fc932573d147582b828783926ec1aaeb8d48b4bb8ad4a2c0d9a292fa01",
+  "materials_sha256": {
+    "materials/w01-facts.json": "b74a05d49904b47a594c2c0f67eb1abe7f59a5d4c0e78ae820599c4f301c46f9",
+    "materials/w01-foreshadows.json": "234eefc91b3655dd788dc4dd9b76292981095027e3c31e3285e38cce17de7c61"
+  },
+  "reviewed_task_ids": [
+    "a2n7-w01-action-01",
+    "a2n7-w01-action-02",
+    "a2n7-w01-action-03",
+    "a2n7-w01-action-04",
+    "a2n7-w01-action-05",
+    "a2n7-w01-action-06",
+    "a2n7-w01-action-07",
+    "a2n7-w01-action-08",
+    "a2n7-w01-no-01",
+    "a2n7-w01-no-02",
+    "a2n7-w01-no-03",
+    "a2n7-w01-no-04",
+    "a2n7-w01-no-05",
+    "a2n7-w01-no-06",
+    "a2n7-w01-no-07",
+    "a2n7-w01-no-08",
+    "a2n7-w01-no-09",
+    "a2n7-w01-no-10",
+    "a2n7-w01-no-11",
+    "a2n7-w01-no-12"
+  ],
+  "metadata_sha256": "4bbb6a28921132c6b630d6525eb2b7015f068beea5a7792ddb38e389992584fc",
+  "findings": [
+    {
+      "id": "FSR-01",
+      "status": "closed",
+      "category": "relative_time",
+      "chapters": [
+        9
+      ],
+      "finding": "The planned afternoon window conflicted with the pre-lunch outing and subsequent lunch.",
+      "resolution": "The lead changed the planned window to pre-lunch; the complete chapter was reread and the event order now agrees."
+    },
+    {
+      "id": "FSR-02",
+      "status": "closed",
+      "category": "relative_day",
+      "chapters": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "finding": "Chapter 12 called the chapter 9 outing yesterday despite intervening day references.",
+      "resolution": "The lead replaced the relative-day wording with a neutral reference to that outing; chapter 12 was reread."
+    },
+    {
+      "id": "FSR-03",
+      "status": "closed",
+      "category": "relative_day",
+      "chapters": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "finding": "Chapter 12 called the chapter 8 resolution yesterday despite later events and day references.",
+      "resolution": "The lead removed the incorrect relative-day word; the complete chapter was reread."
+    },
+    {
+      "id": "FSR-04",
+      "status": "closed",
+      "category": "task_flag",
+      "task_id": "a2n7-w01-action-03",
+      "finding": "The request gives neither the resolution content nor its evidence location and therefore meets the registered vague definition.",
+      "resolution": "The lead changed vague to true and regenerated self-review; the final proportion is 5 of 8."
+    }
+  ],
+  "coverage": {
+    "source_chapters": 12,
+    "shared_draft_han": 823,
+    "materials_files_read": 2,
+    "facts_read": 25,
+    "foreshadows_read": 10,
+    "tasks_read": 20,
+    "self_review_files_read": 2,
+    "characters_verified": 8,
+    "alias_pairs_verified": 4,
+    "lookalike_pairs_read": 8,
+    "rechecked_chapters_after_revision": [
+      9,
+      12
+    ],
+    "self_review_quotes_relocated": 25,
+    "blind_verdicts_read": false,
+    "story_bible_used_as_evidence": false
+  },
+  "classification_audit": {
+    "designed_stale_facts": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "remaining_facts_supported": 20,
+    "missing_facts_verified": 7,
+    "resolved_unmarked_verified": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "recorded_resolved_verified": [
+      5
+    ],
+    "open_threads_verified": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "abandonable_threads_verified": [
+      8,
+      9
+    ],
+    "recorded_abandoned_verified": [
+      10
+    ],
+    "stale_notes_verified": [
+      6,
+      8
+    ],
+    "missing_threads_verified": 3,
+    "unintended_state_or_possession_conflicts": 0,
+    "premise_contradicted_verified": [
+      "a2n7-w01-no-05",
+      "a2n7-w01-no-06"
+    ],
+    "unsupported_conclusions_in_gold": 0,
+    "unresolved_gold_ambiguities": 0
+  },
+  "task_audit": {
+    "action_total": 8,
+    "no_action_total": 12,
+    "single_action_requests": 8,
+    "conditional_requests": 0,
+    "request_target_mismatches": 0,
+    "evidence_support_findings_remaining": 0,
+    "lookalike_pairs_distinguishable": 8,
+    "paraphrased_true": 6,
+    "vague_true": 5,
+    "new_action_vague_true": 1,
+    "action_flags": [
+      {
+        "id": "a2n7-w01-action-01",
+        "paraphrased": true,
+        "vague": true,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-02",
+        "paraphrased": true,
+        "vague": false,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-03",
+        "paraphrased": true,
+        "vague": true,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-04",
+        "paraphrased": true,
+        "vague": true,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-05",
+        "paraphrased": false,
+        "vague": true,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-06",
+        "paraphrased": false,
+        "vague": false,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-07",
+        "paraphrased": true,
+        "vague": true,
+        "verified": true
+      },
+      {
+        "id": "a2n7-w01-action-08",
+        "paraphrased": true,
+        "vague": false,
+        "verified": true
+      }
+    ]
+  },
+  "scope": {
+    "semantic_authoring_review": true,
+    "product_runs": 0,
+    "evaluation_runs": 0,
+    "model_api_calls": 0,
+    "acceptance_claim": "Independent source and gold review only; no model or product quality conclusion."
+  }
+}

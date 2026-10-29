@@ -1,0 +1,74 @@
+{
+  "status": "completed",
+  "chapter_coverage": {
+    "w01": 20,
+    "w02": 20
+  },
+  "unresolved_findings": 0,
+  "source_reports": {
+    "w01": "authoring/independent-w01-review.json",
+    "w02": "authoring/independent-w02-review.json"
+  },
+  "sha256": {
+    "materials/w01-facts.json": "e866362f4cf1b1e853fce70536894a2c88dc28908f59b09ad7134a99acabef86",
+    "materials/w01-foreshadows.json": "83036b43fb137eafb8d1c4dd8b179006644189721c8a45d5893547e46d0b481c",
+    "materials/w02-facts.json": "538636e58de64c50b3be76b507fb99f0bf156a545b4d5028c9e40e6adb3e44cc",
+    "materials/w02-foreshadows.json": "603515851d55a0b09ecd079031f6ff13909f4091c9e6d6b756bf47fb20475fb7",
+    "tasks.json": "7b473908e978c136275d50cd2a8ae0a7fd64f180dc1411b1e1292e1a3fd7bb6a",
+    "works/w01.md": "23ae404bdf315b2e84b1dc3921f879b0985b876d20f720b479f04e145ea39235",
+    "works/w02.md": "587f782975e0308e726b8b283c877f178ef290870cbe90dc2a747107641260d8"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "430b568515418c273237d492c865cda47c9b01d6c16b4e2119070616e10afa12",
+    "authoring/self-review.md": "5484072fef320cb718d87e3d94e08b6bafd01ffefda6a0ad13726b48cb2946c9",
+    "authoring/novelty-reference.json": "42a8da3557d407c9cc4a15eb985e514a6c072ef80b00843280c4e5ec0889ef3e",
+    "authoring/sealed-comparison.json": "c495d8b91917682a881d6b8c260805a23b3ac484039b9b6934c541bb542267e8"
+  },
+  "reports": {
+    "authoring/independent-w01-prose-review.md": "7ede7c0e03409d01f385cd8df4304b97847fdf663e7b7602c1b5bd3587b576f1",
+    "authoring/independent-w01-review.md": "3b8a64bb1b50f01a3a5a0baa8be7b60b9a1507fe45cc527e26bced6ee0f66a47",
+    "authoring/independent-w01-review.json": "c02577be616249c2f20b5f10ab5b6a5563c0d441527984b38042f9d8ea193d04",
+    "authoring/independent-w02-prose-review.md": "6f4cd94daa062754a11d86de3e6ce4747209f47f9b94e599e87b1c8f1f0c08b1",
+    "authoring/independent-w02-review.md": "ca73291754f00ff9c6519686dec98d112b3ce39dc599f8db9ed4f7acba0ab921",
+    "authoring/independent-w02-review.json": "e41066e78c9c11df62b24582e093c4fdac8fb2aa5125f45deac7850c41acc39d",
+    "authoring/independent-checker-review.md": "5fe28f8fd57dedef2b328e98984f6a00d04d6cc0c192bbb0fa8bbced73a613c7",
+    "authoring/reference-reading.md": "2935496f17105cef9409aa699cdf504e926c37c74342606c5d8e1d3652cc5a54",
+    "authoring/w01-shared-draft.txt": "31695476422f0005d264e8840b56daef1beb5cf8760220eabf08520de36a1864",
+    "authoring/w02-shared-draft.txt": "7ac2a2dd9de3986cda2cecfac2c6dbc1e833e84393fd969f8355707a6582b642",
+    "authoring/draft-merge-proof.json": "bd5cd5a9d9b8fc35f105fc8acda50c214bfd6d1a838492f95f837cb2c34f7c65",
+    "authoring/route-blind-input.initial.json": "0f3252dc4e823501eff1ed8754f3cc759487aed4deba91514e79a64e4f0eaf64",
+    "authoring/route-blind-input.json": "0f3252dc4e823501eff1ed8754f3cc759487aed4deba91514e79a64e4f0eaf64",
+    "authoring/route-blind-review.initial.json": "f14445e7d645fa7e512751e3d92c451fb08a44d09aa72f12bd99f0d5d257ff77",
+    "authoring/route-blind-review.final.json": "f14445e7d645fa7e512751e3d92c451fb08a44d09aa72f12bd99f0d5d257ff77",
+    "authoring/route-blind-comparison.json": "e3b507282b93ed3335b0582d369b8911e3afc5269a86f40bad6eb5b2746e1b5b",
+    "authoring/new-action-blind-input.initial.json": "9b27eb57a8d762b292bdda94624a13955894d6a1ab73a1ef6c82bd22270c1462",
+    "authoring/new-action-blind-input.json": "9b27eb57a8d762b292bdda94624a13955894d6a1ab73a1ef6c82bd22270c1462",
+    "authoring/new-action-blind-review.initial.json": "5a25d7023ecebecbe773a6aa74acfbcbf7ada5a3fcd54b99911fbadd52647fab",
+    "authoring/new-action-blind-review.final.json": "5a25d7023ecebecbe773a6aa74acfbcbf7ada5a3fcd54b99911fbadd52647fab",
+    "authoring/new-action-blind-comparison.json": "f996356ea90990ba6cd5c9e2b785f7fdea2c7e530d00b4a9ceadb1d60696239a"
+  },
+  "blind_route": {
+    "total": 20,
+    "initial_agreement": 20,
+    "final_agreement": 20,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  },
+  "new_action_blind": {
+    "total": 12,
+    "initial_agreement": 12,
+    "final_agreement": 12,
+    "initial_rate": 1.0,
+    "final_rate": 1.0,
+    "unresolved": 0,
+    "disagreement_ids": [],
+    "closed_ids": []
+  },
+  "checker_review": {
+    "covered_checkers": 2,
+    "required_fixes": 0
+  }
+}

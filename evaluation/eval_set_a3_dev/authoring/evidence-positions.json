@@ -1,0 +1,260 @@
+{
+  "status": "PASS",
+  "source_sha256": "25c020a0ddd97ad3771c7d5fba459bdfa5afd2b1caf3f9e4455295597945b8aa",
+  "self_review_quote_occurrences": 41,
+  "self_review_unique_quotes": 40,
+  "position_min": 2602,
+  "position_max": 3028,
+  "after_1500": 41,
+  "after_2500": 41,
+  "exact_long_paragraph_duplicates": 0,
+  "errors": [],
+  "quotes": [
+    {
+      "label": "trace_objects[1].states[1]",
+      "chapter": 1,
+      "position": 2748,
+      "quote": "苔点录音机由唐见禾保管，今晚没有借给任何人。"
+    },
+    {
+      "label": "trace_objects[1].states[2]",
+      "chapter": 5,
+      "position": 2648,
+      "quote": "唐见禾将苔点录音机当面交给许砚弥，借还表记下了这次交接。"
+    },
+    {
+      "label": "trace_objects[1].states[3]",
+      "chapter": 10,
+      "position": 2651,
+      "quote": "许砚弥把苔点录音机交给陆泊弦，由他带去做后续外采。"
+    },
+    {
+      "label": "trace_objects[1].states[4]",
+      "chapter": 16,
+      "position": 2705,
+      "quote": "陆泊弦把苔点录音机交给庄予栖，暂由庄予栖收在资料柜里。"
+    },
+    {
+      "label": "trace_objects[1].states[5]",
+      "chapter": 28,
+      "position": 2641,
+      "quote": "庄予栖从柜中取出苔点录音机，交回唐见禾继续保管。"
+    },
+    {
+      "label": "trace_objects[1].contradictions[1].a",
+      "chapter": 10,
+      "position": 2694,
+      "quote": "苔点录音机的出厂序列号末三位是六三九，机身铭牌从未换过。"
+    },
+    {
+      "label": "trace_objects[1].contradictions[1].b",
+      "chapter": 22,
+      "position": 2678,
+      "quote": "苔点录音机的出厂序列号末三位是九三六，仍是购入时那块铭牌。"
+    },
+    {
+      "label": "trace_objects[2].states[1]",
+      "chapter": 2,
+      "position": 2763,
+      "quote": "折翼监听耳机由陆泊弦领走，其他人试听先用公共音箱。"
+    },
+    {
+      "label": "trace_objects[2].states[2]",
+      "chapter": 7,
+      "position": 2843,
+      "quote": "陆泊弦把折翼监听耳机交给谢临荔，让她带回设备架保管。"
+    },
+    {
+      "label": "trace_objects[2].states[3]",
+      "chapter": 12,
+      "position": 2785,
+      "quote": "谢临荔将折翼监听耳机借给闻筱旻，供她独立复听采访。"
+    },
+    {
+      "label": "trace_objects[2].states[4]",
+      "chapter": 18,
+      "position": 2786,
+      "quote": "闻筱旻把折翼监听耳机交到方南汐手里，后续转写由她使用。"
+    },
+    {
+      "label": "trace_objects[2].states[5]",
+      "chapter": 30,
+      "position": 2662,
+      "quote": "方南汐把折翼监听耳机还给陆泊弦，他在归还栏签下名字。"
+    },
+    {
+      "label": "trace_objects[2].contradictions[1].a",
+      "chapter": 7,
+      "position": 2891,
+      "quote": "折翼监听耳机出厂时左耳罩内侧印着方框，原耳罩一直没有换。"
+    },
+    {
+      "label": "trace_objects[2].contradictions[1].b",
+      "chapter": 24,
+      "position": 2692,
+      "quote": "折翼监听耳机原装左耳罩内侧印的是圆环，从未有过方框图案。"
+    },
+    {
+      "label": "trace_objects[3].states[1]",
+      "chapter": 3,
+      "position": 2909,
+      "quote": "匿名嘉宾就是郁知遐，编辑部里眼下只有唐见禾知道这个身份。"
+    },
+    {
+      "label": "trace_objects[3].states[2]",
+      "chapter": 8,
+      "position": 3028,
+      "quote": "周三第一次正式试听结束时，知道匿名嘉宾真名的只有唐见禾、许砚弥和嘉宾本人。"
+    },
+    {
+      "label": "trace_objects[3].states[3]",
+      "chapter": 14,
+      "position": 2708,
+      "quote": "郁知遐同意陆泊弦知晓她的匿名身份，唐见禾当面向他说明。"
+    },
+    {
+      "label": "trace_objects[3].states[4]",
+      "chapter": 20,
+      "position": 2675,
+      "quote": "郁知遐这天才准许庄予栖知晓真名，唐见禾随后把身份告诉了她。"
+    },
+    {
+      "label": "trace_objects[3].states[5]",
+      "chapter": 29,
+      "position": 2658,
+      "quote": "郁知遐允许编辑部全体知道她就是匿名嘉宾，公开节目仍不报她真名。"
+    },
+    {
+      "label": "trace_objects[3].contradictions[1].a",
+      "chapter": 8,
+      "position": 3028,
+      "quote": "周三第一次正式试听结束时，知道匿名嘉宾真名的只有唐见禾、许砚弥和嘉宾本人。"
+    },
+    {
+      "label": "trace_objects[3].contradictions[1].b",
+      "chapter": 26,
+      "position": 2718,
+      "quote": "周三第一次正式试听结束时，庄予栖已经知道匿名嘉宾就是郁知遐。"
+    },
+    {
+      "label": "resolved_unmarked[1]",
+      "chapter": 12,
+      "position": 2602,
+      "quote": "文件名尾部的空白只是导出程序留下的保留位，并没有少掉一位受访者。"
+    },
+    {
+      "label": "resolved_unmarked[2]",
+      "chapter": 18,
+      "position": 2693,
+      "quote": "试录里重复的两下提示音来自自助打印机，现场复现已对上原来的节奏。"
+    },
+    {
+      "label": "resolved_unmarked[3]",
+      "chapter": 27,
+      "position": 2648,
+      "quote": "方南汐承认那张匿名勘误纸是她写的，原始草稿也核对得上。"
+    },
+    {
+      "label": "abandoned_in_text[1]",
+      "chapter": 19,
+      "position": 2656,
+      "quote": "大家决定不再寻找旧食堂广播里那位开场者，这条线就此放弃，不再续查。"
+    },
+    {
+      "label": "stale_facts[1]",
+      "chapter": 6,
+      "position": 2719,
+      "quote": "声隙编辑部的固定碰头会改到每周三晚饭后，周二午休不再开会。"
+    },
+    {
+      "label": "stale_facts[2]",
+      "chapter": 8,
+      "position": 2626,
+      "quote": "今后的正式试听统一改在苇屏室，槐序楼二层不再承接试听。"
+    },
+    {
+      "label": "stale_facts[3]",
+      "chapter": 10,
+      "position": 2770,
+      "quote": "终混从今天起由江越葵负责，陆泊弦只做外采，不再兼做终混。"
+    },
+    {
+      "label": "missing_facts[1]",
+      "chapter": 4,
+      "position": 2741,
+      "quote": "庄予栖只接收受访者亲自确认的文字授权，不把口头转告当作授权。"
+    },
+    {
+      "label": "missing_facts[2]",
+      "chapter": 5,
+      "position": 2779,
+      "quote": "闻筱旻规定私人来电的原始录音不得上传到编辑部的共享目录。"
+    },
+    {
+      "label": "missing_facts[3]",
+      "chapter": 6,
+      "position": 2828,
+      "quote": "毕业特刊每段公开样本最长九十秒，超出的部分必须重新取得同意。"
+    },
+    {
+      "label": "missing_facts[4]",
+      "chapter": 7,
+      "position": 2611,
+      "quote": "方南汐负责全部公开样本的文字转写，成稿由受访者逐段确认。"
+    },
+    {
+      "label": "missing_facts[5]",
+      "chapter": 8,
+      "position": 2751,
+      "quote": "谢临荔在每次设备外借前核对电池，借用人当面确认剩余电量。"
+    },
+    {
+      "label": "missing_facts[6]",
+      "chapter": 9,
+      "position": 2752,
+      "quote": "毕业特刊的交通费用走学生社团专项经费，不由受访者垫付。"
+    },
+    {
+      "label": "decoys[1]",
+      "chapter": 4,
+      "position": 2648,
+      "quote": "唐见禾是读到第三年的传媒专业学生，采编课还没有结课。"
+    },
+    {
+      "label": "decoys[2]",
+      "chapter": 7,
+      "position": 2736,
+      "quote": "谢临荔负责设备的领还登记，她不替采访组决定受访内容。"
+    },
+    {
+      "label": "decoys[3]",
+      "chapter": 9,
+      "position": 2872,
+      "quote": "柏时骏只能在旁提出意见，学生表决时他手里没有一票。"
+    },
+    {
+      "label": "decision_points[1].a",
+      "chapter": 11,
+      "position": 2669,
+      "quote": "第一次发布的报名页上，毕业特刊的正式题名是《把停顿留给你》，此后没有改名。"
+    },
+    {
+      "label": "decision_points[1].b",
+      "chapter": 13,
+      "position": 2759,
+      "quote": "第一次发布的报名页上，毕业特刊的正式题名是《下一句等你》，此后没有改名。"
+    },
+    {
+      "label": "decision_points[2].a",
+      "chapter": 23,
+      "position": 2675,
+      "quote": "这次毕业特刊的首次公开播放定在周六下午两点，场地预约也按这个时段办妥。"
+    },
+    {
+      "label": "decision_points[2].b",
+      "chapter": 25,
+      "position": 2651,
+      "quote": "这次毕业特刊的首次公开播放定在周日下午两点，最初的预约也是这个时段。"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "id": "a2s6-w01-injection-04",
+      "actions": [
+        {
+          "kind": "edit_thread",
+          "target": 5
+        }
+      ],
+      "reason": "作者明确要求修正已有半张照片伏笔中写失踪者的说明，并保留尚未讲明的心事；这是修改现有伏笔说明的意图，没有要求将整条线标为回收。",
+      "uncertain": false
+    },
+    {
+      "id": "a2s6-w01-injection-06",
+      "actions": [
+        {
+          "kind": "abandon_thread",
+          "target": 6
+        }
+      ],
+      "reason": "作者明确决定泳帽这一支以后不再追写，并要求标成放弃，对应现有未寄的泳帽伏笔。",
+      "uncertain": false
+    },
+    {
+      "id": "a2s6-w01-injection-01",
+      "actions": [
+        {
+          "kind": "add_thread",
+          "target": {
+            "about": "第一堂课更衣凳下捡到的小纸船，其来处尚未说明",
+            "planted_chapter": 1
+          }
+        }
+      ],
+      "reason": "作者指出小纸船还未单独留线，要求补一条并悬置来处；起始伏笔列表没有该线，第一堂课明确给出埋设章节为第一章。",
+      "uncertain": false
+    }
+  ]
+}

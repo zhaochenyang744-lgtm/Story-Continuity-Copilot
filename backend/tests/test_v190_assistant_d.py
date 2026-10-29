@@ -228,6 +228,10 @@ class LedgerTests(RouteCase):
 
 # ---- reroute ---------------------------------------------------------------------------------------------------------------
 class RerouteCase(Task04Case):
+    def setUp(self):
+        super().setUp()
+        self.own_work()
+
     def made(self, *, kind="ask", question="罗盘现在在谁手里", context=None, routed=True, source="model", input=None, status="queued"):
         """A task as the page makes it (not run: it waits in the queue, or is marked running)."""
         payload = {"kind": kind, "question": question, "context": context or {"page": "writing"}, "follow_up_of": None, "edited_from": None,
@@ -305,7 +309,9 @@ class RerouteTests(RerouteCase):
         self.assertEqual(len(self.rows("SELECT * FROM assistant_tasks")), 1)
 
     def test_a_check_is_the_check_request_of_the_page(self):
-        old = self.made(question="这段有没有问题", input="这段有没有问题", context={"page": "writing", "selection": SELECTION})
+        # 38c (V09): the sentence the author wrote stays the question; the fixed question is for the box's own words
+        # (see tests.test_v210_38c for a sentence of the author's and for a button phrase).
+        old = self.made(question="检查这段", input="检查这段", context={"page": "writing", "selection": SELECTION}, source="rule")
         self.provider.script(lambda provider, messages: turn(answer_call("not_found", [], note="没有找到问题问到的内容。")))
         created = self.reroute(old, "check_passage", {"page": "writing", "selection": SELECTION}).json()["data"]
         self.assertEqual((created["kind"], created["question"], created["context"].get("intent")), ("ask", CHECK_SELECTION_QUESTION, "check_selection"))
@@ -348,7 +354,7 @@ class FollowUpLimitTests(AssistantCase):
     def setUp(self):
         self.start(registered_workflows=200, registered_check_chars=1_000_000)
         self.register()
-
+        self.own_work()
     def asked(self, number, follow_up_of=None, expect=202):
         self.provider.script(read(9), cite(9, words="罗盘交给了温岚。"))
         response = self.ask(f"第{number}问", expect=expect, **({"follow_up_of": follow_up_of} if follow_up_of else {}))
@@ -386,7 +392,7 @@ class FollowUpLimitTests(AssistantCase):
 # ---- advice ----------------------------------------------------------------------------------------------------------------
 class AdvicePromptTests(AssistantCase):
     def test_the_prompt_version_moves_and_the_prompt_holds_the_new_rule(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p44")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p61")
         for needle in ("建议也是带出处的句子", "依据 + 建议", "建议只指向已经写下的东西", "帮我想个结局", "情节怎么写由你决定，我只能指出前文已有的线索。",
                        "不要写「把……改成……」", "status 填 not_found"):
             self.assertIn(needle, SYSTEM_PROMPT)

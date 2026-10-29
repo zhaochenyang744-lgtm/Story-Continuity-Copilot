@@ -1,0 +1,253 @@
+{
+  "module": {
+    "exit_code": 0,
+    "stdout": "{\"chapter_injection_positions\": [{\"chapter\": 2, \"han_position\": 2855, \"id\": \"a3s2-w01-injection-01\"}, {\"chapter\": 4, \"han_position\": 2868, \"id\": \"a3s2-w01-injection-02\"}, {\"chapter\": 6, \"han_position\": 2946, \"id\": \"a3s2-w01-injection-03\"}, {\"chapter\": 8, \"han_position\": 2833, \"id\": \"a3s2-w01-injection-04\"}, {\"chapter\": 10, \"han_position\": 2824, \"id\": \"a3s2-w01-injection-05\"}], \"copy_errors\": 0, \"errors\": [], \"evaluation_runs\": 0, \"independent_threads\": {\"action_set_agreement\": 5, \"action_sets\": 5, \"final_agreement\": 8, \"first_agreement\": 8, \"total\": 8, \"unresolved\": 0, \"works\": {\"w01\": {\"final_agreement\": 8, \"first_agreement\": 8, \"total\": 8}}}, \"injection_locations\": {\"chapter\": 5, \"chapter_title\": 1, \"fact\": 2, \"foreshadow\": 2}, \"injection_targets\": {\"abandon_thread\": 1, \"add_fact\": 1, \"change_fact\": 2, \"delete_fact\": 2, \"out_of_plan\": 1, \"resolve_all\": 1, \"resolve_thread\": 1, \"skip_asking\": 1}, \"model_calls\": 0, \"novelty_errors\": 0, \"novelty_reference_inputs\": 859, \"product_runs\": 0, \"run_suites\": {\"thread_audit\": 5, \"trace\": 5}, \"scope\": \"this_set_only\", \"semantic_acceptance\": false, \"status\": \"PASS\", \"tasks\": 10, \"works\": {\"w01\": {\"abandoned_in_text\": 0, \"aliases\": 3, \"chapter_han_max\": 3138, \"chapter_han_min\": 2934, \"chapters\": 12, \"characters\": 10, \"contradictions\": 0, \"decision_points\": 1, \"draft_han\": 761, \"facts\": 24, \"foreshadow_states\": {\"developing\": 2, \"planned\": 1, \"planted\": 4, \"resolved\": 1}, \"foreshadows\": 8, \"names\": 18, \"near_misses\": 0, \"point_after1500\": 9, \"point_after2500\": 9, \"point_han_max\": 2821, \"point_han_min\": 196, \"point_position_buckets\": {\"1501_2500\": 0, \"1_1500\": 3, \"2501_plus\": 9}, \"point_quotes\": 12, \"resolved_unmarked\": 2, \"still_open\": 5, \"total_han\": 36513, \"trace_objects\": 1, \"trace_states\": 5}}}",
+    "output": {
+      "chapter_injection_positions": [
+        {
+          "chapter": 2,
+          "han_position": 2855,
+          "id": "a3s2-w01-injection-01"
+        },
+        {
+          "chapter": 4,
+          "han_position": 2868,
+          "id": "a3s2-w01-injection-02"
+        },
+        {
+          "chapter": 6,
+          "han_position": 2946,
+          "id": "a3s2-w01-injection-03"
+        },
+        {
+          "chapter": 8,
+          "han_position": 2833,
+          "id": "a3s2-w01-injection-04"
+        },
+        {
+          "chapter": 10,
+          "han_position": 2824,
+          "id": "a3s2-w01-injection-05"
+        }
+      ],
+      "copy_errors": 0,
+      "errors": [],
+      "evaluation_runs": 0,
+      "independent_threads": {
+        "action_set_agreement": 5,
+        "action_sets": 5,
+        "final_agreement": 8,
+        "first_agreement": 8,
+        "total": 8,
+        "unresolved": 0,
+        "works": {
+          "w01": {
+            "final_agreement": 8,
+            "first_agreement": 8,
+            "total": 8
+          }
+        }
+      },
+      "injection_locations": {
+        "chapter": 5,
+        "chapter_title": 1,
+        "fact": 2,
+        "foreshadow": 2
+      },
+      "injection_targets": {
+        "abandon_thread": 1,
+        "add_fact": 1,
+        "change_fact": 2,
+        "delete_fact": 2,
+        "out_of_plan": 1,
+        "resolve_all": 1,
+        "resolve_thread": 1,
+        "skip_asking": 1
+      },
+      "model_calls": 0,
+      "novelty_errors": 0,
+      "novelty_reference_inputs": 859,
+      "product_runs": 0,
+      "run_suites": {
+        "thread_audit": 5,
+        "trace": 5
+      },
+      "scope": "this_set_only",
+      "semantic_acceptance": false,
+      "status": "PASS",
+      "tasks": 10,
+      "works": {
+        "w01": {
+          "abandoned_in_text": 0,
+          "aliases": 3,
+          "chapter_han_max": 3138,
+          "chapter_han_min": 2934,
+          "chapters": 12,
+          "characters": 10,
+          "contradictions": 0,
+          "decision_points": 1,
+          "draft_han": 761,
+          "facts": 24,
+          "foreshadow_states": {
+            "developing": 2,
+            "planned": 1,
+            "planted": 4,
+            "resolved": 1
+          },
+          "foreshadows": 8,
+          "names": 18,
+          "near_misses": 0,
+          "point_after1500": 9,
+          "point_after2500": 9,
+          "point_han_max": 2821,
+          "point_han_min": 196,
+          "point_position_buckets": {
+            "1501_2500": 0,
+            "1_1500": 3,
+            "2501_plus": 9
+          },
+          "point_quotes": 12,
+          "resolved_unmarked": 2,
+          "still_open": 5,
+          "total_han": 36513,
+          "trace_objects": 1,
+          "trace_states": 5
+        }
+      }
+    },
+    "stderr_empty": true,
+    "data_sha256": {
+      "materials/w01-facts.json": "74551a1e8ea2bb417a452ef680e5bc6f642dc4503965292899b166f0c15d855c",
+      "materials/w01-foreshadows.json": "3319e4012ce8f5b38f8f5245495127a236ac8d0fba627138e9de8fca4a757097",
+      "tasks.json": "60dd23198bf16ce9a97400f5144843edee3695b590a3f869670f8cf0304a49fb",
+      "works/w01.md": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5"
+    },
+    "data_unchanged": true
+  },
+  "absolute": {
+    "exit_code": 0,
+    "stdout": "{\"chapter_injection_positions\": [{\"chapter\": 2, \"han_position\": 2855, \"id\": \"a3s2-w01-injection-01\"}, {\"chapter\": 4, \"han_position\": 2868, \"id\": \"a3s2-w01-injection-02\"}, {\"chapter\": 6, \"han_position\": 2946, \"id\": \"a3s2-w01-injection-03\"}, {\"chapter\": 8, \"han_position\": 2833, \"id\": \"a3s2-w01-injection-04\"}, {\"chapter\": 10, \"han_position\": 2824, \"id\": \"a3s2-w01-injection-05\"}], \"copy_errors\": 0, \"errors\": [], \"evaluation_runs\": 0, \"independent_threads\": {\"action_set_agreement\": 5, \"action_sets\": 5, \"final_agreement\": 8, \"first_agreement\": 8, \"total\": 8, \"unresolved\": 0, \"works\": {\"w01\": {\"final_agreement\": 8, \"first_agreement\": 8, \"total\": 8}}}, \"injection_locations\": {\"chapter\": 5, \"chapter_title\": 1, \"fact\": 2, \"foreshadow\": 2}, \"injection_targets\": {\"abandon_thread\": 1, \"add_fact\": 1, \"change_fact\": 2, \"delete_fact\": 2, \"out_of_plan\": 1, \"resolve_all\": 1, \"resolve_thread\": 1, \"skip_asking\": 1}, \"model_calls\": 0, \"novelty_errors\": 0, \"novelty_reference_inputs\": 859, \"product_runs\": 0, \"run_suites\": {\"thread_audit\": 5, \"trace\": 5}, \"scope\": \"this_set_only\", \"semantic_acceptance\": false, \"status\": \"PASS\", \"tasks\": 10, \"works\": {\"w01\": {\"abandoned_in_text\": 0, \"aliases\": 3, \"chapter_han_max\": 3138, \"chapter_han_min\": 2934, \"chapters\": 12, \"characters\": 10, \"contradictions\": 0, \"decision_points\": 1, \"draft_han\": 761, \"facts\": 24, \"foreshadow_states\": {\"developing\": 2, \"planned\": 1, \"planted\": 4, \"resolved\": 1}, \"foreshadows\": 8, \"names\": 18, \"near_misses\": 0, \"point_after1500\": 9, \"point_after2500\": 9, \"point_han_max\": 2821, \"point_han_min\": 196, \"point_position_buckets\": {\"1501_2500\": 0, \"1_1500\": 3, \"2501_plus\": 9}, \"point_quotes\": 12, \"resolved_unmarked\": 2, \"still_open\": 5, \"total_han\": 36513, \"trace_objects\": 1, \"trace_states\": 5}}}",
+    "output": {
+      "chapter_injection_positions": [
+        {
+          "chapter": 2,
+          "han_position": 2855,
+          "id": "a3s2-w01-injection-01"
+        },
+        {
+          "chapter": 4,
+          "han_position": 2868,
+          "id": "a3s2-w01-injection-02"
+        },
+        {
+          "chapter": 6,
+          "han_position": 2946,
+          "id": "a3s2-w01-injection-03"
+        },
+        {
+          "chapter": 8,
+          "han_position": 2833,
+          "id": "a3s2-w01-injection-04"
+        },
+        {
+          "chapter": 10,
+          "han_position": 2824,
+          "id": "a3s2-w01-injection-05"
+        }
+      ],
+      "copy_errors": 0,
+      "errors": [],
+      "evaluation_runs": 0,
+      "independent_threads": {
+        "action_set_agreement": 5,
+        "action_sets": 5,
+        "final_agreement": 8,
+        "first_agreement": 8,
+        "total": 8,
+        "unresolved": 0,
+        "works": {
+          "w01": {
+            "final_agreement": 8,
+            "first_agreement": 8,
+            "total": 8
+          }
+        }
+      },
+      "injection_locations": {
+        "chapter": 5,
+        "chapter_title": 1,
+        "fact": 2,
+        "foreshadow": 2
+      },
+      "injection_targets": {
+        "abandon_thread": 1,
+        "add_fact": 1,
+        "change_fact": 2,
+        "delete_fact": 2,
+        "out_of_plan": 1,
+        "resolve_all": 1,
+        "resolve_thread": 1,
+        "skip_asking": 1
+      },
+      "model_calls": 0,
+      "novelty_errors": 0,
+      "novelty_reference_inputs": 859,
+      "product_runs": 0,
+      "run_suites": {
+        "thread_audit": 5,
+        "trace": 5
+      },
+      "scope": "this_set_only",
+      "semantic_acceptance": false,
+      "status": "PASS",
+      "tasks": 10,
+      "works": {
+        "w01": {
+          "abandoned_in_text": 0,
+          "aliases": 3,
+          "chapter_han_max": 3138,
+          "chapter_han_min": 2934,
+          "chapters": 12,
+          "characters": 10,
+          "contradictions": 0,
+          "decision_points": 1,
+          "draft_han": 761,
+          "facts": 24,
+          "foreshadow_states": {
+            "developing": 2,
+            "planned": 1,
+            "planted": 4,
+            "resolved": 1
+          },
+          "foreshadows": 8,
+          "names": 18,
+          "near_misses": 0,
+          "point_after1500": 9,
+          "point_after2500": 9,
+          "point_han_max": 2821,
+          "point_han_min": 196,
+          "point_position_buckets": {
+            "1501_2500": 0,
+            "1_1500": 3,
+            "2501_plus": 9
+          },
+          "point_quotes": 12,
+          "resolved_unmarked": 2,
+          "still_open": 5,
+          "total_han": 36513,
+          "trace_objects": 1,
+          "trace_states": 5
+        }
+      }
+    },
+    "stderr_empty": true,
+    "data_sha256": {
+      "materials/w01-facts.json": "74551a1e8ea2bb417a452ef680e5bc6f642dc4503965292899b166f0c15d855c",
+      "materials/w01-foreshadows.json": "3319e4012ce8f5b38f8f5245495127a236ac8d0fba627138e9de8fca4a757097",
+      "tasks.json": "60dd23198bf16ce9a97400f5144843edee3695b590a3f869670f8cf0304a49fb",
+      "works/w01.md": "a09b549b400c61b13ea63e4feccd77c585fe024d99320b60aff1384a6a1288d5"
+    },
+    "data_unchanged": true
+  },
+  "outputs_identical": true
+}

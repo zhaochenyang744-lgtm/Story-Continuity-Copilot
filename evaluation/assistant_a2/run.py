@@ -37,16 +37,18 @@ from app.config import AppPaths
 from app.main import create_app
 from app.v2_database import new_id
 
+from ..models import REGISTERED_MODELS
 from . import score
 from .judge import Judge
 from .thresholds import PRE_REGISTRATION
 
-DEV_SETS = ("eval_set_a2_dev",)
+DEV_SETS = ("eval_set_a2_dev", "eval_set_a2t_dev")  # the second: the thread actions' dev set (addendum 7)
 # Development material: the dev set, and the spent first formal pair (either set, alone or together, any selection).
 SPENT_SETS = score.SPENT_FORMAL_SETS
 # The registered formal pair that has not run yet (none until a new pair is registered).
 FORMAL_SETS = tuple(name for name in PRE_REGISTRATION["formal_sets"] if name not in SPENT_SETS)
-ROUTES = {"ask", "fix_issue", "recap", "check_passage", "change", "out_of_scope"}
+# long_task (v2.1) is a judgement like the others: on an A2 item it is a wrong route, not a broken response.
+ROUTES = {"ask", "fix_issue", "recap", "check_passage", "change", "out_of_scope", "long_task"}
 PASSWORD = "a2-local-evaluation-pass-123"
 THREAD_FIELDS = ("title", "description", "status", "planted_chapter_id", "planted_source_span_id", "resolved_chapter_id",
                  "resolved_source_span_id", "archived_at")
@@ -58,7 +60,7 @@ def set_names(value):
     names = value.split(",")
     if len(names) != len(set(names)):
         raise ValueError("invalid_sets")
-    if names == list(DEV_SETS) or set(names) <= set(SPENT_SETS) or (FORMAL_SETS and sorted(names) == sorted(FORMAL_SETS)):
+    if (len(names) == 1 and names[0] in DEV_SETS) or set(names) <= set(SPENT_SETS) or (FORMAL_SETS and sorted(names) == sorted(FORMAL_SETS)):
         return names
     raise ValueError("invalid_sets")
 
@@ -69,6 +71,12 @@ def set_names_arg(value):
     except ValueError as error:
         raise argparse.ArgumentTypeError(str(error)) from None
     return value
+
+
+def workspaces(out):
+    """Where a run keeps its works' files: a short name beside the results (as A3's). Named after the checkpoint, a run over three
+    spent sets passed Windows' 260-character limit and its database would not open (regression tune1-p58, 2026-10-27)."""
+    return out["checkpoint"].parent / ("ws-" + hashlib.sha256(out["checkpoint"].name.encode("utf-8")).hexdigest()[:12])
 
 
 def readable(name):
@@ -111,7 +119,8 @@ def preflight(args, provider, output=None):
             raise ValueError("formal_requires_three_runs")
         if git("status", "--porcelain", "--", "backend/app", "evaluation/assistant_a2", *[f"evaluation/{n}" for n in names]):
             raise ValueError("formal_dirty_code_forbidden")
-    if not provider.available or provider.assistant_model != "deepseek-flash" or provider.model != "deepseek-flash":
+    if (not provider.available or provider.model != "deepseek-flash"
+            or any(provider.model_for(role) != model for role, model in REGISTERED_MODELS.items())):
         raise ValueError("assistant_model_configuration_invalid")
     if args.judge_model != PRE_REGISTRATION["judging"]["judge_model"]:
         raise ValueError("judge_model_configuration_invalid")
@@ -121,7 +130,7 @@ def preflight(args, provider, output=None):
     if args.resume:
         if not out["checkpoint"].exists():
             raise ValueError("resume_checkpoint_missing")
-    elif any(p.exists() for p in out.values()) or out["checkpoint"].with_suffix(".workspaces").exists():
+    elif any(p.exists() for p in out.values()) or workspaces(out).exists():
         raise FileExistsError("run_output_already_exists")
     for name in names:
         validate_set(name)
@@ -209,7 +218,7 @@ class Work(a1.Work):
             rows = c.execute("SELECT * FROM assistant_changes WHERE task_id=? ORDER BY ordinal", (task_id,)).fetchall()
         items = []
         for row in rows:
-            index = facts.get(row["target_id"]) if row["kind"] == "change_fact" else threads.get(row["target_id"]) if row["kind"] == "resolve_thread" else None
+            index = facts.get(row["target_id"]) if row["kind"] == "change_fact" else threads.get(row["target_id"]) if row["kind"] in THREAD_KINDS else None
             items.append({"id": row["id"], "label": f"C{row['ordinal']}", "kind": row["kind"], "target_id": row["target_id"], "index": index,
                           "before": json.loads(row["before_json"]), "after": json.loads(row["after_json"]), "display": json.loads(row["display_json"]),
                           "evidence": json.loads(row["evidence_json"]), "status": row["status"]})
@@ -225,15 +234,33 @@ def snapshot(db, project):
     return {"facts": facts, "threads": threads}
 
 
-def _expected_after(start, items):
-    """The materials a confirmed card should leave: the start with every item's new values."""
+# The thread actions (v2.1 adds giving a thread up, its note and a new thread to marking it resolved).
+THREAD_KINDS = ("resolve_thread", "abandon_thread", "edit_thread")
+
+
+def _expected_after(start, items, after):
+    """The materials a confirmed card should leave: the start with every item's new values. A new thread has an id and fields
+    the program gives it; it is expected as written when every field the item names is what the item says."""
     expected = json.loads(json.dumps(start))
     for item in items:
-        if item["kind"] == "resolve_thread":
-            expected["threads"][item["target_id"]].update(item["after"])
+        if item["kind"] in THREAD_KINDS:
+            expected["threads"][item["target_id"]].update({k: v for k, v in item["after"].items() if k in THREAD_FIELDS})
+        elif item["kind"] == "add_thread":
+            made = after["threads"].get(item["target_id"])
+            named = {k: v for k, v in item["after"].items() if k in THREAD_FIELDS}
+            expected["threads"][item["target_id"]] = made if made and all(made.get(k) == v for k, v in named.items()) else named
         else:
             expected["facts"][item["target_id"]] = {k: item["after"][k] for k in FACT_FIELDS}
     return expected
+
+
+def undo_restored(start, final, items):
+    """Addendum 8: the materials are as at the start after the card is undone. A thread the card added is archived by its
+    undo (as the materials page deletes one), so the threads compared are the live ones, and every added thread must be
+    archived; the facts are compared as they are."""
+    live = lambda snap: {**snap, "threads": {k: v for k, v in snap["threads"].items() if not v.get("archived_at")}}
+    added = [item["target_id"] for item in items if item["kind"] == "add_thread"]
+    return live(final) == live(start) and all((final["threads"].get(t) or {}).get("archived_at") for t in added)
 
 
 def check_card(work, row, provider):
@@ -257,10 +284,10 @@ def check_card(work, row, provider):
             final = snapshot(app.state.database, work.project)
         finally:
             client.close()
-    confirm_exact = confirmed.status_code == 200 and after == _expected_after(start, items)
+    confirm_exact = confirmed.status_code == 200 and after == _expected_after(start, items, after)
     return {"run_number": row["run_number"], "set": row["set"], "task_id": row["task"]["id"], "items": len(items),
             "confirm_status": confirmed.status_code, "confirm_exact": confirm_exact, "undo_statuses": undone,
-            "undo_exact": confirmed.status_code == 200 and all(code == 200 for code in undone) and final == start,
+            "undo_exact": confirmed.status_code == 200 and all(code == 200 for code in undone) and undo_restored(start, final, items),
             "start_matches_prepared": start == work.start}
 
 
@@ -315,11 +342,12 @@ def execute(args, datasets, provider, judge, ledger, out):
     tasks = [(name, t) for name in names for t in datasets[name]["tasks"] if not t.get("support") and (args.only is None or t["id"] in args.only)]
     fingerprint = {"sets": names, "runs": args.runs, "only": args.only, "git_commit": git("rev-parse", "HEAD"),
                    "prompt_version": ASSISTANT_PROMPT_VERSION, "assistant_model": provider.assistant_model, "model": provider.model,
+                   "models": {role: provider.model_for(role) for role in REGISTERED_MODELS},
                    "judge_model": args.judge_model, "assistant_rates": list(args.assistant_rates), "judge_rates": list(args.judge_rates),
                    "manifests": {n: datasets[n].get("manifest_sha256") for n in names},
                    "code_sha256": hashlib.sha256(b"".join(p.read_bytes() for directory in (ROOT / "backend/app", ROOT / "evaluation/assistant_a2")
                                                           for p in sorted(directory.glob("*.py")))).hexdigest()}
-    state_root = out["checkpoint"].with_suffix(".workspaces")
+    state_root = workspaces(out)
     if args.resume:
         report = json.loads(out["checkpoint"].read_text(encoding="utf-8"))
         if report["environment"] != fingerprint:
@@ -430,7 +458,7 @@ def parser():
 def main():
     args = parser().parse_args()
     ledger = Ledger(args.max_cny, args.assistant_rates, args.judge_rates)
-    provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash") if args.dry_run else PricedProvider(ledger)
+    provider = SimpleNamespace(available=True, assistant_model="deepseek-flash", model="deepseek-flash", model_for=lambda role: "deepseek-flash") if args.dry_run else PricedProvider(ledger)
     out = preflight(args, provider)
     if args.dry_run:
         print("dry_run_ok")

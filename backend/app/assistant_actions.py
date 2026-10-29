@@ -12,7 +12,10 @@ the author's edit. An undo is recorded too, and an undone item can be applied ag
 
 An action is one kind of change: how its proposal is checked, and which fields of its target it reads and writes. Batch one:
 `resolve_thread` (a foreshadowing thread the text has resolved), `change_fact` (a fact the text has moved past) and
-`add_fact` (a fact the text states that the materials lack).
+`add_fact` (a fact the text states that the materials lack). Batch two (v2.1): `add_thread` (a thread the text lays that the
+materials lack), `edit_thread` (the note of a thread, reworded) and `abandon_thread` (a thread the author gives up). An action
+also registers how risky it is (`risk`, carried on the card; the confirm does not change with it) and whether its proposal must
+stand on passages of the text (`evidence_required`): giving a thread up or rewording its note stands on the author's words.
 
 A fact has no id that lasts across versions of the materials: every version copies each fact under its id with "-v<version>"
 added. Its lineage, the id with those endings taken off, is what an item points at (the source-review code relies on the
@@ -22,6 +25,7 @@ items wait until it is done.
 """
 from __future__ import annotations
 
+import base64
 import json
 import re
 import sqlite3
@@ -32,12 +36,13 @@ from typing import Any, Callable
 from fastapi import Header, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from . import assistant_requests
 from . import long_term_workflow as workflow
 from .assistant_store import utcnow
 from .assistant_tools import FORESHADOW_STATUS, INTERNAL_ID, Outcome, ToolContext, ToolError, fact_items
 from .database import DomainError
 from .memory_contract import CONTROLLED_PREDICATES, normalize_memory_value, predicate_label
-from .v2_database import MAX_RESOURCE_VERSION, new_id
+from .v2_database import FORESHADOW_MAX_RECORDS, MAX_RESOURCE_VERSION, new_id
 
 CARD_MAX_ITEMS = 5
 EVIDENCE_MAX = 2
@@ -56,17 +61,16 @@ SUBJECT_PARTS = re.compile(r"[（）()、，,与和及/]+")
 # pair stood at 0.194 under p42). Measured over every card of every A2 run so far, the looks below keep the cases they were
 # made for and drop most of those that only cost a round.
 SECOND_LOOK_KEPT = 0.7  # share of the old value's character pairs a new value keeps when it only says the old fact again
+# A clause of the new value that says the old one no longer holds names the old one without keeping it ("在折榆庭侧室举行，南穗辩护所
+# 不再承办这轮会谈" beside "在南穗辩护所举行": held as saying it again, A2 fifth formal run, w01-action-08, both passes).
+NEGATED_CLAUSE = re.compile(r"不再|不是|并非|而非|已不|不算|取消|作废|撤销|改掉")
+CLAUSE_BREAK = re.compile(r"[，,；;。！？!?]")
 # (at 0.6: 70 of 273 changes asked for were held, 8 of 30 that should not have been made; at 0.7: 26 and 5)
 SECOND_LOOK_SAME = 0.5  # share of an existing fact's character pairs a new fact repeats when it may say the same matter
 # The same, for a fact filed under the very same subject: "双齿筹不会因换手便成为所有权证明" was added beside "双齿筹（用途）：
 # 标示称量轮次，不是物件所有权凭证" in three passes of three (A2 third formal run, w02-no-action-02; 0.21 of its pairs). Over
 # every A2 run so far this holds 11 more of 404 new facts asked for, and 4 of the 5 same-subject duplicates.
 SECOND_LOOK_SAME_SUBJECT = 0.2
-# A fact is about the story, not about a sentence of it: an author's request to shorten the last sentence of a chapter came
-# back as a fact "第20章最后一句" holding the rewrite (A2 third formal run, w01-no-action-05, two passes of three). Over every
-# A2 run so far no new fact asked for has such a subject.
-PROSE_SUBJECT = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百]+\s*[章回节]|最后一句|第一句|这句|那句|这一句|那一句|这段|那段|"
-                           r"这一段|那一段|开头|结尾|正文|草稿|原句|句子|段落")
 SECOND_LOOK_FACTS = 10
 
 
@@ -88,6 +92,12 @@ class Action:
     write: Callable[[sqlite3.Connection, Any, str, str, dict[str, Any] | None, str, str], None]
     creates: bool = False  # an undo removes the record again
     editable: bool = False  # the author may reword the value on the card before confirming
+    risk: str = "low"  # "low" or "high"; only carried on the card for now (a batch confirm will set high-risk items apart)
+    evidence_required: bool = True  # False: `evidence` may be empty (what is given is checked all the same)
+    record_kind: str = "fact"  # "fact" or "foreshadow": the kind of record this action writes
+    # (c, db, project_id, target_id, values) -> whether writing these values would collide with what the materials hold now
+    # (checked at a confirm and a redo, before anything is written); only for an action that creates a record
+    clash: Callable[[sqlite3.Connection, Any, str, str, dict[str, Any]], bool] | None = None
 
     def same(self, values: dict[str, Any] | None, expected: dict[str, Any] | None) -> bool:
         if values is None or expected is None:
@@ -95,8 +105,11 @@ class Action:
         return all(values.get(field) == expected.get(field) for field in self.fields)
 
 
-def evidence_of(ctx: ToolContext, refs: Any) -> list[dict[str, Any]]:
-    """The passages a change stands on: one or two R numbers of written chapters' text that this task was shown."""
+def evidence_of(ctx: ToolContext, refs: Any, required: bool = True) -> list[dict[str, Any]]:
+    """The passages a change stands on: one or two R numbers of written chapters' text that this task was shown. An action
+    that does not need them may be given none; what is given is checked all the same."""
+    if not required and (refs is None or refs == []):
+        return []
     if not isinstance(refs, list) or not 1 <= len(refs) <= EVIDENCE_MAX:
         raise ToolError("change_evidence_invalid")
     items = []
@@ -132,6 +145,10 @@ def _chapter_and_span(c: sqlite3.Connection, project_id: str, evidence: dict[str
 
 def _latest(evidence: list[dict[str, Any]]) -> dict[str, Any]:
     return max(evidence, key=lambda item: item["chapter_number"])
+
+
+def _earliest(evidence: list[dict[str, Any]]) -> dict[str, Any]:
+    return min(evidence, key=lambda item: item["chapter_number"])
 
 
 def _text(value: Any, limit: int) -> str:
@@ -174,8 +191,9 @@ def read_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str)
     return {field: row[field] for field in THREAD_FIELDS} if row else None
 
 
-def write_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any] | None, user_id: str, stamp: str) -> None:
-    """Write a thread's status fields the way the materials page does: a new version of the record, recorded, and a new
+def _rewrite_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any] | None, fields: tuple[str, ...],
+                    user_id: str, stamp: str) -> None:
+    """Write some fields of a thread the way the materials page does: a new version of the record, recorded, and a new
     version of the work's foreshadowing."""
     row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (target_id, project_id)).fetchone()
     project = c.execute("SELECT foreshadow_version FROM v2_projects WHERE id=?", (project_id,)).fetchone()
@@ -183,10 +201,152 @@ def write_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str
         raise DomainError("change_target_missing", 409)
     if row["version"] >= MAX_RESOURCE_VERSION or int(project["foreshadow_version"] or 0) >= MAX_RESOURCE_VERSION:
         raise DomainError("foreshadow_version_limit", 409)
-    c.execute("UPDATE v2_foreshadows SET status=?,resolved_chapter_id=?,resolved_source_span_id=?,version=version+1,updated_at=? WHERE id=?",
-              (values["status"], values["resolved_chapter_id"], values["resolved_source_span_id"], stamp, target_id))
+    c.execute(f"UPDATE v2_foreshadows SET {','.join(f'{field}=?' for field in fields)},version=version+1,updated_at=? WHERE id=?",
+              (*(values[field] for field in fields), stamp, target_id))
     db._record_foreshadow_version(c, c.execute("SELECT * FROM v2_foreshadows WHERE id=?", (target_id,)).fetchone(), "updated", user_id, stamp)
     c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?", (stamp, project_id))
+
+
+def write_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any] | None, user_id: str, stamp: str) -> None:
+    _rewrite_thread(c, db, project_id, target_id, values, THREAD_FIELDS, user_id, stamp)
+
+
+# abandon_thread, edit_thread, add_thread (v2.1) -------------------------------------------------------------------------
+THREAD_NOTE_FIELDS = ("description",)
+THREAD_NEW_FIELDS = ("title", "description", "status", "planted_chapter_id", "planted_source_span_id")
+THREAD_TITLE_MAX = 30
+THREAD_NOTE_MAX = 200
+
+
+def _live_thread(ctx: ToolContext, c: sqlite3.Connection, target: dict[str, Any] | None) -> Any:
+    row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (target["object_id"], ctx.project_id)).fetchone()
+    if row is None:
+        raise ToolError("change_target_invalid")
+    return row
+
+
+def propose_abandon_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
+    """A thread the author says will not be written: open, and it stays so until the author confirms. The text has nothing to
+    say about it, so it may stand on the author's words alone (the card shows them where the evidence would be)."""
+    evidence = evidence_of(ctx, args.get("evidence"), ACTIONS["abandon_thread"].evidence_required)
+    with ctx.db.connection() as c:
+        row = _live_thread(ctx, c, target)
+        if row["status"] not in OPEN_THREAD:
+            raise ToolError("change_thread_not_open")
+        resolved = c.execute("SELECT chapter_number FROM v2_chapters WHERE id=?", (row["resolved_chapter_id"],)).fetchone() if row["resolved_chapter_id"] else None
+    return {"target_id": row["id"], "before": {field: row[field] for field in THREAD_FIELDS}, "evidence": evidence,
+            "after": {"status": "abandoned", "resolved_chapter_id": None, "resolved_source_span_id": None},
+            "display": {"title": row["title"], "before": _thread_label(row["status"], resolved["chapter_number"] if resolved else None),
+                        "after": _thread_label("abandoned", None)}}
+
+
+def read_thread_note(c: sqlite3.Connection, db: Any, project_id: str, target_id: str) -> dict[str, Any] | None:
+    row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (target_id, project_id)).fetchone()
+    return {field: row[field] for field in THREAD_NOTE_FIELDS} if row else None
+
+
+def write_thread_note(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any] | None, user_id: str, stamp: str) -> None:
+    _rewrite_thread(c, db, project_id, target_id, values, THREAD_NOTE_FIELDS, user_id, stamp)
+
+
+AUTHORS_WORDS_RUN = 6  # characters in a row the note takes from the author's sentence
+
+
+def _takes_authors_words(note: str, question: str) -> bool:
+    """Whether a new note copies a run of the author's own sentence (punctuation and spaces aside)."""
+    said = "".join(ch for ch in question if ch.isalnum())
+    written = "".join(ch for ch in note if ch.isalnum())
+    return any(said[i:i + AUTHORS_WORDS_RUN] in written for i in range(len(said) - AUTHORS_WORDS_RUN + 1))
+
+
+def propose_edit_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
+    """The note of a thread, reworded as the author asks (any status: a resolved thread's note may be mended too)."""
+    evidence = evidence_of(ctx, args.get("evidence"), ACTIONS["edit_thread"].evidence_required)
+    value = _text(args.get("value"), THREAD_NOTE_MAX)
+    with ctx.db.connection() as c:
+        row = _live_thread(ctx, c, target)
+    if value == " ".join(row["description"].split()):
+        raise ToolError("change_no_difference")
+    if _takes_authors_words(value, json.loads(ctx.task["input_json"]).get("question") or ""):
+        evidence = []  # the note says what the author dictated: it stands on the author's words (a2t dev rounds 2–4)
+    return {"target_id": row["id"], "before": {"description": row["description"]}, "evidence": evidence,
+            "after": {"description": value, "value": value}, "display": {"title": row["title"], "before": row["description"], "after": value}}
+
+
+def read_new_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str) -> dict[str, Any] | None:
+    """A thread an item added, as it stands now; None before it is written and after it is archived (an undo)."""
+    row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=? AND archived_at IS NULL", (target_id, project_id)).fetchone()
+    return {field: row[field] for field in THREAD_NEW_FIELDS} if row else None
+
+
+def _title_taken(c: sqlite3.Connection, db: Any, project_id: str, title: str, own_id: str) -> bool:
+    return c.execute("SELECT 1 FROM v2_foreshadows WHERE project_id=? AND normalized_title=? AND archived_at IS NULL AND id<>?",
+                     (project_id, db._normalized_foreshadow_title(title), own_id)).fetchone() is not None
+
+
+def _threads_full(c: sqlite3.Connection, project_id: str) -> bool:
+    return c.execute("SELECT COUNT(*) FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL", (project_id,)).fetchone()[0] >= FORESHADOW_MAX_RECORDS
+
+
+def _planted_label(chapter: int | None, note: str) -> str:
+    return f"{_thread_label('planted', chapter)}：{note}"
+
+
+def propose_add_thread(ctx: ToolContext, args: dict[str, Any], target: dict[str, Any] | None) -> dict[str, Any]:
+    """A thread the text lays that the materials lack. It is planted where the earliest of its passages is (a resolved thread
+    closes at the latest)."""
+    evidence = evidence_of(ctx, args.get("evidence"), ACTIONS["add_thread"].evidence_required)
+    title = _text(args.get("title"), THREAD_TITLE_MAX)
+    value = _text(args.get("value"), THREAD_NOTE_MAX)
+    first = _earliest(evidence)
+    with ctx.db.connection() as c:
+        if _title_taken(c, ctx.db, ctx.project_id, title, ""):
+            raise ToolError("change_thread_exists")
+        if _threads_full(c, ctx.project_id):
+            raise ToolError("change_thread_limit_reached")
+        # Two threads of a card with the same title would collide when the card is written.
+        key = ctx.db._normalized_foreshadow_title(title)
+        for row in c.execute("SELECT after_json FROM assistant_changes WHERE task_id=? AND kind='add_thread'", (ctx.task["id"],)):
+            if ctx.db._normalized_foreshadow_title(json.loads(row["after_json"])["title"]) == key:
+                raise ToolError("change_duplicate")
+        chapter_id, span_id = _chapter_and_span(c, ctx.project_id, first)
+    after = {"title": title, "description": value, "value": value, "status": "planted", "planted_chapter_id": chapter_id, "planted_source_span_id": span_id}
+    return {"target_id": new_id("foreshadow"), "before": None, "after": after, "evidence": evidence,
+            "display": {"title": title, "before": "资料里没有", "after": _planted_label(first["chapter_number"], value)}}
+
+
+def write_new_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any] | None, user_id: str, stamp: str) -> None:
+    """Insert the thread (it is a new record of the work's foreshadowing, recorded as created); with None, archive it, as the
+    materials page does; with values for a thread archived that way, take it out of the archive again."""
+    row = c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=?", (target_id, project_id)).fetchone()
+    project = c.execute("SELECT foreshadow_version FROM v2_projects WHERE id=?", (project_id,)).fetchone()
+    if values is None and (row is None or row["archived_at"]):
+        return  # already out of the materials (the author archived it): nothing to take away
+    if (row and row["version"] >= MAX_RESOURCE_VERSION) or int(project["foreshadow_version"] or 0) >= MAX_RESOURCE_VERSION:
+        raise DomainError("foreshadow_version_limit", 409)
+    if values is not None and (row is None or row["archived_at"]) and _threads_full(c, project_id):
+        raise DomainError("foreshadow_limit_reached", 409)
+    if values is None:
+        c.execute("UPDATE v2_foreshadows SET archived_at=?,version=version+1,updated_at=? WHERE id=?", (stamp, stamp, target_id))
+        event = "archived"
+    elif row is None:
+        c.execute("INSERT INTO v2_foreshadows VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (target_id, project_id, values["title"], db._normalized_foreshadow_title(values["title"]), values["description"], values["status"],
+                   values["planted_chapter_id"], values["planted_source_span_id"], None, None, 1, None, stamp, stamp))
+        event = "created"
+    elif row["archived_at"]:
+        c.execute("UPDATE v2_foreshadows SET archived_at=NULL,version=version+1,updated_at=? WHERE id=?", (stamp, target_id))
+        event = "updated"
+    else:
+        raise DomainError("change_state_invalid", 409)
+    db._record_foreshadow_version(c, c.execute("SELECT * FROM v2_foreshadows WHERE id=?", (target_id,)).fetchone(), event, user_id, stamp)
+    c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?", (stamp, project_id))
+
+
+def clash_new_thread(c: sqlite3.Connection, db: Any, project_id: str, target_id: str, values: dict[str, Any]) -> bool:
+    """Whether the thread can no longer be written: the author has put a thread of the same title in the materials since the
+    card was made (or since an undo), or the work holds as many threads as it may."""
+    return _title_taken(c, db, project_id, values["title"], target_id) or _threads_full(c, project_id)
 
 
 # facts ---------------------------------------------------------------------------------------------------------------------
@@ -337,10 +497,17 @@ def propose_add_fact(ctx: ToolContext, args: dict[str, Any], target: dict[str, A
 
 
 ACTIONS: dict[str, Action] = {action.kind: action for action in (
-    Action("resolve_thread", "foreshadow", THREAD_FIELDS, propose_resolve_thread, read_thread, write_thread),
+    Action("resolve_thread", "foreshadow", THREAD_FIELDS, propose_resolve_thread, read_thread, write_thread, record_kind="foreshadow"),
     Action("change_fact", "fact", FACT_FIELDS, propose_change_fact, read_fact, write_fact, editable=True),
     Action("add_fact", None, FACT_FIELDS, propose_add_fact, read_fact, write_fact, creates=True, editable=True),
+    Action("add_thread", None, THREAD_NEW_FIELDS, propose_add_thread, read_new_thread, write_new_thread, creates=True, editable=True,
+           record_kind="foreshadow", clash=clash_new_thread),
+    Action("edit_thread", "foreshadow", THREAD_NOTE_FIELDS, propose_edit_thread, read_thread_note, write_thread_note, editable=True,
+           evidence_required=False, record_kind="foreshadow"),
+    Action("abandon_thread", "foreshadow", THREAD_FIELDS, propose_abandon_thread, read_thread, write_thread, risk="high",
+           evidence_required=False, record_kind="foreshadow"),
 )}
+THREAD_KINDS = tuple(kind for kind, action in ACTIONS.items() if action.record_kind == "foreshadow")
 
 
 # --- the tools ---------------------------------------------------------------------------------------------------------
@@ -361,8 +528,8 @@ def run_list_threads(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     return Outcome({"content_kind": "manuscript_text", "threads": items}, {}, len(items))
 
 
-def _same_new_record(a: dict[str, Any], b: dict[str, Any]) -> bool:
-    return all(normalize_memory_value(str(a[field])) == normalize_memory_value(str(b[field])) for field in FACT_FIELDS)
+def _same_new_record(a: dict[str, Any], b: dict[str, Any], fields: tuple[str, ...] = FACT_FIELDS) -> bool:
+    return all(normalize_memory_value(str(a[field])) == normalize_memory_value(str(b[field])) for field in fields)
 
 
 def _request_words(ctx: ToolContext, value: Any) -> str:
@@ -438,46 +605,41 @@ def numbers_in(text: str) -> set[int]:
 # ("只能手动锁" for "只作手动锁定"), and no count of shared characters tells the two apart: as a refusal the check stopped 57
 # proposals of 14 tasks that were asked for, against 10 where the author had it wrong (second pair, p40). So it holds the
 # item back for a second look, once, and the model decides.
+TITLE_SHARED = 3  # character pairs of the author's words a thread's title must hold for them to point at the thread
 AUTHOR_VALUE_MAX = 40
 AUTHOR_VALUE_FOUND = 0.5
-# An author who gives a thread up or wants a record gone asks for what this version cannot do; marking the thread resolved
-# is not that (A2 second formal run, w02-no-action-06: "把这条伏笔改为放弃" became a resolved thread).
-GIVE_UP = re.compile(r"放弃|不追|不要了|作废|删掉|删除|删了|去掉|撤掉|不打算用|不想留")
-# The piece of the author's sentence an item stands on (its clause) says what the author wants done with that record.
-# Asked only to read it ("那条请读全"), nothing is changed: the record that carried a hidden note was rewritten, note and all,
-# in three passes of three (A2 second pair, p41, injection-07). Asked about a fact in a fact's words ("改掉旧说法", "状态"),
-# the item is not a thread marked resolved (action-08). Over every card of every A2 run so far neither refuses an item that
-# was asked for (856 of them).
-READ_ONLY = re.compile(r"读全|读一遍|读完|看看|看一下|看一遍|看完|核对|核实|对一遍|说说|讲讲|查查|确认一下|回顾")
-CHANGE_WORDS = re.compile(r"改|更新|修正|订正|换|补|记|加|添|存|收|标|录|写|入|留|挪|移|填|调|结|销|退|删|放|去掉|跟上|撤|清|登|归|变成|别再|别停|别漏|别空")
-FACT_WORDS = re.compile(r"旧说法|说法|状态|资料|事实|那栏|那格|一栏|一格|记成|记录")
-THREAD_WORDS = re.compile(r"伏笔|线|疑问|谜|悬|问号|着落|收掉|收一收|回收|结清|吊着|挂着|查明|查清|解释|来路|缘故|原因")
-CLAUSE_BREAK = re.compile(r"[，。；！？,;!?]")
+# What a piece of the request list asks for, when it is not a change of the kind proposed on it.
+WANT_REFUSALS = {"look": "change_read_only", "delete": "change_give_up_not_resolve", "prose": "change_prose_not_fact"}
 
 
-def _clause(ctx: ToolContext, request_words: str) -> str:
-    """The clause of the author's sentence that holds the item's request words."""
-    question = _question(ctx)
-    start = question.find(request_words)
-    begin = max((m.end() for m in CLAUSE_BREAK.finditer(question, 0, start)), default=0)
-    end = next((m.start() for m in CLAUSE_BREAK.finditer(question, start + len(request_words))), len(question))
-    return question[begin:end]
+def _wrong_kind(want: str, action: Action) -> str:
+    """The refusal for a change of this kind on words that ask for `want`, when `want` has no refusal of its own: a fact asked
+    for and a thread proposed, a thread marked resolved asked for and a fact proposed, any other pair of kinds."""
+    if want == "fact" and action.record_kind == "foreshadow":
+        return "change_fact_not_thread"
+    if want == "resolve_thread" and action.record_kind == "fact":
+        return "change_thread_not_fact"
+    return "change_not_this_kind"
 
 
 def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: dict[str, Any], request_words: str) -> None:
     """What an item says must come from its evidence, and from the author only what the evidence bears out; what the author
-    asked done with the record must be a change of this kind."""
+    asked done with the record must be a change of this kind, by the request list (`assistant_requests`).
+
+    Until v2.1 word lists guessed the second from the author's clause (a give-up word, a read-only word, a fact word without a
+    thread word, a subject that names a sentence of the text); the request list says it of every piece of the sentence, and
+    they were taken out (v2.1 A, after the list held on every spent A2 pair). Words the list does not hold, or a task whose
+    split failed, are not refused on their kind."""
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
-    if action.creates and PROSE_SUBJECT.search(proposal["after"]["subject"]):
-        raise ToolError("change_prose_not_fact")
-    clause = _clause(ctx, request_words)
-    if READ_ONLY.search(clause) and not CHANGE_WORDS.search(clause):
-        raise ToolError("change_read_only")
-    if action.kind == "resolve_thread":
-        if GIVE_UP.search(_question(ctx)):
-            raise ToolError("change_give_up_not_resolve")
-        if FACT_WORDS.search(clause) and not THREAD_WORDS.search(clause):
-            raise ToolError("change_fact_not_thread")
+    want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+    # The list can take a thing in the story for a fact: "第10章寓言草稿旁的退休说明，请据实修正未递交的缘由" is about the thread
+    # "褚镜薰扣住的退休说明" (A2 regression tune1b, injection-05: three edits of the thread refused as "a fact, not a thread"). Words
+    # of the author's that the thread's own title holds point at the thread.
+    if want == "fact" and action.record_kind == "foreshadow" and len(_pairs(request_words) & _pairs(proposal["display"].get("title") or "")) >= TITLE_SHARED:
+        want = None
+    if want is not None:
+        raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
+    if action.record_kind == "foreshadow":
         return
     # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).
     subject = "".join(proposal["after"]["subject"].split())
@@ -544,7 +706,8 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
                            "是正文后来变了、旧的那条已经不对，就用 change_fact 改那条。")
     else:
         old = _pairs(proposal["before"]["value"])
-        if old and len(old & _pairs(after["value"])) / len(old) >= SECOND_LOOK_KEPT:
+        affirmed = "".join(part for part in CLAUSE_BREAK.split(after["value"]) if not NEGATED_CLAUSE.search(part))
+        if old and len(old & _pairs(affirmed)) / len(old) >= SECOND_LOOK_KEPT:
             look["current"] = proposal["display"]["before"]
             reasons.append("改后的内容大半还是这条事实原来的话。原来的话已经说了作者要的意思（只是简略些、措辞不同），就不要改，在回答里引用这条事实。")
     display = proposal["display"]
@@ -560,6 +723,35 @@ def _second_look(ctx: ToolContext, action: Action, args: dict[str, Any], proposa
     ctx.held_now += 1
     return {"status": "second_look", **look,
             "message": "这条改动还没有放进卡片。" + "".join(reasons) + "确实需要，就原样再提出一次，会放进卡片。"}
+
+
+ALIAS_RESTATED = 0.8  # share of a new fact's words that one fact of the full name (with its alias fact) holds
+FILLER = set("是的了在和与也就")
+
+
+def _said_under_full_name(ctx: ToolContext, after: dict[str, Any]) -> bool:
+    """A new fact under a nickname that a fact of the full name says already: "绛穗·身份：她是本案辩护人" beside 简迭微's
+    "本案辩护人" and her alias fact "别名绛穗" (A2 regression round 2, w01-no-01: held once, proposed again, put on the card).
+    Measured against one fact of the full name at a time, with the alias fact, so a full name with many facts does not cover
+    everything new."""
+    subject = "".join(ch for ch in after["subject"] if ch.isalnum())
+    facts = ctx.memory()
+    squeeze = lambda text: "".join(ch for ch in str(text or "") if ch.isalnum())
+    aliases = [fact for fact in facts if subject and subject in squeeze(fact["value"]) and squeeze(fact["subject"]) != subject]
+    if not aliases:
+        return False
+    names = set(subject) | {ch for fact in aliases for ch in squeeze(fact["subject"])}
+    said = {ch for ch in squeeze(after["value"]) if ch not in names and ch not in FILLER}
+    if len(said) < 3:
+        return False
+    for alias in aliases:
+        owner = squeeze(alias["subject"])
+        for fact in facts:
+            if fact is not alias and squeeze(fact["subject"]) == owner:
+                held = set(squeeze(fact["value"])) | set(squeeze(alias["value"]))
+                if len(said & held) / len(said) >= ALIAS_RESTATED:
+                    return True
+    return False
 
 
 def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
@@ -586,11 +778,14 @@ def run_propose_change(ctx: ToolContext, args: dict[str, Any]) -> Outcome:
     proposal["display"]["request_words"] = request_words
     for row in earlier:
         if row["target_id"] == proposal["target_id"] or (action.creates and row["kind"] == action.kind
-                                                         and _same_new_record(json.loads(row["after_json"]), proposal["after"])):
+                                                         and _same_new_record(json.loads(row["after_json"]), proposal["after"], action.fields)):
             raise ToolError("change_duplicate")
     shown = {"action": action.kind, "target": args.get("target") if action.target_kind else None, "evidence": [item["ref"] for item in proposal["evidence"]],
              "request_words": request_words}
-    look = _second_look(ctx, action, args, proposal, request_words)
+    # The second look weighs a fact item against the facts the materials hold; a thread item has none to be weighed against.
+    if action.kind == "add_fact" and _said_under_full_name(ctx, proposal["after"]):
+        raise ToolError("change_fact_already_recorded")
+    look = _second_look(ctx, action, args, proposal, request_words) if action.record_kind == "fact" else None
     if look is not None:
         return Outcome(look, shown, 0)
     ordinal = len(earlier) + 1
@@ -615,8 +810,7 @@ def _current(c: sqlite3.Connection, db: Any, row: Any) -> dict[str, Any] | None:
 
 def _target(c: sqlite3.Connection, row: Any) -> dict[str, Any]:
     """What the page needs to find the record: a thread's id, or a fact's lineage and its record in the current version."""
-    action = ACTIONS[row["kind"]]
-    if action.target_kind == "foreshadow":
+    if ACTIONS[row["kind"]].record_kind == "foreshadow":
         return {"kind": "foreshadow", "id": row["target_id"]}
     version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (row["project_id"],)).fetchone()[0]
     record = fact_at(c, row["project_id"], version, row["target_id"])
@@ -632,11 +826,12 @@ def change_view(c: sqlite3.Connection, db: Any, row: Any) -> dict[str, Any]:
     expected = json.loads(row["after_json"] if row["status"] == "applied" else row["before_json"])
     return {"id": row["id"], "label": f"C{row['ordinal']}", "task_id": row["task_id"], "kind": row["kind"], "target": _target(c, row),
             "title": display["title"], "before": display["before"], "after": display["after"], "editable": action.editable,
-            "request_words": display.get("request_words"),
-            "value": json.loads(row["after_json"]).get("value") if action.editable else None,
+            "request_words": display.get("request_words"), "risk": action.risk, "evidence_required": action.evidence_required,
+            "value":json.loads(row["after_json"]).get("value") if action.editable else None,
             "evidence": [{key: item[key] for key in ("chapter_number", "chapter_title", "start", "end", "text")} for item in json.loads(row["evidence_json"])],
             "status": row["status"], "edited_by_author": bool(row["edited_by_author"]),
-            "changed_since": None if row["status"] == "rejected" else not action.same(_current(c, db, row), expected),
+            "changed_since": None if row["status"] == "rejected" else (not action.same(_current(c, db, row), expected)
+                                                                      or (row["status"] in ("proposed", "undone") and _clashes(c, db, row))),
             "created_at": row["created_at"], "decided_at": row["decided_at"], "applied_at": row["applied_at"], "undone_at": row["undone_at"]}
 
 
@@ -657,34 +852,47 @@ def _reworded(c: sqlite3.Connection, row: Any, value: Any) -> Any:
     except ToolError as error:
         raise DomainError(error.code, 422) from error
     after = {**json.loads(row["after_json"]), "value": value}
-    display = {**json.loads(row["display_json"]), "after": _fact_label(c, after)}
+    if row["kind"] in THREAD_KINDS:
+        after["description"] = value  # a thread's note is what is written; `value` is what the card edits
+        planted = c.execute("SELECT chapter_number FROM v2_chapters WHERE id=?", (after.get("planted_chapter_id"),)).fetchone() if after.get("planted_chapter_id") else None
+        label = _planted_label(planted["chapter_number"] if planted else None, value) if row["kind"] == "add_thread" else value
+    else:
+        label = _fact_label(c, after)
+    display = {**json.loads(row["display_json"]), "after": label}
     c.execute("UPDATE assistant_changes SET after_json=?,display_json=?,edited_by_author=1 WHERE id=?",
               (json.dumps(after, ensure_ascii=False), json.dumps(display, ensure_ascii=False), row["id"]))
     return c.execute("SELECT * FROM assistant_changes WHERE id=?", (row["id"],)).fetchone()
 
 
 def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id: str, task_id: str, accepted: list[str] | None,
-           edits: dict[str, str] | None = None) -> dict[str, Any]:
-    """Apply the accepted items of a card, with any value the author reworded, and turn down the rest (`accepted` None: turn
-    down all). All or nothing: when any accepted item's target no longer holds the values the card was made against, or a
-    review of the facts is still open for a fact item, nothing is written."""
+           edits: dict[str, str] | None = None, within: list[str] | None = None) -> dict[str, Any]:
+    """Apply the accepted items of a card, with any value the author reworded. The items not accepted stay proposed, to be
+    confirmed later or turned down; only `accepted` None (不要) turns down all that still waits. All or nothing: when any
+    accepted item's target no longer holds the values the card was made against, or a review of the facts is still open for a
+    fact item, nothing is written. A long task's card is decided a group at a time: `within` names the group's items, and the
+    rest of the card waits."""
     db._project(c, user_id, project_id, True)
     task = c.execute("SELECT * FROM assistant_tasks WHERE id=? AND project_id=? AND hidden_at IS NULL", (task_id, project_id)).fetchone()
-    if not task or task["kind"] != "change":
+    if not task or task["kind"] not in ("change", "long") or (within is not None) != (task["kind"] == "long"):
         raise DomainError("resource_not_found", 404)
-    if task["status"] != "completed":
+    if task["status"] != "completed" and not (task["kind"] == "long" and task["status"] == "stopped"):
         raise DomainError("change_task_not_completed", 409)
     rows = c.execute("SELECT * FROM assistant_changes WHERE task_id=? AND status='proposed' ORDER BY ordinal", (task_id,)).fetchall()
+    if within is not None:
+        if not set(within) <= {row["id"] for row in rows}:
+            raise DomainError("invalid_item_selection", 422)
+        rows = [row for row in rows if row["id"] in within]
     if not rows:
         raise DomainError("change_already_decided", 409)
     chosen, edits = set(accepted or []), edits or {}
     if not chosen <= {row["id"] for row in rows} or not set(edits) <= chosen \
             or any(not ACTIONS[row["kind"]].editable for row in rows if row["id"] in edits):
         raise DomainError("invalid_item_selection", 422)
-    stale = [f"C{row['ordinal']}" for row in rows if row["id"] in chosen and not ACTIONS[row["kind"]].same(_current(c, db, row), json.loads(row["before_json"]))]
+    stale = [f"C{row['ordinal']}" for row in rows if row["id"] in chosen and (not ACTIONS[row["kind"]].same(_current(c, db, row), json.loads(row["before_json"]))
+                                                                            or _clashes(c, db, row))]
     if stale:
         raise DomainError("change_target_changed", 409, False, {"changes": stale})
-    if any(ACTIONS[row["kind"]].target_kind != "foreshadow" for row in rows if row["id"] in chosen):
+    if any(ACTIONS[row["kind"]].record_kind != "foreshadow" for row in rows if row["id"] in chosen):
         review = memory_review_open(c, db, project_id)
         if review:
             raise DomainError("change_memory_review_pending", 409, False, {"review": review})
@@ -696,10 +904,16 @@ def decide(c: sqlite3.Connection, db: Any, store: Any, user_id: str, project_id:
             ACTIONS[row["kind"]].write(c, db, project_id, row["target_id"], json.loads(row["after_json"]), user_id, stamp)
             c.execute("UPDATE assistant_changes SET status='applied',decided_at=?,applied_at=? WHERE id=?", (stamp, stamp, row["id"]))
             _event(c, row, "applied", user_id, stamp, {"edited_by_author": True} if row["id"] in edits else None)
-        else:
+        elif accepted is None:  # 不要: what was not written is turned down. After a partial confirm the rest keeps waiting (V02)
             c.execute("UPDATE assistant_changes SET status='rejected',decided_at=? WHERE id=?", (stamp, row["id"]))
             _event(c, row, "rejected", user_id, stamp)
     return store.view(c, c.execute("SELECT * FROM assistant_tasks WHERE id=?", (task_id,)).fetchone(), user_id)
+
+
+def _clashes(c: sqlite3.Connection, db: Any, row: Any) -> bool:
+    """Whether writing an item's values now would collide with what the materials hold (a thread of the same title)."""
+    action = ACTIONS[row["kind"]]
+    return action.clash is not None and action.clash(c, db, row["project_id"], row["target_id"], json.loads(row["after_json"]))
 
 
 def _owned_change(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_id: str) -> Any:
@@ -747,7 +961,7 @@ def redo(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_i
     row = _owned_change(c, db, user_id, project_id, change_id)
     if row["status"] != "undone":
         raise DomainError("change_state_invalid", 409)
-    if not ACTIONS[row["kind"]].same(_current(c, db, row), json.loads(row["before_json"])):
+    if not ACTIONS[row["kind"]].same(_current(c, db, row), json.loads(row["before_json"])) or _clashes(c, db, row):
         raise DomainError("change_target_changed", 409, False, {"changes": [f"C{row['ordinal']}"]})
     stamp = utcnow()
     ACTIONS[row["kind"]].write(c, db, project_id, row["target_id"], json.loads(row["after_json"]), user_id, stamp)
@@ -756,12 +970,62 @@ def redo(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, change_i
     return {"changes": [change_view(c, db, c.execute("SELECT * FROM assistant_changes WHERE id=?", (row["id"],)).fetchone())]}
 
 
-def ledger(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, limit: int) -> dict[str, Any]:
-    """The changes the author confirmed (applied, or undone since), the latest first; the page lists them with undo."""
+def adoption_view(row: Any) -> dict[str, Any]:
+    """One adopted (or since un-adopted) proposal of a fix_issue task, as an entry of the ledger. Undoing an adoption only
+    records it: the author's draft is not touched."""
+    adopted = row["status"] == "adopted"
+    after = (row["after_edited"] or row["after"]) if adopted else (row["undone_after"] or row["after"])
+    return {"entry": "adoption", "id": row["id"], "label": f"P{row['ordinal']}", "task_id": row["task_id"], "kind": row["kind"],
+            "chapter_number": row["chapter_number"], "before": row["before"], "after": after, "edited_by_author": after != row["after"],
+            "status": "adopted" if adopted else "undone", "adopted_at": row["decided_at"] if adopted else None, "undone_at": row["undone_at"]}
+
+
+# The ledger lists two kinds of entry in one order: the time something was last done (applied or undone), an adoption before the changes on the same instant,
+# adoptions on the same instant, the later row first. A page is asked for by the position of the last entry of the page before it
+# (`before`), never by a count: an undo or a redo moves an entry to the top, and a count would then skip or repeat entries.
+LEDGER_SOURCES = (
+    ("c", "assistant_changes", "COALESCE(undone_at,applied_at)", "status IN ('applied','undone')"),
+    ("p", "assistant_proposals", "COALESCE(undone_at,decided_at)",
+     "(status='adopted' OR undone_at IS NOT NULL) AND kind IN ('edit_this','add_setup') AND task_id IN (SELECT id FROM assistant_tasks WHERE project_id=?)"),
+)
+
+
+def _cursor(before: str | None) -> tuple[str, str, int] | None:
+    if not before:
+        return None
+    try:
+        stamp, source, rowid = json.loads(base64.urlsafe_b64decode(before.encode("ascii")).decode("utf-8"))
+        if not (isinstance(stamp, str) and source in ("c", "p") and isinstance(rowid, int)):
+            raise ValueError
+        return stamp, source, rowid
+    except (ValueError, TypeError, UnicodeError):
+        raise DomainError("invalid_request", 400) from None
+
+
+def _cursor_text(stamp: str, source: str, rowid: int) -> str:
+    return base64.urlsafe_b64encode(json.dumps([stamp, source, rowid]).encode("utf-8")).decode("ascii")
+
+
+def ledger(c: sqlite3.Connection, db: Any, user_id: str, project_id: str, limit: int, before: str | None = None) -> dict[str, Any]:
+    """What the author confirmed or adopted (applied or adopted, or undone since), the latest first, one page of `limit`; `next`
+    is what to pass as `before` for the page after it (None when this is the last). The page lists them with undo."""
     db._project(c, user_id, project_id)
-    rows = c.execute("SELECT * FROM assistant_changes WHERE project_id=? AND status IN ('applied','undone') "
-                     "ORDER BY COALESCE(undone_at,applied_at) DESC,rowid DESC LIMIT ?", (project_id, limit)).fetchall()
-    return {"changes": [change_view(c, db, row) for row in rows]}
+    cursor = _cursor(before)
+    found: list[tuple[str, str, int, Any]] = []
+    for source, table, stamp, where in LEDGER_SOURCES:
+        params: list[Any] = [project_id]
+        sql = f"SELECT rowid AS rid,{stamp} AS at,* FROM {table} WHERE " + (where if "?" in where else f"project_id=? AND {where}")
+        if cursor:
+            # strictly after the cursor in the order below: an earlier time, or the same time and a later place in the order
+            sql += f" AND ({stamp}<? OR ({stamp}=? AND (?>? OR (?=? AND rowid<?))))"
+            params += [cursor[0], cursor[0], cursor[1], source, cursor[1], source, cursor[2]]
+        sql += f" ORDER BY {stamp} DESC,rowid DESC LIMIT ?"
+        found += [(row["at"], source, row["rid"], row) for row in c.execute(sql, (*params, limit + 1)).fetchall()]
+    found.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
+    page = found[:limit]
+    entries = [{**change_view(c, db, row), "entry": "change"} if source == "c" else adoption_view(row) for _, source, _, row in page]
+    more = len(found) > limit
+    return {"changes": entries, "next": _cursor_text(*page[-1][:3]) if more and page else None}
 
 
 # --- routes ---------------------------------------------------------------------------------------------------------------
@@ -822,7 +1086,7 @@ def register_routes(app: Any, db: Any, user: Callable, csrf: Callable, key: Call
                      lambda c, actor: redo(c, db, actor["id"], project_id, change_id), f"{project_id}:{change_id}")
 
     @app.get(base + "/changes")
-    def list_changes(project_id: str, request: Request, limit: int = LEDGER_LIMIT):
+    def list_changes(project_id: str, request: Request, limit: int = LEDGER_LIMIT, before: str | None = None):
         actor = user(request)
         with db.connection() as c:
-            return ok(request, ledger(c, db, actor["id"], project_id, max(1, min(limit, LEDGER_LIMIT))))
+            return ok(request, ledger(c, db, actor["id"], project_id, max(1, min(limit, LEDGER_LIMIT)), before))

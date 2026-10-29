@@ -1,0 +1,571 @@
+{
+  "version": "a3-1",
+  "set_id": "a3-dev",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "把空拍留在桌上",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "唐见禾",
+        "禾灯",
+        "许砚弥",
+        "弥弥",
+        "陆泊弦",
+        "弦哥",
+        "庄予栖",
+        "闻筱旻",
+        "江越葵",
+        "柏时骏",
+        "方南汐",
+        "谢临荔",
+        "郁知遐",
+        "廖承朔",
+        "澄络市",
+        "晏汀大学",
+        "声隙编辑部",
+        "槐序楼",
+        "苇屏室",
+        "苔点录音机",
+        "折翼监听耳机",
+        "双格样本盘",
+        "把停顿留给你",
+        "下一句等你"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第31章 把桌面空出来",
+        "body": "唐见禾到活动室时，窗玻璃上还挂着没擦净的水珠。昨夜的雨把窗台冲得很亮，她拿纸巾抹了一下，又将被风卷到窗边的试听单压回书底。单子背面有人画了一把歪斜的椅子，不像留言，也不像给谁的示意图。她没去猜，把有画的那面朝上放好，替后来的人留了一处能看见的地方。\n\n庄予栖推着小车从走廊进来，车上的纸箱很轻，遇到地砖接缝却仍咯噔一响。唐见禾起身去接，庄予栖让她先把门边散开的线拢好。两个人弯腰忙了一会儿，才发现门旁原来还能空出这么宽的一块地方。她们将小车贴墙停下，谁也没有急着拆箱。\n\n许砚弥比约好的时间稍晚，进门先问能不能让她坐着喘口气。她一路追着公交车跑，头发被风吹进衣领，手里那袋早餐倒护得完整。唐见禾递过去一张纸，许砚弥擦完额头，才想起包里还有昨晚没发出的几条回复。她把手机屏幕朝下扣住，决定吃完再看。\n\n陆泊弦带来的折翼监听耳机挂在包外。他先把耳机放到椅面，拿着饭团问哪里能坐，方南汐便将自己的电脑挪开。电脑上是一页还没保存的随手笔记，只有几行短句，中间空着很大的间隔。陆泊弦看见那些空白，没问是不是漏了什么，找了个不挡门的位置坐下。\n\n唐见禾把苔点录音机留在自己的包里，只将一张空白听写纸铺在桌面上。许砚弥望了一眼那张纸，问今天第一件事是什么。她想了想，说先听大家讲昨夜回去以后还惦记着什么。庄予栖翻开本子，又合上，觉得有些话也许不必在别人开口前就替它准备一个格子。\n\n闻筱旻拎着一盆小辣椒赶到，解释这是宿舍阳台分出来的，暂时找不到能晒到太阳的地方。盆底包了两层旧报纸，她小心揭开外面那层，还是有泥掉到桌沿。谢临荔拿来扫帚，廖承朔把早餐往里挪，几个人为了一小撮泥忙得互相让路。闻筱旻笑着说，早知道会这么兴师动众，就该留在自己窗边。\n\n江越葵最后放下背包时，窗台已经腾出了一格。她把小辣椒挪到光里，回头看见唐见禾仍站在空纸旁，便问是不是可以开始。走廊的脚步声不断经过，屋里没人抢着报进度。唐见禾将笔横放在纸上，等大家把嘴里的那口早餐慢慢咽下去。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a3d-trace-01",
+      "suite": "trace",
+      "work": "w01",
+      "request": "苔点录音机这一路到底归谁拿着？从头到尾挨章找找，前后打架的地方也单独列出来。",
+      "context": {
+        "page": "overview"
+      },
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 1,
+      "allowed_actions": [],
+      "why": "整本追踪同一设备的五次保管状态，并核对原始铭牌的两说；只交有出处的报告，不改资料。"
+    },
+    {
+      "id": "a3d-trace-02",
+      "suite": "trace",
+      "work": "w01",
+      "request": "帮我把折翼监听耳机从借出到归还这一程翻完，谁接给谁、有哪句互相顶着，都带上出处。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 30
+      },
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 2,
+      "allowed_actions": [],
+      "why": "全书五个交接节点跨二十八章，原装耳罩两说须单列为矛盾，报告不替作者选择图案。"
+    },
+    {
+      "id": "a3d-thread-01",
+      "suite": "thread_audit",
+      "work": "w01",
+      "request": "那些还吊着的线都替我过一遍，已经讲透的给个结束卡，明确不要追的也别继续挂着。",
+      "context": {
+        "page": "materials"
+      },
+      "scope": null,
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 一格不是一个人"
+          ],
+          "evidence_quotes": [
+            "文件名尾部的空白只是导出程序留下的保留位，并没有少掉一位受访者。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第18章"
+          ],
+          "evidence_chapters": [
+            "第18章 两声之间"
+          ],
+          "evidence_quotes": [
+            "试录里重复的两下提示音来自自助打印机，现场复现已对上原来的节奏。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "收在第27章"
+          ],
+          "evidence_chapters": [
+            "第27章 勘误纸的背面"
+          ],
+          "evidence_quotes": [
+            "方南汐承认那张匿名勘误纸是她写的，原始草稿也核对得上。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 4,
+          "after_points": [
+            "已放弃",
+            "后续不再查旧广播开场者"
+          ],
+          "evidence_chapters": [
+            "第19章 不必找到每个人"
+          ],
+          "evidence_quotes": [
+            "大家决定不再寻找旧食堂广播里那位开场者，这条线就此放弃，不再续查。"
+          ]
+        }
+      ],
+      "why": "全书三条已经回收但资料未标、一条正文放弃均应出卡；四条仍开放及一条已正确标记的不能再改。"
+    },
+    {
+      "id": "a3d-thread-02",
+      "suite": "thread_audit",
+      "work": "w01",
+      "request": "就看第十二到第二十章，里面先前挖的坑哪些已有着落、哪些说好不追了？给我相应的状态卡。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 12
+      },
+      "scope": [
+        12,
+        20
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "收在第12章"
+          ],
+          "evidence_chapters": [
+            "第12章 一格不是一个人"
+          ],
+          "evidence_quotes": [
+            "文件名尾部的空白只是导出程序留下的保留位，并没有少掉一位受访者。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第18章"
+          ],
+          "evidence_chapters": [
+            "第18章 两声之间"
+          ],
+          "evidence_quotes": [
+            "试录里重复的两下提示音来自自助打印机，现场复现已对上原来的节奏。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 4,
+          "after_points": [
+            "已放弃",
+            "后续不再查旧广播开场者"
+          ],
+          "evidence_chapters": [
+            "第19章 不必找到每个人"
+          ],
+          "evidence_quotes": [
+            "大家决定不再寻找旧食堂广播里那位开场者，这条线就此放弃，不再续查。"
+          ]
+        }
+      ],
+      "why": "范围内发生的回收是第十二、十八章两条，放弃是第十九章一条；第二十七章回收虽属全书考点仍在范围外。"
+    },
+    {
+      "id": "a3d-tidy-01",
+      "suite": "tidy",
+      "work": "w01",
+      "request": "前十章的日程、场地、分工、经费和采编规矩跟资料对一趟，该补的补、变过的更新，同义的别重复。",
+      "context": {
+        "page": "materials"
+      },
+      "scope": [
+        1,
+        10
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "庄予栖",
+            "predicate": "授权接收条件"
+          },
+          "after_points": [
+            "仅受理当事人亲自确认的书面许可"
+          ],
+          "evidence_chapters": [
+            "第4章 不能替人点头"
+          ],
+          "evidence_quotes": [
+            "庄予栖只接收受访者亲自确认的文字授权，不把口头转告当作授权。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "闻筱旻",
+            "predicate": "私人来电处理规则"
+          },
+          "after_points": [
+            "来电原档禁止放入团队共享文件夹"
+          ],
+          "evidence_chapters": [
+            "第5章 借还不是一句话"
+          ],
+          "evidence_quotes": [
+            "闻筱旻规定私人来电的原始录音不得上传到编辑部的共享目录。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "声隙编辑部",
+            "predicate": "公开样本长度上限"
+          },
+          "after_points": [
+            "默认单段最多一分半",
+            "想放更长须另征同意"
+          ],
+          "evidence_chapters": [
+            "第6章 改一顿饭的时间"
+          ],
+          "evidence_quotes": [
+            "毕业特刊每段公开样本最长九十秒，超出的部分必须重新取得同意。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "方南汐",
+            "predicate": "文字转写职责"
+          },
+          "after_points": [
+            "对外片段由方南汐转成文字",
+            "文字稿逐段交受访者认可"
+          ],
+          "evidence_chapters": [
+            "第7章 一张转写纸"
+          ],
+          "evidence_quotes": [
+            "方南汐负责全部公开样本的文字转写，成稿由受访者逐段确认。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "谢临荔",
+            "predicate": "外借电量核验"
+          },
+          "after_points": [
+            "设备借走之前由谢临荔查验余电",
+            "借用者在现场认可电量结果"
+          ],
+          "evidence_chapters": [
+            "第8章 晚饭后的试听"
+          ],
+          "evidence_quotes": [
+            "谢临荔在每次设备外借前核对电池，借用人当面确认剩余电量。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "声隙编辑部",
+            "predicate": "外采交通费用来源"
+          },
+          "after_points": [
+            "外采车费从社团专款列支",
+            "受访者无须预先出钱"
+          ],
+          "evidence_chapters": [
+            "第9章 谁先垫了车费"
+          ],
+          "evidence_quotes": [
+            "毕业特刊的交通费用走学生社团专项经费，不由受访者垫付。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "固定碰头改为周三晚餐之后",
+            "原定周二中午取消"
+          ],
+          "evidence_chapters": [
+            "第6章 改一顿饭的时间"
+          ],
+          "evidence_quotes": [
+            "声隙编辑部的固定碰头会改到每周三晚饭后，周二午休不再开会。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "往后正式试听只用苇屏室",
+            "槐序楼二楼退出试听安排"
+          ],
+          "evidence_chapters": [
+            "第8章 晚饭后的试听"
+          ],
+          "evidence_quotes": [
+            "今后的正式试听统一改在苇屏室，槐序楼二层不再承接试听。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "江越葵接手最终混音",
+            "陆泊弦只承担外出采音"
+          ],
+          "evidence_chapters": [
+            "第10章 把最后一轨交出去"
+          ],
+          "evidence_quotes": [
+            "终混从今天起由江越葵负责，陆泊弦只做外采，不再兼做终混。"
+          ]
+        }
+      ],
+      "why": "前十章恰含六项未记规则和三项已改安排；大三学籍、领还职责与导师无投票权仅换说法，不应新增。"
+    },
+    {
+      "id": "a3d-ask-01",
+      "suite": "ask",
+      "work": "w01",
+      "request": "第十一到第十三章涉及特刊名字的地方都帮我核一遍，给我一份对照结论，别漏掉报名页那边。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 11
+      },
+      "scope": [
+        11,
+        13
+      ],
+      "author_replies": {
+        "decision": "选 a，采用《把停顿留给你》，只统一叙述。"
+      },
+      "decision_point": 1,
+      "expected_actions": [],
+      "why": "同一次首次正式报名页的题名两说且都否认改名，正文无过渡，须问作者选用哪说，答复只统一叙述无需资料卡。"
+    },
+    {
+      "id": "a3d-ask-02",
+      "suite": "ask",
+      "work": "w01",
+      "request": "第二十三到第二十五章跟第一次公开播放有关的预约安排，前后替我对一遍，最后给我一个能照着用的说明。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 23
+      },
+      "scope": [
+        23,
+        25
+      ],
+      "author_replies": {
+        "decision": "选 b，首播叙述按周日下午两点，资料不动。"
+      },
+      "decision_point": 2,
+      "expected_actions": [],
+      "why": "同一次首次公开播放的最初预约分别落周六和周日，无法从文本挑真值；作者选周日仅用于叙述，无可对应的初始资料项。"
+    },
+    {
+      "id": "a3d-narrowed-01",
+      "suite": "narrowed",
+      "work": "w01",
+      "request": "先把全书没结的那些线都翻出来，已经写完的、明确不要续的分别给状态卡，计划出来我再选章。",
+      "context": {
+        "page": "overview"
+      },
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          18,
+          20
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "收在第18章"
+          ],
+          "evidence_chapters": [
+            "第18章 两声之间"
+          ],
+          "evidence_quotes": [
+            "试录里重复的两下提示音来自自助打印机，现场复现已对上原来的节奏。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 4,
+          "after_points": [
+            "已放弃",
+            "后续不再查旧广播开场者"
+          ],
+          "evidence_chapters": [
+            "第19章 不必找到每个人"
+          ],
+          "evidence_quotes": [
+            "大家决定不再寻找旧食堂广播里那位开场者，这条线就此放弃，不再续查。"
+          ]
+        }
+      ],
+      "allowed_actions": [],
+      "why": "初始全书计划被作者缩到第十八至二十章后，只能给第二条回收和第四条放弃出卡，不能沿用全书四张。"
+    },
+    {
+      "id": "a3d-route-01",
+      "suite": "route",
+      "work": "w01",
+      "input": "苔点录音机换来换去我绕晕了，整本翻一遍，给我它的交接经过和对不上的点。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "long_task",
+      "why": "跨全书执行追踪并交报告，检索范围和产物明确，须进入长任务计划。"
+    },
+    {
+      "id": "a3d-route-02",
+      "suite": "route",
+      "work": "w01",
+      "input": "从头查到结尾，所有没收的线给我分一下：确实还悬着、写完了、已经不要了。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "long_task",
+      "why": "要求从头到尾核整本的伏笔状态，是多章审阅执行，口语表达仍应进入长任务。"
+    },
+    {
+      "id": "a3d-route-03",
+      "suite": "route",
+      "work": "w01",
+      "input": "匿名嘉宾的真名到底传到过谁耳朵里？全书逐处核对，最后交一份带出处的知情时间表。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 29
+      },
+      "expected_route": "long_task",
+      "why": "问题后明确要求逐处执行全书核对并交知情时间表，不是只向助手询问做法。"
+    },
+    {
+      "id": "a3d-route-04",
+      "suite": "route",
+      "work": "w01",
+      "input": "开个全书资料核对任务，列计划让我看过再走，遗漏和过期的分开出卡。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "long_task",
+      "why": "明确启动全书资料核对、先审计划再执行，虽要卡片也不是单条即时修改。"
+    },
+    {
+      "id": "a3d-route-05",
+      "suite": "route",
+      "work": "w01",
+      "input": "把第六章刚定的碰头时段替换进那条旧记录，就动这一项。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "范围锁定一条现有日程事实，只需针对性提议修改，不必启动全书任务。"
+    },
+    {
+      "id": "a3d-route-06",
+      "suite": "route",
+      "work": "w01",
+      "input": "第十二章文件名空位的缘由已经揭开，给这条伏笔补个结束状态。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "已指明单条伏笔及已知回收依据，意图是这一项状态修改，未要求跨书查漏。"
+    },
+    {
+      "id": "a3d-route-07",
+      "suite": "route",
+      "work": "w01",
+      "input": "要是把整本的知情顺序弄成时间表，大概得分哪几步？我先问问做法。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "虽提到整本和时间表，但只问方法并未授权执行，应该答步骤而非开长任务。"
+    },
+    {
+      "id": "a3d-route-08",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一小段会跟前文打架吗？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "资料页没有正文选区可核，本句是一般询问，不能臆造待检查段落。"
+    },
+    {
+      "id": "a3d-route-09",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一小段会跟前文打架吗？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 31,
+        "selection": "唐见禾把苔点录音机留在自己的包里，只将一张空白听写纸铺在桌面上。"
+      },
+      "expected_route": "check_passage",
+      "why": "同句出现在写作页并带草稿完整句选区，此时要检查选中段落的连续性。"
+    },
+    {
+      "id": "a3d-route-10",
+      "suite": "route",
+      "work": "w01",
+      "input": "我准备写下一章，先把此刻人物处境和没讲完的事提醒我一下。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "recap",
+      "why": "写作前回顾当前人物状态和未完线索，即使在总览页也属于续写前提醒。"
+    }
+  ]
+}

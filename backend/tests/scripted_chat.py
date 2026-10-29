@@ -73,6 +73,9 @@ class ScriptedChatProvider:
     model_label = "scripted-assistant"
     assistant_model = "scripted-assistant"
 
+    def model_for(self, role: str) -> str:
+        return self.assistant_model
+
     def __init__(self, turns: list[Any] | None = None):
         self.turns = list(turns or [])
         self.calls: list[dict[str, Any]] = []
@@ -90,7 +93,7 @@ class ScriptedChatProvider:
         self.route_calls = []
         return self
 
-    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int) -> ChatResult:
+    def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int, role: str | None = None) -> ChatResult:
         self.route_calls.append({"messages": copy.deepcopy(messages), "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
         if not self.route_turns:
             raise AssertionError("the judgement was asked for more answers than were scripted")

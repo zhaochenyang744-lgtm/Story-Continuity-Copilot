@@ -11,10 +11,11 @@ import { active } from "./assistant-parts";
 
 /** The uses a task can be started as; `out_of_scope` starts nothing. */
 export type Use = Exclude<AssistantRoute, "out_of_scope">;
-export const USE_LABEL: Record<Use, string> = { ask: "问作品", recap: "写前回顾", fix_issue: "帮我改这一处", check_passage: "查前文矛盾", change: "改资料" };
+export const USE_LABEL: Record<Use, string> = { ask: "问作品", recap: "写前回顾", fix_issue: "帮我改这一处", check_passage: "查前文矛盾", change: "改资料", long_task: "长任务" };
 export const CHECK_QUESTION = "这段和前文有没有矛盾？";
-/** The judgement is waited for this long; after it the sentence is an ordinary question. */
-export const ROUTE_WAIT_MS = 8000;
+/** The judgement is waited for this long; after it the sentence is an ordinary question (问作品), and the line above its answer says so. */
+export const ROUTE_WAIT_MS = 15000;
+export const ROUTE_TIMED_OUT = "没等到判断，按问作品处理";
 export const OUT_OF_SCOPE_LOCAL = "这和作品无关，助手只回答这部作品里的事。";
 
 /** A task about to be created: the same request the manual modes send, plus how the use was chosen. */
@@ -28,13 +29,13 @@ export type NewTask = {
 };
 
 /** Ask the server which use `input` asks for. Anything but a clear answer in time is an unsure `ask`. */
-export async function routeInput(projectId: string, input: string, context: AssistantContextInput): Promise<AssistantRouting> {
+export async function routeInput(projectId: string, input: string, context: AssistantContextInput): Promise<AssistantRouting & { timedOut?: boolean }> {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), ROUTE_WAIT_MS);
   try {
     return await json<AssistantRouting>(`/projects/${projectId}/assistant/route`, "POST", { input, context }, controller.signal);
   } catch {
-    return { route: "ask", source: "model", unsure: true };
+    return { route: "ask", source: "model", unsure: true, timedOut: controller.signal.aborted };
   } finally { window.clearTimeout(timer); }
 }
 
@@ -45,13 +46,15 @@ export function taskFor(use: Use, input: string, context: AssistantContextInput,
   if (use === "recap") return { kind: "recap", context: { page: "writing" } };
   if (use === "fix_issue") return plain.issue_id ? { kind: "fix_issue", ...(input ? { question: input } : {}), context: { page: "writing", issue_id: plain.issue_id } } : null;
   if (use === "change") return input ? { kind: "change", question: input, context: plain } : null;
+  // A long task takes the page and the chapter in view and nothing else (the server refuses any other field).
+  if (use === "long_task") return input ? { kind: "long", question: input, context: { page: plain.page, ...(plain.chapter_number != null ? { chapter_number: plain.chapter_number } : {}) } } : null;
   if (use === "check_passage") return plain.selection ? { kind: "ask", question: CHECK_QUESTION, context: { ...plain, intent: "check_selection" } } : null;
   return input ? { kind: "ask", question: input, context: plain, followUpOf: followUpOf ?? null } : null;
 }
 
 /** The use a task was started as. */
 export const usageOf = (task: AssistantTask): Use =>
-  task.kind === "recap" ? "recap" : task.kind === "fix_issue" ? "fix_issue" : task.kind === "change" ? "change" : task.context.intent === "check_selection" ? "check_passage" : "ask";
+  task.kind === "recap" ? "recap" : task.kind === "fix_issue" ? "fix_issue" : task.kind === "change" ? "change" : task.kind === "long" ? "long_task" : task.context.intent === "check_selection" ? "check_passage" : "ask";
 
 export type RerouteControl = {
   /** The other uses this task's sentence can be sent as here. */
@@ -64,29 +67,36 @@ export type RerouteControl = {
 };
 export const RerouteContext = createContext<RerouteControl | null>(null);
 
-/** 按「写前回顾」处理 · 改成 ▾ — at the top of a task the box chose the use of. While the task waits or runs, changing it stops it
+/** The use the task started as, in the words of the line above its answer: a task whose use the author changed by hand says so. A task the box
+    chose the use of needs no line: the line above says what it is. */
+export function routedLead(task: AssistantTask, timedOut: boolean): string {
+  const current = USE_LABEL[usageOf(task)];
+  return task.routed && timedOut ? ROUTE_TIMED_OUT : current;
+}
+
+/** 按「写前回顾」处理: only when the author changed the use in the 改成 menu, so it is not the one the box judged. */
+export function ChosenLine({ task }: { task: AssistantTask }) {
+  if (!task.routed || task.route_source !== "manual" || task.status === "cancelled") return null;
+  return <p className="a-routed" data-testid="routed-line">按「{USE_LABEL[usageOf(task)]}」处理<span className="a-routed-by"> · 你改成的</span></p>;
+}
+
+/** ⋯ at the right end of the line above an answer: 改成 …, for a task the box chose the use of. While the task waits or runs, changing it stops it
     and gives its characters back; once it is over, changing it sends the sentence again and is charged like any task. */
-export function RoutedLine({ task }: { task: AssistantTask }) {
+export function RerouteMenu({ task }: { task: AssistantTask }) {
   const control = useContext(RerouteContext);
   if (!task.routed || !control || task.status === "cancelled") return null;
   const current = usageOf(task);
   const options = control.options(task).filter((use) => use !== current);
   const live = active(task);
+  if (!options.length) return null;
   return (
-    <p className="a-routed" data-testid="routed-line">
-      <span className="a-routed-use">按「{USE_LABEL[current]}」处理</span>
-      {options.length > 0 && (
-        <>
-          <Menu label="改成" buttonLabel="改成别的用法">
-            {options.map((use) => (
-              <button key={use} type="button" role="menuitem" disabled={!live && Boolean(control.blocked)} title={!live && control.blocked ? control.blocked : undefined}
-                onClick={() => control.change(task, use)}>{USE_LABEL[use]}</button>
-            ))}
-          </Menu>
-          {!live && <span className="a-hint">{control.cost}</span>}
-        </>
-      )}
-    </p>
+    <Menu label="⋯" buttonLabel="改成别的用法" dots>
+      <span className="menu-head" aria-hidden="true">改成</span>
+      {options.map((use) => (
+        <button key={use} type="button" role="menuitem" aria-label={USE_LABEL[use]} aria-description={!live && control.cost ? control.cost : undefined} disabled={!live && Boolean(control.blocked)} title={!live && control.blocked ? control.blocked : undefined}
+          onClick={() => control.change(task, use)}>{USE_LABEL[use]}{!live && <span className="a-hint"> {control.cost}</span>}</button>
+      ))}
+    </Menu>
   );
 }
 

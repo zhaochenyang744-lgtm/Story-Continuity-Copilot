@@ -31,10 +31,12 @@ from app.config import AppPaths
 from app.main import create_app
 from app.provider import DeepSeekProvider, ProviderDispatchDenied
 from app.stage13 import Stage13Settings
+from ..models import REGISTERED_MODELS
 from .judge import Judge, grade
 from .score import refresh, audit, markdown, SPENT_FORMAL_SETS, SPENT_GATE_DECISION
 
-RETRY_ERRORS = {'provider_timeout', 'provider_unavailable', 'provider_error'}
+# The product names a failed model call provider_failure (A2 addendum 9: it is the registered provider_error).
+RETRY_ERRORS = {'provider_timeout', 'provider_unavailable', 'provider_error', 'provider_failure'}
 CONFLICTS = {'confirmed_conflict', 'possible_conflict'}
 WRITE_LOCK = threading.RLock()
 
@@ -59,7 +61,10 @@ def settings(price):
         visitor_provider_attempts=30, registered_provider_attempts=100000, visitor_budget_cny=1, registered_budget_cny=100000,
         input_cny_per_million=price[0], output_cny_per_million=price[1], recovery_hash_secret=os.urandom(32),
         reset_base_url='http://127.0.0.1:3080', test_mode=True, registered_check_chars=10000000,
-        registered_imports=100000, assistant_rollout='all')
+        registered_imports=100000, assistant_rollout='all',
+        # Like the limits above, the per-work daily token limit is the service's guard, not what is measured: a formal pair asks
+        # some forty change questions of one work, each read three times (A2 fifth formal run, 2026-10-27).
+        assistant_project_token_limit=1_000_000_000)
 
 
 class Ledger:
@@ -237,7 +242,8 @@ def preflight(args, provider, output=None):
         if args.only is not None: raise ValueError('formal_only_forbidden')
         if git('status', '--porcelain', '--', 'backend/app', 'evaluation/assistant_a1', 'evaluation/assistant_a1b', 'evaluation/assistant_a1c'):
             raise ValueError('formal_dirty_code_forbidden')
-    if not provider.available or provider.assistant_model != 'deepseek-flash' or provider.model != 'deepseek-flash':
+    if (not provider.available or provider.model != 'deepseek-flash'
+            or any(provider.model_for(role) != model for role, model in REGISTERED_MODELS.items())):
         raise ValueError('assistant_model_configuration_invalid')
     if args.judge_model != 'deepseek-v4-pro': raise ValueError('judge_model_configuration_invalid')
     if not math.isfinite(args.max_cny) or args.max_cny <= 0: raise ValueError('max_cny_invalid')
@@ -302,7 +308,7 @@ class Work:
         self.persist = lambda: write_json(self.state_path, state)
         self.persist()
         self.app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / 'protected'), provider=provider,
-                              executor=lambda fn, *args: fn(*args), settings=settings(price))
+                              executor=lambda fn, *args: fn(*args), settings=self.settings_for(price))
         self.client = TestClient(self.app)
         self.client.timeout = httpx.Timeout(180)
         self.project = self.lengths = None
@@ -316,6 +322,10 @@ class Work:
         except BaseException:
             self.close()
             raise
+
+    def settings_for(self, price):
+        """The product settings of this work's app (A3's work keeps a larger character quota)."""
+        return settings(price)
 
     def request(self, method, path, **kwargs):
         return response_data(self.response(method, path, **kwargs))
@@ -465,8 +475,10 @@ class Work:
                         'retryable': response.status_code >= 500,
                         'elapsed_seconds': elapsed}
             result = payload.get('data', payload)
+            # A use added after A1c was registered (change in v2.0, long_task in v2.1) is a judgement like any other: on an A1c
+            # item it is a wrong route, not a broken response.
             if (not isinstance(result, dict) or result.get('route') not in
-                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope'}
+                    {'ask', 'fix_issue', 'recap', 'check_passage', 'out_of_scope', 'change', 'long_task'}
                     or result.get('source') not in {'rule', 'model'} or type(result.get('unsure')) is not bool):
                 return {'status': 'failed', 'error_code': 'route_schema_invalid', 'retryable': False,
                         'elapsed_seconds': elapsed}
@@ -629,6 +641,7 @@ def execute(args, dataset, provider, judge, ledger, out):
     expected = [{'set': name, 'id': t['id'], 'suite': t['suite']} for name, t in tasks]
     fingerprint = {'sets': names, 'runs': args.runs, 'only': args.only, 'git_commit': git('rev-parse', 'HEAD'),
         'prompt_version': ASSISTANT_PROMPT_VERSION, 'assistant_model': provider.assistant_model, 'model': provider.model,
+        'models': {role: provider.model_for(role) for role in REGISTERED_MODELS},
         'judge_model': args.judge_model, 'assistant_rates': list(args.assistant_rates), 'judge_rates': list(args.judge_rates),
         'manifests': {n: datasets[n].get('manifest_sha256') for n in names},
         'review_thinking': getattr(provider, 'review_thinking', None),
@@ -817,7 +830,7 @@ def parser():
 def main():
     args = parser().parse_args()
     ledger = Ledger(args.max_cny, args.assistant_rates, args.judge_rates)
-    provider = (SimpleNamespace(available=True, assistant_model='deepseek-flash', model='deepseek-flash')
+    provider = (SimpleNamespace(available=True, assistant_model='deepseek-flash', model='deepseek-flash', model_for=lambda role: 'deepseek-flash')
                 if args.dry_run else PricedProvider(ledger))
     out = preflight(args, provider)
     if args.dry_run:

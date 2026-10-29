@@ -18,6 +18,8 @@ export const taskPost = (page: Page) => page.waitForRequest((request) => request
 /** A context tag inside the box (its text is followed by the × that takes it off). */
 export const chip = (page: Page, text: string) => thread(page).locator(".a-chip").filter({ hasText: text });
 export const toolbar = (page: Page) => page.getByRole("toolbar", { name: "对选中的文字提问", exact: true });
+/** The uses the mode menu offers, by their names (each entry also carries a line saying what it does). */
+export const menuNames = (root: Locator) => root.getByRole("menuitemradio").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label")));
 export const composeNote = "回答由 AI 生成，可能出错，请点出处核对。";
 
 export async function openAssistantTab(page: Page) {
@@ -74,8 +76,8 @@ export const findingsTab = (page: Page) => findings(page).getByRole("tab", { nam
 export const adoptRequest = (page: Page, action: string) => page.waitForRequest((request) => request.method() === "POST" && new RegExp(`/proposals/[^/]+/${action}$`).test(request.url()));
 
 /** A work whose latest check is a real one, with one finding on `body` (a sentence with E2E_SUGGEST in it). */
-export async function checkedWork(page: Page, body = SENTENCE) {
-  const id = await setup(page);
+export async function checkedWork(page: Page, body = SENTENCE, charged = false) {
+  const id = await setup(page, true, charged);
   await saveBody(page, id, body);
   const result = await finishCheck(page, id, await beginCheck(page, id));
   const issue = result.issues.find((item: any) => item.claim_text.includes("E2E_SUGGEST"));

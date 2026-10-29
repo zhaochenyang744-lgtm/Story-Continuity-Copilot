@@ -18,6 +18,7 @@ import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
 import { PrivacyPage } from "./pages/privacy";
 import { ProjectFrame } from "./project/frame";
 import { AssistantBridge, AssistantDrawer, type AssistantAnchor, type Incoming } from "./project/assistant";
+import { seenLong, useLongDot } from "./project/long-watch";
 import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
 import { Avatar, Wordmark } from "./identity";
@@ -46,6 +47,9 @@ export const projectTabs = [
 ] as const;
 // Addresses from before v1.7.0 keep working.
 const legacyTabs: Record<string, string> = { outline: "plan", characters: "memory", world: "memory" };
+
+/** The dot on the 助手 button: the long task has stopped to ask, or is over, and the author has not looked yet. */
+const LongDot = () => <><span className="topbar-dot" data-testid="assistant-dot" aria-hidden="true" /><span className="sr-only">，长任务有新进展</span></>;
 
 export function App() {
   useWritingFocusOrigin();
@@ -78,6 +82,8 @@ export function App() {
   const [usageBump, setUsageBump] = useState(0);
   const assistantNonce = useRef(0);
   const materialsChanged = useRef<() => void>(() => undefined);
+  // The writing page has the assistant in its own column: the top bar's button goes there instead of opening the drawer.
+  const columnOpener = useRef<(() => void) | null>(null);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const switchPending = useRef(false);
 
@@ -128,11 +134,14 @@ export function App() {
     usageChanged: () => setUsageBump((count) => count + 1),
     // The assistant wrote to (or took back a change of) the materials; the work reads them again.
     materialsChanged: () => materialsChanged.current(),
+    setColumnOpener: (open: (() => void) | null) => { columnOpener.current = open; },
   }), []);
 
   const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
   useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
   useEffect(() => { materialsChanged.current = p.materialsChanged; }, [p.materialsChanged]);
+  // A long task that waits for an answer or is over while the author is elsewhere: a small dot on the 助手 button until they open the assistant.
+  const longDot = useLongDot(p.project?.id ?? null, Boolean(projectId && p.project && assistantAnchor && user?.assistant?.available));
 
   // Theme and text size: layout.tsx applies them before paint (the choice remembered on this device, otherwise the
   // system's light or dark setting); prefs.ts keeps the top bar's button and the settings page in step.
@@ -386,8 +395,10 @@ export function App() {
                     <button type="button" className="topbar-tab" aria-current={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品管理</button>
                   </>}
             </nav>
-            {projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && user.assistant?.available && (
-              <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => setDrawer({ open: true, incoming: null })}>助手</button>
+            {projectId && p.project && assistantAnchor && user.assistant?.available && (
+              assistantAnchor.page === "writing"
+                ? <button id="assistant-open" type="button" className="topbar-assistant" onClick={() => { seenLong(p.project!.id); if (columnOpener.current) columnOpener.current(); else setDrawer({ open: true, incoming: null }); }}>助手{longDot && <LongDot />}</button>
+                : <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => { seenLong(p.project!.id); setDrawer({ open: true, incoming: null }); }}>助手{longDot && <LongDot />}</button>
             )}
             {usageShort(usage) && (
               <span className="topbar-quota">
@@ -414,7 +425,7 @@ export function App() {
         </header>
       )}
       {!user && ready && <ThemeSwitch theme={theme} toggle={toggleTheme} floating />}
-      <main id="main" tabIndex={-1} className={user ? "main" : "main main-auth"}>
+      <main id="main" tabIndex={-1} className={user ? "main" : pathname === "/privacy" ? "main main-auth main-article" : "main main-auth"}>
         {showFeedback && (
           <div className={error ? "feedback error" : "feedback"} role={error ? "alert" : "status"}>
             <span key={error ? "error" : notice}>{error ? labelError(error) : notice}</span>

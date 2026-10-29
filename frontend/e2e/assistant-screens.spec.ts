@@ -67,12 +67,12 @@ test.describe("07c 截图", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await task.getByRole("button", { name: /^搜了 2 处正文/ }).click();
     await page.evaluate(() => window.scrollTo(0, 340));
     await pair(page, "02-跑完后点开的过程", () => column(page));
     // The card over a citation.
-    await task.getByRole("button", { name: /^查了 \d+ 处/ }).click();
+    await task.getByRole("button", { name: "怎么查的" }).click();
     await task.locator(".a-cite button").first().hover();
     await expect(thread(page).locator(".a-pop")).toBeVisible();
     await pair(page, "03-引用悬停", () => column(page), async () => { await task.locator(".a-cite button").first().hover(); await expect(thread(page).locator(".a-pop")).toBeVisible(); });

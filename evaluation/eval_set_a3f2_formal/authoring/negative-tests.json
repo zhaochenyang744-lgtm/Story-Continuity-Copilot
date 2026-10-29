@@ -1,0 +1,80 @@
+{
+  "tests": 5,
+  "detected": 5,
+  "temporary_copies_removed": true,
+  "results": [
+    {
+      "test": 1,
+      "set": "f",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "tasks:count",
+        "w01:suite_distribution",
+        "w01:trace_coverage",
+        "independent:data_binding"
+      ]
+    },
+    {
+      "test": 2,
+      "set": "f",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "w01:trace:1:state:1:quote",
+        "independent:authoring_binding"
+      ]
+    },
+    {
+      "test": 3,
+      "set": "f",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "a3f2-w01-thread-audit-01:expected_actions:5:point_binding",
+        "a3f2-w01-thread-audit-01:actions_complete",
+        "a3f2-w01-thread-audit-01:near_miss_action",
+        "independent:data_binding",
+        "independent:a3f2-w01-thread-audit-01:thread:action_set",
+        "independent:records:thread_summary"
+      ]
+    },
+    {
+      "test": 4,
+      "set": "f",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "tasks:count",
+        "task:39:id",
+        "task:39:id_work",
+        "task:39:suite",
+        "task:39:internal_novelty",
+        "w01:suite_distribution",
+        "independent:data_binding"
+      ]
+    },
+    {
+      "test": 7,
+      "set": "f",
+      "baseline_status": "PASS",
+      "exit_code": 1,
+      "status": "FAIL",
+      "intended_error_detected": true,
+      "errors": [
+        "manifest:6:hash",
+        "independent:data_binding",
+        "independent:w01:full:source_binding",
+        "independent:w01:thread:final_binding"
+      ]
+    }
+  ]
+}

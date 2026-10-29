@@ -1,0 +1,169 @@
+{
+  "method": "verbatim concatenation of individually authored chapters; no prose generated",
+  "chapters": [
+    {
+      "chapter": 1,
+      "fragment_sha256": "ca4c4a2d1f26903cea623952607eaa242e5ddcdc32456397f28dbabce281f463",
+      "han": 3067
+    },
+    {
+      "chapter": 2,
+      "fragment_sha256": "27be62adcd21f8ea0b5d0911cd90adc76ee92856a4a12e891f08acc6ca39ab21",
+      "han": 3090
+    },
+    {
+      "chapter": 3,
+      "fragment_sha256": "281010823db1bc0652808a567fb494b0505b98447e48c1976c55bcf6076fd9dd",
+      "han": 3096
+    },
+    {
+      "chapter": 4,
+      "fragment_sha256": "2aa9158747892c09614e4022a5ba4ecbe249dc9a202fb92551deb33f81bfd473",
+      "han": 3051
+    },
+    {
+      "chapter": 5,
+      "fragment_sha256": "bdd3ffeca107b2b9b9f3eadc35e911583331d0392266901fb43446c10e3d0c0f",
+      "han": 3119
+    },
+    {
+      "chapter": 6,
+      "fragment_sha256": "20732c1398ff7f309737c5be0cac7a725c4cba198e4ebafc0b9658113b70337d",
+      "han": 3061
+    },
+    {
+      "chapter": 7,
+      "fragment_sha256": "3c5012fc2980cd9bdd0308093d2be56948e862f5574b3f94ac865c490ee80113",
+      "han": 3046
+    },
+    {
+      "chapter": 8,
+      "fragment_sha256": "5a1b583547e7d090df318f2575d083ad0b2f1bdb995ae864ecf2c1a914e27af2",
+      "han": 3084
+    },
+    {
+      "chapter": 9,
+      "fragment_sha256": "acddddfc66fca6951529fc14781bae2d64a4c3294dc7728e9aa9a3cc6b40e4c0",
+      "han": 3084
+    },
+    {
+      "chapter": 10,
+      "fragment_sha256": "298cbb92425f72c3f6930528d108737bc87551552dd5df05d385a3b27b426ac8",
+      "han": 3073
+    },
+    {
+      "chapter": 11,
+      "fragment_sha256": "d264ed3c849b307ee849a95fa430c917d7950536871808d9c015dfe48b74675d",
+      "han": 2879
+    },
+    {
+      "chapter": 12,
+      "fragment_sha256": "73072dcaa6289b1983e9f6ebc6ce8ed605bc73e222f13f48dc4c1f05305ac9bf",
+      "han": 2993
+    },
+    {
+      "chapter": 13,
+      "fragment_sha256": "014fbac88704733215cd82d1076486a733c02b02d6d1c0c4c4c1b5e4778a4f97",
+      "han": 2966
+    },
+    {
+      "chapter": 14,
+      "fragment_sha256": "3565d97853d27b96b31d595d4e211e77c5ab9784f3719879bf3c5c7dab017783",
+      "han": 2942
+    },
+    {
+      "chapter": 15,
+      "fragment_sha256": "d95e30ee8bde05ab6538fd44e6e38873138afb1d05f570e94c2dc5d5cbb75136",
+      "han": 2934
+    },
+    {
+      "chapter": 16,
+      "fragment_sha256": "58ad0818e3d2b44a8fb51d1875aba49969665e0c57165295de8255082d44aac5",
+      "han": 2919
+    },
+    {
+      "chapter": 17,
+      "fragment_sha256": "1b8aa8aae1530458386eb5e7065e4ba5504fd02e5a6fc3494b3c4c4cd043d7c5",
+      "han": 2907
+    },
+    {
+      "chapter": 18,
+      "fragment_sha256": "ba909456764dbd30bc4c768e0b93236f5663c557e6aa0406f27df49998b8e0c2",
+      "han": 3012
+    },
+    {
+      "chapter": 19,
+      "fragment_sha256": "c4e9b0428e2357c4c56ff9ae8e6ec1db0e1c01e8f625c4d2f9b25e28a06b0057",
+      "han": 2995
+    },
+    {
+      "chapter": 20,
+      "fragment_sha256": "7e635671ff6ea2c8cb4b2c411958b9e1a50fbb34f1ab59913c8a23c132884fe7",
+      "han": 3016
+    },
+    {
+      "chapter": 21,
+      "fragment_sha256": "9532244902cc32a74c08c625e20f5fdd8d2aff5675381657edb0982eaf7f17ff",
+      "han": 2851
+    },
+    {
+      "chapter": 22,
+      "fragment_sha256": "12f3e415b2128c5dddf653dceffb5d44efd69f8719f261ed9d9e80fe4ec70027",
+      "han": 2886
+    },
+    {
+      "chapter": 23,
+      "fragment_sha256": "c6207911ec2e0326f8a4dff453518259c6363aacafce43f7103bbb5872250484",
+      "han": 2895
+    },
+    {
+      "chapter": 24,
+      "fragment_sha256": "676542839ad2bbf259a5b6f76959e3520680f35a5e47bdc7066b22156216e15f",
+      "han": 2957
+    },
+    {
+      "chapter": 25,
+      "fragment_sha256": "69ef9ae5b3df1f2f558a5740a934f2be043b86f4d9a7d9f0107f04a89e45cb8d",
+      "han": 2963
+    },
+    {
+      "chapter": 26,
+      "fragment_sha256": "d878ece1f89cd28d7c3cb56c0b8f10c446f80daade26f2914675f1b72a059ca5",
+      "han": 2945
+    },
+    {
+      "chapter": 27,
+      "fragment_sha256": "b55626bc26dfcfd53086df41cdc1e50cb8a02c0a3136d94a32e314529fda147d",
+      "han": 3041
+    },
+    {
+      "chapter": 28,
+      "fragment_sha256": "c265a38c90479681ed5e3f7574954828319ea62d951aeade70996476d029de29",
+      "han": 2985
+    },
+    {
+      "chapter": 29,
+      "fragment_sha256": "f491adab00566fa5ea76b1ffe9befc8be8101ebfab93799faef31c666ea20f94",
+      "han": 3010
+    },
+    {
+      "chapter": 30,
+      "fragment_sha256": "4dc9e57bcf622f0c65d18e09039cecff04acf311e8a53a35e8c0ee8c3c356fd3",
+      "han": 2982
+    }
+  ],
+  "source_sha256": "a4f57ccac4c89d3045d6ab495e9ce3dec9c0afa0e990237db9acdd21ab408d6a",
+  "source_han": 89849,
+  "chapter_han_min": 2851,
+  "chapter_han_max": 3119,
+  "canonical_source": "works/w01.md",
+  "post_review_source_sha256": "25c020a0ddd97ad3771c7d5fba459bdfa5afd2b1caf3f9e4455295597945b8aa",
+  "post_review_revision": {
+    "chapter": 27,
+    "before": "当年那两个停顿",
+    "after": "当时那两个停顿",
+    "han_delta": 0,
+    "evidence_positions_changed": false,
+    "review": "independent-review.json IR-ADVISORY-01 accepted and closed"
+  }
+}

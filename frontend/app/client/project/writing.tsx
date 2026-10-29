@@ -1,6 +1,7 @@
 "use client";
 
-import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
 import { countVisibleText, DraftWordCount, flashText, proofreadDraftText, replaceVisibleDraftText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
@@ -24,8 +25,9 @@ import {
   stageLabel,
   timeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
-import { AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, type WritingLink } from "./assistant";
+import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, isSampleWork, SAMPLE_FREE, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { AssistantBridge, AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
+import { quotaReason } from "./assistant-parts";
 import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
@@ -44,15 +46,29 @@ function pinPanes() {
   if (!panes) return;
   const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
   window.scrollTo({ top: Math.max(0, panes.getBoundingClientRect().top + window.scrollY - top) });
+  fitAssistantPane();
+}
+/** On a phone the 助手 pane is as high as what is left of the screen under the top bar, the pane switch and the space the page keeps between
+    the switch and the pane (measured once the pane is shown; 32px until then), so its last line (the box and what stands under it) is on screen. */
+function fitAssistantPane() {
+  const root = document.documentElement;
+  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
+  const switcher = document.querySelector<HTMLElement>(".mobile-panes");
+  const panel = document.getElementById("side-panel-assistant");
+  const visible = window.visualViewport?.height ?? window.innerHeight;
+  const gap = switcher && panel && panel.getClientRects().length > 0 ? Math.max(0, panel.getBoundingClientRect().top - switcher.getBoundingClientRect().bottom) : 32;
+  root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - (switcher?.offsetHeight ?? 0) - gap - 8))}px`);
 }
 
 export function WritingPage(props: PageProps) {
   const { p, user, go, notices } = props;
-  const [viewing, setViewing] = useState<number | null>(() => {
-    if (typeof window === "undefined") return null;
-    const requested = Number(new URLSearchParams(window.location.search).get("chapter"));
-    return Number.isInteger(requested) && requested > 0 ? requested : null;
-  });
+  // The chapter the address asks for is read from the router, not from window.location: when the author arrives from another page
+  // (router.push) the first render of this page happens before the browser's address has changed, and would open the draft (H02).
+  const requested = Number(useSearchParams().get("chapter"));
+  const wanted = Number.isInteger(requested) && requested > 0 ? requested : null;
+  const [viewing, setViewing] = useState<number | null>(wanted);
+  const [seenWanted, setSeenWanted] = useState<number | null>(wanted);
+  if (seenWanted !== wanted) { setSeenWanted(wanted); setViewing(wanted); }
   const open = (number: number | null) => {
     const known = number !== null && p.chapters.some((chapter) => chapter.number === number);
     setViewing(known ? number : null);
@@ -60,7 +76,7 @@ export function WritingPage(props: PageProps) {
     window.scrollTo({ top: 0 });
   };
   if (viewing !== null && p.chapters.some((chapter) => chapter.number === viewing))
-    return <ChapterDesk key={viewing} p={p} user={user} go={go} notices={notices} number={viewing} open={open} />;
+    return <ChapterDesk key={viewing} p={p} user={user} usage={props.usage} go={go} notices={notices} number={viewing} open={open} />;
   return <DraftDesk {...props} openChapter={open} />;
 }
 
@@ -78,7 +94,11 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   // "去写作页做写前回顾" in another page's assistant brings the author here: the column opens on the assistant and starts it, or
   // says why it cannot (chapter 1, an unsaved draft).
   const [forRecap] = useState(recapWanted);
-  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "assistant">(forRecap ? "assistant" : "draft");
+  // One state for "what is being looked at": the desktop column shows findings or assistant, a narrow screen adds the draft. A choice made
+  // on either layout is the choice on both (V08); 正文 only means something on a narrow screen, so the column keeps the last side picked.
+  const [pane, setPane] = useState<"draft" | "issues" | "assistant">(forRecap ? "assistant" : "draft");
+  const mobilePane = pane;
+  const setMobilePane = setPane;
   // The assistant column is always built (hidden while the findings are shown), so a running task goes on while the author
   // writes and the findings list can tell which findings have an adopted change.
   const [incoming, setIncoming] = useState<Incoming | null>(null);
@@ -91,18 +111,16 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const incomingNonce = useRef(0);
   // What the right column shows: the check's findings, or the assistant. Coming from the plan page's 对照正文, whose
   // comparison is running, the column opens on the assistant, where that comparison is shown.
-  const [wantedSide, setWantedSide] = useState<SideItem>(() => (forRecap || p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
+  const [lastSide, setLastSide] = useState<SideItem>(() => (forRecap || p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
+  const wantedSide: SideItem = pane === "assistant" ? "assistant" : pane === "issues" ? "findings" : lastSide;
+  /** A side picked on purpose (the column's tabs, a button that brings the assistant): the narrow screen follows. */
+  const showSide = (next: SideItem) => { setLastSide(next); setPane(next === "assistant" ? "assistant" : "issues"); };
   const [revealSide, setRevealSide] = useState(forRecap ? 1 : 0);
   // On a phone the assistant is a pane as high as what is left of the screen below the top bar and the pane switch (and above the
   // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
   useEffect(() => {
     const root = document.documentElement;
-    const measure = () => {
-      const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
-      const switcher = document.querySelector<HTMLElement>(".mobile-panes")?.offsetHeight ?? 0;
-      const visible = window.visualViewport?.height ?? window.innerHeight;
-      root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - switcher - 8))}px`);
-    };
+    const measure = fitAssistantPane;
     measure();
     window.addEventListener("resize", measure);
     window.visualViewport?.addEventListener("resize", measure);
@@ -114,6 +132,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   }, []);
   // Switching to the 助手 tab with the mouse or Enter puts the cursor in its box, so the author does not walk past the whole conversation.
   const focusAssistant = useRef(false);
+  const [focusBox, setFocusBox] = useState(0);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -152,13 +171,13 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const [seenSelected, setSeenSelected] = useState(selectedId);
   if (seenSelected !== selectedId) {
     setSeenSelected(selectedId);
-    if (selectedId) setWantedSide("findings");
+    if (selectedId) { setLastSide("findings"); if (pane === "assistant") setPane("issues"); }
   }
   useEffect(() => {
     if (side !== "assistant" || !focusAssistant.current) return;
     focusAssistant.current = false;
     document.querySelector<HTMLTextAreaElement>('#side-panel-assistant textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true });
-  }, [side]);
+  }, [side, focusBox]);
   useEffect(() => {
     if (!revealSide) return;
     const column = document.getElementById("writing-side");
@@ -173,9 +192,28 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id, hovered: hovered === issue.id, done: isDone(issue), reveal }));
   const chooseSide = (next: SideItem) => {
     if (next === "assistant" && !assistantOn) return;
-    setWantedSide(next);
+    showSide(next);
     try { window.localStorage.setItem(sideKey, next === "assistant" ? "assistant" : "findings"); } catch { /* the choice lasts for this visit */ }
   };
+  // The top bar's 助手 button: the column switches to the assistant and the cursor goes into its box (a phone shows the assistant pane).
+  const bridge = useContext(AssistantBridge);
+  useAssistantAnchor("writing", { chapter_number: chapterNumber });
+  const openColumn = useRef<() => void>(() => undefined);
+  useEffect(() => {
+    openColumn.current = () => {
+      if (!assistantOn) return;
+      chooseSide("assistant");
+      setMobilePane("assistant");
+      window.requestAnimationFrame(pinPanes);
+      focusAssistant.current = true;
+      setFocusBox((count) => count + 1);
+    };
+  });
+  const { setColumnOpener } = bridge;
+  useEffect(() => {
+    setColumnOpener(() => openColumn.current());
+    return () => setColumnOpener(null);
+  }, [setColumnOpener]);
   // A passage picked in the draft goes to the assistant: into the question, or asked about at once.
   const bring = (text: string, quick: boolean) => {
     chooseSide("assistant");
@@ -197,8 +235,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     const row = document.getElementById(`issue-${id}`);
     if (!issue || !row) return;
     if (p.selected?.id !== id) void p.select(issue, row);
-    setWantedSide("findings");
-    setMobilePane("issues");
+    showSide("findings");
     window.setTimeout(() => row.scrollIntoView({ block: "nearest", behavior: "smooth" }), 0);
   };
   // Opening a card from the list brings its sentence into view and rings it once.
@@ -220,7 +257,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     const id = (target as HTMLElement | null)?.closest?.("[data-finding]")?.getAttribute("data-finding") ?? null;
     if (id !== hovered) setHovered(id);
   };
-  const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : chars > usage.check_chars_remaining) : false;
+  const sample = isSampleWork(project);
+  const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : !sample && chars > usage.check_chars_remaining) : false;
   // A visitor's check is refused above the per-check limit, so the button says so up front.
   const visitorLimit = usage?.account_type === "visitor" && chars > usage.check_chars_per_check ? usage.check_chars_per_check : null;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
@@ -313,6 +351,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
 
   return (
     <section className="page writing" data-mobile-pane={mobilePane}>
+      <div className="writing-layout">
+      <div className="writing-main">
       {notices}
       <header className="draft-head" aria-label={`草稿第 ${chapterNumber} 章`}>
         <Num className="draft-head-num"><Odometer value={chapterNumber} /></Num>
@@ -337,7 +377,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
               </Menu>
               {primary}
             </div>
-            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次${over ? "。这一章超过了上限，删减后才能检查，或者注册账号" : ""}` : usageShort(usage)}</p>}
+            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次${over ? "。这一章超过了上限，删减后才能检查，或者注册账号" : ""}` : sample ? SAMPLE_FREE : usageShort(usage)}</p>}
           </div>
         )}
       </header>
@@ -362,12 +402,12 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
       )}
 
       <nav className="mobile-panes" aria-label="切换内容">
-        {(assistantOn ? ["draft", "issues", "assistant"] as const : ["draft", "issues"] as const).map((pane) => (
-          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => {
-            setMobilePane(pane);
-            if (pane === "assistant") { chooseSide("assistant"); window.requestAnimationFrame(pinPanes); }
-            else if (pane === "issues" && wantedSide === "assistant") setWantedSide("findings");
-          }}>{pane === "draft" ? "正文" : pane === "issues" ? `检查结果 ${issues.length}` : "助手"}</button>
+        {(assistantOn ? ["draft", "issues", "assistant"] as const : ["draft", "issues"] as const).map((target) => (
+          <button key={target} type="button" aria-current={mobilePane === target ? "page" : undefined} onClick={() => {
+            if (target === "assistant") { chooseSide("assistant"); window.requestAnimationFrame(pinPanes); }
+            else if (target === "issues") chooseSide("findings");
+            else setPane("draft");
+          }}>{target === "draft" ? "正文" : target === "issues" ? `检查结果 ${issues.length}` : "助手"}</button>
         ))}
       </nav>
 
@@ -391,11 +431,14 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
             ) : (
               <RichDraftEditor id="draft-body" label="草稿正文" placeholder="开始写这一章……" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} marks={marks} onPickMark={pick} />
             )}
-            {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)}
+            {assistantOn && <SelectionToolbar selector="#draft-body" onAsk={(text) => bring(text, false)} onQuick={(text) => bring(text, true)} blocked={quotaReason(usage, sample)}
               onSelect={(text) => setPicked((current) => (text === null ? (current === null ? current : null) : current?.text === text ? current : { text, quick: false, nonce: ++incomingNonce.current }))}
-              check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" ? usage.check_chars_remaining : null }} />}
+              check={user.account_type === "visitor" ? undefined : { run: (text) => bringTask({ kind: "check", text }), remaining: usage?.account_type === "registered" && !sample ? usage.check_chars_remaining : null, free: sample }} />}
           </div>
         </article>
+
+        </div>
+      </div>
 
         <aside id="writing-side" className="findings" aria-label="检查与回顾">
           <SideTabs
@@ -485,7 +528,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
       <ThreadLayer from={linkedId && !reducedMotion() ? `.finding-mark[data-finding="${linkedId}"]` : null} to={linkedChapters.map((number) => `.draft-chapters li[data-chapter="${number}"] button`)} />
       {completing && <CompleteDraft p={p} close={() => setCompleting(false)} />}
       {tech && p.run && <TechDialog run={p.run} paired={p.pairedRun} close={() => setTech(false)} />}
-      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
+      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus({ preventScroll: true }), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
     </section>
   );
 }
@@ -501,7 +544,7 @@ function SideTabs({ items, value, onChange, onActivate }: { items: { id: SideIte
     const at = Math.max(0, items.findIndex((item) => item.id === (focused ?? value)));
     const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (at + (event.key === "ArrowRight" ? 1 : items.length - 1)) % items.length;
     onChange(items[next].id);
-    document.getElementById(`side-tab-${items[next].id}`)?.focus();
+    document.getElementById(`side-tab-${items[next].id}`)?.focus({ preventScroll: true });
   };
   // One thing to show is a heading, not a tab to switch to.
   if (items.length === 1) {
@@ -666,10 +709,14 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, a
               {(actions.length > 0 || !decided) && (
                 <div className="finding-actions">
                   {actions.map((action, index) => <Button key={action.key} kind={index === 0 ? "primary" : "text"} className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
-                  {!decided && assist && <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>}
+                  {!decided && assist && (
+                    <span className="assist-line">
+                      <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>
+                      {assist.reason && <span className="assist-reason" data-testid="assist-reason">{assist.reason}。</span>}
+                    </span>
+                  )}
                 </div>
               )}
-              {!decided && assist?.reason && !outdated && <p className="finding-hint">{assist.reason}。</p>}
               {error && <p className="inline-error" role="alert">{error}</p>}
             </div>
           ) : <p className={tutorial ? "readonly tutorial-mobile-decision-note" : "readonly"}>{tutorial ? "手机上可以浏览完整依据；请在电脑上继续作出决定。" : "只读，不能在这里处理。"}</p>}

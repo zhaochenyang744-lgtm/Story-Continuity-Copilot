@@ -1,0 +1,13 @@
+{
+  "branch": "eval/a2-6-authoring",
+  "head": "ad82ff04cb61277d6370fb6d63b2e3608a2c6d6b",
+  "initial_dirty": false,
+  "sha256": {
+    "evaluation/assistant_a2/SPEC.md": "571212409f15dc665db08b2705b34777e18b2d511350f922c3f6859a499876ce",
+    "evaluation/assistant_a2/thresholds.py": "fa69bb10e1afb7fd31f54d7f885b31f66cf6be45d11a0c3aaa3559b57e9ba42d",
+    "evaluation/assistant_a1c/SPEC.md": "17f1126c2acfc3fb94a242b4a0ba5480ebc0065a2d4e30cf037ae9e8cdb46ba9",
+    "evaluation/assistant_a1/SPEC.md": "136de8f7addeb1228f9ec1d5d32bb8d2fed35be4acf2e247c1f5795018063512",
+    "backend/app/assistant_actions.py": "e5413b01f3eda02a698642760e84541ec155f3f865eafb86550caaca704988e4",
+    ".gitattributes": "d2cbb392940b86c5c3fe1fb0538dd52e8943bfee2c5128af0fe5e2faa766f32f"
+  }
+}

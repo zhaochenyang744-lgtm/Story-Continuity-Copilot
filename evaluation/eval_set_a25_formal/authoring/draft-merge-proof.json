@@ -1,0 +1,29 @@
+{
+  "copies_removed": 3,
+  "records": [
+    {
+      "set": "eval_set_a25_formal",
+      "work": "w01",
+      "old_file_sha256": "5ecc70d1c145018fc6f0494640df27982292181c74ff17e85aaa54fa0d4d02aa",
+      "body_sha256": "9c341f0537db6ff94293e766e3a8ad22c37512de7d87dc2e2654a34ad7c4bc17",
+      "canonical": "tasks.json",
+      "equal": true
+    },
+    {
+      "set": "eval_set_a25_formal",
+      "work": "w02",
+      "old_file_sha256": "54499d77b6385d09ce20ae60cc12efd1d17cb2194fc6b9b198bb981a7e043e76",
+      "body_sha256": "2942ca3a9fa1cfb9b7c1e7a7821650d8f17914c5b7f8a75f9c088b840fc2904e",
+      "canonical": "tasks.json",
+      "equal": true
+    },
+    {
+      "set": "eval_set_a2s5_formal",
+      "work": "w01",
+      "old_file_sha256": "c5fa02fae41b16d485458e326c590f12217d5d0a3929e5ed770e30a4f5d00702",
+      "body_sha256": "b7c3090eac1f92369ea4c312f25676320b8d2eb687707a76f2c304619b233732",
+      "canonical": "tasks.json",
+      "equal": true
+    }
+  ]
+}

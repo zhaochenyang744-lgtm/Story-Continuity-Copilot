@@ -1,0 +1,211 @@
+{
+ "a2": {
+  "tune": {
+   "eval_set_a25_formal": [
+    "a25f-w01-action-01",
+    "a25f-w01-action-02",
+    "a25f-w01-action-05",
+    "a25f-w01-action-07",
+    "a25f-w01-action-09",
+    "a25f-w01-action-11",
+    "a25f-w01-action-13",
+    "a25f-w01-action-15",
+    "a25f-w01-action-17",
+    "a25f-w01-no-01",
+    "a25f-w01-no-03",
+    "a25f-w01-no-05",
+    "a25f-w01-route-01",
+    "a25f-w01-route-03",
+    "a25f-w01-route-05",
+    "a25f-w01-route-07",
+    "a25f-w01-route-09",
+    "a25f-w02-action-01",
+    "a25f-w02-action-02",
+    "a25f-w02-action-05",
+    "a25f-w02-action-07",
+    "a25f-w02-action-09",
+    "a25f-w02-action-11",
+    "a25f-w02-action-13",
+    "a25f-w02-action-15",
+    "a25f-w02-action-17",
+    "a25f-w02-no-01",
+    "a25f-w02-no-03",
+    "a25f-w02-no-05",
+    "a25f-w02-route-01",
+    "a25f-w02-route-03",
+    "a25f-w02-route-05",
+    "a25f-w02-route-07",
+    "a25f-w02-route-09"
+   ],
+   "eval_set_a2s5_formal": [
+    "a2s5-w01-injection-01",
+    "a2s5-w01-injection-03",
+    "a2s5-w01-injection-05",
+    "a2s5-w01-injection-07",
+    "a2s5-w01-injection-09",
+    "a2s5-w01-injection-11"
+   ],
+   "eval_set_a24_formal": [
+    "a24f-w01-action-02",
+    "a24f-w01-action-03",
+    "a24f-w01-action-06",
+    "a24f-w01-action-07",
+    "a24f-w01-action-09",
+    "a24f-w01-action-10"
+   ]
+  },
+  "hold": {
+   "eval_set_a25_formal": [
+    "a25f-w01-action-03",
+    "a25f-w01-action-04",
+    "a25f-w01-action-06",
+    "a25f-w01-action-08",
+    "a25f-w01-action-10",
+    "a25f-w01-action-12",
+    "a25f-w01-action-14",
+    "a25f-w01-action-16",
+    "a25f-w01-action-18",
+    "a25f-w01-no-02",
+    "a25f-w01-no-04",
+    "a25f-w01-no-06",
+    "a25f-w01-route-02",
+    "a25f-w01-route-04",
+    "a25f-w01-route-06",
+    "a25f-w01-route-08",
+    "a25f-w01-route-10",
+    "a25f-w02-action-03",
+    "a25f-w02-action-04",
+    "a25f-w02-action-06",
+    "a25f-w02-action-08",
+    "a25f-w02-action-10",
+    "a25f-w02-action-12",
+    "a25f-w02-action-14",
+    "a25f-w02-action-16",
+    "a25f-w02-action-18",
+    "a25f-w02-no-02",
+    "a25f-w02-no-04",
+    "a25f-w02-no-06",
+    "a25f-w02-route-02",
+    "a25f-w02-route-04",
+    "a25f-w02-route-06",
+    "a25f-w02-route-08",
+    "a25f-w02-route-10"
+   ],
+   "eval_set_a2s5_formal": [
+    "a2s5-w01-injection-02",
+    "a2s5-w01-injection-04",
+    "a2s5-w01-injection-06",
+    "a2s5-w01-injection-08",
+    "a2s5-w01-injection-10",
+    "a2s5-w01-injection-12"
+   ],
+   "eval_set_a24_formal": [
+    "a24f-w01-action-04",
+    "a24f-w01-action-08",
+    "a24f-w01-action-11",
+    "a24f-w01-action-12",
+    "a24f-w02-action-02",
+    "a24f-w02-action-06"
+   ]
+  }
+ },
+ "a3": {
+  "tune": {
+   "eval_set_a3_formal": [
+    "a3f-w01-ask-01",
+    "a3f-w01-narrowed-01",
+    "a3f-w01-route-01",
+    "a3f-w01-route-03",
+    "a3f-w01-route-05",
+    "a3f-w01-route-07",
+    "a3f-w01-route-09",
+    "a3f-w01-thread-audit-01",
+    "a3f-w01-trace-01",
+    "a3f-w01-trace-03",
+    "a3f-w02-ask-01",
+    "a3f-w02-route-01",
+    "a3f-w02-route-03",
+    "a3f-w02-route-05",
+    "a3f-w02-route-07",
+    "a3f-w02-route-09",
+    "a3f-w02-thread-audit-01",
+    "a3f-w02-trace-02"
+   ],
+   "eval_set_a3s_formal": [
+    "a3s-w01-injection-01",
+    "a3s-w01-injection-04",
+    "a3s-w01-injection-08",
+    "a3s-w01-injection-10"
+   ],
+   "eval_set_a3_dev": [
+    "a3d-ask-01",
+    "a3d-narrowed-01",
+    "a3d-route-01",
+    "a3d-route-03",
+    "a3d-route-05",
+    "a3d-route-07",
+    "a3d-route-09",
+    "a3d-thread-01",
+    "a3d-trace-01"
+   ],
+   "eval_set_a3d2_dev": [
+    "a3e-ask-01",
+    "a3e-narrowed-01",
+    "a3e-route-01",
+    "a3e-route-03",
+    "a3e-route-05",
+    "a3e-route-07",
+    "a3e-route-09",
+    "a3e-thread-01",
+    "a3e-trace-01"
+   ]
+  },
+  "hold": {
+   "eval_set_a3_formal": [
+    "a3f-w01-ask-02",
+    "a3f-w01-route-02",
+    "a3f-w01-route-04",
+    "a3f-w01-route-06",
+    "a3f-w01-route-08",
+    "a3f-w01-route-10",
+    "a3f-w01-thread-audit-02",
+    "a3f-w01-trace-02",
+    "a3f-w02-ask-02",
+    "a3f-w02-narrowed-01",
+    "a3f-w02-route-02",
+    "a3f-w02-route-04",
+    "a3f-w02-route-06",
+    "a3f-w02-route-08",
+    "a3f-w02-route-10",
+    "a3f-w02-thread-audit-02",
+    "a3f-w02-trace-01",
+    "a3f-w02-trace-03"
+   ],
+   "eval_set_a3s_formal": [
+    "a3s-w01-injection-02",
+    "a3s-w01-injection-06",
+    "a3s-w01-injection-09"
+   ],
+   "eval_set_a3_dev": [
+    "a3d-ask-02",
+    "a3d-route-02",
+    "a3d-route-04",
+    "a3d-route-06",
+    "a3d-route-08",
+    "a3d-route-10",
+    "a3d-thread-02",
+    "a3d-trace-02"
+   ],
+   "eval_set_a3d2_dev": [
+    "a3e-ask-02",
+    "a3e-route-02",
+    "a3e-route-04",
+    "a3e-route-06",
+    "a3e-route-08",
+    "a3e-route-10",
+    "a3e-trace-02"
+   ]
+  }
+ },
+ "rule": "each kind of task in id order, even places tune and odd are held back; the held half is looked at once, at the end"
+}

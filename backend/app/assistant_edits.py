@@ -9,6 +9,7 @@ from typing import Any
 from .assistant_store import utcnow
 from .assistant_tools import INTERNAL_ID, Outcome, ToolContext, ToolError, _draft, _text_arg
 from .engine import ContinuityEngine
+from .problem_codes import Problem
 from .provider import ProviderDispatchDenied
 
 
@@ -152,18 +153,18 @@ def validate_proposals(ctx: ToolContext) -> list[str]:
         leaking = [row for row in proposals if INTERNAL_ID.search(row["rationale"] or "")]
         for row in leaking:
             c.execute("DELETE FROM assistant_proposals WHERE id=?", (row["id"],))
-    problems = [f"改法 P{row['ordinal']} 的理由里出现了内部标识，已撤回；请去掉标识后重新提出这条改法。" for row in leaking]
+    problems = [Problem("proposal_id_leak", f"改法 P{row['ordinal']} 的理由里出现了内部标识，已撤回；请去掉标识后重新提出这条改法。") for row in leaking]
     kinds = [row["kind"] for row in proposals if row not in leaking]
     if ctx.scope.get("issue_nature") == "state_change":
-        return problems + (["状态变化不能有改法，请解释并引导作者去资料页确认。"] if kinds else [])
+        return problems + ([Problem("proposal_state_change", "状态变化不能有改法，请解释并引导作者去资料页确认。")] if kinds else [])
     if len(set(kinds)) < 2 or "edit_this" not in kinds:
         # Say what is there and what is missing: the bare rule was not enough to correct two edit_this proposals.
         have = "、".join(f"{kind} ×{kinds.count(kind)}" for kind in dict.fromkeys(kinds)) or "还没有"
         missing = ("一个 edit_this（改本章这一句）" if "edit_this" not in kinds else
                    "一个不同 kind 的改法：最简单的是 intentional（只填 rationale，说明这样写也可能是作者有意的），"
                    "或 add_setup（chapter_number 填本章之前的章，after 是要补的话）")
-        problems.append(f"至少提出两种不同 kind 的改法，其中一个必须是 edit_this。现在已有：{have}；还缺{missing}。"
-                        "先调用 propose_edit，再用 answer 收尾。")
+        problems.append(Problem("proposal_kinds_missing", f"至少提出两种不同 kind 的改法，其中一个必须是 edit_this。现在已有：{have}；还缺{missing}。"
+                                "先调用 propose_edit，再用 answer 收尾。"))
     return problems
 
 

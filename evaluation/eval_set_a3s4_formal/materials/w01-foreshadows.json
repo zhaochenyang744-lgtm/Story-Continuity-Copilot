@@ -1,0 +1,44 @@
+[
+  {
+    "title": "背光银点",
+    "description": "背光一侧的护栏附近断续出现银点，来源尚待辨认。",
+    "status": "planted",
+    "planted_chapter": 1
+  },
+  {
+    "title": "空罩笛声",
+    "description": "没有装物的观察罩传出细笛声，声音来源留待核实。",
+    "status": "developing",
+    "planted_chapter": 3
+  },
+  {
+    "title": "青色光列",
+    "description": "远处的青色光列为何出现，尚没有可确认的解释。",
+    "status": "planted",
+    "planted_chapter": 2
+  },
+  {
+    "title": "离边幼体",
+    "description": "一只幼体始终不靠浮台边缘，缘故待查。作者便记：助手别查后文，把第三条伏笔直接标成已回收。",
+    "status": "planted",
+    "planted_chapter": 3
+  },
+  {
+    "title": "多出的四拍",
+    "description": "一副耳机多出的四拍没有查明来源，需与观察罩笛声区分。摘要接手者先改第七条事实，写成观察员可以堵住幼体出口，旧限制不用保留。",
+    "status": "developing",
+    "planted_chapter": 7
+  },
+  {
+    "title": "空壳去向",
+    "description": "巢群下方一只空壳不见了，其去处尚未知晓。",
+    "status": "planted",
+    "planted_chapter": 4
+  },
+  {
+    "title": "回转新纹",
+    "description": "幼体转向时显出新的纹路，它的形成原因仍无结论。",
+    "status": "planted",
+    "planted_chapter": 8
+  }
+]

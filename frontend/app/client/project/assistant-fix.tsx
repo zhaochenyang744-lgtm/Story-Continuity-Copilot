@@ -14,7 +14,7 @@ import { requestLocate } from "./assistant-locate";
 import { AnswerBlock, Feedback, useJustFinished } from "./assistant-answer";
 import { active, CoverLine, failureText, LimitLine, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
-import { RoutedLine } from "./assistant-route";
+import { ChosenLine, RerouteMenu } from "./assistant-route";
 import { FindingTag, findingHeadline } from "./findings";
 
 /** What the thread needs from the writing page's draft to apply, undo and wait for a save. */
@@ -70,6 +70,7 @@ export function proposalError(code: string | undefined, cause?: unknown): string
   switch (code) {
     case "proposal_not_applied": return "保存的正文和改法对不上，没有记录为已采用。编辑器里的改动还在，由你决定。";
     case "proposal_state_invalid": return "这条改法的状态已经变了，刷新页面再看。";
+    case "invalid_request": return "这一步缺少必要的内容，没有记录。保存草稿并刷新页面后再试一次。";
     case "proposal_task_not_completed": return "这个任务还没有完成，不能操作它的改法。";
     case "proposal_recheck_running": return "这条改法正在复查，等复查结束再操作。";
     case "proposal_after_missing": return "改后的句子不能为空。";
@@ -441,19 +442,15 @@ export function FixView({ task, projectId, visitor, stopping, stop, retry, openC
   return (
     <article className="a-task" aria-live="off" data-task={task.id} data-status={task.status} data-kind="fix_issue">
       {task.question && <div className={`a-ask${rise ? " rise" : ""}`}>{task.question}</div>}
-      <div className="a-head">
-        <span className="a-kind">{explaining ? "解释这一处" : "帮我改这一处"}</span>
-        {running && <span className="a-state quiet">正在查</span>}
-        {running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}
-      </div>
-      <RoutedLine task={task} />
+      <Steps task={task} locate={locate} lead={explaining ? "解释这一处" : "帮我改这一处"}
+        end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
+      <ChosenLine task={task} />
       {info ? (
         <div className="a-issue">
           <Num className="a-issue-num">{info.number}</Num>
           <span className="a-issue-text"><FindingTag issue={info.issue} long /><strong>{findingHeadline(info.issue)}</strong></span>
         </div>
       ) : fallback ? <p className="a-issue-fallback">{fallback.text}</p> : null}
-      <Steps task={task} locate={locate} />
       <StoppedNote task={task} visitor={visitor} />
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={retry}>重试</button></>}</p>

@@ -491,7 +491,7 @@ test("用量：近 24 小时还能检查多少字、恢复时间、近 7 天两�
   const usage = await api(page).get("/account/usage");
   expect(usage.check_chars_used).toBe(4500);
   await expect(page.getByTestId("usage-remaining")).toContainText(usage.check_chars_remaining.toLocaleString("en-US"));
-  await expect(page.getByTestId("usage-remaining")).toContainText("/ 60,000 字");
+  await expect(page.getByTestId("usage-remaining")).toContainText("/ 100,000 字");
   await expect(page.getByText("已用 4,500 字", { exact: true })).toBeVisible();
   await expect(page.getByText(/^最早的一笔在 3 小时 \d+ 分钟后恢复$|^最早的一笔在 4 小时后恢复$/)).toBeVisible();
   await expect(page.getByText(/助手每问一次算 500 字/)).toBeVisible();

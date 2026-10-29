@@ -1,0 +1,9 @@
+{
+  "branch": "eval/a3-authoring",
+  "head": "4ef15e4c754406e26e474fc646ef12f924f17243",
+  "sha256": {
+    "evaluation/assistant_a3/SPEC.md": "ef7fa7a8286349bff8fd4158cc887091963832b71aa05c338039889fa6f77bf0",
+    "evaluation/assistant_a3/thresholds.py": "6df4d5b903c9f4c2516fb7a9d500f08b7ef5ff87472b73eb8114677c5974c1c1",
+    ".gitattributes": "83b62a5089d2cf9f9cd72341b904bc2e7550ac3705b432d579b8fc91079b0794"
+  }
+}

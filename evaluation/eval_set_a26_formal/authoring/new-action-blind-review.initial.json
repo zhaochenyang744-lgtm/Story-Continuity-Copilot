@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "id": "a26f-w02-action-16",
+      "actions": [{"kind": "edit_thread", "target": 5}],
+      "reason": "作者要求重写已有旧工具箱一线的说明，并保留私信仍封着的信息；未请求将该线收束。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w02-action-15",
+      "actions": [{"kind": "edit_thread", "target": 6}],
+      "reason": "作者明确要求在已有未发语音的说明中补充先誊文字再决定发送的打算，并保留原有未发送及未放给人听的信息。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-13",
+      "actions": [{"kind": "add_thread", "target": {"about": "无图且未署名明信片的来处", "planted_chapter": null}}],
+      "reason": "作者要求为来处未明的无图未署名明信片单独建立一条线；现有伏笔中没有该对象，原话没有给出埋设章。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-18",
+      "actions": [{"kind": "abandon_thread", "target": 7}],
+      "reason": "作者明确决定不再写花店门口的陌生长伞，并要求把已有伏笔标为放弃。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w02-action-14",
+      "actions": [{"kind": "add_thread", "target": {"about": "未落款生日录音的来路", "planted_chapter": null}}],
+      "reason": "作者要求为未落款生日录音单开一条来路未明的线；现有伏笔中没有该对象，原话没有给出埋设章。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w02-action-17",
+      "actions": [{"kind": "abandon_thread", "target": 6}],
+      "reason": "作者明确表示后续不再展开录好未发的语音，并整支停写，对应放弃已有伏笔。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-14",
+      "actions": [{"kind": "add_thread", "target": {"about": "旧模型底下月份对不齐的小纸片", "planted_chapter": null}}],
+      "reason": "作者明确要求为旧模型底下的小纸片新建一条线，并要求与相册线分开；原话没有给出埋设章。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-15",
+      "actions": [{"kind": "edit_thread", "target": 6}],
+      "reason": "作者要求补充已有未打开画作的说明，加入任等待寄画者当面解释后再展开的打算，并保留未拆及来意不明的信息。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w02-action-13",
+      "actions": [{"kind": "add_thread", "target": {"about": "相册背页陌生缩写的书写者", "planted_chapter": null}}],
+      "reason": "作者要求新建伏笔追查相册背页缩写的书写者，并明确不要并入空相格一线；原话没有给出埋设章。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-17",
+      "actions": [{"kind": "abandon_thread", "target": 6}],
+      "reason": "作者明确决定不再追写蓝纸裹画这一支，并让它停在这里，对应放弃已有伏笔。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w01-action-16",
+      "actions": [{"kind": "edit_thread", "target": 5}],
+      "reason": "作者要求重写已有贺去外地一线的说明，纠正长期居住的表述并保留日期未定；未要求把这条线标为收束。",
+      "uncertain": false
+    },
+    {
+      "id": "a26f-w02-action-18",
+      "actions": [{"kind": "abandon_thread", "target": 7}],
+      "reason": "作者明确不再追写柴闻序到远方看房间这一支，并要求把已有伏笔标为放弃。",
+      "uncertain": false
+    }
+  ]
+}

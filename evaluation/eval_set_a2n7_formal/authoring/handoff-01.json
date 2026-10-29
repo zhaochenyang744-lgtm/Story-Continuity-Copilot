@@ -1,0 +1,247 @@
+{
+  "segment": "01-04",
+  "status": "complete",
+  "new_named_people": 0,
+  "new_proper_names": [],
+  "time": "四个连续普通工作日；第一晚发现夜蓝，第四日晚查明来源。无具体日期。",
+  "chapters": [
+    {
+      "number": 1,
+      "file": "ch01.md",
+      "han": 3011,
+      "quotes": [
+        {
+          "label": "alias_1_2",
+          "quote": "矩鸢就是蒋珞岑，霜芥就是褚霁禾。",
+          "han_position": 2767,
+          "characters": 16
+        },
+        {
+          "label": "alias_3_4",
+          "quote": "砂鹭是厉闻绡，斜栅是范筠策。",
+          "han_position": 2800,
+          "characters": 14
+        },
+        {
+          "label": "fact_5",
+          "quote": "她现在仍是组里的制样员，明天要做多少，尚需大家商量",
+          "han_position": 2719,
+          "characters": 25
+        },
+        {
+          "label": "fact_6",
+          "quote": "褚霁禾的工作房间仍是迟测间，门里的旧样页还等着她整理。",
+          "han_position": 2742,
+          "characters": 27
+        },
+        {
+          "label": "fact_10",
+          "quote": "她用左手写标签，右手只替纸边压住卷角",
+          "han_position": 2687,
+          "characters": 18
+        },
+        {
+          "label": "fact_11",
+          "quote": "那本子一直是青布封面，边角磨浅了，也没有换掉。",
+          "han_position": 2871,
+          "characters": 23
+        },
+        {
+          "label": "fact_14",
+          "quote": "黎映珂负责安排研究日程，先逐个问谁有别的会议",
+          "han_position": 1665,
+          "characters": 22
+        },
+        {
+          "label": "fact_23",
+          "quote": "澄络材料实验中心的例会一向在午后举行",
+          "han_position": 1701,
+          "characters": 18
+        },
+        {
+          "label": "thread_5_planted",
+          "quote": "桌边竟浮起一小块蓝影。那颜色很窄，落在杯沿后面，挪一步便看不清。",
+          "han_position": 2212,
+          "characters": 32
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "file": "ch02.md",
+      "han": 3018,
+      "quotes": [
+        {
+          "label": "fact_8",
+          "quote": "范筠策负责试次安排，他定下先看双瓣样，再讨论其余材料。",
+          "han_position": 2651,
+          "characters": 27
+        },
+        {
+          "label": "fact_20",
+          "quote": "双瓣样由两片可以分离的薄样组成",
+          "han_position": 2675,
+          "characters": 15
+        },
+        {
+          "label": "thread_1_planted",
+          "quote": "一片上留着三个紫点，点间距离很近，像颜色曾经自己挪动过；另一片没有同样的点。",
+          "han_position": 2712,
+          "characters": 38
+        },
+        {
+          "label": "fact_21",
+          "quote": "厉闻绡收起的灰芽膜边缘呈灰绿",
+          "han_position": 2767,
+          "characters": 14
+        },
+        {
+          "label": "thread_3_planted",
+          "quote": "膜的一角却始终没有显出颜色，那一角为什么空白，眼下没人能解释。",
+          "han_position": 2781,
+          "characters": 31
+        },
+        {
+          "label": "fact_7",
+          "quote": "灰芽膜由厉闻绡保管，他将它放回自己的柜中，没有托给郝宥弦带走。",
+          "han_position": 2809,
+          "characters": 31
+        },
+        {
+          "label": "fact_15",
+          "quote": "郝宥弦的座位靠北窗，下午收回去的镇纸仍在桌上。",
+          "han_position": 2837,
+          "characters": 23
+        },
+        {
+          "label": "fact_13",
+          "quote": "范筠策端起水杯，只喝温水，他没有接褚霁禾递来的冰饮",
+          "han_position": 2858,
+          "characters": 25
+        },
+        {
+          "label": "fact_12",
+          "quote": "厉闻绡午饭后惯走楼梯，今天也是沿楼梯回来的。",
+          "han_position": 2881,
+          "characters": 22
+        },
+        {
+          "label": "thread_10_abandoned",
+          "quote": "上一轮就已经定了，不再重建旧色谱，这回也不重新追索。",
+          "han_position": 2914,
+          "characters": 26
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "file": "ch03.md",
+      "han": 3053,
+      "quotes": [
+        {
+          "label": "fact_9",
+          "quote": "卫砚翎现在的组内身份是报告统筹，收集各人的短记也由她负责。",
+          "han_position": 2682,
+          "characters": 29
+        },
+        {
+          "label": "fact_16",
+          "quote": "翁素缦研究的是颜色的时间差，并不把哪一刻更漂亮当作唯一的问题。",
+          "han_position": 2709,
+          "characters": 31
+        },
+        {
+          "label": "fact_17_18",
+          "quote": "昼纹片是方形，暮纹片是圆形",
+          "han_position": 2738,
+          "characters": 13
+        },
+        {
+          "label": "thread_4_planted",
+          "quote": "同样放到傍晚，暮纹片比昼纹片退色慢，缘由尚未查明",
+          "han_position": 2750,
+          "characters": 24
+        },
+        {
+          "label": "thread_6_planted",
+          "quote": "黎映珂仍想找合适的日光比较昼纹片，可方片何时能带出去没有定下来。",
+          "han_position": 2785,
+          "characters": 32
+        },
+        {
+          "label": "fact_19_thread_7",
+          "quote": "岔脊盒的盒盖缠着白线，盒内是否还藏有夹层，此时也只是一个疑问，没人拆开。",
+          "han_position": 2815,
+          "characters": 36
+        },
+        {
+          "label": "fact_22_thread_8",
+          "quote": "桌角的弧脉条带着一道弯曲暗纹，翁素缦打算以后比较斜纹的来源，今天还没有着手。",
+          "han_position": 2847,
+          "characters": 38
+        },
+        {
+          "label": "thread_2_planted",
+          "quote": "靠墙的空架没有摆材料，低鸣却又从那一带响起；他们只确认空架旁能听见，声音的来处仍不明。",
+          "han_position": 2882,
+          "characters": 43
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "file": "ch04.md",
+      "han": 2877,
+      "quotes": [
+        {
+          "label": "thread_5_resolved",
+          "quote": "蓝窗帘向旁边拉开，桌上的夜蓝反光随即消失；将布送回原位，蓝影又出现。",
+          "han_position": 2613,
+          "characters": 34
+        },
+        {
+          "label": "thread_5_resolution",
+          "quote": "四个人换着站位看过，终于确认那片夜蓝来自窗帘反射，并非薄膜自己发光。",
+          "han_position": 2643,
+          "characters": 34
+        },
+        {
+          "label": "fact_24",
+          "quote": "本轮研究不把一次颜色变化当作可重复结果。",
+          "han_position": 2763,
+          "characters": 20
+        },
+        {
+          "label": "fact_25",
+          "quote": "她写告示不用红字催人，今天的新纸也只有黑字。",
+          "han_position": 2793,
+          "characters": 22
+        }
+      ]
+    }
+  ],
+  "final_states": {
+    "蒋珞岑": "仍为制样员，左手写标签",
+    "褚霁禾": "仍在迟测间工作，青布封面本未换",
+    "厉闻绡": "仍保管灰芽膜，午饭后惯走楼梯",
+    "范筠策": "试次仍先看双瓣样，只喝温水",
+    "卫砚翎": "仍为报告统筹",
+    "黎映珂": "安排研究日程，不用红字催人",
+    "郝宥弦": "座位靠北窗，没有接手灰芽膜",
+    "翁素缦": "研究颜色的时间差",
+    "昼纹片": "方形，尚未带出迟测间",
+    "暮纹片": "圆形，比昼纹片退色慢，原因未明",
+    "岔脊盒": "盖缠白线，未拆，夹层问题未收",
+    "弧脉条": "有弯曲暗纹，计划比较来源，尚未做",
+    "双瓣样": "两片可分离，一片三紫点一片无点，来源未收",
+    "灰芽膜": "边缘灰绿，空白角未解释",
+    "空架低鸣": "已发现但来源未明",
+    "夜蓝反光": "第1章埋，第4章以窗帘反射解释收束",
+    "旧色谱重建": "第2章明确上一轮已放弃，本段未恢复"
+  },
+  "notes": [
+    "未引入额外人物姓名或专名。",
+    "第1章安排日程/例会事实较早，其他关键尾段集中在2600汉字后。",
+    "第4章修正了可能歧义的相对夜晚表述和留场人数；未收其他线。"
+  ]
+}

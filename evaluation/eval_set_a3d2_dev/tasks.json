@@ -1,0 +1,610 @@
+{
+  "version": "a3-1",
+  "set_id": "a3-dev-2",
+  "author": "evaluation authoring",
+  "works": [
+    {
+      "key": "w01",
+      "title": "把台阶留给明天",
+      "language": "zh",
+      "source_file": "works/w01.md",
+      "purpose": "general",
+      "kind": "long",
+      "names": [
+        "嵇沐乔",
+        "乔尺",
+        "屈予葭",
+        "葭子",
+        "滕书蔚",
+        "蔚桥",
+        "邵令珂",
+        "匡泽絮",
+        "牟宛歧",
+        "巫承晏",
+        "傅语岑",
+        "缪见隅",
+        "应时霏",
+        "连照棠",
+        "赫沄市",
+        "绮衡周转站",
+        "呈晖大厦",
+        "璃岑服务间",
+        "砚棕间",
+        "弧栈坡板",
+        "棱湾折叠推车",
+        "赭环试配箱",
+        "让出一段平路",
+        "门口还有一步"
+      ],
+      "materials": {
+        "facts": "materials/w01-facts.json",
+        "foreshadows": "materials/w01-foreshadows.json"
+      },
+      "shared_draft": {
+        "chapter_title": "第31章 留一张空椅",
+        "body": "嵇沐乔到站里时，门口还堆着昨夜没带走的纸箱。她侧身进去，发现箱子并没有堵住路，只是自己已经习惯了沿墙走，见那里多一点东西，便以为原来的路没了。她没有马上搬开它们，先在门边站了一会儿，等眼睛从外面的亮光里缓过来。\n\n屈予葭正在找一只掉到桌底的笔帽。她趴得很低，只露出搭在椅背上的外套。嵇沐乔问要不要帮忙，她从桌下伸出一只手，掌心朝外，说已经看见了，别再把它踢远。两个人为一个笔帽保持了片刻安静，直到屈予葭直起腰，手里却多拿出一枚不知什么时候落下的纽扣。\n\n“这又是谁的？”她把纽扣放在纸箱盖上。\n\n“先让它待一会儿。”嵇沐乔说。她差一点便接着说自己去问，话到了嘴边，又觉得不是每个问号都得在刚进门时回答。她把早餐放下，绕着桌子找了一个没有纸张的位置，终于发现端在手里反而更容易。\n\n屈予葭把棱湾折叠推车推到窗边，自己坐在空出来的椅子上。窗外有人举着一把没有收拢的伞找门，伞沿在玻璃上投下摇晃的影子。屈予葭本来要起身，来人已经绕到另一扇门去了。她重新坐下，笑自己如今看见谁犹豫，都忍不住想先替对方指一个方向。\n\n应时霏带着赭环试配箱进来，裤脚沾了一点湿灰。她把箱子放在自己脚边，先借纸巾擦裤脚，又问昨天剩的那半袋面包有没有人带走。嵇沐乔说自己以为被她拿了，屈予葭说面包袋现在就在窗台上，里面装的却是揉皱的包装纸。三个人相视片刻，只好承认谁也不知道面包去了哪里。\n\n门外传来几声脚步，傅语岑没有进来，只把一只热纸杯递给应时霏。杯盖压得太紧，应时霏掀不开，傅语岑在门边等着，等她喝到第一口才走。嵇沐乔望见那张刚空出的椅子，忽然把自己的包放到地上，给纸杯腾了个稳当的地方。\n\n她的包里装着弧栈坡板的交接纸，纸角被早餐袋压出一道浅折。她抚平那道折痕，没有立刻翻页。屈予葭问今天从哪件事开始，她看了看桌上的纽扣，又看门口没有撤掉的纸箱，说先坐下把早饭吃完。窗边的椅子还空着，没人急着替后来的人占住。"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a3e-trace-01",
+      "suite": "trace",
+      "work": "w01",
+      "request": "弧栈坡板这一路谁接过谁的手，整本帮我一站站找全；它本身有说不拢的地方也附上原话。",
+      "context": {
+        "page": "overview"
+      },
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 1,
+      "allowed_actions": [],
+      "why": "全书追踪坡板五次实际交接及原刻线三道或四道的冲突，只报告不改资料。"
+    },
+    {
+      "id": "a3e-trace-02",
+      "suite": "trace",
+      "work": "w01",
+      "request": "棱湾折叠推车的借还我快弄混了，从开头到结尾查一遍，按先后列交接和它身上的两说。",
+      "context": {
+        "page": "chapters"
+      },
+      "scope": null,
+      "author_replies": {},
+      "trace_object": 2,
+      "allowed_actions": [],
+      "why": "全书五次推车领出或转手及原装锁扣左右的冲突，不能代作者选择原装位置。"
+    },
+    {
+      "id": "a3e-thread-01",
+      "suite": "thread_audit",
+      "work": "w01",
+      "request": "全书那些留下的问号，哪些已经讲透、哪些明确不要续了，给相应状态卡；还没着落的也说一声。",
+      "context": {
+        "page": "materials"
+      },
+      "scope": null,
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 1,
+          "after_points": [
+            "已回收",
+            "空行留给回程件用"
+          ],
+          "evidence_chapters": [
+            "第12章 空白也有去处"
+          ],
+          "evidence_quotes": [
+            "运单空行是预留给回程件的，不是漏记了另一块坡板。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "异色布是试装的包边样料"
+          ],
+          "evidence_chapters": [
+            "第18章 小片颜色"
+          ],
+          "evidence_quotes": [
+            "那片异色布是试装时留下的包边样料，并不是谁遗失的私人物件。"
+          ]
+        },
+        {
+          "kind": "resolve_thread",
+          "target": 3,
+          "after_points": [
+            "已回收",
+            "便条出自连照棠"
+          ],
+          "evidence_chapters": [
+            "第27章 纸背上的名字"
+          ],
+          "evidence_quotes": [
+            "改字便条是连照棠写的，她拿出的草稿与便条逐行吻合。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 4,
+          "after_points": [
+            "已放弃",
+            "不再查旧单收件人"
+          ],
+          "evidence_chapters": [
+            "第20章 不再往下猜"
+          ],
+          "evidence_quotes": [
+            "大家决定不再追问旧租单上的模糊收件人，这条线就到这里，往后不再查。"
+          ]
+        }
+      ],
+      "why": "正好三张回收卡和一张放弃卡，四开放线和已正确回收的挂绳不改。"
+    },
+    {
+      "id": "a3e-tidy-01",
+      "suite": "tidy",
+      "work": "w01",
+      "request": "只看头十章，把服务规矩、固定分工、固定时间地点、费用来源跟资料对对，缺的补上，旧的换掉。",
+      "context": {
+        "page": "materials"
+      },
+      "scope": [
+        1,
+        10
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "续租确认"
+          },
+          "after_points": [
+            "续租须由本人答应",
+            "未作回应不表示同意继续租"
+          ],
+          "evidence_chapters": [
+            "第4章 一字的距离"
+          ],
+          "evidence_quotes": [
+            "绮衡周转站规定每次续租都须本人确认，不把沉默当作续租。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "屈予葭",
+            "predicate": "变动通知"
+          },
+          "after_points": [
+            "预约变化由屈予葭逐个通知租用者",
+            "不能只更新内部记录"
+          ],
+          "evidence_chapters": [
+            "第5章 少打的一通电话"
+          ],
+          "evidence_quotes": [
+            "屈予葭负责把预约变动逐一通知租用人，不能只改内部表格。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "停车费来源"
+          },
+          "after_points": [
+            "送取停车支出从经营收入出",
+            "租用者不用先付停车钱"
+          ],
+          "evidence_chapters": [
+            "第7章 不在纸包里面"
+          ],
+          "evidence_quotes": [
+            "每次送取产生的停车费由绮衡周转站经营收入支付，不让租用人垫付。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "体验时地"
+          },
+          "after_points": [
+            "周五上午接待体验",
+            "体验地点是璃岑服务间",
+            "与日常交接分别安排"
+          ],
+          "evidence_chapters": [
+            "第8章 先把手松开"
+          ],
+          "evidence_quotes": [
+            "每周五上午的体验接待固定放在璃岑服务间，不与日常交接混用。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "傅语岑",
+            "predicate": "清除个人标签"
+          },
+          "after_points": [
+            "傅语岑负责清除个人标记",
+            "再次租出前要先去除"
+          ],
+          "evidence_chapters": [
+            "第10章 回来的那半程"
+          ],
+          "evidence_quotes": [
+            "归还物件上的个人标签必须在再次出租前清除，由傅语岑负责。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 1,
+          "after_points": [
+            "会面固定在周四傍晚",
+            "不再沿用周一午后"
+          ],
+          "evidence_chapters": [
+            "第6章 把午后还回去"
+          ],
+          "evidence_quotes": [
+            "从现在起，绮衡周转站每周四傍晚碰头，原来的周一午后安排取消。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 2,
+          "after_points": [
+            "常规交接改用砚棕间",
+            "璃岑服务间退出常规交接"
+          ],
+          "evidence_chapters": [
+            "第9章 留着旧门的方向"
+          ],
+          "evidence_quotes": [
+            "日常交接从今天起改在砚棕间，璃岑服务间不再承担日常交接。"
+          ]
+        }
+      ],
+      "why": "范围内五项独立缺漏和两项旧值全部出卡，已有资料的同义职责不重复新增。"
+    },
+    {
+      "id": "a3e-tidy-02",
+      "suite": "tidy",
+      "work": "w01",
+      "request": "第十六到二十二章也帮我对资料：服务规矩、固定分工、固定时间地点、费用来源，少了或过期的都给卡。",
+      "context": {
+        "page": "chapters"
+      },
+      "scope": [
+        16,
+        22
+      ],
+      "author_replies": {},
+      "expected_actions": [
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "暂停计费"
+          },
+          "after_points": [
+            "租用者叫停后不得自行续算天数"
+          ],
+          "evidence_chapters": [
+            "第16章 留在纸外的话"
+          ],
+          "evidence_quotes": [
+            "绮衡周转站规定租用人提出暂停后不得自动延长计费天数。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "答疑时地"
+          },
+          "after_points": [
+            "周二傍晚进行跨楼答疑",
+            "答疑场地为砚棕间",
+            "不挤占体验接待"
+          ],
+          "evidence_chapters": [
+            "第18章 小片颜色"
+          ],
+          "evidence_quotes": [
+            "每周二傍晚的跨楼答疑固定在砚棕间举行，不占体验接待时段。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "外包装回收边界"
+          },
+          "after_points": [
+            "坏的外包装另行回收",
+            "不能混入住户私纸"
+          ],
+          "evidence_chapters": [
+            "第19章 打开的那一面"
+          ],
+          "evidence_quotes": [
+            "绮衡周转站规定破损外包装单独回收，不得混入住户的私人纸件。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "试办运费来源"
+          },
+          "after_points": [
+            "试办来回运输开支由经营收入出",
+            "不扣租用者押金"
+          ],
+          "evidence_chapters": [
+            "第21章 来回之间"
+          ],
+          "evidence_quotes": [
+            "跨楼试办的往返运费由经营收入承担，不从住户押金中扣。"
+          ]
+        },
+        {
+          "kind": "add_fact",
+          "target": {
+            "subject": "绮衡周转站",
+            "predicate": "提前退租理由"
+          },
+          "after_points": [
+            "可提前退租",
+            "不必说明私人缘由"
+          ],
+          "evidence_chapters": [
+            "第22章 谁说了算"
+          ],
+          "evidence_quotes": [
+            "绮衡周转站允许提前退租，租用人无需交代私人原因。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 3,
+          "after_points": [
+            "出库最后复核改归邵令珂",
+            "嵇沐乔卸下这项兼任"
+          ],
+          "evidence_chapters": [
+            "第17章 另一只手"
+          ],
+          "evidence_quotes": [
+            "此后的出库最终复核交给邵令珂，嵇沐乔不再兼任这一项。"
+          ]
+        },
+        {
+          "kind": "change_fact",
+          "target": 4,
+          "after_points": [
+            "耗材改由经营收入付款",
+            "不再用押金垫这笔钱"
+          ],
+          "evidence_chapters": [
+            "第20章 不再往下猜"
+          ],
+          "evidence_quotes": [
+            "包装耗材今后只用经营收入支付，原先从押金周转的办法取消。"
+          ]
+        }
+      ],
+      "why": "第二范围内五项独立缺漏和两项旧值全部出卡，押金禁挪用等已有设定无卡。"
+    },
+    {
+      "id": "a3e-ask-01",
+      "suite": "ask",
+      "work": "w01",
+      "request": "第十一到第十三章关于试办最初叫什么的说法请挨处对过，报名时的也算，给我一个能接着用的结论。",
+      "context": {
+        "page": "chapters"
+      },
+      "scope": [
+        11,
+        13
+      ],
+      "author_replies": {
+        "decision": "选 a，采用《让出一段平路》，只统一叙述。"
+      },
+      "decision_point": 1,
+      "expected_actions": [],
+      "why": "同次最初登记名两说且均否认改名，须问作者；答复只定叙述不改资料。"
+    },
+    {
+      "id": "a3e-ask-02",
+      "suite": "ask",
+      "work": "w01",
+      "request": "第二十五、二十六章那次首次展示的预约到底怎么写？替我核对两章，用确认过的一说写个说明。",
+      "context": {
+        "page": "chapters"
+      },
+      "scope": [
+        25,
+        26
+      ],
+      "author_replies": {
+        "decision": "选 b，以周日下午三点为准，只统一叙述。"
+      },
+      "decision_point": 2,
+      "expected_actions": [],
+      "why": "同次最初预约有周六或周日两说，不能自行择真；作者只要求统一叙述。"
+    },
+    {
+      "id": "a3e-narrowed-01",
+      "suite": "narrowed",
+      "work": "w01",
+      "request": "整本里留着没收的线挨个看看，已交代的和明确停掉的都给状态卡，我看计划后再圈要做的章。",
+      "context": {
+        "page": "plan"
+      },
+      "scope": null,
+      "author_replies": {},
+      "plan_edit": {
+        "chapters": [
+          18,
+          20
+        ]
+      },
+      "expected_actions": [
+        {
+          "kind": "resolve_thread",
+          "target": 2,
+          "after_points": [
+            "已回收",
+            "异色布是试装的包边样料"
+          ],
+          "evidence_chapters": [
+            "第18章 小片颜色"
+          ],
+          "evidence_quotes": [
+            "那片异色布是试装时留下的包边样料，并不是谁遗失的私人物件。"
+          ]
+        },
+        {
+          "kind": "abandon_thread",
+          "target": 4,
+          "after_points": [
+            "已放弃",
+            "不再查旧单收件人"
+          ],
+          "evidence_chapters": [
+            "第20章 不再往下猜"
+          ],
+          "evidence_quotes": [
+            "大家决定不再追问旧租单上的模糊收件人，这条线就到这里，往后不再查。"
+          ]
+        }
+      ],
+      "allowed_actions": [],
+      "why": "作者将全书计划缩到18–20，只保留异色布回收与旧单放弃，不能带出12或27章的动作。"
+    },
+    {
+      "id": "a3e-route-01",
+      "suite": "route",
+      "work": "w01",
+      "input": "弧栈坡板的几次交接我记乱了，整本找齐，给我带出处的流转表。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "long_task",
+      "why": "跨全书逐处执行物件追踪并交出处表。"
+    },
+    {
+      "id": "a3e-route-02",
+      "suite": "route",
+      "work": "w01",
+      "input": "先从头看到尾，把已完结和不再追的支线分开给卡，没完的留着。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "long_task",
+      "why": "需要通读全书后核对整组伏笔状态。"
+    },
+    {
+      "id": "a3e-route-03",
+      "suite": "route",
+      "work": "w01",
+      "input": "赭环试配箱的接手顺序通篇核过再给结果，两处相撞的说法也要指出。",
+      "context": {
+        "page": "chapters",
+        "chapter_number": 29
+      },
+      "expected_route": "long_task",
+      "why": "要求执行全书核对，而非只问某次交接。"
+    },
+    {
+      "id": "a3e-route-04",
+      "suite": "route",
+      "work": "w01",
+      "input": "站里旧规则怕有漏，开个全书核对任务，先让我看章次安排。",
+      "context": {
+        "page": "plan"
+      },
+      "expected_route": "long_task",
+      "why": "明确启动全书任务并先审核计划。"
+    },
+    {
+      "id": "a3e-route-05",
+      "suite": "route",
+      "work": "w01",
+      "input": "不用通篇翻，只把第六章的新碰头时间替换进旧资料那一项。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "虽提通篇但只要求改一个已指明的资料项。"
+    },
+    {
+      "id": "a3e-route-06",
+      "suite": "route",
+      "work": "w01",
+      "input": "空行的缘由既然交代过了，帮我结束运单那条悬念记录。",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "change",
+      "why": "只改变一条已知回收依据的伏笔状态。"
+    },
+    {
+      "id": "a3e-route-07",
+      "suite": "route",
+      "work": "w01",
+      "input": "全书资料要核一遍的话，分几步比较省事？现在只是问做法。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "ask",
+      "why": "只问执行方法，未要求实际启动全书任务。"
+    },
+    {
+      "id": "a3e-route-08",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一段跟以前写的能合上吗？",
+      "context": {
+        "page": "materials"
+      },
+      "expected_route": "ask",
+      "why": "没有正文选区时按一般问作品处理。"
+    },
+    {
+      "id": "a3e-route-09",
+      "suite": "route",
+      "work": "w01",
+      "input": "这一段跟以前写的能合上吗？",
+      "context": {
+        "page": "writing",
+        "chapter_number": 31,
+        "selection": "屈予葭把棱湾折叠推车推到窗边，自己坐在空出来的椅子上。"
+      },
+      "expected_route": "check_passage",
+      "why": "同句在写作页有完整句选区，要求检查这段和前文是否一致。"
+    },
+    {
+      "id": "a3e-route-10",
+      "suite": "route",
+      "work": "w01",
+      "input": "接下来要写人又碰面的场景，先提醒我前面停在哪儿、还有哪些事没落定。",
+      "context": {
+        "page": "overview"
+      },
+      "expected_route": "recap",
+      "why": "动笔前请求回顾当前处境和未完事项。"
+    }
+  ]
+}

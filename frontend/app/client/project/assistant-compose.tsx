@@ -16,8 +16,17 @@ export type ComposeChip = {
   note?: string;
   drop: () => void;
 };
-export type Mode = "auto" | "ask" | "recap" | "check" | "change";
-export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料" };
+export type Mode = "auto" | "ask" | "recap" | "check" | "change" | "long";
+export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料", long: "长任务" };
+/** One line under each use in the menu: what choosing it does. */
+export const MODE_HINT: Record<Mode, string> = {
+  auto: "由助手判断这句话要做什么",
+  ask: "查正文和资料回答",
+  recap: "回顾上一章停在哪、哪些线没收",
+  check: "检查选中的一段和前文有没有矛盾",
+  change: "提出改动，你确认后才执行",
+  long: "先列计划，你点头后在后台做",
+};
 
 /** What the 「＋」 menu can add, and what choosing each does. */
 export type PlusPick = {
@@ -35,6 +44,7 @@ export type PlusPick = {
 
 const Cross = () => <svg viewBox="0 0 10 10" width="8" height="8" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 2l6 6M8 2 2 8" /></svg>;
 const Plus = () => <svg viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10" /></svg>;
+const Caret = () => <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 4l4 4 4-4" /></svg>;
 const Up = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" /></svg>;
 const Stop = () => <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" fill="currentColor" /></svg>;
 
@@ -55,7 +65,7 @@ function useMenu(close: () => void, anchor: RefObject<HTMLElement | null>) {
     if (!items.length) return;
     event.preventDefault();
     const at = items.indexOf(document.activeElement as HTMLElement);
-    items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
+    items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus({ preventScroll: true });
   };
   return { list, onKeyDown };
 }
@@ -144,7 +154,7 @@ function PlusMenu({ pick, close, anchor, writing }: { pick: PlusPick; close: () 
   );
 }
 
-function ModeMenu({ modes, mode, setMode, close, anchor }: { modes: Mode[]; mode: Mode; setMode: (mode: Mode) => void; close: () => void; anchor: RefObject<HTMLElement | null> }) {
+function ModeMenu({ modes, mode, setMode, close, anchor, unavailable }: { modes: Mode[]; mode: Mode; setMode: (mode: Mode) => void; close: () => void; anchor: RefObject<HTMLElement | null>; unavailable: Partial<Record<Mode, string>> }) {
   const { list, onKeyDown } = useMenu(close, anchor);
   usePlacement(anchor, "mode");
   useEffect(() => { list.current?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus({ preventScroll: true }); }, [list]);
@@ -152,7 +162,12 @@ function ModeMenu({ modes, mode, setMode, close, anchor }: { modes: Mode[]; mode
     <div ref={list} className="cx-menu mode" role="menu" aria-label="这次让助手做什么" onKeyDown={onKeyDown}>
       <span className="head" aria-hidden="true">这次让助手做什么</span>
       {modes.map((item) => (
-        <button key={item} type="button" role="menuitemradio" aria-checked={item === mode} onClick={() => { setMode(item); close(); }}>{MODE_LABEL[item]}</button>
+        // A use this account cannot have is greyed, not hidden, and says why when pointed at (aria-disabled keeps it reachable, so the reason can be read).
+        <button key={item} type="button" role="menuitemradio" aria-label={MODE_LABEL[item]} aria-checked={item === mode} aria-disabled={unavailable[item] ? true : undefined}
+          title={unavailable[item] || undefined}
+          onClick={() => { if (unavailable[item]) return; setMode(item); close(); }}>
+          <span className="what"><span className="name">{MODE_LABEL[item]}</span><span className="d">{MODE_HINT[item]}</span></span>
+        </button>
       ))}
     </div>
   );
@@ -186,18 +201,20 @@ export type ComposerProps = {
   hintMore?: string;
   /** Set when the mode is not the author's choice (a fix for one finding): its name, shown in place of the mode, without a menu. */
   modeName?: string;
-  /** What the mode button says in 自动 while the sentence is judged ("判断中…") and after ("自动 · 写前回顾"); the menu is unchanged. */
-  modeText?: string;
   /** The text box cannot be typed in (查前文矛盾 asks about the picked words only). */
   fixed?: boolean;
+  /** Uses shown in the menu but greyed, each with the reason (长任务 for a visitor: 注册后可以用). */
+  unavailable?: Partial<Record<Mode, string>>;
   /** ↑ with an empty box. */
   recall: () => void;
 };
 
 const STOP_GRACE_MS = 700;
+// How long after the IME candidate list closes an Enter still belongs to it (Safari; half a second, as the clients that handle it).
+const IME_GRACE_MS = 500;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, modeText, fixed, recall } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {} } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -209,15 +226,19 @@ export function Composer(props: ComposerProps) {
   const modeButton = useRef<HTMLButtonElement>(null);
   const length = Array.from(text).length;
   const counting = length >= 250;
+  // When the IME's candidate list last closed. Safari can deliver the Enter that confirmed a candidate after the composition has
+  // ended, as a plain Enter: one that comes this soon after is still the candidate's, not a send.
+  const composedAt = useRef(-Infinity);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "ArrowUp" && !text && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); recall(); return; }
     // Enter sends; Shift+Enter breaks the line; Enter that confirms an IME candidate does neither.
     if (event.key !== "Enter" || event.shiftKey || event.nativeEvent.isComposing || event.keyCode === 229) return;
+    if (performance.now() - composedAt.current < IME_GRACE_MS) { event.preventDefault(); return; }
     event.preventDefault();
     send();
   };
-  const closePlus = () => { setOpen(null); window.setTimeout(() => plusButton.current?.focus(), 0); };
-  const closeMode = () => { setOpen(null); window.setTimeout(() => modeButton.current?.focus(), 0); };
+  const closePlus = () => { setOpen(null); window.setTimeout(() => plusButton.current?.focus({ preventScroll: true }), 0); };
+  const closeMode = () => { setOpen(null); window.setTimeout(() => modeButton.current?.focus({ preventScroll: true }), 0); };
   return (
     <div className="a-compose">
       <form className={`cx${off ? " off" : ""}`} onSubmit={(event) => { event.preventDefault(); if (!running) send(); }} aria-label="向助手提问" ref={frame}>
@@ -236,28 +257,22 @@ export function Composer(props: ComposerProps) {
                 ))}
               </div>
             )}
-            <textarea ref={fieldRef} className="cx-text" value={text} maxLength={maxLength} rows={2} aria-label="向助手提问" placeholder={placeholder}
+            <textarea ref={fieldRef} className="cx-text" value={text} maxLength={maxLength} rows={1} aria-label="向助手提问" placeholder={placeholder}
               data-autofocus={autoFocus ? true : undefined} readOnly={fixed} aria-readonly={fixed || undefined}
-              onChange={(event) => setText(event.target.value)} onKeyDown={onKeyDown} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+              onChange={(event) => setText(event.target.value)} onKeyDown={onKeyDown} onCompositionEnd={() => { composedAt.current = performance.now(); }}
+              onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
           </>
         )}
         <div className="cx-bar">
           {!off && (
             <>
-              <button ref={plusButton} type="button" className="cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
-              <button ref={modeButton} type="button" className="cx-mode" aria-label={`这次做什么：${modeName ?? modeText ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
-                {modeName ?? modeText ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret" aria-hidden="true"> ▼</span>}
+              <button ref={plusButton} type="button" className="cx-ghost cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
+              <button ref={modeButton} type="button" className="cx-ghost cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
+                {modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret"><Caret /></span>}
               </button>
             </>
           )}
-          {/* One place for the counter, the key hint and the cost: the key hint takes the cost's place while the box has focus, so the bar never reflows. */}
-          {off ? <span className="cx-fill" /> : (
-            <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
-              {counting ? `${length} / ${maxLength}`
-                : focused && !running ? <span className="cx-keys">Enter 发送</span>
-                  : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
-            </span>
-          )}
+          <span className="cx-fill" />
           {running ? (
             <button type="button" className="cx-send stop" aria-label="停止" disabled={stopping} onClick={() => { if (performance.now() - stopArmedAt.current >= STOP_GRACE_MS) stop(); }}><Stop /></button>
           ) : (
@@ -265,9 +280,19 @@ export function Composer(props: ComposerProps) {
           )}
         </div>
         {open === "plus" && <PlusMenu pick={pick} writing={writing} close={closePlus} anchor={frame} />}
-        {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} />}
+        {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} unavailable={unavailable} />}
       </form>
-      <p className="a-ai-note">回答由 AI 生成，可能出错，请点出处核对。</p>
+      {/* Under the frame, at its right: one place for the counter, the key hint and the cost. The key hint takes the cost's place while the box has focus, so the line never reflows. */}
+      <div className="a-quota-row">
+        <p className="a-ai-note">回答由 AI 生成，可能出错，请点出处核对。</p>
+        {!off && (
+          <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
+            {counting ? `${length} / ${maxLength}`
+              : focused && !running ? <span className="cx-keys">Enter 发送</span>
+                : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

@@ -4,18 +4,19 @@
 .plan-legend .key { display: inline-block; width: 14px; height: 14px; }
 .plan-legend .key.decided { background: var(--c-ink); }
 .plan-legend .key.weighing { border: 2px dashed var(--c-ink); }
-.plan-group { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--c-rule); }
+.plan-group { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; padding: 20px 0; }
 .plan-group-label .num { display: block; font-size: 64px; line-height: .9; }
 .plan-group-label > span:last-child { display: block; margin-top: 6px; font-size: 13px; }
 .plan-items { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.plan-card { padding: 18px 20px; border: 2px solid var(--c-rule); scroll-margin-top: calc(var(--topbar-h) + 24px); }
-.plan-card.weighing { border-style: dashed; border-color: var(--c-faint); }
-.plan-card.open { background: var(--c-surface); }
+/* A plan is a raised card with no frame; one still being weighed keeps a dashed outline: dashes mean "not certain yet". */
+.plan-card { padding: 18px 20px; border: 2px solid transparent; background: var(--c-raised); scroll-margin-top: calc(var(--topbar-h) + 24px); }
+.plan-card.weighing { border-style: dashed; border-color: var(--c-faint); background: transparent; }
+.plan-card.open { background: var(--c-surface); box-shadow: var(--ring-rest); }
 .plan-card-main { display: block; width: 100%; min-height: 44px; padding: 0; border: 0; background: none; color: var(--c-ink); text-align: left; cursor: pointer; }
 .plan-card-main:hover .plan-card-title { color: var(--c-blue-text); }
 .plan-card-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.kind-tag { padding: 0 6px; border: 1px solid var(--c-rule); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; }
-.plan-card-title { display: block; margin-top: 8px; font-size: 24px; font-weight: 900; line-height: 1.3; }
+.kind-tag { padding: 0 6px; border: 0; background: var(--c-fill); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; }
+.plan-card-title { display: block; margin-top: 8px; font-size: 24px; font-weight: 700; line-height: 1.3; }
 .plan-card-summary { display: block; max-width: 46em; margin-top: 6px; color: var(--c-ink-2); font-family: var(--font-serif); font-size: 16px; }
 .plan-card-more { display: grid; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--c-line); }
 .plan-card-more > p { font-size: 14px; }
@@ -27,6 +28,11 @@
 .plan-archived li { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; color: var(--c-muted); }
 
 @media (max-width: 720px) {
+  /* The category tabs are one row that slides sideways, never a 3 + 1 wrap (as the settings sub-navigation does). */
+  .plan .tabs nav { flex: 1 1 100%; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .plan .tabs nav::-webkit-scrollbar { display: none; }
+  .plan .tabs .tab { flex: none; padding: 0 16px; white-space: nowrap; }
+  .plan .tabs .tab:focus-visible { outline-offset: -3px; }
   .plan-group { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .plan-group-label { display: flex; align-items: baseline; gap: 12px; }
   .plan-group-label .num { font-size: 40px; }

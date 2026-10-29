@@ -439,7 +439,7 @@ class OfflineTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as d, patch.object(run, 'git', return_value=''), \
                     patch.object(run, 'validate_set'), patch.object(run, 'load_set', side_effect=AssertionError('sealed')):
                 with self.assertRaisesRegex(ValueError, error):
-                    run.preflight(args(*options), SimpleNamespace(available=True, model='deepseek-flash', assistant_model='deepseek-flash'), Path(d))
+                    run.preflight(args(*options), SimpleNamespace(available=True, model='deepseek-flash', assistant_model='deepseek-flash', model_for=lambda role: 'deepseek-flash'), Path(d))
         with patch.object(run, 'git', return_value=' M evaluation/assistant_a1/run.py'), \
                 self.assertRaisesRegex(ValueError, 'dirty'):
             run.preflight(args('--set', PAIR, '--runs', '3'), None)
@@ -464,7 +464,7 @@ class OfflineTests(unittest.TestCase):
         data = {'manifest_sha256': 'invented', 'works': [{'key': 'w', 'title': 'test',
             'source': '# 第一章\n仅测试。', 'shared_draft': {'body': '她把书放下。'}}],
             'tasks': [route_task(), suggest_task()]}
-        provider = SimpleNamespace(assistant_model='deepseek-flash', model='deepseek-flash')
+        provider = SimpleNamespace(assistant_model='deepseek-flash', model='deepseek-flash', model_for=lambda role: 'deepseek-flash')
         fake_judge = Mock()
         fake_judge.ask.side_effect = lambda row, name, key, material, choices: {
             'verdict': 'supported' if name == 'citation_support' else 'absent' if key.startswith('forbidden:') else 'stated' if name == 'qa_answer_points' else 'no',
@@ -493,7 +493,7 @@ class OfflineTests(unittest.TestCase):
             'source': '# 第一章\n仅测试。', 'shared_draft': {'body': '她把书放下。'}}],
             'tasks': [route_task(), {'id': 'fix-support', 'work': 'w', 'suite': 'fix', 'support': True, 'draft': '她把书放下。',
                                      'conflict_sentence': '她把书放下。', 'category': 'x', 'evidence_chapters': [], 'fix_idea': 'x'}]}
-        provider = SimpleNamespace(assistant_model='deepseek-flash', model='deepseek-flash')
+        provider = SimpleNamespace(assistant_model='deepseek-flash', model='deepseek-flash', model_for=lambda role: 'deepseek-flash')
         with tempfile.TemporaryDirectory() as d, patch.object(run, 'Work', FakeWork),                 patch.object(run, 'git', return_value='test-commit'), contextlib.redirect_stdout(io.StringIO()):
             options = args('--runs', '1')
             result = run.execute(options, data, provider, Mock(), run.Ledger(10, (2, 8), (9, 27)), run.paths(SET, options.run_id, Path(d)))

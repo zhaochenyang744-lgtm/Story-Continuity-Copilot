@@ -1,0 +1,48 @@
+{
+  "status": "completed",
+  "unresolved_findings": 0,
+  "sha256": {
+    "materials/w01-facts.json": "062d0597a1072117f6a72dd42e64c053d7f755ded57bb8c66a284b105bd8d196",
+    "materials/w01-foreshadows.json": "0450f8b68422a7e206bc032e6cc80ec5e325cf86a6bed0ef4db304563a75387f",
+    "materials/w02-facts.json": "d70c69a06166f83aa8b6e52465016168f40ba20bf2c744a2a4c8dfa52e69a70f",
+    "materials/w02-foreshadows.json": "9d58d45bea9427a08245fdb80f2c8c6ed9642a1f45d41a7394966dce34cd6e06",
+    "tasks.json": "4f9ffad01ab5c57acb46b768c170f2a23def7ee8ba66727de05ec2733fc9ef74",
+    "works/w01.md": "a418c6baa96657c6204bf5c332f2ee42bd2898579d390b1c697560bba96f310e",
+    "works/w02.md": "9d9c894b094be465b2a3cc8d905002f21d76ac0cac9660f34e3ec085d07c2d28"
+  },
+  "authoring_sha256": {
+    "authoring/self-review.json": "a4f3d377d05d5b926eec0b612585efe75ca3326d7e924b63a1911c4d1554ff93",
+    "authoring/self-review.md": "6bd8fa1e1dbe98b828d7f9eb982b72e9d54ed44d1555cd37cfccf58b254fdb76"
+  },
+  "reports": {
+    "authoring/blind-comparison.json": "d769e64bb3bc050e3fc8f9a0390d2b1da0b4a7fa3087ceb72694e7702f5910c8",
+    "authoring/blind-review-summary.json": "c3171cb128814714950299c5807a00b4562e6cd5903f27e7756e5d027b6ccd22",
+    "authoring/semantic-review.json": "e5703735099540a0ce3bd7c71fdae64cb350890a9b283a36caad2e87e4cb6e9c",
+    "authoring/blind-w01-input.json": "0539bb813d85aed698aa0207e7095dbfb3a66fecf0b3cb8807106f4a99fa8508",
+    "authoring/blind-w01-predictions.initial.json": "1bfdcad69d1e7786a85c2f1c172ac91e950e57ec95123bf2319087304cc40fbd",
+    "authoring/blind-w01-predictions.final.json": "97141d2a16d0f0bed25762ac36dc90685895d08c012c7d15582d55ee21bb2c34",
+    "authoring/blind-w02-input.json": "677cd203b01cb89b5bd8be4c4005c957903cb58b3edde5728914fdcce6e5ecc3",
+    "authoring/blind-w02-predictions.initial.json": "5f9bb0a98e74490912a23503264805d6db12c7b194e63da20e21dc648a8215fe",
+    "authoring/blind-w02-predictions.final.json": "5f9bb0a98e74490912a23503264805d6db12c7b194e63da20e21dc648a8215fe"
+  },
+  "blind_route": {
+    "total": 8,
+    "initial_agreement": 8,
+    "final_agreement": 8,
+    "unresolved": 0
+  },
+  "blind_intent": {
+    "total": 20,
+    "initial_agreement": 20,
+    "final_agreement": 20,
+    "unresolved": 0
+  },
+  "supplemental_intent": {
+    "total": 8,
+    "agreement": 8
+  },
+  "semantic_findings_closed": 2,
+  "model_calls": 0,
+  "product_runs": 0,
+  "evaluation_runs": 0
+}
