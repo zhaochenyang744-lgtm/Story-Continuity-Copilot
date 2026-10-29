@@ -359,7 +359,7 @@ test("18 变更卡片：白底、一圈细环的容器（没有边框），标�
   });
 });
 
-test("18 变更卡片：确认以后顶上换成“已写入资料 · 撤销”；没执行和已撤销的条目正文变淡，状态词对比度够，不再写“确认后才会执行”", async ({ page }) => {
+test("18 变更卡片：确认以后顶上换成“已写入资料 · 撤销”；没要和已撤销的条目正文变淡，状态词对比度够，不再写“确认后才会执行”", async ({ page }) => {
   const when = ago(30);
   const written = cardItems({ status: "applied", decided_at: when, applied_at: when });
   await withThread(page, [changeView(written, { id: "atask-applied" })]);
@@ -389,7 +389,7 @@ test("18 变更卡片：已撤销和没执行的条目——状态词对比度�
     const [a, b] = [luminance(text), luminance(background)];
     return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   });
-  for (const [index, word] of [[0, "已撤销"], [1, "没有执行"]] as const) {
+  for (const [index, word] of [[0, "已撤销"], [1, "没要"]] as const) {
     const card = thread(page).getByRole("region", { name: "资料改动" }).nth(index);
     await expect(card.locator(".a-chg-note-r")).toHaveCount(0);
     await expect(card).not.toContainText("确认后才会执行");

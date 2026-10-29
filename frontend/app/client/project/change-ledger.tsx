@@ -180,7 +180,7 @@ export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }:
                   )}
                 </span>
                 <span className="ledger-side">
-                  <span className="ledger-state">{item.status === "applied" ? "已执行" : "已撤销"}</span>
+                  <span className="ledger-state">{item.status === "applied" ? "已写入" : "已撤销"}</span>
                   <span className="actions">
                     {!readOnly && item.status === "applied" && <Button kind="text" disabled={local.busy || Boolean(local.conflict)} onClick={() => void ops.undo(item)}>撤销</Button>}
                     {!readOnly && item.status === "undone" && <Button kind="text" disabled={local.busy} onClick={() => void ops.redo(item)}>恢复</Button>}

@@ -45,7 +45,7 @@ test.describe("改资料：加伏笔", () => {
 
     await confirmButton(card).click();
     await expect(item).toHaveAttribute("data-status", "applied");
-    await expect(stateOf(item)).toHaveText("已执行");
+    await expect(stateOf(item)).toHaveText("已写入");
     const written = await threadRecord(page, id, change.target.id);
     expect([written.title, written.status, written.description, written.archived_at]).toEqual([ADDED_THREAD_TITLE, "planted", ADDED_THREAD_NOTE, null]);
     await expect(await threadsViewWith(page, id, ADDED_THREAD_TITLE)).toContainText("助手按你的确认添加");
