@@ -586,8 +586,12 @@ def _related(held: str, name: str) -> bool:
     return len(held) >= 2 and (held in name or name in held)
 
 
-# A chapter number written in figures or in Chinese ("第十二章" and "第12章" are one chapter).
+# Numbers a value states must stand in its evidence (A2 second formal run, w01-no-action-03: "生日是八月十二号" added on a
+# passage that names no date). Chapter mentions ("自第18章起") are where, not what, and are left out.
+CHAPTER_MENTION = re.compile(r"第\s*[0-9０-９零〇一二两三四五六七八九十百千]+\s*[章回节卷]")
 CHAPTER_NUMBER_IN = re.compile(r"第\s*([0-9０-９零〇一二两三四五六七八九十百千]+)\s*章")
+NUMBER_WORDS = re.compile(r"万一|一一|十分|千万|万万|三三两两|七七八八|一五一十|十全十美|百分之百")
+NUMBERS = re.compile(r"[0-9０-９]+|[零〇一二两三四五六七八九十百千万]{2,}|[零〇一二两三四五六七八九十百千](?=[年月日号岁点时])")
 DIGITS = {ch: i for i, ch in enumerate("零一二三四五六七八九")} | {"〇": 0, "两": 2}
 UNITS = {"十": 10, "百": 100, "千": 1000, "万": 10000}
 
@@ -605,6 +609,12 @@ def _number(token: str) -> int:
             section += (1 if digit is None else digit) * UNITS[ch]
             digit = None
     return total + section + (digit or 0)
+
+
+def numbers_in(text: str) -> set[int]:
+    """The numbers a text states, written in figures or in Chinese ("十二" and "12" are one number)."""
+    text = NUMBER_WORDS.sub("", CHAPTER_MENTION.sub("", "".join(text.split())))
+    return {_number(token.translate(str.maketrans("０１２３４５６７８９", "0123456789"))) for token in NUMBERS.findall(text)}
 
 
 # What the author says the new state is should be in the evidence: an author who names a place the text does not ("写成服务台
@@ -631,9 +641,9 @@ def _wrong_kind(want: str, action: Action) -> str:
 
 def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: dict[str, Any], request_words: str) -> None:
     """What the author asked done with the record must be a change of this kind, by the request list (`assistant_requests`).
-    (Until v2.2 the numbers of a fact's value had to stand in its evidence, and a thread whose title shared three character
-    pairs with the author's words was let through a "fact" piece: neither moved a measure when switched off in the v2.2 rule
-    cleanup, Desktop/v2.2任务/03-规则清理结果.md, and both went.)
+    A number or date in a fact's value must stand in its evidence (crutch `value_numbers`). (Until v2.2 a thread whose title
+    shared three character pairs with the author's words was let through a "fact" piece; it moved no measure when switched off
+    in the v2.2 rule cleanup and went.)
 
     Until v2.1 word lists guessed the second from the author's clause (a give-up word, a read-only word, a fact word without a
     thread word, a subject that names a sentence of the text); the request list says it of every piece of the sentence, and
@@ -647,17 +657,28 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
         want = None
     if want is not None:
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
+    if action.record_kind == "foreshadow":
+        return
+    evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
+    # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).
+    subject = "".join(proposal["after"]["subject"].split())
+    known = "".join(fact["value"] for fact in ctx.memory() if "".join(fact["subject"].split()) == subject)
+    if not numbers_in(proposal["after"]["value"]) <= numbers_in(evidence) | numbers_in(known):
+        raise ToolError("change_value_not_in_evidence")
 
 
-THREAD_NAMED = 2  # character pairs a thread's title shares with the author's words when the words name the thread
+# The author's words name a thread when they share a character pair with its title ("罗盘那条线" for "罗盘下落") or call it one.
+THREAD_WORDS = re.compile(r"伏笔|悬念|那条线|这条线|线索")
 
 
 def _names_a_thread(ctx: ToolContext, request_words: str) -> bool:
     pieces = assistant_requests.pieces_for(ctx.requests or [], _question(ctx), request_words)
-    said = _pairs(request_words + "".join(part for piece in pieces[:1] for part in (*piece["about"], piece["ask"])))
+    words = request_words + "".join(part for piece in pieces[:1] for part in (*piece["about"], piece["ask"]))
+    if THREAD_WORDS.search(words):
+        return True
     with ctx.db.connection() as c:
         titles = [row["title"] for row in c.execute("SELECT title FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL", (ctx.project_id,))]
-    return any(len(said & _pairs(title)) >= THREAD_NAMED for title in titles)
+    return any(_pairs(words) & _pairs(title) for title in titles)
 
 
 def _author_value_missing(ctx: ToolContext, args: dict[str, Any], proposal: dict[str, Any]) -> str | None:

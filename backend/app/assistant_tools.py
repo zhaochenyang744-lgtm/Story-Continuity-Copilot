@@ -58,6 +58,7 @@ ERROR_TEXTS = {
     "change_fields_invalid": "事实的类型或属性不在可选范围内",
     "change_fact_already_recorded": "资料里已经有这条事实",
     "change_check_existing": "先查一遍资料里已有的事实",
+    "change_value_not_in_evidence": "改后内容里的数字在依据段落里没有",
     "change_give_up_not_resolve": "作者要的是放弃或删除，不是已回收",
     "change_thread_limit_reached": "伏笔已经到上限，不能再加",
     "change_read_only": "作者只说要看这条资料，没有说要改",
@@ -80,6 +81,7 @@ ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时
                                         "用 add_fact 另加一条说这个属性的事实；只是这条本身变了，就只写这条的新内容，不在开头写名称。",
                "change_fields_invalid": "memory_type 和 predicate 只能用工具说明里列出的值。",
                "change_fact_already_recorded": "资料里已经有这条事实，不用再加；在回答里引用那条事实告诉作者。",
+               "change_value_not_in_evidence": "改后的内容里有依据段落里没有的数字或日期：只写依据段落里写着的；正文里没有写到，就不提出，在回答里告诉作者正文没有写。",
                "change_request_words_taken": "作者这几个字已经对应了卡片上的另一条改动：一处要求只做一条改动。作者这句话里没有别的字指到这条资料，就不要提出。",
                "change_not_requested": "request_words 要原样摘抄作者这句话里指到这条资料的字（至少两个字）。作者的话里摘不出指到它的字，"
                                        "就是作者没要改它：不要提出，用 answer 回答作者真正问的事。",

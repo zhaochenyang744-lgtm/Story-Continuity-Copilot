@@ -46,12 +46,13 @@ def _any_request_words():
 
 
 # Change tasks (the A2 path). The word lists (prose_subject, read_only, give_up, fact_not_thread) were switched off in g1 and
-# taken out in v2.1 A; value_numbers, alias, negated and title_shared (and A3's first_time and no_news) in the v2.2 cleanup.
+# taken out in v2.1 A; alias, negated and title_shared (and A3's first_time and no_news) in the v2.2 cleanup.
 A2 = {
     "consensus": _settings(assistant_change_runs=1),
     "request_list": _set("app.assistant_requests", "call_model", _no_split),
     "second_look": _set("app.assistant_actions", "_second_look", lambda ctx, action, args, proposal, request_words: None),
     "author_value": _set("app.assistant_actions", "_author_value_missing", lambda ctx, args, proposal: None),
+    "value_numbers": _set("app.assistant_actions", "numbers_in", lambda text: set()),  # change_value_not_in_evidence
     "card_review": _no_review,
     "request_words": _any_request_words,
 }

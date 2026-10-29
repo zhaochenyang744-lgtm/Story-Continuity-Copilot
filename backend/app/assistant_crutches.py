@@ -13,10 +13,10 @@ crutches (long tasks: compaction, pausing to ask, checking a step after a resume
 
 The v2.2 rule cleanup (2026-10-29, Desktop/v2.2任务/03-规则清理结果.md) switched each off on a fixed selection of spent tasks
 against two all-on passes of the same day. Taken out, having moved no measure and with the tasks they were added for still
-right: value_numbers (numbers of a value stood in its evidence), alias (a nickname's fact refused when the full name held it;
-card_review catches it), negated (a value saying the old no longer holds was not a restatement; it only saved a round),
-title_shared (a thread's title let it through a "fact" piece), and the trace's first_time and no_news word lists. Each kept
-one's `check` says what switching it off did.
+right: alias (a nickname's fact refused when the full name held it; card_review catches it), negated (a value saying the
+old no longer holds was not a restatement; it only saved a round), title_shared (a thread's title let it through a "fact"
+piece), and the trace's first_time and no_news word lists. value_numbers was taken out too and put back: its task failed in
+the regression after the cleanup. Each kept one's `check` says what switching it off did.
 """
 from __future__ import annotations
 
@@ -56,6 +56,11 @@ CRUTCHES = (
            "the model writes the author's wording of a new state onto a card when the text says otherwise",
            "A2 second formal run, w02-no-action-04 (three passes of three)",
            f"{SPENT_A2}: no-action rate (no-evidence tasks) (v2.2 cleanup, off: three cards with the author's wrong state)", True),
+    Crutch("value_numbers", "assistant_actions.numbers_in in _grounded",
+           "the model puts a number or date into a fact that its passage does not state",
+           "A2 second formal run, w01-no-action-03 (a birthday on a passage that names no date)",
+           f"{SPENT_A2}: evidence support, no-action rate (v2.2 cleanup: taken out, then put back when its task, the birthday, failed "
+           "again in the regression after the cleanup, three runs of three)", True),
     Crutch("request_words", "assistant_actions._request_words and change_request_words_taken",
            "the model proposes a change the author's sentence has no words for, or two changes on one piece of it",
            "A2 development round 2, no-action-05; A2 first formal run, w01/w02-action-12",

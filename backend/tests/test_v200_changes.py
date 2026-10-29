@@ -785,6 +785,13 @@ class GroundedTests(SecondLookTests):
             self.adding(ctx, passage, **fields)
         return raised.exception.code
 
+    def test_a_number_the_evidence_does_not_state_is_refused(self):
+        # w01-no-action-03: a birthday the text never gives, added on an unrelated passage.
+        task, ctx, _, _ = self.setup_task("鹦鹉螺号的生日按八月十二号加进去")
+        self.assertEqual(self.refused(ctx, self.passage(ctx, "她总把拓纸带在身上。"), value="生日是八月十二号"), "change_value_not_in_evidence")
+        stated = self.passage(ctx, "鹦鹉螺号的生日是8月12日，那天下了雨。")  # figures and Chinese numerals are the same numbers
+        self.assertEqual(self.adding(ctx, stated, value="生日是八月十二号")["change"], "C1")
+
     def test_a_chapter_mentioned_in_the_value_is_not_a_number_it_states(self):
         task, ctx, _, _ = self.setup_task("鹦鹉螺号现在停在北港")
         self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号已经停进北港。"), value="自第18章起停在北港")["change"], "C1")

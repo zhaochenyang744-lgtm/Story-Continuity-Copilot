@@ -372,7 +372,7 @@ class SetTests(unittest.TestCase):
         self.assertLessEqual(set(regress.ABLATIONS), set(SWITCHES))
         self.assertEqual(len({crutch.name for crutch in CRUTCHES}), len(CRUTCHES))
         self.assertTrue(all(crutch.weakness and crutch.origin and crutch.check for crutch in CRUTCHES))
-        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("_author_value_missing", "_second_look")))
+        self.assertTrue(all(hasattr(assistant_actions, name) for name in ("numbers_in", "_author_value_missing", "_second_look")))
         self.assertTrue(hasattr(assistant_requests, "call_model"))
         from app import long_task_kinds, long_tasks
         from app.assistant import AssistantEngine
