@@ -928,6 +928,16 @@ class RequestListTests(GroundedTests):
         ctx.requests = [self.piece("留一下", "fact", "鹦鹉螺号停在哪"), self.piece("别写成", "prose", "鹦鹉螺号整晚出海")]
         self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港")["change"], "C1")
 
+    def test_a_line_added_to_a_fact_taken_for_a_threads_note_is_not_refused_when_no_thread_is_named(self):
+        # Continuous use u1, rounds 3 and 20: "资料里「三棱脂囊·封口状态」那条得补一句" split as a thread's note, every change refused.
+        task, ctx, _, _ = self.setup_task("鹦鹉螺号那条得补一句：停在北港")
+        ctx.requests = [self.piece("得补一句", "thread_note", "鹦鹉螺号那条")]
+        self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港")["change"], "C1")
+        # Words that name a thread keep the list's reading: the note of that thread was asked for, not a fact.
+        task, ctx, _, _ = self.setup_task("鹦鹉螺号和罗盘下落那条得补一句：停在北港")
+        ctx.requests = [self.piece("得补一句", "thread_note", "鹦鹉螺号和罗盘下落那条")]
+        self.assertEqual(self.refused(ctx, self.passage(ctx, "鹦鹉螺号停在北港。"), value="停在北港"), "change_not_this_kind")
+
     def test_a_piece_the_list_does_not_name_is_not_refused_on_its_kind(self):
         # The word lists that used to decide here are gone (v2.1 A).
         task, ctx, _, _ = self.setup_task("鹦鹉螺号那条请读全")

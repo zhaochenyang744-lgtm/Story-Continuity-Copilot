@@ -916,6 +916,7 @@ class AssistantEngine:
         force_cost = min(ASSISTANT_FORCE_ANSWER_CNY, max_cost)
         last_call_cost: float | None = None  # what the previous model call cost (a point check's review is not counted)
         repaired = False
+        resent = False  # an answer that came back after the repair as no object at all is asked for once more
         dropped_codes: list[str] = []  # rules whose offending items the program left out once the repair was spent (codes only)
         protocol_errors = 0
         lines_shown = 0
@@ -1108,6 +1109,16 @@ class AssistantEngine:
                                             result_count=sum(len(s) for s in cleaned["sections"].values()) if kind == "recap" else len(cleaned["sentences"]),
                                             diagnostics={"problem_codes": [], "repairs": 1, "dropped": len(dropped_codes), "dropped_codes": count_codes(dropped_codes)}
                                             if repaired else None, elapsed_ms=_ms(round_started))
+                        continue
+                    if repaired and not resent and codes_of(problems) == ["answer_args_invalid"]:
+                        # The repaired answer did not come back as an object (cut off or not JSON): that says nothing of its
+                        # citations, so it is asked for once more (continuous use u1, round 31: the task failed on it).
+                        resent = True
+                        self.store.add_step(task_id, round_, "repair", "回答没有交完整，让助手重新交一次", args={"problems": problems[:8]},
+                                            error_code="answer_args_invalid", elapsed_ms=_ms(round_started),
+                                            diagnostics={"problem_codes": codes_of(problems), "repairs": 1, "dropped": 0, "dropped_codes": {}})
+                        messages.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(
+                            {"error": "answer_invalid", "problems": problems, "instruction": f"参数要是一个完整的 JSON 对象：请再次调用 {final_tool}。"}, ensure_ascii=False)})
                         continue
                     if repaired:
                         self.store.add_step(task_id, round_, "repair", "回答的引用仍然对不上，已放弃", args={"problems": problems[:8]},

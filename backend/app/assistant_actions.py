@@ -640,8 +640,24 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
     they were taken out (v2.1 A, after the list held on every spent A2 pair). Words the list does not hold, or a task whose
     split failed, are not refused on their kind."""
     want = assistant_requests.refusal(ctx.requests, _question(ctx), request_words, action.kind)
+    # "那条补一句" is a thread's note or a fact's by the record it names, and the list is made without the materials: a fact's
+    # line it takes for a thread's note, when the author's words name no thread, is not held against a change of the fact
+    # (continuous use u1, rounds 3 and 20: every change of the fact refused, no card).
+    if want == "thread_note" and action.record_kind == "fact" and not _names_a_thread(ctx, request_words):
+        want = None
     if want is not None:
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
+
+
+THREAD_NAMED = 2  # character pairs a thread's title shares with the author's words when the words name the thread
+
+
+def _names_a_thread(ctx: ToolContext, request_words: str) -> bool:
+    pieces = assistant_requests.pieces_for(ctx.requests or [], _question(ctx), request_words)
+    said = _pairs(request_words + "".join(part for piece in pieces[:1] for part in (*piece["about"], piece["ask"])))
+    with ctx.db.connection() as c:
+        titles = [row["title"] for row in c.execute("SELECT title FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL", (ctx.project_id,))]
+    return any(len(said & _pairs(title)) >= THREAD_NAMED for title in titles)
 
 
 def _author_value_missing(ctx: ToolContext, args: dict[str, Any], proposal: dict[str, Any]) -> str | None:

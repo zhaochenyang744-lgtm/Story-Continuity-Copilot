@@ -117,6 +117,23 @@ class CitationTests(AssistantCase):
         self.assertIn("answer_invalid", feedback)
         self.assertIn("R99", feedback)
 
+    def test_a_repaired_answer_that_comes_back_cut_off_is_asked_for_once_more(self):
+        # Continuous use u1, round 31: the repair's answer was no object at all, and the task failed on citations it never had.
+        task = self.run_ask(
+            turn(call("read_chapter", chapter_number=9)),
+            turn(answer_call("answered", [("没有出处的话。", ["R99"])])),
+            turn(raw_call("answer", '{"status": "answered", "sentences": [{"te')),
+            cite(9))
+        self.assertEqual(task["status"], "completed")
+        self.assertEqual([(s["kind"], s["error_code"]) for s in task["steps"] if s["kind"] == "repair"],
+                         [("repair", "citation_validation_failed"), ("repair", "answer_args_invalid")])
+        # Twice cut off is still a failure.
+        task = self.run_ask(
+            turn(call("read_chapter", chapter_number=9)),
+            turn(answer_call("answered", [("没有出处的话。", ["R99"])])),
+            turn(raw_call("answer", "{")), turn(raw_call("answer", "{")))
+        self.assertEqual((task["status"], task["error_code"]), ("failed", "citation_validation_failed"))
+
     def test_two_bad_answers_fail_the_task_and_return_the_characters(self):
         self.assertEqual(self.usage()["check_chars_used"], 0)
         task = self.run_ask(
