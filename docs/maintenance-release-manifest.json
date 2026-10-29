@@ -590,6 +590,50 @@
     {
       "source": "frontend/app/styles/radius.css",
       "target": "frontend-source/app/styles/radius.css"
+    },
+    {
+      "source": "backend/app/assistant_consensus.py",
+      "target": "backend/app/assistant_consensus.py"
+    },
+    {
+      "source": "backend/app/assistant_crutches.py",
+      "target": "backend/app/assistant_crutches.py"
+    },
+    {
+      "source": "backend/app/assistant_requests.py",
+      "target": "backend/app/assistant_requests.py"
+    },
+    {
+      "source": "backend/app/assistant_review.py",
+      "target": "backend/app/assistant_review.py"
+    },
+    {
+      "source": "backend/app/long_tasks.py",
+      "target": "backend/app/long_tasks.py"
+    },
+    {
+      "source": "backend/app/long_task_kinds.py",
+      "target": "backend/app/long_task_kinds.py"
+    },
+    {
+      "source": "backend/app/problem_codes.py",
+      "target": "backend/app/problem_codes.py"
+    },
+    {
+      "source": "backend/app/usage_stats.py",
+      "target": "backend/app/usage_stats.py"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-long.tsx",
+      "target": "frontend-source/app/client/project/assistant-long.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/assistant-text.ts",
+      "target": "frontend-source/app/client/project/assistant-text.ts"
+    },
+    {
+      "source": "frontend/app/client/project/long-watch.ts",
+      "target": "frontend-source/app/client/project/long-watch.ts"
     }
   ],
   "complete_trees": [

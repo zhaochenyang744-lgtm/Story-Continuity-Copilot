@@ -883,7 +883,7 @@ test.describe("助手：开关、测试版、隐私", () => {
     await other.goto("/privacy");
     await expect(other.getByRole("heading", { level: 1, name: "隐私说明" })).toBeVisible();
     await expect(other).toHaveURL(/\/privacy$/);
-    await expect(other.getByText("最近更新：2026 年 10 月 27 日")).toBeVisible();
+    await expect(other.getByText("最近更新：2026 年 10 月 29 日")).toBeVisible();
     // v2.1: the usage statistics, what they are used for, and how their summaries are kept.
     await expect(other.getByText("这些只有数字和代码，不包含你的作品内容、你的问题和助手的回答。", { exact: false })).toBeVisible();
     await expect(other.getByText("做这件事时我们只看汇总的数字，不读你的作品、你的问题和助手的回答。", { exact: false })).toBeVisible();
