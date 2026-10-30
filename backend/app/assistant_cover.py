@@ -112,7 +112,7 @@ def covering(c: sqlite3.Connection, issue: Any) -> dict[str, Any] | None:
         return None
     return {"decision": "author_decision", "status": "author_decision", "decision_id": row["decision_id"], "statement": row["statement"],
             "possibly_out_of_date": row["status"] == decisions.STALE, "source_issue_id": None,
-            "review_path": f"/projects/{issue['project_id']}/materials?tab=decisions", "requires_new_decision": False}
+            "review_path": f"/projects/{issue['project_id']}/memory?view=decisions", "requires_new_decision": False}
 
 
 def purge(c: sqlite3.Connection, project_id: str) -> None:

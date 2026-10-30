@@ -152,7 +152,7 @@ class ForeshadowCandidateDecision(Strict):
     base_foreshadow_version:int=Field(ge=0,le=2147483647)
     decision:Literal['accepted','edited','rejected']
     edited:ForeshadowFields|None=None
-class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=None; resulting_revision:int|None=None
+class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=Field(default=None,max_length=500); resulting_revision:int|None=None
 class ChangeSet(Strict): run_id:str; source_run_revision:int=Field(ge=1); resolved_revision:int=Field(ge=1)
 class EditedMemoryItem(Strict): item_id:str; memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class Commit(Strict): confirm:bool|None=None; accepted_item_ids:list[str]; rejected_item_ids:list[str]; edited_items:list[EditedMemoryItem]=Field(default_factory=list); note:str|None=None
