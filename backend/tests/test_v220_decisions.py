@@ -1,6 +1,7 @@
 """v2.2: the author's decisions, kept as records of their own and written only by a card the author confirms."""
 from __future__ import annotations
 
+import json
 import unittest
 
 from app import assistant_decisions as decisions
@@ -14,11 +15,17 @@ def record(statement="她第 7 章的年龄和第 3 章不同是有意的", kind
             "foreshadow_id": None, "prefer_chapter": None, "quote": "她年龄不统一是故意的", "source": "box", "source_ref": None,
             "basis_chapter": 7, **extra}
 
+def clear_sample(case):
+    """The sample work comes with two decisions of its own; these tests start from none."""
+    with case.db.connection() as c:
+        c.execute("DELETE FROM v2_author_decisions WHERE project_id=?", (case.project_id,))
+
 
 class DecisionCardTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
+        clear_sample(self)
 
     def answered(self):
         def cite(provider, messages):
@@ -150,6 +157,7 @@ class UseTests(AssistantCase):
     def setUp(self):
         self.start()
         self.register()
+        clear_sample(self)
         self.name = self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=? LIMIT 1", self.project_id)[0]["subject"]
         with self.db.connection() as c:
             decisions.write(c, self.db, self.project_id, "decision-age", record(f"{self.name}前后年龄不同是有意的", subjects=(self.name,), chapters=None),
@@ -191,12 +199,45 @@ class UseTests(AssistantCase):
         self.assertEqual(raised.exception.code, "change_thread_kept_open")
 
 
+class LongTaskTests(AssistantCase):
+    def setUp(self):
+        self.start()
+        self.register()
+        clear_sample(self)
+        self.name = self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=? LIMIT 1", self.project_id)[0]["subject"]
+        self.found = {"text": f"{self.name}的年龄两处写法不同", "options": [{"key": "a", "chapter": 3, "quote": "十七岁"}, {"key": "b", "chapter": 9, "quote": "十八岁"}]}
+
+    def test_a_question_the_author_has_decided_is_answered_by_the_decision(self):
+        from app.long_tasks import LongTasks as LongTaskRunner
+        decided = LongTaskRunner._decided
+        with self.db.connection() as c:
+            self.assertIsNone(decided(c, self.project_id, self.found))
+            decisions.write(c, self.db, self.project_id, "decision-prefer", record(f"{self.name}的年龄以第 3 章为准", kind="prefer", subjects=(self.name,),
+                                                                                chapters=None, prefer_chapter=3), self.user_id, "2026-10-30T00:00:00+00:00")
+            self.assertEqual(decided(c, self.project_id, self.found), ("a", "decision-prefer"))
+            other = {**self.found, "text": "罗盘的去向两处写法不同"}
+            self.assertIsNone(decided(c, self.project_id, other))  # another matter: asked as before
+
+    def test_the_authors_pick_becomes_a_decision_for_the_end_of_the_report(self):
+        from app.long_tasks import LongTasks as LongTaskRunner
+        def cite(provider, messages):
+            return turn(answer_call("answered", [("第九章写到了她。", [ref_of_chapter(messages, 9)])]))
+        self.run_ask(turn(call("read_chapter", chapter_number=9)), cite)
+        with self.db.connection() as c:
+            task_id = c.execute("SELECT id FROM assistant_tasks WHERE project_id=? LIMIT 1", (self.project_id,)).fetchone()["id"]
+            LongTaskRunner._choice_card(c, self.project_id, task_id, {**self.found, "choices": ["a", "b", "both", "you_decide"]}, "both")
+            item = c.execute("SELECT * FROM assistant_changes WHERE task_id=?", (task_id,)).fetchone()
+        self.assertEqual(item["kind"], "add_decision")
+        self.assertIn("两处都保留", json.loads(item["display_json"])["after"])
+
+
 class RecognitionTests(AssistantCase):
     """The author's sentence read for a decision beside the task (`assistant_recognize`), the card the program makes of it."""
 
     def setUp(self):
         self.start(assistant_recognize_decisions=True)
         self.register()
+        clear_sample(self)
         self.names = [row["subject"] for row in self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", self.project_id)]
 
     def asked(self, question, decision):
@@ -253,6 +294,7 @@ class CheckTests(AssistantCase):
     def setUp(self):
         self.start(assistant_recognize_decisions=True)
         self.register()
+        clear_sample(self)
         project = self.client.get(f"/api/projects/{self.project_id}").json()["data"]
         self.run = self.client.get(f"/api/projects/{self.project_id}/checks/{project['latest_run']['run_id']}?include=issues,evidence").json()["data"]
         self.issue = next(issue for issue in self.run["issues"] if "keep_intentional" in (issue.get("available_actions") or []))
