@@ -44,6 +44,10 @@ const viewOf = (requested: string | null): View | null => {
 };
 const current = (records: Memory[]) => records.filter((record) => record.valid_to == null && record.review_status === "author_confirmed");
 
+const LEDE = "只放已经写进正文的内容，每一条都能查到出自哪一章。还没写的打算放在「计划」。";
+/** The 决定 tab holds what the author decided, not what the text says: its line says that. */
+const DECISIONS_LEDE = "你定过的处理方式：哪里是有意的、以哪章为准、哪些不用提醒、哪条先别收、回答怎么写。每一条都是你确认过的，助手以后照着办。";
+
 /** 资料: only what is already written into the story, each item traceable to its chapter. */
 export function MaterialsPage({ p, user, initialView, go, notices }: PageProps & { initialView: "people" | "settings" | null }) {
   const project = p.project!;
@@ -83,7 +87,7 @@ export function MaterialsPage({ p, user, initialView, go, notices }: PageProps &
   return (
     <section className="page materials">
       {notices}
-      <PageHead title="资料" lede="只放已经写进正文的内容，每一条都能查到出自哪一章。还没写的打算放在「计划」。" rule={false}
+      <PageHead title="资料" lede={view === "decisions" ? DECISIONS_LEDE : LEDE} rule={false}
         aside={(assistantOffered || Boolean(ledger.items?.length)) && <Button kind="small" expanded={ledgerOpen} onClick={() => setLedgerOpen((open) => !open)}>助手改动记录</Button>} />
       {ledgerOpen && (
         <ChangeLedger projectId={project.id} ledger={ledger} written={bridge.materialsChanged} readOnly={p.readOnly}
@@ -105,7 +109,8 @@ export function MaterialsPage({ p, user, initialView, go, notices }: PageProps &
       {view === "people" && <PeopleView p={p} openId={openCharacter} setOpenId={setOpenCharacter} />}
       {view === "settings" && <SettingsView p={p} />}
       {view === "threads" && <ThreadsView p={p} go={go} marks={marks} />}
-      {view === "decisions" && <DecisionsView projectId={project.id} decisions={decisions} readOnly={p.readOnly} openTask={assistantOffered ? (taskId) => bridge.openDrawer(undefined, taskId) : null} />}
+      {view === "decisions" && <DecisionsView projectId={project.id} decisions={decisions} readOnly={p.readOnly} openTask={assistantOffered ? (taskId) => bridge.openDrawer(undefined, taskId) : null}
+        findingIds={new Set((p.run?.issues ?? []).map((issue) => issue.id))} go={go} />}
     </section>
   );
 }
