@@ -47,15 +47,16 @@ const current = (records: Memory[]) => records.filter((record) => record.valid_t
 /** 资料: only what is already written into the story, each item traceable to its chapter. */
 export function MaterialsPage({ p, user, initialView, go, notices }: PageProps & { initialView: "people" | "settings" | null }) {
   const project = p.project!;
+  // A link from another page of the work (a finding covered by a decision) arrives while this page is being made: the address wins.
+  const search = useSearchParams();
+  const named = viewOf(search.get("view") ?? search.get("tab"));
   const [view, setView] = useState<View>(() => {
     if (initialView) return initialView;
+    if (named) return named;
     if (typeof window === "undefined") return "facts";
     const query = new URLSearchParams(window.location.search);
     return viewOf(query.get("view") ?? query.get("tab")) ?? "facts";
   });
-  // A link from another page of the work (a finding covered by a decision) arrives while this page is being made: the address wins.
-  const search = useSearchParams();
-  const named = viewOf(search.get("view") ?? search.get("tab"));
   const [seenView, setSeenView] = useState(named);
   if (named !== seenView) { setSeenView(named); if (named) setView(named); }
   // The person card in view is the assistant's context (an address with ?character= opens it).

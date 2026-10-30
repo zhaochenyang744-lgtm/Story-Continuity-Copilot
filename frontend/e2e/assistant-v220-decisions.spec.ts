@@ -349,6 +349,40 @@ test.describe("卡片：记下决定", () => {
   });
 });
 
+// ── 长任务 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+test("长任务：按作者的决定自动答了的提问，报告里说明；报告末尾的「记下决定」卡片和别的卡片一样", async ({ page }) => {
+  const id = await sampleWork(page, "v220long");
+  const step = { kind: "read", chapters: [1, 10], look_for: "两处写法不同的地方", produces: [], chars: 5000 };
+  const body = { type: "trace", target: null, output: "list", chapters: [1, 10], steps: [step, { kind: "report", produces: [] }], est_chars: 5000, est_cny: 0.05, produces: [] };
+  const view = {
+    ...askView({ id: "atask-long-mock", kind: "long", status: "completed", question: "查一遍罗盘在各章的去向", context: { page: "overview" }, steps: [], sources: {}, coverage: null,
+      answer: { status: "answered", sentences: [{ text: "罗盘在第 4 章和第 9 章的写法不同。", refs: [] }], note: null, sections: {} },
+      changes: [decisionItem({ id: "d-long", task_id: "atask-long-mock", title: "记下决定·以哪处为准", quote: "以第 9 章为准", after: "罗盘的去向以第 9 章为准（管：黄铜罗盘；全书）", value: "罗盘的去向以第 9 章为准" })] }),
+    plan: { proposed: body, approved: body, cap_cny: 2, est_chars: 5000, est_cny: 0.05, chars_read: 5000, stop_requested: false },
+    long_steps: [{ ordinal: 1, spec: step, status: "done", attempt: 1, found: 1, cost_cny: 0.03 }, { ordinal: 2, spec: { kind: "report", produces: [] }, status: "done", attempt: 1, found: 0, cost_cny: 0 }],
+    progress: { done: 2, total: 2, cost_cny: 0.04, cap_cny: 2 },
+    questions: [{
+      id: "alq-auto", kind: "decision", step: 1, text: "两处写法不同，以哪处为准？", choices: ["a", "b", "both", "you_decide"],
+      options: [{ key: "a", label: "第 4 章：罗盘在苏岑手里", chapter: 4, quote: "……" }, { key: "b", label: "第 9 章：罗盘在温岚手里", chapter: 9, quote: "……" }],
+      answer: { choice: "b", by: "author_decision", decision_id: "decision-mock" },
+    }],
+  };
+  await serveTasks(page, () => [view]);
+  await page.route(/\/assistant\/long-tasks\/[^/]+$/, (route) => (route.request().method() === "GET" ? route.fulfill(envelope(view)) : route.fallback()));
+  await openTab(page, id, "overview");
+  await page.locator("#assistant-open").click();
+  await expect(thread(page)).toBeVisible();
+  await expect(thread(page).getByTestId("long-asked")).toHaveText("中途有一处按你记下的决定处理了，没有再问你：以「第 9 章：罗盘在温岚手里」为准。");
+  await expect(thread(page).getByTestId("long-asked")).not.toContainText("你选了");
+  const card = thread(page).getByTestId("long-groups").getByRole("region", { name: /^记下决定/ });
+  await expect(card).toBeVisible();
+  const item = itemOf(card, "C1");
+  await expect(item).toHaveAttribute("data-kind", "add_decision");
+  await expect(item.getByTestId("decision-quote")).toHaveText("依据你说的：「以第 9 章为准」");
+  await expect(card.getByRole("button", { name: /^确认/ })).toBeVisible();
+  await shot(thread(page), "14-长任务报告里的记下决定", "long");
+});
+
 // ── 检查结果：说一句为什么 ─────────────────────────────────────────────────────────────────────────────────────────────
 test.describe("检查结果：说一句为什么", () => {
   const noteBox = (page: Page) => findings(page).getByPlaceholder("说一句为什么（可选，写了以后可以记成一条决定）");
@@ -396,9 +430,9 @@ test.describe("检查结果：说一句为什么", () => {
     await expect(made).toContainText("已生成一张记录卡片");
     await shot(findings(page), "08-已生成一张记录卡片", "note");
     await made.getByRole("button", { name: "打开卡片", exact: true }).click();
-    await expect(thread(page)).toBeVisible();
-    await expect(thread(page).locator('[data-task="atask-mock-ask"]')).toBeVisible();
-    await expect(cardOf(page).locator('[data-kind="add_decision"]')).toBeVisible();
+    await expect(page.getByTestId("assistant-thread").last()).toBeVisible();
+    await expect(page.locator('[data-task="atask-mock-ask"]').last()).toBeVisible();
+    await expect(page.getByRole("region", { name: "资料改动" }).last().locator('[data-kind="add_decision"]')).toBeVisible();
   });
 
   test("被作者记下的决定盖住的结果：「按你记下的决定略过」，链接去决定一栏，不说沿用之前的判断", async ({ page }) => {

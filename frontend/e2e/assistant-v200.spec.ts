@@ -6,7 +6,7 @@ import { box, chooseMode, finished, menuNames, openAssistantTab, send, taskPost,
 import { serveTasks } from "./support/assistant-mock";
 import {
   ADD_ASK, ADDED_VALUE, afterOf, basisOf, cardOf, changeItem, changeView, closeDrawer, confirmButton, confirmByApi, confirmPost, editThread, factRecords, factRow, FACT_ASK, itemOf,
-  lastChange, LAST_CHAPTER, ledgerButton, ledgerOf, MODEL_VALUE, openBasis, openCard, openDrawer, openLedger, proposeByApi, rejectByApi, THREAD_ASK, threadRow, threadsView,
+  lastChange, LAST_CHAPTER, ledgerButton, ledgerOf, MODEL_VALUE, openBasis, openCard, openDrawer, openLedger, proposeByApi, rejectByApi, releaseKeptOpen, THREAD_ASK, threadRow, threadsView,
   threadStatus, undoOf,
 } from "./support/assistant-change";
 import { theme } from "./support/pages";
@@ -104,6 +104,7 @@ test.describe("改资料：用法和菜单", () => {
 test.describe("改资料：标伏笔已回收", () => {
   test("卡片出现：条目、改前改后、依据都对，资料页的伏笔还是原状态；确认后伏笔变成已回收，列表和改动记录里都有；撤销、恢复", async ({ page }) => {
     const id = await setup(page);
+    await releaseKeptOpen(page, id);
     await openAssistantTab(page);
     await chooseMode(page, "改资料");
     await box(page).fill(THREAD_ASK);
@@ -386,6 +387,7 @@ test.describe("改资料：改事实和加事实", () => {
 test.describe("改资料：资料页", () => {
   test("在资料页的抽屉里确认和撤销：事实列表和伏笔列表不用刷新就跟着变；改动记录按时间排，能撤销、恢复、看对话", async ({ page }) => {
     const id = await setup(page);
+    await releaseKeptOpen(page, id);
     await openTab(page, id, "memory");
     await openDrawer(page);
     await chooseMode(page, "改资料");

@@ -252,7 +252,7 @@ export type Issue = {
   )[];
   claim_span_id: string;
   claim_text?: string;
-  reused_decision?: { decision: string; status: string; source_issue_id: string | null; review_path: string; requires_new_decision: boolean; /** v2.2, `status: "author_decision"`: the decision the author recorded that covers this finding. */ statement?: string; decision_id?: string } | null;
+  reused_decision?: { decision: string; status: string; source_issue_id: string | null; review_path: string; requires_new_decision: boolean; /** v2.2, `status: "author_decision"`: the decision the author recorded that covers this finding. */ statement?: string; decision_id?: string; /** True when the chapter that decision stands on was revised since. */ possibly_out_of_date?: boolean } | null;
   /** v1.7.0 「待修改」: the author noted that the prose still needs a change for this finding. */
   to_revise?: boolean;
   decision?: { decision: string; resulting_revision: number | null; reused?: boolean } | null;
@@ -637,7 +637,8 @@ export type LongQuestion = {
   id: string; kind: "budget" | "decision" | string; step: number; text: string; choices: string[];
   /** A decision: what each of the two ways reads, with a line of the original. */
   options?: { key: string; label: string; chapter?: number | null; quote?: string }[];
-  answer: { choice: string; cap_cny?: number | null } | null;
+  /** `by`: who answered when the author did not (the program, or — v2.2 — a decision of theirs that already covers the question). */
+  answer: { choice: string; cap_cny?: number | null; by?: string; decision_id?: string } | null;
 };
 export type AssistantTask = {
   id: string;

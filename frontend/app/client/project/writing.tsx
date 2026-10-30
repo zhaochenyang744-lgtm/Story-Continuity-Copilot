@@ -711,7 +711,7 @@ function FindingDetail({ p, go, issue, tutorialStep, outdated, decided: onDecide
           {!p.readOnly ? (
             <div className="author-decision">
               {issue.reused_decision?.status === "author_decision"
-                ? <p className="finding-decided" data-testid="author-decision-cover">按你记下的决定略过：「{issue.reused_decision.statement}」<a href={decisionsPath(p.project!.id)} onClick={(event) => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); go(decisionsPath(p.project!.id)); }}>查看这条决定</a></p>
+                ? <p className="finding-decided" data-testid="author-decision-cover">按你记下的决定略过：「{issue.reused_decision.statement}」<a href={decisionsPath(p.project!.id)} onClick={(event) => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); go(decisionsPath(p.project!.id)); }}>查看这条决定</a>{issue.reused_decision.possibly_out_of_date && <span className="finding-stale" data-testid="author-decision-stale">（这条决定可能过时）</span>}</p>
                 : issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
               {decided && <p className="finding-decided"><Tag tone="solid">{decisionLabel(issue.decision?.decision)}</Tag>已记下，这一条留在列表里备查。</p>}
               {!decided && !tutorial && (canKeep || canDismiss) && (

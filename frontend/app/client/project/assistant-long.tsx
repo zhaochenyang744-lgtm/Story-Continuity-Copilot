@@ -274,6 +274,11 @@ function AskCard({ task, question, handlers }: { task: AssistantTask; question: 
     pick, option b) and says so. */
 export function decisionLine(item: LongQuestion): string {
   const choice = item.answer?.choice;
+  // A decision of the author's already covered this question (v2.2): it was not asked, and the report says whose word it went by.
+  if (item.answer?.by === "author_decision") {
+    const side = item.options?.find((entry) => entry.key === choice);
+    return `中途有一处按你记下的决定处理了，没有再问你：${choice === "both" ? "两处都保留" : side ? `以「${side.label}」为准` : "按决定办"}。`;
+  }
   if (choice === "both") return "中途问过一处：你说两处都保留。";
   const option = item.options?.find((entry) => entry.key === choice);
   if (option) return `中途问过一处：你选了「${option.label}」。`;
