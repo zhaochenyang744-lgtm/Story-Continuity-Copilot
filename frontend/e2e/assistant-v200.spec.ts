@@ -36,6 +36,7 @@ async function expectPending(card: Locator, title: string, kind: string) {
 test.describe("改资料：用法和菜单", () => {
   test("模式菜单：写作页五项（自动、问作品、写前回顾、查前文矛盾、改资料），其他页三项，访客也有；自动模式下带 E2E_ROUTE_CHANGE 的句子建的是改资料任务", async ({ page, browser }) => {
     const id = await setup(page);
+    await releaseKeptOpen(page, id);
     await openAssistantTab(page);
     await modeButton(page, "自动").click();
     expect(await menuNames(thread(page))).toEqual(["自动", "问作品", "写前回顾", "查前文矛盾", "改资料", "长任务"]);

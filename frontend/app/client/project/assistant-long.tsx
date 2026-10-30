@@ -465,7 +465,8 @@ export function LongView({ task, handlers, usage, project, maxChapter, usageChan
         {ended && began && <EndLine task={task} />}
         {ended && began && <Report task={task} handlers={handlers} />}
         {ended && !began && <p className="a-note" data-testid="long-note">{sentencesOf(task)?.note ?? "没有开始就停下了。"}</p>}
-        {ended && began && <Groups task={task} handlers={handlers} />}
+        {/* A decision the request said stands on the card even when the task stopped before it began (the server lets a stopped task's card be decided). */}
+        {ended && <Groups task={task} handlers={handlers} />}
       </article>
     </div>
   );

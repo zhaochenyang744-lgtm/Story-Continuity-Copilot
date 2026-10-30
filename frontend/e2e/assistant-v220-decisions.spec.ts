@@ -443,7 +443,7 @@ test.describe("检查结果：说一句为什么", () => {
       const response = await route.fetch();
       const payload = await response.json();
       const issues = (payload.data.issues ?? []).map((issue: any) => (issue.id === covered.id
-        ? { ...issue, decision: null, reused_decision: { decision: "author_decision", status: "author_decision", decision_id: real[0].id, statement: real[0].statement, source_issue_id: null, review_path: `/projects/${id}/materials?tab=decisions`, requires_new_decision: false } }
+        ? { ...issue, decision: null, reused_decision: { decision: "author_decision", status: "author_decision", decision_id: real[0].id, statement: real[0].statement, source_issue_id: null, review_path: `/projects/${id}/materials?tab=decisions`, requires_new_decision: false, possibly_out_of_date: true } }
         : issue));
       await route.fulfill({ status: response.status(), contentType: "application/json", body: JSON.stringify({ ...payload, data: { ...payload.data, issues } }) });
     });
@@ -455,6 +455,7 @@ test.describe("检查结果：说一句为什么", () => {
     const line = findings(page).getByTestId("author-decision-cover");
     await expect(line).toContainText(`按你记下的决定略过：「${real[0].statement}」`);
     await expect(line).not.toContainText("沿用你之前对同一句的判断");
+    await expect(line.getByTestId("author-decision-stale")).toHaveText("（这条决定可能过时）");
     await shot(findings(page), "09-按决定略过", "cover");
     await line.getByRole("link", { name: "查看这条决定", exact: true }).click();
     await expect(page).toHaveURL(/\/memory\?view=decisions/);
