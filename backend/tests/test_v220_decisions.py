@@ -312,6 +312,11 @@ class CheckTests(AssistantCase):
         issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
         covered = next(issue for issue in issues if issue["id"] == self.issue["id"])
         self.assertEqual((covered["reused_decision"]["status"], covered["reused_decision"]["statement"]), ("author_decision", f"{self.name}这处前后不同是有意的"))
+        self.assertFalse(covered["reused_decision"]["possibly_out_of_date"])
+        with self.db.connection() as c:
+            decisions.mark_stale(c, self.project_id, {7}, "2026-10-30T00:00:01+00:00")
+        issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
+        self.assertTrue(next(issue for issue in issues if issue["id"] == self.issue["id"])["reused_decision"]["possibly_out_of_date"])
         messages = self.provider.route_calls[0]["messages"][1]["content"]
         self.assertIn("作者定过的决定", messages)
         # Deleted, the decision no longer passes the finding over.
