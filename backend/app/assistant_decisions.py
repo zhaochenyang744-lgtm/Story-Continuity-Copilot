@@ -14,6 +14,7 @@ whose chapters it covers, at most `RELEVANT_MAX`, the newest first. With none of
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 import uuid
 from typing import Any, Callable
@@ -144,6 +145,27 @@ def listing(c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
     return [view(row) for row in sorted(rows, key=lambda row: order.get(row["status"], 3))]
 
 
+ALIAS_PREDICATES = ("别名", "外号", "又名", "又称", "绰号", "小名", "代号", "称号")
+ALIAS_SPLIT = re.compile(r"[、，,/／;；\s]+")
+
+
+def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
+    """The work's other names for its people and things, each to the name it stands for: the character records' aliases and
+    the facts that give one ("孟苒箴 / 别名 / 蓼仔"). A decision is about the name; the author may say the other."""
+    found: dict[str, str] = {}
+    if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_character_aliases'").fetchone():
+        for row in c.execute("SELECT a.alias,ch.name FROM v2_character_aliases a JOIN v2_characters ch ON ch.id=a.character_id "
+                             "WHERE a.project_id=? AND a.status='active' AND a.archived_at IS NULL", (project_id,)):
+            found.setdefault("".join(row[0].split()), "".join(row[1].split()))
+    marks = ",".join("?" for _ in ALIAS_PREDICATES)
+    for row in c.execute(f"SELECT DISTINCT subject,value FROM v2_memory_records WHERE project_id=? AND predicate IN ({marks})", (project_id, *ALIAS_PREDICATES)):
+        for alias in ALIAS_SPLIT.split(str(row[1]).strip("「」“”\"'")):
+            alias = alias.strip("「」“”\"'")
+            if len(alias) >= 2 and alias != row[0]:
+                found.setdefault(alias, "".join(row[0].split()))
+    return found
+
+
 ABOUT_DECISIONS = ("决定", "定过", "记下", "先别收", "不用提醒")
 THREAD_PAIRS_MIN = 2  # a thread kept open is named by two character pairs of its title ("白色渡船这条" for 白色渡船与失去的署名)
 
@@ -161,11 +183,15 @@ def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[
     newest first, at most RELEVANT_MAX."""
     said = "".join(str(text or "").split())
     every = authors_words and any(word in said for word in ABOUT_DECISIONS)
+    others: dict[str, list[str]] = {}
+    for alias, name in alias_map(c, project_id).items():
+        others.setdefault(name, []).append(alias)
     picked = []
     for row in c.execute("SELECT * FROM v2_author_decisions WHERE project_id=? AND archived_at IS NULL AND status IN (?,?) ORDER BY created_at DESC,id",
                          (project_id, ACTIVE, STALE)):
         values = _values(row)
         names = ["".join(s.split()) for s in values["subjects"]]
+        names += [alias for name in names for alias in others.get(name, [])]  # the author may say a decision's name by another
         named = any(len(name) >= 2 and name in said for name in names)
         if not named and row["kind"] == "keep_open":
             named = any(len(_pairs(name) & _pairs(said)) >= THREAD_PAIRS_MIN for name in names)

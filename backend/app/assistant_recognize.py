@@ -111,12 +111,21 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
     chapters = sorted(chapters) if chapters else None
     known = {_squeeze(row[0]) for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
     known |= {_squeeze(row[0]) for row in c.execute("SELECT name FROM v2_characters WHERE project_id=?", (project_id,))} if _has(c, "v2_characters") else set()
+    others = decisions.alias_map(c, project_id)  # another name of the work's ("蓼仔" for 孟苒箴): the decision is about the name
+    named = known | set(others)
     text = "".join(row[0] or "" for row in c.execute("SELECT body FROM v2_source_spans WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)", (project_id,)))
-    subjects = [s for s in found["subjects"] if _squeeze(s) in said and (_squeeze(s) in known or _squeeze(s) in _squeeze(text))]
-    for given in found["subjects"]:  # "雾钟的敲响条件": the work's own names inside what the model gave, said by the author
-        if given not in subjects:
-            subjects += [name for name in sorted(known, key=len, reverse=True)
-                         if len(name) >= 2 and name in _squeeze(given) and name in said and name not in subjects][:1]
+    given = [s for s in found["subjects"] if _squeeze(s) in said and (_squeeze(s) in named or _squeeze(s) in _squeeze(text))]
+    for phrase in found["subjects"]:  # "雾钟的敲响条件": the work's own names inside what the model gave, said by the author
+        if phrase not in given:
+            given += [name for name in sorted(named, key=len, reverse=True)
+                      if len(name) >= 2 and name in _squeeze(phrase) and name in said and name not in given][:1]
+    if any(_squeeze(s) in named for s in given):  # the work's names stand; a word that is only in the text ("年岁") goes
+        given = [s for s in given if _squeeze(s) in named]
+    subjects = []
+    for name in given:
+        name = others.get(_squeeze(name), name)
+        if name not in subjects:
+            subjects.append(name)
     subjects = subjects[:decisions.SUBJECTS_MAX]
     thread = None
     if found["kind"] == "keep_open" and GIVEN_UP.search(said) and not STILL_OPEN.search(said):
@@ -128,7 +137,7 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
         if not scored or scored[0][0] < 2 or (len(scored) > 1 and scored[1][0] == scored[0][0]):
             return None  # no thread of the work, or two equally named: nothing to keep open
         thread = scored[0][1]
-        subjects = [thread["title"]]
+        subjects = [thread["title"]] + [name for name in subjects if name in known and name not in thread["title"]][:decisions.SUBJECTS_MAX - 1]
     prefer = found["prefer_chapter"]
     if found["kind"] == "prefer" and not (prefer and prefer <= max(last, 1)):
         return None

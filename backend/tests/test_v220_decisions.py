@@ -449,6 +449,19 @@ class ReviewFixTests(AssistantCase):
         _, replaces = self.recognized(f"关于{self.name}，我改主意了：以后以第3章为准", {"kind": "prefer", "words": "以第3章为准", "prefer_chapter": 3})
         self.assertEqual(replaces["id"], "decision-old")
 
+    def test_another_name_of_the_works_stands_for_its_name(self):  # A4 dev run: 蓼仔 for 孟苒箴
+        with self.db.connection() as c:
+            version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (self.project_id,)).fetchone()[0]
+            span = c.execute("SELECT id FROM v2_source_spans WHERE project_id=? LIMIT 1", (self.project_id,)).fetchone()[0]
+            c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status) "
+                      "VALUES('mem-alias',?,?,'character',?,'别名','阿岑、小岑',?,'author_confirmed')", (self.project_id, version, self.name, span))
+        record_, _ = self.recognized("阿岑的年岁两版都别统一，是故意的", {"kind": "intentional", "words": "是故意的", "subjects": ["阿岑", "年岁"]})
+        self.assertEqual(record_["subjects"], [self.name])
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-age", record(f"{self.name}前后不同是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+            self.assertEqual([d["id"] for d in decisions.relevant(c, self.project_id, "小岑的年岁到底该引用哪一处？")], ["decision-age"])
+
     def test_giving_a_thread_up_is_not_keeping_it_open(self):  # E04
         self.thread("移交单上的窄纸")
         found = {"kind": "keep_open", "thread": "移交单上的窄纸"}
