@@ -139,6 +139,8 @@ REVIEW_LINES = {"not_closed": "核对后去掉了一条：依据的原文没有�
 PENDING_LINE = "这些改动要等你在卡片上确认后才会写进资料。"
 # A decision the author's sentence said, put on the card (v2.2).
 DECISION_CARD_LINE = "你这句话里有一个以后也要照办的决定，卡片上附了一条，确认后才会记下。"
+DECISION_ONLY_LINE = "这句话是一个以后也要照办的决定，不用查正文：卡片上附了一条，确认后才会记下。"
+NO_CARD_PREFIX, NO_CHANGE_PREFIX = "没有出卡片：", "资料没有改："
 NOTE_CARD_LINE = "你在检查里写的这句话可以记成一条以后也照办的决定，确认后才会记下。"
 # A sentence that says a change was proposed, when the task ends with no card: the clause goes (A2 fifth formal run: "我已按第15章
 # 提出改动，等你确认" with nothing to confirm, three times).
@@ -796,7 +798,12 @@ class AssistantEngine:
             if grounded is None:
                 return answer
             assistant_decisions.card_item(c, task_id, row["project_id"], *grounded)
-        return {**answer, "note": " ".join(part for part in (answer.get("note"), DECISION_CARD_LINE) if part)}
+        if answer.get("status") == "not_found":  # the sentence was a decision with nothing in the text to look up (review 13 E05)
+            return {**answer, "note": DECISION_ONLY_LINE}
+        note = answer.get("note") or ""
+        for line in NO_CARD_LINES.values():  # the card holds the decision now: what did not happen is a change to the materials
+            note = note.replace(line, line.replace(NO_CARD_PREFIX, NO_CHANGE_PREFIX, 1))
+        return {**answer, "note": " ".join(part for part in (note, DECISION_CARD_LINE) if part)}
 
     def note_card(self, user_id: str, project_id: str, issue_id: str, note: str | None) -> dict[str, Any] | None:
         """A check decision's note (说一句为什么) read for a decision (v2.2): when it says one, a finished task holding only its
@@ -834,6 +841,7 @@ class AssistantEngine:
             if grounded is None or issue is None:
                 return None
             record, replaces = grounded
+            record["basis_chapter"] = record["basis_chapter"] or issue["chapter_number"]  # the chapter of the check it was said on
             if not record["subjects"] and record["kind"] != "style":
                 names = {row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
                 record["subjects"] = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in (issue["claim"] or "")][:3]
@@ -967,9 +975,10 @@ class AssistantEngine:
         if ctx is not None:  # the author's decisions this task touches (v2.2), chosen by the program
             with self.db.connection() as c:
                 chapter = context.get("chapter_number")
-                given = assistant_decisions.relevant(c, row["project_id"], task_input.get("question") or "", (chapter, chapter) if chapter else None)
+                given = assistant_decisions.relevant(c, row["project_id"], task_input.get("question") or "", (chapter, chapter) if chapter else None,
+                                                     authors_words=True)
             refs = [ctx.registry.register("decision", item["id"], None, None, None, None, f"作者定过的决定（{item['kind_label']}）：{item['statement']}（{item['scope']}）")
-                    for item in given]
+                    if item["kind"] != "style" else "" for item in given]  # a writing preference is not a source
             lines += assistant_decisions.prompt_lines(given, refs)
         scope_line = f"可查的范围：已写章节的正文（到第 {scope['max_chapter']} 章）、已确认事实、计划和伏笔记录。"
         scope_line += "可以读当前草稿和它最近一次的检查结果。" if scope.get("draft_readable") else "这次不能读当前草稿。"

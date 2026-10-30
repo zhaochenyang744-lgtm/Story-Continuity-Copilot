@@ -172,8 +172,8 @@ def open_issue_count(c, project_id, severity=None):
     issues = c.execute("SELECT * FROM v2_issues WHERE project_id=? AND status='open'", (project_id,)).fetchall()
     if severity:
         issues = [issue for issue in issues if issue["severity"] == severity]
-    has_covers = c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_issue_decision_covers'").fetchone() is not None
-    covers = has_covers and c.execute("SELECT 1 FROM v2_issue_decision_covers WHERE project_id=? LIMIT 1", (project_id,)).fetchone() is not None
+    has_covers = c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_finding_decision_covers'").fetchone() is not None
+    covers = has_covers and c.execute("SELECT 1 FROM v2_finding_decision_covers WHERE project_id=? LIMIT 1", (project_id,)).fetchone() is not None
     if not covers and not c.execute("SELECT 1 FROM v2_decision_reuse WHERE project_id=? AND enabled=1", (project_id,)).fetchone():
         return len(issues)
     runs = {}

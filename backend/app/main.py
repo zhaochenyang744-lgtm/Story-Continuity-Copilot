@@ -296,11 +296,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if not db.advance_run(project_id,run_id,'comparing_evidence'):return
             with provider_usage(user_id,reservation_id): result=engine.execute(data)
             if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
-            db.finish_run(project_id,run_id,result)
             if result['status']=='completed':
-                try:  # v2.2: findings the author's decisions pass over (no decision touching a finding, no call)
-                    with provider_usage(user_id,reservation_id): assistant_cover.cover_run(db,assistant_engine.provider,project_id,run_id)
+                try:  # v2.2: findings the author's decisions pass over, before the run reads as completed (no decision touching a finding, no call)
+                    with provider_usage(user_id,reservation_id): assistant_cover.cover_run(db,assistant_engine.provider,project_id,run_id,result.get('issues') or [])
                 except Exception: pass
+            db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
     def execute_chapter_check(project_id:str,run_id:str,user_id:str,reservation_id:str):
         try:

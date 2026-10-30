@@ -1,5 +1,7 @@
 """A check's findings held against the author's decisions (v2.2), after the check and before its cards: the check itself is
-not changed (Desktop/v2.2任务/06-记忆设计.md, section 3).
+not changed (Desktop/v2.2任务/06-记忆设计.md, section 3). It runs before the run is marked completed, so the first read of
+the results already shows what a decision passed over (a page that read them at once missed it, review 13 E01); the calls
+for one check go out together.
 
 A finding whose sentence names a decision's subjects, or stands in its chapters, is put to one small call with those
 decisions: does one of them cover it? A finding covered by "intentional" or "no reminder" gets no card (it is shown as passed
@@ -18,9 +20,9 @@ from . import assistant_decisions as decisions
 from .assistant_store import utcnow
 
 SCHEMA = """
-CREATE TABLE IF NOT EXISTS v2_issue_decision_covers(
-  issue_id TEXT PRIMARY KEY, project_id TEXT NOT NULL, run_id TEXT NOT NULL, decision_id TEXT NOT NULL,
-  verdict TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS v2_finding_decision_covers(
+  run_id TEXT NOT NULL, claim_span_id TEXT NOT NULL, project_id TEXT NOT NULL, decision_id TEXT NOT NULL,
+  verdict TEXT NOT NULL, created_at TEXT NOT NULL, PRIMARY KEY(run_id, claim_span_id));
 """
 COVER_KINDS = ("intentional", "no_reminder", "prefer")
 COVER_TIMEOUT_SECONDS = 8
@@ -64,9 +66,10 @@ def verdict(content: Any, given: list[dict[str, Any]]) -> tuple[dict[str, Any], 
     return decision, "passed"
 
 
-def cover_run(db: Any, provider: Any, project_id: str, run_id: str) -> int:
-    """Hold a finished check's findings against the decisions they touch. Returns how many findings a decision passed over.
-    A call that fails covers nothing: the finding keeps its card."""
+def cover_run(db: Any, provider: Any, project_id: str, run_id: str, issues: list[dict[str, Any]] | None = None) -> int:
+    """Hold a check's findings against the decisions they touch: `issues` as the review returned them (before they are
+    stored), or, when None, the run's stored findings. Returns how many findings a decision passed over. A call that fails
+    covers nothing: the finding keeps its card."""
     with db.connection() as c:
         c.executescript(SCHEMA)
         if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone() or not c.execute(
@@ -75,27 +78,41 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str) -> int:
         run = c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?", (run_id, project_id)).fetchone()
         draft = c.execute("SELECT chapter_number FROM v2_drafts WHERE id=?", (run["draft_id"],)).fetchone() if run else None
         chapter = draft["chapter_number"] if draft else None
-        found = c.execute("SELECT i.id,i.explanation,cl.text AS claim FROM v2_issues i JOIN v2_run_claims cl ON cl.id=i.claim_span_id "
-                          "WHERE i.project_id=? AND i.run_id=? ORDER BY i.rowid LIMIT ?", (project_id, run_id, ISSUES_MAX)).fetchall()
+        if issues is None:
+            found = [dict(row) for row in c.execute("SELECT claim_span_id,explanation FROM v2_issues WHERE project_id=? AND run_id=? ORDER BY rowid",
+                                                    (project_id, run_id))]
+        else:
+            found = [{"claim_span_id": i.get("claim_span_id"), "explanation": i.get("explanation")} for i in issues if isinstance(i, dict)]
+        claims = {row["id"]: row["text"] for row in c.execute("SELECT id,text FROM v2_run_claims WHERE run_id=?", (run_id,))}
         asked = []
-        for issue in found:
-            given = [d for d in decisions.relevant(c, project_id, (issue["claim"] or "") + (issue["explanation"] or ""), (chapter, chapter) if chapter else None)
+        for issue in found[:ISSUES_MAX]:
+            claim = claims.get(issue["claim_span_id"]) or ""
+            given = [d for d in decisions.relevant(c, project_id, claim + (issue["explanation"] or ""), (chapter, chapter) if chapter else None)
                      if d["kind"] in COVER_KINDS]
-            if given:
-                asked.append(({"id": issue["id"], "claim": issue["claim"] or "", "explanation": issue["explanation"] or ""}, given))
+            if given and issue["claim_span_id"]:
+                asked.append(({"claim_span_id": issue["claim_span_id"], "claim": claim, "explanation": issue["explanation"] or ""}, given))
+    if not asked:
+        return 0
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=len(asked))
+    try:
+        futures = [pool.submit(contextvars.copy_context().run, call_model, provider, messages_for(issue, given)) for issue, given in asked]
+        results = []
+        for future in futures:
+            try:
+                results.append(future.result(timeout=COVER_TIMEOUT_SECONDS + 2))
+            except Exception:
+                results.append(None)
+    finally:
+        pool.shutdown(wait=False)
     passed = 0
-    for issue, given in asked:
-        try:
-            result = call_model(provider, messages_for(issue, given))
-        except Exception:
-            continue
-        judged = verdict((result.message or {}).get("content"), given)
+    for (issue, given), result in zip(asked, results):
+        judged = verdict((result.message or {}).get("content"), given) if result is not None else None
         if judged is None:
             continue
         decision, outcome = judged
         with db.connection() as c:
-            c.execute("INSERT OR REPLACE INTO v2_issue_decision_covers(issue_id,project_id,run_id,decision_id,verdict,created_at) VALUES(?,?,?,?,?,?)",
-                      (issue["id"], project_id, run_id, decision["id"], outcome, utcnow()))
+            c.execute("INSERT OR REPLACE INTO v2_finding_decision_covers(run_id,claim_span_id,project_id,decision_id,verdict,created_at) VALUES(?,?,?,?,?,?)",
+                      (run_id, issue["claim_span_id"], project_id, decision["id"], outcome, utcnow()))
         passed += outcome == "passed"
     return passed
 
@@ -103,11 +120,11 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str) -> int:
 def covering(c: sqlite3.Connection, issue: Any) -> dict[str, Any] | None:
     """The author's decision that passed this finding over, while it is in force; shaped as a reused decision is, and saying
     whether the decision may be out of date (a chapter it stands on was revised since)."""
-    if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_issue_decision_covers'").fetchone():
+    if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_finding_decision_covers'").fetchone():
         return None
-    row = c.execute("SELECT v.decision_id,d.statement,d.status FROM v2_issue_decision_covers v JOIN v2_author_decisions d ON d.id=v.decision_id "
-                    "WHERE v.issue_id=? AND v.verdict='passed' AND d.archived_at IS NULL AND d.status IN (?,?)",
-                    (issue["id"], decisions.ACTIVE, decisions.STALE)).fetchone()
+    row = c.execute("SELECT v.decision_id,d.statement,d.status FROM v2_finding_decision_covers v JOIN v2_author_decisions d ON d.id=v.decision_id "
+                    "WHERE v.run_id=? AND v.claim_span_id=? AND v.verdict='passed' AND d.archived_at IS NULL AND d.status IN (?,?)",
+                    (issue["run_id"], issue["claim_span_id"], decisions.ACTIVE, decisions.STALE)).fetchone()
     if row is None:
         return None
     return {"decision": "author_decision", "status": "author_decision", "decision_id": row["decision_id"], "statement": row["statement"],
@@ -116,6 +133,6 @@ def covering(c: sqlite3.Connection, issue: Any) -> dict[str, Any] | None:
 
 
 def purge(c: sqlite3.Connection, project_id: str) -> None:
-    if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_issue_decision_covers'").fetchone():
-        c.execute("DELETE FROM v2_issue_decision_covers WHERE project_id=?", (project_id,))
+    if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_finding_decision_covers'").fetchone():
+        c.execute("DELETE FROM v2_finding_decision_covers WHERE project_id=?", (project_id,))
 

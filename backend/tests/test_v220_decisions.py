@@ -325,6 +325,36 @@ class CheckTests(AssistantCase):
         issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
         self.assertIsNone(next(issue for issue in issues if issue["id"] == self.issue["id"])["reused_decision"])
 
+    def test_a_finding_is_held_against_the_decisions_before_the_check_reads_as_completed(self):
+        from unittest import mock
+        from app import assistant_cover
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-cover", record(f"{self.name}这处前后不同是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+        engine = self.app.state.engine
+
+        def review(data):  # one finding on the draft's first sentence that names the decision's subject
+            claim = next(claim for claim in data["claims"] if self.name in claim["text"]) if any(self.name in cl["text"] for cl in data["claims"]) else data["claims"][0]
+            return {"status": "completed", "issues": [{"claim_span_id": claim["id"], "status": "conflict", "category": "continuity", "severity": "high",
+                                                       "evidence_status": "sufficient", "explanation": f"{self.name}前后写法不同", "evidence": []}]}
+        seen = []
+        real = assistant_cover.cover_run
+
+        def watched(db, provider, project_id, run_id, issues=None):
+            with db.connection() as c:
+                seen.append(c.execute("SELECT status FROM v2_runs WHERE id=?", (run_id,)).fetchone()["status"])
+            return real(db, provider, project_id, run_id, issues)
+        self.provider.script_route(*([{"covers": 1, "draft_follows_preferred": None}] * 5))
+        draft = self.client.get(f"/api/projects/{self.project_id}").json()["data"]["current_draft"]
+        with mock.patch.object(engine, "execute", review), mock.patch.object(type(engine.provider), "available", True, create=True), \
+                mock.patch.object(assistant_cover, "cover_run", watched):
+            r = self.client.post(f"/api/projects/{self.project_id}/checks", headers=self.idem(), json={"draft_id": draft["id"], "draft_revision": draft["revision"]})
+        self.assertEqual(r.status_code, 202, r.text)
+        run = self.client.get(f"/api/projects/{self.project_id}/checks/{r.json()['data']['run_id']}?include=issues").json()["data"]
+        self.assertEqual(run["status"], "completed")
+        self.assertEqual(seen, ["running"])  # held against the decisions while the run was still running
+        self.assertEqual(run["issues"][0]["reused_decision"]["status"], "author_decision")
+
     def test_no_decision_no_call(self):
         from app import assistant_cover
         self.provider.script_route()
@@ -351,6 +381,86 @@ class CheckTests(AssistantCase):
         body = {"run_id": self.run["run_id"], "source_revision": self.run["source_revision"], "decision": "false_positive", "note": "看着像错其实没问题"}
         r = self.client.post(f"/api/projects/{self.project_id}/issues/{self.issue['id']}/decision", headers=self.idem(), json=body)
         self.assertNotIn("memory_card", r.json()["data"])
+
+
+class ReviewFixTests(AssistantCase):
+    """The front-end review of 2026-10-30 (Desktop/v2.2任务/13-前端评审报告.md), its findings on the backend."""
+
+    def setUp(self):
+        self.start(assistant_recognize_decisions=True)
+        self.register()
+        clear_sample(self)
+        self.names = [row["subject"] for row in self.rows("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", self.project_id)]
+        self.name = max(self.names, key=len)
+
+    def thread(self, title):
+        version = self.client.get(f"/api/projects/{self.project_id}/foreshadows").json()["data"]["foreshadow_version"]
+        chapter = self.rows("SELECT id FROM v2_chapters WHERE project_id=? ORDER BY chapter_number LIMIT 1", self.project_id)[0]["id"]
+        r = self.client.post(f"/api/projects/{self.project_id}/foreshadows", headers=self.idem(), json={
+            "base_foreshadow_version": version, "title": title, "description": "还没有交代", "status": "planted", "planted_chapter_id": chapter})
+        return r.json()["data"]["item"]["id"]
+
+    def test_a_thread_kept_open_is_given_when_named_by_part_of_its_title_and_every_decision_when_asked_about_them(self):  # E02
+        thread = self.thread("白色渡船与失去的署名")
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-open", record("白色渡船那条先别收", kind="keep_open", subjects=("白色渡船与失去的署名",),
+                                                                              chapters=None, foreshadow_id=thread), self.user_id, "2026-10-30T00:00:00+00:00")
+            decisions.write(c, self.db, self.project_id, "decision-age", record(f"{self.name}前后不同是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:01+00:00")
+            self.assertEqual([d["id"] for d in decisions.relevant(c, self.project_id, "白色渡船这条现在该回收吗？")], ["decision-open"])
+            self.assertEqual(decisions.relevant(c, self.project_id, "我之前决定哪些伏笔先别收？"), [])
+            self.assertEqual({d["id"] for d in decisions.relevant(c, self.project_id, "我之前决定哪些伏笔先别收？", authors_words=True)},
+                             {"decision-open", "decision-age"})
+
+    def test_a_writing_preference_is_how_to_write_not_a_source(self):  # E02
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-style", record("以后回答短一点", kind="style", subjects=(), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+
+        def look(provider, messages):
+            first = next(m["content"] for m in messages if m["role"] == "user")
+            self.assertIn("作者对回答的写法偏好", first)
+            self.assertIn("以后回答短一点", first)
+            self.assertNotIn("作者定过的决定（作者自己确认过", first)
+            return turn(call("read_chapter", chapter_number=9))
+
+        def cite(provider, messages):
+            return turn(answer_call("answered", [("第九章写到了。", [ref_of_chapter(messages, 9)])]))
+        self.provider.script_route({"decision": None})
+        task = self.run_ask(look, cite, question="第九章写了什么？")
+        self.assertEqual(task["status"], "completed")
+        self.assertNotIn("decision", [s["kind"] for s in task["sources"].values()])
+
+    def recognized(self, sentence, found):
+        from app import assistant_recognize
+        with self.db.connection() as c:
+            return assistant_recognize.ground(c, self.project_id, sentence, {"words": "", "subjects": [], "chapters": None, "prefer_chapter": None,
+                                                                            "thread": "", "statement": "决定", **found})
+
+    def test_the_chapter_that_holds_is_not_the_chapters_covered_and_a_name_inside_a_phrase_is_found(self):  # E03
+        record_, _ = self.recognized(f"关于{self.name}的说法，以后以第3章为准", {"kind": "prefer", "words": "以第3章为准", "subjects": [f"{self.name}的说法"],
+                                                                          "chapters": [3, 3], "prefer_chapter": 3})
+        self.assertEqual((record_["chapters"], record_["prefer_chapter"], record_["subjects"]), (None, 3, [self.name]))
+
+    def test_a_new_decision_replaces_the_one_about_a_name_the_author_says(self):  # E03
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-old", record(f"{self.name}这处是有意的", subjects=(self.name,), chapters=None),
+                            self.user_id, "2026-10-30T00:00:00+00:00")
+        _, replaces = self.recognized(f"关于{self.name}，我改主意了：以后以第3章为准", {"kind": "prefer", "words": "以第3章为准", "prefer_chapter": 3})
+        self.assertEqual(replaces["id"], "decision-old")
+
+    def test_giving_a_thread_up_is_not_keeping_it_open(self):  # E04
+        self.thread("移交单上的窄纸")
+        found = {"kind": "keep_open", "thread": "移交单上的窄纸"}
+        self.assertIsNone(self.recognized("我决定放弃移交单上的窄纸这条伏笔，不再继续写它", {**found, "words": "放弃"}))
+        self.assertIsNotNone(self.recognized("移交单上的窄纸那条先别收，后面还要写", {**found, "words": "先别收"}))
+
+    def test_a_decision_with_nothing_to_look_up_says_so_instead_of_not_found(self):  # E05
+        from app.assistant import DECISION_ONLY_LINE
+        self.provider.script_route({"decision": {"kind": "style", "statement": "以后回答短一点", "words": "回答短一点", "subjects": [], "chapters": None}})
+        task = self.run_ask(turn(answer_call("not_found", [], note="只能查正文，这句话没有要查的内容。")), question="以后回答短一点")
+        self.assertEqual(task["answer"]["note"], DECISION_ONLY_LINE)
+        self.assertEqual([i["kind"] for i in task["changes"]], ["add_decision"])
 
 
 from tests.test_v210_long_tasks import LongCase  # noqa: E402

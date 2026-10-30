@@ -106,8 +106,8 @@ def purge(c: sqlite3.Connection, project_id: str) -> None:
     existing = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
     if "v2_author_decisions" in existing:  # the author's decisions (v2.2) go with the work
         c.execute("DELETE FROM v2_author_decisions WHERE project_id=?", (project_id,))
-    if "v2_issue_decision_covers" in existing:
-        c.execute("DELETE FROM v2_issue_decision_covers WHERE project_id=?", (project_id,))
+    if "v2_finding_decision_covers" in existing:
+        c.execute("DELETE FROM v2_finding_decision_covers WHERE project_id=?", (project_id,))
     if "assistant_tasks" not in existing:
         return
     ids = "SELECT id FROM assistant_tasks WHERE project_id=?"

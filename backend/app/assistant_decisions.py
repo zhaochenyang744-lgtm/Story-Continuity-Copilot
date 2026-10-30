@@ -144,17 +144,33 @@ def listing(c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
     return [view(row) for row in sorted(rows, key=lambda row: order.get(row["status"], 3))]
 
 
-def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[int, int] | None = None) -> list[dict[str, Any]]:
-    """The decisions a task's words or chapters touch: a name of theirs in the words, or their chapters overlapping the
-    task's; writing preferences always. Active or possibly out of date, the newest first, at most RELEVANT_MAX."""
+ABOUT_DECISIONS = ("决定", "定过", "记下", "先别收", "不用提醒")
+THREAD_PAIRS_MIN = 2  # a thread kept open is named by two character pairs of its title ("白色渡船这条" for 白色渡船与失去的署名)
+
+
+def _pairs(text: str) -> set[str]:
+    kept = "".join(ch for ch in text if ch.isalnum())
+    return {kept[i:i + 2] for i in range(len(kept) - 1)}
+
+
+def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[int, int] | None = None,
+             authors_words: bool = False) -> list[dict[str, Any]]:
+    """The decisions a task's words or chapters touch: a name of theirs in the words (a thread kept open also by part of its
+    title), or their chapters overlapping the task's; writing preferences always; and, when the words are the author's own
+    and ask about the decisions themselves ("我之前决定哪些伏笔先别收"), every decision. Active or possibly out of date, the
+    newest first, at most RELEVANT_MAX."""
     said = "".join(str(text or "").split())
+    every = authors_words and any(word in said for word in ABOUT_DECISIONS)
     picked = []
     for row in c.execute("SELECT * FROM v2_author_decisions WHERE project_id=? AND archived_at IS NULL AND status IN (?,?) ORDER BY created_at DESC,id",
                          (project_id, ACTIVE, STALE)):
         values = _values(row)
-        named = any(len(name) >= 2 and name in said for name in ("".join(s.split()) for s in values["subjects"]))
+        names = ["".join(s.split()) for s in values["subjects"]]
+        named = any(len(name) >= 2 and name in said for name in names)
+        if not named and row["kind"] == "keep_open":
+            named = any(len(_pairs(name) & _pairs(said)) >= THREAD_PAIRS_MIN for name in names)
         covered = bool(chapters and values["chapters"] and values["chapters"][0] <= chapters[1] and chapters[0] <= values["chapters"][1])
-        if named or covered or row["kind"] == "style":
+        if every or named or covered or row["kind"] == "style":
             picked.append(view(row))
         if len(picked) >= RELEVANT_MAX:
             break
@@ -170,12 +186,16 @@ def kept_open(c: sqlite3.Connection, project_id: str) -> set[str]:
 
 
 def prompt_lines(items: list[dict[str, Any]], refs: list[str]) -> list[str]:
-    """The decisions a task is given, for its first message: each with the number it is cited by."""
-    if not items:
-        return []
-    return ["作者定过的决定（作者自己确认过，照着办；回答里用到时引用它的编号，说明这是作者定过的）："] + [
+    """The decisions a task is given, for its first message: each with the number it is cited by. Writing preferences are
+    not about the work: they come as how to write the answer, with no number, never cited as what the answer rests on."""
+    cited = [(item, ref) for item, ref in zip(items, refs) if item["kind"] != "style"]
+    styles = [item for item in items if item["kind"] == "style"]
+    lines = ["作者定过的决定（作者自己确认过，照着办；回答里用到时引用它的编号，说明这是作者定过的）："] + [
         f"[{ref}] {item['kind_label']}：{item['statement']}（{item['scope']}）" + ("（这条依据的章节后来改过，可能过时：照办前先告诉作者）" if item["status"] == STALE else "")
-        for item, ref in zip(items, refs)]
+        for item, ref in cited] if cited else []
+    if styles:
+        lines.append("作者对回答的写法偏好（照着写回答就好；这不是作品内容，不要引用，也不要在回答里复述）：" + "；".join(item["statement"] for item in styles))
+    return lines
 
 
 def mark_stale(c: sqlite3.Connection, project_id: str, chapter_numbers: set[int], stamp: str) -> int:
