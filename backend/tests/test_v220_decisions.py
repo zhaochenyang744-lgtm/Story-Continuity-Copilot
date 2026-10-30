@@ -312,6 +312,11 @@ class CheckTests(AssistantCase):
         issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
         covered = next(issue for issue in issues if issue["id"] == self.issue["id"])
         self.assertEqual((covered["reused_decision"]["status"], covered["reused_decision"]["statement"]), ("author_decision", f"{self.name}这处前后不同是有意的"))
+        self.assertFalse(covered["reused_decision"]["possibly_out_of_date"])
+        with self.db.connection() as c:
+            decisions.mark_stale(c, self.project_id, {7}, "2026-10-30T00:00:01+00:00")
+        issues = self.client.get(f"/api/projects/{self.project_id}/checks/{self.run['run_id']}?include=issues").json()["data"]["issues"]
+        self.assertTrue(next(issue for issue in issues if issue["id"] == self.issue["id"])["reused_decision"]["possibly_out_of_date"])
         messages = self.provider.route_calls[0]["messages"][1]["content"]
         self.assertIn("作者定过的决定", messages)
         # Deleted, the decision no longer passes the finding over.
@@ -346,6 +351,41 @@ class CheckTests(AssistantCase):
         body = {"run_id": self.run["run_id"], "source_revision": self.run["source_revision"], "decision": "false_positive", "note": "看着像错其实没问题"}
         r = self.client.post(f"/api/projects/{self.project_id}/issues/{self.issue['id']}/decision", headers=self.idem(), json=body)
         self.assertNotIn("memory_card", r.json()["data"])
+
+
+from tests.test_v210_long_tasks import LongCase  # noqa: E402
+
+
+class LongRecognitionTests(LongCase):
+    """A long task's request read for a decision beside its plan call; the card waits for the end of the report."""
+
+    def setUp(self):
+        super().setUp()
+        clear_sample(self)
+        import dataclasses
+        self.long.settings = dataclasses.replace(self.long.settings, assistant_recognize_decisions=True)
+
+    def script(self, decision):
+        from app.assistant_recognize import SYSTEM_PROMPT
+        def answer(provider, messages):
+            if messages[0]["content"] == SYSTEM_PROMPT:
+                return {"decision": decision}
+            return {"type": "thread_audit", "target": None, "chapters": None, "output": "list"}
+        self.provider.script_route(answer, answer)
+
+    def test_a_request_that_also_keeps_a_thread_open_gets_its_card(self):
+        self.script({"kind": "keep_open", "statement": "罗盘下落这条伏笔先别收", "words": "先别收", "subjects": [], "chapters": None, "thread": "罗盘下落"})
+        task = self.create("罗盘下落那条先别收，其余还吊着的伏笔都替我过一遍")
+        view = self.view(task["id"])
+        self.assertEqual(view["status"], "awaiting_plan")
+        self.assertEqual([(i["kind"], i["status"]) for i in view["changes"]], [("add_decision", "proposed")])
+        self.assertIn("罗盘下落", view["changes"][0]["after"])
+        self.assertEqual([r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=? ORDER BY seq", task["id"])], ["plan", "requests"])
+
+    def test_a_request_with_no_decision_has_no_card(self):
+        self.script(None)
+        task = self.create()
+        self.assertEqual(self.view(task["id"])["changes"], [])
 
 
 if __name__ == "__main__":

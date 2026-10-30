@@ -101,16 +101,18 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str) -> int:
 
 
 def covering(c: sqlite3.Connection, issue: Any) -> dict[str, Any] | None:
-    """The author's decision that passed this finding over, while it is in force; shaped as a reused decision is."""
+    """The author's decision that passed this finding over, while it is in force; shaped as a reused decision is, and saying
+    whether the decision may be out of date (a chapter it stands on was revised since)."""
     if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_issue_decision_covers'").fetchone():
         return None
-    row = c.execute("SELECT v.decision_id,d.statement FROM v2_issue_decision_covers v JOIN v2_author_decisions d ON d.id=v.decision_id "
+    row = c.execute("SELECT v.decision_id,d.statement,d.status FROM v2_issue_decision_covers v JOIN v2_author_decisions d ON d.id=v.decision_id "
                     "WHERE v.issue_id=? AND v.verdict='passed' AND d.archived_at IS NULL AND d.status IN (?,?)",
                     (issue["id"], decisions.ACTIVE, decisions.STALE)).fetchone()
     if row is None:
         return None
     return {"decision": "author_decision", "status": "author_decision", "decision_id": row["decision_id"], "statement": row["statement"],
-            "source_issue_id": None, "review_path": f"/projects/{issue['project_id']}/materials?tab=decisions", "requires_new_decision": False}
+            "possibly_out_of_date": row["status"] == decisions.STALE, "source_issue_id": None,
+            "review_path": f"/projects/{issue['project_id']}/materials?tab=decisions", "requires_new_decision": False}
 
 
 def purge(c: sqlite3.Connection, project_id: str) -> None:
