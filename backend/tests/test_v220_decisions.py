@@ -476,6 +476,18 @@ class ReviewFixTests(AssistantCase):
         self.assertEqual([i["kind"] for i in task["changes"]], ["add_decision"])
 
 
+
+class OtherWordTests(unittest.TestCase):
+    """Another word for a thing of the work: the same last character, near its name in the text (A4 dev run, 2026-10-31)."""
+
+    def test_a_word_ending_like_a_name_and_standing_near_it_is_that_thing(self):
+        text = "她扶住空喉盏的底部，那只礼盏比想象中轻。门外挂着弯穗牌。他把弯穗牌放在掌心，木牌一共五边。"
+        self.assertEqual(decisions.thing_for(text, "礼盏", ["空喉盏", "弯穗牌"]), "空喉盏")
+        self.assertEqual(decisions.thing_for(text, "木牌", ["空喉盏", "弯穗牌"]), "弯穗牌")
+        self.assertIsNone(decisions.thing_for(text, "坛门", ["黧烛坛"]))  # not the same last character
+        self.assertIsNone(decisions.thing_for("礼盏在东屋。" + "风。" * 400 + "空喉盏在西屋。", "礼盏", ["空喉盏"]))  # never near it
+
+
 from tests.test_v210_long_tasks import LongCase  # noqa: E402
 
 

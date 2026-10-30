@@ -119,6 +119,8 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
         if phrase not in given:
             given += [name for name in sorted(named, key=len, reverse=True)
                       if len(name) >= 2 and name in _squeeze(phrase) and name in said and name not in given][:1]
+    # Another word for a thing of the work ("礼盏" for 空喉盏, "那块木牌" for 弯穗牌) stands for the thing.
+    given = [s if _squeeze(s) in named else (decisions.thing_for(_squeeze(text), s, known) or s) for s in given]
     if any(_squeeze(s) in named for s in given):  # the work's names stand; a word that is only in the text ("年岁") goes
         given = [s for s in given if _squeeze(s) in named]
     subjects = []

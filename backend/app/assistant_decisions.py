@@ -166,6 +166,39 @@ def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
     return found
 
 
+NEAR_CHARS = 300  # how close in the text another word for a thing must stand to its name
+
+
+def work_text(c: sqlite3.Connection, project_id: str) -> str:
+    return "\n".join(row[0] or "" for row in c.execute(
+        "SELECT s.body FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id WHERE ch.project_id=? ORDER BY ch.chapter_number,s.id",
+        (project_id,)))
+
+
+def _near(text: str, first: str, second: str) -> int:
+    """How many times `first` stands within NEAR_CHARS of `second` in the text."""
+    seconds = [i for i in range(len(text)) if text.startswith(second, i)]
+    count = 0
+    start = text.find(first)
+    while start != -1:
+        count += any(abs(start - j) <= NEAR_CHARS for j in seconds)
+        start = text.find(first, start + 1)
+    return count
+
+
+def thing_for(text: str, word: str, names: Any) -> str | None:
+    """The thing of the work another word stands for: a name that ends in the same character (礼盏 for 空喉盏, 木牌 for 弯穗牌)
+    and that the word stands near in the text. None when no name does, or two do as often."""
+    word = "".join(word.split())
+    if len(word) < 2 or word not in text:
+        return None
+    scored = sorted(((_near(text, word, name), name) for name in names
+                     if len(name) >= 2 and name != word and name[-1] == word[-1] and word not in name and name not in word), reverse=True)
+    if not scored or not scored[0][0] or (len(scored) > 1 and scored[1][0] == scored[0][0]):
+        return None
+    return scored[0][1]
+
+
 ABOUT_DECISIONS = ("决定", "定过", "记下", "先别收", "不用提醒")
 THREAD_PAIRS_MIN = 2  # a thread kept open is named by two character pairs of its title ("白色渡船这条" for 白色渡船与失去的署名)
 
@@ -183,6 +216,7 @@ def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[
     newest first, at most RELEVANT_MAX."""
     said = "".join(str(text or "").split())
     every = authors_words and any(word in said for word in ABOUT_DECISIONS)
+    text: str | None = None
     others: dict[str, list[str]] = {}
     for alias, name in alias_map(c, project_id).items():
         others.setdefault(name, []).append(alias)
@@ -193,6 +227,10 @@ def relevant(c: sqlite3.Connection, project_id: str, text: str, chapters: tuple[
         names = ["".join(s.split()) for s in values["subjects"]]
         names += [alias for name in names for alias in others.get(name, [])]  # the author may say a decision's name by another
         named = any(len(name) >= 2 and name in said for name in names)
+        if not named and row["kind"] != "keep_open":  # another word for the thing ("礼盏" for 空喉盏), said by the author
+            text = text if text is not None else work_text(c, project_id)
+            named = any(thing_for(text, said[i - size:i + 1], [name]) == name for name in names if len(name) >= 2
+                        for i in range(len(said)) if said[i] == name[-1] for size in (1, 2, 3) if i - size >= 0)
         if not named and row["kind"] == "keep_open":
             named = any(len(_pairs(name) & _pairs(said)) >= THREAD_PAIRS_MIN for name in names)
         covered = bool(chapters and values["chapters"] and values["chapters"][0] <= chapters[1] and chapters[0] <= values["chapters"][1])
