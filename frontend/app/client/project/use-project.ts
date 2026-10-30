@@ -122,6 +122,8 @@ export function useProject({
   const [controlled, setControlled] = useState<Issue | null>(null);
   const [pendingControlledDecision, setPendingControlledDecision] = useState<PendingControlledDecision | null>(null);
   const [locallyResolvedIssueIds, setLocallyResolvedIssueIds] = useState<string[]>([]);
+  /** v2.2: the decision a finding's note turned into a card of the assistant (the task that holds it), for the finding it was written on. */
+  const [memoryCard, setMemoryCard] = useState<{ issueId: string; taskId: string } | null>(null);
   const [changeSet, setChangeSet] = useState<ChangeSet | null>(null);
   const [saveFailed, setSaveFailed] = useState(false);
   const [autosaveRecord, setAutosaveRecord] = useState<{ key: string; state: AutosaveState }>({ key: "", state: "idle" });
@@ -172,7 +174,7 @@ export function useProject({
     setProject(null); setChapters([]); setMemories([]); setDraft(null); setSaved(null); setRun(null); setPairedRun(null);
     setInitialization(null); setInitializationError(""); setMemoryDelta(null); setCoverage(null); setAuthorContext(null); setAuthorBusy("");
     setCharacters([]); setWorld([]); setSelected(null); setSourceRecord(null); setControlled(null); setPendingControlledDecision(null);
-    setLocallyResolvedIssueIds([]); setChangeSet(null); setSaveFailed(false); setDraftRecoveryPrompt(null); setDraftRecoveryConflict(null);
+    setLocallyResolvedIssueIds([]); setMemoryCard(null); setChangeSet(null); setSaveFailed(false); setDraftRecoveryPrompt(null); setDraftRecoveryConflict(null);
     setDraftRecoveryUnavailable(""); setPendingDecisionStorageUnavailable(""); setPendingDecisionConflict(""); setPendingDecisionPersisted(false);
     setTutorialRestored(false); setPlanAlignment(null); setMissingProjectId("");
   }, []);
@@ -336,7 +338,7 @@ export function useProject({
   const adoptNextDraft = (next: Draft | null | undefined) => {
     if (next) { setDraft(next); setSaved(next); }
     setRun(null); setPairedRun(null); setSelected(null); setControlled(null); setChangeSet(null);
-    setLocallyResolvedIssueIds([]); setPlanAlignment(null);
+    setLocallyResolvedIssueIds([]); setMemoryCard(null); setPlanAlignment(null);
   };
 
   // Poll an active check (and its paired fact run). One request at a time; a hidden tab polls when shown again.
@@ -720,8 +722,8 @@ export function useProject({
     window.setTimeout(() => selectTrigger.current?.focus(), 0);
   };
 
-  /** Records 保留原意 / 不是问题 for one finding; resolves true once it is recorded. */
-  const decide = async (issue: Issue, decision: "keep_intentional" | "false_positive"): Promise<boolean> => {
+  /** Records 保留原意 / 不是问题 for one finding; resolves true once it is recorded. `note`: a sentence of why, which the server may turn into a card for a decision to remember. */
+  const decide = async (issue: Issue, decision: "keep_intentional" | "false_positive", note?: string): Promise<boolean> => {
     if (!projectId || !run || readOnly) return false;
     if (!issueAllows(issue, decision) || !issueHasSufficientEvidence(issue)) {
       notify("这一条依据不够充分，或者不能这样处理；现在只能查看依据。");
@@ -729,13 +731,16 @@ export function useProject({
     }
     setBusy("正在记录决定");
     try {
-      const recorded = await json<{ decision: string; resulting_revision: number | null }>(`/projects/${projectId}/issues/${issue.id}/decision`, "POST", {
+      const said = note?.trim();
+      const recorded = await json<{ decision: string; resulting_revision: number | null; memory_card?: { task_id: string } | null }>(`/projects/${projectId}/issues/${issue.id}/decision`, "POST", {
         run_id: run.run_id,
         source_revision: run.source_revision,
         decision,
+        ...(said ? { note: said } : {}),
         ...(run.current_revision !== run.source_revision ? { resulting_revision: run.current_revision } : {}),
       });
       setLocallyResolvedIssueIds((ids) => [...new Set([...ids, issue.id])]);
+      setMemoryCard(recorded.memory_card?.task_id ? { issueId: issue.id, taskId: recorded.memory_card.task_id } : null);
       if (tutorialActive && project) await tutorialEvent(project.id, "author_decision_recorded");
       const refreshed = await request<Run>(checkPath(projectId, run.run_id));
       setRun(refreshed);
@@ -1022,7 +1027,7 @@ export function useProject({
     // state
     project, missingProjectId, chapters, memories, characters, world, authorContext, authorBusy, draft, saved, run, pairedRun,
     initialization, initializationError, memoryDelta, coverage, planAlignment, analysisBusy, busy, selected, controlled, materialsStamp,
-    pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
+    pendingControlledDecision, locallyResolvedIssueIds, memoryCard, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
     pendingDecisionPersisted, sourceRecord, tutorialRestored, tutorialActive, readOnly, dirty, narrow,
     // actions

@@ -245,7 +245,7 @@ test.describe("助手", () => {
     await api(page).post(`/test/v190/projects/${id}/legacy-story-qa`, { draft_id: current.id, draft_revision: current.revision, question: "罗盘现在在哪里？", scope: ["confirmed", "written", "planned"] });
     await page.goto(`/projects/${id}/memory?view=ask`);
     const tabs = page.getByRole("navigation", { name: "资料分类", exact: true });
-    await expect(tabs.getByRole("button")).toHaveText([/^事实/, /^人物/, /^设定/, /^伏笔/]);
+    await expect(tabs.getByRole("button")).toHaveText([/^事实/, /^人物/, /^设定/, /^伏笔/, /^决定/]);
     await expect(tabs.getByRole("button", { name: /^事实/ })).toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("button", { name: "问一问" })).toHaveCount(0);
     // The history is in the assistant, folded, read only.

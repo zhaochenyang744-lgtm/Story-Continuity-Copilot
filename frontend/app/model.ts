@@ -252,7 +252,7 @@ export type Issue = {
   )[];
   claim_span_id: string;
   claim_text?: string;
-  reused_decision?: { decision: string; status: string; source_issue_id: string; review_path: string; requires_new_decision: boolean } | null;
+  reused_decision?: { decision: string; status: string; source_issue_id: string | null; review_path: string; requires_new_decision: boolean; /** v2.2, `status: "author_decision"`: the decision the author recorded that covers this finding. */ statement?: string; decision_id?: string; /** True when the chapter that decision stands on was revised since. */ possibly_out_of_date?: boolean } | null;
   /** v1.7.0 「待修改」: the author noted that the prose still needs a change for this finding. */
   to_revise?: boolean;
   decision?: { decision: string; resulting_revision: number | null; reused?: boolean } | null;
@@ -573,7 +573,7 @@ export type AssistantProposal = {
   recheck: ProposalRecheck | null;
 };
 /** 改资料 (v2.0): one item of a change card, and of the ledger of what the assistant changed. `before` and `after` are already words. */
-export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact" | "add_thread" | "edit_thread" | "abandon_thread";
+export type AssistantChangeKind = "resolve_thread" | "change_fact" | "add_fact" | "add_thread" | "edit_thread" | "abandon_thread" | "add_decision";
 export type AssistantChange = {
   /** Only in the ledger, where changes and adoptions are listed together. */
   entry?: "change";
@@ -582,7 +582,7 @@ export type AssistantChange = {
   task_id: string;
   kind: AssistantChangeKind;
   /** A thread by its id; a fact by its lasting id and the record it is now (null when it is not in the current version). */
-  target: { kind: "foreshadow"; id: string } | { kind: "fact"; id: string; record_id: string | null };
+  target: { kind: "foreshadow"; id: string } | { kind: "fact"; id: string; record_id: string | null } | { kind: "decision"; id: string };
   title: string;
   before: string;
   after: string;
@@ -604,6 +604,11 @@ export type AssistantChange = {
   decided_at: string | null;
   applied_at: string | null;
   undone_at: string | null;
+  /** v2.2, only an `add_decision` item: the author's own words it stands on, and the content of the decision it replaces (null when it replaces none). */
+  quote?: string | null;
+  replaces?: string | null;
+  /** v2.2: an undone item the author may be asked about once: remember it as a thread to keep open. */
+  rememberable?: boolean;
 };
 /** 改动记录 (v2.1): a proposal of a fix_issue task that the author adopted (or adopted and then undid), listed beside the changes. Undoing an adoption
     only records it; the draft is not touched. `after` is the sentence adopted, the author's own wording when they reworded it. */
@@ -632,7 +637,8 @@ export type LongQuestion = {
   id: string; kind: "budget" | "decision" | string; step: number; text: string; choices: string[];
   /** A decision: what each of the two ways reads, with a line of the original. */
   options?: { key: string; label: string; chapter?: number | null; quote?: string }[];
-  answer: { choice: string; cap_cny?: number | null } | null;
+  /** `by`: who answered when the author did not (the program, or — v2.2 — a decision of theirs that already covers the question). */
+  answer: { choice: string; cap_cny?: number | null; by?: string; decision_id?: string } | null;
 };
 export type AssistantTask = {
   id: string;
@@ -678,3 +684,29 @@ export type AssistantTask = {
   progress?: { done: number; total: number; cost_cny: number; cap_cny: number };
   questions?: LongQuestion[];
 };
+
+/** 决定 (v2.2): what the author said to keep doing from now on, remembered once they confirmed it on a card. */
+export type DecisionKind = "intentional" | "prefer" | "no_reminder" | "keep_open" | "style";
+export type AuthorDecision = {
+  id: string;
+  kind: DecisionKind;
+  kind_label: string;
+  statement: string;
+  subjects: string[];
+  /** The chapters it covers (from, to); null when it covers the whole work. */
+  chapters: [number, number] | null;
+  foreshadow_id: string | null;
+  prefer_chapter: number | null;
+  status: "active" | "stale" | "superseded";
+  scope: string;
+  quote: string;
+  source: "box" | "check_note" | "long_choice" | "undo";
+  source_label: string;
+  source_ref: string | null;
+  basis_chapter: number | null;
+  replaces_id: string | null;
+  revision: number;
+  created_at: string;
+  updated_at: string;
+};
+export type DecisionList = { decisions: AuthorDecision[]; limit: number; kinds: Record<string, string> };

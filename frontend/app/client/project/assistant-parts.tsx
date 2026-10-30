@@ -11,7 +11,7 @@ import { bareChapterTitle, type CheckUsage, chapterHeading, formatCount } from "
 export const LIMIT_MARK = "步数或预算已到";
 export const LIMIT_LINE = "查到上限了，先按已找到的回答。";
 export const OUT_OF_SCOPE_TEXT = "我只能查这部作品里写过的内容，可以换个关于作品的问题。";
-export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果" };
+export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果", decision: "作者的决定" };
 export const VISITOR_SAMPLE_ONLY = "访客只能在示例作品上用助手。注册后可以在自己的作品上用。";
 export const VISITOR_USED_UP ="访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
 export const RUNNING_NOW = "上一个问题还在查";
@@ -40,6 +40,7 @@ export function cardLabel(source: AssistantSource): string {
   if (source.kind === "fact" && chapter) return `事实摘要${chapter}`;
   if (source.kind === "foreshadow") return `伏笔记录${chapter}`;
   if (source.kind === "plan") return `计划${chapter}`;
+  if (source.kind === "decision") return "作者的决定";
   return whereLabel(source);
 }
 /** Where 去原文 takes the author, and what to look for there: the passage itself, or for a fact the passage it was taken from.

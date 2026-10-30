@@ -109,7 +109,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   const notFound = answer?.status === "not_found";
   const failure = task.status === "failed" ? failureText(task, handlers.visitor) : null;
   // What the line above says besides the use: only what the answer's own words do not (a card waiting to be decided, an answer that disagrees with itself).
-  const state = !running && task.kind === "change" && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
+  const state = !running && (task.kind === "change" || task.kind === "ask") && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
   const lead = routedLead(task, handlers.timedOut.includes(task.id)) + state;
   // The passages a change card already stands on are not listed again under the answer.
   const cardHas = new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)));
@@ -129,7 +129,8 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
         {!offTopic && <CoverLine task={task} onlyMissed={notFound} />}
         {!offTopic && <SourceList task={task} locate={handlers.locate} skip={cardHas} />}
-        {task.kind === "change" && task.status === "completed" && (
+        {/* A question can carry a card too (v2.2): the author asked and decided in one sentence, and the card holds only the record to be made. */}
+        {(task.kind === "change" || task.kind === "ask") && task.status === "completed" && (
           <ChangeCard task={task} projectId={handlers.projectId} readOnly={handlers.readOnly} replace={handlers.replace} merge={handlers.merge} locate={handlers.locate}
             written={handlers.written} goMaterials={handlers.goMaterials} />
         )}

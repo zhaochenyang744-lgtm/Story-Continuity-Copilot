@@ -49,7 +49,7 @@ const minutes = (seconds: number) => (seconds < 60 ? "不到 1 分钟" : `${Math
 
 /** The group titles: what the cards of one kind do, in few words (the item's own tag keeps the longer name). */
 const GROUP_TITLE: Record<AssistantChangeKind, string> = {
-  resolve_thread: "标已回收", abandon_thread: "标放弃", add_fact: "加事实", change_fact: "改事实", add_thread: "加伏笔", edit_thread: "改伏笔说明",
+  resolve_thread: "标已回收", abandon_thread: "标放弃", add_fact: "加事实", change_fact: "改事实", add_thread: "加伏笔", edit_thread: "改伏笔说明", add_decision: "记下决定",
 };
 
 /** What the author is told when a task ends in failure (never the code). Every failed task has its characters given back. */
@@ -274,6 +274,11 @@ function AskCard({ task, question, handlers }: { task: AssistantTask; question: 
     pick, option b) and says so. */
 export function decisionLine(item: LongQuestion): string {
   const choice = item.answer?.choice;
+  // A decision of the author's already covered this question (v2.2): it was not asked, and the report says whose word it went by.
+  if (item.answer?.by === "author_decision") {
+    const side = item.options?.find((entry) => entry.key === choice);
+    return `中途有一处按你记下的决定处理了，没有再问你：${choice === "both" ? "两处都保留" : side ? `以「${side.label}」为准` : "按决定办"}。`;
+  }
   if (choice === "both") return "中途问过一处：你说两处都保留。";
   const option = item.options?.find((entry) => entry.key === choice);
   if (option) return `中途问过一处：你选了「${option.label}」。`;
@@ -460,7 +465,8 @@ export function LongView({ task, handlers, usage, project, maxChapter, usageChan
         {ended && began && <EndLine task={task} />}
         {ended && began && <Report task={task} handlers={handlers} />}
         {ended && !began && <p className="a-note" data-testid="long-note">{sentencesOf(task)?.note ?? "没有开始就停下了。"}</p>}
-        {ended && began && <Groups task={task} handlers={handlers} />}
+        {/* A decision the request said stands on the card even when the task stopped before it began (the server lets a stopped task's card be decided). */}
+        {ended && <Groups task={task} handlers={handlers} />}
       </article>
     </div>
   );

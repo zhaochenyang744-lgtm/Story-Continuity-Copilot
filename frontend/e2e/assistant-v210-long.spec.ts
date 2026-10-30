@@ -4,7 +4,7 @@ import type { Locator, Page } from "@playwright/test";
 import { api, expect, openTab, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
 import { box, chooseMode, send, thread, topbarAssistant } from "./support/assistant";
 import { askView, serveTasks } from "./support/assistant-mock";
-import { closeDrawer, openDrawer, openLedger, threadRecords, threadsView } from "./support/assistant-change";
+import { closeDrawer, openDrawer, openLedger, releaseKeptOpen, threadRecords, threadsView } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { ownWork } from "./support/writing";
 
@@ -94,6 +94,7 @@ async function photographBar(page: Page, name: string) {
 async function open(page: Page, own = false) {
   await registerAccount(page, "l19");
   const id = await sampleWorkId(page);
+  await releaseKeptOpen(page, id);
   if (own) await ownWork(page, id);
   await openTab(page, id, "overview");
   await openDrawer(page);
