@@ -716,6 +716,11 @@ class ContinuityEngine:
         flags={claim_id:flag for claim_id,flag in flags.items() if not is_author_voice(next((claim["text"] for claim in claims if claim["id"]==claim_id),""))}
         summary["flagged"]=len(flags)
         evidence={claim["id"]:screening.claim_evidence(claim,index,flags[claim["id"]]["facts"]) for claim in claims if claim["id"] in flags}
+        # A sentence giving a number an earlier passage gives otherwise goes to a careful review without the triage (v2.2).
+        split=[claim["id"] for claim in claims if claim["id"] in flags and flags[claim["id"]]["kind"]=="check" and evidence.get(claim["id"])
+               and screening.value_split(claim["text"],evidence[claim["id"]],index)][:screening.VALUE_SPLIT_MAX]
+        flags.update({claim_id:{**flags[claim_id],"kind":"conflict"} for claim_id in split})
+        summary["value_split"]=len(split)
         # A flagged sentence with no earlier passage at all has nothing to be reviewed against.
         reviewed=[{**claim,"allowed_evidence":evidence[claim["id"]],"screen_facts":flags[claim["id"]]["facts"]} for claim in claims if evidence.get(claim["id"])]
         summary["reviewed"]=len(reviewed)

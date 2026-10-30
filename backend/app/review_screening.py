@@ -74,7 +74,7 @@ TRIAGE_SWEEP_BATCH = 3
 KEY_MAX_CLAIMS = 5
 SECOND_LOOK_MAX_CLAIMS = 2
 # The triage only scores, so each sentence brings its three best passages.
-TRIAGE_PASSAGES_PER_CLAIM = 3
+TRIAGE_PASSAGES_PER_CLAIM = 4  # 3 until v2.2: one more, so the passages of PassageIndex.same_point leave room for the best match
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
 # a non-thinking fallback), so it gets a larger token guard than the per-sentence review's 50,000.
 SCREENED_RUN_TOKEN_BUDGET = 90000
@@ -207,7 +207,12 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
         passage = index.fact_passage(fact_id)
         if passage is not None and passage.chapter_number < before and passage not in ranked:
             ranked.append(passage)
-    ranked.extend(passage for _, passage in index.search(claim["text"], before_chapter=before, k=limit) if passage not in ranked)
+    # Then the best direct match, the passages that may give another version of the same point (PassageIndex.same_point), and
+    # the other matches: the triage reads only the first TRIAGE_PASSAGES_PER_CLAIM.
+    matches = [passage for _, passage in index.search(claim["text"], before_chapter=before, k=limit)]
+    ranked.extend(passage for passage in matches[:1] if passage not in ranked)
+    ranked.extend(passage for passage in index.same_point(claim["text"], before_chapter=before) if passage not in ranked)
+    ranked.extend(passage for passage in matches[1:] if passage not in ranked)
     picked: list[Passage] = []
     used = 0
     for passage in ranked:
@@ -216,6 +221,62 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
         picked.append(passage)
         used += len(passage.text)
     return [passage_entry(passage) for passage in picked]
+
+
+# A number and the word it counts ("三十一岁", "六边", "第四声", "七月初五"): the value a sentence gives a point.
+_NUMERAL = r"零〇一二两三四五六七八九十百千\d"
+_VALUE = re.compile(rf"(?:第|初)?([{_NUMERAL}]+)\s*(?:条|个|只|张|道)?([岁边声次个人天年月日号点层道条座间只张把匹头级])")
+_DIGITS = {"零": 0, "〇": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+VALUE_SPLIT_MAX = 2  # sentences per check sent straight to a careful review for a value an earlier passage gives otherwise
+
+
+def _number(text: str) -> int | None:
+    if text.isdigit():
+        return int(text)
+    total, current = 0, 0
+    for ch in text:
+        if ch in _DIGITS:
+            current = _DIGITS[ch]
+        elif ch == "十":
+            total += (current or 1) * 10
+            current = 0
+        elif ch == "百":
+            total += (current or 1) * 100
+            current = 0
+        elif ch == "千":
+            total += (current or 1) * 1000
+            current = 0
+        else:
+            return None
+    return total + current
+
+
+def values(text: str) -> set[tuple[str, int]]:
+    found = set()
+    for number, unit in _VALUE.findall(text):
+        value = _number(number)
+        if value is not None:
+            found.add((unit, value))
+    return found
+
+
+def value_split(claim_text: str, passages: list[dict[str, Any]], index: PassageIndex) -> bool:
+    """Whether an earlier passage that names a thing the sentence names gives a different number of the same kind ("三十一岁"
+    against "二十七岁", "六边" against "五边"). Only a reason for a careful look, never a finding by itself: the triage
+    passed such sentences as agreeing when another passage agreed (A4 dev run, 2026-10-30)."""
+    own = values(claim_text)
+    if not own:
+        return False
+    units = {unit for unit, _ in own}
+    named = {e for e in index.entities_in(claim_text)}
+    for passage in passages:
+        text = passage.get("body") or ""
+        if named and not any(name in text for name in named):
+            continue
+        theirs = {(unit, value) for unit, value in values(text) if unit in units}
+        if theirs and not theirs <= own and not own <= theirs:
+            return True
+    return False
 
 
 def passage_entry(passage: Passage) -> dict[str, Any]:
