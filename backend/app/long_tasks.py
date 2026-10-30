@@ -18,6 +18,8 @@ is written before the next step.
 """
 from __future__ import annotations
 
+import concurrent.futures
+import contextvars
 import json
 import random
 import sqlite3
@@ -31,6 +33,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from . import assistant_actions
 from . import assistant_decisions
+from . import assistant_recognize
 from .assistant_actions import ACTIONS, OPEN_THREAD
 from .assistant_store import new_task_id, utcnow
 from .assistant_tools import SourceRegistry, ToolContext
@@ -215,14 +218,18 @@ class LongTasks:
         """The plan call, then the step list the program makes of it. A task the sentence does not fit ends at once."""
         row = self.store.row(task_id)
         question = json.loads(row["input_json"])["question"]
+        recognition = None
         try:
             with provider_usage(row["user_id"], row["reservation_id"]):
+                if self.settings.assistant_recognize_decisions:
+                    recognition = self._start_recognition(question)
                 result = self.provider.route([{"role": "system", "content": PLAN_PROMPT}, {"role": "user", "content": f"作者的话：{question}"}],
                                              PLAN_MAX_TOKENS, PLAN_TIMEOUT_SECONDS, role="plan")
             self._book(task_id, 0, 0, "plan", result)
             choice = _parse_plan((result.message or {}).get("content"))
         except Exception as error:  # a failed plan call fails the task; the author asks again
             return self._finish(task_id, FAILED, error_code="assistant_long_plan_failed", internal=type(error).__name__)
+        self._decision_card(task_id, row, question, recognition)
         scope = json.loads(row["scope_json"])
         if choice["type"] not in OFFERED:
             with self.db.connection() as c:
@@ -237,6 +244,31 @@ class LongTasks:
                       (json.dumps(proposed, ensure_ascii=False), proposed["est_chars"], proposed["est_cny"], proposed["type"],
                        proposed["chapters"][1] - proposed["chapters"][0] + 1, task_id))
             c.execute("UPDATE assistant_tasks SET status=?,phase=NULL WHERE id=? AND status=?", (AWAITING_PLAN, task_id, PLANNING))
+
+    def _start_recognition(self, question: str) -> concurrent.futures.Future:
+        """The author's request read for a decision beside the plan call (as an ask's or a change's, `assistant_recognize`)."""
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question)
+        pool.shutdown(wait=False)
+        return future
+
+    def _decision_card(self, task_id: str, row: Any, question: str, recognition: concurrent.futures.Future | None) -> None:
+        """The decision the request said, if any, on the task's card for the end of the report; a failure only means no card."""
+        if recognition is None:
+            return
+        try:
+            result = recognition.result(timeout=assistant_recognize.RECOGNIZE_TIMEOUT_SECONDS + 2)
+        except Exception:
+            return
+        self._book(task_id, 0, 0, "requests", result)
+        found = assistant_recognize.parse((result.message or {}).get("content"))
+        if found is None:
+            return
+        with self.db.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            grounded = assistant_recognize.ground(c, row["project_id"], question, found, source_ref=task_id)
+            if grounded is not None:
+                assistant_decisions.card_item(c, task_id, row["project_id"], *grounded)
 
     def _expand(self, c: sqlite3.Connection, row: Any, choice: dict[str, Any], chapters: list[int]) -> dict[str, Any]:
         """The step list over `chapters`: a step per window of chapters, then the report. The kind says what a step looks for

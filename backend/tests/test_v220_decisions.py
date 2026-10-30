@@ -348,5 +348,40 @@ class CheckTests(AssistantCase):
         self.assertNotIn("memory_card", r.json()["data"])
 
 
+from tests.test_v210_long_tasks import LongCase  # noqa: E402
+
+
+class LongRecognitionTests(LongCase):
+    """A long task's request read for a decision beside its plan call; the card waits for the end of the report."""
+
+    def setUp(self):
+        super().setUp()
+        clear_sample(self)
+        import dataclasses
+        self.long.settings = dataclasses.replace(self.long.settings, assistant_recognize_decisions=True)
+
+    def script(self, decision):
+        from app.assistant_recognize import SYSTEM_PROMPT
+        def answer(provider, messages):
+            if messages[0]["content"] == SYSTEM_PROMPT:
+                return {"decision": decision}
+            return {"type": "thread_audit", "target": None, "chapters": None, "output": "list"}
+        self.provider.script_route(answer, answer)
+
+    def test_a_request_that_also_keeps_a_thread_open_gets_its_card(self):
+        self.script({"kind": "keep_open", "statement": "罗盘下落这条伏笔先别收", "words": "先别收", "subjects": [], "chapters": None, "thread": "罗盘下落"})
+        task = self.create("罗盘下落那条先别收，其余还吊着的伏笔都替我过一遍")
+        view = self.view(task["id"])
+        self.assertEqual(view["status"], "awaiting_plan")
+        self.assertEqual([(i["kind"], i["status"]) for i in view["changes"]], [("add_decision", "proposed")])
+        self.assertIn("罗盘下落", view["changes"][0]["after"])
+        self.assertEqual([r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=? ORDER BY seq", task["id"])], ["plan", "requests"])
+
+    def test_a_request_with_no_decision_has_no_card(self):
+        self.script(None)
+        task = self.create()
+        self.assertEqual(self.view(task["id"])["changes"], [])
+
+
 if __name__ == "__main__":
     unittest.main()
