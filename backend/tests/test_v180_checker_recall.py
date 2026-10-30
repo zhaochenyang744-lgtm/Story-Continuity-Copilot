@@ -435,7 +435,7 @@ class PromptTests(unittest.TestCase):
 
     def test_prompt_versions_moved_on(self):
         self.assertEqual(provider_module.CONTINUITY_PROMPT_VERSION, "continuity-review-v24d-epithet-referents")
-        self.assertEqual(provider_module.CONTINUITY_SCREENED_PROMPT_VERSION, "continuity-review-v25k-screened-offpage-second-review")
+        self.assertEqual(provider_module.CONTINUITY_SCREENED_PROMPT_VERSION, "continuity-review-v25l-split-sources")
         self.assertEqual(MEMORY_PROMPT_VERSION, "memory-initialization-v11-epithet-subjects")
         self.assertEqual(MemoryDeltaEngine(Scripted()).provenance()["prompt_version"], "memory-delta-v6-epithet-subjects")
 

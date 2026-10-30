@@ -60,7 +60,7 @@ class PromptTests(unittest.TestCase):
         rules = " ".join(prompt["rules"])
         self.assertIn("Describing the same people, things or events is not agreement", rules)
         self.assertIn("new off-page background", rules)
-        self.assertEqual(prompt["prompt_version"], "continuity-triage-v5-stated-links")
+        self.assertEqual(prompt["prompt_version"], "continuity-triage-v6-split-sources")
 
     def test_the_screened_review_has_the_new_examples_and_the_legacy_review_does_not(self):
         def situations(pipeline):
