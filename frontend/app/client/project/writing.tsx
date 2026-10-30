@@ -32,6 +32,7 @@ import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline } from "./findings";
+import { decisionsPath } from "./decisions";
 import { PredicateSelect } from "./materials";
 import { issueAllows, issueHasSufficientEvidence, issueNeedsDecision, type ProjectState } from "./use-project";
 
@@ -492,7 +493,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                         <span className="finding-head">
                           <span className="finding-tags">
                             <FindingTag issue={issue} long />
-                            {done ? <span className="label just-done">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
+                            {done ? <span className="label just-done">{issue.reused_decision?.status === "author_decision" ? "按你记下的决定略过" : issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
                             {adoptedIssueIds.includes(issue.id) && <span className="label adopted-tag">已采用助手改法</span>}
                           </span>
                           <strong>{findingHeadline(issue)}</strong>
@@ -500,8 +501,12 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                       </button>
                       {isOpen && p.selected && (
                         <div className={folding === issue.id ? "collapse closing" : "collapse"}>
-                          <div><FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} assist={assistantOn ? { reason: assistReason, run: () => bringTask({ kind: "fix", issueId: issue.id }) } : null} /></div>
+                          <div><FindingDetail key={issue.id} p={p} go={go} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} assist={assistantOn ? { reason: assistReason, run: () => bringTask({ kind: "fix", issueId: issue.id }) } : null} /></div>
                         </div>
+                      )}
+                      {/* The finding folds away once it is handled; what it made of the sentence of why stays under its row. */}
+                      {p.memoryCard?.issueId === issue.id && (
+                        <p className="finding-decided finding-memory" role="status" data-testid="memory-card-made">已生成一张记录卡片，确认后才会记下这条决定。<button type="button" className="link" onClick={() => bridge.openDrawer(undefined, p.memoryCard!.taskId)}>打开卡片</button></p>
                       )}
                     </li>
                   );
@@ -613,11 +618,13 @@ function groupIssues(issues: Issue[]) {
 
 /** The open finding: why it was flagged, the earlier passages it rests on, the suggested change, and
     what the author can do. Actions follow the finding's kind; the first one is blue. */
-function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, assist }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean; decided: (issueId: string) => void; assist: { reason: string; run: () => void } | null }) {
+function FindingDetail({ p, go, issue, tutorialStep, outdated, decided: onDecided, assist }: { p: ProjectState; go: (href: string) => void; issue: Issue; tutorialStep: number; outdated: boolean; decided: (issueId: string) => void; assist: { reason: string; run: () => void } | null }) {
   const [toRevise, setToRevise] = useState(Boolean(issue.to_revise));
   const [applying, setApplying] = useState(false);
   const [markBusy, setMarkBusy] = useState(false);
   const [error, setError] = useState("");
+  // 说一句为什么 (v2.2): an optional sentence with 是有意的 / 不是问题; the server may turn it into a card for a decision to remember.
+  const [note, setNote] = useState("");
   const tutorial = p.tutorialActive;
   const [evidenceRevealed, setEvidenceRevealed] = useState(false);
   const gate = tutorial && tutorialStep < 4 && !evidenceRevealed;
@@ -655,8 +662,8 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, a
         }), away && !reducedMotion() ? 520 : 0);
       } } : null,
       mark: { key: "mark", label: toRevise ? "取消待修改" : "标为待修改", disabled: markBusy || !p.run, pressed: toRevise, run: () => void toggleMark() },
-      keep: canKeep ? { key: "keep", label: tone === "state" ? "保留这个变化" : "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional").then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
-      dismiss: canDismiss ? { key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive").then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
+      keep: canKeep ? { key: "keep", label: tone === "state" ? "保留这个变化" : "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional", note).then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
+      dismiss: canDismiss ? { key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive", note).then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
       edit: issueAllows(issue, "edit") ? { key: "edit", label: "改正文", disabled: Boolean(p.busy) || !evidence.length || outdated, run: () => p.startControlledEdit(issue) } : null,
     };
     // The preview's order: the action that fits the kind of finding first, then 标为待修改 / 是有意的 / 不是问题.
@@ -703,8 +710,15 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided, a
           {!decided && !ready && <p className="finding-hint">依据不够充分，只能标为待修改，或者补写前文后再检查一次。</p>}
           {!p.readOnly ? (
             <div className="author-decision">
-              {issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
+              {issue.reused_decision?.status === "author_decision"
+                ? <p className="finding-decided" data-testid="author-decision-cover">按你记下的决定略过：「{issue.reused_decision.statement}」<a href={decisionsPath(p.project!.id)} onClick={(event) => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); go(decisionsPath(p.project!.id)); }}>查看这条决定</a></p>
+                : issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
               {decided && <p className="finding-decided"><Tag tone="solid">{decisionLabel(issue.decision?.decision)}</Tag>已记下，这一条留在列表里备查。</p>}
+              {!decided && !tutorial && (canKeep || canDismiss) && (
+                <label className="field finding-note"><span className="sr-only">说一句为什么</span>
+                  <input value={note} maxLength={200} disabled={blockedDecision} onChange={(event) => setNote(event.target.value)} placeholder="说一句为什么（可选，写了以后可以记成一条决定）" />
+                </label>
+              )}
               {tutorial && tutorialStep === 4 && decided && <Button kind="primary" className="tutorial-decision-review" disabled={Boolean(p.busy)} onClick={() => void p.reviewDecision(issue)}>复习过了，继续导览</Button>}
               {(actions.length > 0 || !decided) && (
                 <div className="finding-actions">

@@ -9,7 +9,7 @@ import { type ApiFailure, json, labelError, request } from "../../api";
 import type { AssistantAdoption, AssistantChange, AssistantProposal, LedgerEntry } from "../../model";
 import { timeLabel } from "../labels";
 import { Button, SectionHead, Tag } from "../ui";
-import { ConflictPrompt, Flow, KIND_LABEL, useItemOps } from "./assistant-change";
+import { ConflictPrompt, Flow, KIND_LABEL, RememberAsk, shownTitle, useItemOps } from "./assistant-change";
 import { proposalError } from "./assistant-fix";
 
 export const isAdoption = (entry: LedgerEntry): entry is AssistantAdoption => entry.entry === "adoption";
@@ -76,7 +76,7 @@ export type Marks = { facts: Map<string, string>; threads: Map<string, string> }
 export function marksOf(items: LedgerEntry[] | null): Marks {
   const marks: Marks = { facts: new Map(), threads: new Map() };
   for (const item of items ?? []) {
-    if (isAdoption(item) || item.status !== "applied" || item.changed_since) continue;
+    if (isAdoption(item) || item.status !== "applied" || item.changed_since || item.target.kind === "decision") continue;
     if (item.target.kind === "foreshadow") {
       if (!marks.threads.has(item.target.id)) marks.threads.set(item.target.id, item.kind === "add_thread" ? "助手按你的确认添加" : "助手按你的确认修改");
     } else if (item.target.record_id && !marks.facts.has(item.target.record_id)) {
@@ -172,8 +172,10 @@ export function ChangeLedger({ projectId, ledger, written, readOnly, openTask }:
               <li key={item.id} data-change={item.id} data-label={item.label} data-kind={item.kind} data-status={item.status} className={item.status === "undone" ? "undone" : undefined}>
                 <Times at={item.applied_at} atLabel="确认" undone={item.undone_at} />
                 <span className="ledger-copy">
-                  <span className="ledger-head"><Tag tone="line">{KIND_LABEL[item.kind]}</Tag><strong>{item.title}</strong>{item.edited_by_author && <span className="label">你改过</span>}</span>
+                  <span className="ledger-head"><Tag tone="line">{KIND_LABEL[item.kind]}</Tag><strong>{shownTitle(item)}</strong>{item.edited_by_author && <span className="label">你改过</span>}</span>
                   <Flow before={item.before} after={item.after} className="ledger-flow" />
+                  {item.kind === "add_decision" && item.quote && <span className="label ledger-quote">你说的：「{item.quote}」</span>}
+                  {item.status === "undone" && <RememberAsk page item={item} projectId={projectId} readOnly={readOnly} done={(taskId) => openTask?.(taskId)} />}
                   {local.conflict && <ConflictPrompt page conflict={local.conflict} busy={Boolean(local.busy)} undo={() => ops.undo(item, true)} leave={() => ops.leave(item)} />}
                   {local.problem && (
                     <p className="note note-warn" role="alert"><span>{local.problem.text}</span></p>

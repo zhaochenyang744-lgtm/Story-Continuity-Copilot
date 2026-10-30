@@ -587,3 +587,11 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
   .cx { padding-top: 8px; }
   .a-compose { padding-top: 8px; padding-bottom: 8px; }
 }
+
+/* v2.2 记下决定: the author's own words under the item, and the question after an undo */
+.a-chg-quote, .a-chg-replaces { margin: 0; overflow-wrap: anywhere; }
+.a-chg-quote q, .a-chg-quote .quote { font-family: var(--font-serif); }
+.a-remember { display: grid; gap: 4px; padding: 8px 10px; background: var(--c-sunken); font-size: var(--fs-12); line-height: 1.7; }
+.a-remember p { margin: 0; }
+.ledger-remember { display: grid; gap: 4px; margin-top: 6px; font-size: 14px; }
+.ledger-remember p { margin: 0; }

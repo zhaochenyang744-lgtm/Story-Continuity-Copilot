@@ -29,8 +29,18 @@ export const LAST_CHAPTER = 10;
 export type Change = { id: string; label: string; status: string; title: string; request_words: string | null; target: { kind: string; id: string; record_id?: string | null } };
 export type ChangeTask = { id: string; status: string; changes: Change[] };
 
+/** The sample work comes with a decision to keep its thread 廊桥钥匙的指向 open (v2.2), and the test model proposes to resolve "the first thread not
+    resolved": a test that wants that proposal first lets the decision go. */
+export async function releaseKeptOpen(page: Page, id: string) {
+  const { decisions } = await api(page).get(`/projects/${id}/decisions`);
+  for (const item of decisions as { id: string; kind: string; revision: number }[]) {
+    if (item.kind === "keep_open") await api(page).post(`/projects/${id}/decisions/${item.id}/delete`, { base_revision: item.revision });
+  }
+}
+
 /** A change task started through the API and waited for: the same task the box would start, without the box. */
 export async function proposeByApi(page: Page, id: string, question: string): Promise<ChangeTask> {
+  await releaseKeptOpen(page, id);
   const created = await api(page).post(`/projects/${id}/assistant/tasks`, { kind: "change", question, context: { page: "materials" } });
   await expect.poll(async () => (await api(page).get(`/projects/${id}/assistant/tasks/${created.id}`)).status, { timeout: 30_000 }).toBe("completed");
   return api(page).get(`/projects/${id}/assistant/tasks/${created.id}`);

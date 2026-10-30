@@ -125,3 +125,27 @@
   .ledger { padding: 14px; }
   .ledger-list li { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* 决定 */
+.decision-count { margin-bottom: 4px; }
+.decision-list { margin-top: 12px; border-top: 1px solid var(--c-rule); }
+.decision-list li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 220px; gap: 12px 24px; align-items: start; padding: 20px 0; border-bottom: 1px solid var(--c-line); scroll-margin-top: calc(var(--topbar-h) + 24px); }
+.decision-list li.retired { opacity: .6; }
+.decision-kind { padding-top: 4px; }
+.decision-copy { display: grid; gap: 6px; min-width: 0; justify-items: start; }
+.decision-statement { font-size: 19px; font-weight: 700; line-height: 1.5; overflow-wrap: anywhere; }
+.decision-scope { color: var(--c-ink-2); font-size: 14px; }
+.decision-flag { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.decision-source { display: grid; justify-items: start; gap: 4px; padding: 10px 12px; background: var(--c-raised); }
+.decision-quote { font-family: var(--font-serif); font-size: 15px; line-height: 1.8; overflow-wrap: anywhere; }
+.decision-side { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.decision-side .actions { gap: 4px 14px; }
+.decision-confirm { display: grid; gap: 6px; font-size: 14px; }
+.decision-form { width: 100%; margin-bottom: 0; }
+.decision-range { align-items: center; }
+.decision-range legend { float: left; margin-right: 16px; }
+.decision-chapters { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; }
+.decision-chapters input { width: 72px; min-height: 36px; padding: 4px 8px; }
+@media (max-width: 720px) {
+  .decision-list li { grid-template-columns: minmax(0, 1fr); }
+}

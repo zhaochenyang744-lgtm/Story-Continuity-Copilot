@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { FormEvent, MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { Chapter, CharacterAliasSnapshot, ForeshadowCandidate, ForeshadowRecord, ForeshadowSnapshot, Memory, MemoryDelta, MemoryInitialization, WritingAnalysisRun } from "../../model";
@@ -23,6 +24,7 @@ import { bareChapterTitle, Button, chapterHeading, Chips, Num, PageHead, pad2, S
 import { AssistantBridge, useAssistantAnchor } from "./assistant";
 import { AssistantMark, ChangeLedger, type Marks, marksOf, useLedger } from "./change-ledger";
 import type { PageProps } from "./frame";
+import { DecisionsView, useDecisions } from "./decisions";
 import { BULK_REVIEW_THRESHOLD, type Character, type ProjectState, type WorldEntry } from "./use-project";
 
 /** A choice of fact key, not free text. A legacy key already on the candidate stays selectable. */
@@ -31,9 +33,15 @@ export function PredicateSelect({ name, value, disabled }: { name: string; value
   return <select name={name} defaultValue={value} disabled={disabled}>{options.map((key) => <option key={key} value={key}>{predicateLabel(key)}</option>)}</select>;
 }
 
-type View = "facts" | "people" | "settings" | "threads";
-const views: View[] = ["facts", "people", "settings", "threads"];
+type View = "facts" | "people" | "settings" | "threads" | "decisions";
+const views: View[] = ["facts", "people", "settings", "threads", "decisions"];
 const factTone: Record<string, "line" | "solid" | "state" | "gap" | "mid"> = { static_canon: "line", event_timeline: "solid", dynamic_state: "state", character_knowledge: "gap", open_thread: "mid" };
+const legacyViews: Record<string, View> = { places: "settings", foreshadow: "threads" };
+/** The view an address names (`?view=`, or `?tab=` as the server's review paths write it), or null. */
+const viewOf = (requested: string | null): View | null => {
+  const value = (requested && (legacyViews[requested] ?? requested)) as View;
+  return views.includes(value) ? value : null;
+};
 const current = (records: Memory[]) => records.filter((record) => record.valid_to == null && record.review_status === "author_confirmed");
 
 /** 资料: only what is already written into the story, each item traceable to its chapter. */
@@ -42,11 +50,14 @@ export function MaterialsPage({ p, user, initialView, go, notices }: PageProps &
   const [view, setView] = useState<View>(() => {
     if (initialView) return initialView;
     if (typeof window === "undefined") return "facts";
-    const requested = new URLSearchParams(window.location.search).get("view");
-    const legacy: Record<string, View> = { places: "settings", foreshadow: "threads" };
-    const value = (requested && (legacy[requested] ?? requested)) as View;
-    return views.includes(value) ? value : "facts";
+    const query = new URLSearchParams(window.location.search);
+    return viewOf(query.get("view") ?? query.get("tab")) ?? "facts";
   });
+  // A link from another page of the work (a finding covered by a decision) arrives while this page is being made: the address wins.
+  const search = useSearchParams();
+  const named = viewOf(search.get("view") ?? search.get("tab"));
+  const [seenView, setSeenView] = useState(named);
+  if (named !== seenView) { setSeenView(named); if (named) setView(named); }
   // The person card in view is the assistant's context (an address with ?character= opens it).
   const [openCharacter, setOpenCharacter] = useState<string | null>(() => (typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("character")));
   const viewedCharacter = view === "people" ? p.characters.find((character) => character.id === openCharacter) : undefined;
@@ -62,6 +73,7 @@ export function MaterialsPage({ p, user, initialView, go, notices }: PageProps &
   const ledger = useLedger(project.id, p.materialsStamp);
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const marks = marksOf(ledger.items);
+  const decisions = useDecisions(project.id, p.materialsStamp);
   const assistantOffered = Boolean(user.assistant?.available);
   const choose = (next: View) => {
     setView(next);
@@ -85,12 +97,14 @@ export function MaterialsPage({ p, user, initialView, go, notices }: PageProps &
           { id: "people", label: "人物", count: p.characters.length },
           { id: "settings", label: "设定", count: p.world.length },
           { id: "threads", label: "伏笔", count: threadCount ?? "" },
+          { id: "decisions", label: "决定", count: decisions.list?.decisions.length ?? "" },
         ]}
       />
       {view === "facts" && <FactsView p={p} go={go} marks={marks} />}
       {view === "people" && <PeopleView p={p} openId={openCharacter} setOpenId={setOpenCharacter} />}
       {view === "settings" && <SettingsView p={p} />}
       {view === "threads" && <ThreadsView p={p} go={go} marks={marks} />}
+      {view === "decisions" && <DecisionsView projectId={project.id} decisions={decisions} readOnly={p.readOnly} openTask={assistantOffered ? (taskId) => bridge.openDrawer(undefined, taskId) : null} />}
     </section>
   );
 }

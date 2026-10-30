@@ -49,7 +49,7 @@ const minutes = (seconds: number) => (seconds < 60 ? "不到 1 分钟" : `${Math
 
 /** The group titles: what the cards of one kind do, in few words (the item's own tag keeps the longer name). */
 const GROUP_TITLE: Record<AssistantChangeKind, string> = {
-  resolve_thread: "标已回收", abandon_thread: "标放弃", add_fact: "加事实", change_fact: "改事实", add_thread: "加伏笔", edit_thread: "改伏笔说明",
+  resolve_thread: "标已回收", abandon_thread: "标放弃", add_fact: "加事实", change_fact: "改事实", add_thread: "加伏笔", edit_thread: "改伏笔说明", add_decision: "记下决定",
 };
 
 /** What the author is told when a task ends in failure (never the code). Every failed task has its characters given back. */

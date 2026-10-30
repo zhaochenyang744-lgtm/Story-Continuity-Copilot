@@ -12,9 +12,14 @@ import { diffView } from "./assistant-diff";
 import { Fold, SourceItem } from "./assistant-parts";
 
 export const KIND_LABEL: Record<AssistantChangeKind, string> = {
-  add_fact: "加事实", change_fact: "改事实", resolve_thread: "标伏笔已回收", add_thread: "加伏笔", edit_thread: "改伏笔说明", abandon_thread: "伏笔标放弃",
+  add_fact: "加事实", change_fact: "改事实", resolve_thread: "标伏笔已回收", add_thread: "加伏笔", edit_thread: "改伏笔说明", abandon_thread: "伏笔标放弃", add_decision: "记下决定",
 };
 const VALUE_MAX = 200;
+/** A decision is one sentence (the server cuts it at 80). */
+const DECISION_MAX = 80;
+const maxOf = (item: AssistantChange) => (item.kind === "add_decision" ? DECISION_MAX : VALUE_MAX);
+/** The card's title for an item: a decision's title is 「记下决定·有意为之」, and the kind label in front already says 记下决定. */
+export const shownTitle = (item: AssistantChange) => (item.kind === "add_decision" ? item.title.replace(/^记下决定[·・]?/, "") || item.title : item.title);
 
 /** What a change was written to: the page asks for it again once the materials have moved. */
 export type ChangeWritten = () => void;
@@ -41,7 +46,8 @@ export function changeProblem(cause: unknown, step: "confirm" | "undo" | "redo" 
     case "change_state_invalid": return { text: "这一条的状态已经变了，已经换成现在的样子。", review: false };
     case "change_target_missing": return { text: "要改的资料已经不在了，这一条不能再操作。", review: false };
     case "invalid_item_selection": return { text: "勾选的条目和这张卡片对不上，刷新页面再看。", review: false };
-    case "change_value_invalid": return { text: `改写的内容不能为空，也不能超过 ${VALUE_MAX} 字。`, review: false };
+    case "change_value_invalid": return { text: `改写的内容不能为空，也不能超过 ${VALUE_MAX} 字（决定最多 ${DECISION_MAX} 字）。`, review: false };
+    case "decision_limit_reached": return { text: "这部作品记下的决定已到 200 条上限，先到资料页删掉不再用的，再记新的。", review: true };
     case "change_task_not_completed": return { text: "助手还没有答完，等它结束再确认。", review: false };
     case "resource_not_found": return { text: "这张卡片已经不在了（对话可能被清空了）。", review: false };
     case "request_timeout": return { text: "这一步花的时间比平时长，结果可能已经保存。刷新页面看看。", review: false };
@@ -211,9 +217,56 @@ function Basis({ item, locate, sameEvidenceAs, alone }: { item: AssistantChange;
   );
 }
 
-function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditing, locate, readOnly, goMaterials, decided, alone, sameEvidenceAs }: {
+const ASKED_KEY = "sc-remember-asked";
+const askedBefore = (id: string) => { try { return (JSON.parse(window.localStorage.getItem(ASKED_KEY) ?? "[]") as string[]).includes(id); } catch { return false; } };
+const markAsked = (id: string) => { try { const all = JSON.parse(window.localStorage.getItem(ASKED_KEY) ?? "[]") as string[]; window.localStorage.setItem(ASKED_KEY, JSON.stringify([...all.filter((one) => one !== id), id].slice(-300))); } catch { /* the question is then asked again after a reload */ } };
+
+/** After an undo of a thread item (标已回收, 标放弃): asked once whether to remember it as a thread to keep open. 记下来 puts a card for the decision on the
+    task; 不用 drops the question. It is not a pop-up: it sits under the item. */
+export function RememberAsk({ item, projectId, readOnly, done, page = false }: { item: AssistantChange; projectId: string; readOnly: boolean; done: (taskId: string) => void; page?: boolean }) {
+  const [asked, setAsked] = useState(() => askedBefore(item.id));
+  const [busy, setBusy] = useState(false);
+  const [made, setMade] = useState(false);
+  const [problem, setProblem] = useState("");
+  if (made) return <p className={page ? "small-note ledger-remember" : "a-why a-chg-note"} role="status" data-testid="remember-made">已生成一张记录卡片，确认后才会记下。</p>;
+  if (!item.rememberable || readOnly || asked) return null;
+  const close = () => { markAsked(item.id); setAsked(true); };
+  const remember = async () => {
+    setBusy(true); setProblem("");
+    try {
+      const result = await json<{ task_id: string }>(`/projects/${projectId}/assistant/changes/${item.id}/remember`, "POST", {});
+      markAsked(item.id); setMade(true); done(result.task_id);
+    } catch (cause) {
+      if ((cause as ApiFailure)?.code === "change_already_decided") { markAsked(item.id); setMade(true); done(item.task_id); }
+      else setProblem(changeProblem(cause, "confirm").text);
+    } finally { setBusy(false); }
+  };
+  const asking = (
+    <>
+      <p>要记下来，以后别再提出这一条吗？</p>
+      {page ? (
+        <span className="actions">
+          <Button kind="small" disabled={busy} onClick={() => void remember()}>记下来</Button>
+          <Button kind="text" disabled={busy} onClick={close}>不用</Button>
+        </span>
+      ) : (
+        <div className="a-opt-a">
+          <button type="button" className="a-btn" disabled={busy} onClick={() => void remember()}>记下来</button>
+          <button type="button" className="a-link" disabled={busy} onClick={close}>不用</button>
+        </div>
+      )}
+      {problem && <p className="a-note" role="alert">{problem}</p>}
+    </>
+  );
+  return <div className={page ? "ledger-remember" : "a-remember"} role="group" aria-label="要不要记下来" data-testid="remember-ask">{asking}</div>;
+}
+
+function Item({ item, ops, projectId, remembered, picked, setPicked, typed, setTyped, editing, setEditing, locate, readOnly, goMaterials, decided, alone, sameEvidenceAs }: {
   item: AssistantChange;
   ops: ItemOps;
+  projectId: string;
+  /** 记下来 was answered with a card on the task: read the task again. */
+  remembered: () => void;
   picked: boolean;
   setPicked: (value: boolean) => void;
   typed: string | undefined;
@@ -234,11 +287,11 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
   const proposed = item.status === "proposed";
   const reworded = proposed && item.editable && typed !== undefined && typed.trim() !== (item.value ?? "").trim();
   // A thread's note is shown as the author wrote it (the server leaves no full stop off it); a fact's value loses its closing stop before the chapter.
-  const trim = (text: string) => (item.kind === "add_thread" || item.kind === "edit_thread" ? text : text.replace(VALUE_END, ""));
+  const trim = (text: string) => (item.kind === "add_thread" || item.kind === "edit_thread" || item.kind === "add_decision" ? text : text.replace(VALUE_END, ""));
   const base = trim(item.value ?? "");
   const at = item.after.indexOf(base);
   const shownAfter = reworded && item.value !== null && base && at >= 0 ? item.after.slice(0, at) + trim(typed!.trim()) + item.after.slice(at + base.length) : item.after;
-  const name = `${item.label} ${item.title}`;
+  const name = `${item.label} ${shownTitle(item)}`;
   // Not done and taken back: the words go quiet (still easy to read), the word for what became of the item does not.
   const dismissed = item.status === "rejected" || item.status === "undone";
   return (
@@ -252,7 +305,7 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
       <div className="a-chg-main">
         <div className="a-chg-line">
           <span className="a-chg-kind">{KIND_LABEL[item.kind]}</span>
-          <strong>{item.title}</strong>
+          <strong>{shownTitle(item)}</strong>
           {proposed && item.changed_since && <span className="a-edited warn">这条资料已经变了</span>}
           {(reworded || (!proposed && item.edited_by_author)) && <span className="a-edited">你改过</span>}
           {item.status !== "proposed" && <span className={`a-chg-state ${item.status}`}>{STATE_TEXT[item.status]}</span>}
@@ -260,11 +313,16 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
         {item.kind === "abandon_thread" && proposed && <p className="a-why a-chg-note">作者确认后这条伏笔不再提醒</p>}
         <ChangeWords item={item} after={shownAfter} />
         {proposed && item.editable && editing && (
-          <textarea className="a-edit" aria-label={`改后的内容：${item.title}`} value={typed ?? item.value ?? ""} rows={3} maxLength={VALUE_MAX}
+          <textarea className="a-edit" aria-label={`改后的内容：${shownTitle(item)}`} value={typed ?? item.value ?? ""} rows={3} maxLength={maxOf(item)}
             aria-invalid={!(typed ?? item.value ?? "").trim() || undefined} onChange={(event) => setTyped(event.target.value)} />
         )}
         {proposed && item.editable && editing && !(typed ?? item.value ?? "").trim() && <p className="a-why a-warn" role="alert">改写的内容不能为空。</p>}
-        <Basis item={item} locate={locate} sameEvidenceAs={sameEvidenceAs} alone={alone} />
+        {item.kind === "add_decision" ? (
+          <>
+            {item.quote && <p className="a-why a-chg-quote" data-testid="decision-quote">依据你说的：「{item.quote}」</p>}
+            {item.replaces && <p className="a-why a-chg-replaces" data-testid="decision-replaces">取代：{item.replaces}</p>}
+          </>
+        ) : <Basis item={item} locate={locate} sameEvidenceAs={sameEvidenceAs} alone={alone} />}
         {(proposed && item.editable && !decided && !readOnly) && (
           <div className="a-opt-a">
             <button type="button" className="a-link" aria-expanded={editing} onClick={() => setEditing(!editing)}>{editing ? "改好了" : "改内容"}</button>
@@ -275,6 +333,7 @@ function Item({ item, ops, picked, setPicked, typed, setTyped, editing, setEditi
             <Button kind="text" disabled={local.busy} onClick={() => ops.redo(item)}>恢复</Button>
           </div>
         )}
+        {item.status === "undone" && <RememberAsk item={item} projectId={projectId} readOnly={readOnly} done={remembered} />}
         {local.conflict && <ConflictPrompt conflict={local.conflict} busy={Boolean(local.busy)} undo={() => ops.undo(item, true)} leave={() => ops.leave(item)} />}
         {local.problem && (
           <p className="a-note" role="alert">
@@ -368,7 +427,7 @@ export function ChangeCard({ task, projectId, readOnly, replace, merge, locate, 
         </div>
       )}
       {items.map((item) => (
-        <Item key={item.id} item={item} ops={ops} picked={picked(item)} setPicked={(value) => setChoice((all) => ({ ...all, [item.id]: value }))}
+        <Item key={item.id} item={item} ops={ops} projectId={projectId} remembered={() => void refreshTask()} picked={picked(item)} setPicked={(value) => setChoice((all) => ({ ...all, [item.id]: value }))}
           typed={typed[item.id]} setTyped={(value) => setTyped((all) => ({ ...all, [item.id]: value }))}
           editing={Boolean(editing[item.id])} setEditing={(value) => setEditing((all) => ({ ...all, [item.id]: value }))}
           locate={locate} readOnly={readOnly} goMaterials={goMaterials} decided={!waiting || Boolean(group?.alone)} alone={items.length === 1} sameEvidenceAs={shared[item.id]} />
