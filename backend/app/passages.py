@@ -171,6 +171,11 @@ def _bm25(wanted: set[str], tf: Counter, length: int, average: float, idf) -> fl
     return sum(idf(t) * tf[t] * (BM25_K1 + 1) / (tf[t] + norm) for t in wanted & tf.keys())
 
 
+SAME_POINT_MAX = 2
+SAME_POINT_MIN_WORDS = 2
+SAME_POINT_CLASS_WEIGHT = 3.0
+
+
 @dataclass
 class PassageIndex:
     """Passages of one work, searchable as of any chapter.
@@ -249,6 +254,44 @@ class PassageIndex:
     def search_facts(self, query: str, *, before_chapter: int, k: int = 3) -> list[tuple[float, FactKey]]:
         """The facts whose wording best matches the query, from chapters before `before_chapter`."""
         return [(round(score, 4), fact) for score, _, fact in self._scored_facts(set(terms(query)), before_chapter)[:k]]
+
+    def entities_in(self, text: str) -> list[str]:
+        return [e for e in self._entity_list if e in text]
+
+    def same_point(self, query: str, *, before_chapter: int, k: int = SAME_POINT_MAX) -> list[Passage]:
+        """Passages of earlier chapters that name a thing the query names and speak of the same kind of point: an attribute
+        class (an age, a count, a date) or at least SAME_POINT_MIN_WORDS of the query's own words beyond the names. They are
+        where an earlier chapter may give another version of what the query states, which a ranking by overall likeness
+        leaves out when the version that agrees ranks first (A4 dev run, 2026-10-30: "虞澈蓁是骨雨匣最初的制作者" in one
+        chapter, "裴栖蘅是……" in another). At most one per chapter, the closest first."""
+        named = {e for e in self._entity_list if e in query}
+        if not named:
+            return []
+        wanted = terms(query)
+        classes = {t for t in wanted if t.startswith("§") and t != "§规"}
+        name_grams = {g for e in named for g in terms(e)}
+        words = {t for t in wanted if not t.startswith("§") and not t.startswith("w:") and t not in name_grams}
+        scored = []
+        for entry in self._entries:
+            passage = entry.passage
+            if passage.chapter_number >= before_chapter or not named & entry.entities:
+                continue
+            shared_classes = classes & entry.tf.keys()
+            shared_words = words & entry.tf.keys()
+            if not shared_classes and len(shared_words) < SAME_POINT_MIN_WORDS:
+                continue
+            score = SAME_POINT_CLASS_WEIGHT * (len(shared_classes) + len(named & entry.entities)) + sum(self._idf(t) for t in shared_words)
+            scored.append((score, -passage.chapter_number, passage.ordinal, passage))
+        scored.sort(key=lambda row: (-row[0], row[1], row[2]))
+        picked, chapters = [], set()
+        for _, _, _, passage in scored:
+            if passage.chapter_number in chapters:
+                continue
+            picked.append(passage)
+            chapters.add(passage.chapter_number)
+            if len(picked) == k:
+                break
+        return picked
 
     def fact_passage(self, fact_id: str) -> Passage | None:
         """The passage a fact was mapped to: the one of its chapter that shares the most with it."""

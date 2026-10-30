@@ -30,7 +30,7 @@ import re
 from typing import Any
 
 from .passages import ATTRIBUTE_CLASSES, PASSAGE_METHOD_VERSION, FactKey, Passage, PassageIndex, split_passages, terms
-from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG, input_budget_units_for, request_prompt_and_budget
+from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG, input_budget_units_for, request_prompt_and_budget, without_author_voice
 
 SCREENED_RETRIEVAL_METHOD_VERSION = PASSAGE_METHOD_VERSION
 SCREEN_MIN_CLAIMS = 6
@@ -74,7 +74,7 @@ TRIAGE_SWEEP_BATCH = 3
 KEY_MAX_CLAIMS = 5
 SECOND_LOOK_MAX_CLAIMS = 2
 # The triage only scores, so each sentence brings its three best passages.
-TRIAGE_PASSAGES_PER_CLAIM = 3
+TRIAGE_PASSAGES_PER_CLAIM = 4  # 3 until v2.2: one more, so the passages of PassageIndex.same_point leave room for the best match
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
 # a non-thinking fallback), so it gets a larger token guard than the per-sentence review's 50,000.
 SCREENED_RUN_TOKEN_BUDGET = 90000
@@ -150,7 +150,7 @@ def screen_request(part: list[dict[str, Any]], index: PassageIndex, memory: list
     request = {
         "task": "continuity_screen",
         "facts": [{"id": short, "chapter": chapters.get(fact_id), "type": by_id[fact_id].get("memory_type"),
-                   "subject": by_id[fact_id].get("subject"), "predicate": by_id[fact_id].get("predicate"), "value": by_id[fact_id].get("value")}
+                   "subject": by_id[fact_id].get("subject"), "predicate": by_id[fact_id].get("predicate"), "value": without_author_voice(by_id[fact_id].get("value"))}
                   for short, fact_id in fact_ids.items()],
         "sentences": [{"id": short, "text": claim["text"]} for short, claim in zip(sentence_ids, part)],
     }
@@ -207,7 +207,12 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
         passage = index.fact_passage(fact_id)
         if passage is not None and passage.chapter_number < before and passage not in ranked:
             ranked.append(passage)
-    ranked.extend(passage for _, passage in index.search(claim["text"], before_chapter=before, k=limit) if passage not in ranked)
+    # Then the best direct match, the passages that may give another version of the same point (PassageIndex.same_point), and
+    # the other matches: the triage reads only the first TRIAGE_PASSAGES_PER_CLAIM.
+    matches = [passage for _, passage in index.search(claim["text"], before_chapter=before, k=limit)]
+    ranked.extend(passage for passage in matches[:1] if passage not in ranked)
+    ranked.extend(passage for passage in index.same_point(claim["text"], before_chapter=before) if passage not in ranked)
+    ranked.extend(passage for passage in matches[1:] if passage not in ranked)
     picked: list[Passage] = []
     used = 0
     for passage in ranked:
@@ -218,8 +223,64 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
     return [passage_entry(passage) for passage in picked]
 
 
+# A number and the word it counts ("三十一岁", "六边", "第四声", "七月初五"): the value a sentence gives a point.
+_NUMERAL = r"零〇一二两三四五六七八九十百千\d"
+_VALUE = re.compile(rf"(?:第|初)?([{_NUMERAL}]+)\s*(?:条|个|只|张|道)?([岁边声次个人天年月日号点层道条座间只张把匹头级])")
+_DIGITS = {"零": 0, "〇": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+VALUE_SPLIT_MAX = 2  # sentences per check sent straight to a careful review for a value an earlier passage gives otherwise
+
+
+def _number(text: str) -> int | None:
+    if text.isdigit():
+        return int(text)
+    total, current = 0, 0
+    for ch in text:
+        if ch in _DIGITS:
+            current = _DIGITS[ch]
+        elif ch == "十":
+            total += (current or 1) * 10
+            current = 0
+        elif ch == "百":
+            total += (current or 1) * 100
+            current = 0
+        elif ch == "千":
+            total += (current or 1) * 1000
+            current = 0
+        else:
+            return None
+    return total + current
+
+
+def values(text: str) -> set[tuple[str, int]]:
+    found = set()
+    for number, unit in _VALUE.findall(text):
+        value = _number(number)
+        if value is not None:
+            found.add((unit, value))
+    return found
+
+
+def value_split(claim_text: str, passages: list[dict[str, Any]], index: PassageIndex) -> bool:
+    """Whether an earlier passage that names a thing the sentence names gives a different number of the same kind ("三十一岁"
+    against "二十七岁", "六边" against "五边"). Only a reason for a careful look, never a finding by itself: the triage
+    passed such sentences as agreeing when another passage agreed (A4 dev run, 2026-10-30)."""
+    own = values(claim_text)
+    if not own:
+        return False
+    units = {unit for unit, _ in own}
+    named = {e for e in index.entities_in(claim_text)}
+    for passage in passages:
+        text = passage.get("body") or ""
+        if named and not any(name in text for name in named):
+            continue
+        theirs = {(unit, value) for unit, value in values(text) if unit in units}
+        if theirs and not theirs <= own and not own <= theirs:
+            return True
+    return False
+
+
 def passage_entry(passage: Passage) -> dict[str, Any]:
-    return {"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": passage.text,
+    return {"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": without_author_voice(passage.text),
             "source_span_id": passage.span_id, "chapter_number": passage.chapter_number, "passage_start": passage.start}
 
 
@@ -239,7 +300,7 @@ def triage_request(claims: list[dict[str, Any]], context: str) -> tuple[dict[str
                 passage_ids[span["id"]] = f"p{len(passage_ids) + 1}"
                 passages.append({"id": passage_ids[span["id"]], "chapter": span.get("chapter_number"), "text": span["prompt_excerpt"]})
     sentence_ids = {f"s{position + 1}": claim["id"] for position, claim in enumerate(claims)}
-    request = {"task": "continuity_triage", "chapter": context_window(context, [claim["text"] for claim in claims]), "passages": passages,
+    request = {"task": "continuity_triage", "chapter": without_author_voice(context_window(context, [claim["text"] for claim in claims])), "passages": passages,
                "sentences": [{"id": short, "text": claim["text"], "passages": [passage_ids[span["id"]] for span in claim["allowed_evidence"][:TRIAGE_PASSAGES_PER_CLAIM]]}
                              for short, claim in zip(sentence_ids, claims)]}
     return request, sentence_ids

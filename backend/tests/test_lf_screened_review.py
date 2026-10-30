@@ -111,7 +111,7 @@ class ScreenedReviewTests(unittest.TestCase):
         reviewed = [claim["id"] for request in provider.reviews() for claim in request["claims"]]
         self.assertEqual(reviewed, ["claim-5"])
         self.assertEqual(result["screening"], {"claims": 9, "screened": True, "parts": 1, "fallback_parts": 0, "flagged": 1, "reviewed": 1,
-                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0, "key_capped": 0,
+                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0, "key_capped": 0, "value_split": 0,
                                                "double_reviewed": 0, "second_look": 0, "second_look_found": 0})
         self.assertEqual(result["retrieval_method_version"], screening.SCREENED_RETRIEVAL_METHOD_VERSION)
         states = {row["claim_id"]: row["screen"] for row in result["retrieval_traces"]}
