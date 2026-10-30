@@ -30,7 +30,7 @@ import re
 from typing import Any
 
 from .passages import ATTRIBUTE_CLASSES, PASSAGE_METHOD_VERSION, FactKey, Passage, PassageIndex, split_passages, terms
-from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG, input_budget_units_for, request_prompt_and_budget
+from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG, input_budget_units_for, request_prompt_and_budget, without_author_voice
 
 SCREENED_RETRIEVAL_METHOD_VERSION = PASSAGE_METHOD_VERSION
 SCREEN_MIN_CLAIMS = 6
@@ -150,7 +150,7 @@ def screen_request(part: list[dict[str, Any]], index: PassageIndex, memory: list
     request = {
         "task": "continuity_screen",
         "facts": [{"id": short, "chapter": chapters.get(fact_id), "type": by_id[fact_id].get("memory_type"),
-                   "subject": by_id[fact_id].get("subject"), "predicate": by_id[fact_id].get("predicate"), "value": by_id[fact_id].get("value")}
+                   "subject": by_id[fact_id].get("subject"), "predicate": by_id[fact_id].get("predicate"), "value": without_author_voice(by_id[fact_id].get("value"))}
                   for short, fact_id in fact_ids.items()],
         "sentences": [{"id": short, "text": claim["text"]} for short, claim in zip(sentence_ids, part)],
     }
@@ -219,7 +219,7 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
 
 
 def passage_entry(passage: Passage) -> dict[str, Any]:
-    return {"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": passage.text,
+    return {"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": without_author_voice(passage.text),
             "source_span_id": passage.span_id, "chapter_number": passage.chapter_number, "passage_start": passage.start}
 
 
@@ -239,7 +239,7 @@ def triage_request(claims: list[dict[str, Any]], context: str) -> tuple[dict[str
                 passage_ids[span["id"]] = f"p{len(passage_ids) + 1}"
                 passages.append({"id": passage_ids[span["id"]], "chapter": span.get("chapter_number"), "text": span["prompt_excerpt"]})
     sentence_ids = {f"s{position + 1}": claim["id"] for position, claim in enumerate(claims)}
-    request = {"task": "continuity_triage", "chapter": context_window(context, [claim["text"] for claim in claims]), "passages": passages,
+    request = {"task": "continuity_triage", "chapter": without_author_voice(context_window(context, [claim["text"] for claim in claims])), "passages": passages,
                "sentences": [{"id": short, "text": claim["text"], "passages": [passage_ids[span["id"]] for span in claim["allowed_evidence"][:TRIAGE_PASSAGES_PER_CLAIM]]}
                              for short, claim in zip(sentence_ids, claims)]}
     return request, sentence_ids

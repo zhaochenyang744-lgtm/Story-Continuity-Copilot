@@ -12,7 +12,7 @@ from .memory_contract import CONTROLLED_PREDICATES, normalized_predicate, predic
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, WRITING_ANALYSIS_INPUT_BUDGET_UNITS, request_prompt_and_budget, review_effort_scope
-from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, CONTINUITY_TRIAGE_PROMPT_VERSION, input_budget_units_for
+from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, CONTINUITY_TRIAGE_PROMPT_VERSION, input_budget_units_for, is_author_voice, without_author_voice
 from . import review_screening as screening
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 
@@ -588,7 +588,7 @@ class ContinuityEngine:
             used.update({item["id"]:item for item in reserved+rest})
             extras.extend((position,passage) for passage in self._source_passages(claim,reserved,data.get("passage_index")))
         full=data["contexts"][claims[0]["context"]]
-        body=screening.context_window(full,[claim["text"] for claim in claims])
+        body=without_author_voice(screening.context_window(full,[claim["text"] for claim in claims]))
         def build(added:list[tuple[int,dict[str,Any]]])->dict[str,Any]:
             shown=[{**claim,"allowed_evidence":claim["allowed_evidence"]+[passage for place,passage in added if place==position]} for position,claim in enumerate(selected)]
             return {"pipeline":"screened",**({"second_review":True} if data.get("second_review") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":shown,
@@ -712,6 +712,8 @@ class ContinuityEngine:
         else:
             # A short draft is reviewed whole, every sentence with thinking.
             flags={claim["id"]:{"kind":"unscreened","facts":[]} for claim in claims}
+        # A line in the author's voice to a reviewer ("作者决定……检查时不要再报") is not a story claim: it is never reviewed.
+        flags={claim_id:flag for claim_id,flag in flags.items() if not is_author_voice(next((claim["text"] for claim in claims if claim["id"]==claim_id),""))}
         summary["flagged"]=len(flags)
         evidence={claim["id"]:screening.claim_evidence(claim,index,flags[claim["id"]]["facts"]) for claim in claims if claim["id"] in flags}
         # A flagged sentence with no earlier passage at all has nothing to be reviewed against.
