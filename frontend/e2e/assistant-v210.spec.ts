@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { api, createWorkByApi, expect, openTab, sampleWorkId, startVisitor, test } from "./support/app";
 import { adoptRequest, askForFix, box, checkedWork, finished, findingsTab, openAssistantTab, proposal, REWRITTEN, send, SENTENCE, tasks, thread } from "./support/assistant";
-import { ADD_ASK, changeItem, cardOf, confirmButton, confirmByApi, itemOf, ledgerOf, openLedger, proposeByApi, THREAD_ASK, undoOf } from "./support/assistant-change";
+import { ADD_ASK, changeItem, cardOf, confirmButton, confirmByApi, itemOf, ledgerOf, openLedger, proposeByApi, releaseKeptOpen, THREAD_ASK, undoOf } from "./support/assistant-change";
 import { theme } from "./support/pages";
 import { beginCheck, draft, finishCheck, saveBody, setup } from "./support/writing";
 
@@ -287,6 +287,7 @@ test.describe("访客改资料", () => {
     const id = await sampleWorkId(page);
     const before = await usageOf(page);
     expect(before.account_type).toBe("visitor");
+    await releaseKeptOpen(page, id);  // the sample's kept-open thread would stop the test model's proposal
     await openTab(page, id, "workspace");
     await openAssistantTab(page);
     const sentence = `E2E_ROUTE_CHANGE ${THREAD_ASK}`;

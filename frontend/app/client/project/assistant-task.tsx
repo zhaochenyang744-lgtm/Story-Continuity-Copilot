@@ -107,6 +107,8 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   const answer = task.answer && !("kind" in task.answer) ? task.answer : null;
   const offTopic = answer?.status === "out_of_scope";
   const notFound = answer?.status === "not_found";
+  // A sentence that only states a decision to keep (nothing in the text to look up) is answered "not found" with a card holding the record: nothing was searched, so no line says what was.
+  const saysDecision = notFound && Boolean(task.changes?.some((item) => item.kind === "add_decision"));
   const failure = task.status === "failed" ? failureText(task, handlers.visitor) : null;
   // What the line above says besides the use: only what the answer's own words do not (a card waiting to be decided, an answer that disagrees with itself).
   const state = !running && (task.kind === "change" || task.kind === "ask") && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
@@ -127,7 +129,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
-        {!offTopic && <CoverLine task={task} onlyMissed={notFound} />}
+        {!offTopic && !saysDecision && <CoverLine task={task} onlyMissed={notFound} />}
         {!offTopic && <SourceList task={task} locate={handlers.locate} skip={cardHas} />}
         {/* A question can carry a card too (v2.2): the author asked and decided in one sentence, and the card holds only the record to be made. */}
         {(task.kind === "change" || task.kind === "ask") && task.status === "completed" && (

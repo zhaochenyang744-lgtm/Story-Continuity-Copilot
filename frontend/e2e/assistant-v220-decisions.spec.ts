@@ -2,7 +2,7 @@ import type { Locator, Page, Route } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, test } from "./support/app";
-import { openAssistantTab, thread } from "./support/assistant";
+import { openAssistantTab, thread, topbarAssistant } from "./support/assistant";
 import { serveTasks, askView } from "./support/assistant-mock";
 import {
   cardOf, changeItem, confirmButton, confirmByApi, itemOf, ledgerButton, ledgerOf, openCard, openLedger, proposeByApi, THREAD_ASK, undoOf,
@@ -460,6 +460,102 @@ test.describe("检查结果：说一句为什么", () => {
     await line.getByRole("link", { name: "查看这条决定", exact: true }).click();
     await expect(page).toHaveURL(/\/memory\?view=decisions/);
     await expect(rows(page)).toHaveCount(2);
+  });
+});
+
+// ── 评审之后（任务单 14）────────────────────────────────────────────────────────────────────────────────────────────────────
+test.describe("评审之后的修改", () => {
+  test("U01 从检查记下的决定：「从哪来」写依据第 N 章，能回到写作页那条检查结果；那条结果不在了就没有入口", async ({ page }) => {
+    const id = await plainSample(page);
+    const issue = (await run(page, id)).issues.find((item: any) => item.nature === "possible_conflict");
+    const real = await decisionsOf(page, id);
+    const state: Decision[] = [
+      { ...real[0], source: "check_note", source_label: "检查结果的说明", source_ref: issue.id as never, basis_chapter: 11, quote: "她这里的口气本来就和前面不同" } as Decision,
+      { ...real[1], source: "check_note", source_label: "检查结果的说明", source_ref: "issue-gone" as never, basis_chapter: 9, quote: "那一处是我故意的" } as Decision,
+    ];
+    await page.route(decisionsUrl, (route) => (route.request().method() === "GET" ? route.fulfill(envelope({ decisions: state, limit: 200, kinds: {} })) : route.fallback()));
+    await goDecisions(page, id);
+    const [live, gone] = [rows(page).nth(0), rows(page).nth(1)];
+    await live.getByRole("button", { name: "从哪来", exact: true }).click();
+    await expect(live.locator(".decision-source")).toContainText("检查结果的说明 · 依据第 11 章");
+    await expect(live.locator(".decision-source")).toContainText("你说的：「她这里的口气本来就和前面不同」");
+    await shot(page.locator(".decision-list"), "u01-回到那条检查结果", "u01");
+    await gone.getByRole("button", { name: "从哪来", exact: true }).click();
+    await expect(gone.locator(".decision-source")).toContainText("依据第 9 章");
+    await expect(gone.getByRole("button", { name: "回到那条检查结果", exact: true })).toHaveCount(0);
+    await live.getByRole("button", { name: "回到那条检查结果", exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/workspace#issue-${issue.id}$`));
+    await expect(finding(page, issue.id)).toBeVisible();
+  });
+
+  test("U02 删除后的「这条决定删掉了」：列表因为别的原因重读（从卡片确认了一条）就不再挂着", async ({ page }) => {
+    const id = await sampleWork(page, "v220stale");
+    let view = askWithCard([decisionItem({ id: "d-1" })]);
+    await serveTasks(page, () => [view]);
+    await page.route(/\/assistant\/tasks\/atask-mock-ask\/changes\/confirm$/, async (route) => {
+      view = askWithCard([decisionItem({ id: "d-1", status: "applied", applied_at: new Date().toISOString() })]);
+      await route.fulfill(envelope(view));
+    });
+    await goDecisions(page, id);
+    await rowOf(page, "旧潮位牌").getByRole("button", { name: "删除", exact: true }).click();
+    await rowOf(page, "旧潮位牌").getByRole("button", { name: "确认删除", exact: true }).click();
+    const notice = page.getByRole("status").filter({ hasText: "这条决定删掉了。" });
+    await expect(notice).toBeVisible();
+    await expect(rows(page)).toHaveCount(1);
+    await shot(page.locator(".materials-view.decisions"), "u02-删除后的提示", "u02");
+    await topbarAssistant(page).click();
+    await expect(thread(page)).toBeVisible();
+    await confirmButton(cardOf(page)).click();
+    await expect(cardOf(page).getByTestId("change-written")).toBeVisible();
+    await expect(notice).toHaveCount(0);
+    // The line about the newest thing done stays while nothing else moves the list: a second delete says its own.
+    await page.getByRole("button", { name: "关闭助手" }).click();
+    await rowOf(page, "廊桥钥匙").getByRole("button", { name: "删除", exact: true }).click();
+    await rowOf(page, "廊桥钥匙").getByRole("button", { name: "确认删除", exact: true }).click();
+    await expect(page.getByRole("status").filter({ hasText: "这条决定删掉了。" })).toHaveCount(1);
+  });
+
+  test("U03 资料页顶部的说明：选中「决定」时讲决定，其余几栏不变，回到别的栏换回来", async ({ page }) => {
+    const id = await sampleWork(page, "v220lede");
+    await openTab(page, id, "memory");
+    const plain = "只放已经写进正文的内容，每一条都能查到出自哪一章。还没写的打算放在「计划」。";
+    const decisionsLede = "你定过的处理方式：哪里是有意的、以哪章为准、哪些不用提醒、哪条先别收、回答怎么写。每一条都是你确认过的，助手以后照着办。";
+    await expect(page.getByText(plain)).toBeVisible();
+    await tabOf(page, /^决定/).click();
+    await expect(page.getByText(decisionsLede)).toBeVisible();
+    await expect(page.getByText(plain)).toHaveCount(0);
+    await shot(page.locator(".page.materials"), "u03-决定一栏的说明", "u03");
+    for (const name of [/^事实/, /^人物/, /^设定/, /^伏笔/]) {
+      await tabOf(page, name).click();
+      await expect(page.getByText(plain)).toBeVisible();
+      await expect(page.getByText(decisionsLede)).toHaveCount(0);
+    }
+    await goDecisions(page, id);
+    await expect(page.getByText(decisionsLede)).toBeVisible();
+  });
+
+  test("只说了一个决定的回答（not_found + add_decision）不显示「没查：…」；别的 not_found 照旧显示", async ({ page }) => {
+    const id = await sampleWork(page, "v220said");
+    const said = "这句话是一个以后也要照办的决定，不用查正文：卡片上附了一条，确认后才会记下。";
+    const found = (changes: unknown[]) => askWithCard(changes, {
+      question: "以后回答短一点", answer: { status: "not_found", sentences: [], note: said },
+      steps: [], sources: {}, coverage: { checked: [], not_checked: ["计划", "第 12 章草稿"] },
+    });
+    let view = found([decisionItem({ id: "d-1", title: "记下决定·回答短一点", value: "回答尽量短", after: "回答尽量短（管：回答）", quote: "以后回答短一点" })]);
+    await serveTasks(page, () => [view]);
+    await openTab(page, id, "workspace");
+    await openAssistantTab(page);
+    const task = thread(page).locator('[data-task]').last();
+    await expect(task).toContainText("这句话是一个以后也要照办的决定");
+    await expect(cardOf(page)).toBeVisible();
+    await expect(task.getByTestId("not-checked")).toHaveCount(0);
+    await expect(task.getByTestId("how-checked")).toHaveCount(0);
+    await shot(thread(page), "u04-只说了决定的回答", "u04");
+    // The same answer with no card (the model found nothing) keeps its line.
+    view = found([]);
+    await page.reload();
+    await openAssistantTab(page);
+    await expect(thread(page).locator('[data-task]').last().getByTestId("not-checked")).toContainText("没查：计划、第 12 章草稿");
   });
 });
 

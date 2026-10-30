@@ -18,7 +18,8 @@ export type Decisions = {
   /** Null until the first answer. */
   list: DecisionList | null;
   failure: string;
-  reload: () => Promise<void>;
+  /** Reads the list again; gives the list read (null when it could not be). */
+  reload: () => Promise<DecisionList | null>;
 };
 
 /** The decisions of the work, read when the page opens and again whenever the materials were changed by the assistant (`stamp`). */
@@ -26,8 +27,8 @@ export function useDecisions(projectId: string, stamp: number): Decisions {
   const [list, setList] = useState<DecisionList | null>(null);
   const [failure, setFailure] = useState("");
   const reload = useCallback(async () => {
-    try { setList(await request<DecisionList>(`/projects/${projectId}/decisions`)); setFailure(""); }
-    catch (cause) { setFailure(labelError(cause)); }
+    try { const read = await request<DecisionList>(`/projects/${projectId}/decisions`); setList(read); setFailure(""); return read; }
+    catch (cause) { setFailure(labelError(cause)); return null; }
   }, [projectId]);
   useEffect(() => { void Promise.resolve().then(reload); }, [reload, stamp]);
   return { list, failure, reload };
@@ -43,7 +44,7 @@ const draftOf = (decision: AuthorDecision): Draft => ({
 });
 const subjectsOf = (text: string) => text.split(/[、,，;；\s]+/).map((name) => name.trim()).filter(Boolean);
 
-function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, save, conflict, loadLatest, holds, remove, openTask }: {
+function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, save, conflict, loadLatest, holds, remove, openTask, openFinding }: {
   decision: AuthorDecision;
   readOnly: boolean;
   busy: boolean;
@@ -57,6 +58,8 @@ function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, s
   remove: () => void;
   /** 看对话: opens the assistant at the task the decision came from (null where the assistant is not offered). */
   openTask: ((taskId: string) => void) | null;
+  /** 回到那条检查结果: the writing page at the finding a check note's decision was made from (null once the finding is no longer in the check). */
+  openFinding: ((issueId: string) => void) | null;
 }) {
   const [draft, setDraft] = useState<Draft>(() => draftOf(decision));
   const [fromWhere, setFromWhere] = useState(false);
@@ -68,6 +71,7 @@ function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, s
   const rangeBad = !draft.whole && (!Number.isInteger(from) || !Number.isInteger(to) || from < 1 || to < from);
   const invalid = !draft.statement.trim() || subjects.length > SUBJECTS_MAX || rangeBad;
   const hasTask = (decision.source === "box" || decision.source === "long_choice") && Boolean(decision.source_ref);
+  const fromCheck = decision.source === "check_note" && Boolean(decision.source_ref);
   return (
     <li id={`decision-${decision.id}`} className={superseded ? "retired" : undefined} data-decision={decision.id} data-kind={decision.kind} data-status={decision.status}>
       <span className="decision-kind"><Tag tone="line">{decision.kind_label}</Tag></span>
@@ -108,6 +112,7 @@ function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, s
                 <span className="small-note">{decision.source_label}{decision.basis_chapter ? ` · 依据第 ${decision.basis_chapter} 章` : ""}</span>
                 <span className="decision-quote">你说的：「{decision.quote}」</span>
                 {hasTask && openTask && <button type="button" className="link" onClick={() => openTask(decision.source_ref!)}>看对话</button>}
+                {fromCheck && openFinding && <button type="button" className="link" onClick={() => openFinding(decision.source_ref!)}>回到那条检查结果</button>}
               </span>
             )}
           </>
@@ -136,22 +141,30 @@ function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, s
 }
 
 /** 决定: the list in the server's order: those that may be out of date first, then those in force, then those replaced. */
-export function DecisionsView({ projectId, decisions, readOnly, openTask }: { projectId: string; decisions: Decisions; readOnly: boolean; openTask: ((taskId: string) => void) | null }) {
+export function DecisionsView({ projectId, decisions, readOnly, openTask, findingIds, go }: {
+  projectId: string; decisions: Decisions; readOnly: boolean; openTask: ((taskId: string) => void) | null;
+  /** The findings of the check now on the writing page, and the way to another page: a decision made from a check note can lead back to its finding. */
+  findingIds: ReadonlySet<string>; go: (href: string) => void;
+}) {
   const [editing, setEditing] = useState<{ id: string; revision: number } | null>(null);
   const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState("");
-  const [conflict, setConflict] = useState(false);
   const { list, failure, reload } = decisions;
+  // The line about the last thing done here belongs to the list it left behind: when the list is read again for another reason (a card of the
+  // assistant was confirmed, the work was changed elsewhere) the line is not about this list any more and goes.
+  const [said, setSaid] = useState<{ text: string; list: DecisionList | null }>({ text: "", list: null });
+  const notice = said.text && said.list === list ? said.text : "";
+  const setNotice = (text: string, at: DecisionList | null = list) => setSaid({ text, list: at });
+  const [conflict, setConflict] = useState(false);
   const items = list?.decisions ?? [];
   const limit = list?.limit ?? DECISION_LIMIT;
   const run = async (work: () => Promise<unknown>, done: string): Promise<boolean> => {
     setBusy(true); setNotice(""); setConflict(false);
-    try { await work(); setNotice(done); await reload(); return true; }
+    try { await work(); setNotice(done, (await reload()) ?? list); return true; }
     catch (cause) {
       const failed = cause as ApiFailure;
       setConflict(failed.code === "decision_revision_conflict");
-      setNotice(labelError(cause));
-      if (failed.code === "resource_not_found") { setEditing(null); await reload(); }
+      if (failed.code === "resource_not_found") { setEditing(null); setNotice(labelError(cause), (await reload()) ?? list); }
+      else setNotice(labelError(cause));
       return false;
     } finally { setBusy(false); }
   };
@@ -166,12 +179,12 @@ export function DecisionsView({ projectId, decisions, readOnly, openTask }: { pr
   const loadLatest = async () => {
     setBusy(true);
     try {
-      const latest = await request<DecisionList>(`/projects/${projectId}/decisions`);
+      const latest = await reload();
+      if (!latest) return;
       const record = latest.decisions.find((item) => item.id === editing?.id);
-      await reload();
-      if (record) { setEditing({ id: record.id, revision: record.revision }); setConflict(false); setNotice("载入了最新版本；你填的内容还在，核对后再保存。"); }
-      else { setEditing(null); setConflict(false); setNotice("这条决定已经不在了。"); }
-    } catch (cause) { setNotice(labelError(cause)); } finally { setBusy(false); }
+      if (record) { setEditing({ id: record.id, revision: record.revision }); setConflict(false); setNotice("载入了最新版本；你填的内容还在，核对后再保存。", latest); }
+      else { setEditing(null); setConflict(false); setNotice("这条决定已经不在了。", latest); }
+    } finally { setBusy(false); }
   };
   const holds = (decision: AuthorDecision) => void run(() => json(`/projects/${projectId}/decisions/${decision.id}`, "PATCH", { base_revision: decision.revision, still_holds: true }), "好，这条决定仍然有效。");
   const remove = (decision: AuthorDecision) => void run(() => json(`/projects/${projectId}/decisions/${decision.id}/delete`, "POST", { base_revision: decision.revision }), "这条决定删掉了。");
@@ -191,7 +204,8 @@ export function DecisionsView({ projectId, decisions, readOnly, openTask }: { pr
               startEdit={() => { setEditing({ id: decision.id, revision: decision.revision }); setNotice(""); setConflict(false); }}
               stopEdit={() => { setEditing(null); setConflict(false); setNotice(""); }}
               save={(draft) => void save(decision, draft)} conflict={conflict && editing?.id === decision.id} loadLatest={() => void loadLatest()}
-              holds={() => holds(decision)} remove={() => remove(decision)} openTask={openTask} />
+              holds={() => holds(decision)} remove={() => remove(decision)} openTask={openTask}
+              openFinding={decision.source === "check_note" && decision.source_ref && findingIds.has(decision.source_ref) ? (issueId) => go(`/projects/${projectId}/workspace#issue-${issueId}`) : null} />
           ))}
         </ol>
       )}
