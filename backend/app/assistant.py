@@ -774,10 +774,8 @@ class AssistantEngine:
     def _start_recognition(self, row: Any) -> concurrent.futures.Future:
         """Read the author's sentence for a decision beside the task (`assistant_recognize`); a failure only means no card."""
         question = json.loads(row["input_json"]).get("question") or ""
-        with self.db.connection() as c:
-            threads = [thread["title"] for thread in assistant_recognize.threads_for(c, row["project_id"])]
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question)
         pool.shutdown(wait=False)
         return future
 
@@ -795,7 +793,7 @@ class AssistantEngine:
         found = assistant_recognize.parse((result.message or {}).get("content"))
         picked = None
         if found:
-            found, picked = assistant_recognize.pick_subjects(self.provider, self.db, row["project_id"], question, found)
+            found, picked = assistant_recognize.pick(self.provider, self.db, row["project_id"], question, found)
         with self.db.connection() as c:
             for call in (result, picked):
                 if call is not None:
@@ -830,13 +828,11 @@ class AssistantEngine:
         cost = 0.0
         try:
             with provider_usage(user_id, reservation_id):
-                with self.db.connection() as c:
-                    threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
-                result = assistant_recognize.call_model(self.provider, note, threads)
+                result = assistant_recognize.call_model(self.provider, note)
                 cost = self._cost(result)
                 found = assistant_recognize.parse((result.message or {}).get("content"))
                 if found:
-                    found, picked = assistant_recognize.pick_subjects(self.provider, self.db, project_id, note, found)
+                    found, picked = assistant_recognize.pick(self.provider, self.db, project_id, note, found)
                     cost += self._cost(picked) if picked is not None else 0.0
         except Exception:
             return None

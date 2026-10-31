@@ -477,7 +477,7 @@ class ReviewFixTests(AssistantCase):
         self.assertIn("固定格数", shown["鹊髓匣"])  # the label of what is recorded, never its value
         self.assertNotIn("三格", "".join(shown["鹊髓匣"]))
         self.assertIn("别名：行商别名蘅斛。", shown[self.name])  # another name as the materials wrote it
-        message = assistant_recognize.pick_messages("格间以第三章为准", "格数以第三章为准", names)[1]["content"]
+        message = assistant_recognize.pick_messages("格间以第三章为准", "格数以第三章为准", "作品里的人和物", names)[1]["content"]
         self.assertIn("鹊髓匣（固定格数）", message)
         self.assertNotIn("鹊髓匣", assistant_recognize.messages_for("格间以第三章为准")[1]["content"])  # the first call is not given the names
         number = [name for name, _ in names].index("鹊髓匣") + 1
@@ -486,6 +486,7 @@ class ReviewFixTests(AssistantCase):
             self.assertTrue(assistant_recognize.needs_pick(c, self.project_id, {**found, "statement": "x"}))
             self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "subjects": ["蘅斛"]}))
             self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "kind": "style", "subjects": []}))
+            self.assertTrue(assistant_recognize.needs_pick(c, self.project_id, {**found, "kind": "keep_open"}))  # a thread is always picked
         self.assertEqual(self.recognized("格间以第三章为准", found)[0]["subjects"], [])  # spelled nowhere in the work
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [number]})[0]["subjects"], ["鹊髓匣"])
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [999]})[0]["subjects"], [])  # not on the list
@@ -572,12 +573,10 @@ class OtherWordTests(unittest.TestCase):
         self.assertIsNone(decisions.thing_for("礼盏在东屋。" + "风。" * 400 + "空喉盏在西屋。", "礼盏", ["空喉盏"]))  # never near it
 
     def test_a_chapter_range_the_author_says_is_read_from_the_words(self):  # A4 fix run: "二到七章……是我故意留的"
-        from app.assistant_recognize import said_chapters, THREAD_WORDS
+        from app.assistant_recognize import said_chapters
         self.assertEqual(said_chapters("二到七章郦闻砾的左右手打架是我故意留的"), [2, 7])
         self.assertEqual(said_chapters("第3-5章的日期别管"), [3, 5])
         self.assertIsNone(said_chapters("她年龄不统一是故意的"))
-        self.assertTrue(THREAD_WORDS.search("井里那组三声我还想吊着"))  # the thread list goes with this call
-        self.assertFalse(THREAD_WORDS.search("以后回答短一点"))  # and not with this one
 
 
 from tests.test_v210_long_tasks import LongCase  # noqa: E402
