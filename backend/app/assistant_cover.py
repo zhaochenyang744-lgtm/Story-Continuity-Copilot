@@ -28,6 +28,7 @@ COVER_KINDS = ("intentional", "no_reminder", "prefer")
 COVER_TIMEOUT_SECONDS = 8
 COVER_MAX_TOKENS = 120
 ISSUES_MAX = 12  # findings of one check put to the call
+GIVEN_MAX = 8  # decisions put to one call: those the finding names first, then the others in force for its chapter
 
 SYSTEM_PROMPT = """作者对自己的小说定过一些决定。章节检查发现了一处可能的前后矛盾。你判断作者定过的决定里，有没有一条管着这一处。只回答 JSON：{"covers": 编号或 null, "draft_follows_preferred": true/false/null}。
 - 决定说的就是这件事（同一个人或物、同一种不一致），才算管着；只是提到同一个人、说的是别的事，不算。
@@ -69,7 +70,9 @@ def verdict(content: Any, given: list[dict[str, Any]]) -> tuple[dict[str, Any], 
 def cover_run(db: Any, provider: Any, project_id: str, run_id: str, issues: list[dict[str, Any]] | None = None) -> int:
     """Hold a check's findings against the decisions they touch: `issues` as the review returned them (before they are
     stored), or, when None, the run's stored findings. Returns how many findings a decision passed over. A call that fails
-    covers nothing: the finding keeps its card."""
+    covers nothing: the finding keeps its card. The call is given the decisions the finding names and the others in force
+    for its chapter: a finding often says a thing by another word than the decision's (A4 formal 2, a signature's alias), and
+    whether a decision is about the same thing is the call's to judge, not the spelling's."""
     with db.connection() as c:
         c.executescript(SCHEMA)
         if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v2_author_decisions'").fetchone() or not c.execute(
@@ -84,11 +87,14 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str, issues: list
         else:
             found = [{"claim_span_id": i.get("claim_span_id"), "explanation": i.get("explanation")} for i in issues if isinstance(i, dict)]
         claims = {row["id"]: row["text"] for row in c.execute("SELECT id,text FROM v2_run_claims WHERE run_id=?", (run_id,))}
+        standing = [d for d in decisions.listing(c, project_id) if d["status"] in (decisions.ACTIVE, decisions.STALE)
+                    and d["kind"] in COVER_KINDS and decisions.covers_chapter(d, chapter)]
         asked = []
         for issue in found[:ISSUES_MAX]:
             claim = claims.get(issue["claim_span_id"]) or ""
             given = [d for d in decisions.relevant(c, project_id, claim + (issue["explanation"] or ""), (chapter, chapter) if chapter else None)
                      if d["kind"] in COVER_KINDS and decisions.covers_chapter(d, chapter)]
+            given = (given + [d for d in standing if d["id"] not in {g["id"] for g in given}])[:GIVEN_MAX]
             if given and issue["claim_span_id"]:
                 asked.append(({"claim_span_id": issue["claim_span_id"], "claim": claim, "explanation": issue["explanation"] or ""}, given))
     if not asked:
