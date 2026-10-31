@@ -498,7 +498,7 @@ class TraceTests(LongCase):
         view = self.trace(output="conclusion")
         self.post(view["id"], "answer", {"question_id": view["questions"][0]["id"], "choice": "both"}, expect=202)
         view = self.view(view["id"])
-        self.assertEqual((view["status"], view["changes"]), ("completed", []))
+        self.assertEqual((view["status"], [c for c in view["changes"] if c["kind"] != "add_decision"]), ("completed", []))  # v2.2: "both" offers only a decision
         [conflict] = view["answer"]["sections"]["对不上的地方"]
         self.assertEqual(conflict["text"], "第 3 章和第 10 章：罗盘在谁手上前后对不上（你说两处都保留）")
         self.assertEqual(view["questions"][0]["answer"]["choice"], "both")
@@ -603,7 +603,7 @@ class TidyTests(TidyOn):
         self.assertEqual(len(picked), 1)
         self.assertIn("（你定的：以第 6 章为准）", view["answer"]["sections"]["要你拿主意的"][0]["text"])
         self.long.run(view["id"])  # nothing to take up again: the pick is written once
-        self.assertEqual(len(self.view(view["id"])["changes"]), 3)
+        self.assertEqual(len([c for c in self.view(view["id"])["changes"] if c["kind"] != "add_decision"]), 3)  # v2.2: the pick also offers a decision
 
     def test_with_the_questions_used_up_the_latest_passage_is_gone_by(self):
         many = self.tidying()

@@ -88,7 +88,7 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str, issues: list
         for issue in found[:ISSUES_MAX]:
             claim = claims.get(issue["claim_span_id"]) or ""
             given = [d for d in decisions.relevant(c, project_id, claim + (issue["explanation"] or ""), (chapter, chapter) if chapter else None)
-                     if d["kind"] in COVER_KINDS]
+                     if d["kind"] in COVER_KINDS and decisions.covers_chapter(d, chapter)]
             if given and issue["claim_span_id"]:
                 asked.append(({"claim_span_id": issue["claim_span_id"], "claim": claim, "explanation": issue["explanation"] or ""}, given))
     if not asked:

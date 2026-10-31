@@ -462,6 +462,48 @@ class ReviewFixTests(AssistantCase):
                             self.user_id, "2026-10-30T00:00:00+00:00")
             self.assertEqual([d["id"] for d in decisions.relevant(c, self.project_id, "小岑的年岁到底该引用哪一处？")], ["decision-age"])
 
+    def test_a_thread_told_in_the_authors_own_words_is_found_by_its_number(self):  # A4 formal 1: 井里那组三声 for 井下的三次敲击
+        thread = self.thread("井下的三次敲击")
+        found = {"kind": "keep_open", "words": "还想吊着", "thread": "井里那组三声"}
+        self.assertIsNone(self.recognized("井里那组三声我还想吊着", found))  # no number: the title shares no pair of characters
+        with self.db.connection() as c:
+            from app import assistant_recognize
+            number = [row["id"] for row in assistant_recognize.threads_for(c, self.project_id)].index(thread) + 1
+        record_, _ = self.recognized("井里那组三声我还想吊着", {**found, "thread_number": number})
+        self.assertEqual((record_["foreshadow_id"], record_["subjects"][0]), (thread, "井下的三次敲击"))
+        self.assertIsNone(self.recognized("井里那组三声我还想吊着", {**found, "thread_number": 99}))  # not a number of the list
+
+    def test_a_decision_kept_to_some_chapters_holds_for_those_only(self):  # A4 formal 1, the chapter-bound scope pairs
+        self.assertTrue(decisions.covers_chapter({"chapters": [2, 7]}, 5))
+        self.assertFalse(decisions.covers_chapter({"chapters": [2, 7]}, 9))
+        self.assertTrue(decisions.covers_chapter({"chapters": None}, 9))
+        from app.long_tasks import LongTasks
+        with self.db.connection() as c:
+            decisions.write(c, self.db, self.project_id, "decision-range", record(f"{self.name}的年龄以第 3 章为准", kind="prefer", subjects=(self.name,),
+                                                                                chapters=(2, 7), prefer_chapter=3), self.user_id, "2026-10-30T00:00:00+00:00")
+            found = {"text": f"{self.name}的年龄两处写法不同", "options": [{"key": "a", "chapter": 3, "quote": "十七岁"}, {"key": "b", "chapter": 9, "quote": "十八岁"}]}
+            self.assertIsNone(LongTasks._decided(c, self.project_id, found))  # chapter 9 is outside the decision's chapters
+            inside = {**found, "options": [{"key": "a", "chapter": 3, "quote": "十七岁"}, {"key": "b", "chapter": 6, "quote": "十八岁"}]}
+            self.assertEqual(LongTasks._decided(c, self.project_id, inside), ("a", "decision-range"))
+
+    def test_a_long_tasks_pick_names_the_thing_the_question_left_out(self):  # A4 formal 1: "缺口位置：……"
+        from app.long_tasks import LongTasks
+        task_id = self.rows("SELECT id FROM assistant_tasks WHERE project_id=? LIMIT 1", self.project_id)
+        if not task_id:
+            self.provider.script_route({"decision": None})
+
+            def cite(provider, messages):
+                return turn(answer_call("answered", [("第九章写到了。", [ref_of_chapter(messages, 9)])]))
+            self.run_ask(turn(call("read_chapter", chapter_number=9)), cite)
+            task_id = self.rows("SELECT id FROM assistant_tasks WHERE project_id=? LIMIT 1", self.project_id)
+        task_id = task_id[0]["id"]
+        body = {"text": "缺口位置：第2章写右上角，第9章写左上角", "subject": self.name, "choices": ["a", "b", "both", "you_decide"],
+                "options": [{"key": "a", "chapter": 2, "quote": "右上角"}, {"key": "b", "chapter": 9, "quote": "左上角"}]}
+        with self.db.connection() as c:
+            LongTasks._choice_card(c, self.project_id, task_id, body, "a")
+            item = c.execute("SELECT after_json FROM assistant_changes WHERE task_id=? AND kind='add_decision'", (task_id,)).fetchone()
+        self.assertEqual(json.loads(item["after_json"])["subjects"], [self.name])
+
     def test_giving_a_thread_up_is_not_keeping_it_open(self):  # E04
         self.thread("移交单上的窄纸")
         found = {"kind": "keep_open", "thread": "移交单上的窄纸"}

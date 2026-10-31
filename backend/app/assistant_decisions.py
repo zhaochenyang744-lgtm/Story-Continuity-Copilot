@@ -199,6 +199,14 @@ def thing_for(text: str, word: str, names: Any) -> str | None:
     return scored[0][1]
 
 
+def covers_chapter(item: dict[str, Any], chapter: int | None) -> bool:
+    """Whether a decision holds for a chapter: one kept to some chapters ("第二至七章……") holds for those only; one for the whole
+    work, or a chapter not known, always. A finding in chapter 9 is not passed over by a decision about chapters 2 to 7 (A4
+    formal 1, its chapter-bound scope pairs)."""
+    span = item.get("chapters")
+    return not span or chapter is None or span[0] <= chapter <= span[1]
+
+
 ABOUT_DECISIONS = ("决定", "定过", "记下", "先别收", "不用提醒")
 THREAD_PAIRS_MIN = 2  # a thread kept open is named by two character pairs of its title ("白色渡船这条" for 白色渡船与失去的署名)
 

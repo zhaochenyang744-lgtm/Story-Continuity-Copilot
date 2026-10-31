@@ -2554,6 +2554,9 @@ class V2Database:
             if len(persisted_chain)!=len(evidence_rows):raise DomainError("evidence_unresolvable",422)
             actions=issue.get("available_actions")
             if not isinstance(actions,list) or not set(actions)<=ISSUE_ACTIONS:raise DomainError("schema_invalid",422)
+            # v2.2: a conflict with sufficient evidence always lets the author say it is meant or not a problem (the model left the two out of some).
+            if issue.get("status")=="conflict" and issue.get("evidence_status")=="sufficient" and nature in ("confirmed_conflict","possible_conflict"):
+                actions=list(actions)+[action for action in ("keep_intentional","false_positive") if action not in actions]
             chain_json=json.dumps(persisted_chain,ensure_ascii=False)
             suggestion_json=json.dumps(issue.get("suggested_revision"),ensure_ascii=False) if issue.get("suggested_revision") else None
             actions_json=json.dumps(actions,ensure_ascii=False)

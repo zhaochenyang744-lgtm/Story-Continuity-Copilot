@@ -380,7 +380,8 @@ class Trace:
             if plan.get("output") == "conclusion" or plan.get("ask_first"):
                 sides = [_option(key, refs, rows, anchors=_stated(report["states"], refs, item["what"]), hint=item["what"])
                          for key, refs in (("a", item["earlier"]), ("b", item["later"]))]
-                decisions.append(decision(f"{item['what']}：两处写法不同，怎么处理？", *sides, conflict=found["id"]))
+                decisions.append(decision(f"{item['what']}：两处写法不同，怎么处理？", *sides, conflict=found["id"],
+                                          subject=str(plan.get("target") or "")))  # the thing traced, which the question may leave out
         return {"states": states, "conflicts": conflicts}, [], decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:
@@ -552,7 +553,7 @@ class Tidy:
             decisions.append(decision(f"{about}：{item['what'] or '两处写法不同'}，资料按哪处记？",
                                       _option("a", item["earlier"]["refs"], rows, item["earlier"]["value"], hint=item["what"]),
                                       _option("b", item["later"]["refs"], rows, item["later"]["value"], hint=item["what"]), conflict=found["id"],
-                                      fact=item["fact"], fields={k: item[k] for k in ("memory_type", "subject", "predicate")}))
+                                      fact=item["fact"], fields={k: item[k] for k in ("memory_type", "subject", "predicate")}, subject=about))
         return output, proposals, decisions
 
     def resolve(self, ctx: ToolContext, found: dict[str, Any], choice: str) -> list[tuple[str, dict[str, Any]]]:

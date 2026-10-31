@@ -774,8 +774,10 @@ class AssistantEngine:
     def _start_recognition(self, row: Any) -> concurrent.futures.Future:
         """Read the author's sentence for a decision beside the task (`assistant_recognize`); a failure only means no card."""
         question = json.loads(row["input_json"]).get("question") or ""
+        with self.db.connection() as c:
+            threads = [thread["title"] for thread in assistant_recognize.threads_for(c, row["project_id"])]
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
         pool.shutdown(wait=False)
         return future
 
@@ -823,7 +825,9 @@ class AssistantEngine:
         cost = 0.0
         try:
             with provider_usage(user_id, reservation_id):
-                result = assistant_recognize.call_model(self.provider, note)
+                with self.db.connection() as c:
+                    threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
+                result = assistant_recognize.call_model(self.provider, note, threads)
             cost = self._cost(result)
         except Exception:
             return None

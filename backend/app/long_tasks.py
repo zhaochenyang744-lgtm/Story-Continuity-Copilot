@@ -222,7 +222,7 @@ class LongTasks:
         try:
             with provider_usage(row["user_id"], row["reservation_id"]):
                 if self.settings.assistant_recognize_decisions:
-                    recognition = self._start_recognition(question)
+                    recognition = self._start_recognition(question, row["project_id"])
                 result = self.provider.route([{"role": "system", "content": PLAN_PROMPT}, {"role": "user", "content": f"作者的话：{question}"}],
                                              PLAN_MAX_TOKENS, PLAN_TIMEOUT_SECONDS, role="plan")
             self._book(task_id, 0, 0, "plan", result)
@@ -245,10 +245,12 @@ class LongTasks:
                        proposed["chapters"][1] - proposed["chapters"][0] + 1, task_id))
             c.execute("UPDATE assistant_tasks SET status=?,phase=NULL WHERE id=? AND status=?", (AWAITING_PLAN, task_id, PLANNING))
 
-    def _start_recognition(self, question: str) -> concurrent.futures.Future:
+    def _start_recognition(self, question: str, project_id: str) -> concurrent.futures.Future:
         """The author's request read for a decision beside the plan call (as an ask's or a change's, `assistant_recognize`)."""
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question)
+        with self.db.connection() as c:
+            threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
         pool.shutdown(wait=False)
         return future
 
@@ -646,7 +648,7 @@ class LongTasks:
             if not pending:
                 return False
             ordinal, found = pending[0]
-            body = {"decision_id": found["id"], "text": found["text"], "choices": ["a", "b", "both", "you_decide"],
+            body = {"decision_id": found["id"], "text": found["text"], "choices": ["a", "b", "both", "you_decide"], "subject": found.get("subject"),
                     "options": [{key: option[key] for key in ("key", "label", "chapter", "quote")} for option in found["options"]]}
             decided = self._decided(c, row_project(c, task_id), found)
             if decided:  # the author has decided this already (v2.2): not asked again, answered by the decision
@@ -675,7 +677,10 @@ class LongTasks:
         """The answer a decision of the author's gives a question about to be asked: "以第 N 章为准" picks the side of that
         chapter, "有意为之" keeps both. None when no decision names what the question is about."""
         words = found["text"] + "".join(option.get("quote") or "" for option in found["options"])
+        chapters = [option.get("chapter") for option in found["options"] if isinstance(option.get("chapter"), int)]
         for item in assistant_decisions.relevant(c, project_id, words, None):
+            if not all(assistant_decisions.covers_chapter(item, chapter) for chapter in chapters):
+                continue  # a decision kept to other chapters does not answer a question about these
             if item["kind"] == "prefer":
                 side = next((option["key"] for option in found["options"] if option.get("chapter") == item["prefer_chapter"]), None)
                 if side:
@@ -690,6 +695,8 @@ class LongTasks:
         asked again (v2.2, a long task's question as the third source of decisions)."""
         names = {row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
         subjects = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in body["text"]][:3]
+        if not subjects and len(str(body.get("subject") or "").strip()) >= 2:  # the question left the thing out ("缺口位置：……")
+            subjects = [str(body["subject"]).strip()]
         if not subjects:
             return  # nothing to say whom it covers: the answer stands for this task only
         option = next((o for o in body["options"] if o["key"] == choice), None)
