@@ -124,8 +124,9 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
     if len(words) < WORDS_MIN or words not in said:
         return None
     last = c.execute("SELECT COALESCE(MAX(chapter_number),0) FROM v2_chapters WHERE project_id=?", (project_id,)).fetchone()[0]
-    chapters = found["chapters"] or said_chapters(sentence)
-    if chapters and not 1 <= min(chapters) <= max(chapters) <= max(last, 1):
+    valid = lambda span: bool(span) and 1 <= min(span) <= max(span) <= max(last, 1)
+    chapters = found["chapters"] if valid(found["chapters"]) else said_chapters(sentence)  # the author's own words when the call's will not do
+    if not valid(chapters):
         chapters = None
     chapters = sorted(chapters) if chapters else None
     known = {_squeeze(row[0]) for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
