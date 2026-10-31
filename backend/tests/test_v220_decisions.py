@@ -491,6 +491,20 @@ class ReviewFixTests(AssistantCase):
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [number]})[0]["subjects"], ["鹊髓匣"])
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [999]})[0]["subjects"], [])  # not on the list
 
+    def test_a_decision_the_question_is_about_but_does_not_name_is_picked_by_a_call(self):  # A4 formal 2: "匣子应该几格"
+        from types import SimpleNamespace
+        from app import assistant_cover
+        others = [{"kind_label": "以哪处为准", "statement": "赭翮匣格数以第三章为准", "scope": "全书"},
+                  {"kind_label": "有意为之", "statement": "邴瑕柚胎记方位有意保留", "scope": "第 2–7 章"}]
+        seen = []
+        reply = lambda content: SimpleNamespace(route=lambda messages, *a, **k: seen.append(messages) or SimpleNamespace(
+            message={"content": content}, input_tokens=1, output_tokens=1, cost_cny=0.0))
+        picked, _ = assistant_cover.touched(reply('{"numbers": [1, 7, 1]}'), "匣子应该几格？", others)
+        self.assertEqual(picked, others[:1])  # a number not on the list goes, a repeated one counts once
+        self.assertIn("1. 以哪处为准：赭翮匣格数以第三章为准", seen[0][1]["content"])
+        self.assertEqual(assistant_cover.touched(reply("不是 JSON"), "匣子应该几格？", others)[0], [])
+        self.assertEqual(assistant_cover.touched(reply('{"numbers": [1]}'), "匣子应该几格？", [])[1], None)  # nothing to ask about, no call
+
     def test_an_answer_given_a_decision_out_of_date_says_so_citing_it(self):  # A4 formal 2: the mark was given, the answer left it out
         from types import SimpleNamespace
         from app.assistant import with_stale_lines

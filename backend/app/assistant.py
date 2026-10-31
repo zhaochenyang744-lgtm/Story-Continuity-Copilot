@@ -29,7 +29,7 @@ from .problem_codes import Problem, codes_of, count as count_codes
 from .provider import ProviderDispatchDenied, ProviderFailure, ProviderTimeout, ProviderUnavailable
 from .stage13 import ASSISTANT_TASK_CHARS, ASSISTANT_WORKFLOW_KIND, provider_usage
 from . import assistant_recap, assistant_edits, assistant_coverage, assistant_route, assistant_actions, assistant_requests
-from . import assistant_consensus, assistant_decisions, assistant_proposals, assistant_recognize, assistant_review
+from . import assistant_consensus, assistant_cover, assistant_decisions, assistant_proposals, assistant_recognize, assistant_review
 from .text_content import written_chars
 
 ASSISTANT_PROMPT_VERSION = "assistant-p62"
@@ -759,7 +759,7 @@ class AssistantEngine:
             with provider_usage(row["user_id"], row["reservation_id"]):
                 if self._runs(row["kind"]) > 1 and row["status"] == "queued":
                     self._shadows[task_id] = self._start_shadows(row, self._runs(row["kind"]) - 1 - self._held_runs(row["kind"]))
-                if self.settings.assistant_recognize_decisions and row["kind"] in ("ask", "change") and row["status"] == "queued":
+                if self.settings.assistant_recognize_decisions and row["kind"] in ("ask", "change", "recap") and row["status"] == "queued":
                     self._recognitions[task_id] = self._start_recognition(row)
                 self._run(row)
                 if task_id in self._shadows:  # cancelled: the hidden runs stop with it, and go
@@ -985,6 +985,16 @@ class AssistantEngine:
                 chapter = context.get("chapter_number")
                 given = assistant_decisions.relevant(c, row["project_id"], task_input.get("question") or "", (chapter, chapter) if chapter else None,
                                                      authors_words=True)
+                named = {item["id"] for item in given}
+                others = [item for item in assistant_decisions.listing(c, row["project_id"]) if item["id"] not in named
+                          and item["status"] in (assistant_decisions.ACTIVE, assistant_decisions.STALE) and item["kind"] != "style"]
+            # The decisions the words did not name are put to a small call: is the question about one of them? (A4 formal 2)
+            more, result = assistant_cover.touched(self.provider, task_input.get("question") or "", others[:assistant_cover.TOUCHED_OTHERS_MAX])
+            given = (given + more)[:assistant_decisions.RELEVANT_MAX] if more else given
+            if result is not None:
+                with self.db.connection() as c:
+                    c.execute("UPDATE assistant_tasks SET input_tokens=input_tokens+?,output_tokens=output_tokens+?,cost_cny=cost_cny+? WHERE id=?",
+                              (result.input_tokens or 0, result.output_tokens or 0, self._cost(result), row["id"]))
             refs = [ctx.registry.register("decision", item["id"], None, None, None, None, f"作者定过的决定（{item['kind_label']}）：{item['statement']}（{item['scope']}）")
                     if item["kind"] != "style" else "" for item in given]  # a writing preference is not a source
             lines += assistant_decisions.prompt_lines(given, refs)
