@@ -124,7 +124,8 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
     if len(words) < WORDS_MIN or words not in said:
         return None
     last = c.execute("SELECT COALESCE(MAX(chapter_number),0) FROM v2_chapters WHERE project_id=?", (project_id,)).fetchone()[0]
-    valid = lambda span: bool(span) and 1 <= min(span) <= max(span) <= max(last, 1)
+    # A range may reach the chapter being written (the next one): "二到七章" said on chapter 7's draft (A4 fix run).
+    valid = lambda span: bool(span) and 1 <= min(span) <= max(span) <= max(last, 1) + 1
     chapters = found["chapters"] if valid(found["chapters"]) else said_chapters(sentence)  # the author's own words when the call's will not do
     if not valid(chapters):
         chapters = None
