@@ -52,6 +52,13 @@ def call_model(provider: Any, messages: list[dict[str, str]]) -> Any:
         pool.shutdown(wait=False)
 
 
+def _json(content: Any) -> Any:
+    try:
+        return json.loads(content) if isinstance(content, str) else None
+    except ValueError:
+        return None
+
+
 def verdict(content: Any, given: list[dict[str, Any]]) -> tuple[dict[str, Any], str] | None:
     """The decision that covers the finding and what becomes of its card ("passed" or "kept"); None when none covers it."""
     try:
@@ -145,7 +152,11 @@ def cover_run(db: Any, provider: Any, project_id: str, run_id: str, issues: list
     passed = 0
     for (issue, given), result in zip(asked, results):
         judged = verdict((result.message or {}).get("content"), given) if result is not None else None
-        if judged is None:
+        if judged is None:  # kept too, with no decision: whether the call said none covers it or did not answer (A4 dev, w02-obey-03)
+            answered = result is not None and isinstance(_json((result.message or {}).get("content")), dict)
+            with db.connection() as c:
+                c.execute("INSERT OR REPLACE INTO v2_finding_decision_covers(run_id,claim_span_id,project_id,decision_id,verdict,created_at) VALUES(?,?,?,?,?,?)",
+                          (run_id, issue["claim_span_id"], project_id, "", "none" if answered else "failed", utcnow()))
             continue
         decision, outcome = judged
         with db.connection() as c:
