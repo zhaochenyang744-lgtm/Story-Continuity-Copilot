@@ -140,7 +140,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
                 <li key={issue.id}>
                   <button type="button" onClick={() => go(`/projects/${project.id}/workspace#issue-${issue.id}`)}>
                     <Num className="rows-num">{index + 1}</Num>
-                    <span className="rows-copy"><strong>{findingHeadline(issue)}</strong>{issue.claim_text && <span>“{clip(issue.claim_text, 40)}”</span>}</span>
+                    <span className="rows-copy"><strong>{findingHeadline(issue)}</strong>{issue.claim_text && <span className="quote-line">“{clip(issue.claim_text, 40)}”</span>}</span>
                     <FindingTag issue={issue} />
                   </button>
                 </li>

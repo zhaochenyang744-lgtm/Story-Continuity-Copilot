@@ -185,7 +185,9 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     if (!column) return;
     const box = column.getBoundingClientRect();
     const covered = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 0;
-    if (box.top > window.innerHeight - covered || box.bottom < covered * 2) column.scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" });
+    // Scroll when the column is below the fold or above the top bar, and also when only a sliver of it shows (less than 240px, or all of it if it is shorter).
+    const shown = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, covered);
+    if (box.top > window.innerHeight - covered || box.bottom < covered * 2 || shown < Math.min(box.height, 240)) column.scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" });
   }, [revealSide]);
   const linkedId = hovered ?? p.selected?.id ?? null;
   const linkedIssue = issues.find((issue) => issue.id === linkedId) ?? null;
@@ -263,13 +265,13 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   // A visitor's check is refused above the per-check limit, so the button says so up front.
   const visitorLimit = usage?.account_type === "visitor" && chars > usage.check_chars_per_check ? usage.check_chars_per_check : null;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
-    <Button kind="primary" size="lg" disabled={Boolean(p.busy) || p.autosaveState === "saving" || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
+    <Button kind="primary" disabled={Boolean(p.busy) || p.autosaveState === "saving" || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
   ) : checking ? (
-    <Button kind="primary" size="lg" disabled busy>正在检查…</Button>
+    <Button kind="primary" disabled busy>正在检查…</Button>
   ) : p.run && retryableRun(p.run) && !outdated ? (
-    <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
+    <Button kind="primary" disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
   ) : (
-    <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
+    <Button kind="primary" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
   const finished = p.run?.status === "completed" && !checking;
   // 对照计划 is the old analysis, unchanged; only where its result is shown has moved: the top of the assistant column.
@@ -370,8 +372,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
         {!p.readOnly && (
           <div className="draft-head-side">
             <div className="draft-head-actions">
-              {assistantOn && <Button size="lg" disabled={!p.draft || Boolean(recapReason)} title={recapReason || undefined} onClick={() => bringTask({ kind: "recap" })}>写前回顾</Button>}
-              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={analyse}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
+              {assistantOn && <Button disabled={!p.draft || Boolean(recapReason)} title={recapReason || undefined} onClick={() => bringTask({ kind: "recap" })}>写前回顾</Button>}
+              {hasPlans && <Button disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={analyse}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
               <Menu buttonLabel="更多：完成本章、技术详情、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => openDialog("reset")}>重置作品</button>}>
                 <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => setCompleting(true)}>完成本章，开始下一章</button>
                 <button type="button" role="menuitem" disabled={!p.run} onClick={() => setTech(true)}>这次检查的技术详情</button>
@@ -878,7 +880,7 @@ function FactReview({ p }: { p: ProjectState }) {
           </div>
         </article>
       ))}
-      <Button kind="primary" size="lg" type="submit" disabled={blocked}>确认并更新资料</Button>
+      <Button kind="primary" type="submit" disabled={blocked}>确认并更新资料</Button>
     </form>
   );
 }

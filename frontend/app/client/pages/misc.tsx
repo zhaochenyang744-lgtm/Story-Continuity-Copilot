@@ -12,8 +12,8 @@ export function NotFoundPage({ kind, go }: { kind: "page" | "project"; go: (href
       <h1 id="not-found-title">{kind === "project" ? "找不到这部作品" : "找不到这个页面"}</h1>
       <p>{kind === "project" ? "它可能已经删除，或者不属于当前账号。其他作品不受影响。" : "网址可能输错了，或者这个页面已经不在了。"}</p>
       <div className="form-actions">
-        <Button kind="primary" size="lg" onClick={() => go("/projects")}>作品管理</Button>
-        <Button size="lg" onClick={() => go("/")}>回到首页</Button>
+        <Button kind="primary" onClick={() => go("/projects")}>作品管理</Button>
+        <Button onClick={() => go("/")}>回到首页</Button>
       </div>
     </section>
   );
@@ -40,9 +40,9 @@ export function TutorialCompletePage({ go }: { go: (href: string) => void }) {
         {tourSteps.map((step, index) => <li key={step} className={finished ? "done" : undefined}><Num>{pad2(index + 1)}</Num><span>{step}</span></li>)}
       </ol>
       <div className="form-actions">
-        {!finished && status === "active" && tutorialId && <Button kind="primary" size="lg" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续导览</Button>}
-        <Button kind={finished || status !== "active" || !tutorialId ? "primary" : "outline"} size="lg" onClick={() => go("/projects/import")}>导入自己的作品</Button>
-        <Button size="lg" onClick={() => go("/projects/new")}>新建空白作品</Button>
+        {!finished && status === "active" && tutorialId && <Button kind="primary" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续导览</Button>}
+        <Button kind={finished || status !== "active" || !tutorialId ? "primary" : "outline"} onClick={() => go("/projects/import")}>导入自己的作品</Button>
+        <Button onClick={() => go("/projects/new")}>新建空白作品</Button>
         <Button kind="text" onClick={() => go("/")}>回到首页</Button>
       </div>
     </section>

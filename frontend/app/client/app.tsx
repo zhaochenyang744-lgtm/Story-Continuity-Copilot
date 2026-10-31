@@ -493,7 +493,7 @@ export function App() {
         <Dialog title="资料没能保存" close={() => setSettingsLeave(null)}>
           <p>个人资料有改动没能保存，现在离开会丢掉它们。</p>
           <div className="dialog-actions">
-            <Button kind="primary" onClick={() => {
+            <Button kind="destroy" onClick={() => {
               const target = settingsLeave;
               settingsDirty.current = false;
               setSettingsLeave(null);
@@ -508,7 +508,7 @@ export function App() {
         <Dialog title="退出会丢失这条记录" close={() => setConfirmUnstoredLogout(false)}>
           <p>这个浏览器没能保存这条已失效的待补记记录。退出后它会丢失；服务器上的正文和决定不会改变。</p>
           <div className="dialog-actions">
-            <Button kind="danger" onClick={() => { setConfirmUnstoredLogout(false); void performLogout(); }}>仍然退出</Button>
+            <Button kind="destroy" onClick={() => { setConfirmUnstoredLogout(false); void performLogout(); }}>仍然退出</Button>
             <Button kind="text" onClick={() => setConfirmUnstoredLogout(false)}>取消</Button>
           </div>
         </Dialog>

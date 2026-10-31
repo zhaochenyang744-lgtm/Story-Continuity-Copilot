@@ -138,7 +138,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
               <div><dt className="sr-only">字数</dt><dd><Num><CountUp id={`${project.id}:words`} value={totalChars} /></Num></dd><dd className="figure-label">字</dd></div>
               <div><dt className="sr-only">已检查</dt><dd><Num><CountUp id={`${project.id}:checked`} value={checkedCount} /></Num></dd><dd className="figure-label">章已检查</dd></div>
             </dl>
-            {!p.readOnly && <Button size="lg" onClick={() => document.getElementById("append")?.scrollIntoView({ block: "start", behavior: "smooth" })}>追加章节</Button>}
+            {!p.readOnly && <Button onClick={() => document.getElementById("append")?.scrollIntoView({ block: "start", behavior: "smooth" })}>追加章节</Button>}
           </div>
         }
       />

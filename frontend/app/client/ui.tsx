@@ -4,11 +4,10 @@
 import { CSSProperties, KeyboardEvent as ReactKeyboardEvent, MouseEventHandler, ReactNode, Ref, useEffect, useRef, useState } from "react";
 import { request } from "../api";
 
-type ButtonKind = "primary" | "outline" | "text" | "small" | "danger" | "plain";
+type ButtonKind = "primary" | "outline" | "text" | "small" | "danger" | "destroy" | "plain";
 export function Button({
   children,
   kind = "outline",
-  size,
   className = "",
   disabled,
   pressed,
@@ -23,9 +22,9 @@ export function Button({
   onClick,
 }: {
   children: ReactNode;
-  /** primary: the one blue action; outline: 2px black frame; text: underlined; small: thin frame; danger: destructive. */
+  /** primary: the one blue action of a screen; outline: the grey secondary button; small: the secondary button at 32px; text: no fill, underlined when pointed at;
+   *  danger: a secondary button with red words (delete, archive, discard, clear); destroy: the red fill that confirms it in a dialog. */
   kind?: ButtonKind;
-  size?: "lg";
   className?: string;
   disabled?: boolean;
   pressed?: boolean;
@@ -44,7 +43,7 @@ export function Button({
       ref={buttonRef}
       id={id}
       type={type}
-      className={`btn btn-${kind}${size ? ` btn-${size}` : ""}${className ? ` ${className}` : ""}`}
+      className={`btn btn-${kind}${className ? ` ${className}` : ""}`}
       disabled={disabled}
       aria-pressed={pressed}
       aria-current={current ? "page" : undefined}
@@ -86,7 +85,7 @@ export function Num({ children, className = "", fit }: { children: ReactNode; cl
   return <span className={`num${className ? ` ${className}` : ""}`} style={fit === undefined ? undefined : fitVars(fit)}>{children}</span>;
 }
 
-export function Tag({ tone = "line", children }: { tone?: "high" | "mid" | "gap" | "state" | "solid" | "blue" | "line" | "considering"; children: ReactNode }) {
+export function Tag({ tone = "line", children }: { tone?: "high" | "mid" | "gap" | "state" | "solid" | "line" | "considering"; children: ReactNode }) {
   return <span className={`tag tag-${tone}`}>{children}</span>;
 }
 
@@ -158,6 +157,26 @@ export function Chips<T extends string>({ items, value, onChange, label }: { ite
         </button>
       ))}
     </div>
+  );
+}
+
+export const GENRES = ["悬疑", "奇幻", "科幻", "言情", "历史", "现实", "其他"] as const;
+
+/** The work's kind: one choice among a few, shown as option blocks. The new-work page and the import's last step use this one control. */
+export function GenrePicker({ value, custom, onChange, onCustom, disabled }: { value: string; custom: string; onChange: (next: string) => void; onCustom: (next: string) => void; disabled?: boolean }) {
+  return (
+    <fieldset className="field">
+      <legend className="field-label">类型</legend>
+      <div className="chips" role="radiogroup" aria-label="类型">
+        {GENRES.map((item) => (
+          <label key={item} className="chip chip-radio">
+            <input className="sr-only" type="radio" name="genre-choice" value={item} checked={value === item} onChange={() => onChange(item)} disabled={disabled} />
+            {item}
+          </label>
+        ))}
+      </div>
+      {value === "其他" && <input aria-label="其他类型" maxLength={80} placeholder="填写类型" value={custom} onChange={(event) => onCustom(event.target.value)} disabled={disabled} />}
+    </fieldset>
   );
 }
 

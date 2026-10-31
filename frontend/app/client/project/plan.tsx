@@ -102,8 +102,8 @@ export function PlanPage({ p, go, notices }: PageProps) {
         aside={!p.readOnly && (
           <div className="head-actions-stack">
             <div className="actions">
-              <Button size="lg" disabled={blocked} onClick={() => setDialog({ kind: filter === "all" ? "story" : filter, item: null })}>新建计划</Button>
-              <Button kind="primary" size="lg" disabled={p.analysisBusy === "plan_alignment" || !decidedCount || !p.draft || p.dirty} title={decidedCount ? undefined : "还没有已定的计划；「考虑中」的不参与对照"} onClick={compare}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照正文"}</Button>
+              <Button disabled={blocked} onClick={() => setDialog({ kind: filter === "all" ? "story" : filter, item: null })}>新建计划</Button>
+              <Button kind="primary" disabled={p.analysisBusy === "plan_alignment" || !decidedCount || !p.draft || p.dirty} title={decidedCount ? undefined : "还没有已定的计划；「考虑中」的不参与对照"} onClick={compare}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照正文"}</Button>
             </div>
             <span className="small-note">只对照「已定」的计划，结果显示在写作页</span>
           </div>
@@ -152,7 +152,7 @@ export function PlanPage({ p, go, notices }: PageProps) {
                           <Button kind="text" disabled={blocked} onClick={() => void toggleConsidering(plan)}>{weighing ? "定下来" : "放到考虑中"}</Button>
                           <Button kind="text" disabled={blocked || index <= 0} onClick={() => void move(plan, -1)}>上移</Button>
                           <Button kind="text" disabled={blocked || index < 0 || index >= sameKind.length - 1} onClick={() => void move(plan, 1)}>下移</Button>
-                          <Button kind="text" disabled={blocked} onClick={() => setArchiveTarget(plan)}>归档</Button>
+                          <Button kind="danger" className="btn-small" disabled={blocked} onClick={() => setArchiveTarget(plan)}>归档</Button>
                         </div>
                       )}
                     </div>
@@ -179,7 +179,7 @@ export function PlanPage({ p, go, notices }: PageProps) {
         <Dialog title={`归档「${planTitle(archiveTarget)}」？`} close={() => setArchiveTarget(null)} closeDisabled={Boolean(p.authorBusy)}>
           <p>归档后默认不显示，也不再用于检查。正文和资料不受影响。</p>
           {error && <p className="inline-error" role="alert">{error}</p>}
-          <div className="dialog-actions"><Button kind="danger" disabled={Boolean(p.authorBusy)} onClick={() => void archive()}>{p.authorBusy || "归档"}</Button><Button kind="text" onClick={() => setArchiveTarget(null)}>取消</Button></div>
+          <div className="dialog-actions"><Button kind="destroy" disabled={Boolean(p.authorBusy)} onClick={() => void archive()}>{p.authorBusy || "归档"}</Button><Button kind="text" onClick={() => setArchiveTarget(null)}>取消</Button></div>
         </Dialog>
       )}
     </section>

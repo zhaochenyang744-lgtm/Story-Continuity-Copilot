@@ -123,14 +123,14 @@ function DecisionRow({ decision, readOnly, busy, editing, startEdit, stopEdit, s
           <span className="actions">
             {stale && <Button kind="small" disabled={busy} onClick={holds}>仍然有效</Button>}
             {!superseded && <Button kind="text" disabled={busy} onClick={() => { setDraft(draftOf(decision)); startEdit(); }}>编辑</Button>}
-            {!confirming && <Button kind="text" disabled={busy} onClick={() => setConfirming(true)}>删除</Button>}
+            {!confirming && <Button kind="danger" className="btn-small" disabled={busy} onClick={() => setConfirming(true)}>删除</Button>}
           </span>
         )}
         {confirming && !editing && (
           <span className="decision-confirm" role="alert">
             <span>删除后助手不再照这条办。确定删除？</span>
             <span className="actions">
-              <Button kind="small" disabled={busy} onClick={() => { setConfirming(false); remove(); }}>确认删除</Button>
+              <Button kind="destroy" disabled={busy} onClick={() => { setConfirming(false); remove(); }}>确认删除</Button>
               <Button kind="text" disabled={busy} onClick={() => setConfirming(false)}>取消</Button>
             </span>
           </span>

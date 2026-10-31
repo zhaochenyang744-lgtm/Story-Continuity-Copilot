@@ -20,7 +20,7 @@ test("12 Q 夜间勾选栏禁用按钮透明底和弱描边", async ({ page }) =
 });
 
 test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
-  for (const [scheme, value, background] of [["dark", "night", "rgb(19, 19, 19)"], ["light", "day", "rgb(243, 243, 240)"]] as const) {
+  for (const [scheme, value, background] of [["dark", "night", "rgb(17, 17, 17)"], ["light", "day", "rgb(243, 243, 240)"]] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/login");
     await expect(page.locator("html")).toHaveAttribute("data-theme", value);
@@ -34,7 +34,7 @@ test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("night");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
-  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(19, 19, 19)");
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(17, 17, 17)");
   await button(page, "切换到日间模式").click();
   await expect(button(page, "切换到夜间模式")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("day");
@@ -84,7 +84,8 @@ test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；�
       await expect(band, `${name}: ${mode}`).toHaveCSS("background-color", colours[mode].background);
       await expect(band, `${name}: ${mode}`).toHaveCSS("color", colours[mode].color);
       if (mode === "day") await expect(control, `${name}: no edge on the blue button by day`).toHaveCSS("box-shadow", "none");
-      else await expect.poll(() => look(control).then(item => item.shadow), { message: `${name}: the blue button has an edge at night` }).not.toBe("none");
+      // The tour's button is the band's own light colour since v2.2, so only the blue ones need the edge.
+      else if (name !== "night-tour") await expect.poll(() => look(control).then(item => item.shadow), { message: `${name}: the blue button has an edge at night` }).not.toBe("none");
     }
     await shot(page, name, false);
   }

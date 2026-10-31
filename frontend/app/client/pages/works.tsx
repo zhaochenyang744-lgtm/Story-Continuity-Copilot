@@ -60,8 +60,8 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
               </dl>
             )}
             <div className="actions">
-              <Button size="lg" onClick={() => go("/projects/import")}>导入作品</Button>
-              <Button kind="primary" size="lg" onClick={() => go("/projects/new")}>新建作品</Button>
+              <Button onClick={() => go("/projects/import")}>导入作品</Button>
+              <Button kind="primary" onClick={() => go("/projects/new")}>新建作品</Button>
             </div>
           </div>
         }

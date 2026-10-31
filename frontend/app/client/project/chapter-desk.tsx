@@ -217,11 +217,11 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
   };
 
   const primary = !editing ? (
-    <Button kind="primary" size="lg" disabled={!canEdit} onClick={() => startEdit()}>修改这一章</Button>
+    <Button kind="primary" disabled={!canEdit} onClick={() => startEdit()}>修改这一章</Button>
   ) : preview ? (
-    <Button kind="primary" size="lg" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
+    <Button kind="primary" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
   ) : (
-    <Button kind="primary" size="lg" disabled={!dirty || Boolean(busy) || conflict} busy={busy === "正在预览"} onClick={() => void makePreview()}>{busy === "正在预览" ? "正在预览" : "预览修改影响"}</Button>
+    <Button kind="primary" disabled={!dirty || Boolean(busy) || conflict} busy={busy === "正在预览"} onClick={() => void makePreview()}>{busy === "正在预览" ? "正在预览" : "预览修改影响"}</Button>
   );
 
   return (
@@ -240,7 +240,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
         </div>
         <div className="draft-head-side">
           <div className="draft-head-actions">
-            <Button size="lg" onClick={() => open(null)}>回到草稿</Button>
+            <Button onClick={() => open(null)}>回到草稿</Button>
             {!p.readOnly && primary}
           </div>
         </div>
@@ -287,7 +287,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
                   <p>这台设备上有这一章没提交的修改。</p>
                   <span className="actions">
                     <Button kind="text" disabled={!canEdit} onClick={() => startEdit(ownRecovery)}>接着改</Button>
-                    <Button kind="text" onClick={discard}>删除副本</Button>
+                    <Button kind="danger" className="btn-small" onClick={discard}>删除副本</Button>
                   </span>
                 </div>
               )}
@@ -300,7 +300,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
               {conflict && <p className="finding-hint warn">服务器上的这一章在副本之后更新过。请先复制需要的文字，放弃这次修改，再对照最新正文重新修改。</p>}
               {storageWarning && <p className="finding-hint warn">{storageWarning}</p>}
               <p className="small-note">{format === "markdown" ? "这一章用 Markdown 保存，格式会一起保存。" : "这一章按纯文本保存。"}</p>
-              <div className="finding-actions"><Button kind="text" disabled={Boolean(busy)} onClick={discard}>放弃修改</Button></div>
+              <div className="finding-actions"><Button kind="danger" className="btn-small" disabled={Boolean(busy)} onClick={discard}>放弃修改</Button></div>
             </>
           )}
           {editing && preview && (

@@ -99,7 +99,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
         <Dialog title={project.status === "archived" ? "恢复作品" : "归档作品"} close={() => setDialog(null)}>
           <p>{project.status === "archived" ? `恢复《${project.title}》后，就可以继续写和检查。` : `归档后《${project.title}》只能浏览，不能写入；不会删除。随时可以恢复。`}</p>
           <div className="dialog-actions">
-            <Button kind="primary" disabled={Boolean(p.busy)} onClick={async () => { if (await p.updateProject(project.status === "archived" ? { status: "active" } : { status: "archived", confirm_archive: true })) setDialog(null); }}>{project.status === "archived" ? "恢复作品" : "归档"}</Button>
+            <Button kind={project.status === "archived" ? "primary" : "destroy"} disabled={Boolean(p.busy)} onClick={async () => { if (await p.updateProject(project.status === "archived" ? { status: "active" } : { status: "archived", confirm_archive: true })) setDialog(null); }}>{project.status === "archived" ? "恢复作品" : "归档"}</Button>
             <Button kind="text" onClick={() => setDialog(null)}>取消</Button>
           </div>
         </Dialog>
@@ -114,7 +114,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
           </p>
           <p>这部作品的检查结果、你的决定和没提交的修改都会清除。其他作品不受影响。<strong>重置后不能撤销。</strong></p>
           <div className="dialog-actions">
-            <Button kind="danger" disabled={p.readOnly || Boolean(p.busy)} onClick={async () => { if (await p.reset()) setDialog(null); }}>确认重置</Button>
+            <Button kind="destroy" disabled={p.readOnly || Boolean(p.busy)} onClick={async () => { if (await p.reset()) setDialog(null); }}>确认重置</Button>
             <Button kind="text" onClick={() => setDialog(null)}>取消</Button>
           </div>
         </Dialog>

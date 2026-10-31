@@ -187,14 +187,15 @@ test.describe("07f 空对话和全站", () => {
       };
       return { info: make("note note-info"), warn: make("note note-warn"), error: make("note note-error"), toast: make("feedback"), toastError: make("feedback error") };
     });
-    const [blue, yellow, red] = [await colourOf(page, "var(--c-blue)"), await colourOf(page, "var(--c-yellow)"), await colourOf(page, "var(--c-red)")];
-    for (const [name, colour] of [["info", blue], ["warn", yellow], ["error", red], ["toast", blue], ["toastError", red]] as const) {
+    const [ink, yellow, red] = [await colourOf(page, "var(--c-ink)"), await colourOf(page, "var(--c-yellow)"), await colourOf(page, "var(--c-red)")];
+    // v2.2: blue is for the main action and links, not for a plain notice, so the info bar is ink.
+    for (const [name, colour] of [["info", ink], ["warn", yellow], ["error", red], ["toast", ink], ["toastError", red]] as const) {
       const item = seen[name];
       // (soft look) the box has no frame: the bar at its left is all there is.
       expect(item.left, name).toBe("0px");
       expect(item.radius, name).toBe("10px");
       expect(item.width, name).toBe("4px");
-      expect(item.barRadius, name).toBe("2px");
+      expect(item.barRadius, name).toBe("0px");
       expect(item.top, name).toBe("8px");
       expect(item.bottom, name).toBe("8px");
       expect(item.colour, name).toBe(colour);
@@ -246,7 +247,7 @@ test.describe("07f 空对话和全站", () => {
     expect(shadow).toContain("36px");
   });
 
-  test("34 输入框的占位文字：日夜都和底色至少 4.5:1，已输入的文字更深；35 个人信息页的大头像是 14 像素圆角，顶栏的小头像仍是圆形", async ({ page }) => {
+  test("34 输入框的占位文字：日夜都和底色至少 4.5:1，已输入的文字更深；35 个人信息页的大头像和顶栏的小头像都是圆形", async ({ page }) => {
     await registerAccount(page, "hint");
     await page.goto("/projects/new");
     const field = page.locator("textarea[name=summary]");
@@ -271,8 +272,8 @@ test.describe("07f 空对话和全站", () => {
     const large = page.locator(".avatar-xl");
     await expect(large).toBeVisible();
     const style = await large.evaluate((node) => { const css = getComputedStyle(node); return { radius: css.borderTopLeftRadius, overflow: css.overflow }; });
-    expect(style).toEqual({ radius: "14px", overflow: "hidden" });
-    expect(await accountMenuButton(page).locator(".avatar").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("50%");
+    expect(style).toEqual({ radius: "999px", overflow: "hidden" });
+    expect(await accountMenuButton(page).locator(".avatar").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("999px");
   });
 });
 

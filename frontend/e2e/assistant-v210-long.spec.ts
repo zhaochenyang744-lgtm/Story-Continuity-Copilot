@@ -315,7 +315,7 @@ test.describe("长任务：做、问、报告、确认", () => {
     const view = await viewOf(page, id);
     const end = thread(page).getByTestId("long-end");
     await expect(end).toHaveText(/^做完了 · 不到 1 分钟 · (¥\d\.\d\d|不到 ¥0\.01)$/);
-    expect(await style(end, "font-size")).toBe("11px");
+    expect(await style(end, "font-size")).toBe("12px");
     const report = thread(page).getByTestId("long-report");
     const sections = Object.entries(view.answer.sections) as [string, { label: string; refs: string[] }[]][];
     const total = sections.reduce((sum, [, items]) => sum + items.length, 0);

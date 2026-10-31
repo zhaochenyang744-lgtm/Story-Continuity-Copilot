@@ -242,7 +242,7 @@ test("38a 写前回顾：一条一句、句末是角标；没有灰色原文行�
   await expect(view.locator(".a-label")).toHaveText(["上一章停在哪", "出场人物的最新状态", "还没收的线", "计划里这一章的事"]);
   expect(await style(view.locator(".a-label").first(), "font-weight")).toBe("400");
   expect(await style(view.locator(".a-label").first(), "letter-spacing")).toBe("normal");
-  expect(await style(view.locator(".a-label").first(), "font-size")).toBe("11px");
+  expect(await style(view.locator(".a-label").first(), "font-size")).toBe("12px");
   // The previous ending is the opening, in body size; the other groups are lists with a little space between items and no rules.
   expect(await style(view.locator("p.a-ri.lead"), "font-size")).toBe("14px");
   await expect(view.locator("ul.a-ri-list")).toHaveCount(3);

@@ -179,9 +179,9 @@ test.describe("07f 回答", () => {
     expect(await summary.evaluate(mark)).toBe('" ⌃"');
     const body = entry.locator("details.a-older > .a-fold-body");
     const style = await body.evaluate((node) => { const css = getComputedStyle(node); return { left: css.marginLeft, rule: css.borderLeftWidth, colour: css.borderLeftColor }; });
-    expect(style.left).toBe("10px");
-    expect(style.rule).toBe("2px");
-    expect(style.colour).toBe(await colourOf(page, "var(--c-line)"));
+    // v2.2: an older answer sits one step in; the line that used to hang beside it is gone (lines mark structure only).
+    expect(style.left).toBe("8px");
+    expect(style.rule).toBe("0px");
     const [older, newer] = [await body.locator(".a-answer").first().evaluate((node) => getComputedStyle(node).color), await entry.locator(":scope > .a-task .a-answer").first().evaluate((node) => getComputedStyle(node).color)];
     expect(older).toBe(await colourOf(page, "var(--c-ink-2)"));
     expect(older).not.toBe(newer);

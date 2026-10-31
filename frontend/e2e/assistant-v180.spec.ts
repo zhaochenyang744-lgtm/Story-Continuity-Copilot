@@ -490,7 +490,8 @@ test.describe("助手：输入框", () => {
     await expect(picked).toBeVisible();
     const [chipBox, areaBox] = [await picked.boundingBox(), await box(page).boundingBox()];
     expect(chipBox!.y).toBeLessThan(areaBox!.y);
-    expect(await picked.evaluate((node) => getComputedStyle(node).fontFamily)).toContain("Noto Serif");
+    // v2.2: the chip is an interface label; the serif face is for the text itself and the words quoted from it.
+    expect(await picked.evaluate((node) => getComputedStyle(node).fontFamily)).not.toContain("Noto Serif");
     // One line high when empty; it grows with what is written to six lines, and then scrolls inside.
     expect(areaBox!.height).toBeGreaterThanOrEqual(20);
     expect(areaBox!.height).toBeLessThanOrEqual(26);
@@ -866,7 +867,7 @@ test.describe("助手：开关、测试版、隐私", () => {
       await page.reload();
       const tab = findings(page).getByRole("tab", { name: /^助手/ });
       await expect(tab.locator(".a-beta")).toHaveText("测试版");
-      expect(await tab.locator(".a-beta").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("3px");
+      expect(await tab.locator(".a-beta").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("6px");
       await openTab(page, id, "sources");
       await topbarAssistant(page).click();
       await expect(page.getByRole("dialog", { name: "助手", exact: true }).locator(".a-beta")).toHaveText("测试版");
@@ -948,15 +949,15 @@ test.describe("助手：开关、测试版、隐私", () => {
 });
 
 test.describe("全站：圆角和输入框", () => {
-  test("圆角按大小分级：标签 3、按钮和输入框 6、菜单和助手的框 10、大卡片 / 对话框 / 抽屉 14；分隔线、表格、页头保持直线", async ({ page }) => {
+  test("圆角只有三种：标签、按钮和输入框 6，菜单、助手的框、卡片、对话框和抽屉 10，头像和圆点 999；分隔线、表格、页头保持直线", async ({ page }) => {
     const id = await setup(page);
     const radius = (selector: string) => page.locator(selector).first().evaluate((node) => getComputedStyle(node).borderTopLeftRadius);
-    expect(await page.evaluate(() => ["--r-xs", "--r-sm", "--r-md", "--r-lg"].map((name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()))).toEqual(["3px", "6px", "10px", "14px"]);
+    expect(await page.evaluate(() => ["--r-sm", "--r-md", "--r-pill"].map((name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()))).toEqual(["6px", "10px", "999px"]);
     // The writing page: tags and badges 3; buttons 6; the sample's tour band 14; the page's own rules and head are straight.
-    expect(await radius(".finding .tag")).toBe("3px");
-    expect(await radius(".draft-head-meta .badge")).toBe("3px");
+    expect(await radius(".finding .tag")).toBe("6px");
+    expect(await radius(".draft-head-meta .badge")).toBe("6px");
     expect(await radius(".draft-head .btn-primary")).toBe("6px");
-    expect(await radius(".tour")).toBe("14px");
+    expect(await radius(".tour")).toBe("10px");
     expect(await radius(".topbar")).toBe("0px");
     expect(await radius(".draft-head")).toBe("0px");
     expect(await radius(".finding")).toBe("0px");
@@ -966,21 +967,21 @@ test.describe("全站：圆角和输入框", () => {
     expect(await radius(".draft-head-actions .menu-list")).toBe("10px");
     await page.getByRole("menuitem", { name: "重置作品", exact: true }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
-    expect(await radius(".dialog")).toBe("14px");
+    expect(await radius(".dialog")).toBe("10px");
     await page.keyboard.press("Escape");
     // The assistant's box 10, its tag 3, its send square 6, the question bubble 10; the drawer 14 on the side that faces the page.
     await openAssistantTab(page);
     expect(await radius(".assistant .cx")).toBe("10px");
-    expect(await radius(".assistant .cx-send")).toBe("50%");  // the send key is round
+    expect(await radius(".assistant .cx-send")).toBe("999px");  // the send key is round
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     expect(await radius(".assistant .a-ask")).toBe("10px");
-    expect(await radius(".assistant .a-cite button")).toBe("3px");
+    expect(await radius(".assistant .a-cite button")).toBe("6px");
     await openTab(page, id, "sources");
     expect(await radius(".chapter-row")).toBe("0px");
     expect(await radius(".chapter-item")).toBe("0px");
     await topbarAssistant(page).click();
-    expect(await page.locator(".drawer").evaluate((node) => getComputedStyle(node).borderRadius)).toBe("14px 0px 0px 14px");
+    expect(await page.locator(".drawer").evaluate((node) => getComputedStyle(node).borderRadius)).toBe("10px 0px 0px 10px");
     await page.keyboard.press("Escape");
     // Fields everywhere are 6.
     await openTab(page, id, "memory");
