@@ -614,7 +614,10 @@ class LongTasks:
                 args = json.loads(call["arguments"] or "{}") if call else None
             except ValueError:
                 args = None
-            if not isinstance(args, dict):
+            if not isinstance(args, dict) and getattr(result, "finish_reason", None) == "length":
+                # Cut off at the token limit (A4 dev, a whole-book check of things): asked again for a shorter report.
+                report, problems = None, [Problem("report_call_missing", f"结果太长被截断了：再调用一次 {kind.tool_name}，只交这一步最要紧的项，每项写短")]
+            elif not isinstance(args, dict):
                 report, problems = None, [Problem("report_call_missing", f"请调用 {kind.tool_name}，参数是一个 JSON 对象")]
             else:
                 report, problems = kind.validate(args, subjects, passages, earlier)
