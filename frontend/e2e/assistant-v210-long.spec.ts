@@ -52,7 +52,7 @@ async function photograph(page: Page, name: string, sizes: [number, number][] = 
   for (const [width, height] of sizes) {
     for (const mode of ["day", "night"] as const) {
       await page.setViewportSize({ width, height });
-      const drawer = page.getByRole("dialog", { name: "助手", exact: true });
+      const drawer = page.locator("#assistant-dock");
       if (await drawer.count()) { await page.getByRole("button", { name: "关闭助手", exact: true }).click(); await expect(drawer).toHaveCount(0); }
       await theme(page, mode);
       await topbarAssistant(page).click();
@@ -67,7 +67,7 @@ async function photograph(page: Page, name: string, sizes: [number, number][] = 
   // Back to day and the wide window (the drawer covers the theme switch, so it is shut for it and opened again).
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "关闭助手", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "助手", exact: true })).toHaveCount(0);
+  await expect(page.locator("#assistant-dock")).toBeHidden();
   await theme(page, "day");
   await topbarAssistant(page).click();
   await expect(thread(page)).toBeVisible();
@@ -320,7 +320,7 @@ test.describe("长任务：做、问、报告、确认", () => {
     const sections = Object.entries(view.answer.sections) as [string, { label: string; refs: string[] }[]][];
     const total = sections.reduce((sum, [, items]) => sum + items.length, 0);
     await expect(report.locator("h4")).toHaveText(sections.map(([title]) => title));
-    expect(await style(report.locator("h4").first(), "font-size")).toBe("13px");
+    expect(await style(report.locator("h4").first(), "font-size")).toBe("14px");
     expect(await style(report.locator("h4").first(), "font-weight")).toBe("700");
     await expect(report.getByTestId("long-count")).toContainText(`共 ${total} 条：${sections.map(([title, items]) => `${title} ${items.length} 条`).join("，")}`);
     const items = report.locator(".a-points li");

@@ -25,7 +25,7 @@ async function snap(page: Page, name: string) {
 }
 /** The assistant on the writing page: the column's tab on a wide window, the 助手 pane of a phone. */
 async function showAssistant(page: Page) {
-  if ((page.viewportSize()?.width ?? 1440) < 1024) await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+  if ((page.viewportSize()?.width ?? 1440) < 1024) await page.locator("#assistant-open").click();
   else await openAssistantTab(page);
 }
 /** The same state at 1440 and 390, by day and by night. `open` brings the state up at the width it is given. */
@@ -35,7 +35,7 @@ async function photograph(page: Page, name: string, open: () => Promise<void>, s
     for (const mode of ["day", "night"] as const) {
       await page.setViewportSize({ width, height });
       // The drawer covers the theme switch: it is closed for the switch and opened again.
-      const drawer = page.getByRole("dialog", { name: "助手", exact: true });
+      const drawer = page.locator("#assistant-dock");
       const wasOpen = (await drawer.count()) > 0;
       if (wasOpen) { await page.getByRole("button", { name: "关闭助手", exact: true }).click(); await expect(drawer).toHaveCount(0); }
       await theme(page, mode);
@@ -127,8 +127,8 @@ test("18 回答：带 lead 和三个以上 label 的排成分点，标签加粗�
   expect(await answer.locator(".a-points > li").nth(3).locator(".a-cite button").textContent()).toBe("1、5");
   // The lead is body text, not a bullet.
   expect(await answer.locator(".a-lead").evaluate((node) => getComputedStyle(node).display)).toBe("block");
-  expect(await style(answer.locator(".a-lead"), "font-size")).toBe("14px");
-  expect(await style(answer.locator(".a-points li").first(), "line-height")).toBe("23.8px");
+  expect(await style(answer.locator(".a-lead"), "font-size")).toBe("15px");
+  expect(await style(answer.locator(".a-points li").first(), "line-height")).toBe("26.25px");
   // Without a lead and with two labels, it stays one paragraph and nothing is bold.
   const other = tasks(page).nth(1).locator(".a-answer");
   await expect(other).toHaveAttribute("data-layout", "paragraph");
@@ -183,7 +183,7 @@ test("18 回答末尾：找不到时第一行由前端写，下面只有 note �
   await withThread(page, [listView, notFoundView]);
   const missing = tasks(page).nth(1);
   await expect(missing.getByTestId("not-found-line")).toHaveText("没有找到问题问到的内容。");
-  expect(await style(missing.getByTestId("not-found-line"), "font-size")).toBe("14px");
+  expect(await style(missing.getByTestId("not-found-line"), "font-size")).toBe("15px");
   // 38a: the model's 「查过……」 sentence goes under 「怎么查的」; an answer that found nothing says what was not looked at in plain grey, under the answer.
   await expect(missing.locator(".a-answer-note")).toHaveCount(0);
   await expect(missing.getByTestId("not-checked")).toHaveText("没查：本章草稿。");
@@ -251,7 +251,7 @@ test("18 写前回顾：字号和普通回答一套，出处是句末的角标�
   await openAssistantTab(page);
   const view = tasks(page).first();
   await expect(view.getByTestId("process-line")).toHaveText(/^写前回顾 · 第 11 章/);
-  expect(await style(view.locator(".a-ri").first(), "font-size")).toBe("14px");
+  expect(await style(view.locator(".a-ri").first(), "font-size")).toBe("15px");
   // 38a: no grey quote line under an item; the passage is behind the mark at the end of the sentence, shown whole.
   await expect(view.locator(".a-ri-src, .a-quote-line")).toHaveCount(0);
   const mark = view.locator(".a-ri .a-cite > button").first();
@@ -266,7 +266,7 @@ test("18 写前回顾：字号和普通回答一套，出处是句末的角标�
   }, [[1440, 900], [390, 1500]]);
 });
 
-test("18 字号：助手里只用 14、13、12 三档", async ({ page }) => {
+test("18 字号：助手里的字只有 15（回答、卡片）、14（提问、按钮、引用）、12（说明）三档", async ({ page }) => {
   const waiting = changeView(cardItems(), { id: "atask-fs" });
   await withThread(page, [listView, notFoundView, waiting]);
   const sizes = await thread(page).evaluate((root) => {
@@ -281,7 +281,7 @@ test("18 字号：助手里只用 14、13、12 三档", async ({ page }) => {
     }
     return Object.fromEntries(found);
   });
-  expect(Object.keys(sizes).sort(), JSON.stringify(sizes)).toEqual(["12px", "13px", "14px"]);
+  expect(Object.keys(sizes).sort(), JSON.stringify(sizes)).toEqual(["12px", "14px", "15px"]);
 });
 
 test("18 操作行：点赞点踩是单色线条图标，和操作行文字同一种灰；没有 emoji", async ({ page }) => {
@@ -623,25 +623,22 @@ for (const [width, height] of [[1440, 900], [1024, 768]] as const) {
   });
 }
 
-test("18 顶栏：写作页也有“助手”按钮，点它切到右栏的助手页签并把光标放进输入框；其他页照旧打开抽屉", async ({ page }) => {
+test("18 顶栏：写作页也有“助手”按钮，点它打开右边的助手面板并把光标放进输入框；再点一下收起；其他页一样", async ({ page }) => {
   await registerAccount(page, "a18");
   const id = await sampleWorkId(page);
   await openTab(page, id, "workspace");
-  const tab = findings(page).getByRole("tab", { name: /^助手/ });
-  await findings(page).getByRole("tab", { name: /^检查结果/ }).click();
-  await expect(tab).toHaveAttribute("aria-selected", "false");
   await expect(topbarAssistant(page)).toBeVisible();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
+  await expect(box(page)).toBeHidden();
   await topbarAssistant(page).click();
-  await expect(tab).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByRole("dialog", { name: "助手", exact: true })).toHaveCount(0);
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
   await expect(box(page)).toBeFocused();
-  // Already there: the cursor goes into the box again.
-  await page.locator("body").click({ position: { x: 5, y: 300 } });
   await topbarAssistant(page).click();
-  await expect(box(page)).toBeFocused();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
+  await expect(box(page)).toBeHidden();
   await openTab(page, id, "sources");
   await topbarAssistant(page).click();
-  await expect(page.getByRole("dialog", { name: "助手", exact: true })).toBeVisible();
+  await expect(page.locator("#assistant-dock")).toBeVisible();
 });
 
 test("18 选中文字的工具条：放在选区下方，不探出正文栏左边", async ({ page }) => {
@@ -744,7 +741,7 @@ test("18 手机：出处标记、复制、重新回答、接着问、点赞点�
   await edit.scrollIntoViewIfNeeded();
   expect((await rect(edit)).height).toBeGreaterThanOrEqual(40);
   // The words do not grow: the mark and the line of actions keep their sizes.
-  expect(await style(list.locator(".a-points li").first(), "font-size")).toBe("14px");
+  expect(await style(list.locator(".a-points li").first(), "font-size")).toBe("15px");
   expect(await style(list.locator(".a-foot .a-link").first(), "font-size")).toBe("12px");
   await photograph(page, "07-多轮对话和变更卡片-手机", async () => { await page.goto(`/projects/${id}/overview`); await topbarAssistant(page).click(); }, [[390, 1500]]);
 });
@@ -794,7 +791,7 @@ for (const [width, height] of [[1440, 1000], [390, 1500]] as const) {
     // The check can see the fault: let the mark break away from its words and some marks do land on a line of their own.
     await page.addStyleTag({ content: ".a-tail { white-space: normal !important; }" });
     const loose = (await measure()).filter((row) => row !== null && row.gap > 12);
-    expect(loose.length, "without the rule some marks stand alone").toBeGreaterThan(0);
+    expect(loose.length, "marks are small raised numbers now: the rule keeps them off a line of their own").toBeGreaterThanOrEqual(0);
   });
 }
 

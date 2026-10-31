@@ -169,7 +169,7 @@ test("08 axe 扫描：十一个页面的日间和夜间", async ({ page }, info)
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
 });
 
-test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜间都没有严重违规", async ({ page }, info) => {
+test("助手 axe 扫描：写作页和其他页的助手面板打开时，日间和夜间都没有严重违规", async ({ page }, info) => {
   await registerAccount(page, "axe180");
   const id = await sampleWorkId(page);
   // One answered question, so the scan meets the steps, the answer, its sources and the coverage line.
@@ -185,13 +185,14 @@ test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜
   for (const value of ["day", "night"] as const) {
     await openTab(page, id, "workspace");
     await theme(page, value);
-    await page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("tab", { name: "助手", exact: true }).click();
+    await page.locator("#assistant-open").click();
+    await expect(page.locator("#assistant-dock")).toBeVisible();
     await expect(completed()).toHaveCount(1);
     await page.getByTestId("assistant-thread").getByRole("button", { name: "怎么查的" }).click();
     await scan("写作页助手标签", value);
     await openTab(page, id, "sources");
     await page.locator("#assistant-open").click();
-    await expect(page.getByRole("dialog", { name: "助手", exact: true })).toBeVisible();
+    await expect(page.locator("#assistant-dock")).toBeVisible();
     await expect(completed()).toHaveCount(1);
     await scan("抽屉", value);
   }

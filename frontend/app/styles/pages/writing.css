@@ -239,3 +239,7 @@
 .finding-note input { width: 100%; min-height: 40px; }
 .finding-memory { margin: 0; padding: 8px 12px 12px; }
 .finding-stale { margin-left: 8px; color: var(--c-muted); }
+
+/* The findings column's heading (it holds the check's results only; the assistant has its own dock), and each result's 问助手. */
+.side-title { position: sticky; top: 0; z-index: 2; display: flex; align-items: baseline; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-2) 0 0; background: var(--c-ground); font-size: var(--fs-15); font-weight: 700; }
+.finding-ask { margin: calc(var(--s-1) * -1) 0 var(--s-3) 40px; color: var(--c-muted); font-size: var(--fs-13); }

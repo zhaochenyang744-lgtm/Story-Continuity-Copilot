@@ -17,7 +17,7 @@
 .feedback { animation: toast-in var(--dur-mid) var(--ease); }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -14px); } }
 @media (min-width: 1024px) {
-  body:has(#side-panel-assistant:not([hidden])) .feedback { animation-name: toast-in-left; }
+  html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 }
 @keyframes toast-in-left { from { opacity: 0; transform: translateY(-14px); } }
 

@@ -32,7 +32,7 @@ test.describe("07f 回答", () => {
     await registerAccount(phone, "tap");
     const id = await sampleWorkId(phone);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await ask(phone, "E2E_PASSAGE 苏岑知道罗盘被调包了吗？");
     await finished(phone);
     const task = tasks(phone).first();

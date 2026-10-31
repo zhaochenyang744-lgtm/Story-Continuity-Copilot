@@ -10,8 +10,10 @@ export const tasks = (page: Page) => thread(page).locator("[data-task]");
 export const box = (page: Page) => thread(page).getByRole("textbox", { name: "向助手提问", exact: true });
 export const send = (page: Page) => thread(page).getByRole("button", { name: "发送", exact: true });
 export const stopButton = (page: Page) => thread(page).locator(".cx-send.stop");
-export const sideTab = (page: Page) => findings(page).getByRole("tab", { name: /^助手/ });
+/** The assistant is one dock for every page (v2.2): the top bar's button opens and closes it. */
 export const topbarAssistant = (page: Page) => page.locator("#assistant-open");
+export const sideTab = topbarAssistant;
+export const dock = (page: Page) => page.locator("#assistant-dock");
 // The figure rolls like a counter when it changes (a digit is in the page twice while it does), so it is read from its label.
 export const allowance = async (page: Page) => Number(((await page.locator(".topbar-quota .odo").getAttribute("aria-label")) ?? "").replace(/\D/g, ""));
 export const taskPost = (page: Page) => page.waitForRequest((request) => request.method() === "POST" && /\/assistant\/tasks$/.test(request.url()));
@@ -23,10 +25,12 @@ export const menuNames = (root: Locator) => root.getByRole("menuitemradio").eval
 export const composeNote = "回答由 AI 生成，可能出错，请点出处核对。";
 
 export async function openAssistantTab(page: Page) {
-  await sideTab(page).click();
-  await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+  if (!(await dock(page).isVisible())) await topbarAssistant(page).click();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
   await expect(thread(page)).toBeVisible();
-  // Switching to the tab puts the cursor in the box, where the key hint stands in the cost line's place; most checks read the line at rest.
+  // Opening the dock puts the cursor in the box, where the key hint stands in the cost line's place; most checks read the line at rest.
+  // (With the day's allowance used up the box is not there; one line and the way out stand in its place.)
+  if (await box(page).count()) await expect(box(page)).toBeFocused();
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
 }
 export async function ask(page: Page, question: string) {
@@ -72,7 +76,8 @@ export const proposal = (task: Locator, kind: string) => task.locator(`[data-pro
 export const SENTENCE = "苏岑拿着黄铜罗盘，温岚的手中已经空了，E2E_SUGGEST。";
 export const REWRITTEN = `（示意改法）${SENTENCE.slice(1)}`;
 export const chars = (text: string) => text.replace(/\s+/g, "").length;
-export const findingsTab = (page: Page) => findings(page).getByRole("tab", { name: /^检查结果/ });
+/** The findings column has no tabs any more: this is its heading (clicking it does nothing, which is what the old code needs after "switching" to the findings). */
+export const findingsTab = (page: Page) => findings(page).getByRole("heading", { name: /^检查结果/ });
 export const adoptRequest = (page: Page, action: string) => page.waitForRequest((request) => request.method() === "POST" && new RegExp(`/proposals/[^/]+/${action}$`).test(request.url()));
 
 /** A work whose latest check is a real one, with one finding on `body` (a sentence with E2E_SUGGEST in it). */
@@ -89,7 +94,7 @@ export async function askForFix(page: Page, issue: { id: string }, label = "让�
   await selectIssue(page, issue);
   const request = taskPost(page);
   await findings(page).getByRole("button", { name: label, exact: true }).click();
-  await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
   const body = (await request).postDataJSON();
   await finished(page);
   return { body, task: tasks(page).last() };

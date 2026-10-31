@@ -122,6 +122,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}</>} />
       <ChosenLine task={task} />
       <StoppedNote task={task} visitor={handlers.visitor} />
+      {task.status === "cancelled" && answer && <p className="a-note" data-testid="after-stop">停止前已经生成</p>}
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={() => handlers.retry(task)}>重试</button></>}</p>
       )}

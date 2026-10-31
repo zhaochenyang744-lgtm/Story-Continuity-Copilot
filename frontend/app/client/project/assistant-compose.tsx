@@ -207,6 +207,8 @@ export type ComposerProps = {
   unavailable?: Partial<Record<Mode, string>>;
   /** ↑ with an empty box. */
   recall: () => void;
+  /** The day's allowance is used up: the box is not there; one line says so, with the way out (注册 for a visitor). */
+  usedUp?: { text: string; action?: { label: string; run: () => void } } | null;
 };
 
 const STOP_GRACE_MS = 700;
@@ -214,13 +216,17 @@ const STOP_GRACE_MS = 700;
 const IME_GRACE_MS = 500;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {} } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {}, usedUp = null } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
-  // not stop the task it just started, so the stop button ignores clicks for a moment after it appears.
-  const stopArmedAt = useRef(0);
-  useEffect(() => { if (running) stopArmedAt.current = performance.now(); }, [running]);
+  // not stop the task it just started, so the stop button is greyed for a moment after it appears (it does not take a click it would ignore).
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (!running) return;
+    const timer = window.setTimeout(() => setArmed(true), STOP_GRACE_MS);
+    return () => { window.clearTimeout(timer); setArmed(false); };
+  }, [running]);
   const frame = useRef<HTMLFormElement>(null);
   const plusButton = useRef<HTMLButtonElement>(null);
   const modeButton = useRef<HTMLButtonElement>(null);
@@ -239,6 +245,16 @@ export function Composer(props: ComposerProps) {
   };
   const closePlus = () => { setOpen(null); window.setTimeout(() => plusButton.current?.focus({ preventScroll: true }), 0); };
   const closeMode = () => { setOpen(null); window.setTimeout(() => modeButton.current?.focus({ preventScroll: true }), 0); };
+  if (usedUp) {
+    return (
+      <div className="a-compose">
+        <div className="a-used" role="status">
+          <p>{usedUp.text}</p>
+          {usedUp.action && <button type="button" className="btn btn-primary btn-small" onClick={usedUp.action.run}>{usedUp.action.label}</button>}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="a-compose">
       <form className={`cx${off ? " off" : ""}`} onSubmit={(event) => { event.preventDefault(); if (!running) send(); }} aria-label="向助手提问" ref={frame}>
@@ -274,9 +290,9 @@ export function Composer(props: ComposerProps) {
           )}
           <span className="cx-fill" />
           {running ? (
-            <button type="button" className="cx-send stop" aria-label="停止" disabled={stopping} onClick={() => { if (performance.now() - stopArmedAt.current >= STOP_GRACE_MS) stop(); }}><Stop /></button>
+            <button key="stop" type="button" className="cx-send stop" aria-label="停止" disabled={stopping || !armed} onClick={(event) => { event.preventDefault(); stop(); }}><Stop /></button>
           ) : (
-            <button type="submit" className="cx-send" aria-label="发送" disabled={!canSend}><Up /></button>
+            <button key="send" type="submit" className="cx-send" aria-label="发送" disabled={!canSend}><Up /></button>
           )}
         </div>
         {open === "plus" && <PlusMenu pick={pick} writing={writing} close={closePlus} anchor={frame} />}

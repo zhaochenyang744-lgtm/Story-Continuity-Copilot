@@ -275,7 +275,7 @@ test.describe("示例作品不计字数", () => {
     const own = await createWorkByApi(page, { title: "自己的作品" });
     await openTab(page, own, "workspace");
     await openAssistantTab(page);
-    await expect(thread(page).locator("form.cx")).toHaveClass(/\boff\b/);
+    await expect(thread(page).locator(".a-used")).toBeVisible();
     await expect(thread(page)).toContainText("今天的可检查字数不够这次提问");
   });
 });
@@ -402,7 +402,7 @@ test.describe("v2.1 截图", () => {
     const own = await createWorkByApi(page, { title: "自己的作品" });
     await openTab(page, own, "workspace");
     await openAssistantTab(page);
-    await expect(thread(page).locator("form.cx")).toHaveClass(/\boff\b/);
+    await expect(thread(page).locator(".a-used")).toBeVisible();
     await both(page, (value) => snap(thread(page), "04-对照-自己的作品额度不够", value));
   });
 });

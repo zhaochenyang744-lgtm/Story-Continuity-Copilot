@@ -14,11 +14,10 @@ async function analysis(page: Page, id: string, label: string, type: string, exp
   expect(record.analysis_type).toBe(type);
   return record;
 }
-test("对照计划：结果是助手标签顶部的一块，逐条结果与后端一致，「×」只收起", async ({ page }) => {
+test("对照计划：结果是检查结果顶部的一块，逐条结果与后端一致，「×」只收起", async ({ page }) => {
   const id = await setup(page), result = await analysis(page, id, "对照计划", "plan_alignment");
-  // The result is not a tab of its own any more: the column switches to the assistant and shows it at the top.
-  await expect(tab(page, "助手")).toHaveAttribute("aria-selected", "true");
-  await expect(findings(page).getByRole("tab")).toHaveText([/^检查结果/, "助手"]);
+  // The result is not a tab of its own: it is the top block of the findings column (the assistant has its own panel).
+  await expect(findings(page).getByRole("tab")).toHaveCount(0);
   const block = findings(page).getByTestId("plan-block");
   await expect(block).toBeVisible();
   await expect(block.getByText(/^对照计划 · \d{1,2}:\d{2}$/)).toBeVisible();
@@ -43,43 +42,18 @@ test("没有计划时：不显示对照计划入口", async ({ page }) => {
   const id = await setup(page, false), plans = await api(page).get(`/projects/${id}/author-intent?include_archived=true`);
   expect(plans.story_plans).toHaveLength(0);
   await expect(button(page, "对照计划")).toHaveCount(0);
-  // Without a plan there is no such tab either: the findings tab stands alone.
-  await expect(findings(page).getByRole("tab")).toHaveText([/^检查结果/, "助手"]);
-  await expect(tab(page, "对照计划")).toHaveCount(0);
+  // Without a plan there is no comparison block either.
+  await expect(findings(page).getByRole("tab")).toHaveCount(0);
+  await expect(findings(page).getByTestId("plan-block")).toHaveCount(0);
 });
 
-test("右栏的切换：只有「检查结果」「助手」两项；方向键、Home、End 在两项之间移动，Tab 进入面板", async ({ page }) => {
+test("右栏只有检查结果：一个标题，没有标签；对照计划的结果在它上面", async ({ page }) => {
   const id = await setup(page);
-  await expect(findings(page).getByRole("tablist", { name: "右栏内容", exact: true })).toBeVisible();
-  await expect(findings(page).getByRole("tab")).toHaveText([/^检查结果/, "助手"]);
-  await expect(tab(page, /^检查结果/)).toHaveAttribute("aria-selected", "true");
-  // 写前回顾 and 对照计划 start in the assistant; the strip stays at two.
+  await expect(findings(page).getByRole("tablist")).toHaveCount(0);
+  await expect(findings(page).getByRole("heading", { name: /^检查结果/ })).toBeVisible();
   await analysis(page, id, "对照计划", "plan_alignment");
-  await expect(tab(page, "助手")).toHaveAttribute("aria-selected", "true");
-  await expect(findings(page).getByRole("tab")).toHaveText([/^检查结果/, "助手"]);
-  await expect(tab(page, "助手")).toHaveAttribute("tabindex", "0");
-  await expect(tab(page, /^检查结果/)).toHaveAttribute("tabindex", "-1");
-  // Only the chosen tab is in the tab order; the arrow keys move and choose, and wrap round.
-  await tab(page, "助手").focus();
-  await page.keyboard.press("ArrowRight");
-  await expect(tab(page, /^检查结果/)).toBeFocused();
-  await expect(tab(page, /^检查结果/)).toHaveAttribute("aria-selected", "true");
-  await expect(findings(page).getByRole("tabpanel")).toHaveCount(1);
-  await page.keyboard.press("ArrowRight");
-  await expect(tab(page, "助手")).toBeFocused();
-  await expect(tab(page, "助手")).toHaveAttribute("aria-selected", "true");
   await expect(findings(page).getByTestId("plan-block")).toBeVisible();
-  await page.keyboard.press("ArrowLeft");
-  await expect(tab(page, /^检查结果/)).toBeFocused();
-  await page.keyboard.press("End");
-  await expect(tab(page, "助手")).toBeFocused();
-  await page.keyboard.press("Home");
-  await expect(tab(page, /^检查结果/)).toBeFocused();
-  await page.keyboard.press("ArrowLeft");
-  await expect(tab(page, "助手")).toBeFocused();
-  // Tab leaves the strip for the chosen panel's content.
-  await page.keyboard.press("Tab");
-  await expect.poll(() => page.evaluate(() => Boolean(document.activeElement?.closest("[role=tabpanel]")))).toBe(true);
+  await expect(findings(page).getByRole("tab")).toHaveCount(0);
 });
 
 test("右栏的切换：右栏不在视口里时（窄窗口里它在正文下面），点页头按钮会滚到它", async ({ page }) => {

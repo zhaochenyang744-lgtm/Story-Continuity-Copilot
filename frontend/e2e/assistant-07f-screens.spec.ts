@@ -42,7 +42,7 @@ test.describe("07f 截图", () => {
     await registerAccount(small, "shotbar");
     const sample = await sampleWorkId(small);
     await openTab(small, sample, "workspace");
-    await small.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await small.locator("#assistant-open").click();
     await both(small, async (value) => { await box(small).focus(); await snap(compose(small), "01-输入框聚焦-手机", value); });
     await both(small, async (value) => { await box(small).blur(); await snap(compose(small), "11-花费提示-手机", value); });
     await phone.close();
@@ -136,9 +136,9 @@ test.describe("07f 截图", () => {
     await registerAccount(small, "shotpane");
     const id = await sampleWorkId(small);
     await openTab(small, id, "workspace");
-    await small.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await small.locator("#assistant-open").click();
     for (const [index, question] of ["苏岑是谁？", "温岚是谁？", "罗盘在谁手里？", "老周是谁？"].entries()) { await ask(small, question); await finished(small, index + 1); }
-    await small.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await small.locator("#assistant-open").click();
     await small.waitForTimeout(600);
     await both(small, async (value) => snap(small, "31-手机助手窗格", value));
     await phone.close();

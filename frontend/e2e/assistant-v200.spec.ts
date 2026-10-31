@@ -562,7 +562,7 @@ test.describe("改资料：版面", () => {
     const id = await sampleWorkId(phone);
     await serveTasks(phone, () => [crowded()]);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await expect(cardOf(phone)).toBeVisible();
     await insideColumn(phone);
     await itemOf(cardOf(phone), "C2").getByRole("button", { name: "改内容", exact: true }).tap();
@@ -658,7 +658,7 @@ test.describe("改资料 截图", () => {
     const id = await sampleWorkId(phone);
     await serveTasks(phone, () => [changeView([changeItem({ id: "a-1", label: "C1" }), fact({ id: "a-2", label: "C2" })])]);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await expect(cardOf(phone)).toBeVisible();
     await both(phone, (value) => snap(phone, "07-375宽-卡片", value));
     await phone.unrouteAll({ behavior: "ignoreErrors" });

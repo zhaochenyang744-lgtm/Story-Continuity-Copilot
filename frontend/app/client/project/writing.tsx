@@ -26,7 +26,7 @@ import {
   timeLabel,
 } from "../labels";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, isSampleWork, SAMPLE_FREE, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
-import { AssistantBridge, AssistantThread, type Command, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
+import { AssistantBridge, AssistantDock, type Command, DockContext, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
 import { quotaReason } from "./assistant-parts";
 import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
@@ -39,28 +39,6 @@ import { issueAllows, issueHasSufficientEvidence, issueNeedsDecision, type Proje
 /** 写作: a huge blue chapter number and the title, the chapters on the left, the draft with each
     finding's sentence marked and numbered, and the findings as cards that open in place. Both side
     columns stay on screen while the draft scrolls. A written chapter opens here too (?chapter=N). */
-// On a phone the 助手 pane fills the screen under the top bar and the pane switch. The switch is scrolled up to just under the top
-// bar, measured, since the bar wraps taller on a phone than --topbar-h; the page itself is then held still (assistant.css) and
-// only the conversation scrolls, so the box never leaves the screen.
-function pinPanes() {
-  const panes = document.querySelector<HTMLElement>(".mobile-panes");
-  if (!panes) return;
-  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
-  window.scrollTo({ top: Math.max(0, panes.getBoundingClientRect().top + window.scrollY - top) });
-  fitAssistantPane();
-}
-/** On a phone the 助手 pane is as high as what is left of the screen under the top bar, the pane switch and the space the page keeps between
-    the switch and the pane (measured once the pane is shown; 32px until then), so its last line (the box and what stands under it) is on screen. */
-function fitAssistantPane() {
-  const root = document.documentElement;
-  const top = document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 0;
-  const switcher = document.querySelector<HTMLElement>(".mobile-panes");
-  const panel = document.getElementById("side-panel-assistant");
-  const visible = window.visualViewport?.height ?? window.innerHeight;
-  const gap = switcher && panel && panel.getClientRects().length > 0 ? Math.max(0, panel.getBoundingClientRect().top - switcher.getBoundingClientRect().bottom) : 32;
-  root.style.setProperty("--assistant-pane-h", `${Math.max(320, Math.round(visible - top - (switcher?.offsetHeight ?? 0) - gap - 8))}px`);
-}
-
 export function WritingPage(props: PageProps) {
   const { p, user, go, notices } = props;
   // The chapter the address asks for is read from the router, not from window.location: when the author arrives from another page
@@ -81,26 +59,16 @@ export function WritingPage(props: PageProps) {
   return <DraftDesk {...props} openChapter={open} />;
 }
 
-/** Which of the right column's tabs the author last chose, kept on this device. */
-const sideKey = "story-continuity:writing-side";
-const rememberedSide = (): "findings" | "assistant" | null => {
-  try {
-    const value = window.localStorage.getItem(sideKey);
-    return value === "assistant" || value === "findings" ? value : null;
-  } catch { return null; }
-};
-
 function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
-  // "去写作页做写前回顾" in another page's assistant brings the author here: the column opens on the assistant and starts it, or
+  // "去写作页做写前回顾" in another page's assistant brings the author here: the dock opens and starts it, or
   // says why it cannot (chapter 1, an unsaved draft).
   const [forRecap] = useState(recapWanted);
-  // One state for "what is being looked at": the desktop column shows findings or assistant, a narrow screen adds the draft. A choice made
-  // on either layout is the choice on both (V08); 正文 only means something on a narrow screen, so the column keeps the last side picked.
-  const [pane, setPane] = useState<"draft" | "issues" | "assistant">(forRecap ? "assistant" : "draft");
+  // On a narrow screen the page shows the draft or the findings, one at a time. The assistant is the dock (over the page there), not a pane.
+  const [pane, setPane] = useState<"draft" | "issues">("draft");
   const mobilePane = pane;
-  const setMobilePane = setPane;
-  // The assistant column is always built (hidden while the findings are shown), so a running task goes on while the author
+  const dock = useContext(DockContext);
+  // The dock is always built (hidden while it is closed), so a running task goes on while the author
   // writes and the findings list can tell which findings have an adopted change.
   const [incoming, setIncoming] = useState<Incoming | null>(null);
   const [command, setCommand] = useState<Command | null>(forRecap ? { kind: "recap", nonce: -1 } : null);
@@ -108,32 +76,11 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const [assistantBusy, setAssistantBusy] = useState(false);
   const [adoptedIssueIds, setAdoptedIssueIds] = useState<string[]>([]);
   const [planFolded, setPlanFolded] = useState(false);
-  const [planStarts, setPlanStarts] = useState(0);
   const incomingNonce = useRef(0);
-  // What the right column shows: the check's findings, or the assistant. Coming from the plan page's 对照正文, whose
-  // comparison is running, the column opens on the assistant, where that comparison is shown.
-  const [lastSide, setLastSide] = useState<SideItem>(() => (forRecap || p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "assistant" : rememberedSide() ?? "findings"));
-  const wantedSide: SideItem = pane === "assistant" ? "assistant" : pane === "issues" ? "findings" : lastSide;
-  /** A side picked on purpose (the column's tabs, a button that brings the assistant): the narrow screen follows. */
-  const showSide = (next: SideItem) => { setLastSide(next); setPane(next === "assistant" ? "assistant" : "issues"); };
-  const [revealSide, setRevealSide] = useState(forRecap ? 1 : 0);
-  // On a phone the assistant is a pane as high as what is left of the screen below the top bar and the pane switch (and above the
-  // keyboard, when it is up): the conversation scrolls inside it and the box stays at its foot.
-  useEffect(() => {
-    const root = document.documentElement;
-    const measure = fitAssistantPane;
-    measure();
-    window.addEventListener("resize", measure);
-    window.visualViewport?.addEventListener("resize", measure);
-    return () => {
-      window.removeEventListener("resize", measure);
-      window.visualViewport?.removeEventListener("resize", measure);
-      root.style.removeProperty("--assistant-pane-h");
-    };
-  }, []);
-  // Switching to the 助手 tab with the mouse or Enter puts the cursor in its box, so the author does not walk past the whole conversation.
-  const focusAssistant = useRef(false);
-  const [focusBox, setFocusBox] = useState(0);
+  // Starting a review or a comparison scrolls the findings column into view when it is out of sight.
+  const [revealSide, setRevealSide] = useState(0);
+  const { setOpen: setDockOpen } = dock;
+  useEffect(() => { if (forRecap) setDockOpen(true); }, [forRecap, setDockOpen]);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -151,7 +98,6 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const hasAlignment = hasPlans && (Boolean(p.planAlignment) || p.analysisBusy === "plan_alignment");
   // The assistant is offered only to accounts the roll-out has reached; for the others its tab, its entrances and its column are not there.
   const assistantOn = Boolean(user.assistant?.available);
-  const side: SideItem = assistantOn ? wantedSide : "findings";
   const empty = !(p.saved?.body ?? p.draft?.body ?? "").trim();
   const chars = writtenChars(p.draft?.body ?? "");
   const chapterNumber = p.draft?.chapter_number ?? project.current_draft.chapter_number;
@@ -167,18 +113,6 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const demoChecking = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "checking";
   const scanning = checking || demoChecking;
   const reveal = useFirstShow(p.run?.status === "completed" ? p.run.run_id : null, issues.length);
-  // Opening a finding brings the findings back; starting a review or comparison scrolls to the column if it is out of view.
-  const selectedId = p.selected?.id ?? null;
-  const [seenSelected, setSeenSelected] = useState(selectedId);
-  if (seenSelected !== selectedId) {
-    setSeenSelected(selectedId);
-    if (selectedId) { setLastSide("findings"); if (pane === "assistant") setPane("issues"); }
-  }
-  useEffect(() => {
-    if (side !== "assistant" || !focusAssistant.current) return;
-    focusAssistant.current = false;
-    document.querySelector<HTMLTextAreaElement>('#side-panel-assistant textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true });
-  }, [side, focusBox]);
   useEffect(() => {
     if (!revealSide) return;
     const column = document.getElementById("writing-side");
@@ -193,42 +127,16 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const linkedIssue = issues.find((issue) => issue.id === linkedId) ?? null;
   const linkedChapters = [...new Set((linkedIssue?.evidence ?? []).map((item) => item.chapter_number))].slice(0, 3);
   const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id, hovered: hovered === issue.id, done: isDone(issue), reveal }));
-  const chooseSide = (next: SideItem) => {
-    if (next === "assistant" && !assistantOn) return;
-    showSide(next);
-    try { window.localStorage.setItem(sideKey, next === "assistant" ? "assistant" : "findings"); } catch { /* the choice lasts for this visit */ }
-  };
-  // The top bar's 助手 button: the column switches to the assistant and the cursor goes into its box (a phone shows the assistant pane).
   const bridge = useContext(AssistantBridge);
   useAssistantAnchor("writing", { chapter_number: chapterNumber });
-  const openColumn = useRef<() => void>(() => undefined);
-  useEffect(() => {
-    openColumn.current = () => {
-      if (!assistantOn) return;
-      chooseSide("assistant");
-      setMobilePane("assistant");
-      window.requestAnimationFrame(pinPanes);
-      focusAssistant.current = true;
-      setFocusBox((count) => count + 1);
-    };
-  });
-  const { setColumnOpener } = bridge;
-  useEffect(() => {
-    setColumnOpener(() => openColumn.current());
-    return () => setColumnOpener(null);
-  }, [setColumnOpener]);
   // A passage picked in the draft goes to the assistant: into the question, or asked about at once.
   const bring = (text: string, quick: boolean) => {
-    chooseSide("assistant");
-    setMobilePane("assistant");
-    setRevealSide((count) => count + 1);
+    setDockOpen(true);
     setIncoming({ text, quick, nonce: ++incomingNonce.current });
   };
-  // A task the page starts for the assistant: the column switches to it, the thread starts it or says why it cannot.
-  const bringTask = (next: { kind: "recap" } | { kind: "fix"; issueId: string } | { kind: "check"; text: string }) => {
-    chooseSide("assistant");
-    setMobilePane("assistant");
-    setRevealSide((count) => count + 1);
+  // A task the page starts for the assistant: the dock opens, the thread starts it (or takes the finding as the question's context) or says why it cannot.
+  const bringTask = (next: { kind: "recap" } | { kind: "fix"; issueId: string } | { kind: "context"; issueId: string } | { kind: "check"; text: string }) => {
+    setDockOpen(true);
     setCommand({ ...next, nonce: ++incomingNonce.current });
   };
   // Read once: a later visit does not start it again.
@@ -238,7 +146,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
     const row = document.getElementById(`issue-${id}`);
     if (!issue || !row) return;
     if (p.selected?.id !== id) void p.select(issue, row);
-    showSide("findings");
+    setPane("issues");
     window.setTimeout(() => row.scrollIntoView({ block: "nearest", behavior: "smooth" }), 0);
   };
   // Opening a card from the list brings its sentence into view and rings it once.
@@ -276,10 +184,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const finished = p.run?.status === "completed" && !checking;
   // 对照计划 is the old analysis, unchanged; only where its result is shown has moved: the top of the assistant column.
   const analyse = () => {
-    chooseSide("assistant");
-    setMobilePane(assistantOn ? "assistant" : "issues");
+    setPane("issues");
     setPlanFolded(false);
-    setPlanStarts((count) => count + 1);
     setRevealSide((count) => count + 1);
     void p.startAnalysis("plan_alignment");
   };
@@ -353,7 +259,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   };
 
   return (
-    <section className="page writing" data-mobile-pane={mobilePane}>
+    <section className="page writing" data-mobile-pane={mobilePane} data-dock={dock.open ? "open" : "closed"}>
       <div className="writing-layout">
       <div className="writing-main">
       {notices}
@@ -405,12 +311,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
       )}
 
       <nav className="mobile-panes" aria-label="切换内容">
-        {(assistantOn ? ["draft", "issues", "assistant"] as const : ["draft", "issues"] as const).map((target) => (
-          <button key={target} type="button" aria-current={mobilePane === target ? "page" : undefined} onClick={() => {
-            if (target === "assistant") { chooseSide("assistant"); window.requestAnimationFrame(pinPanes); }
-            else if (target === "issues") chooseSide("findings");
-            else setPane("draft");
-          }}>{target === "draft" ? "正文" : target === "issues" ? `检查结果 ${issues.length}` : "助手"}</button>
+        {(["draft", "issues"] as const).map((target) => (
+          <button key={target} type="button" aria-current={mobilePane === target ? "page" : undefined} onClick={() => setPane(target)}>{target === "draft" ? "正文" : `检查结果 ${issues.length}`}</button>
         ))}
       </nav>
 
@@ -444,17 +346,9 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
       </div>
 
         <aside id="writing-side" className="findings" aria-label="检查与回顾">
-          <SideTabs
-            value={side}
-            onChange={chooseSide}
-            onActivate={(next) => { if (next === "assistant") focusAssistant.current = true; }}
-            items={[
-              { id: "findings", label: "检查结果", count: issues.length },
-              ...(assistantOn ? [{ id: "assistant" as const, label: "助手", beta: Boolean(user.assistant?.beta) }] : []),
-            ]}
-          />
-          <div role={assistantOn ? "tabpanel" : undefined} id="side-panel-findings" aria-labelledby="side-tab-findings" hidden={side !== "findings"}>
-          {!assistantOn && hasAlignment && <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} />}
+          <h2 className="side-title" id="side-tab-findings">检查结果 <span className="num side-tab-count">{issues.length}</span></h2>
+          <div id="side-panel-findings">
+          {hasAlignment && <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} />}
           {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
             <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
           )}
@@ -501,6 +395,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                           <strong>{findingHeadline(issue)}</strong>
                         </span>
                       </button>
+                      {assistantOn && !isOpen && <button type="button" className="link finding-ask" disabled={Boolean(assistReason)} title={assistReason || undefined} onClick={() => bringTask({ kind: "context", issueId: issue.id })}>问助手</button>}
                       {isOpen && p.selected && (
                         <div className={folding === issue.id ? "collapse closing" : "collapse"}>
                           <div><FindingDetail key={issue.id} p={p} go={go} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} assist={assistantOn ? { reason: assistReason, run: () => bringTask({ kind: "fix", issueId: issue.id }) } : null} /></div>
@@ -520,15 +415,13 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
           ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
           {p.run && p.run.result_origin !== "demo_preset" && <p className="ai-note" data-testid="ai-note">检查结果由 AI 生成，可能有错漏，请对照原文判断。</p>}
           </div>
-          {assistantOn && (
-            <div role="tabpanel" id="side-panel-assistant" aria-labelledby="side-tab-assistant" hidden={side !== "assistant"}>
-              <AssistantThread key={project.id} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }} usage={usage} visitor={user.account_type === "visitor"} go={go}
-                incoming={incoming} command={command} picked={picked} writing={writingLink} variant="column" material={material}
-                top={hasAlignment ? <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} /> : null} topKey={planStarts} />
-            </div>
-          )}
         </aside>
       </div>
+
+      {assistantOn && (
+        <AssistantDock key={project.id} open={dock.open} close={() => setDockOpen(false)} beta={Boolean(user.assistant?.beta)} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
+          usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={incoming} command={command} picked={picked} focus={dock.focus} writing={writingLink} material={material} />
+      )}
 
       {p.changeSet && <FactReview p={p} />}
 
@@ -537,35 +430,6 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
       {tech && p.run && <TechDialog run={p.run} paired={p.pairedRun} close={() => setTech(false)} />}
       {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus({ preventScroll: true }), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
     </section>
-  );
-}
-
-type SideItem = "findings" | "assistant";
-/** The right column's switch: a tablist with one tab per item; the arrow keys, Home and End move between them. */
-function SideTabs({ items, value, onChange, onActivate }: { items: { id: SideItem; label: string; count?: number; beta?: boolean }[]; value: SideItem; onChange: (next: SideItem) => void; onActivate?: (next: SideItem) => void }) {
-  const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
-    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
-    event.preventDefault();
-    // Counted from the tab that has focus, which is not always the chosen one.
-    const focused = (event.target as HTMLElement).closest<HTMLElement>('[role="tab"]')?.id.replace("side-tab-", "");
-    const at = Math.max(0, items.findIndex((item) => item.id === (focused ?? value)));
-    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (at + (event.key === "ArrowRight" ? 1 : items.length - 1)) % items.length;
-    onChange(items[next].id);
-    document.getElementById(`side-tab-${items[next].id}`)?.focus({ preventScroll: true });
-  };
-  // One thing to show is a heading, not a tab to switch to.
-  if (items.length === 1) {
-    const only = items[0];
-    return <h2 className="side-title" id={`side-tab-${only.id}`}>{only.label}{only.count !== undefined && <> <span className="num side-tab-count">{only.count}</span></>}</h2>;
-  }
-  return (
-    <div className="side-tabs" role="tablist" aria-label="右栏内容" onKeyDown={onKeyDown}>
-      {items.map((item) => (
-        <button key={item.id} type="button" role="tab" id={`side-tab-${item.id}`} className="side-tab" aria-selected={item.id === value} aria-controls={`side-panel-${item.id}`} tabIndex={item.id === value ? 0 : -1} onClick={() => { onActivate?.(item.id); onChange(item.id); }}>
-          <span>{item.label}</span>{item.count !== undefined && <> <span className="num side-tab-count">{item.count}</span></>}{item.beta && <span className="a-beta">测试版</span>}
-        </button>
-      ))}
-    </div>
   );
 }
 

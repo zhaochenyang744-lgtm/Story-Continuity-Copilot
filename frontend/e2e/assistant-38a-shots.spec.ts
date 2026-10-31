@@ -19,7 +19,7 @@ async function snap(page: Page, name: string) {
 }
 /** The assistant on the writing page: the column's tab on a wide window, the 助手 pane of a phone. */
 async function showAssistant(page: Page) {
-  if ((page.viewportSize()?.width ?? 1440) < 1024) await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+  if ((page.viewportSize()?.width ?? 1440) < 1024) await page.locator("#assistant-open").click();
   else await openAssistantTab(page);
 }
 

@@ -209,7 +209,7 @@ test.describe("助手：回答", () => {
     await registerAccount(phone, "touch");
     const id = await sampleWorkId(phone);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await ask(phone, "E2E_PASSAGE 苏岑知道罗盘被调包了吗？");
     await finished(phone);
     const task = tasks(phone).first();
@@ -859,18 +859,19 @@ test.describe("助手：开关、测试版、隐私", () => {
     expect(errors).toEqual([]);
   });
 
-  test("注册用户阶段：「助手」标签旁有「测试版」小标签（3 像素圆角），抽屉标题也有", async ({ page }) => {
+  test("注册用户阶段：面板标题旁有「测试版」小标签（6 像素圆角），换页也有", async ({ page }) => {
     const id = await setup(page);
     try {
       await setRollout(page, "registered");
       expect((await api(page).get("/auth/session")).user.assistant).toEqual({ available: true, beta: true });
       await page.reload();
-      const tab = findings(page).getByRole("tab", { name: /^助手/ });
-      await expect(tab.locator(".a-beta")).toHaveText("测试版");
-      expect(await tab.locator(".a-beta").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("6px");
+      await topbarAssistant(page).click();
+      const mark = page.locator("#assistant-dock").locator(".a-beta");
+      await expect(mark).toHaveText("测试版");
+      expect(await mark.evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("6px");
       await openTab(page, id, "sources");
       await topbarAssistant(page).click();
-      await expect(page.getByRole("dialog", { name: "助手", exact: true }).locator(".a-beta")).toHaveText("测试版");
+      await expect(page.locator("#assistant-dock").locator(".a-beta")).toHaveText("测试版");
       // Not in the other stages.
       await setRollout(page, "all");
       await page.reload();
@@ -980,8 +981,8 @@ test.describe("全站：圆角和输入框", () => {
     await openTab(page, id, "sources");
     expect(await radius(".chapter-row")).toBe("0px");
     expect(await radius(".chapter-item")).toBe("0px");
-    await topbarAssistant(page).click();
-    expect(await page.locator(".drawer").evaluate((node) => getComputedStyle(node).borderRadius)).toBe("10px 0px 0px 10px");
+    if (!(await page.locator("#assistant-dock").isVisible())) await topbarAssistant(page).click();
+    expect(await radius("#assistant-dock")).toBe("0px");
     await page.keyboard.press("Escape");
     // Fields everywhere are 6.
     await openTab(page, id, "memory");

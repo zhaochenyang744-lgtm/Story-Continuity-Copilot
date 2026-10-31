@@ -75,13 +75,13 @@ export function ChapterRail({ chapters, current, draftNumber, draftTitle, linked
         {chapters.map((chapter) => (
           <li key={chapter.id} data-chapter={chapter.number} className={linked.includes(chapter.number) ? "linked" : undefined}>
             <button type="button" aria-current={current === chapter.number ? "page" : undefined} onClick={() => open(chapter.number)}>
-              <span className="mono">{pad2(chapter.number)}</span>{bareChapterTitle(chapter.title) || "未命名"}
+              <span className="mono">{pad2(chapter.number)}</span><span className="rail-title">{bareChapterTitle(chapter.title) || "未命名"}</span>
             </button>
           </li>
         ))}
         <li className="draft-row">
           <button type="button" aria-current={current === null ? "page" : undefined} onClick={() => open(null)}>
-            <span className="mono">{pad2(draftNumber)}</span>{bareChapterTitle(draftTitle) || "草稿"}<span className="badge">草稿</span>
+            <span className="mono">{pad2(draftNumber)}</span><span className="rail-title">{bareChapterTitle(draftTitle) || "草稿"}</span><span className="badge">草稿</span>
           </button>
         </li>
       </ol>

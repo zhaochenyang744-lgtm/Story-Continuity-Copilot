@@ -62,7 +62,7 @@ test.describe("07f 输入框", () => {
     await registerAccount(small, "bar");
     const sample = await sampleWorkId(small);
     await openTab(small, sample, "workspace");
-    await small.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await small.locator("#assistant-open").click();
     await expect(thread(small)).toBeVisible();
     await expectBarSteady(small);
     await phone.close();
