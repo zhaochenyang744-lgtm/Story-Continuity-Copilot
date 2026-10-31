@@ -15,10 +15,11 @@ PRE_REGISTERED = True
 
 PRE_REGISTRATION = {
     "registered_on": "2026-10-30",
-    "amended_on": [],
-    "applies_to": ["eval_set_a4_dev", "eval_set_a4_formal", "eval_set_a4s_formal"],
+    "amended_on": ["2026-10-31"],  # addendum 1 (SPEC): the first formal pair is spent, a new pair registered; no bar changed
+    "applies_to": ["eval_set_a4_dev", "eval_set_a4_formal", "eval_set_a4s_formal", "eval_set_a42_formal", "eval_set_a4s2_formal"],
     "dev_sets": ["eval_set_a4_dev"],
-    "formal_sets": ["eval_set_a4_formal", "eval_set_a4s_formal"],
+    "spent_formal_sets": ["eval_set_a4_formal", "eval_set_a4s_formal"],
+    "formal_sets": ["eval_set_a42_formal", "eval_set_a4s2_formal"],
     "runs": 3,
     "judging": {"judge_model": "deepseek-v4-pro", "thinking": False, "temperature": 0, "audit_seed": 20261030,
                 "audit_sample_rate": 0.2},
