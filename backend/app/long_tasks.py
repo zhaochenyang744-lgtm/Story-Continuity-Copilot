@@ -695,8 +695,9 @@ class LongTasks:
         asked again (v2.2, a long task's question as the third source of decisions)."""
         names = {row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
         subjects = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in body["text"]][:3]
-        if not subjects and len(str(body.get("subject") or "").strip()) >= 2:  # the question left the thing out ("缺口位置：……")
-            subjects = [str(body["subject"]).strip()]
+        target = str(body.get("subject") or "").strip()
+        if not subjects and len(target) >= 2:  # the question left the thing out ("缺口位置：……"): the plan's target says it
+            subjects = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in target][:1] or [target]
         if not subjects:
             return  # nothing to say whom it covers: the answer stands for this task only
         option = next((o for o in body["options"] if o["key"] == choice), None)

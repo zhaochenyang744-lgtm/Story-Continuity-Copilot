@@ -497,7 +497,7 @@ class ReviewFixTests(AssistantCase):
             self.run_ask(turn(call("read_chapter", chapter_number=9)), cite)
             task_id = self.rows("SELECT id FROM assistant_tasks WHERE project_id=? LIMIT 1", self.project_id)
         task_id = task_id[0]["id"]
-        body = {"text": "缺口位置：第2章写右上角，第9章写左上角", "subject": self.name, "choices": ["a", "b", "both", "you_decide"],
+        body = {"text": "缺口位置：第2章写右上角，第9章写左上角", "subject": f"{self.name}的外形描述", "choices": ["a", "b", "both", "you_decide"],
                 "options": [{"key": "a", "chapter": 2, "quote": "右上角"}, {"key": "b", "chapter": 9, "quote": "左上角"}]}
         with self.db.connection() as c:
             LongTasks._choice_card(c, self.project_id, task_id, body, "a")
@@ -528,6 +528,14 @@ class OtherWordTests(unittest.TestCase):
         self.assertEqual(decisions.thing_for(text, "木牌", ["空喉盏", "弯穗牌"]), "弯穗牌")
         self.assertIsNone(decisions.thing_for(text, "坛门", ["黧烛坛"]))  # not the same last character
         self.assertIsNone(decisions.thing_for("礼盏在东屋。" + "风。" * 400 + "空喉盏在西屋。", "礼盏", ["空喉盏"]))  # never near it
+
+    def test_a_chapter_range_the_author_says_is_read_from_the_words(self):  # A4 fix run: "二到七章……是我故意留的"
+        from app.assistant_recognize import said_chapters, THREAD_WORDS
+        self.assertEqual(said_chapters("二到七章郦闻砾的左右手打架是我故意留的"), [2, 7])
+        self.assertEqual(said_chapters("第3-5章的日期别管"), [3, 5])
+        self.assertIsNone(said_chapters("她年龄不统一是故意的"))
+        self.assertTrue(THREAD_WORDS.search("井里那组三声我还想吊着"))  # the thread list goes with this call
+        self.assertFalse(THREAD_WORDS.search("以后回答短一点"))  # and not with this one
 
 
 from tests.test_v210_long_tasks import LongCase  # noqa: E402

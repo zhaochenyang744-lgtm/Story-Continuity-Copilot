@@ -64,8 +64,13 @@ def messages_for(sentence: str, threads: list[str] | tuple[str, ...] = ()) -> li
     return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": shown}]
 
 
+THREAD_WORDS = re.compile(r"伏笔|线|悬念|收|吊|留着|问号|谜|没解|不解释|别交代")
+
+
 def call_model(provider: Any, sentence: str, threads: list[str] | tuple[str, ...] = ()) -> Any:
-    """One recognition call, back within the timeout (the transport is told the same limit)."""
+    """One recognition call, back within the timeout (the transport is told the same limit). The work's threads go with it only
+    when the words may be about one (a thread kept open): for any other sentence they would only make the call dearer."""
+    threads = threads if THREAD_WORDS.search(sentence or "") else ()
     context = contextvars.copy_context()
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
     try:
@@ -119,7 +124,7 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
     if len(words) < WORDS_MIN or words not in said:
         return None
     last = c.execute("SELECT COALESCE(MAX(chapter_number),0) FROM v2_chapters WHERE project_id=?", (project_id,)).fetchone()[0]
-    chapters = found["chapters"]
+    chapters = found["chapters"] or said_chapters(sentence)
     if chapters and not 1 <= min(chapters) <= max(chapters) <= max(last, 1):
         chapters = None
     chapters = sorted(chapters) if chapters else None
@@ -168,6 +173,38 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
               "quote": sentence.strip()[:decisions.QUOTE_MAX], "source": source, "source_ref": source_ref,
               "basis_chapter": prefer or (chapters[1] if chapters else None)}
     return record, replaced(c, project_id, record, sentence)
+
+
+_NUMERAL = "零〇一二两三四五六七八九十百"
+CHAPTER_RANGE = re.compile(rf"第?([{_NUMERAL}\d]+)\s*(?:章)?\s*(?:至|到|-|—|～|~)\s*第?([{_NUMERAL}\d]+)\s*章")
+
+
+def _chapter_number(text: str) -> int | None:
+    if text.isdigit():
+        return int(text)
+    digits = {"零": 0, "〇": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+    total, current = 0, 0
+    for ch in text:
+        if ch in digits:
+            current = digits[ch]
+        elif ch == "十":
+            total += (current or 1) * 10
+            current = 0
+        elif ch == "百":
+            total += (current or 1) * 100
+            current = 0
+        else:
+            return None
+    return total + current or None
+
+
+def said_chapters(sentence: str) -> list[int] | None:
+    """A chapter range the author's words give ("二到七章", "第3至5章"), when the call did not write it (A4 fix run)."""
+    found = CHAPTER_RANGE.search(sentence or "")
+    if not found:
+        return None
+    first, last = _chapter_number(found.group(1)), _chapter_number(found.group(2))
+    return [first, last] if first and last else None
 
 
 SAME_MATTER = ("intentional", "prefer", "no_reminder")
