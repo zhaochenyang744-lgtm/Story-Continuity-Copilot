@@ -229,7 +229,10 @@ class LongTasks:
             choice = _parse_plan((result.message or {}).get("content"))
         except Exception as error:  # a failed plan call fails the task; the author asks again
             return self._finish(task_id, FAILED, error_code="assistant_long_plan_failed", internal=type(error).__name__)
-        self._decision_card(task_id, row, question, recognition)
+        # The card's own call (picking the thread or the thing) is the task's too: outside the usage it fails at once and the
+        # decision is matched by spelling alone (A4 dev 3: "那封信" kept open, never matched to its thread, no card).
+        with provider_usage(row["user_id"], row["reservation_id"]):
+            self._decision_card(task_id, row, question, recognition)
         scope = json.loads(row["scope_json"])
         if choice["type"] not in OFFERED:
             with self.db.connection() as c:
@@ -337,6 +340,7 @@ class LongTasks:
     def answer(self, user_id: str, project_id: str, task_id: str, question_id: str, choice: str, cap_cny: float | None) -> dict[str, Any]:
         """The author's answer to a question the task stopped on. A budget question: `continue` with a higher ceiling, or `stop`
         and take what is done. A decision: one of the question's options, or `you_decide`."""
+        picked = self._choice_subjects(user_id, project_id, task_id, question_id, choice)
         with self.db.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             row, plan = self._owned(c, user_id, project_id, task_id)
@@ -356,7 +360,7 @@ class LongTasks:
             c.execute("UPDATE assistant_long_questions SET answer_json=?,answered_at=? WHERE id=?",
                       (json.dumps({"choice": choice, "cap_cny": cap_cny}, ensure_ascii=False), utcnow(), question_id))
             if question["kind"] == "decision" and choice in ("a", "b", "both"):
-                self._choice_card(c, project_id, task_id, body, choice)
+                self._choice_card(c, project_id, task_id, body, choice, picked)
             if stop:
                 c.execute("UPDATE assistant_long_plans SET stop_requested=1,stopped_by=COALESCE(stopped_by,?) WHERE task_id=?", (COST_CAP, task_id))
             c.execute("UPDATE assistant_tasks SET status=? WHERE id=?", (QUEUED, task_id))
@@ -694,14 +698,49 @@ class LongTasks:
         return None
 
     @staticmethod
-    def _choice_card(c: Any, project_id: str, task_id: str, body: dict[str, Any], choice: str) -> None:
+    def _named_subjects(c: Any, project_id: str, body: dict[str, Any]) -> list[str]:
+        """The work's names the question spells out, else those its target (the plan's thing) spells out."""
+        names = sorted({row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}, key=len, reverse=True)
+        subjects = [name for name in names if len(name) >= 2 and name in body["text"]][:3]
+        target = str(body.get("subject") or "").strip()
+        return subjects or [name for name in names if len(name) >= 2 and name in target][:1]
+
+    def _choice_subjects(self, user_id: str, project_id: str, task_id: str, question_id: str, choice: str) -> list[str] | None:
+        """What the author's pick of a side covers when the question does not spell the thing's name ("匣子分格的两处"): picked
+        from the work's people and things by the small call that picks a decision's thing (`assistant_recognize.pick`), before
+        the answer is written, so no model call holds the database. None when the words name it, or for no decision's pick
+        (A4 dev 3, a42f-w01-recognize-04: no card, the words were matched by spelling only)."""
+        if choice not in ("a", "b", "both"):
+            return None
+        with self.db.connection() as c:
+            row, _ = self._owned(c, user_id, project_id, task_id)
+            question = c.execute("SELECT * FROM assistant_long_questions WHERE id=? AND task_id=? AND kind='decision' AND answered_at IS NULL",
+                                 (question_id, task_id)).fetchone()
+            if not question:
+                return None
+            body = json.loads(question["body_json"])
+            if self._named_subjects(c, project_id, body):
+                return None
+        found = {"kind": "intentional" if choice == "both" else "prefer", "statement": body["text"], "subjects": []}
+        try:
+            with provider_usage(row["user_id"], row["reservation_id"]):
+                found, result = assistant_recognize.pick(self.provider, self.db, project_id, f"{body['text']} {body.get('subject') or ''}".strip(), found)
+        except Exception:
+            return None
+        if result is not None:
+            self._book(task_id, 0, 0, "requests", result)
+        with self.db.connection() as c:
+            shown = assistant_recognize.names_for(c, project_id)
+        return [shown[n - 1][0] for n in found.get("subject_numbers") or [] if n <= len(shown)][:3] or None
+
+    @classmethod
+    def _choice_card(cls, c: Any, project_id: str, task_id: str, body: dict[str, Any], choice: str, picked: list[str] | None = None) -> None:
         """The author's pick of a side, or of both, offered as a decision for the end of the report: confirmed, it is not
         asked again (v2.2, a long task's question as the third source of decisions)."""
-        names = {row[0] for row in c.execute("SELECT DISTINCT subject FROM v2_memory_records WHERE project_id=?", (project_id,))}
-        subjects = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in body["text"]][:3]
+        subjects = cls._named_subjects(c, project_id, body) or picked or []
         target = str(body.get("subject") or "").strip()
-        if not subjects and len(target) >= 2:  # the question left the thing out ("缺口位置：……"): the plan's target says it
-            subjects = [name for name in sorted(names, key=len, reverse=True) if len(name) >= 2 and name in target][:1] or [target]
+        if not subjects and len(target) >= 2:  # the question left the thing out ("缺口位置：……") and nothing was picked: the plan's target says it
+            subjects = [target]
         if not subjects:
             return  # nothing to say whom it covers: the answer stands for this task only
         option = next((o for o in body["options"] if o["key"] == choice), None)

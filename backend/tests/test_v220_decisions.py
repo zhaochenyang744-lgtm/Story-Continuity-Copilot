@@ -632,6 +632,24 @@ class LongRecognitionTests(LongCase):
         self.assertIn("罗盘下落", view["changes"][0]["after"])
         self.assertEqual([r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=? ORDER BY seq", task["id"])], ["plan", "requests"])
 
+    def test_a_thread_kept_open_in_the_authors_own_words_is_picked_within_the_tasks_usage(self):  # A4 dev 3: "那封信"
+        import re
+        from app.assistant_recognize import PICK_PROMPT, SYSTEM_PROMPT
+        decision = {"kind": "keep_open", "statement": "那只指路的铜盘去了哪先别收", "words": "先别收", "subjects": [], "chapters": None, "thread": "铜盘"}
+
+        def answer(provider, messages):
+            if messages[0]["content"] == SYSTEM_PROMPT:
+                return {"decision": decision}
+            if messages[0]["content"] == PICK_PROMPT:
+                return {"numbers": [int(re.search(r"(\d+)\. 罗盘下落", messages[1]["content"]).group(1))]}
+            return {"type": "thread_audit", "target": None, "chapters": None, "output": "list"}
+        self.provider.script_route(answer, answer, answer)
+        task = self.create("那只指路的铜盘去了哪先别收，其余还吊着的伏笔都替我过一遍")
+        view = self.view(task["id"])
+        self.assertEqual([(i["kind"], i["status"]) for i in view["changes"]], [("add_decision", "proposed")])
+        self.assertIn("罗盘下落", view["changes"][0]["after"])
+        self.assertEqual(sorted(r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=?", task["id"])), ["plan", "requests", "requests"])
+
     def test_a_request_with_no_decision_has_no_card(self):
         self.script(None)
         task = self.create()
