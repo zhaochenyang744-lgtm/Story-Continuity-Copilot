@@ -220,7 +220,10 @@ class QuotaTests(AssistantCase):
         self.assertEqual(len(reservation), 1)
         self.assertEqual(reservation[0]["reserved_microunits"], 60_000)  # two calls at 0.05 and 0.01
         self.assertEqual(self.rows("SELECT chars_charged,cost_cny FROM assistant_tasks")[0]["chars_charged"], 500)
-        self.assertEqual(len(self.rows("SELECT * FROM v2_provider_attempts")), 2)  # every model call reserved an attempt
+        # every model call reserved an attempt: the two turns, and the small call about the sample work's decisions (v2.2;
+        # not scripted here, so it failed and added nothing to the cost)
+        self.assertEqual(len(self.provider.touched_calls), 1)
+        self.assertEqual(len(self.rows("SELECT * FROM v2_provider_attempts")), 3)
 
     def test_too_few_characters_refuse_the_task_before_anything_is_created(self):
         self.start(registered_check_chars=1000)

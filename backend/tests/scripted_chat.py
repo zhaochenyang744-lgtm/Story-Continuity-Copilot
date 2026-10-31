@@ -12,6 +12,7 @@ import itertools
 import json
 from typing import Any
 
+from app import assistant_cover
 from app.provider import ChatResult, ProviderResult
 
 
@@ -85,6 +86,10 @@ class ScriptedChatProvider:
         self.review_issues = False
         self.route_turns: list[Any] = []
         self.route_calls: list[dict[str, Any]] = []
+        # v2.2: the small call that asks which of the decisions a question's words did not name it is about. It has its own
+        # answers, so it never takes one scripted for the judgements above; with none scripted it fails and adds no decision.
+        self.touched_turns: list[Any] = []
+        self.touched_calls: list[dict[str, Any]] = []
 
     def script_route(self, *results: Any) -> "ScriptedChatProvider":
         """What the input box's judgement answers, in turn: a dict ({"route": ..., "unsure": ...}), a raw string, an exception to
@@ -94,10 +99,12 @@ class ScriptedChatProvider:
         return self
 
     def route(self, messages: list[dict[str, Any]], max_tokens: int, timeout_seconds: int, role: str | None = None) -> ChatResult:
-        self.route_calls.append({"messages": copy.deepcopy(messages), "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
-        if not self.route_turns:
+        touched = messages[0]["content"] == assistant_cover.TOUCHED_PROMPT
+        calls, turns = (self.touched_calls, self.touched_turns) if touched else (self.route_calls, self.route_turns)
+        calls.append({"messages": copy.deepcopy(messages), "max_tokens": max_tokens, "timeout_seconds": timeout_seconds})
+        if not turns:
             raise AssertionError("the judgement was asked for more answers than were scripted")
-        scripted = self.route_turns.pop(0)
+        scripted = turns.pop(0)
         if callable(scripted):
             scripted = scripted(self, messages)
         if isinstance(scripted, BaseException):
