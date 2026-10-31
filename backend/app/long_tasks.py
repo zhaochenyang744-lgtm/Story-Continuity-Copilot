@@ -250,7 +250,8 @@ class LongTasks:
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         with self.db.connection() as c:
             threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
+            names = assistant_recognize.names_for(c, project_id)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads, names)
         pool.shutdown(wait=False)
         return future
 

@@ -776,8 +776,9 @@ class AssistantEngine:
         question = json.loads(row["input_json"]).get("question") or ""
         with self.db.connection() as c:
             threads = [thread["title"] for thread in assistant_recognize.threads_for(c, row["project_id"])]
+            names = assistant_recognize.names_for(c, row["project_id"])
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads, names)
         pool.shutdown(wait=False)
         return future
 
@@ -827,7 +828,8 @@ class AssistantEngine:
             with provider_usage(user_id, reservation_id):
                 with self.db.connection() as c:
                     threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
-                result = assistant_recognize.call_model(self.provider, note, threads)
+                    names = assistant_recognize.names_for(c, project_id)
+                result = assistant_recognize.call_model(self.provider, note, threads, names)
             cost = self._cost(result)
         except Exception:
             return None

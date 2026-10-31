@@ -462,6 +462,29 @@ class ReviewFixTests(AssistantCase):
                             self.user_id, "2026-10-30T00:00:00+00:00")
             self.assertEqual([d["id"] for d in decisions.relevant(c, self.project_id, "小岑的年岁到底该引用哪一处？")], ["decision-age"])
 
+    def test_the_thing_a_decision_is_about_is_picked_by_its_number_from_the_works_names(self):  # A4 formal 2: "格间" for 鹊髓匣
+        from app import assistant_recognize
+        with self.db.connection() as c:
+            version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (self.project_id,)).fetchone()[0]
+            span = c.execute("SELECT id FROM v2_source_spans WHERE project_id=? LIMIT 1", (self.project_id,)).fetchone()[0]
+            c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status) "
+                      "VALUES('mem-box',?,?,'object','鹊髓匣','固定格数','制成以来始终三格',?,'author_confirmed')", (self.project_id, version, span))
+            c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status) "
+                      "VALUES('mem-alias2',?,?,'character',?,'别名','行商别名蘅斛。',?,'author_confirmed')", (self.project_id, version, self.name, span))
+            names = assistant_recognize.names_for(c, self.project_id)
+            self.assertEqual(decisions.alias_map(c, self.project_id).get("蘅斛"), self.name)  # the words around an alias go
+        shown = dict(names)
+        self.assertIn("固定格数", shown["鹊髓匣"])  # the label of what is recorded, never its value
+        self.assertNotIn("三格", "".join(shown["鹊髓匣"]))
+        self.assertIn("别名：行商别名蘅斛。", shown[self.name])  # another name as the materials wrote it
+        message = assistant_recognize.messages_for("格间以第三章为准", (), names)[1]["content"]
+        self.assertIn("鹊髓匣（固定格数）", message)
+        number = [name for name, _ in names].index("鹊髓匣") + 1
+        found = {"kind": "prefer", "words": "以第三章为准", "prefer_chapter": 3, "subjects": ["格间"]}
+        self.assertEqual(self.recognized("格间以第三章为准", found)[0]["subjects"], [])  # spelled nowhere in the work
+        self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [number]})[0]["subjects"], ["鹊髓匣"])
+        self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [999]})[0]["subjects"], [])  # not on the list
+
     def test_a_thread_told_in_the_authors_own_words_is_found_by_its_number(self):  # A4 formal 1: 井里那组三声 for 井下的三次敲击
         thread = self.thread("井下的三次敲击")
         found = {"kind": "keep_open", "words": "还想吊着", "thread": "井里那组三声"}

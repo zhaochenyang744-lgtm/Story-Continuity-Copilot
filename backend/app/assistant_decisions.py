@@ -147,6 +147,9 @@ def listing(c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
 
 ALIAS_PREDICATES = ("别名", "外号", "又名", "又称", "绰号", "小名", "代号", "称号")
 ALIAS_SPLIT = re.compile(r"[、，,/／;；\s]+")
+# What the materials write around another name ("行商别名蘅斛", "翙扣。"): the words before the predicate, the end mark.
+ALIAS_LEAD = re.compile(rf"^.*?(?:{'|'.join(ALIAS_PREDICATES)})(?:是|为|叫|作|：|:)?")
+ALIAS_END = "。.．！!？?”」』\"'）)"
 
 
 def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
@@ -160,7 +163,7 @@ def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
     marks = ",".join("?" for _ in ALIAS_PREDICATES)
     for row in c.execute(f"SELECT DISTINCT subject,value FROM v2_memory_records WHERE project_id=? AND predicate IN ({marks})", (project_id, *ALIAS_PREDICATES)):
         for alias in ALIAS_SPLIT.split(str(row[1]).strip("「」“”\"'")):
-            alias = alias.strip("「」“”\"'")
+            alias = ALIAS_LEAD.sub("", alias.strip("「」“”\"'")).strip("「」“”\"'" + ALIAS_END)
             if len(alias) >= 2 and alias != row[0]:
                 found.setdefault(alias, "".join(row[0].split()))
     return found
