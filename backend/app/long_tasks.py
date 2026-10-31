@@ -250,8 +250,7 @@ class LongTasks:
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         with self.db.connection() as c:
             threads = [thread["title"] for thread in assistant_recognize.threads_for(c, project_id)]
-            names = assistant_recognize.names_for(c, project_id)
-        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads, names)
+        future = pool.submit(contextvars.copy_context().run, assistant_recognize.call_model, self.provider, question, threads)
         pool.shutdown(wait=False)
         return future
 
@@ -267,6 +266,9 @@ class LongTasks:
         found = assistant_recognize.parse((result.message or {}).get("content"))
         if found is None:
             return
+        found, picked = assistant_recognize.pick_subjects(self.provider, self.db, row["project_id"], question, found)
+        if picked is not None:
+            self._book(task_id, 0, 0, "requests", picked)
         with self.db.connection() as c:
             c.execute("BEGIN IMMEDIATE")
             grounded = assistant_recognize.ground(c, row["project_id"], question, found, source_ref=task_id)

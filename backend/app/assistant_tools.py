@@ -193,6 +193,7 @@ class ToolContext:
     held_now: int = 0  # items held back for a second look in this round
     last: bool = False  # no round after this one (the last round, or the budget or time is spent)
     requests: list[dict[str, str]] | None = None  # the pieces of the author's sentence (`assistant_requests`); None: not split
+    decisions_given: list[tuple[dict[str, Any], str]] = field(default_factory=list)  # the author's decisions the task was given, with their refs
     _spans: list[dict[str, Any]] | None = field(default=None, repr=False)
     _memory: list[dict[str, Any]] | None = field(default=None, repr=False)
     _index: PassageIndex | None = field(default=None, repr=False)

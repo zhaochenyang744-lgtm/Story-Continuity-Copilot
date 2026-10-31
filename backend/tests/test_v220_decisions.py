@@ -477,13 +477,32 @@ class ReviewFixTests(AssistantCase):
         self.assertIn("固定格数", shown["鹊髓匣"])  # the label of what is recorded, never its value
         self.assertNotIn("三格", "".join(shown["鹊髓匣"]))
         self.assertIn("别名：行商别名蘅斛。", shown[self.name])  # another name as the materials wrote it
-        message = assistant_recognize.messages_for("格间以第三章为准", (), names)[1]["content"]
+        message = assistant_recognize.pick_messages("格间以第三章为准", "格数以第三章为准", names)[1]["content"]
         self.assertIn("鹊髓匣（固定格数）", message)
+        self.assertNotIn("鹊髓匣", assistant_recognize.messages_for("格间以第三章为准")[1]["content"])  # the first call is not given the names
         number = [name for name, _ in names].index("鹊髓匣") + 1
         found = {"kind": "prefer", "words": "以第三章为准", "prefer_chapter": 3, "subjects": ["格间"]}
+        with self.db.connection() as c:  # a name the work does not spell is picked; one it spells, or a way of writing, is not
+            self.assertTrue(assistant_recognize.needs_pick(c, self.project_id, {**found, "statement": "x"}))
+            self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "subjects": ["蘅斛"]}))
+            self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "kind": "style", "subjects": []}))
         self.assertEqual(self.recognized("格间以第三章为准", found)[0]["subjects"], [])  # spelled nowhere in the work
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [number]})[0]["subjects"], ["鹊髓匣"])
         self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [999]})[0]["subjects"], [])  # not on the list
+
+    def test_an_answer_given_a_decision_out_of_date_says_so_citing_it(self):  # A4 formal 2: the mark was given, the answer left it out
+        from types import SimpleNamespace
+        from app.assistant import with_stale_lines
+        stale = {"kind": "prefer", "statement": "格数以第三章为准。", "status": decisions.STALE}
+        ctx = SimpleNamespace(decisions_given=[(stale, "R3"), ({**stale, "status": decisions.ACTIVE}, "R4")])
+        answer = {"status": "answered", "sentences": [{"text": "第3章写三格。", "refs": ["R1"]}], "note": None}
+        lines = with_stale_lines(answer, ctx)["sentences"]
+        self.assertEqual([item["refs"] for item in lines], [["R1"], ["R3"]])
+        self.assertIn("「格数以第三章为准」", lines[1]["text"])
+        said = {**answer, "sentences": [{"text": "这条决定可能过时。", "refs": ["R3"]}]}
+        self.assertEqual(with_stale_lines(said, ctx), said)  # the answer said it already
+        self.assertIn("不要建议统一成一处", decisions.prompt_lines([{**stale, "kind": "intentional", "kind_label": "有意为之", "scope": "全书",
+                                                                   "status": decisions.ACTIVE}], ["R5"])[1])
 
     def test_a_thread_told_in_the_authors_own_words_is_found_by_its_number(self):  # A4 formal 1: 井里那组三声 for 井下的三次敲击
         thread = self.thread("井下的三次敲击")
