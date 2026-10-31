@@ -592,6 +592,16 @@ class OtherWordTests(unittest.TestCase):
         self.assertEqual(said_chapters("第3-5章的日期别管"), [3, 5])
         self.assertIsNone(said_chapters("她年龄不统一是故意的"))
 
+    def test_the_cover_call_is_told_a_subjects_other_names_as_the_materials_wrote_them(self):  # A4 dev 3: w02-obey-03
+        from app import assistant_cover
+        given = [{"kind_label": "不用提醒", "statement": "仵鸣荇正式署名用别名时不用提醒", "scope": "管：仵鸣荇；全书", "subjects": ["仵鸣荇"]},
+                 {"kind_label": "有意为之", "statement": "缃齿碗的缺角两种写法是有意的", "scope": "全书", "subjects": ["缃齿碗"]}]
+        issue = {"claim": "仵鸣荇给契据署了荇舌两字。", "explanation": "前文说他只落本名。"}
+        content = assistant_cover.messages_for(issue, given, {"仵鸣荇": ["别名：荇舌"]})[1]["content"]
+        self.assertIn("1. 不用提醒：仵鸣荇正式署名用别名时不用提醒（管：仵鸣荇；全书）；仵鸣荇的另一种叫法（别名：荇舌）", content)
+        self.assertIn("2. 有意为之：缃齿碗的缺角两种写法是有意的（全书）\n", content)  # a subject with no other name gets nothing more
+        self.assertEqual(assistant_cover.messages_for(issue, given)[1]["content"].count("另一种叫法"), 0)
+
 
 from tests.test_v210_long_tasks import LongCase  # noqa: E402
 
