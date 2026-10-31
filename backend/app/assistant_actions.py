@@ -669,12 +669,25 @@ def _grounded(ctx: ToolContext, action: Action, args: dict[str, Any], proposal: 
         raise ToolError(WANT_REFUSALS.get(want) or _wrong_kind(want, action))
     if action.record_kind == "foreshadow":
         return
+    # A character's card or a setting entry is edited on the materials page; a fact is not a stand-in for it (review 16,
+    # V16-11: "给苏岑加别名" and "改雾港的设定简介" became two added facts).
+    if MATERIALS_PAGE_WORDS.search(request_words + _question(ctx)):
+        raise ToolError("change_needs_materials_page")
     evidence = "".join("".join(item["text"].split()) for item in proposal["evidence"])
+    # A name the new value quotes must stand in its evidence: the author's new word is not the text's (V16-12: an alias the
+    # answer said the text never gives went on the card as from chapter 1).
+    known_text = "".join(fact["value"] for fact in ctx.memory())
+    if any("".join(name.split()) not in evidence and name not in known_text for name in QUOTED.findall(proposal["after"]["value"])):
+        raise ToolError("change_name_not_in_evidence")
     # A number the materials already state about the subject may stay ("原定第二十一昼期" kept beside the new day).
     subject = "".join(proposal["after"]["subject"].split())
     known = "".join(fact["value"] for fact in ctx.memory() if "".join(fact["subject"].split()) == subject)
     if not numbers_in(proposal["after"]["value"]) <= numbers_in(evidence) | numbers_in(known):
         raise ToolError("change_value_not_in_evidence")
+
+
+MATERIALS_PAGE_WORDS = re.compile(r"人物卡|人物简介|设定简介|设定条目|设定说明|设定的简介|设定的说明")
+QUOTED = re.compile(r"[「“\"'‘『]([^」”\"'’』]{1,20})[」”\"'’』]")
 
 
 # The author's words name a thread when they share a character pair with its title ("罗盘那条线" for "罗盘下落") or call it one.

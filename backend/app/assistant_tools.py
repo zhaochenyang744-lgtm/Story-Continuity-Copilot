@@ -72,6 +72,8 @@ ERROR_TEXTS = {
     "change_not_this_kind": "作者要的不是这种改动",
     "change_other_property": "改后的内容说的是另一个属性",
     "change_thread_kept_open": "作者定过这条伏笔先别收",
+    "change_name_not_in_evidence": "改后内容里的名字在依据段落里没有",
+    "change_needs_materials_page": "人物卡和设定条目要在资料页里改",
 }
 # What the model is told besides the code, when the code alone would not tell it what to do.
 ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时仍有矛盾，没有通过检查；请换一种改法再提出。",
@@ -84,6 +86,8 @@ ERROR_HINTS = {"proposal_after_failed_check": "这句改后的话刚才检查时
                "change_fields_invalid": "memory_type 和 predicate 只能用工具说明里列出的值。",
                "change_fact_already_recorded": "资料里已经有这条事实，不用再加；在回答里引用那条事实告诉作者。",
                "change_value_not_in_evidence": "改后的内容里有依据段落里没有的数字或日期：只写依据段落里写着的；正文里没有写到，就不提出，在回答里告诉作者正文没有写。",
+               "change_name_not_in_evidence": "改后的内容里加了引号的名字在依据段落里没有：资料只记正文里写过的内容，不提出这条；在回答里告诉作者正文里还没有这个名字，写进正文以后再记。",
+               "change_needs_materials_page": "作者要改的是人物卡（别名、外号、简介）或设定条目：助手不能改这两类，也不要用 add_fact 或 change_fact 代替；不提出改动，在回答里告诉作者到资料页的人物或设定栏里直接改。",
                "change_request_words_taken": "作者这几个字已经对应了卡片上的另一条改动：一处要求只做一条改动。作者这句话里没有别的字指到这条资料，就不要提出。",
                "change_not_requested": "request_words 要原样摘抄作者这句话里指到这条资料的字（至少两个字）。作者的话里摘不出指到它的字，"
                                        "就是作者没要改它：不要提出，用 answer 回答作者真正问的事。",
