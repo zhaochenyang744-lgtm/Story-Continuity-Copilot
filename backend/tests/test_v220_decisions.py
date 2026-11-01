@@ -592,6 +592,11 @@ class OtherWordTests(unittest.TestCase):
         self.assertEqual(said_chapters("第3-5章的日期别管"), [3, 5])
         self.assertIsNone(said_chapters("她年龄不统一是故意的"))
 
+    def test_asking_how_to_write_on_or_setting_a_rule_for_later_is_a_question_not_a_recap(self):  # A4 dev 3: w01-obey-05, w01-recognize-10
+        from app.assistant_route import ROUTE_SYSTEM_PROMPT
+        recap = ROUTE_SYSTEM_PROMPT.split("recap：", 1)[1].split("\n", 1)[0]
+        self.assertIn("要你出主意，或者定下一条以后写作要守的规矩，不是要回顾前文，算 ask，不算 recap", recap)
+
     def test_the_cover_call_is_told_a_subjects_other_names_as_the_materials_wrote_them(self):  # A4 dev 3: w02-obey-03
         from app import assistant_cover
         given = [{"kind_label": "不用提醒", "statement": "仵鸣荇正式署名用别名时不用提醒", "scope": "管：仵鸣荇；全书", "subjects": ["仵鸣荇"]},
