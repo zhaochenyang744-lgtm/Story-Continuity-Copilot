@@ -50,10 +50,10 @@ ADAPTER = "draft_replace_v1"
 RETRYABLE_ERRORS = {"provider_timeout", "provider_unavailable", "provider_error"}
 RETRYABLE_STATUSES = {"timed_out"}
 POLL_SECONDS = 600
-# What a formal run must match. Re-pinned 2026-10-20 for the v1.9 gate (PLAN 0f) after the pooled lf4+lf5 dev
-# regression (commit 1c12630); any later prompt change makes a formal run refuse.
+# What a formal run must match. Re-pinned 2026-11-02 for the v2.2 pre-release regression (A4 SPEC addendum 4) to the
+# checker hardened in v2.2 (author-voice lines, split sources); any later prompt change makes a formal run refuse.
 FORMAL_RUNTIME = {"model": "deepseek-flash", "review_thinking": "high", "concurrency": "4",
-                  "prompt_version": "continuity-review-v25k-screened-offpage-second-review+continuity-screen-v1+continuity-triage-v5-stated-links"}
+                  "prompt_version": "continuity-review-v25l-split-sources+continuity-screen-v1+continuity-triage-v6-split-sources"}
 DEFAULT_BUDGET_CNY = 10.0
 
 
