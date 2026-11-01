@@ -243,6 +243,8 @@ def _expected_after(start, items, after):
     the program gives it; it is expected as written when every field the item names is what the item says."""
     expected = json.loads(json.dumps(start))
     for item in items:
+        if item["kind"] == "add_decision":  # v2.2: a decision goes to the decisions ledger, outside the materials compared here
+            continue
         if item["kind"] in THREAD_KINDS:
             expected["threads"][item["target_id"]].update({k: v for k, v in item["after"].items() if k in THREAD_FIELDS})
         elif item["kind"] == "add_thread":

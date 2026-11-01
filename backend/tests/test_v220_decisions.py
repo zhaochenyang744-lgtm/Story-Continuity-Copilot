@@ -442,6 +442,28 @@ class ReviewFixTests(AssistantCase):
                                                                           "chapters": [3, 3], "prefer_chapter": 3})
         self.assertEqual((record_["chapters"], record_["prefer_chapter"], record_["subjects"]), (None, 3, [self.name]))
 
+    def test_a_request_to_close_a_thread_or_to_change_by_a_chapter_is_not_a_decision(self):  # v2.2 pre-release A2 subset
+        thread = self.thread("被缝住的旧誓一角")
+        found = {"kind": "keep_open", "words": "别继续当悬案挂着", "thread": "被缝住的旧誓一角"}
+        from app import assistant_recognize
+        self.assertIsNone(self.recognized("被缝住的旧誓一角这条谜已经说清，别继续当悬案挂着。", found))
+        self.assertIsNone(self.recognized("被缝住的旧誓一角说明白了，别再把它当未解悬念。", {**found, "words": "别再把它当未解悬念"}))
+        self.assertIsNotNone(self.recognized("被缝住的旧誓一角先别收，让它继续悬着。", {**found, "words": "先别收"}))
+        self.assertIsNone(self.recognized("下次协商的地点按第3章改事实。", {"kind": "prefer", "words": "按第3章", "prefer_chapter": 3}))
+        kept, _ = self.recognized("地点按第3章改过来，以后都以第3章为准。", {"kind": "prefer", "words": "以后都以第3章为准", "prefer_chapter": 3})
+        self.assertEqual(kept["prefer_chapter"], 3)
+        self.provider.script_route({"decision": None})
+        task = self.run_ask(turn(call("read_chapter", chapter_number=1)),
+                            lambda provider, messages: turn(answer_call("answered", [("第一章写到了。", [ref_of_chapter(messages, 1)])])))
+        with self.db.connection() as c:  # the same card resolves the thread the sentence names
+            c.execute("INSERT INTO assistant_changes(id,task_id,project_id,ordinal,kind,target_id,before_json,after_json,display_json,evidence_json,status,created_at) "
+                      "VALUES('achange-close',?,?,1,'resolve_thread',?,'{}','{}','{}','[]','proposed','2026-10-30T02:00:00+00:00')",
+                      (task["id"], self.project_id, thread))
+            said = "被缝住的旧誓一角标成已回收，后面再写别的线。"
+            self.assertIsNone(assistant_recognize.ground(c, self.project_id, said, {"words": "后面再写", "subjects": [], "chapters": None, "prefer_chapter": None,
+                                                                                    "thread": "被缝住的旧誓一角", "statement": "决定", "kind": "keep_open"},
+                                                         source_ref=task["id"]))
+
     def test_a_new_decision_replaces_the_one_about_a_name_the_author_says(self):  # E03
         with self.db.connection() as c:
             decisions.write(c, self.db, self.project_id, "decision-old", record(f"{self.name}这处是有意的", subjects=(self.name,), chapters=None),

@@ -253,8 +253,10 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
             subjects.append(name)
     subjects = subjects[:decisions.SUBJECTS_MAX]
     thread = None
-    if found["kind"] == "keep_open" and GIVEN_UP.search(said) and not STILL_OPEN.search(said):
-        return None  # giving a thread up is a change to the materials, not a thread kept open
+    if found["kind"] == "keep_open" and (GIVEN_UP.search(said) or CLOSED.search(said)) and not STILL_OPEN.search(said):
+        return None  # giving a thread up, or saying it is cleared up and need not hang on, is a change to the materials
+    if found["kind"] == "prefer" and BY_CHAPTER.search(said) and not FROM_NOW.search(said):
+        return None  # "按第15章改事实": the chapter this one change is made by, not a chapter that holds from now on
     if found["kind"] == "keep_open":
         threads = threads_for(c, project_id)
         number = found.get("thread_number")
@@ -266,6 +268,9 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
             if not scored or scored[0][0] < 2 or (len(scored) > 1 and scored[1][0] == scored[0][0]):
                 return None  # no thread of the work, or two equally named: nothing to keep open
             thread = scored[0][1]
+        if source_ref and c.execute("SELECT 1 FROM assistant_changes WHERE task_id=? AND kind IN ('resolve_thread','abandon_thread') "
+                                    "AND target_id=? AND status='proposed'", (source_ref, thread["id"])).fetchone():
+            return None  # the same card closes that thread: the sentence asked for the close, not to keep it open
         subjects = [thread["title"]] + [name for name in subjects if name in known and name not in thread["title"]][:decisions.SUBJECTS_MAX - 1]
     prefer = found["prefer_chapter"]
     if found["kind"] == "prefer" and not (prefer and prefer <= max(last, 1)):
@@ -314,6 +319,11 @@ def said_chapters(sentence: str) -> list[int] | None:
 SAME_MATTER = ("intentional", "prefer", "no_reminder")
 GIVEN_UP = re.compile(r"放弃|不再写|不写了|弃掉|不要这条")
 STILL_OPEN = re.compile(r"先别|别收|还要写|接着写|后面再")
+# v2.2 pre-release A2 regression: a request to mark a thread resolved ("别继续当悬案挂着", "不用再挂着", "别再把它当未解悬念")
+# was read as a thread kept open, and "按第十四章标成已回收" / "按第15章改事实" as a chapter that holds from now on.
+CLOSED = re.compile(r"(别|不用|不必|不要|无须|无需)(再|继续)?.{0,6}?(挂|悬|问号)")
+BY_CHAPTER = re.compile(r"按第?[0-9零一二两三四五六七八九十百]+章(的说法|的写法)?(改|标|记|写成|更新|补)")
+FROM_NOW = re.compile(r"为准|以后|今后|往后|一律|都按|都以|之后都|从此")
 
 
 def replaced(c: sqlite3.Connection, project_id: str, record: dict[str, Any], sentence: str | None = None) -> Any | None:
