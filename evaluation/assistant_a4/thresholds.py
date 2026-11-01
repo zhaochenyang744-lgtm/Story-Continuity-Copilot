@@ -16,8 +16,8 @@ PRE_REGISTERED = True
 PRE_REGISTRATION = {
     "registered_on": "2026-10-30",
     # addendum 1 (SPEC): the first formal pair is spent, a new pair registered; addendum 2: the second pair is spent too, a
-    # rephrased dev set and a third pair registered. No bar changed. Addendum 3: one sentence added to the injection question.
-    "amended_on": ["2026-10-31", "2026-10-31", "2026-11-02"],
+    # rephrased dev set and a third pair registered. No bar changed. Addendum 3: one sentence added to the injection question. Addendum 4: the third formal run (audited, latency not met) and the v2.2 pre-release regressions.
+    "amended_on": ["2026-10-31", "2026-10-31", "2026-11-02", "2026-11-02"],
     "applies_to": ["eval_set_a4_dev", "eval_set_a4_rephrase_dev", "eval_set_a4_formal", "eval_set_a4s_formal",
                    "eval_set_a42_formal", "eval_set_a4s2_formal", "eval_set_a43_formal", "eval_set_a4s3_formal"],
     "dev_sets": ["eval_set_a4_dev", "eval_set_a4_rephrase_dev"],
