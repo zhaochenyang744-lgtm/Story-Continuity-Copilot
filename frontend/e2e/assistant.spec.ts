@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { api, expect, openTab, sampleWorkId, shot, startVisitor, test } from "./support/app";
+import { api, expect, keepDock, openTab, sampleWorkId, shot, startVisitor, test } from "./support/app";
 import { adoptRequest, allowance, ask, askForFix, box, checkedWork, chip, chars, finished, findingsTab, openAssistantTab, proposal, REWRITTEN, select, selectedWords, send, SENTENCE, sideTab, stopButton, taskPost, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
 import { evidence, theme } from "./support/pages";
 import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBody, run, saveBody, selectIssue, setDraftBody, setup } from "./support/writing";
@@ -11,10 +11,11 @@ import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBod
 
 test.describe("助手", () => {
   test("写作页：提问得到带出处的回答，步骤折叠，扣 500 字，刷新后对话还在", async ({ page }) => {
+    await keepDock(page);
     await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
-    await expect(thread(page)).toContainText(/约 500 字 · 今天还剩 [\d,]+ 字/);
+    await expect(thread(page)).toContainText(/约 500 字 · 24 小时内还剩 [\d,]+ 字/);
     const before = await allowance(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
@@ -47,12 +48,12 @@ test.describe("助手", () => {
     await expect(task).toContainText("计 500 字");
     await expect(task).not.toContainText(/\d+ 步|第 \d+ 轮/);
     await expect.poll(() => allowance(page)).toBe(before - 500);
-    await expect(thread(page)).toContainText(`今天还剩 ${(before - 500).toLocaleString("en-US")} 字`);
+    await expect(thread(page)).toContainText(`24 小时内还剩 ${(before - 500).toLocaleString("en-US")} 字`);
     await page.evaluate(() => window.scrollTo(0, 340));
     await shot(page, "assistant-writing-day", false);
-    // The conversation is on the server, and the author's last tab is remembered on this device.
+    // The conversation is on the server, and the panel was left open: after a reload it is open again (this device remembers it), with the conversation in it.
     await page.reload();
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await expect(tasks(page)).toHaveCount(1);
     await expect(tasks(page).first()).toContainText("（示意回答）前文写过这件事。");
   });
@@ -162,7 +163,7 @@ test.describe("助手", () => {
     await expect(toolbar(page)).toHaveCount(0);
     await select(page, "#draft-body", 12);
     await toolbar(page).getByRole("button", { name: /^问助手/ }).click();
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await expect(chip(page, `选中：「${picked}」`)).toBeVisible();
     await expect(box(page)).toBeFocused();
     await expect(toolbar(page)).toHaveCount(0);
@@ -192,7 +193,7 @@ test.describe("助手", () => {
     await expect(topbarAssistant(page)).toHaveText("助手");
     await page.locator("#chapter-2").getByRole("button", { name: /^段落/ }).click();
     await topbarAssistant(page).click();
-    const drawer = page.getByRole("dialog", { name: "助手", exact: true });
+    const drawer = page.locator("#assistant-dock");
     await expect(drawer).toBeVisible();
     await expect(box(page)).toBeFocused();
     await expect(chip(page, "第 2 章")).toBeVisible();
@@ -201,23 +202,16 @@ test.describe("助手", () => {
     expect((await request).postDataJSON().context).toMatchObject({ page: "chapters", chapter_number: 2 });
     await finished(page);
     await shot(page, "assistant-drawer", false);
-    // Focus stays inside the drawer, then Escape closes it and the button gets focus back.
-    for (let i = 0; i < 25; i++) {
-      await page.keyboard.press("Tab");
-      expect(await page.evaluate(() => Boolean(document.activeElement?.closest('[role="dialog"]')))).toBe(true);
-    }
+    // Escape closes the panel and the button gets focus back (a citation card that is open goes first).
     await page.keyboard.press("Escape");
-    // Tabbing may have opened a citation card (focus does); the first Escape then only puts that card away.
-    if (await drawer.count()) await page.keyboard.press("Escape");
-    await expect(drawer).toHaveCount(0);
+    if (await drawer.isVisible()) await page.keyboard.press("Escape");
+    await expect(drawer).toBeHidden();
     await expect(topbarAssistant(page)).toBeFocused();
     // The writing page has the assistant in its own right column: its top bar has the same button, and it goes to the column.
     await openTab(page, id, "workspace");
     await expect(topbarAssistant(page)).toBeVisible();
-    await findings(page).getByRole("tab", { name: /^检查结果/ }).click();
     await topbarAssistant(page).click();
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
-    await expect(page.getByRole("dialog", { name: "助手", exact: true })).toHaveCount(0);
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await expect(box(page)).toBeFocused();
   });
 
@@ -278,25 +272,25 @@ test.describe("助手", () => {
     await expect(tasks(page)).toHaveCount(0);
     await expect(thread(page).getByText(/^问这部作品里的人、事、物。/)).toBeVisible();
     await page.reload();
+    await openAssistantTab(page);
     await expect(thread(page).getByText(/^问这部作品里的人、事、物。/)).toBeVisible();
     await expect(tasks(page)).toHaveCount(0);
   });
 
-  test("字数不够：框变成虚线，直接写明原因和恢复时间，发送键不可点", async ({ page }) => {
+  test("字数不够：输入框换成一行说明，直接写明原因和恢复时间；建议问题灰着不能点", async ({ page }) => {
     const id = await setup(page, true, true);
     const session = await api(page).get("/auth/session");
     const usage = await api(page).get("/account/usage");
     await api(page).post(`/test/v180/users/${session.user.id}/spend-characters/${usage.check_chars_remaining - 300}`);
     await page.reload();
-    await openAssistantTab(page);
-    // The reason is written in the box itself (not on a red line under it), and the box has no fill.
-    const frame = thread(page).locator("form.cx");
-    await expect(frame).toHaveClass(/\boff\b/);
-    await expect(frame.getByText("今天的可检查字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。", { exact: true })).toBeVisible();
+    await topbarAssistant(page).click();
+    await expect(thread(page)).toBeVisible();
+    // The reason is written where the box was (the box is not there), and the starting questions stay in view but cannot be pointed at.
+    const line = thread(page).locator(".a-used");
+    await expect(line).toContainText("24 小时内可检查的字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。");
     await expect(box(page)).toHaveCount(0);
-    await expect(send(page)).toBeDisabled();
-    // (soft look) the box has no border; the dashes are an outline drawn just inside its edge.
-    expect(await frame.evaluate((node) => ({ style: getComputedStyle(node).outlineStyle, border: getComputedStyle(node).borderTopWidth, fill: getComputedStyle(node).backgroundColor }))).toEqual({ style: "dashed", border: "0px", fill: "rgba(0, 0, 0, 0)" });
+    await expect(send(page)).toHaveCount(0);
+    await expect(thread(page).locator(".a-starters button").first()).toBeDisabled();
     await expect(thread(page).locator(".a-block")).toHaveCount(0);
     // The server refuses it too, with the code the page turns into those words.
     const refused = await api(page).raw("POST", `/projects/${id}/assistant/tasks`, { kind: "ask", question: "苏岑是谁？", context: { page: "writing" } });
@@ -310,12 +304,12 @@ test.describe("助手", () => {
     await openTab(page, id, "workspace");
     await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
     await openAssistantTab(page);
-    await expect(thread(page)).toContainText("今天还可以问 3 次");
+    await expect(thread(page)).toContainText("24 小时内还可以问 3 次");
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     // (The cursor is in the box after sending, and the key hint stands where the count is; leave the box to read it.)
     await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-    await expect(thread(page)).toContainText("今天还可以问 2 次");
+    await expect(thread(page)).toContainText("24 小时内还可以问 2 次");
     await expect(tasks(page).first()).not.toContainText("计 500 字");
     // A visitor has no other work; the refusal is simulated once.
     await page.route("**/assistant/tasks", (route) => route.request().method() === "POST"
@@ -325,32 +319,31 @@ test.describe("助手", () => {
     await expect(thread(page).getByText("访客只能在示例作品上使用助手。", { exact: true })).toBeVisible();
   });
 
-  test("手机宽度：写作页第三个窗格「助手」可用，其他页的抽屉全屏", async ({ page }) => {
+  test("手机宽度：助手面板在每一页都是全屏，写作页的窗格切换只有正文和检查结果", async ({ page }) => {
     const id = await setup(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await openTab(page, id, "workspace");
     const panes = page.getByRole("navigation", { name: "切换内容", exact: true });
-    await expect(panes.getByRole("button")).toHaveText(["正文", /^检查结果/, "助手"]);
-    await panes.getByRole("button", { name: "助手", exact: true }).click();
-    await expect(panes.getByRole("button", { name: "助手", exact: true })).toHaveAttribute("aria-current", "page");
-    await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeHidden();
+    await expect(panes.getByRole("button")).toHaveText(["正文", /^检查结果/]);
+    await topbarAssistant(page).click();
+    const drawer = page.locator("#assistant-dock");
+    await expect(drawer).toBeVisible();
+    const size = await drawer.boundingBox();
+    expect(size!.width).toBeGreaterThanOrEqual(374);
     await expect(thread(page)).toBeVisible();
-    // The pane switch already names the assistant; the side tabs would only repeat it.
-    await expect(page.getByRole("tablist", { name: "右栏内容", exact: true })).toBeHidden();
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     await expect(tasks(page).first().getByText("（示意回答）前文写过这件事。")).toBeVisible();
     await shot(page, "assistant-phone-pane", false);
-    await panes.getByRole("button", { name: /^检查结果/ }).click();
+    await page.keyboard.press("Escape");
     await expect(thread(page)).toBeHidden();
-    // Another page: the drawer fills the screen.
+    // Another page: the same panel fills the screen.
     await openTab(page, id, "sources");
     await topbarAssistant(page).click();
-    const drawer = page.getByRole("dialog", { name: "助手", exact: true });
     await expect(drawer).toBeVisible();
-    const size = await drawer.boundingBox();
-    expect(size!.width).toBeGreaterThanOrEqual(374);
-    expect(size!.height).toBeGreaterThanOrEqual(800);
+    const other = await drawer.boundingBox();
+    expect(other!.width).toBeGreaterThanOrEqual(374);
+    expect(other!.height).toBeGreaterThanOrEqual(600);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
     await shot(page, "assistant-phone-drawer", false);
@@ -381,7 +374,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     const request = taskPost(page);
     await button(page, "写前回顾").click();
     expect((await request).postDataJSON()).toEqual({ kind: "recap", context: { page: "writing" } });
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await finished(page);
     const task = tasks(page).first();
     await expect(task.getByTestId("process-line")).toContainText("写前回顾 · 第 11 章（只看第 1–10 章）");
@@ -394,13 +387,18 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await ending.locator(".a-cite > button").click();
     await expect(task.locator(".a-pop .w")).toHaveText(/^第 10 章/);
     await expect(task.locator(".a-pop q")).not.toHaveText("");
-    const people = task.getByRole("region", { name: "出场人物的最新状态", exact: true });
+    await page.keyboard.press("Escape");
+    await expect(task.locator(".a-pop")).toHaveCount(0);
+    const people =task.getByRole("region", { name: "出场人物的最新状态", exact: true });
     await expect(people.locator(".a-ri").first()).toContainText("（示意）");
     for (const item of await people.locator(".a-ri").all()) {
       await expect(item.locator(".a-cite")).toHaveCount(1);
       await item.locator(".a-cite > button").click();
       await expect(task.locator(".a-pop .w").first()).toHaveText(/^(事实摘要 · )?第 \d+ 章/);
       await expect(task.locator(".a-pop q").first()).not.toHaveText("");
+      // A card that opens under its mark covers the lines below it: it is closed (Esc) before the next mark is pointed at.
+      await page.keyboard.press("Escape");
+      await expect(task.locator(".a-pop")).toHaveCount(0);
     }
     // An empty column is not shown (the test model leaves 还没收的线 empty).
     await expect(task.getByRole("region", { name: "还没收的线", exact: true })).toHaveCount(0);
@@ -452,22 +450,18 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await expect(head).toBeEnabled();
   });
 
-  test("对照计划的结果在助手标签顶部，可以收起；右栏只有两个标签", async ({ page }) => {
+  test("对照计划的结果在检查结果顶部，可以收起；右栏没有标签", async ({ page }) => {
     const id = await setup(page);
-    await openAssistantTab(page);
-    await ask(page, "苏岑知道罗盘被调包了吗？");
-    await finished(page);
     const response = page.waitForResponse((r) => r.request().method() === "POST" && r.url().endsWith("/analyses"));
     await button(page, "对照计划").click();
     const rid = (await (await response).json()).data.run_id;
     await expect.poll(async () => (await api(page).get(`/projects/${id}/analyses/${rid}`)).status).toBe("completed");
-    await expect(findings(page).getByRole("tab")).toHaveText([/^检查结果/, "助手"]);
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
-    const block = thread(page).getByTestId("plan-block");
+    await expect(findings(page).getByRole("tab")).toHaveCount(0);
+    const block = findings(page).getByTestId("plan-block");
     await expect(block).toBeVisible();
-    // It sits above the conversation, not under it.
-    const [blockBox, taskBox] = [await block.boundingBox(), await tasks(page).first().boundingBox()];
-    expect(blockBox!.y).toBeLessThan(taskBox!.y);
+    // It sits above the findings.
+    const [blockBox, firstBox] = [await block.boundingBox(), await findings(page).locator("li.finding").first().boundingBox()];
+    expect(blockBox!.y).toBeLessThan(firstBox!.y);
     await expect(block.getByRole("region", { name: "对照计划", exact: true })).toBeVisible();
     await block.getByRole("button", { name: "收起对照计划", exact: true }).click();
     await expect(block.getByRole("region", { name: "对照计划", exact: true })).toBeHidden();
@@ -526,7 +520,8 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await findingsTab(page).click();
     await expect(finding(page, issue.id)).toContainText("已采用助手改法");
     expect((await run(page, id)).issues.find((i: any) => i.id === issue.id).decision).toBeFalsy();
-    await sideTab(page).click();
+    // (The panel stays open beside the findings.)
+    await expect(edit).toBeVisible();
     await shot(page, "assistant-fix-adopted", false);
     // 撤销 puts the old sentence back in the editor; once that is saved it is recorded.
     const undo = adoptRequest(page, "undo");
@@ -710,7 +705,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await check.click();
     const body = (await request).postDataJSON();
     expect(body).toMatchObject({ kind: "ask", question: "这段和前文有没有矛盾？", context: { page: "writing", selection: picked, intent: "check_selection" } });
-    await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await finished(page);
     const task = tasks(page).first();
     await expect(task.getByTestId("process-line")).toContainText("查前文矛盾");
@@ -723,11 +718,11 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await expect.poll(() => allowance(page)).toBe(before - 500 - chars(picked));
   });
 
-  test("窄屏：检查结果窗格和助手窗格都没有内层标签，Tab 不会落到看不见的元素上", async ({ page }) => {
+  test("窄屏：检查结果窗格没有内层标签，Tab 不会落到看不见的元素上", async ({ page }) => {
     await checkedWork(page);
     await page.setViewportSize({ width: 375, height: 812 });
     const panes = page.getByRole("navigation", { name: "切换内容", exact: true });
-    for (const name of [/^检查结果/, "助手"]) {
+    for (const name of [/^检查结果/]) {
       await panes.getByRole("button", { name }).click();
       await expect(page.locator(".side-tabs")).toBeHidden();
       await expect(findings(page).getByRole("tab")).toHaveCount(0);
@@ -749,7 +744,7 @@ test.describe("助手：写前回顾、帮我改这一处、查前文矛盾", ()
     await expect.poll(async () => (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks[0]?.status).toBe("completed");
     await page.setViewportSize({ width: 375, height: 812 });
     await openTab(page, id, "workspace");
-    await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await page.locator("#assistant-open").click();
     const task = tasks(page).first();
     await expect(proposal(task, "edit_this")).toBeVisible();
     // A phone cannot change the draft: the adopt button says why.

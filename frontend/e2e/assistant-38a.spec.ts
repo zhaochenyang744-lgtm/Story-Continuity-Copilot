@@ -81,7 +81,7 @@ test("38a 访客在自己的作品上打开助手：一开始就说清楚，没�
   await expect(thread(page).getByRole("status").filter({ hasText: "访客只能在示例作品上用助手。注册后可以在自己的作品上用。" })).toBeVisible();
   await expect(box(page)).toHaveCount(0);
   await expect(thread(page).locator(".a-starters, .a-start")).toHaveCount(0);
-  await expect(thread(page)).not.toContainText("今天还可以问");
+  await expect(thread(page)).not.toContainText("24 小时内还可以问");
 });
 
 test("38a 没发出去的追问不丢：关掉抽屉、换一页再打开，文字还在；发出去以后清掉；只恢复文字（V01）", async ({ page }) => {
@@ -112,7 +112,7 @@ test("38a 没发出去的追问不丢：关掉抽屉、换一页再打开，文�
   expect(keys[0]).toContain(id);
 });
 
-test("38a 抽屉打开、输入框有焦点时改变窗口宽度：标题和关闭按钮留在画面里，抽屉外框不滚，输入框贴着抽屉底部（V04）", async ({ page }) => {
+test("38a 助手面板打开、输入框有焦点时改变窗口宽度：标题和关闭按钮留在画面里，面板外框不滚，输入框贴着面板底部（V04）", async ({ page }) => {
   await registerAccount(page, "a38");
   const id = await sampleWorkId(page);
   const views = [1, 2, 3].map((n) => askView({ id: `atask-v04-${n}`, question: `第 ${n} 个问题：罗盘有什么特征？`, created_at: ago(400 - n * 60), started_at: ago(398 - n * 60), completed_at: ago(390 - n * 60) }));
@@ -121,7 +121,7 @@ test("38a 抽屉打开、输入框有焦点时改变窗口宽度：标题和关�
   await openTab(page, id, "overview");
   await topbarAssistant(page).click();
   await expect(thread(page).locator("[data-task]")).toHaveCount(3);
-  const drawer = page.getByRole("dialog", { name: "助手", exact: true });
+  const drawer = page.locator("#assistant-dock");
   for (const [width, height] of [[1280, 800], [390, 844], [768, 1000], [1280, 800]] as const) {
     await page.setViewportSize({ width, height });
     await box(page).focus();
@@ -134,7 +134,6 @@ test("38a 抽屉打开、输入框有焦点时改变窗口宽度：标题和关�
     await expect(drawer.getByRole("button", { name: "关闭助手", exact: true })).toBeInViewport();
     expect(await drawer.evaluate((node) => node.scrollTop)).toBe(0);
     expect(await drawer.locator(".assistant").evaluate((node) => node.scrollTop)).toBe(0);
-    expect(await page.locator(".layer-drawer").evaluate((node) => node.scrollTop)).toBe(0);
     const field = await rect(drawer.locator("form.cx"));
     expect(frame.bottom - field.bottom, `${width}: the box stands at the foot of the drawer`).toBeLessThan(60);
     // The frame is as tall as the window and no taller: a frame that grew to its content would put the box (and the end of the conversation) below the screen.
@@ -153,7 +152,7 @@ test("38a 写作页右栏回答完以后：对话区顶边不在右栏顶边之�
     await ask(page, question);
     await finished(page, question.includes("苏岑") ? 1 : 2);
   }
-  const column = page.locator("#writing-side");
+  const column = page.locator("#assistant-dock");
   const columnBox = await rect(column);
   const log = await rect(thread(page).locator(".a-thread"));
   expect(log.top, "the conversation starts under the column's top").toBeGreaterThanOrEqual(columnBox.top - 1);
@@ -162,39 +161,6 @@ test("38a 写作页右栏回答完以后：对话区顶边不在右栏顶边之�
   expect(columnBox.bottom, "the column ends with the window").toBeLessThanOrEqual(900 + 1);
   expect(field.bottom, "the box is on screen").toBeLessThanOrEqual(900);
   expect(await column.evaluate((node) => node.scrollTop)).toBe(0);
-  expect(await page.locator("#side-panel-assistant").evaluate((node) => node.scrollTop)).toBe(0);
-});
-
-test("38a 窄屏标签和内容对得上：桌面上选助手，缩到 832 高亮的是助手；窄屏上选检查结果，放大后右栏是检查结果（V08）", async ({ page }) => {
-  await registerAccount(page, "a38");
-  const id = await sampleWorkId(page);
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await openTab(page, id, "workspace");
-  const panes = page.getByRole("navigation", { name: "切换内容", exact: true });
-  await sideTab(page).click();
-  await page.setViewportSize({ width: 832, height: 900 });
-  await expect(panes.getByRole("button", { name: "助手", exact: true })).toHaveAttribute("aria-current", "page");
-  await expect(thread(page)).toBeVisible();
-  // On the narrow screen, choose 检查结果; widened, the column shows the findings.
-  await panes.getByRole("button", { name: /^检查结果/ }).click();
-  await expect(panes.getByRole("button", { name: /^检查结果/ })).toHaveAttribute("aria-current", "page");
-  await expect(thread(page)).toBeHidden();
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(page.getByRole("tab", { name: /^检查结果/ })).toHaveAttribute("aria-selected", "true");
-  await expect(thread(page)).toBeHidden();
-  // The other way: the column on the findings, narrowed, then 助手 chosen on the narrow screen, widened: the column shows the assistant.
-  await page.setViewportSize({ width: 832, height: 900 });
-  await expect(panes.getByRole("button", { name: /^检查结果/ })).toHaveAttribute("aria-current", "page");
-  await panes.getByRole("button", { name: "助手", exact: true }).click();
-  await expect(thread(page)).toBeVisible();
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
-  await expect(thread(page)).toBeVisible();
-  // 正文 only means something on the narrow screen: back on the desktop the column keeps the last side picked.
-  await page.setViewportSize({ width: 832, height: 900 });
-  await panes.getByRole("button", { name: "正文", exact: true }).click();
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(sideTab(page)).toHaveAttribute("aria-selected", "true");
 });
 
 test("38a 资料页伏笔的来源行写「埋下：第 N 章 · 章名」，章名取自章节列表，不显示 append（V06）", async ({ page }) => {
@@ -242,9 +208,9 @@ test("38a 写前回顾：一条一句、句末是角标；没有灰色原文行�
   await expect(view.locator(".a-label")).toHaveText(["上一章停在哪", "出场人物的最新状态", "还没收的线", "计划里这一章的事"]);
   expect(await style(view.locator(".a-label").first(), "font-weight")).toBe("400");
   expect(await style(view.locator(".a-label").first(), "letter-spacing")).toBe("normal");
-  expect(await style(view.locator(".a-label").first(), "font-size")).toBe("11px");
+  expect(await style(view.locator(".a-label").first(), "font-size")).toBe("12px");
   // The previous ending is the opening, in body size; the other groups are lists with a little space between items and no rules.
-  expect(await style(view.locator("p.a-ri.lead"), "font-size")).toBe("14px");
+  expect(await style(view.locator("p.a-ri.lead"), "font-size")).toBe("15px");
   await expect(view.locator("ul.a-ri-list")).toHaveCount(3);
   expect(await style(view.locator("ul.a-ri-list > li").first(), "border-bottom-width")).toBe("0px");
   // Each item is one sentence with one mark at its end.

@@ -13,7 +13,7 @@ export const LIMIT_LINE = "查到上限了，先按已找到的回答。";
 export const OUT_OF_SCOPE_TEXT = "我只能查这部作品里写过的内容，可以换个关于作品的问题。";
 export const SOURCE_KIND: Record<string, string> = { fact: "已确认事实", plan: "计划", foreshadow: "伏笔记录", draft: "本章草稿", issue: "检查结果", decision: "作者的决定" };
 export const VISITOR_SAMPLE_ONLY = "访客只能在示例作品上用助手。注册后可以在自己的作品上用。";
-export const VISITOR_USED_UP ="访客可以在示例作品上问 3 次，今天已经用完。注册后可以在自己的作品上用助手。";
+export const VISITOR_USED_UP ="访客可以在示例作品上问 3 次，24 小时内已经用完。注册后可以在自己的作品上用助手。";
 export const RUNNING_NOW = "上一个问题还在查";
 export const FOLLOW_UP_LIMIT_TEXT = "这一串已经追问两次了，可以问一个新问题";
 /** What a task costs before anything is added: 500 characters (the server reads the figure from the usage). */
@@ -97,7 +97,7 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
   switch (code) {
     case "character_quota_exceeded": {
       const remaining = ((cause as ApiFailure).details ?? {}).remaining;
-      return `今天的可检查字数不够这次${kind === "ask" ? "提问" : "任务"}（约 500 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到 500"} 字）。`;
+      return `24 小时内可检查的字数不够这次${kind === "ask" ? "提问" : "任务"}（约 500 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到 500"} 字）。`;
     }
     case "workflow_quota_exceeded":
       return visitor ? VISITOR_USED_UP : labelError(cause);

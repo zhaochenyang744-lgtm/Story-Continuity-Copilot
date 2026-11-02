@@ -1,4 +1,4 @@
-/* Elements, buttons, form controls and type roles. Values follow the approved 版面 preview. */
+/* Elements, buttons, form controls and type roles. Values follow the approved 版面 preview; the rules are in tokens.css. */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -8,19 +8,20 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-y: scrol
 html,
 body { margin: 0; min-height: 100%; background: var(--c-ground); color: var(--c-ink); }
 body {
-  font-family: var(--font-sans);
-  font-size: var(--fs-15);
+  font-family: var(--font-ui);
+  font-size: var(--fs-14);
   line-height: var(--lh-ui);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-variant-numeric: tabular-nums;
 }
 
-h1, h2, h3, h4 { margin: 0; color: var(--c-ink); font-weight: 700; line-height: var(--lh-tight); }
-h1 { font-size: 72px; line-height: 1; letter-spacing: -.03em; }
+/* Headings and page titles keep the heavy face; everything else is the interface face. */
+h1, h2, h3, h4 { margin: 0; color: var(--c-ink); font-family: var(--font-heading); font-weight: 700; line-height: var(--lh-tight); }
+h1 { font-size: var(--fs-title); line-height: 1; letter-spacing: -.03em; }
 h2 { font-size: var(--fs-28); }
 h3 { font-size: var(--fs-22); }
-h4 { font-size: var(--fs-17); font-weight: 700; }
+h4 { font-size: var(--fs-18); font-weight: 700; }
 p { margin: 0; }
 small { font-size: var(--fs-12); }
 strong, b { font-weight: 700; }
@@ -44,10 +45,15 @@ ins { text-decoration: none; }
 :focus-visible { outline: 3px solid var(--c-blue); outline-offset: 2px; }
 details > summary { cursor: pointer; list-style: none; }
 details > summary::-webkit-details-marker { display: none; }
+/* A fold that opens is a text action: no underline at rest, one when it is pointed at. */
+details > summary:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── Buttons ────────────────────────────────────────────
-   default: a fill a step off the page, a step darker when pointed at, no frame · primary: blue fill ·
-   small: regular weight · text: underlined, no fill · danger: red · plain: no styling. */
+   Three kinds, one height scale (40, or 32 with .btn-small), one corner (6px):
+   primary: blue fill, white words, at most one on a screen · default (secondary): a grey fill, a step darker when pointed at ·
+   text: no fill, underlined only when pointed at, for the quiet action beside a button.
+   Danger is told the same way everywhere: .btn-danger is a secondary button with red words (delete, archive, discard, clear);
+   .btn-destroy is the red fill with white words that confirms it in a dialog. plain: no styling. */
 button { font: inherit; color: inherit; }
 .btn {
   display: inline-flex;
@@ -55,12 +61,12 @@ button { font: inherit; color: inherit; }
   justify-content: center;
   gap: var(--s-2);
   min-height: var(--control-h);
-  padding: 0 20px;
+  padding: 0 var(--s-4);
   border: 0;
   border-radius: var(--r-sm);
   background: var(--c-fill);
   color: var(--c-ink);
-  font-size: var(--fs-15);
+  font-size: var(--fs-14);
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
@@ -70,66 +76,63 @@ button { font: inherit; color: inherit; }
 .btn:hover:not(:disabled) { background: var(--c-fill-hover); color: var(--c-ink); }
 .btn:disabled { cursor: not-allowed; opacity: .4; }
 .btn[aria-busy="true"] { cursor: progress; }
-.btn-lg { min-height: var(--control-h-lg); padding: 0 24px; }
 .btn-primary { background: var(--c-blue); color: var(--c-on-blue); }
 .btn-primary:hover:not(:disabled) { background: var(--c-blue-hover); color: var(--c-on-blue); }
-.btn-small { min-height: 40px; padding: 0 16px; font-size: var(--fs-14); font-weight: 400; }
+.btn-small { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn-danger { color: var(--c-red-text); }
+.btn-danger:hover:not(:disabled) { color: var(--c-red-text); }
+.btn-destroy { background: var(--c-danger); color: var(--c-on-danger); }
+.btn-destroy:hover:not(:disabled) { background: var(--c-danger-hover); color: var(--c-on-danger); }
 .btn-text {
-  min-height: var(--control-h);
-  padding: 0 4px;
+  min-height: var(--control-h-sm);
+  padding: 0 var(--s-1);
   border: 0;
-  border-bottom: 1px solid var(--c-ink);
+  border-radius: 0;
   background: transparent;
   font-weight: 400;
-  min-height: 32px;
   align-self: center;
 }
-.btn-text:hover:not(:disabled) { background: transparent; color: var(--c-blue-text); border-bottom-color: var(--c-blue-text); }
-.btn-text[aria-pressed="true"] { border-bottom-width: 3px; font-weight: 700; }
-.btn-danger { background: var(--c-red); color: var(--c-on-finding); }
-.btn-danger:hover:not(:disabled) { background: var(--c-ink); color: var(--c-ground); }
-.btn-plain { min-height: 0; padding: 0; border: 0; background: transparent; font-weight: inherit; }
+.btn-text:hover:not(:disabled) { background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+.btn-text[aria-pressed="true"] { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.btn-plain { min-height: 0; padding: 0; border: 0; border-radius: 0; background: transparent; font-weight: inherit; }
 .btn-plain:hover:not(:disabled) { background: transparent; color: var(--c-blue-text); }
-/* A text link that looks like the preview's underlined "作品管理". */
+/* A text link in a line of words: the same quiet action, blue when it is a link to somewhere. */
 .link {
   display: inline;
   min-height: 0;
   padding: 0;
   border: 0;
-  border-bottom: 1px solid currentColor;
   background: none;
   color: var(--c-ink);
   font-size: var(--fs-14);
   line-height: 1.6;
   cursor: pointer;
 }
-.link:hover:not(:disabled) { color: var(--c-blue-text); }
+.link:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 3px; }
 .link:disabled { opacity: .45; cursor: not-allowed; }
-.link.blue { color: var(--c-blue-text); border-bottom-width: 2px; font-weight: 700; }
+.link.blue { color: var(--c-blue-text); font-weight: 700; }
 .arrow, .chevron { flex: none; }
 
 /* ── Form controls ────────────────────────────────────
-   A field is a white well (the surface colour) with the small corner and no border: a faint inner ring and a soft
-   shadow (--ring-rest). Hovering deepens both a step; focus deepens them again and adds a pale halo. There is no blue
-   edge. An error is a red ring; a disabled field loses its shadow. The state rules sit in :where() so a field that styles
-   itself (the draft's title and body, the focus-mode title, the sign-in pages' underline fields, the assistant's text area)
-   still wins over them. */
+   One field: a rectangle with a full faint ring (--ring-rest), the 6px corner, on the surface colour. Pointing deepens the ring; focus deepens it
+   again and adds a pale halo. There is no blue edge and no shadow. An error is a red ring; a disabled field loses its fill. The state rules sit in
+   :where() so a field that styles itself (the draft's title and body, the focus-mode title, the assistant's text area) still wins over them. */
 input,
 select,
 textarea {
   width: 100%;
   min-height: var(--control-h);
-  padding: 9px 13px;
+  padding: var(--s-2) var(--s-3);
   border: 0;
   border-radius: var(--r-sm);
   background-color: var(--c-surface);
   color: var(--c-ink);
   font: inherit;
-  font-size: var(--fs-15);
+  font-size: var(--fs-14);
   line-height: var(--lh-ui);
   transition: background-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
-textarea { min-height: 88px; resize: vertical; }
+textarea { min-height: 96px; resize: vertical; }
 input::placeholder,
 textarea::placeholder { color: var(--c-muted); opacity: 1; }
 :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { box-shadow: var(--ring-rest); }
@@ -144,53 +147,63 @@ textarea:focus-visible { outline: none; }
 :where(input, select, textarea)[aria-invalid="true"]:focus { box-shadow: var(--ring-error-focus); }
 select {
   appearance: none;
-  padding-right: 34px;
+  padding-right: var(--s-8);
   background-image: linear-gradient(45deg, transparent 50%, var(--c-ink) 50%), linear-gradient(135deg, var(--c-ink) 50%, transparent 50%);
-  background-position: calc(100% - 17px) 52%, calc(100% - 12px) 52%;
-  background-size: 5px 5px;
+  background-position: calc(100% - 16px) 52%, calc(100% - 12px) 52%;
+  background-size: 4px 4px;
   background-repeat: no-repeat;
 }
 input[type="checkbox"],
 input[type="radio"] { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; border: 0; background: none; accent-color: var(--c-blue); box-shadow: none; }
-input[type="file"] { padding: 8px; }
+input[type="file"] { padding: var(--s-2); }
 input[type="number"] { font-variant-numeric: tabular-nums; }
 
 /* ── Type roles ─────────────────────────────────────── */
-.label { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 400; letter-spacing: var(--tracking-label); }
-.mono { font-family: var(--font-mono); font-size: var(--fs-12); }
+.label { color: var(--c-muted); font-size: var(--fs-12); font-weight: 400; letter-spacing: var(--tracking-label); }
+.mono { font-size: var(--fs-12); }
 .num { font-family: var(--font-display); font-stretch: 100%; font-weight: 700; letter-spacing: -.01em; line-height: 1; font-variant-numeric: tabular-nums; }
 .num.blue,
 .blue .num { color: var(--c-blue-text); }
 .muted { color: var(--c-muted); }
 .small-note { color: var(--c-muted); font-size: var(--fs-13); }
 .sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.badge { display: inline-block; padding: 0 6px; background: var(--c-ink); color: var(--c-ground); font-family: var(--font-mono); font-size: var(--fs-12); letter-spacing: var(--tracking-label); line-height: 1.6; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) 18px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); }
 
-/* ── Tags: red fill = confirmed conflict, yellow fill = possible, dashed = not enough evidence,
-      blue outline = state update, black fill = neutral/decided, dashed grey = considering. ── */
-.tag {
+/* ── Tags ───────────────────────────────────────────────
+   One height (24px), one padding, one corner for every tag. A state keeps its own colour: red fill = confirmed conflict, yellow fill =
+   possible conflict, dashed = not enough evidence (or still being weighed), blue outline = state update. Every other tag (a category, a kind,
+   decided, an alias, a count of chapters) is a grey fill. */
+.tag,
+.kind-tag,
+.alias-chip,
+.badge {
   display: inline-flex;
   align-items: center;
-  padding: 0 8px;
+  height: 24px;
+  padding: 0 var(--s-2);
   border: 1px solid transparent;
+  border-radius: var(--r-sm);
   background: var(--c-fill);
+  color: var(--c-ink);
   font-size: var(--fs-12);
-  font-weight: 700;
-  line-height: 1.7;
+  font-weight: 500;
+  line-height: 1;
   white-space: nowrap;
   justify-self: start;
 }
+.tag { font-weight: 700; }
 .tag-high { border-color: var(--c-red); background: var(--c-red); color: var(--c-on-finding); }
 .tag-mid { border-color: var(--c-yellow); background: var(--c-yellow); color: var(--c-on-finding); }
 .tag-gap { border-color: var(--c-ink); border-style: dashed; background: transparent; }
 .tag-state { border-color: var(--c-blue-text); background: transparent; color: var(--c-blue-text); }
-.tag-solid { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
-.tag-blue { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
-.tag-line { line-height: 1.7; }
-.tag-considering { border: 2px dashed var(--c-ink); background: transparent; line-height: 1.5; }
+.tag-solid, .tag-line { border-color: transparent; }
+.tag-considering { border: 1px dashed var(--c-ink); background: transparent; }
+.badge-line { background: transparent; border-color: var(--c-ink); }
+
+/* Words quoted from the author's text: the serif face, 14px at the least, a 2px bar at the left. (Serif is used for nothing else but the text itself.) */
+.quote-line, .rows-copy .quote-line { padding-left: var(--s-3); border-left: 2px solid var(--c-rule); color: var(--c-ink-2); font-family: var(--font-serif); font-size: var(--fs-14); line-height: 1.8; }
 
 /* ── Inline messages ────────────────────────────────── */
-.inline-error { margin-top: var(--s-2); padding-left: 10px; border-left: 4px solid var(--c-red); color: var(--c-ink); font-size: var(--fs-14); }
-.inline-ok { margin-top: var(--s-2); padding-left: 10px; border-left: 4px solid var(--c-blue); font-size: var(--fs-14); }
+.inline-error { margin-top: var(--s-2); padding-left: var(--s-3); border-left: 4px solid var(--c-red); color: var(--c-ink); font-size: var(--fs-14); }
+.inline-ok { margin-top: var(--s-2); padding-left: var(--s-3); border-left: 4px solid var(--c-ink); font-size: var(--fs-14); }
 .readonly { font-size: var(--fs-13); color: var(--c-muted); }

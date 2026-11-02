@@ -138,6 +138,9 @@ test("全部处理完，审阅事实变化", async ({ page }) => {
   for (const issue of result.issues) {
     await selectIssue(page, issue);
     if (issue.nature === "insufficient_evidence") {
+      // The page does not say everything is done while one finding with too little evidence has not been looked at.
+      await expect(findings(page).getByTestId("findings-unsure")).toContainText("还有 1 条需要你判断");
+      await expect(findings(page)).not.toContainText("都处理完了");
       await button(page, "标为待修改").click();
       expect((await run(page, id)).issues.find((i: any) => i.id === issue.id).to_revise).toBe(true);
     } else await decide(page, id, issue, issue.nature === "state_change" ? "保留这个变化" : "是有意的", "keep_intentional");

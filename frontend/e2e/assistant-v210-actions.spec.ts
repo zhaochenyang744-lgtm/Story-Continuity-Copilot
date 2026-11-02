@@ -265,7 +265,7 @@ test.describe("改资料：新动作的版面", () => {
     const id = await sampleWorkId(phone);
     await serveTasks(phone, () => [view()]);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await expect(cardOf(phone)).toBeVisible();
     await insideColumn(phone);
     await itemOf(cardOf(phone), "C2").getByRole("button", { name: "改内容", exact: true }).tap();
@@ -309,7 +309,7 @@ test.describe("v2.1 第二批动作 截图", () => {
     const id = await sampleWorkId(phone);
     await serveTasks(phone, () => [view()]);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     await expect(cardOf(phone)).toBeVisible();
     await snap(cardOf(phone), "03-375宽-卡片-日间");
     await theme(phone, "night");

@@ -39,6 +39,8 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
   const project = p.project!;
   const [dialog, setDialog] = useState<ProjectDialog | null>(null);
   const [guidanceRequest, setGuidanceRequest] = useState(0);
+  // Step 2 is only to get to the writing page: once the author is there the tour is at step 3 (the first finding), not still asking to go there.
+  const shownStep = (tab === "workspace" && tutorialStep === 2 ? 3 : tutorialStep) as TutorialStep;
   // Jump to an anchor (#issue-…, #chapter-…, #append) once the page has rendered.
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -59,7 +61,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
         <TutorialBar
           projectId={project.id}
           tab={tab}
-          step={tutorialStep}
+          step={shownStep}
           restored={p.tutorialRestored}
           readOnly={p.readOnly}
           busy={Boolean(p.busy)}
@@ -91,7 +93,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
     <>
       {page}
       {p.tutorialActive && (
-        <TutorialGuidance projectId={project.id} step={tutorialStep} tab={tab} readOnly={p.readOnly} busy={Boolean(p.busy)} evidenceOpen={Boolean(p.selected)} sourceOpen={Boolean(p.sourceRecord)} requestId={guidanceRequest} />
+        <TutorialGuidance projectId={project.id} step={shownStep} tab={tab} readOnly={p.readOnly} busy={Boolean(p.busy)} evidenceOpen={Boolean(p.selected)} sourceOpen={Boolean(p.sourceRecord)} requestId={guidanceRequest} />
       )}
       {dialog === "export" && <Dialog title="导出作品" close={() => setDialog(null)}><ExportPanel projectId={project.id} /></Dialog>}
       {dialog === "meta" && <MetaDialog p={p} close={() => setDialog(null)} />}
@@ -99,7 +101,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
         <Dialog title={project.status === "archived" ? "恢复作品" : "归档作品"} close={() => setDialog(null)}>
           <p>{project.status === "archived" ? `恢复《${project.title}》后，就可以继续写和检查。` : `归档后《${project.title}》只能浏览，不能写入；不会删除。随时可以恢复。`}</p>
           <div className="dialog-actions">
-            <Button kind="primary" disabled={Boolean(p.busy)} onClick={async () => { if (await p.updateProject(project.status === "archived" ? { status: "active" } : { status: "archived", confirm_archive: true })) setDialog(null); }}>{project.status === "archived" ? "恢复作品" : "归档"}</Button>
+            <Button kind={project.status === "archived" ? "primary" : "destroy"} disabled={Boolean(p.busy)} onClick={async () => { if (await p.updateProject(project.status === "archived" ? { status: "active" } : { status: "archived", confirm_archive: true })) setDialog(null); }}>{project.status === "archived" ? "恢复作品" : "归档"}</Button>
             <Button kind="text" onClick={() => setDialog(null)}>取消</Button>
           </div>
         </Dialog>
@@ -114,7 +116,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
           </p>
           <p>这部作品的检查结果、你的决定和没提交的修改都会清除。其他作品不受影响。<strong>重置后不能撤销。</strong></p>
           <div className="dialog-actions">
-            <Button kind="danger" disabled={p.readOnly || Boolean(p.busy)} onClick={async () => { if (await p.reset()) setDialog(null); }}>确认重置</Button>
+            <Button kind="destroy" disabled={p.readOnly || Boolean(p.busy)} onClick={async () => { if (await p.reset()) setDialog(null); }}>确认重置</Button>
             <Button kind="text" onClick={() => setDialog(null)}>取消</Button>
           </div>
         </Dialog>

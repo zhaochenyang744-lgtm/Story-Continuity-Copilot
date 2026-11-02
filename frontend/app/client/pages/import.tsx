@@ -4,7 +4,7 @@ import { FormEvent, useRef, useState } from "react";
 import { json, request } from "../../api";
 import type { User } from "../../model";
 import { importStrategyLabel, importWarningLabel } from "../labels";
-import { Button, formatCount, Num, PageHead, pad2 } from "../ui";
+import { Button, formatCount, GenrePicker, Num, PageHead, pad2 } from "../ui";
 
 type ImportPreview = {
   import_id: string;
@@ -29,6 +29,8 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [page, setPage] = useState(1);
   const [busy, setBusy] = useState("");
+  const [genre, setGenre] = useState("");
+  const [custom, setCustom] = useState("");
   const [localError, setLocalError] = useState("");
   const visitor = user.account_type === "visitor";
 
@@ -66,7 +68,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
       const data = await json<{ project: { id: string } }>(`/imports/${preview.import_id}/commit`, "POST", {
         confirm: true,
         title: String(form.get("title")),
-        genre: String(form.get("genre")),
+        genre: genre === "其他" ? custom : genre,
         summary: String(form.get("summary")),
         chapter_preview_ids: preview.detected.chapters.map((chapter) => chapter.preview_id),
       });
@@ -124,7 +126,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
           </ul>
           {localError && <p className="inline-error">{localError}</p>}
           <div className="form-actions">
-            <Button kind="primary" size="lg" disabled={Boolean(busy)} busy={Boolean(busy)} onClick={() => void send()}>{busy || (file ? "下一步：检查分章" : "选择文件")}</Button>
+            <Button kind="primary" disabled={Boolean(busy)} busy={Boolean(busy)} onClick={() => void send()}>{busy || (file ? "下一步：检查分章" : "选择文件")}</Button>
             <Button kind="text" disabled={Boolean(busy)} onClick={() => void discard(true)}>取消导入</Button>
           </div>
         </div>
@@ -168,7 +170,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
             {audit && <p className="mono">{formatCount(audit.source_line_count)} 行 · 保留 {formatCount(audit.retained_body_characters)} 个正文字符</p>}
           </details>
           <div className="form-actions">
-            <Button kind="primary" size="lg" disabled={Boolean(busy)} onClick={() => setStep(3)}>分章没问题，下一步</Button>
+            <Button kind="primary" disabled={Boolean(busy)} onClick={() => setStep(3)}>分章没问题，下一步</Button>
             <Button disabled={Boolean(busy)} onClick={() => void discard(false)}>重新选择文件</Button>
             <Button kind="text" disabled={Boolean(busy)} onClick={() => void discard(true)}>取消导入</Button>
           </div>
@@ -182,10 +184,10 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
             <span className="field-label">书名<span className="field-req">必填</span></span>
             <input className="input-xl" name="title" required maxLength={80} defaultValue={defaultTitle} />
           </label>
-          <label className="field"><span className="field-label">类型</span><input name="genre" maxLength={80} placeholder="例如：悬疑" /></label>
+          <GenrePicker value={genre} custom={custom} onChange={setGenre} onCustom={setCustom} disabled={Boolean(busy)} />
           <label className="field"><span className="field-label">简介</span><textarea name="summary" maxLength={500} rows={3} /></label>
           <div className="form-actions">
-            <Button kind="primary" size="lg" type="submit" disabled={Boolean(busy)} busy={Boolean(busy)}>{busy || "导入并创建作品"}</Button>
+            <Button kind="primary" type="submit" disabled={Boolean(busy)} busy={Boolean(busy)}>{busy || "导入并创建作品"}</Button>
             <Button disabled={Boolean(busy)} onClick={() => setStep(2)}>返回检查分章</Button>
             <Button kind="text" disabled={Boolean(busy)} onClick={() => void discard(true)}>取消导入</Button>
           </div>

@@ -17,7 +17,7 @@
 .feedback { animation: toast-in var(--dur-mid) var(--ease); }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -14px); } }
 @media (min-width: 1024px) {
-  body:has(#side-panel-assistant:not([hidden])) .feedback { animation-name: toast-in-left; }
+  html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 }
 @keyframes toast-in-left { from { opacity: 0; transform: translateY(-14px); } }
 
@@ -84,7 +84,7 @@
 .finding-mark {
   --mark: transparent;
   --mark-h: 100%;
-  padding: 2px 0;
+  padding: 4px 0;
   background-image: linear-gradient(var(--mark), var(--mark));
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -161,9 +161,9 @@
 .scan { position: absolute; inset: 0 -16px auto; z-index: 2; pointer-events: none; transition: height 600ms var(--ease); }
 .scan::before { content: ""; position: absolute; inset: 0; background: var(--c-ground); opacity: .45; }
 .scan::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--c-blue); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-blue) 18%, transparent); }
-.scan-label { position: absolute; right: 0; bottom: 8px; padding: 2px 6px; background: var(--c-blue); color: var(--c-on-blue); font-family: var(--font-mono); font-size: 11px; }
-.finding-skeleton { display: grid; gap: 18px; padding: 18px 0; }
-.finding-skeleton span { display: block; height: 14px; background: linear-gradient(90deg, var(--c-sunken) 0 40%, var(--c-line-soft) 50%, var(--c-sunken) 60% 100%) 0 0 / 300% 100%; animation: shimmer 1600ms linear infinite; }
+.scan-label { position: absolute; right: 0; bottom: 8px; padding: 4px 4px; background: var(--c-blue); color: var(--c-on-blue); font-size: 12px; }
+.finding-skeleton { display: grid; gap: 16px; padding: 16px 0; }
+.finding-skeleton span { display: block; height: 14px; background: linear-gradient(90deg, var(--c-fill) 0 40%, var(--c-line) 50%, var(--c-fill) 60% 100%) 0 0 / 300% 100%; animation: shimmer 1600ms linear infinite; }
 .finding-skeleton span:nth-child(3n + 2) { width: 72%; }
 .finding-skeleton span:nth-child(3n) { width: 48%; }
 @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }

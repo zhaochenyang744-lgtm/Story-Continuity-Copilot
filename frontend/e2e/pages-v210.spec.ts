@@ -240,7 +240,7 @@ test("17 资料页、计划页的分类导航：窄屏一行横向滑动，选�
   expect(await page.getByRole("navigation", { name: "资料分类", exact: true }).evaluate((node) => getComputedStyle(node).overflowX)).toBe("visible");
 });
 
-test("17 内部表单的输入框：白底、没有边框、小圆角、一圈细环加淡影；悬停和聚焦各深一档，不变蓝；浅色和深色；登录页和写作页不受影响", async ({ page }) => {
+test("17 内部表单的输入框：白底、没有边框、小圆角、一圈细环；悬停和聚焦各深一档，不变蓝；浅色和深色；登录页也是同一种，写作页的标题和正文不受影响", async ({ page }) => {
   await registerAccount(page, "fields17");
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto("/settings/general");
@@ -292,15 +292,16 @@ test("17 内部表单的输入框：白底、没有边框、小圆角、一圈�
   await expect(editor).toBeVisible();
   expect(await editor.evaluate((node) => getComputedStyle(node).borderTopWidth)).toBe("0px");
 
-  // The sign-in pages keep their underline fields.
+  // The sign-in pages use the same field (v2.2): the same ring, the same corner.
   await page.context().clearCookies();
   await page.goto("/login");
   const account = page.getByLabel("账号", { exact: true });
   await expect(account).toBeVisible();
   await account.blur();
-  expect(await account.evaluate((node) => { const style = getComputedStyle(node); return { top: style.borderTopWidth, bottom: style.borderBottomWidth, radius: style.borderTopLeftRadius, background: style.backgroundColor }; })).toEqual({ top: "0px", bottom: "1px", radius: "0px", background: "rgba(0, 0, 0, 0)" });
+  await expect.poll(async () => (await look(account)).shadow).toBe(await cssShadow(page, "--ring-rest"));
+  expect(await look(account)).toMatchObject({ width: "0px", radius: "6px" });
   await account.focus();
-  expect(await account.evaluate((node) => { const style = getComputedStyle(node); return { bottom: style.borderBottomWidth, shadow: style.boxShadow, top: style.borderTopWidth }; })).toEqual({ bottom: "2px", shadow: "none", top: "0px" });
+  await expect.poll(async () => (await look(account)).shadow).toBe(await cssShadow(page, "--ring-focus"));
 });
 
 test("17 截图（只在设置了 PAGES_SHOTS_DIR 时拍）", async ({ page, browser }) => {

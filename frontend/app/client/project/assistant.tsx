@@ -25,7 +25,7 @@ import {
 import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { AssistantContextInput, AssistantPage, AssistantSource, AssistantTask, Project, WritingAnalysisRun } from "../../model";
 import { qaLayerLabel, qaStanceLabel, qaStatusLabel, readableKeys, stageLabel, timeLabel } from "../labels";
-import { type CheckUsage, clip, formatCount, isSampleWork, Menu, SAMPLE_FREE, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { type CheckUsage, clip, formatCount, isSampleWork, Menu, SAMPLE_FREE, writtenChars } from "../ui";
 import { regenerateTask } from "./assistant-answer";
 import { mergeChanges } from "./assistant-change";
 import { Composer, type ComposeChip, type Mode, type PlusPick } from "./assistant-compose";
@@ -50,6 +50,8 @@ export type Incoming = { text: string; quick: boolean; nonce: number };
 export type Command =
   | { nonce: number; kind: "recap" }
   | { nonce: number; kind: "fix"; issueId: string }
+  /** A finding becomes the context of the next question (a chip in the box); nothing is sent. */
+  | { nonce: number; kind: "context"; issueId: string }
   | { nonce: number; kind: "check"; text: string };
 type Bridge = {
   setAnchor: (anchor: AssistantAnchor | null) => void;
@@ -58,11 +60,20 @@ type Bridge = {
   usageChanged: () => void;
   /** The assistant wrote to the materials (or took a change back): the page reads facts and threads again. */
   materialsChanged: () => void;
-  /** The writing page says what the top bar's 助手 button does there (switch its column to the assistant); null when it leaves. Elsewhere the button opens the drawer. */
-  setColumnOpener: (open: (() => void) | null) => void;
+  /** A visitor leaves the visitor space for the page where an account is made (the assistant's 注册 button). */
+  register: () => void;
 };
 /** The app provides it; pages tell it where the author is, and ask it to open the drawer. */
-export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined, setColumnOpener: () => undefined });
+export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined, register: () => undefined });
+/** Whether the assistant dock is open (one flag for every page), and the task a page asked to have brought into view. The writing page keeps its own
+    dock (it hands the dock the draft and the findings) and reads this to show or hide it. */
+export const DockContext = createContext<{ open: boolean; setOpen: (open: boolean) => void; focus: { taskId: string; nonce: number } | null; /** Open because this device remembered it, not because the author just asked: the cursor stays where it was. */ restored: boolean }>({ open: false, setOpen: () => undefined, focus: null, restored: false });
+/** Whether the dock was left open, kept on this device; nothing readable or writable means closed. */
+const DOCK_OPEN = "story-continuity:assistant-dock";
+/** On a phone (720 wide or less) the panel takes the whole screen: it is never opened by the memory, and what the author does with it there is not remembered. */
+const onPhone = () => window.innerWidth <= 720;
+export const readDockOpen = () => { if (onPhone()) return false; try { return window.localStorage.getItem(DOCK_OPEN) === "open"; } catch { return false; } };
+export const writeDockOpen = (open: boolean) => { if (onPhone()) return; try { window.localStorage.setItem(DOCK_OPEN, open ? "open" : "closed"); } catch { /* it is only a memory */ } };
 
 /** A page registers where the author is for as long as it is shown; the top bar's 助手 button follows it. */
 export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter_number?: number; character_id?: string; character_name?: string } = {}) {
@@ -133,7 +144,8 @@ export type ThreadProps = {
   topKey?: number;
   /** Called just before the thread moves the author to a chapter (the drawer closes). */
   onNavigate?: () => void;
-  variant: "column" | "drawer";
+  /** The assistant is one panel docked at the right of every page. */
+  variant: "dock";
 };
 export type ThreadMaterial = {
   chapters: { number: number; title: string }[];
@@ -194,6 +206,11 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const [chosen, setChosen] = useState<{ chapter: number | null; character: { id: string; name: string } | null }>({ chapter: null, character: null });
   const [sending, setSending] = useState(false);
   const [stopping, setStopping] = useState(false);
+  // 停止 while the sentence is still being judged (no task yet): the send is given up and nothing is created. While the task is being made (the post is
+  // in flight) it is cancelled the moment it exists. `stoppedNote` is the question that was not sent, shown with its word 已停止.
+  const routeAbort = useRef<{ aborted: boolean; undo: () => void } | null>(null);
+  const stopAfterPost = useRef(false);
+  const [stoppedNote, setStoppedNote] = useState<{ input: string; selection: string } | null>(null);
   const [refusal, setRefusal] = useState("");
   const [tip, setTip] = useState("");
   const [announce, setAnnounce] = useState("");
@@ -304,7 +321,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     const settle = () => {
       const mine = root.current;
       if (!mine || mine.getClientRects().length === 0) return;
-      for (const frame of [mine.closest<HTMLElement>(".assistant-drawer"), mine.closest<HTMLElement>("#writing-side")]) if (frame && frame.scrollTop !== 0) frame.scrollTop = 0;
+      for (const frame of [mine.closest<HTMLElement>(".a-dock")]) if (frame && frame.scrollTop !== 0) frame.scrollTop = 0;
     };
     settle();
     window.addEventListener("resize", settle);
@@ -361,9 +378,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const off = archived ? "作品已归档，只能浏览。" : quotaReason(usage, sample);
   const blocked = off || (busy && !routing ? RUNNING_NOW : "");
   const cost = usage?.account_type === "registered" ? (sample ? SAMPLE_FREE : `约 ${formatCount(needed)} 字`)
-    : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `今天还可以问 ${usage.assistant_tasks_remaining} 次` : "";
+    : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `24 小时内还可以问 ${usage.assistant_tasks_remaining} 次` : "";
   // What is left today goes after the cost when the line has room for it, and into its title when it has not.
-  const costMore = usage?.account_type === "registered" && !sample ? `今天还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
+  const costMore = usage?.account_type === "registered" && !sample ? `24 小时内还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
 
   // The page hears whether a task is running (its 写前回顾 button waits for it) and which findings have an adopted change.
   const report = useRef(writing);
@@ -381,7 +398,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     if (next.kind === "long") noteLong(projectId, next.id, next.status);
   };
 
-  const onWriting = variant === "column" && Boolean(writing);
+  const onWriting = Boolean(writing);
   const chapterNumber = anchor.page === "writing" ? anchor.chapter_number : undefined;
   const recapReason = chapterNumber != null && chapterNumber <= 1 ? "第一章前面没有内容可以回顾" : writing?.draft.dirty ? "等草稿保存后再回顾" : "";
   const modes: Mode[] = onWriting ? (visitor ? ["auto", "ask", "recap", "change", "long"] : ["auto", "ask", "recap", "check", "change", "long"]) : ["auto", "ask", "change", "long"];
@@ -413,7 +430,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   };
 
   const post = async (task: NewTask) => {
-    setSending(true); setRefusal(""); setAgain(null);
+    setSending(true); setRefusal(""); setAgain(null); setStoppedNote(null);
+    stopAfterPost.current = false;
     try {
       // A long task has its own address, and takes the sentence and the page (and chapter) only, and where it came from: the box judged
       // the sentence to be one ("route"), or the author chose the mode ("mode"); the server only counts it.
@@ -434,6 +452,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       setPending(null);
       setTasks((current) => [...(current ?? []), created]);
       setAsked((current) => [...current, created.id]);
+      if (stopAfterPost.current) { stopAfterPost.current = false; void stop(created); }
       // The note about where the words go has been on screen for a first question; this device now remembers it was seen.
       try { window.localStorage.setItem(PRIVACY_SEEN, "1"); } catch { /* shown again next time */ }
       return true;
@@ -462,10 +481,15 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     const putBack = () => { setText(kept.text); setSelection(kept.selection); setFollowUp(kept.followUp); setRefine(kept.refine); setChosen(kept.chosen); };
     const abandon = (reason?: string) => { setPending(null); putBack(); if (reason) setRefusal(reason); };
     stick.current = true; pinned.current = null; setUnseen(false);
-    setRouting(true); setRefusal(""); setAgain(null);
+    setRouting(true); setRefusal(""); setAgain(null); setStoppedNote(null);
     setPending({ input, selection });
     afterSend();
+    const ticket = { aborted: false, undo: () => { setPending(null); putBack(); setStoppedNote({ input, selection }); } };
+    routeAbort.current = ticket;
     const verdict = await routeInput(projectId, input, base);
+    // 停止 was pressed while the sentence was being judged: the send was already given up (ticket.undo), so nothing more happens.
+    if (ticket.aborted) return;
+    routeAbort.current = null;
     setRouting(false);
     if (verdict.route === "out_of_scope") {
       setOffTopic({ input, context: base }); setElsewhere(null); setPending(null);
@@ -572,13 +596,27 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     cost,
     blocked,
   };
+  // 停止 shows 已停止 at once (the task is marked stopped here before the server answers) and puts it back when the server says it could not.
   const stop = async (task: AssistantTask) => {
     setStopping(true);
+    replace({ ...task, status: "cancelled" });
     try {
       const next = await json<AssistantTask>(`/projects/${projectId}/assistant/tasks/${task.id}/cancel`, "POST", {});
       replace(next);
       bridge.usageChanged();
-    } catch (cause) { setRefusal(labelError(cause)); } finally { setStopping(false); }
+    } catch (cause) { replace(task); setRefusal(labelError(cause)); } finally { setStopping(false); }
+  };
+  const stopFromBox = () => {
+    if (routing && routeAbort.current) {
+      const ticket = routeAbort.current;
+      ticket.aborted = true; routeAbort.current = null;
+      setRouting(false);
+      ticket.undo();
+      return;
+    }
+    const running = tasks?.find(active);
+    if (running) { void stop(running); return; }
+    if (sending) stopAfterPost.current = true;
   };
   const clear = async () => {
     setConfirmClear(false);
@@ -605,8 +643,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
 
   // A picked passage arrives: either it becomes the question's context, or it is asked about at once.
   // A command arrives: a 写前回顾, a fix for one finding, or a check of a passage starts, or says why it cannot.
-  const latest = useRef({ post, blocked, contextFor, usage, sample });
-  useEffect(() => { latest.current = { post, blocked, contextFor, usage, sample }; });
+  const latest = useRef({ post, blocked, contextFor, usage, sample, material });
+  useEffect(() => { latest.current = { post, blocked, contextFor, usage, sample, material }; });
+  const refineOn = useRef<(issueId: string, number: number, manual?: boolean) => void>(() => undefined);
   useEffect(() => {
     if (!incoming || incoming.nonce === handled.current) return;
     handled.current = incoming.nonce;
@@ -623,7 +662,12 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     if (!command || command.nonce === handledCommand.current) return;
     handledCommand.current = command.nonce;
     void Promise.resolve().then(() => {
-      const { post: start, blocked: reason, contextFor: build, usage: allowance, sample: free } = latest.current;
+      const { post: start, blocked: reason, contextFor: build, usage: allowance, sample: free, material: current } = latest.current;
+      if (command.kind === "context") {
+        const found = current.issues.find((item) => item.id === command.issueId);
+        if (found) refineOn.current(found.id, found.number, false);
+        return;
+      }
       // A check also pays for the picked words (not on a sample work).
       const short = command.kind === "check" && !reason && !free && allowance?.account_type === "registered" && allowance.check_chars_remaining < (allowance.assistant_task_chars ?? TASK_CHARS) + writtenChars(command.text);
       if (reason || short) {
@@ -693,6 +737,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     setRefine({ issueId, number, manual }); setFollowUp(null); setSelection(""); setMode("auto");
     field.current?.focus({ preventScroll: true });
   };
+  useEffect(() => { refineOn.current = startRefine; });
   const rerunRecap = () => {
     if (blocked) { setRefusal(blocked); return; }
     void post({ kind: "recap", context: { page: "writing" } });
@@ -764,7 +809,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   return (
     <RerouteContext.Provider value={rerouting}>
     <LocateContext.Provider value={locate}>
-    <div ref={root} className={`assistant assistant-${variant}`} data-testid="assistant-thread">
+    <div ref={root} className={`assistant${tasks !== null && tasks.length === 0 && !pending && !stoppedNote ? " assistant-empty" : ""}`} data-testid="assistant-thread" data-variant={variant}>
       <div className="a-bar">
         <span className="a-bar-note">只提建议，不改你的正文</span>
         <Menu label="更多" buttonLabel="助手：更多操作">
@@ -789,7 +834,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         {loadError && <p className="a-note" role="alert">{loadError}</p>}
         {starters && (
           <Starters intro="问这部作品里的人、事、物。助手会自己去查正文和已确认的事实，每句回答都带着出处。"
-            items={starters} ask={askStarter} recap={onWriting ? { run: rerunRecap, reason: blocked || recapReason } : null} />
+            items={starters} ask={askStarter} recap={onWriting ? { run: rerunRecap, reason: blocked || recapReason } : null} disabled={Boolean(off)} />
         )}
         {groups.map((group, index) => {
           const task = group.latest;
@@ -818,6 +863,12 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
             <div className="a-process" role="status"><span className="a-fold static"><ThreeSquares /> 正在判断用法…</span></div>
           </div>
         )}
+        {stoppedNote && (
+          <div className="a-group a-pending" data-testid="route-stopped">
+            <div className="a-ask">{stoppedNote.selection && <span className="a-quote">{clip(stoppedNote.selection, 120)}</span>}{stoppedNote.input}</div>
+            <p className="a-note" role="status">已停止，没有发出</p>
+          </div>
+        )}
         {offTopic && <OutOfScopeNote input={offTopic.input} asAsk={askAnyway} blocked={blocked} />}
         {elsewhere !== null && <RecapElsewhereNote input={elsewhere} cost={cost} blocked={blocked} open={() => { wantRecapOnArrival(); go(`/projects/${projectId}/workspace`); }} />}
         {announce && <p className="sr-only">{announce}</p>}
@@ -827,12 +878,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       {refusal && refusal !== blocked && (
         <p className="a-block a-refused" role="alert">{refusal}{again && <> <button type="button" className="a-link a-retry" onClick={again.run}>重试</button></>}</p>
       )}
-      <Composer chips={chips} text={text} setText={edited} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={variant === "drawer"}
-        mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId)} stopping={stopping}
-        stop={() => { const running = tasks?.find(active); if (running) void stop(running); }}
+      <Composer chips={chips} text={text} setText={edited} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={false}
+        mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId) || routing || sending} stopping={stopping}
+        stop={stopFromBox}
         canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
-        fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable} />
-      {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
+        fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable}
+        usedUp={!archived && off ? { text: off, ...(visitor ? { action: { label: "注册", run: bridge.register } } : {}) } : null} />
+      {confirmClear && <ClearConfirm visitor={visitor} confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
     </div>
     </LocateContext.Provider>
     </RerouteContext.Provider>
@@ -871,7 +923,7 @@ function LegacyQuestions({ runs, go }: { runs: WritingAnalysisRun[]; go: (href: 
 }
 
 /** 清空对话: a small question laid over the panel, with its own focus. */
-function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => void }) {
+function ClearConfirm({ confirm, cancel, visitor }: { confirm: () => void; cancel: () => void; visitor: boolean }) {
   const first = useRef<HTMLButtonElement>(null);
   const last = useRef<HTMLButtonElement>(null);
   useEffect(() => { first.current?.focus({ preventScroll: true }); }, []);
@@ -885,7 +937,7 @@ function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => 
     <div className="a-confirm" role="alertdialog" aria-modal="true" aria-labelledby="a-confirm-title" aria-describedby="a-confirm-body" onKeyDown={onKeyDown}>
       <div className="a-confirm-box">
         <h3 id="a-confirm-title">清空对话</h3>
-        <p id="a-confirm-body">清空后这部作品的对话不再显示。已用的字数不退。</p>
+        <p id="a-confirm-body">{visitor ? "清空后这部作品的对话不再显示。已用的次数不退。" : "清空后这部作品的对话不再显示。已用的字数不退。"}</p>
         <div className="a-confirm-actions">
           <button ref={first} type="button" className="a-link" onClick={cancel}>取消</button>
           <button ref={last} type="button" className="a-danger" onClick={confirm}>清空</button>
@@ -895,20 +947,50 @@ function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => 
   );
 }
 
-/** The drawer other pages open from the top bar: the same thread, on the right, full screen on a phone. */
-export function AssistantDrawer({ close, beta = false, ...thread }: ThreadProps & { close: () => void; beta?: boolean }) {
-  useScrollLock();
-  const { ref, onKeyDown } = useFocusTrap<HTMLElement>(close);
+/** Where the dock sits: the page is pushed aside when the window is wide enough for the page and the panel together (1440 on the writing page,
+    where the draft, the findings and the assistant are side by side; 1200 elsewhere), and the panel lies over the page's right edge when it is not. */
+export type DockMode = "push" | "overlay";
+export const dockModeFor = (writing: boolean): DockMode => (typeof window !== "undefined" && window.innerWidth >= (writing ? 1440 : 1200) ? "push" : "overlay");
+function useDockMode(writing: boolean): DockMode {
+  const [mode, setMode] = useState<DockMode>(() => dockModeFor(writing));
+  useEffect(() => {
+    const update = () => setMode(dockModeFor(writing));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [writing]);
+  return mode;
+}
+
+/** The assistant, one panel for every page: docked at the right under the top bar, about 400px wide. Open, it pushes the page aside (the root
+    element says so for the stylesheet); in a narrower window it lies over the page's edge instead. The same button, the key Ctrl + / and
+    Esc close it. `open` false keeps the thread alive (a running task goes on) but hides the panel. */
+export function AssistantDock({ open, close, beta = false, quiet = false, ...thread }: Omit<ThreadProps, "variant"> & { open: boolean; close: () => void; beta?: boolean; quiet?: boolean }) {
+  const mode = useDockMode(Boolean(thread.writing));
+  const frame = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    root.dataset.dock = mode;
+    const fit = () => root.style.setProperty("--dock-top", `${document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 64}px`);
+    fit();
+    window.addEventListener("resize", fit);
+    return () => { delete root.dataset.dock; root.style.removeProperty("--dock-top"); window.removeEventListener("resize", fit); };
+  }, [open, mode]);
+  // Opened, the cursor is in the box (V: the author does not walk past the whole conversation).
+  useEffect(() => {
+    if (!open || quiet) return;
+    const timer = window.setTimeout(() => frame.current?.querySelector<HTMLTextAreaElement>('textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true }), 40);
+    return () => window.clearTimeout(timer);
+  }, [open, quiet]);
   return (
-    <div className="layer layer-drawer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
-      <aside ref={ref} className="drawer assistant-drawer" role="dialog" aria-modal="true" aria-label="助手" onKeyDown={onKeyDown}>
-        <header className="a-drawer-head">
-          <h2>助手{beta && <span className="a-beta">测试版</span>}</h2>
-          <button type="button" className="a-link" aria-label="关闭助手" onClick={close}>关闭 <kbd>Esc</kbd></button>
-        </header>
-        <AssistantThread {...thread} variant="drawer" onNavigate={() => { thread.onNavigate?.(); close(); }} />
-      </aside>
-    </div>
+    <aside ref={frame} id="assistant-dock" className={`a-dock ${mode}`} aria-label="助手" hidden={!open} data-testid="assistant-dock">
+      <header className="a-dock-head">
+        <h2>助手{beta && <span className="a-beta">测试版</span>}</h2>
+        <button type="button" className="a-link" aria-label="关闭助手" onClick={close}>收起<kbd> Esc</kbd></button>
+      </header>
+      <AssistantThread {...thread} variant="dock" onNavigate={() => { thread.onNavigate?.(); if (mode === "overlay") close(); }} />
+    </aside>
   );
 }
 
@@ -1030,7 +1112,7 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check, bl
         const short = check.remaining !== null && check.remaining < cost;
         const label = check.free ? "查前文矛盾" : `查前文矛盾 · 约 ${formatCount(cost)} 字`;
         return (
-          <button type="button" disabled={short || Boolean(blocked)} title={blocked || (short ? "今天的可检查字数不够这次检查" : undefined)}
+          <button type="button" disabled={short || Boolean(blocked)} title={blocked || (short ? "24 小时内可检查的字数不够这次检查" : undefined)}
             aria-label={`查前文矛盾：检查这段和前文有没有矛盾${check.free ? "，示例作品不计字数" : `，约 ${formatCount(cost)} 字`}`} onClick={() => { check.run(shown.text); setShown(null); }}>{label}</button>
         );
       })()}

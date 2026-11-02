@@ -133,20 +133,20 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
 
       <div className="overview-columns">
         <section aria-labelledby="overview-open">
-          <SectionHead id="overview-open" title="草稿里待看" aside={<button type="button" className="link" onClick={() => go(`/projects/${project.id}/workspace`)}>去写作页处理</button>} />
+          <SectionHead id="overview-open" title="草稿里待看" aside={<button type="button" className="link" onClick={() => go(`/projects/${project.id}/workspace`)}>{p.readOnly ? "去写作页查看" : "去写作页处理"}</button>} />
           {issues.length ? (
             <ol className="rows">
               {issues.slice(0, 6).map((issue, index) => (
                 <li key={issue.id}>
                   <button type="button" onClick={() => go(`/projects/${project.id}/workspace#issue-${issue.id}`)}>
                     <Num className="rows-num">{index + 1}</Num>
-                    <span className="rows-copy"><strong>{findingHeadline(issue)}</strong>{issue.claim_text && <span>“{clip(issue.claim_text, 40)}”</span>}</span>
+                    <span className="rows-copy"><strong>{findingHeadline(issue)}</strong>{issue.claim_text && <span className="quote-line">“{clip(issue.claim_text, 40)}”</span>}</span>
                     <FindingTag issue={issue} />
                   </button>
                 </li>
               ))}
             </ol>
-          ) : <p className="empty">{p.run ? "上次检查之后，草稿里没有待看的地方。" : "这一章还没检查。写完一段后，在写作页点「检查这一章」。"}</p>}
+          ) : <p className="empty">{p.run ? "上次检查之后，草稿里没有待看的地方。" : p.readOnly ? "这一章没有检查结果。" : "这一章还没检查。写完一段后，在写作页点「检查这一章」。"}</p>}
           {issues.length > 0 && (p.dirty || p.run?.is_stale) && <p className="small-note">草稿在检查之后又改过，这些结果针对的是先前的正文。</p>}
           {issues.length > 6 && <p className="small-note">还有 {issues.length - 6} 处，在写作页查看。</p>}
         </section>
@@ -164,7 +164,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
                 </li>
               ))}
             </ul>
-          ) : <p className="empty">还没写下接下来的打算。在「计划」里记下要写的情节，它们会出现在航线的「接下来」一段。</p>}
+          ) : <p className="empty">{p.readOnly ? "没有写下的计划。" : "还没写下接下来的打算。在「计划」里记下要写的情节，它们会出现在航线的「接下来」一段。"}</p>}
         </section>
       </div>
     </section>

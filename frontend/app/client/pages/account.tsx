@@ -115,7 +115,8 @@ function WritingCalendar({ calendar }: { calendar: AuthorHome["calendar"] }) {
         >
           <div className="heat-days" aria-hidden="true"><span /><span>一</span><span /><span>三</span><span /><span>五</span><span /></div>
           <div className="heat-months" aria-hidden="true">
-            {months.map((mark) => <span key={mark.column} style={{ gridColumn: mark.column + 1 }}>{mark.label}</span>)}
+            {/* A month that begins in the last weeks is written backwards from the chart's right edge: its name is wider than the one or two weeks it has, and would stand out of the chart (and make the row scroll). */}
+            {months.map((mark) => <span key={mark.column} style={{ gridColumn: mark.column + 1, ...(mark.column >= columns - 2 ? { justifySelf: "end" } : {}) }}>{mark.label}</span>)}
           </div>
           <div className="heat-grid" onMouseLeave={() => setActive(null)}>
             {calendar.chars.map((_, index) => (

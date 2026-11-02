@@ -2,38 +2,38 @@
 /* The header is a grid so the two columns line up from the top to the foot: the menu button sits level with the kicker line, the first
    numeral's top is level with the title's, and the last line under the figures ends level with the summary's last line. The figures'
    column is as high as the title and summary; the first row of figures stays at its top and the last row at its foot. */
-.overview-hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "kicker menu" "main figures"; column-gap: 64px; row-gap: 12px; padding: 40px 0 44px; border-bottom: 1px solid var(--c-rule); }
+.overview-hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "kicker menu" "main figures"; column-gap: 64px; row-gap: 12px; padding: 32px 0 48px; border-bottom: 1px solid var(--c-rule); }
 .overview-hero-main { grid-area: main; min-width: 0; }
-.overview-kicker { grid-area: kicker; display: flex; flex-wrap: wrap; align-items: center; align-self: center; gap: 14px; color: var(--c-ink); }
+.overview-kicker { grid-area: kicker; display: flex; flex-wrap: wrap; align-items: center; align-self: center; gap: 12px; color: var(--c-ink); }
 .overview-title { font-size: clamp(64px, 9vw, 132px); line-height: 1; letter-spacing: -.04em; overflow-wrap: anywhere; }
-.overview-summary { max-width: 34em; margin-top: 28px; font-family: var(--font-serif); font-size: 19px; line-height: 1.85; }
+.overview-summary { max-width: 34em; margin-top: 24px; font-size: 18px; line-height: 1.85; }
 .overview-menu { grid-area: menu; display: flex; justify-content: flex-end; }
-.overview-figures { grid-area: figures; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; align-self: stretch; margin-top: 3px; }
+.overview-figures { grid-area: figures; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; align-self: stretch; margin-top: 4px; }
 .overview-figures > div { container-type: inline-size; padding: 0 0 16px; border-bottom: 1px solid var(--c-line); }
-.overview-figures > div.wide { grid-column: span 2; align-self: end; margin-bottom: 6px; padding: 16px 0 0; border-bottom: 0; }
+.overview-figures > div.wide { grid-column: span 2; align-self: end; margin-bottom: 4px; padding: 16px 0 0; border-bottom: 0; }
 /* The numerals keep their full size until the cell is too narrow for them, then shrink to fill it. */
 .overview-figures .num { font-size: clamp(var(--fs-figure-min), calc(100cqi / (var(--digits, 1) * var(--num-digit) + var(--commas, 0) * var(--num-comma))), var(--fs-figure)); }
-.overview-figures .figure-label { margin-top: 6px; }
+.overview-figures .figure-label { margin-top: 4px; }
 .import-note { margin-top: 24px; }
-.overview-band { margin-top: 40px; }
+.overview-band { margin-top: 32px; }
 .overview-route { margin-top: 64px; }
-.route-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; }
-.route-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.route-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
+.route-legend li { display: inline-flex; align-items: center; gap: 4px; }
 .route-legend .key { display: inline-block; width: 12px; height: 12px; }
 .route-legend .key.checked { background: var(--c-ink); }
 .route-legend .key.unchecked { border: 2px solid var(--c-ink); }
 .route-legend .key.changed { border: 2px solid var(--c-ink); background: linear-gradient(135deg, transparent 50%, var(--c-ink) 50%); }
 .route-legend .key.draft { background: var(--c-blue); }
 .route-legend .key.thread { width: 20px; height: 0; border-top: 2px solid var(--c-ink); }
-.route-legend .key.plan { width: 10px; height: 10px; margin: 0 1px; transform: rotate(45deg); background: var(--c-blue); }
+.route-legend .key.plan { width: 10px; height: 10px; margin: 0 4px; transform: rotate(45deg); background: var(--c-blue); }
 .route-scroll { margin-top: 12px; overflow-x: auto; overscroll-behavior-x: contain; }
 .route-frame { position: relative; }
 .route-point { position: absolute; padding: 0; border: 0; background: none; cursor: pointer; }
 .route-point:focus-visible { outline-offset: calc(var(--s-1) * -1); }
 .route { display: block; max-width: none; }
-.route text { font-family: var(--font-sans); }
-.route .route-mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; }
-.route .route-mono.small { font-size: 11px; letter-spacing: 0; }
+.route text { font-family: var(--font-ui); }
+.route .route-mono { font-size: 12px; letter-spacing: .06em; }
+.route .route-mono.small { font-size: 12px; letter-spacing: 0; }
 .route .route-thread { font-size: 15px; fill: var(--c-ink); }
 .route .route-thread-title { font-weight: 700; }
 .route .route-num { font-family: var(--font-display); font-stretch: 100%; font-weight: 700; letter-spacing: -.01em; font-size: 15px; }
@@ -41,20 +41,20 @@
 .route .route-label.current { font-weight: 700; }
 .route .route-thread-no { font-size: 12px; }
 /* On a narrow screen the threads' words live in this list; the chart keeps only the dots and their numbers. */
-.route-threads { display: grid; margin-top: 12px; border-top: 1px solid var(--c-line); }
-.route-threads li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--c-line); }
-.route-threads-no { display: grid; flex: none; place-items: center; width: 24px; height: 24px; border: 2px solid var(--c-ink); border-radius: 50%; font-family: var(--font-display); font-stretch: 100%; font-size: 12px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+.route-threads { display: grid; gap: 4px; margin-top: 12px; }
+.route-threads li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; }
+.route-threads-no { display: grid; flex: none; place-items: center; width: 24px; height: 24px; border: 2px solid var(--c-ink); border-radius: var(--r-pill); font-family: var(--font-display); font-stretch: 100%; font-size: 12px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
 .route-threads-copy { display: grid; min-width: 0; }
 .route-threads-copy strong { font-weight: 700; overflow-wrap: anywhere; }
 .route-threads-copy span { color: var(--c-muted); font-size: 13px; }
-.overview-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 56px; margin-top: 56px; }
+.overview-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 48px; margin-top: 48px; }
 .overview-columns .small-note { margin-top: 12px; }
 
 /* Below the width where the two columns fit, the figures move under the title and keep the same order. */
 @media (max-width: 1004px) {
   .overview-hero { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "kicker menu" "main main" "figures figures"; row-gap: 12px; }
-  .overview-figures { margin-top: 20px; }
+  .overview-figures { margin-top: 16px; }
 }
 @media (max-width: 720px) {
-  .overview-hero { padding: 24px 0 28px; }
+  .overview-hero { padding: 24px 0 24px; }
 }

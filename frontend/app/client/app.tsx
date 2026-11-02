@@ -17,7 +17,7 @@ import { isSettingsItem, settingsAliases, SettingsPage } from "./pages/settings"
 import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
 import { PrivacyPage } from "./pages/privacy";
 import { ProjectFrame } from "./project/frame";
-import { AssistantBridge, AssistantDrawer, type AssistantAnchor, type Incoming } from "./project/assistant";
+import { AssistantBridge, AssistantDock, DockContext, readDockOpen, writeDockOpen, type AssistantAnchor, type Incoming } from "./project/assistant";
 import { seenLong, useLongDot } from "./project/long-watch";
 import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
@@ -58,6 +58,9 @@ export function App() {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null);
   const [ready, setReady] = useState(() => bootstrappedUser !== undefined);
+  // The session could not be asked about (the service is not answering): not the same as having none, so the author is not sent to the login page.
+  const [unreachable, setUnreachable] = useState(false);
+  const [bootstrapTry, setBootstrapTry] = useState(0);
   const { theme } = usePrefs();
   const [narrow, setNarrow] = useState(false);
   const [notice, setNotice] = useState("");
@@ -78,12 +81,11 @@ export function App() {
   const [settingsLeave, setSettingsLeave] = useState<string | null>(null);
   // The assistant: where the author is (told by the open page), the drawer other pages open, and a nudge to re-read the allowance.
   const [assistantAnchor, setAssistantAnchor] = useState<AssistantAnchor | null>(null);
-  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null; focus?: { taskId: string; nonce: number } }>({ open: false, incoming: null });
+  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null; focus?: { taskId: string; nonce: number }; restored?: boolean }>(() => (typeof window !== "undefined" && readDockOpen() ? { open: true, incoming: null, restored: true } : { open: false, incoming: null }));
   const [usageBump, setUsageBump] = useState(0);
   const assistantNonce = useRef(0);
   const materialsChanged = useRef<() => void>(() => undefined);
-  // The writing page has the assistant in its own column: the top bar's button goes there instead of opening the drawer.
-  const columnOpener = useRef<(() => void) | null>(null);
+  const registerRef = useRef<() => void>(() => undefined);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const switchPending = useRef(false);
 
@@ -128,13 +130,13 @@ export function App() {
 
   const assistantBridge = useMemo(() => ({
     setAnchor: setAssistantAnchor,
-    openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => setDrawer({
+    openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => { writeDockOpen(true); setDrawer({
       open: true, incoming: incoming ? { ...incoming, nonce: ++assistantNonce.current } : null, ...(focusTask ? { focus: { taskId: focusTask, nonce: ++assistantNonce.current } } : {}),
-    }),
+    }); },
     usageChanged: () => setUsageBump((count) => count + 1),
     // The assistant wrote to (or took back a change of) the materials; the work reads them again.
     materialsChanged: () => materialsChanged.current(),
-    setColumnOpener: (open: (() => void) | null) => { columnOpener.current = open; },
+    register: () => registerRef.current(),
   }), []);
 
   const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
@@ -148,9 +150,13 @@ export function App() {
   useEffect(() => { loadPrefs(); }, []);
   // A new address starts at the top (an #anchor is scrolled to by the page), without the last error.
   const [shownPath, setShownPath] = useState(pathname);
+  const [shownProject, setShownProject] = useState(projectId);
+  if (shownProject !== projectId) setShownProject(projectId);
   if (shownPath !== pathname) {
     setShownPath(pathname);
-    if (drawer.open) setDrawer({ open: false, incoming: null });
+    // The assistant stays docked from page to page of the same work; leaving the work closes it (the device still remembers it was left open, so the next work opens it again).
+    if (drawer.open && !(projectId && projectId === shownProject)) setDrawer({ open: false, incoming: null });
+    else if (!drawer.open && projectId && projectId !== shownProject && readDockOpen()) setDrawer({ open: true, incoming: null, restored: true });
     // The redirect to the login page keeps the "登录已过期" reason; any other new address starts without the last error.
     if (errorFollowsTo === pathname) setErrorFollowsTo(null);
     else { setError(null); setErrorFollowsTo(null); }
@@ -213,12 +219,14 @@ export function App() {
       .then((x) => { bootstrappedUser = x.user; return x.user; })
       .catch((cause) => { if ((cause as ApiFailure).code === "authentication_required") { bootstrappedUser = null; return null; } throw cause; })
       .finally(() => { sessionBootstrap = null; }));
-    bootstrap.then((next) => setUser(next)).catch(fail).finally(() => setReady(true));
-  }, [fail]);
+    bootstrap.then((next) => { setUnreachable(false); setUser(next); })
+      .catch((cause) => { if ((cause as ApiFailure).code === "authentication_required") fail(cause); else setUnreachable(true); })
+      .finally(() => setReady(true));
+  }, [fail, bootstrapTry]);
   useEffect(() => {
     if (!ready) return;
     const isPublic = publicAuthPaths.includes(pathname);
-    if (!user && !isPublic) { router.replace("/login"); return; }
+    if (!user && !isPublic && !unreachable) { router.replace("/login"); return; }
     if (user && signedOutOnlyPaths.includes(pathname)) { router.replace("/"); return; }
     // The addresses of the single 个人信息 and 账号安全 pages (before v1.8.0) still lead somewhere.
     if (user && pathname === "/account/profile") { router.replace("/account"); return; }
@@ -228,7 +236,7 @@ export function App() {
     const settingsAlias = Object.hasOwn(settingsAliases, oldItem) ? settingsAliases[oldItem] : undefined;
     if (user && settingsAlias) { router.replace(`/settings/${settingsAlias}`); return; }
     if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
-  }, [ready, user, pathname, router, applyOnboarding, fail]);
+  }, [ready, user, unreachable, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
     if (!menuOpen) return;
     const items = () => Array.from(document.querySelectorAll<HTMLElement>(".account-menu [role^='menuitem']"));
@@ -306,6 +314,7 @@ export function App() {
       startTransition(() => { p.clear(); setTutorialProgress(null); setOnboarding(null); updateUser(null); router.replace(to); });
     } catch (cause) { fail(cause); }
   };
+  useEffect(() => { registerRef.current = () => { void performLogout("/register"); }; });
   const logout = async () => {
     setMenuOpen(false);
     if (settingsDirty.current) { setSettingsLeave("logout"); return; }
@@ -344,11 +353,42 @@ export function App() {
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
 
+  // The assistant dock: one panel for every page, opened and closed by the top bar's button, Ctrl + / and Esc.
+  const dockAvailable = Boolean(projectId && p.project && assistantAnchor && user?.assistant?.available);
+  const toggleDock = () => {
+    if (!drawer.open && p.project) seenLong(p.project.id);
+    writeDockOpen(!drawer.open);
+    setDrawer((current) => (current.open ? { open: false, incoming: null } : { open: true, incoming: null }));
+  };
+  const setDockOpen = useCallback((open: boolean) => { writeDockOpen(open); setDrawer((current) => (current.open === open ? current : open ? { ...current, open: true, restored: false } : { open: false, incoming: null })); }, []);
+  useEffect(() => {
+    if (!dockAvailable) return;
+    const keys = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "/") { event.preventDefault(); toggleDock(); return; }
+      if (event.key !== "Escape" || !drawer.open || event.defaultPrevented) return;
+      // Esc belongs to a dialog, a menu or a question that is open first.
+      if (document.querySelector('[aria-modal="true"], .cx-menu, details.menu[open], .a-selpop, .account-menu')) return;
+      writeDockOpen(false);
+      setDrawer({ open: false, incoming: null });
+      window.setTimeout(() => { if (document.activeElement === document.body || document.activeElement?.closest("#assistant-dock")) document.getElementById("assistant-open")?.focus(); }, 30);
+    };
+    window.addEventListener("keydown", keys);
+    return () => window.removeEventListener("keydown", keys);
+  });
+  const dockValue = useMemo(() => ({ open: drawer.open, setOpen: setDockOpen, focus: drawer.focus ?? null, restored: Boolean(drawer.restored) }), [drawer.open, drawer.focus, drawer.restored, setDockOpen]);
+
   const usage = useUsage(user ? `${user.id}:${pathname}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}:${usageBump}` : "");
   const tutorialStep = (p.project?.is_tutorial && tutorialProgress?.tutorial_project_id === p.project.id ? tutorialProgress.current_step : 1) as 1 | 2 | 3 | 4 | 5;
 
   let body;
   if (!ready || (user && signedOutOnlyPaths.includes(pathname))) body = <div className="boot" role="status">正在载入…</div>;
+  else if (unreachable && !user && !publicAuthPaths.includes(pathname)) body = (
+    <div className="boot offline" role="alert" data-testid="service-unreachable">
+      <h1>暂时连不上服务</h1>
+      <p>你的内容没有丢，这不是登录过期。等服务恢复后点重试。</p>
+      <Button kind="primary" onClick={() => { bootstrappedUser = undefined; sessionBootstrap = null; setReady(false); setBootstrapTry((value) => value + 1); }}>重试</Button>
+    </div>
+  );
   else if (pathname === "/password-reset") body = <PasswordResetRequestPage go={(href) => router.push(href)} />;
   else if (pathname === "/password-reset/confirm") body = <PasswordResetConfirmPage go={(href) => router.push(href)} />;
   else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;
@@ -371,6 +411,7 @@ export function App() {
   const showFeedback = !publicAuthPaths.includes(pathname) && Boolean(user) && (notice || Boolean(error));
   return (
     <AssistantBridge.Provider value={assistantBridge}>
+    <DockContext.Provider value={dockValue}>
     <div className={`app${user ? "" : " app-auth"}`}>
       <a className="skip" href="#main" onClick={() => document.getElementById("main")?.focus()}>跳到主要内容</a>
       {user && (
@@ -396,9 +437,7 @@ export function App() {
                   </>}
             </nav>
             {projectId && p.project && assistantAnchor && user.assistant?.available && (
-              assistantAnchor.page === "writing"
-                ? <button id="assistant-open" type="button" className="topbar-assistant" onClick={() => { seenLong(p.project!.id); if (columnOpener.current) columnOpener.current(); else setDrawer({ open: true, incoming: null }); }}>助手{longDot && <LongDot />}</button>
-                : <button id="assistant-open" type="button" className="topbar-assistant" aria-haspopup="dialog" aria-expanded={drawer.open} onClick={() => { seenLong(p.project!.id); setDrawer({ open: true, incoming: null }); }}>助手{longDot && <LongDot />}</button>
+              <button id="assistant-open" type="button" className="topbar-assistant" aria-expanded={drawer.open} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={toggleDock}>助手{longDot && <LongDot />}</button>
             )}
             {usageShort(usage) && (
               <span className="topbar-quota">
@@ -445,11 +484,11 @@ export function App() {
           </nav>
         </footer>
       )}
-      {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && (
-        <AssistantDrawer key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus} variant="drawer"
+      {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && (
+        <AssistantDock open quiet={Boolean(drawer.restored)} key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus}
           material={{ chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })), characters: p.characters.map((person) => ({ id: person.id, name: person.name })), draftBody: p.draft?.body ?? "", issues: [], issuesReason: "" }}
           beta={Boolean(user.assistant?.beta)}
-          close={() => { setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />
+          close={() => { writeDockOpen(false); setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />
       )}
       {switchTo && (
         <Dialog title={p.pendingDecisionConflict ? "待补记的决定已失效" : p.pendingControlledDecision ? "决定还没记下" : "草稿还没保存"} closeDisabled={switchSaving} close={() => { if (!switchPending.current) setSwitchTo(null); }}>
@@ -493,7 +532,7 @@ export function App() {
         <Dialog title="资料没能保存" close={() => setSettingsLeave(null)}>
           <p>个人资料有改动没能保存，现在离开会丢掉它们。</p>
           <div className="dialog-actions">
-            <Button kind="primary" onClick={() => {
+            <Button kind="destroy" onClick={() => {
               const target = settingsLeave;
               settingsDirty.current = false;
               setSettingsLeave(null);
@@ -508,12 +547,13 @@ export function App() {
         <Dialog title="退出会丢失这条记录" close={() => setConfirmUnstoredLogout(false)}>
           <p>这个浏览器没能保存这条已失效的待补记记录。退出后它会丢失；服务器上的正文和决定不会改变。</p>
           <div className="dialog-actions">
-            <Button kind="danger" onClick={() => { setConfirmUnstoredLogout(false); void performLogout(); }}>仍然退出</Button>
+            <Button kind="destroy" onClick={() => { setConfirmUnstoredLogout(false); void performLogout(); }}>仍然退出</Button>
             <Button kind="text" onClick={() => setConfirmUnstoredLogout(false)}>取消</Button>
           </div>
         </Dialog>
       )}
     </div>
+    </DockContext.Provider>
     </AssistantBridge.Provider>
   );
 }

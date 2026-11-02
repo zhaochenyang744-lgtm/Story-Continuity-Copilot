@@ -104,12 +104,6 @@ test.describe("07f 键盘", () => {
     await expect(box(page)).toBeFocused();
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
-    // The arrow keys move between the tabs without pulling the cursor away from them.
-    await sideTab(page).focus();
-    await page.keyboard.press("ArrowLeft");
-    await expect(findings(page).getByRole("tab", { name: /^检查结果/ })).toBeFocused();
-    await page.keyboard.press("ArrowRight");
-    await expect(sideTab(page)).toBeFocused();
     // From the 更多 menu, one Tab reaches the link that jumps to the box; it can be seen only then.
     const skip = thread(page).getByRole("button", { name: "跳到输入框", exact: true });
     await expect(skip).toBeAttached();
@@ -187,14 +181,15 @@ test.describe("07f 空对话和全站", () => {
       };
       return { info: make("note note-info"), warn: make("note note-warn"), error: make("note note-error"), toast: make("feedback"), toastError: make("feedback error") };
     });
-    const [blue, yellow, red] = [await colourOf(page, "var(--c-blue)"), await colourOf(page, "var(--c-yellow)"), await colourOf(page, "var(--c-red)")];
-    for (const [name, colour] of [["info", blue], ["warn", yellow], ["error", red], ["toast", blue], ["toastError", red]] as const) {
+    const [ink, yellow, red] = [await colourOf(page, "var(--c-ink)"), await colourOf(page, "var(--c-yellow)"), await colourOf(page, "var(--c-red)")];
+    // v2.2: blue is for the main action and links, not for a plain notice, so the info bar is ink.
+    for (const [name, colour] of [["info", ink], ["warn", yellow], ["error", red], ["toast", ink], ["toastError", red]] as const) {
       const item = seen[name];
       // (soft look) the box has no frame: the bar at its left is all there is.
       expect(item.left, name).toBe("0px");
       expect(item.radius, name).toBe("10px");
       expect(item.width, name).toBe("4px");
-      expect(item.barRadius, name).toBe("2px");
+      expect(item.barRadius, name).toBe("0px");
       expect(item.top, name).toBe("8px");
       expect(item.bottom, name).toBe("8px");
       expect(item.colour, name).toBe(colour);
@@ -246,7 +241,7 @@ test.describe("07f 空对话和全站", () => {
     expect(shadow).toContain("36px");
   });
 
-  test("34 输入框的占位文字：日夜都和底色至少 4.5:1，已输入的文字更深；35 个人信息页的大头像是 14 像素圆角，顶栏的小头像仍是圆形", async ({ page }) => {
+  test("34 输入框的占位文字：日夜都和底色至少 4.5:1，已输入的文字更深；35 个人信息页的大头像和顶栏的小头像都是圆形", async ({ page }) => {
     await registerAccount(page, "hint");
     await page.goto("/projects/new");
     const field = page.locator("textarea[name=summary]");
@@ -271,8 +266,8 @@ test.describe("07f 空对话和全站", () => {
     const large = page.locator(".avatar-xl");
     await expect(large).toBeVisible();
     const style = await large.evaluate((node) => { const css = getComputedStyle(node); return { radius: css.borderTopLeftRadius, overflow: css.overflow }; });
-    expect(style).toEqual({ radius: "14px", overflow: "hidden" });
-    expect(await accountMenuButton(page).locator(".avatar").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("50%");
+    expect(style).toEqual({ radius: "999px", overflow: "hidden" });
+    expect(await accountMenuButton(page).locator(".avatar").evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("999px");
   });
 });
 
@@ -285,36 +280,37 @@ test.describe("07f 手机", () => {
     await registerAccount(phone, "pane");
     const id = await sampleWorkId(phone);
     await openTab(phone, id, "workspace");
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
+    await phone.locator("#assistant-open").click();
     const questions = ["苏岑是谁？", "温岚是谁？", "罗盘在谁手里？", "老周是谁？", "第 9 章发生了什么？", "黎舟是谁？"];
     for (const [index, question] of questions.entries()) {
       await ask(phone, question);
       await finished(phone, index + 1);
     }
     const geometry = async () => phone.evaluate(() => {
-      const pane = document.getElementById("side-panel-assistant")!.getBoundingClientRect();
+      const pane = document.getElementById("assistant-dock")!.getBoundingClientRect();
       const log = document.querySelector<HTMLElement>(".a-thread")!;
       const field = document.querySelector('[aria-label="向助手提问"]')!.getBoundingClientRect();
       return { pane: [Math.round(pane.top), Math.round(pane.height)], log: [log.scrollHeight, log.clientHeight], field: Math.round(field.bottom), page: document.documentElement.scrollHeight, height: window.innerHeight };
     });
-    await phone.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
     await expect.poll(async () => (await geometry()).pane[0]).toBeLessThan(200);
     const now = await geometry();
     // The conversation is longer than the pane and scrolls inside it; the box is at the pane's foot and in the window.
     expect(now.log[0]).toBeGreaterThan(now.log[1]);
     expect(now.pane[1]).toBeLessThanOrEqual(now.height);
     expect(now.field).toBeLessThanOrEqual(now.height);
-    expect(now.page).toBeLessThan(now.height * 3);
-    // The pane switch sits just under the top bar (whose real height on a phone is taller than --topbar-h), not under it.
-    const cover = await phone.evaluate(() => ({ bar: document.querySelector(".topbar")!.getBoundingClientRect().bottom, panes: document.querySelector(".mobile-panes")!.getBoundingClientRect().top }));
-    expect(cover.panes).toBeGreaterThanOrEqual(cover.bar - 1);
+    // The panel fills the screen just under the top bar (whose real height on a phone is taller than --topbar-h), not under it, and is as wide as the window.
+    const cover = await phone.evaluate(() => ({ bar: document.querySelector(".topbar")!.getBoundingClientRect().bottom, dock: document.getElementById("assistant-dock")!.getBoundingClientRect() }));
+    expect(Math.abs(cover.dock.top - cover.bar)).toBeLessThanOrEqual(1);
+    expect(Math.round(cover.dock.width)).toBe(375);
     // The page itself is held still: a pull outside the conversation does not move it, so the box stays on the screen.
     const before = await phone.evaluate(() => window.scrollY);
-    await phone.locator(".mobile-panes").hover();
+    await phone.locator(".a-dock-head").hover();
     await phone.mouse.wheel(0, -3000);
     await phone.waitForTimeout(300);
     expect(await phone.evaluate(() => window.scrollY)).toBe(before);
-    expect(Math.round(await phone.locator('#side-panel-assistant textarea[aria-label="向助手提问"]').evaluate((field) => field.getBoundingClientRect().bottom))).toBeLessThanOrEqual(now.height);
+    expect(Math.round(await phone.locator('#assistant-dock textarea[aria-label="向助手提问"]').evaluate((field) => field.getBoundingClientRect().bottom))).toBeLessThanOrEqual(now.height);
+    // The conversation does not scroll sideways (V16-16).
+    expect(await phone.locator(".a-thread").evaluate((node) => node.scrollWidth - node.clientWidth)).toBeLessThanOrEqual(0);
     await shot(phone, "07f-31-phone-pane", false);
     // Scrolled up in the conversation while an answer is on its way, 「新回答 ↓」 shows and takes the author to the end.
     await ask(phone, "E2E_SLOW 老周后来去了哪里？");

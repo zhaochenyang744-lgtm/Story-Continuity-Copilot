@@ -1,31 +1,33 @@
 /* 计划 */
-.plan-legend { display: flex; gap: 18px; font-size: 13px; }
-.plan-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.plan-legend { display: flex; gap: 16px; font-size: 13px; }
+.plan-legend span { display: inline-flex; align-items: center; gap: 4px; }
 .plan-legend .key { display: inline-block; width: 14px; height: 14px; }
 .plan-legend .key.decided { background: var(--c-ink); }
 .plan-legend .key.weighing { border: 2px dashed var(--c-ink); }
-.plan-group { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; padding: 20px 0; }
+.plan-group { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; padding: 16px 0; }
 .plan-group-label .num { display: block; font-size: 64px; line-height: .9; }
-.plan-group-label > span:last-child { display: block; margin-top: 6px; font-size: 13px; }
+.plan-group-label > span:last-child { display: block; margin-top: 4px; font-size: 13px; }
 .plan-items { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 /* A plan is a raised card with no frame; one still being weighed keeps a dashed outline: dashes mean "not certain yet". */
-.plan-card { padding: 18px 20px; border: 2px solid transparent; background: var(--c-raised); scroll-margin-top: calc(var(--topbar-h) + 24px); }
+.plan-card { padding: 16px 24px; border: 1px solid transparent; background: var(--c-raised); scroll-margin-top: calc(var(--topbar-h) + 24px); }
 .plan-card.weighing { border-style: dashed; border-color: var(--c-faint); background: transparent; }
 .plan-card.open { background: var(--c-surface); box-shadow: var(--ring-rest); }
 .plan-card-main { display: block; width: 100%; min-height: 44px; padding: 0; border: 0; background: none; color: var(--c-ink); text-align: left; cursor: pointer; }
 .plan-card-main:hover .plan-card-title { color: var(--c-blue-text); }
-.plan-card-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.kind-tag { padding: 0 6px; border: 0; background: var(--c-fill); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; }
-.plan-card-title { display: block; margin-top: 8px; font-size: 24px; font-weight: 700; line-height: 1.3; }
-.plan-card-summary { display: block; max-width: 46em; margin-top: 6px; color: var(--c-ink-2); font-family: var(--font-serif); font-size: 16px; }
-.plan-card-more { display: grid; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--c-line); }
+.plan-card-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.plan-card-title { display: block; margin-top: 8px; font-size: 22px; font-weight: 700; line-height: 1.3; }
+.plan-card-summary { display: block; max-width: 46em; margin-top: 4px; color: var(--c-ink-2); font-size: 16px; }
+.plan-card-more { display: grid; gap: 8px; margin-top: 16px; }
 .plan-card-more > p { font-size: 14px; }
-.plan-card-more .actions { gap: 8px 18px; }
-.plan-empty { display: grid; justify-items: start; gap: 16px; padding: 40px 0; }
+.plan-card-more .actions { gap: 8px 16px; }
+.plan-empty { display: grid; justify-items: start; gap: 16px; padding: 32px 0; }
 .plan-empty p { max-width: 40em; font-size: 16px; }
 .plan-archived { margin-top: 32px; }
 .plan-archived ul { margin-top: 12px; }
-.plan-archived li { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; color: var(--c-muted); }
+.plan-archived li { padding: 4px 0; color: var(--c-muted); }
+.plan-archived-main { display: flex; gap: 8px; align-items: baseline; width: 100%; padding: 4px 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.plan-archived-main:hover { color: var(--c-ink); }
+.plan-archived li.open .plan-archived-main { color: var(--c-ink); }
 
 @media (max-width: 720px) {
   /* The category tabs are one row that slides sideways, never a 3 + 1 wrap (as the settings sub-navigation does). */

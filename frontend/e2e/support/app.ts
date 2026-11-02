@@ -17,15 +17,26 @@ export const tabOrder: Tab[] = ["overview", "workspace", "sources", "memory", "p
 export const test = base.extend({
   page: async ({ page }, provide) => {
     await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+    await startsWithDockShut(page);
     await provide(page);
   },
 });
+
+/** The device remembers whether the assistant panel was left open (v2.2); a test starts, and starts every page it loads, with it shut, unless the
+    test is about that memory: it sets `e2e-keep-dock` in local storage (see keepDock) and the memory is then left alone. */
+const DOCK_MEMORY = "story-continuity:assistant-dock";
+export const startsWithDockShut = (page: Page) => page.addInitScript((key) => {
+  try { if (!window.localStorage.getItem("e2e-keep-dock")) window.localStorage.removeItem(key); } catch { /* storage not readable: nothing to clear */ }
+}, DOCK_MEMORY);
+/** Let this test's pages keep the assistant panel's memory from one load to the next. */
+export const keepDock = (page: Page) => page.addInitScript(() => { try { window.localStorage.setItem("e2e-keep-dock", "1"); } catch { /* none */ } });
 
 /** A new page in its own browser context (its own cookies), with the same media settings as `test`'s page. */
 export async function newPage(browser: Browser): Promise<Page> {
   const context = await browser.newContext({ baseURL: process.env.E2E_BASE_URL, viewport: { width: 1440, height: 960 } });
   const page = await context.newPage();
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+  await startsWithDockShut(page);
   return page;
 }
 

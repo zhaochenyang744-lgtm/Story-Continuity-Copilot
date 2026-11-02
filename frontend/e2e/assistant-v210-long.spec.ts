@@ -52,7 +52,7 @@ async function photograph(page: Page, name: string, sizes: [number, number][] = 
   for (const [width, height] of sizes) {
     for (const mode of ["day", "night"] as const) {
       await page.setViewportSize({ width, height });
-      const drawer = page.getByRole("dialog", { name: "助手", exact: true });
+      const drawer = page.locator("#assistant-dock");
       if (await drawer.count()) { await page.getByRole("button", { name: "关闭助手", exact: true }).click(); await expect(drawer).toHaveCount(0); }
       await theme(page, mode);
       await topbarAssistant(page).click();
@@ -67,7 +67,7 @@ async function photograph(page: Page, name: string, sizes: [number, number][] = 
   // Back to day and the wide window (the drawer covers the theme switch, so it is shut for it and opened again).
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "关闭助手", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "助手", exact: true })).toHaveCount(0);
+  await expect(page.locator("#assistant-dock")).toBeHidden();
   await theme(page, "day");
   await topbarAssistant(page).click();
   await expect(thread(page)).toBeVisible();
@@ -315,12 +315,12 @@ test.describe("长任务：做、问、报告、确认", () => {
     const view = await viewOf(page, id);
     const end = thread(page).getByTestId("long-end");
     await expect(end).toHaveText(/^做完了 · 不到 1 分钟 · (¥\d\.\d\d|不到 ¥0\.01)$/);
-    expect(await style(end, "font-size")).toBe("11px");
+    expect(await style(end, "font-size")).toBe("12px");
     const report = thread(page).getByTestId("long-report");
     const sections = Object.entries(view.answer.sections) as [string, { label: string; refs: string[] }[]][];
     const total = sections.reduce((sum, [, items]) => sum + items.length, 0);
     await expect(report.locator("h4")).toHaveText(sections.map(([title]) => title));
-    expect(await style(report.locator("h4").first(), "font-size")).toBe("13px");
+    expect(await style(report.locator("h4").first(), "font-size")).toBe("14px");
     expect(await style(report.locator("h4").first(), "font-weight")).toBe("700");
     await expect(report.getByTestId("long-count")).toContainText(`共 ${total} 条：${sections.map(([title, items]) => `${title} ${items.length} 条`).join("，")}`);
     const items = report.locator(".a-points li");
@@ -490,14 +490,14 @@ test.describe("长任务：做、问、报告、确认", () => {
     await photograph(page, "09-失败");
   });
 
-  test("额度不够：计划卡先写清要读多少、今天还剩多少；开始被拒时说明并留在计划卡上，缩小范围后能开始", async ({ page }) => {
+  test("额度不够：计划卡先写清要读多少、24 小时内还剩多少；开始被拒时说明并留在计划卡上，缩小范围后能开始", async ({ page }) => {
     test.setTimeout(120_000);
     const id = await open(page, true);
     await planned(page, ASK);
     const plan = (await viewOf(page, id)).plan;
     const quota = planCard(page).getByTestId("long-quota");
     const usage = await api(page).get("/account/usage");
-    await expect(quota).toContainText(`要读约 ${count(plan.est_chars)} 字，你今天还剩 ${count(usage.check_chars_remaining)} 字`);
+    await expect(quota).toContainText(`要读约 ${count(plan.est_chars)} 字，你 24 小时内还剩 ${count(usage.check_chars_remaining)} 字`);
     expect(await style(quota, "color")).not.toBe(RED);
     // The day's allowance has less than the plan reads: the card says so beforehand, and the server refuses to start.
     const session = await api(page).get("/auth/session");
@@ -505,10 +505,10 @@ test.describe("长任务：做、问、报告、确认", () => {
     await page.reload();
     await openDrawer(page);
     await expect(planCard(page)).toBeVisible();
-    await expect(quota).toContainText(`你今天只剩 ${count(plan.est_chars - 100)} 字，不够读完。缩小章节范围再开始`);
+    await expect(quota).toContainText(`你 24 小时内只剩 ${count(plan.est_chars - 100)} 字，不够读完。缩小章节范围再开始`);
     expect(await style(quota, "color")).toBe(RED);
     await start(page);
-    await expect(planCard(page).getByRole("alert")).toContainText(`今天的可检查字数不够（要读约 ${count(plan.est_chars)} 字，还剩 ${count(plan.est_chars - 100)} 字）。缩小章节范围再开始。`);
+    await expect(planCard(page).getByRole("alert")).toContainText(`24 小时内可检查的字数不够（要读约 ${count(plan.est_chars)} 字，还剩 ${count(plan.est_chars - 100)} 字）。缩小章节范围再开始。`);
     await expect(planCard(page)).toBeVisible();
     expect((await viewOf(page, id)).status).toBe("awaiting_plan");
     await adjust(page, { from: 6, to: 10 });

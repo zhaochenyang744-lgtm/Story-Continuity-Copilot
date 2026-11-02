@@ -75,13 +75,13 @@ export function ChapterRail({ chapters, current, draftNumber, draftTitle, linked
         {chapters.map((chapter) => (
           <li key={chapter.id} data-chapter={chapter.number} className={linked.includes(chapter.number) ? "linked" : undefined}>
             <button type="button" aria-current={current === chapter.number ? "page" : undefined} onClick={() => open(chapter.number)}>
-              <span className="mono">{pad2(chapter.number)}</span>{bareChapterTitle(chapter.title) || "未命名"}
+              <span className="mono">{pad2(chapter.number)}</span><span className="rail-title">{bareChapterTitle(chapter.title) || "未命名"}</span>
             </button>
           </li>
         ))}
         <li className="draft-row">
           <button type="button" aria-current={current === null ? "page" : undefined} onClick={() => open(null)}>
-            <span className="mono">{pad2(draftNumber)}</span>{bareChapterTitle(draftTitle) || "草稿"}<span className="badge">草稿</span>
+            <span className="mono">{pad2(draftNumber)}</span><span className="rail-title">{bareChapterTitle(draftTitle) || "草稿"}</span><span className="badge">草稿</span>
           </button>
         </li>
       </ol>
@@ -217,11 +217,9 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
   };
 
   const primary = !editing ? (
-    <Button kind="primary" size="lg" disabled={!canEdit} onClick={() => startEdit()}>修改这一章</Button>
-  ) : preview ? (
-    <Button kind="primary" size="lg" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
-  ) : (
-    <Button kind="primary" size="lg" disabled={!dirty || Boolean(busy) || conflict} busy={busy === "正在预览"} onClick={() => void makePreview()}>{busy === "正在预览" ? "正在预览" : "预览修改影响"}</Button>
+    <Button kind="primary" disabled={!canEdit} onClick={() => startEdit()}>修改这一章</Button>
+  ) : preview ? null : (
+    <Button kind="primary" disabled={!dirty || Boolean(busy) || conflict} busy={busy === "正在预览"} onClick={() => void makePreview()}>{busy === "正在预览" ? "正在预览" : "预览修改影响"}</Button>
   );
 
   return (
@@ -240,7 +238,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
         </div>
         <div className="draft-head-side">
           <div className="draft-head-actions">
-            <Button size="lg" onClick={() => open(null)}>回到草稿</Button>
+            <Button onClick={() => open(null)}>回到草稿</Button>
             {!p.readOnly && primary}
           </div>
         </div>
@@ -250,6 +248,20 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
         <ChapterRail chapters={p.chapters} current={number} draftNumber={p.draft?.chapter_number ?? project.current_draft.chapter_number} draftTitle={p.draft?.title ?? ""} open={open} />
 
         <article className="draft" aria-label={`第 ${number} 章正文`}>
+          {editing && preview && (
+            <section className="revision-impact" aria-label="这次修改的影响">
+              <div className="impact">
+                <p><Num>{preview.impact.affected_memory_count}</Num><span>条已确认的事实需要复核</span></p>
+                <p><Num>{preview.impact.affected_analysis_count}</Num><span>条分析可能过时</span></p>
+              </div>
+              <p className="panel-copy">提交后替换这一章的正文，旧版本保留。受影响的事实要你在章节页逐条确认后，才会用于新的检查。</p>
+              <div className="revision-actions">
+                <Button kind="text" onClick={() => setCompare(true)}>看前后对照</Button>
+                <Button kind="text" disabled={Boolean(busy)} onClick={() => setPreview(null)}>继续修改</Button>
+              </div>
+              <Button kind="primary" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
+            </section>
+          )}
           {editing && (
             <div className="draft-tools">
               <WritingTools targetId="chapter-body" disabled={Boolean(busy) || Boolean(preview)} />
@@ -287,7 +299,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
                   <p>这台设备上有这一章没提交的修改。</p>
                   <span className="actions">
                     <Button kind="text" disabled={!canEdit} onClick={() => startEdit(ownRecovery)}>接着改</Button>
-                    <Button kind="text" onClick={discard}>删除副本</Button>
+                    <Button kind="danger" className="btn-small" onClick={discard}>删除副本</Button>
                   </span>
                 </div>
               )}
@@ -300,20 +312,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
               {conflict && <p className="finding-hint warn">服务器上的这一章在副本之后更新过。请先复制需要的文字，放弃这次修改，再对照最新正文重新修改。</p>}
               {storageWarning && <p className="finding-hint warn">{storageWarning}</p>}
               <p className="small-note">{format === "markdown" ? "这一章用 Markdown 保存，格式会一起保存。" : "这一章按纯文本保存。"}</p>
-              <div className="finding-actions"><Button kind="text" disabled={Boolean(busy)} onClick={discard}>放弃修改</Button></div>
-            </>
-          )}
-          {editing && preview && (
-            <>
-              <div className="impact">
-                <p><Num>{preview.impact.affected_memory_count}</Num><span>条已确认的事实需要复核</span></p>
-                <p><Num>{preview.impact.affected_analysis_count}</Num><span>条分析可能过时</span></p>
-              </div>
-              <p className="panel-copy">提交后替换这一章的正文，旧版本保留。受影响的事实要你在章节页逐条确认后，才会用于新的检查。</p>
-              <div className="finding-actions">
-                <Button kind="text" onClick={() => setCompare(true)}>看前后对照</Button>
-                <Button kind="text" disabled={Boolean(busy)} onClick={() => setPreview(null)}>继续修改</Button>
-              </div>
+              <div className="finding-actions"><Button kind="danger" className="btn-small" disabled={Boolean(busy)} onClick={discard}>放弃修改</Button></div>
             </>
           )}
           {error && <p className="inline-error" role="alert">{error}</p>}

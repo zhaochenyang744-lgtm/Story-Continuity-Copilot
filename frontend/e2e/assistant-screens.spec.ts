@@ -157,7 +157,6 @@ test.describe("07c 截图", () => {
     await ask(page, "E2E_TWO 苏岑知道罗盘被调包了吗？");
     await finished(page);
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "助手", exact: true }).click();
     await expect(thread(page)).toBeVisible();
     await thread(page).scrollIntoViewIfNeeded();
     await viewport(page, "10-手机宽度的助手面板");

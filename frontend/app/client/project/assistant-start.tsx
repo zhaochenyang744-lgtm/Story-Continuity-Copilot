@@ -28,10 +28,12 @@ export function starterQuestions({ lastChapter, characters, draftBody }: {
 }
 
 /** The three questions as a list of buttons, and (on the writing page) a 写前回顾 button under it. */
-export function Starters({ intro, items, ask, recap }: {
+export function Starters({ intro, items, ask, recap, disabled = false }: {
   intro: string;
   items: Starter[];
   ask: (question: string) => void;
+  /** The day's allowance is used up: the questions stay in view but cannot be pointed at. */
+  disabled?: boolean;
   /** 写前回顾 (the writing page only); null elsewhere. */
   recap: { run: () => void; reason: string } | null;
 }) {
@@ -39,18 +41,18 @@ export function Starters({ intro, items, ask, recap }: {
     <div className="a-start">
       <p className="a-intro">{intro}</p>
       {items.length > 0 && (
-        <ul className="a-starters" aria-label="可以先问这些">
+        <ul className={`a-starters${disabled ? " off" : ""}`} aria-label="可以先问这些">
           {items.map((item) => (
             <li key={item.text}>
-              <button type="button" onClick={() => ask(item.text)}>
-                <span>{item.text}<span className="why">　{item.why}</span></span>
-                <span className="arrow" aria-hidden="true">→</span>
+              <button type="button" disabled={disabled} onClick={() => ask(item.text)}>
+                <span className="q">{item.text}</span>
+                <span className="why">{item.why}</span>
               </button>
             </li>
           ))}
         </ul>
       )}
-      {recap && <button type="button" className="a-recap-btn" disabled={Boolean(recap.reason)} title={recap.reason || undefined} onClick={recap.run}>写前回顾</button>}
+      {recap && <button type="button" className="a-recap-btn" disabled={disabled || Boolean(recap.reason)} title={recap.reason || undefined} onClick={recap.run}>写前回顾</button>}
     </div>
   );
 }

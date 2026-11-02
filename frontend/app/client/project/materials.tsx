@@ -146,12 +146,11 @@ function FactsView({ p, go, marks }: { p: ProjectState; go: (href: string) => vo
                     <Num>{record.source ? pad2(record.source.chapter_number) : "—"}</Num>
                   </button>
                   <span className="fact-copy">
-                    <strong>{record.subject}</strong>
+                    <span className="fact-head"><strong>{record.subject}</strong><Tag tone={factTone[record.memory_type] ?? "line"}>{memoryTypeLabel(record.memory_type)}</Tag></span>
                     <span className="fact-value">{predicateLabel(record.predicate) !== "其他" && <span className="fact-key">{predicateLabel(record.predicate)} · </span>}{record.value}</span>
                     {(record.valid_to != null || record.requires_source_review) && <span className="label">{record.valid_to != null ? "已被后来的内容取代" : "出处改过，待复核"}</span>}
                     <AssistantMark text={marks.facts.get(record.id)} />
                   </span>
-                  <Tag tone={factTone[record.memory_type] ?? "line"}>{memoryTypeLabel(record.memory_type)}</Tag>
                 </li>
               ))}
             </ol>
@@ -211,7 +210,7 @@ function DeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelt
           </article>
         );
       })}
-      <Button kind="primary" size="lg" type="submit" disabled={blocked}>{delta.candidates.length ? "确认并更新资料" : "确认，资料不变"}</Button>
+      <Button kind="primary" type="submit" disabled={blocked}>{delta.candidates.length ? "确认并更新资料" : "确认，资料不变"}</Button>
     </form>
   );
 }
@@ -231,7 +230,7 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
         {p.initializationError && <p className="note note-error" role="alert">{p.initializationError}</p>}
         <p className="lede">系统从导入的章节里找出人物、地点、规则和事件，整理成候选。候选要你逐条确认，不会自动写进资料。</p>
         {experienceSimulation && <p className="note note-info">隔离模拟环境：候选来自固定示例数据，不会调用真实模型。请先导入体验包里的 v140-simulation-sample.md。</p>}
-        <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>开始整理</Button>
+        <Button kind="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>开始整理</Button>
       </div>
     );
   if (init.status === "rejected") return <p className="note note-info">候选全部没接受，资料是空的。检查仍会直接对照前文；想重新整理可以重置作品。</p>;
@@ -304,7 +303,7 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
           </details>
         );
       }) : init.candidates.map(card)}
-      {init.status === "draft" && <Button kind="primary" size="lg" type="submit" disabled={blocked}>确认，建立第 1 版资料</Button>}
+      {init.status === "draft" && <Button kind="primary" type="submit" disabled={blocked}>确认，建立第 1 版资料</Button>}
       {p.coverage?.status === "ready_partial" && <div className="note note-ok"><span>核心事实已确认；还有 {p.coverage.counts.supporting_pending} 条次要候选没决定，它们不在资料里。</span><Button kind="primary" onClick={() => go(`/projects/${p.project!.id}/workspace`)}>开始检查</Button></div>}
       {p.coverage?.status === "in_review" && p.coverage.counts.core_pending === 0 && p.coverage.counts.confirmed_core === 0 && <p className="note note-error">没有确认任何重要事实，资料还是空的；检查仍会直接对照原文。可以在某条重要候选上点「重新评估」后重新决定。</p>}
     </form>
@@ -400,7 +399,7 @@ function AliasRow({ item, readOnly, busy, save, archive }: { item: CharacterAlia
     <li id={`alias-${item.id}`} className={item.status === "archived" ? "archived" : undefined}>
       <input aria-label={`别名 ${item.alias}`} value={value} disabled={readOnly || busy || item.status === "archived"} onChange={(event) => setValue(event.target.value)} />
       <span className="label">{item.status === "active" ? "使用中" : "已归档"}</span>
-      {!readOnly && item.status === "active" && <><Button kind="text" disabled={busy || !value.trim() || value === item.alias} onClick={() => save(value)}>保存</Button><Button kind="text" disabled={busy} onClick={archive}>归档</Button></>}
+      {!readOnly && item.status === "active" && <><Button kind="text" disabled={busy || !value.trim() || value === item.alias} onClick={() => save(value)}>保存</Button><Button kind="danger" className="btn-small" disabled={busy} onClick={archive}>归档</Button></>}
     </li>
   );
 }
@@ -508,7 +507,7 @@ function SettingsView({ p }: { p: ProjectState }) {
                 <input aria-label={`${item.name} 的名称`} value={names[item.key] ?? item.name} maxLength={20} disabled={busy} onChange={(event) => setNames((all) => ({ ...all, [item.key]: event.target.value }))} />
                 <span className="label">{item.count} 条</span>
                 <Button kind="text" disabled={busy || !(names[item.key] ?? item.name).trim() || (names[item.key] ?? item.name) === item.name} onClick={() => void change({ action: "rename", category: item.key, name: names[item.key] })}>改名</Button>
-                <Button kind="text" disabled={busy} onClick={() => void change({ action: "delete", category: item.key })}>删除</Button>
+                <Button kind="danger" className="btn-small" disabled={busy} onClick={() => void change({ action: "delete", category: item.key })}>删除</Button>
               </li>
             ))}
           </ul>
@@ -679,7 +678,7 @@ function ThreadsView({ p, go, marks }: { p: ProjectState; go: (href: string) => 
           <span className="actions">
             {record.status !== "resolved" && <Button kind="text" disabled={Boolean(busy)} onClick={() => resolveRecord(record)}>标为已回收</Button>}
             <Button kind="text" disabled={Boolean(busy)} onClick={() => { setEditing({ id: record.id, version: record.version }); setEditor(recordEditor(record)); window.setTimeout(() => formRef.current?.scrollIntoView({ block: "center", behavior: "smooth" }), 0); }}>编辑</Button>
-            <Button kind="text" disabled={Boolean(busy)} onClick={() => void archive(record)}>归档</Button>
+            <Button kind="danger" className="btn-small" disabled={Boolean(busy)} onClick={() => void archive(record)}>归档</Button>
           </span>
         )}
       </span>

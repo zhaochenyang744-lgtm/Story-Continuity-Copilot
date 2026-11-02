@@ -95,6 +95,8 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   // The page has its own 新建作品; the top bar does not repeat it here (it does on the home page).
   await expect(page.getByRole("banner").getByRole("button", { name: "新建作品", exact: true })).toHaveCount(0);
   await expect(page.getByRole("main").getByRole("button", { name: "新建作品", exact: true })).toBeVisible();
+  // With works the page head has both, 导入作品 the main one.
+  await expect(page.getByRole("main").getByRole("button", { name: "导入作品", exact: true })).toHaveClass(/btn-primary/);
   // The filter chip and the row label say the same word.
   await expect(page.getByRole("group", { name: "作品状态", exact: true }).getByRole("button", { name: "已暂停", exact: true })).toBeVisible();
   // No sample work in this list.
@@ -152,12 +154,18 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   await expect(rows(page)).toHaveText([/潮声之后/, /北堤旧事/]);
 });
 
-test("作品管理为空：没有作品时给出两个入口", async ({ page }) => {
+test("作品管理为空：页头不放按钮，正文一张导入卡（一个主按钮）加一个文字按钮「从空白开始」", async ({ page }) => {
   await registerAccount(page, "workempty");
   await worksPage(page);
   await expect(page.getByText("导入写好的稿子，或者从空白开始。", { exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: /导入已有作品/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /从空白开始/ })).toBeVisible();
+  // Nothing in the page head: the way in is said once.
+  await expect(page.locator(".page-head").getByRole("button")).toHaveCount(0);
+  const card = page.getByRole("region", { name: "导入已有作品" });
+  await expect(card.getByRole("heading")).toHaveCount(1);
+  await expect(card.getByRole("button")).toHaveCount(1);
+  await expect(card.getByRole("button", { name: "选择文件", exact: true })).toHaveClass(/btn-primary/);
+  await expect(page.getByRole("button", { name: "从空白开始", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "从空白开始", exact: true })).not.toHaveClass(/btn-primary/);
   await expect(page.getByRole("textbox", { name: "搜索作品" })).toHaveCount(0);
   await shot(page, "works-empty");
 });

@@ -118,10 +118,10 @@ export function AuthPage({ register, busy, error, submit, visitor, go }: {
         {register && <p className="field-hint">账号至少 3 个字符，密码至少 10 个字符。恢复邮箱用来找回密码，注册后会收到一封验证邮件。</p>}
         {register && <p className="field-hint">创建账号前，请看一下<Link className="link-inline" href="/privacy" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey) return; event.preventDefault(); go("/privacy"); }}>隐私说明</Link>。</p>}
         {hasError && <p id="auth-error" className="inline-error" role="alert">{message}</p>}
-        <Button kind="primary" size="lg" type="submit" disabled={Boolean(busy)} busy={Boolean(busy)} className="auth-submit">{busy || (register ? "创建账号" : "登录")}</Button>
+        <Button kind="primary" type="submit" disabled={Boolean(busy)} busy={Boolean(busy)} className="auth-submit">{busy || (register ? "创建账号" : "登录")}</Button>
         {!register && (
           <div className="auth-visitor">
-            <Button kind="outline" size="lg" className="auth-second" disabled={Boolean(busy)} onClick={() => void visitor()}>以访客身份进入</Button>
+            <Button kind="outline" className="auth-second" disabled={Boolean(busy)} onClick={() => void visitor()}>以访客身份进入</Button>
             <p><strong>先看看？</strong>访客空间保留 24 小时，带一部示例作品，可以检查几次短章节，也可以问助手。用到的片段会交给模型处理，详见<Link className="link-inline" href="/privacy" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey) return; event.preventDefault(); go("/privacy"); }}>隐私说明</Link>。</p>
           </div>
         )}
@@ -152,7 +152,7 @@ export function PasswordResetRequestPage({ go }: { go: (href: string) => void })
       <form className="auth-form" onSubmit={(event) => void submit(event)}>
         <LineField label="恢复邮箱"><input name="recovery_email" type="email" placeholder=" " autoComplete="email" required maxLength={254} /></LineField>
         {message && <p className={state === "failed" ? "inline-error" : "inline-ok"} role={state === "failed" ? "alert" : "status"}>{message}</p>}
-        <Button kind="primary" size="lg" type="submit" className="auth-submit" disabled={state === "sending"} busy={state === "sending"}>{state === "sending" ? "正在发送" : "发送重置邮件"}</Button>
+        <Button kind="primary" type="submit" className="auth-submit" disabled={state === "sending"} busy={state === "sending"}>{state === "sending" ? "正在发送" : "发送重置邮件"}</Button>
       </form>
     </AuthLayout>
   );
@@ -188,14 +188,14 @@ export function PasswordResetConfirmPage({ go }: { go: (href: string) => void })
       {state === "success" ? (
         <div className="auth-form">
           <p className="inline-ok" role="status">{message}</p>
-          <Button kind="primary" size="lg" className="auth-submit" onClick={() => go("/login")}>去登录</Button>
+          <Button kind="primary" className="auth-submit" onClick={() => go("/login")}>去登录</Button>
         </div>
       ) : (
         <form className="auth-form" onSubmit={(event) => void submit(event)}>
           <LineField label="新密码"><input name="password" type="password" placeholder=" " autoComplete="new-password" minLength={10} required /></LineField>
           <p className="field-hint">至少 10 个字符，不能全部相同。</p>
           {message && <p className="inline-error" role="alert">{message}</p>}
-          <Button kind="primary" size="lg" type="submit" className="auth-submit" disabled={state === "sending"} busy={state === "sending"}>{state === "sending" ? "正在更新" : "更新密码"}</Button>
+          <Button kind="primary" type="submit" className="auth-submit" disabled={state === "sending"} busy={state === "sending"}>{state === "sending" ? "正在更新" : "更新密码"}</Button>
         </form>
       )}
     </AuthLayout>
@@ -223,7 +223,7 @@ export function VerifyEmailPage({ go, refreshUser }: { go: (href: string) => voi
     <AuthLayout title="验证恢复邮箱">
       <div className="auth-form">
         <p className={failed ? "inline-error" : "inline-ok"} role={failed ? "alert" : "status"} aria-live="polite">{message}</p>
-        <Button kind="primary" size="lg" className="auth-submit" onClick={() => go("/")}>回到首页</Button>
+        <Button kind="primary" className="auth-submit" onClick={() => go("/")}>回到首页</Button>
       </div>
     </AuthLayout>
   );

@@ -1,24 +1,26 @@
-/* 版面 design tokens (v1.7.0, softened in v2.1). The only place colours, type, spacing and timing are defined; every
-   other stylesheet uses these names. Swiss typographic layout: off-white paper, black ink, one
-   electric blue for actions, the draft and what comes next. Red and yellow are reserved for
-   findings (confirmed / possible conflict); dashed outlines mean "not certain yet". Corners are
-   graded by size (--r-xs … --r-lg); rules, tables and the page's structure stay straight.
-   Layers are told apart by a step of background (1–3% apart), not by black frames: page, raised
-   (a region that groups things), surface (white: fields, menus, the card that can be clicked).
+/* 版面 design tokens (v1.7.0, softened in v2.1, one set of rules in v2.2). The only place colours, type, spacing and timing are defined;
+   every other stylesheet uses these names and nothing else.
+
+   Type: nine sizes (12 13 14 15 16 18 22 28 36) and the large figures; three weights (400 500 700), 900 only for the big headings and the
+   numerals. Interface words are set in the system face (--font-ui), headings and big numerals in the heavy Noto Sans SC and Archivo
+   (--font-heading, --font-display); the serif face is for the author's own text and for words quoted from it, nowhere else.
+   Colour: four steps of background (ground, raised, surface, fill); two greys for text (muted, faint-text). Blue is for the one main
+   action of a screen and for links and the current choice, never for "done". Red and yellow are for findings and for danger.
+   Lines: two, and only where they mark a structure (--c-rule) or the rows of an aligned data list (--c-line).
+   Corners: three (6 buttons/fields/tags, 10 cards/menus/dialogs, 999 avatars and dots). Shadows: two (a floating layer; a card
+   that can be clicked, pointed at). Space: 4 8 12 16 24 32 48 64.
    Day is the default; <html data-theme="night"> switches palettes. */
 :root {
   color-scheme: light;
   --writing-focus-width: 3px;
   --writing-focus-gap: 12px;
 
-  /* Surfaces */
-  --c-ground: #f3f3f0;        /* page */
-  --c-raised: #fafaf8;        /* a region that groups things: it was a framed box, it is now a step lighter than the page */
-  --c-surface: #ffffff;       /* white: fields, menus, the card that can be clicked, the open row */
-  --c-paper: #ffffff;
-  --c-sunken: #ebebe7;        /* tracks, quiet fills */
-  --c-fill: #e9e9e5;          /* a button at rest */
-  --c-fill-hover: #dfdfda;    /* a button pointed at */
+  /* Background, four steps */
+  --c-ground: #f3f3f0;        /* the page */
+  --c-raised: #fafaf8;        /* a region that groups things */
+  --c-surface: #ffffff;       /* a card that can be clicked, a field, a menu, the open row */
+  --c-fill: #e9e9e5;          /* a button, a tag, a track, any quiet fill */
+  --c-fill-hover: #dfdfda;    /* the fill, pointed at */
   --c-inverse: #111111;       /* black bands (continue card, selection bar) */
   --c-on-inverse: #f4f4f1;
   --c-on-inverse-2: #d8d8d8;
@@ -26,28 +28,26 @@
   /* An edge for blue buttons on an inverse band: none by day, a light line at night, where blue on deep blue barely separates. */
   --inverse-edge: none;
 
-  /* Rules */
-  /* Lines are faint and kept only where two things really have to be told apart: the rows of a list, the foot of the top bar. */
-  --c-rule: rgba(17, 17, 17, .09);   /* section rules */
-  --c-line: rgba(17, 17, 17, .08);   /* hairlines between rows */
-  --c-line-soft: rgba(17, 17, 17, .05);
-  --c-line-strong: rgba(17, 17, 17, .16);
-  /* A field or a white card: a faint inner ring and a soft shadow; pointing deepens both, focus deepens them further. No blue edge. */
-  --ring-rest: inset 0 0 0 1px rgba(17, 17, 17, .08), 0 1px 2px rgba(17, 17, 17, .04);
-  --ring-hover: inset 0 0 0 1px rgba(17, 17, 17, .13), 0 1px 3px rgba(17, 17, 17, .06);
-  --ring-focus: inset 0 0 0 1px rgba(17, 17, 17, .35), 0 0 0 4px rgba(17, 17, 17, .045), 0 4px 14px rgba(17, 17, 17, .10);
-  --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(17, 17, 17, .04);
-  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 14px rgba(17, 17, 17, .10);
+  /* Lines. --c-rule marks a structure: the foot of the top bar, the page head, a big block. --c-line separates the rows of a data list whose
+     columns must line up (facts, chapters, the ledger, settings). Parallel choices, cards, suggestions and turns of a conversation have none. */
+  --c-rule: rgba(17, 17, 17, .14);
+  --c-line: rgba(17, 17, 17, .10);
+  /* A field or a card: one faint ring, deeper when pointed at, deeper again with a pale halo in focus. No shadow, no blue edge. */
+  --ring-rest: inset 0 0 0 1px rgba(17, 17, 17, .16);
+  --ring-hover: inset 0 0 0 1px rgba(17, 17, 17, .30);
+  --ring-focus: inset 0 0 0 1px rgba(17, 17, 17, .55), 0 0 0 4px rgba(17, 17, 17, .08);
+  --ring-error: inset 0 0 0 1px var(--c-red-text);
+  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint);
 
-  /* Ink */
+  /* Ink. Two greys for words: --c-muted for notes and anything at 12px, --c-faint-text for the quieter words that are 13px or more.
+     --c-faint is a stroke colour only (a dashed outline, a disabled mark), never the colour of words. */
   --c-ink: #111111;
   --c-ink-2: #333333;
   --c-muted: #555555;
-  --c-faint: #8a8a85;
-  /* The pale grey of small words that must still be read (4.5:1 on the page): the line above an answer, a citation mark at rest, the allowance. */
   --c-faint-text: #6c6c67;
+  --c-faint: #8a8a85;
 
-  /* Blue: actions, the draft, the future */
+  /* Blue: the one main action of a screen, links, the current choice */
   --c-blue: #1f2bff;
   --c-blue-hover: #1520d6;
   --c-on-blue: #ffffff;
@@ -55,56 +55,42 @@
   --c-blue-tint: #e6e7ff;
   --c-blue-mid: #c9cdff;
 
-  /* Findings */
+  /* Findings, and danger */
   --c-red: #ff4019;           /* confirmed conflict (fill, black text) */
   --c-red-tint: #ffcdbf;
-  --c-red-text: #c42a0a;      /* red used as text on paper */
+  --c-red-text: #c42a0a;      /* red used as text on paper: a danger button's words, an error */
+  --c-danger: #c42a0a;        /* the fill of the button that confirms a destructive act, white words on it */
+  --c-danger-hover: #a32208;
+  --c-on-danger: #ffffff;
   --c-yellow: #ffc400;        /* possible conflict (fill, black text) */
   --c-yellow-tint: #ffe89a;
   --c-on-finding: #111111;
   --c-ins: #dfe9d6;           /* added words in a before/after: a pale green wash, ink on top */
   --c-ins-text: #2f5a12;
-
-  --c-veil: rgba(17, 17, 17, .48);
-
-  /* Legacy names still read by older rules */
-  --c-indigo: var(--c-blue);
-  --c-indigo-hover: var(--c-blue-hover);
-  --c-on-indigo: var(--c-on-blue);
-  --c-indigo-text: var(--c-blue-text);
-  --c-indigo-tint: var(--c-blue-tint);
-  --c-verm: var(--c-red-text);
-  --c-verm-tint: var(--c-red-tint);
-  --c-verm-mark: var(--c-red-tint);
-  --c-amber: #7a5800;
-  --c-amber-tint: var(--c-yellow-tint);
-  --c-green: var(--c-blue-text);
-  --c-green-tint: var(--c-blue-tint);
-  --c-shadow: transparent;
   --c-inverse-disabled-bg: transparent;
   --inverse-disabled-edge: inset 0 0 0 1px var(--c-on-inverse-3);
 
+  --c-veil: rgba(17, 17, 17, .48);
+
   /* Type. Fonts are self-hosted (sliced by unicode-range, fetched on demand). */
-  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+  /* Interface words (buttons, menus, notes, forms, the assistant): the system face first, which is crisper than a web face at 12-15px. */
+  --font-ui: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  /* Headings and page titles: the heavy Noto Sans SC, for the editorial voice. */
+  --font-heading: "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+  /* The author's own text and words quoted from it (an evidence line, a source, an excerpt). Nothing else. */
   --font-serif: "Noto Serif SC", "Songti SC", STSong, "Source Han Serif SC", serif;
-  /* Small words, counts and times: the text face with tabular digits (the typewriter face is kept only where columns must line up). */
-  --font-mono: var(--font-sans);
+  /* Only where characters are read one by one (a file's hash, a record's id). */
   --font-code: "IBM Plex Mono", "Noto Sans SC", ui-monospace, Consolas, monospace;
   /* Large numerals: the display face at its ordinary width, weight 700. The wordmark alone keeps the expanded heavy face (font-stretch: 125%). */
   --font-display: "Archivo Variable", "Archivo", "Noto Sans SC", sans-serif;
-  --fs-11: 11px;
-  --fs-12: 12px;
-  --fs-13: 13px;
-  --fs-14: 14px;
-  --fs-15: 15px;
+  --fs-12: 12px;   /* labels, times, counts: the least size, always --c-muted */
+  --fs-13: 13px;   /* a note that explains */
+  --fs-14: 14px;   /* the interface: buttons, forms, rows; a quoted sentence is never smaller */
+  --fs-15: 15px;   /* an answer, the body of a card */
   --fs-16: 16px;
-  --fs-17: 17px;
   --fs-18: 18px;
-  --fs-20: 20px;
   --fs-22: 22px;
-  --fs-24: 24px;
   --fs-28: 28px;
-  --fs-30: 30px;
   --fs-36: 36px;
   /* Large numerals: the sizes they are set at and the least they shrink to when their box is too narrow.
      --num-digit / --num-comma are the width of a digit and of a separator in em. They were measured on the expanded heavy face
@@ -113,52 +99,41 @@
      rules and labels. */
   --fs-figure: 72px;
   --fs-figure-md: 48px;
-  --fs-figure-min: 24px;
+  --fs-figure-min: 22px;
+  --fs-title: 72px;           /* a page's title */
   --num-digit: .83;
   --num-comma: .4;
   --figures-reserve: 200px;
   --lh-tight: 1.25;
   --lh-ui: 1.6;
-  --lh-prose: 2.05;
   --tracking-label: .08em;
 
-  /* Space (4px grid) */
+  /* Space (4px grid): 4 8 12 16 24 32 48 64 */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
   --s-4: 16px;
-  --s-5: 20px;
   --s-6: 24px;
-  --s-7: 28px;
   --s-8: 32px;
-  --s-10: 40px;
   --s-12: 48px;
-  --s-14: 56px;
   --s-16: 64px;
-  --s-18: 72px;
-  --s-24: 96px;
 
-  /* Shape: objects get corners by size; rules, dividers, tables and the page structure stay straight.
-     xs tags, badges and citation marks · sm buttons, fields, segmented controls and tips ·
-     md the assistant box, menus, cards that float, the author's question · lg large cards, dialogs, the drawer. */
-  --r-xs: 3px;
+  /* Shape: three corners. 6 buttons, fields, tags, segmented controls · 10 cards, menus, dialogs, the drawer · 999 avatars and dots only.
+     Rules, dividers, tables and the page's structure stay straight. */
   --r-sm: 6px;
   --r-md: 10px;
-  --r-lg: 14px;
-  --r-xl: 0;
   --r-pill: 999px;
-  --control-h: 44px;
-  --control-h-lg: 48px;
-  --control-h-sm: 36px;
+  /* Two heights for a button or a field: 40 and 32 (the small one sits inside a row of text and in the assistant). */
+  --control-h: 40px;
+  --control-h-sm: 32px;
   --topbar-h: 64px;
   --page-max: 1360px;
-  --page-gutter: 40px;
+  --page-gutter: 32px;
   --form-max: 800px;
   --prose-max: 680px;
-  --elev-1: none;
-  /* Floating layers (menus, messages, dialogs, cards): a soft lift instead of a frame. One shadow for all of them. */
+  /* Two shadows. A floating layer (menu, dialog, drawer, message); and a card that can be clicked when it is pointed at. Cards at rest have none. */
   --elev-pop: 0 14px 36px rgba(17, 17, 17, .12), 0 2px 6px rgba(17, 17, 17, .08);
-  --elev-2: var(--elev-pop);
+  --elev-hover: 0 8px 24px rgba(17, 17, 17, .10);
 
   /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
      slow for drawing charts and the after-glow of a change. */
@@ -176,33 +151,30 @@
 
 :root[data-theme="night"] {
   color-scheme: dark;
-  --c-ground: #131313;
-  --c-raised: #1b1b1b;
-  --c-surface: #1f1f1f;
-  --c-paper: #1f1f1f;
-  --c-sunken: #1b1b1b;
-  --c-fill: #252525;
-  --c-fill-hover: #2e2e2e;
+  /* Four steps that can be told apart: each is about 1.1 times the one before in brightness. */
+  --c-ground: #111111;
+  --c-raised: #1a1a1a;
+  --c-surface: #242424;
+  --c-fill: #303030;
+  --c-fill-hover: #3b3b3b;
   /* The "inverse" bands stay a dark colour at night too: deep blue with light text, not a white slab. */
   --c-inverse: #1d2155;
   --c-on-inverse: #f4f4f1;
   --c-on-inverse-2: #c9cdff;
   --c-on-inverse-3: #959bff;
   --inverse-edge: inset 0 0 0 2px var(--c-on-inverse-3);
-  --c-rule: rgba(255, 255, 255, .08);
-  --c-line: rgba(255, 255, 255, .07);
-  --c-line-soft: rgba(255, 255, 255, .045);
-  --c-line-strong: rgba(255, 255, 255, .16);
-  --ring-rest: inset 0 0 0 1px rgba(255, 255, 255, .07), 0 1px 2px rgba(0, 0, 0, .3);
-  --ring-hover: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 1px 3px rgba(0, 0, 0, .35);
-  --ring-focus: inset 0 0 0 1px rgba(255, 255, 255, .35), 0 0 0 4px rgba(255, 255, 255, .05), 0 4px 16px rgba(0, 0, 0, .55);
-  --ring-error: inset 0 0 0 1px var(--c-red-text), 0 1px 2px rgba(0, 0, 0, .3);
-  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint), 0 4px 16px rgba(0, 0, 0, .55);
+  --c-rule: rgba(255, 255, 255, .18);
+  --c-line: rgba(255, 255, 255, .14);
+  --ring-rest: inset 0 0 0 1px rgba(255, 255, 255, .18);
+  --ring-hover: inset 0 0 0 1px rgba(255, 255, 255, .32);
+  --ring-focus: inset 0 0 0 1px rgba(255, 255, 255, .55), 0 0 0 4px rgba(255, 255, 255, .10);
+  --ring-error: inset 0 0 0 1px var(--c-red-text);
+  --ring-error-focus: inset 0 0 0 1px var(--c-red-text), 0 0 0 4px var(--c-red-tint);
   --c-ink: #f4f4f1;
   --c-ink-2: #d4d4cf;
-  --c-muted: #a3a39e;
+  --c-muted: #a9a9a4;
+  --c-faint-text: #94948f;
   --c-faint: #76766f;
-  --c-faint-text: #8a8a85;
   --c-blue: #4651ff;
   --c-blue-hover: #6069ff;
   --c-on-blue: #ffffff;
@@ -212,18 +184,21 @@
   --c-red: #ff5a36;
   --c-red-tint: #4a1f14;
   --c-red-text: #ff8a6e;
+  --c-danger: #c42a0a;
+  --c-danger-hover: #d9381a;
   --c-yellow: #ffc400;
   --c-yellow-tint: #403310;
   --c-ins: #22331a;
   --c-ins-text: #b5dc96;
-  --c-amber: #ffd45c;
   --c-veil: rgba(0, 0, 0, .62);
   --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+  --elev-hover: 0 8px 24px rgba(0, 0, 0, .5);
 }
 
 @media (max-width: 720px) {
   :root {
     --fs-figure: 48px;
     --fs-figure-md: 36px;
+    --fs-title: 48px;
   }
 }

@@ -32,7 +32,11 @@ const finishImport = async (page: Page, title: string, genre = "", summary = "")
   await page.getByRole("button", { name: "分章没问题，下一步", exact: true }).click();
   await expectStep(page, 3);
   await page.getByRole("textbox", { name: /^书名/ }).fill(title);
-  if (genre) await page.getByRole("textbox", { name: "类型", exact: true }).fill(genre);
+  if (genre) {
+    const known = ["悬疑", "奇幻", "科幻", "言情", "历史", "现实"];
+    await pickGenre(page, known.includes(genre) ? genre : "其他");
+    if (!known.includes(genre)) await page.getByRole("textbox", { name: "其他类型", exact: true }).fill(genre);
+  }
   if (summary) await page.getByRole("textbox", { name: "简介", exact: true }).fill(summary);
 };
 const importedWork = async (page: Page, title: string) => {

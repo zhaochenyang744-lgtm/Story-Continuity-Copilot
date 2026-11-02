@@ -132,12 +132,13 @@ export async function openLedger(page: Page) {
 }
 /** The assistant drawer of a page that has no column of its own. */
 export async function openDrawer(page: Page) {
-  await topbarAssistant(page).click();
+  if (!(await page.locator("#assistant-dock").isVisible())) await topbarAssistant(page).click();
   await expect(thread(page)).toBeVisible();
+  await expect(thread(page).getByRole("textbox", { name: "向助手提问", exact: true })).toBeFocused();
 }
 export async function closeDrawer(page: Page) {
   await page.getByRole("button", { name: "关闭助手", exact: true }).click();
-  await expect(thread(page)).toHaveCount(0);
+  await expect(thread(page)).not.toBeVisible();
 }
 
 // ── Task views made by hand (for the pictures: a card of several items in states one run cannot hold still) ─────────────────

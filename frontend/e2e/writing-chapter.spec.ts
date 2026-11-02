@@ -33,6 +33,25 @@ test("已完成章节修改并提交：影响、对照与历史", async ({ page 
   expect(preview.before.body).toBe(original.body);
   expect(preview.after.body).toContain("测试值班员");
   await expect(page.getByText("条已确认的事实需要复核", { exact: true })).toBeVisible();
+  // The effect stands above the text, 看前后对照 under it and 确认提交修改 under that (V16-08), and nothing lies on the chapter list (V18-01).
+  const impact = page.getByRole("region", { name: "这次修改的影响" });
+  const at = async (locator: import("@playwright/test").Locator) => (await locator.boundingBox())!;
+  const [summary, compareAt, confirmAt, text, rail] = [await at(impact.locator(".impact")), await at(button(page, "看前后对照")), await at(button(page, "确认提交修改")), await at(page.locator("#chapter-body")), await at(page.locator(".draft-chapters"))];
+  expect(summary.y + summary.height).toBeLessThanOrEqual(compareAt.y + 1);
+  expect(compareAt.y + compareAt.height).toBeLessThanOrEqual(confirmAt.y + 1);
+  expect(confirmAt.y + confirmAt.height).toBeLessThanOrEqual(text.y + 1);
+  for (const part of [summary, compareAt, confirmAt]) expect(part.x).toBeGreaterThanOrEqual(rail.x + rail.width - 1);
+  // The two figures stand side by side in one row, each with its words beside it on the digits' base line (V18-01 follow-up).
+  const groups = impact.locator(".impact p");
+  const [one, two] = [await at(groups.nth(0)), await at(groups.nth(1))];
+  expect(Math.abs(one.y - two.y)).toBeLessThanOrEqual(2);
+  expect(two.x).toBeGreaterThanOrEqual(one.x + one.width - 1);
+  for (let index = 0; index < 2; index += 1) {
+    const [figure, words] = [await at(groups.nth(index).locator(".num")), await at(groups.nth(index).locator("span:not(.num)"))];
+    expect(Math.abs((figure.y + figure.height) - (words.y + words.height)), "the words end where the figure ends").toBeLessThanOrEqual(8);
+  }
+  await expect(page.locator(".chapter-panel")).toBeVisible();
+  expect((await at(page.locator(".chapter-panel"))).x).toBeGreaterThanOrEqual(rail.x + rail.width - 1);
   await button(page, "看前后对照").click();
   const dialog = page.getByRole("dialog", { name: "第 3 章 · 前后对照", exact: true });
   await expect(dialog.getByText(preview.before.body, { exact: true })).toBeVisible();

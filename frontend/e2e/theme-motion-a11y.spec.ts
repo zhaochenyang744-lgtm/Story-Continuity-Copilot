@@ -20,7 +20,7 @@ test("12 Q 夜间勾选栏禁用按钮透明底和弱描边", async ({ page }) =
 });
 
 test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
-  for (const [scheme, value, background] of [["dark", "night", "rgb(19, 19, 19)"], ["light", "day", "rgb(243, 243, 240)"]] as const) {
+  for (const [scheme, value, background] of [["dark", "night", "rgb(17, 17, 17)"], ["light", "day", "rgb(243, 243, 240)"]] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/login");
     await expect(page.locator("html")).toHaveAttribute("data-theme", value);
@@ -34,7 +34,7 @@ test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("night");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
-  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(19, 19, 19)");
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(17, 17, 17)");
   await button(page, "切换到日间模式").click();
   await expect(button(page, "切换到夜间模式")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("day");
@@ -84,7 +84,8 @@ test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；�
       await expect(band, `${name}: ${mode}`).toHaveCSS("background-color", colours[mode].background);
       await expect(band, `${name}: ${mode}`).toHaveCSS("color", colours[mode].color);
       if (mode === "day") await expect(control, `${name}: no edge on the blue button by day`).toHaveCSS("box-shadow", "none");
-      else await expect.poll(() => look(control).then(item => item.shadow), { message: `${name}: the blue button has an edge at night` }).not.toBe("none");
+      // The tour's button is the band's own light colour since v2.2, so only the blue ones need the edge.
+      else if (name !== "night-tour") await expect.poll(() => look(control).then(item => item.shadow), { message: `${name}: the blue button has an edge at night` }).not.toBe("none");
     }
     await shot(page, name, false);
   }
@@ -168,7 +169,7 @@ test("08 axe 扫描：十一个页面的日间和夜间", async ({ page }, info)
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
 });
 
-test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜间都没有严重违规", async ({ page }, info) => {
+test("助手 axe 扫描：写作页和其他页的助手面板打开时，日间和夜间都没有严重违规", async ({ page }, info) => {
   await registerAccount(page, "axe180");
   const id = await sampleWorkId(page);
   // One answered question, so the scan meets the steps, the answer, its sources and the coverage line.
@@ -184,13 +185,14 @@ test("助手 axe 扫描：写作页助手标签和抽屉打开时，日间和夜
   for (const value of ["day", "night"] as const) {
     await openTab(page, id, "workspace");
     await theme(page, value);
-    await page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("tab", { name: "助手", exact: true }).click();
+    await page.locator("#assistant-open").click();
+    await expect(page.locator("#assistant-dock")).toBeVisible();
     await expect(completed()).toHaveCount(1);
     await page.getByTestId("assistant-thread").getByRole("button", { name: "怎么查的" }).click();
     await scan("写作页助手标签", value);
     await openTab(page, id, "sources");
     await page.locator("#assistant-open").click();
-    await expect(page.getByRole("dialog", { name: "助手", exact: true })).toBeVisible();
+    await expect(page.locator("#assistant-dock")).toBeVisible();
     await expect(completed()).toHaveCount(1);
     await scan("抽屉", value);
   }

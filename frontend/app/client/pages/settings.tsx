@@ -302,7 +302,7 @@ function UsagePane({ user, usage }: { user: User; usage: CheckUsage | null }) {
   }, [visitor, user.id]);
   return (
     <>
-      <PaneHead title="用量" lede="检查和助手用同一个额度，按字数计：检查算它读的字数，助手每问一次算 500 字。额度是滚动的 24 小时，用掉的字数过 24 小时就回来，不是每天 0 点恢复。" />
+      <PaneHead title="用量" lede={visitor ? "访客按次数计：检查有检查的次数，助手有助手的次数，两边不互相占用。次数是滚动的 24 小时，用掉的次数过 24 小时就回来，不是每天 0 点恢复。" : "检查和助手用同一个额度，按字数计：检查算它读的字数，助手每问一次算 500 字。额度是滚动的 24 小时，用掉的字数过 24 小时就回来，不是每天 0 点恢复。"} />
       <Group title="近 24 小时">
         {usage?.account_type === "visitor" ? (
           <div className="meter-block">
