@@ -96,6 +96,20 @@ class ProgramTests(unittest.TestCase):
         r = long_row({**task, "plan_edit": {"chapters": [18, 20]}}, approved=PLAN, plan_shown={**PLAN, "chapters": [1, 30]}, steps=steps)
         self.assertEqual(score.out_of_plan(r), ["approved_plan_differs", "plan_edit_not_applied"])
 
+    def test_the_decision_card_item_for_the_authors_answer_is_not_out_of_plan(self):  # addendum 8
+        task = {"id": "t", "suite": "ask", "request": "x"}
+        steps = [{"ordinal": i, "spec": s, "status": "done", "attempt": 1, "chars_read": 0, "output": {}} for i, s in enumerate(PLAN["steps"], 1)]
+        r = long_row(task, approved=PLAN, plan_shown=PLAN, steps=steps)
+        r["assistant"] = {"id": "atask-1"}
+        choice = {"id": "c1", "kind": "add_decision", "after": {"source": "long_choice", "source_ref": "atask-1"}, "evidence": []}
+        box = {"id": "c2", "kind": "add_decision", "after": {"source": "box", "source_ref": "atask-1"}, "evidence": []}
+        r["changes"] = [choice, box]
+        self.assertTrue(score.author_choice(r, choice, True))
+        self.assertFalse(score.author_choice(r, choice, False))  # the decision point was not asked about
+        self.assertFalse(score.author_choice(r, box, True))
+        self.assertFalse(score.author_choice(r, {**choice, "after": {**choice["after"], "source_ref": "atask-2"}}, True))
+        self.assertEqual(score.out_of_plan(r, ["c1"]), ["kind_outside:c2"])
+
     def test_a_resumed_task_is_exact_only_with_every_step_once_and_every_call_paid_once(self):
         steps = [{"ordinal": 1, "spec": PLAN["steps"][0], "status": "done", "attempt": 2, "chars_read": 10, "output": {"changes": ["c1"]}},
                  {"ordinal": 2, "spec": PLAN["steps"][1], "status": "done", "attempt": 1, "chars_read": 5, "output": {"changes": []}},
