@@ -81,7 +81,7 @@ test("38a 访客在自己的作品上打开助手：一开始就说清楚，没�
   await expect(thread(page).getByRole("status").filter({ hasText: "访客只能在示例作品上用助手。注册后可以在自己的作品上用。" })).toBeVisible();
   await expect(box(page)).toHaveCount(0);
   await expect(thread(page).locator(".a-starters, .a-start")).toHaveCount(0);
-  await expect(thread(page)).not.toContainText("今天还可以问");
+  await expect(thread(page)).not.toContainText("24 小时内还可以问");
 });
 
 test("38a 没发出去的追问不丢：关掉抽屉、换一页再打开，文字还在；发出去以后清掉；只恢复文字（V01）", async ({ page }) => {

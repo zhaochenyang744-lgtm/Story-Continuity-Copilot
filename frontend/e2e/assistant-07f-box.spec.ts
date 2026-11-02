@@ -68,7 +68,7 @@ test.describe("07f 输入框", () => {
     await phone.close();
   });
 
-  test("11 花费提示放不下时整段去掉「今天还剩…」，只留「约 500 字」，不截断数字；余量在 title 里", async ({ page }) => {
+  test("11 花费提示放不下时整段去掉「24 小时内还剩…」，只留「约 500 字」，不截断数字；余量在 title 里", async ({ page }) => {
     await setup(page, true, true);
     await openAssistantTab(page);
     const note = thread(page).locator(".cx-note");
@@ -78,7 +78,7 @@ test.describe("07f 输入框", () => {
     const width = (await row.boundingBox())!.width;
     const more = note.locator(".more");
     const left = await allowance(page);
-    await expect(note).toHaveAttribute("title", new RegExp(`今天还剩 ${left.toLocaleString("en-US")} 字`));
+    await expect(note).toHaveAttribute("title", new RegExp(`24 小时内还剩 ${left.toLocaleString("en-US")} 字`));
     // Never half a figure: either all of it shows, or none of it.
     const fits = await note.evaluate((node) => node.scrollWidth <= node.clientWidth);
     expect(fits).toBe(true);
@@ -87,7 +87,7 @@ test.describe("07f 输入框", () => {
       expect((await note.innerText()).trim()).toBe("约 500 字");
     } else {
       await expect(more).toBeVisible();
-      await expect(more).toContainText(`今天还剩 ${left.toLocaleString("en-US")} 字`);
+      await expect(more).toContainText(`24 小时内还剩 ${left.toLocaleString("en-US")} 字`);
     }
     // A narrower box (a drawer on a phone is full width, the column on a tablet is wide): the rule holds at every width.
     for (const size of [{ width: 1100, height: 900 }, { width: 1440, height: 900 }]) {

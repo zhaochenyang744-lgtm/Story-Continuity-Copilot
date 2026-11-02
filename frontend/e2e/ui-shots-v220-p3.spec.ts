@@ -7,6 +7,8 @@ import { button, decide, finding, findings, run, selectIssue } from "./support/w
 // by day. The same file is run against the build before the changes and the build after them; UI_SHOTS3_TAG says which. Taken only when UI_SHOTS3_DIR names a folder.
 const dir = process.env.UI_SHOTS3_DIR;
 const tag = process.env.UI_SHOTS3_TAG ?? "后";
+// UI_SHOTS3_ONLY="08" takes just the pictures whose name begins with it (a re-take of one place).
+const only = process.env.UI_SHOTS3_ONLY;
 test.skip(!dir, "UI_SHOTS3_DIR is not set");
 test.use({ actionTimeout: 15_000 });
 
@@ -18,6 +20,7 @@ const dockOpen = (page: Page, open: boolean) => page.evaluate((wanted) => {
 
 type Scene = (page: Page) => Promise<void>;
 async function photograph(page: Page, name: string, scene: Scene, options: { fullPage?: boolean } = {}) {
+  if (only && !name.startsWith(only)) return;
   await mkdir(dir!, { recursive: true });
   for (const size of [1440, 375] as const) {
     await page.setViewportSize({ width: size, height: size === 375 ? 812 : 900 });

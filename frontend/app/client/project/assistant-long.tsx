@@ -67,7 +67,7 @@ function problemText(cause: unknown, planNeeds = 0): string {
   switch (failure?.code) {
     case "character_quota_exceeded": {
       const remaining = failure.details?.remaining;
-      return `今天的可检查字数不够（要读约 ${formatCount(planNeeds)} 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到这么多"} 字）。缩小章节范围再开始。`;
+      return `24 小时内可检查的字数不够（要读约 ${formatCount(planNeeds)} 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到这么多"} 字）。缩小章节范围再开始。`;
     }
     case "assistant_long_chapters_invalid": return "章节范围不对：起、止都要是已经写出的章节，起不能大于止。";
     case "assistant_long_plan_closed": return "这个计划已经开始或已经结束，不能再改了。";
@@ -151,8 +151,8 @@ function PlanCard({ task, plan, handlers, usage, sample, maxChapter, usageChange
       <p className={`a-long-quota${short ? " warn" : ""}`} data-testid="long-quota">
         {sample ? "示例作品不计字数。"
           : remaining === null ? ""
-            : short ? `要读约 ${formatCount(plan.est_chars)} 字，你今天只剩 ${formatCount(remaining)} 字，不够读完。缩小章节范围再开始。`
-              : `要读约 ${formatCount(plan.est_chars)} 字，你今天还剩 ${formatCount(remaining)} 字。`}
+            : short ? `要读约 ${formatCount(plan.est_chars)} 字，你 24 小时内只剩 ${formatCount(remaining)} 字，不够读完。缩小章节范围再开始。`
+              : `要读约 ${formatCount(plan.est_chars)} 字，你 24 小时内还剩 ${formatCount(remaining)} 字。`}
       </p>
       <p className="a-long-quota" data-testid="long-scope">{SCOPE_NOTE}</p>
       {abandonNote(plan.abandon) && <p className="a-long-quota" data-testid="long-abandon">{abandonNote(plan.abandon)}</p>}

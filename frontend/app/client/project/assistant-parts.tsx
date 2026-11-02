@@ -97,7 +97,7 @@ export function refusalText(cause: unknown, visitor: boolean, kind: AssistantTas
   switch (code) {
     case "character_quota_exceeded": {
       const remaining = ((cause as ApiFailure).details ?? {}).remaining;
-      return `今天的可检查字数不够这次${kind === "ask" ? "提问" : "任务"}（约 500 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到 500"} 字）。`;
+      return `24 小时内可检查的字数不够这次${kind === "ask" ? "提问" : "任务"}（约 500 字，还剩 ${typeof remaining === "number" ? formatCount(remaining) : "不到 500"} 字）。`;
     }
     case "workflow_quota_exceeded":
       return visitor ? VISITOR_USED_UP : labelError(cause);

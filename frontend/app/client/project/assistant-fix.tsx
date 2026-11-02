@@ -81,7 +81,7 @@ export function proposalError(code: string | undefined, cause?: unknown): string
     case "assistant_check_visitor_forbidden": return "访客不能复查，注册账号后可以用。";
     case "passage_too_long": return "改后的句子超过 600 字，不能复查。";
     case "passage_check_incomplete": return "复查没能把每句都判断完，所以不下结论，也没有计字数。可以重试。";
-    case "character_quota_exceeded": return "今天的可检查字数不够复查这一句。";
+    case "character_quota_exceeded": return "24 小时内可检查的字数不够复查这一句。";
     case "resource_not_found": return "这条改法已经不在了（对话可能被清空了）。";
     case "assistant_proposal_adopt_failed":
     case "assistant_proposal_dismiss_failed":

@@ -41,6 +41,15 @@ test("已完成章节修改并提交：影响、对照与历史", async ({ page 
   expect(compareAt.y + compareAt.height).toBeLessThanOrEqual(confirmAt.y + 1);
   expect(confirmAt.y + confirmAt.height).toBeLessThanOrEqual(text.y + 1);
   for (const part of [summary, compareAt, confirmAt]) expect(part.x).toBeGreaterThanOrEqual(rail.x + rail.width - 1);
+  // The two figures stand side by side in one row, each with its words beside it on the digits' base line (V18-01 follow-up).
+  const groups = impact.locator(".impact p");
+  const [one, two] = [await at(groups.nth(0)), await at(groups.nth(1))];
+  expect(Math.abs(one.y - two.y)).toBeLessThanOrEqual(2);
+  expect(two.x).toBeGreaterThanOrEqual(one.x + one.width - 1);
+  for (let index = 0; index < 2; index += 1) {
+    const [figure, words] = [await at(groups.nth(index).locator(".num")), await at(groups.nth(index).locator("span:not(.num)"))];
+    expect(Math.abs((figure.y + figure.height) - (words.y + words.height)), "the words end where the figure ends").toBeLessThanOrEqual(8);
+  }
   await expect(page.locator(".chapter-panel")).toBeVisible();
   expect((await at(page.locator(".chapter-panel"))).x).toBeGreaterThanOrEqual(rail.x + rail.width - 1);
   await button(page, "看前后对照").click();

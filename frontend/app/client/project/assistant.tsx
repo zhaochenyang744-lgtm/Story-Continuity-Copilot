@@ -70,8 +70,10 @@ export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefine
 export const DockContext = createContext<{ open: boolean; setOpen: (open: boolean) => void; focus: { taskId: string; nonce: number } | null; /** Open because this device remembered it, not because the author just asked: the cursor stays where it was. */ restored: boolean }>({ open: false, setOpen: () => undefined, focus: null, restored: false });
 /** Whether the dock was left open, kept on this device; nothing readable or writable means closed. */
 const DOCK_OPEN = "story-continuity:assistant-dock";
-export const readDockOpen = () => { try { return window.localStorage.getItem(DOCK_OPEN) === "open"; } catch { return false; } };
-export const writeDockOpen = (open: boolean) => { try { window.localStorage.setItem(DOCK_OPEN, open ? "open" : "closed"); } catch { /* it is only a memory */ } };
+/** On a phone (720 wide or less) the panel takes the whole screen: it is never opened by the memory, and what the author does with it there is not remembered. */
+const onPhone = () => window.innerWidth <= 720;
+export const readDockOpen = () => { if (onPhone()) return false; try { return window.localStorage.getItem(DOCK_OPEN) === "open"; } catch { return false; } };
+export const writeDockOpen = (open: boolean) => { if (onPhone()) return; try { window.localStorage.setItem(DOCK_OPEN, open ? "open" : "closed"); } catch { /* it is only a memory */ } };
 
 /** A page registers where the author is for as long as it is shown; the top bar's 助手 button follows it. */
 export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter_number?: number; character_id?: string; character_name?: string } = {}) {
@@ -376,9 +378,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const off = archived ? "作品已归档，只能浏览。" : quotaReason(usage, sample);
   const blocked = off || (busy && !routing ? RUNNING_NOW : "");
   const cost = usage?.account_type === "registered" ? (sample ? SAMPLE_FREE : `约 ${formatCount(needed)} 字`)
-    : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `今天还可以问 ${usage.assistant_tasks_remaining} 次` : "";
+    : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `24 小时内还可以问 ${usage.assistant_tasks_remaining} 次` : "";
   // What is left today goes after the cost when the line has room for it, and into its title when it has not.
-  const costMore = usage?.account_type === "registered" && !sample ? `今天还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
+  const costMore = usage?.account_type === "registered" && !sample ? `24 小时内还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
 
   // The page hears whether a task is running (its 写前回顾 button waits for it) and which findings have an adopted change.
   const report = useRef(writing);
@@ -1110,7 +1112,7 @@ export function SelectionToolbar({ selector, onAsk, onQuick, onSelect, check, bl
         const short = check.remaining !== null && check.remaining < cost;
         const label = check.free ? "查前文矛盾" : `查前文矛盾 · 约 ${formatCount(cost)} 字`;
         return (
-          <button type="button" disabled={short || Boolean(blocked)} title={blocked || (short ? "今天的可检查字数不够这次检查" : undefined)}
+          <button type="button" disabled={short || Boolean(blocked)} title={blocked || (short ? "24 小时内可检查的字数不够这次检查" : undefined)}
             aria-label={`查前文矛盾：检查这段和前文有没有矛盾${check.free ? "，示例作品不计字数" : `，约 ${formatCount(cost)} 字`}`} onClick={() => { check.run(shown.text); setShown(null); }}>{label}</button>
         );
       })()}

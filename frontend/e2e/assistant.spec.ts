@@ -15,7 +15,7 @@ test.describe("助手", () => {
     await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
-    await expect(thread(page)).toContainText(/约 500 字 · 今天还剩 [\d,]+ 字/);
+    await expect(thread(page)).toContainText(/约 500 字 · 24 小时内还剩 [\d,]+ 字/);
     const before = await allowance(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
@@ -48,7 +48,7 @@ test.describe("助手", () => {
     await expect(task).toContainText("计 500 字");
     await expect(task).not.toContainText(/\d+ 步|第 \d+ 轮/);
     await expect.poll(() => allowance(page)).toBe(before - 500);
-    await expect(thread(page)).toContainText(`今天还剩 ${(before - 500).toLocaleString("en-US")} 字`);
+    await expect(thread(page)).toContainText(`24 小时内还剩 ${(before - 500).toLocaleString("en-US")} 字`);
     await page.evaluate(() => window.scrollTo(0, 340));
     await shot(page, "assistant-writing-day", false);
     // The conversation is on the server, and the panel was left open: after a reload it is open again (this device remembers it), with the conversation in it.
@@ -287,7 +287,7 @@ test.describe("助手", () => {
     await expect(thread(page)).toBeVisible();
     // The reason is written where the box was (the box is not there), and the starting questions stay in view but cannot be pointed at.
     const line = thread(page).locator(".a-used");
-    await expect(line).toContainText("今天的可检查字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。");
+    await expect(line).toContainText("24 小时内可检查的字数不够这次提问（约 500 字，还剩 300 字）。用掉的额度 24 小时后陆续返还。");
     await expect(box(page)).toHaveCount(0);
     await expect(send(page)).toHaveCount(0);
     await expect(thread(page).locator(".a-starters button").first()).toBeDisabled();
@@ -304,12 +304,12 @@ test.describe("助手", () => {
     await openTab(page, id, "workspace");
     await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
     await openAssistantTab(page);
-    await expect(thread(page)).toContainText("今天还可以问 3 次");
+    await expect(thread(page)).toContainText("24 小时内还可以问 3 次");
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     // (The cursor is in the box after sending, and the key hint stands where the count is; leave the box to read it.)
     await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-    await expect(thread(page)).toContainText("今天还可以问 2 次");
+    await expect(thread(page)).toContainText("24 小时内还可以问 2 次");
     await expect(tasks(page).first()).not.toContainText("计 500 字");
     // A visitor has no other work; the refusal is simulated once.
     await page.route("**/assistant/tasks", (route) => route.request().method() === "POST"

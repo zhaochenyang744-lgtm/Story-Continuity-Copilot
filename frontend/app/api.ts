@@ -236,8 +236,8 @@ export const labelError = (cause: unknown) => {
   if (code === "character_quota_exceeded") {
     const { characters, remaining } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;
     if (typeof characters === "number" && typeof remaining === "number")
-      return `今天的检查字数不够：这次要检查约 ${characters.toLocaleString()} 字，今天还剩 ${remaining.toLocaleString()} 字。这次没有开始检查，也没有扣字数。可以只检查一部分，或者明天再来。`;
-    return "今天的检查字数已经用完了。这次没有开始检查，也没有扣字数，明天再来。";
+      return `24 小时内可检查的字数不够：这次要检查约 ${characters.toLocaleString()} 字，24 小时内还剩 ${remaining.toLocaleString()} 字。这次没有开始检查，也没有扣字数。可以只检查一部分，或者等用掉的额度返还（24 小时后陆续返还）。`;
+    return "24 小时内可检查的字数已经用完了。这次没有开始检查，也没有扣字数，等用掉的额度返还（24 小时后陆续返还）。";
   }
   if (code === "visitor_check_too_long") {
     const { limit } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;

@@ -174,3 +174,34 @@ test("作品归档只读：概览、章节、计划里不再催着去写、去�
   await expect(page.getByText("没有计划。", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "写下第一条计划", exact: true })).toHaveCount(0);
 });
+
+test("手机宽度（720 以内）：面板不按记忆自动打开，手机上开关也不写记忆；桌面的记忆不受影响", async ({ page }) => {
+  await keepDock(page);
+  await registerAccount(page, "dockphone");
+  const id = await sampleWorkId(page);
+  await openTab(page, id, "overview");
+  await topbarAssistant(page).click();
+  await expect(dock(page)).toBeVisible();
+  // The desktop remembers it open; the phone does not use that on load.
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.reload();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
+  await expect(dock(page)).toBeHidden();
+  // What is done with it on the phone is not written down: opened and shut there, the desktop's memory is as it was (open).
+  await topbarAssistant(page).click();
+  await expect(dock(page)).toBeVisible();
+  await topbarAssistant(page).click();
+  await expect(dock(page)).toBeHidden();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.reload();
+  await expect(dock(page)).toBeVisible();
+  // And the other way: shut on the desktop, opened on the phone, the desktop is still shut.
+  await topbarAssistant(page).click();
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.reload();
+  await topbarAssistant(page).click();
+  await expect(dock(page)).toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.reload();
+  await expect(dock(page)).toBeHidden();
+});

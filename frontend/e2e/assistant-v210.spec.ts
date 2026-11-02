@@ -276,7 +276,7 @@ test.describe("示例作品不计字数", () => {
     await openTab(page, own, "workspace");
     await openAssistantTab(page);
     await expect(thread(page).locator(".a-used")).toBeVisible();
-    await expect(thread(page)).toContainText("今天的可检查字数不够这次提问");
+    await expect(thread(page)).toContainText("24 小时内可检查的字数不够这次提问");
   });
 });
 
