@@ -90,6 +90,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const issues = groupIssues(p.run?.issues ?? []);
   const isDone = (issue: Issue) => Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
   const pending = issues.filter((issue) => issueNeedsDecision(issue, p.locallyResolvedIssueIds)).length;
+  // Findings whose evidence is not enough to decide on are still open until the author has looked at them (标为待修改); the page does not say everything is done while one is.
+  const unsure = issues.filter((issue) => !isDone(issue) && !issueNeedsDecision(issue, p.locallyResolvedIssueIds) && !issue.to_revise).length;
   // The backend only offers a fact review for findings the author kept on purpose and that came with a proposed fact change.
   const hasFactChanges = issues.some((issue) => issue.has_memory_proposal && issue.decision?.decision === "keep_intentional" && !issue.decision.reused);
   const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
@@ -177,9 +179,9 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   ) : checking ? (
     <Button kind="primary" disabled busy>正在检查…</Button>
   ) : p.run && retryableRun(p.run) && !outdated ? (
-    <Button kind="primary" disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
+    <Button kind={p.selected ? "outline" : "primary"} disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
   ) : (
-    <Button kind="primary" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
+    <Button kind={p.selected ? "outline" : "primary"} disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
   const finished = p.run?.status === "completed" && !checking;
   // 对照计划 is the old analysis, unchanged; only where its result is shown has moved: the top of the assistant column.
@@ -364,7 +366,13 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
               {p.run.status === "completed" && (p.run.metrics?.undecided_claim_count ?? 0) > 0 && (
                 <p className="findings-note">{(p.run.metrics?.undecided_claims ?? []).some((row) => row.error_code === "provider_attempt_quota_exceeded") ? `额度用完，有 ${p.run.metrics?.undecided_claim_count} 句没检查，结果里不包括它们。` : `有 ${p.run.metrics?.undecided_claim_count} 句没能判断，结果里不包括它们。`}</p>
               )}
-              {finished && pending === 0 && (
+              {finished && pending === 0 && unsure > 0 && (
+                <div className="findings-zero" data-testid="findings-unsure">
+                  <Num>{unsure}</Num>
+                  <p><strong>还有 {unsure} 条需要你判断。</strong>依据不够的几条，看过正文后可以标为待修改。</p>
+                </div>
+              )}
+              {finished && pending === 0 && unsure === 0 && (
                 <div className="findings-zero">
                   <Num>0</Num>
                   <p><strong>这一章前后不打架。</strong>{issues.length ? (hasFactChanges ? "都处理完了。最后确认哪些事实有变化，再记进资料。" : "都处理完了。") : "这次检查没有发现要处理的地方。"}</p>
@@ -412,14 +420,14 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
             </>
           ) : scanning ? (
             <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>
-          ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
+          ) : <p className="findings-empty">{p.readOnly ? "这一章没有检查结果。" : empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
           {p.run && p.run.result_origin !== "demo_preset" && <p className="ai-note" data-testid="ai-note">检查结果由 AI 生成，可能有错漏，请对照原文判断。</p>}
           </div>
         </aside>
       </div>
 
       {assistantOn && (
-        <AssistantDock key={project.id} open={dock.open} close={() => setDockOpen(false)} beta={Boolean(user.assistant?.beta)} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
+        <AssistantDock key={project.id} open={dock.open} quiet={dock.restored} close={() => setDockOpen(false)} beta={Boolean(user.assistant?.beta)} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
           usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={incoming} command={command} picked={picked} focus={dock.focus} writing={writingLink} material={material} />
       )}
 
@@ -588,11 +596,19 @@ function FindingDetail({ p, go, issue, tutorialStep, outdated, decided: onDecide
               {tutorial && tutorialStep === 4 && decided && <Button kind="primary" className="tutorial-decision-review" disabled={Boolean(p.busy)} onClick={() => void p.reviewDecision(issue)}>复习过了，继续导览</Button>}
               {(actions.length > 0 || !decided) && (
                 <div className="finding-actions">
-                  {actions.map((action, index) => <Button key={action.key} kind={index === 0 ? "primary" : "text"} className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
-                  {!decided && assist && (
+                  {/* One main action as a button; the others in a single row of plain-text buttons under it. */}
+                  {actions.slice(0, 1).map((action) => <Button key={action.key} kind="primary" className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
+                  {(actions.length > 1 || (!decided && assist && !assist.reason)) && (
+                    <div className="finding-more">
+                      {actions.slice(1).map((action) => <Button key={action.key} kind="text" className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
+                      {!decided && assist && !assist.reason && <Button kind="text" className="assist-action" onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>}
+                    </div>
+                  )}
+                  {/* Why the assistant cannot take this one stands beside its (greyed) button, on a line of its own. */}
+                  {!decided && assist?.reason && (
                     <span className="assist-line">
-                      <Button kind="text" className="assist-action" disabled={Boolean(assist.reason)} title={assist.reason || undefined} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>
-                      {assist.reason && <span className="assist-reason" data-testid="assist-reason">{assist.reason}。</span>}
+                      <Button kind="text" className="assist-action" disabled title={assist.reason} onClick={assist.run}>{tone === "state" ? "让助手解释" : "让助手给改法"}</Button>
+                      <span className="assist-reason" data-testid="assist-reason">{assist.reason}。</span>
                     </span>
                   )}
                 </div>

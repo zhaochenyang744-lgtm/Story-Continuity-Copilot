@@ -146,12 +146,11 @@ function FactsView({ p, go, marks }: { p: ProjectState; go: (href: string) => vo
                     <Num>{record.source ? pad2(record.source.chapter_number) : "—"}</Num>
                   </button>
                   <span className="fact-copy">
-                    <strong>{record.subject}</strong>
+                    <span className="fact-head"><strong>{record.subject}</strong><Tag tone={factTone[record.memory_type] ?? "line"}>{memoryTypeLabel(record.memory_type)}</Tag></span>
                     <span className="fact-value">{predicateLabel(record.predicate) !== "其他" && <span className="fact-key">{predicateLabel(record.predicate)} · </span>}{record.value}</span>
                     {(record.valid_to != null || record.requires_source_review) && <span className="label">{record.valid_to != null ? "已被后来的内容取代" : "出处改过，待复核"}</span>}
                     <AssistantMark text={marks.facts.get(record.id)} />
                   </span>
-                  <Tag tone={factTone[record.memory_type] ?? "line"}>{memoryTypeLabel(record.memory_type)}</Tag>
                 </li>
               ))}
             </ol>

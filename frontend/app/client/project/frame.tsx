@@ -39,6 +39,8 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
   const project = p.project!;
   const [dialog, setDialog] = useState<ProjectDialog | null>(null);
   const [guidanceRequest, setGuidanceRequest] = useState(0);
+  // Step 2 is only to get to the writing page: once the author is there the tour is at step 3 (the first finding), not still asking to go there.
+  const shownStep = (tab === "workspace" && tutorialStep === 2 ? 3 : tutorialStep) as TutorialStep;
   // Jump to an anchor (#issue-…, #chapter-…, #append) once the page has rendered.
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -59,7 +61,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
         <TutorialBar
           projectId={project.id}
           tab={tab}
-          step={tutorialStep}
+          step={shownStep}
           restored={p.tutorialRestored}
           readOnly={p.readOnly}
           busy={Boolean(p.busy)}
@@ -91,7 +93,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
     <>
       {page}
       {p.tutorialActive && (
-        <TutorialGuidance projectId={project.id} step={tutorialStep} tab={tab} readOnly={p.readOnly} busy={Boolean(p.busy)} evidenceOpen={Boolean(p.selected)} sourceOpen={Boolean(p.sourceRecord)} requestId={guidanceRequest} />
+        <TutorialGuidance projectId={project.id} step={shownStep} tab={tab} readOnly={p.readOnly} busy={Boolean(p.busy)} evidenceOpen={Boolean(p.selected)} sourceOpen={Boolean(p.sourceRecord)} requestId={guidanceRequest} />
       )}
       {dialog === "export" && <Dialog title="导出作品" close={() => setDialog(null)}><ExportPanel projectId={project.id} /></Dialog>}
       {dialog === "meta" && <MetaDialog p={p} close={() => setDialog(null)} />}

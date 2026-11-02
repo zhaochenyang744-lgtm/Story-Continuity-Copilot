@@ -67,7 +67,11 @@ type Bridge = {
 export const AssistantBridge = createContext<Bridge>({ setAnchor: () => undefined, openDrawer: () => undefined, usageChanged: () => undefined, materialsChanged: () => undefined, register: () => undefined });
 /** Whether the assistant dock is open (one flag for every page), and the task a page asked to have brought into view. The writing page keeps its own
     dock (it hands the dock the draft and the findings) and reads this to show or hide it. */
-export const DockContext = createContext<{ open: boolean; setOpen: (open: boolean) => void; focus: { taskId: string; nonce: number } | null }>({ open: false, setOpen: () => undefined, focus: null });
+export const DockContext = createContext<{ open: boolean; setOpen: (open: boolean) => void; focus: { taskId: string; nonce: number } | null; /** Open because this device remembered it, not because the author just asked: the cursor stays where it was. */ restored: boolean }>({ open: false, setOpen: () => undefined, focus: null, restored: false });
+/** Whether the dock was left open, kept on this device; nothing readable or writable means closed. */
+const DOCK_OPEN = "story-continuity:assistant-dock";
+export const readDockOpen = () => { try { return window.localStorage.getItem(DOCK_OPEN) === "open"; } catch { return false; } };
+export const writeDockOpen = (open: boolean) => { try { window.localStorage.setItem(DOCK_OPEN, open ? "open" : "closed"); } catch { /* it is only a memory */ } };
 
 /** A page registers where the author is for as long as it is shown; the top bar's 助手 button follows it. */
 export function useAssistantAnchor(page: AssistantPage | null, detail: { chapter_number?: number; character_id?: string; character_name?: string } = {}) {
@@ -878,7 +882,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable}
         usedUp={!archived && off ? { text: off, ...(visitor ? { action: { label: "注册", run: bridge.register } } : {}) } : null} />
-      {confirmClear && <ClearConfirm confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
+      {confirmClear && <ClearConfirm visitor={visitor} confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
     </div>
     </LocateContext.Provider>
     </RerouteContext.Provider>
@@ -917,7 +921,7 @@ function LegacyQuestions({ runs, go }: { runs: WritingAnalysisRun[]; go: (href: 
 }
 
 /** 清空对话: a small question laid over the panel, with its own focus. */
-function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => void }) {
+function ClearConfirm({ confirm, cancel, visitor }: { confirm: () => void; cancel: () => void; visitor: boolean }) {
   const first = useRef<HTMLButtonElement>(null);
   const last = useRef<HTMLButtonElement>(null);
   useEffect(() => { first.current?.focus({ preventScroll: true }); }, []);
@@ -931,7 +935,7 @@ function ClearConfirm({ confirm, cancel }: { confirm: () => void; cancel: () => 
     <div className="a-confirm" role="alertdialog" aria-modal="true" aria-labelledby="a-confirm-title" aria-describedby="a-confirm-body" onKeyDown={onKeyDown}>
       <div className="a-confirm-box">
         <h3 id="a-confirm-title">清空对话</h3>
-        <p id="a-confirm-body">清空后这部作品的对话不再显示。已用的字数不退。</p>
+        <p id="a-confirm-body">{visitor ? "清空后这部作品的对话不再显示。已用的次数不退。" : "清空后这部作品的对话不再显示。已用的字数不退。"}</p>
         <div className="a-confirm-actions">
           <button ref={first} type="button" className="a-link" onClick={cancel}>取消</button>
           <button ref={last} type="button" className="a-danger" onClick={confirm}>清空</button>
@@ -959,7 +963,7 @@ function useDockMode(writing: boolean): DockMode {
 /** The assistant, one panel for every page: docked at the right under the top bar, about 400px wide. Open, it pushes the page aside (the root
     element says so for the stylesheet); in a narrower window it lies over the page's edge instead. The same button, the key Ctrl + / and
     Esc close it. `open` false keeps the thread alive (a running task goes on) but hides the panel. */
-export function AssistantDock({ open, close, beta = false, ...thread }: Omit<ThreadProps, "variant"> & { open: boolean; close: () => void; beta?: boolean }) {
+export function AssistantDock({ open, close, beta = false, quiet = false, ...thread }: Omit<ThreadProps, "variant"> & { open: boolean; close: () => void; beta?: boolean; quiet?: boolean }) {
   const mode = useDockMode(Boolean(thread.writing));
   const frame = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -973,15 +977,15 @@ export function AssistantDock({ open, close, beta = false, ...thread }: Omit<Thr
   }, [open, mode]);
   // Opened, the cursor is in the box (V: the author does not walk past the whole conversation).
   useEffect(() => {
-    if (!open) return;
+    if (!open || quiet) return;
     const timer = window.setTimeout(() => frame.current?.querySelector<HTMLTextAreaElement>('textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true }), 40);
     return () => window.clearTimeout(timer);
-  }, [open]);
+  }, [open, quiet]);
   return (
     <aside ref={frame} id="assistant-dock" className={`a-dock ${mode}`} aria-label="助手" hidden={!open} data-testid="assistant-dock">
       <header className="a-dock-head">
         <h2>助手{beta && <span className="a-beta">测试版</span>}</h2>
-        <button type="button" className="a-link" aria-label="关闭助手" onClick={close}>收起 <kbd>Esc</kbd></button>
+        <button type="button" className="a-link" aria-label="关闭助手" onClick={close}>收起<kbd> Esc</kbd></button>
       </header>
       <AssistantThread {...thread} variant="dock" onNavigate={() => { thread.onNavigate?.(); if (mode === "overlay") close(); }} />
     </aside>

@@ -155,7 +155,8 @@ test("稍后再说：离开导览，刷新或再回来仍停在同一步", async
   await page.reload();
   await expect(bar(page)).toContainText("导览 2 / 5");
   await openTab(page, workId, "workspace");
-  await expect(bar(page)).toContainText("导览 2 / 5");
+  // On the writing page step 2 (get here) is done: the bar shows step 3, the first finding.
+  await expect(bar(page)).toContainText("导览 3 / 5");
 
   // 稍后再说 is offered on the last step: it leaves for the home page and keeps the tour where it was.
   await advanceTour(page, workId, 5);

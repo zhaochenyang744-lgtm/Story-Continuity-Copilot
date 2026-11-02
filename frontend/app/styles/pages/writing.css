@@ -127,14 +127,15 @@
 .author-decision { margin-top: 16px; }
 .finding-decided { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; }
 .finding-decided a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.finding-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 8px; }
+.finding-actions { display: grid; justify-items: start; gap: 8px; margin-top: 8px; }
+.finding-more { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
 .findings-zero { display: grid; justify-items: start; gap: 12px; margin-top: 16px; padding-bottom: 16px; }
 .findings-zero .num { color: var(--c-ink); font-size: 112px; line-height: .8; }
 .findings-zero p { font-size: 14px; }
 .findings-zero strong { display: block; font-size: 16px; }
 .run-status { display: grid; gap: 8px; margin-top: 12px; padding-bottom: 12px; }
 .run-status-line { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
-.run-status .finding-actions { margin-top: 0; }
+.run-status .finding-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 0; }
 
 /* A written chapter on the writing page */
 .panel-copy { margin-top: 12px; color: var(--c-ink-2); font-size: 14px; }
@@ -243,3 +244,11 @@
 /* The findings column's heading (it holds the check's results only; the assistant has its own dock), and each result's 问助手. */
 .side-title { position: sticky; top: 0; z-index: 2; display: flex; align-items: baseline; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-2) 0 0; background: var(--c-ground); font-size: var(--fs-15); font-weight: 700; }
 .finding-ask { margin: calc(var(--s-1) * -1) 0 var(--s-3) 40px; color: var(--c-muted); font-size: var(--fs-13); }
+
+/* A written chapter open for revision: the panel with the notes goes under the text in the text's own column (it used to wrap into the chapter list's column), and
+   the effect of a previewed revision stands above the text, with 确认提交修改 under it. */
+.chapter-mode .findings.chapter-panel { grid-column: 2; position: static; height: auto; margin: 0; padding: 0; overflow: visible; }
+.revision-impact { display: grid; justify-items: start; gap: 12px; margin-bottom: 24px; padding: 16px; border-radius: var(--r-md); background: var(--c-raised); }
+.revision-impact .impact { margin-top: 0; }
+.revision-actions { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+@media (max-width: 1280px) { .chapter-mode .findings.chapter-panel { grid-column: 1; } }

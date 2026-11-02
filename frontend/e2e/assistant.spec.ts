@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { api, expect, openTab, sampleWorkId, shot, startVisitor, test } from "./support/app";
+import { api, expect, keepDock, openTab, sampleWorkId, shot, startVisitor, test } from "./support/app";
 import { adoptRequest, allowance, ask, askForFix, box, checkedWork, chip, chars, finished, findingsTab, openAssistantTab, proposal, REWRITTEN, select, selectedWords, send, SENTENCE, sideTab, stopButton, taskPost, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
 import { evidence, theme } from "./support/pages";
 import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBody, run, saveBody, selectIssue, setDraftBody, setup } from "./support/writing";
@@ -11,6 +11,7 @@ import { beginCheck, button, draft, finding, findings, finishCheck, readDraftBod
 
 test.describe("助手", () => {
   test("写作页：提问得到带出处的回答，步骤折叠，扣 500 字，刷新后对话还在", async ({ page }) => {
+    await keepDock(page);
     await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
@@ -50,10 +51,9 @@ test.describe("助手", () => {
     await expect(thread(page)).toContainText(`今天还剩 ${(before - 500).toLocaleString("en-US")} 字`);
     await page.evaluate(() => window.scrollTo(0, 340));
     await shot(page, "assistant-writing-day", false);
-    // The conversation is on the server: after a reload the panel is closed (it opens when asked for) and the conversation is in it.
+    // The conversation is on the server, and the panel was left open: after a reload it is open again (this device remembers it), with the conversation in it.
     await page.reload();
-    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
-    await openAssistantTab(page);
+    await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
     await expect(tasks(page)).toHaveCount(1);
     await expect(tasks(page).first()).toContainText("（示意回答）前文写过这件事。");
   });

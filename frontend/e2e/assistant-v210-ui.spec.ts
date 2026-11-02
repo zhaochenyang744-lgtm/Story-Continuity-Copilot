@@ -305,7 +305,7 @@ test("18 额度用完：重新回答、接着问置灰，悬停写原因；写�
   await openTab(page, id, "workspace");
   await openAssistantTab(page);
   const task = tasks(page).first();
-  const reason = "访客可以在示例作品上问 3 次，今天已经用完";
+  const reason = "访客可以在示例作品上问 3 次，24 小时内已经用完";
   for (const name of ["重新回答", "接着问"]) {
     const control = task.getByRole("button", { name, exact: true });
     await expect(control).toBeDisabled();

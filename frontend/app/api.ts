@@ -59,6 +59,13 @@ export async function request<T>(
       error.retryable = true;
       throw error;
     }
+    // The server did not answer (the network is down, or the proxy had no one to pass it to and answered with something that is not ours).
+    if (cause instanceof TypeError || cause instanceof SyntaxError) {
+      const error = new Error("暂时连不上服务") as ApiFailure;
+      error.code = "service_unreachable";
+      error.retryable = true;
+      throw error;
+    }
     throw cause;
   } finally {
     if (timer) window.clearTimeout(timer);
@@ -88,6 +95,7 @@ export const json = <T>(
 
 const unknownError = "请求未完成。请保留当前内容并重试。";
 const labels: Record<string, string> = {
+  service_unreachable: "暂时连不上服务。你写的内容没有丢，稍后再试。",
   source_revision_review_required: "历史章节已修订。请到项目概览中的“修订历史章节与复核事实”，逐项确认受影响的资料后再运行 AI 检查。",
   authentication_required: "会话已失效；已清除当前作品上下文，请重新登录。",
   invalid_credentials: "账号或密码不正确。",

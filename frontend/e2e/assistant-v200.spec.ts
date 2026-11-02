@@ -568,6 +568,8 @@ test.describe("改资料：版面", () => {
     await itemOf(cardOf(phone), "C2").getByRole("button", { name: "改内容", exact: true }).tap();
     await expect(itemOf(cardOf(phone), "C2").getByRole("textbox", { name: /^改后的内容/ })).toBeVisible();
     await insideColumn(phone);
+    // The panel fills the phone's screen and this device remembers it open: it is shut before the other page is looked at.
+    await phone.locator("#assistant-open").click();
     await phone.unrouteAll({ behavior: "ignoreErrors" });
     await confirmByApi(phone, id, await proposeByApi(phone, id, THREAD_ASK));
     await openTab(phone, id, "memory");

@@ -17,7 +17,7 @@ import { isSettingsItem, settingsAliases, SettingsPage } from "./pages/settings"
 import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
 import { PrivacyPage } from "./pages/privacy";
 import { ProjectFrame } from "./project/frame";
-import { AssistantBridge, AssistantDock, DockContext, type AssistantAnchor, type Incoming } from "./project/assistant";
+import { AssistantBridge, AssistantDock, DockContext, readDockOpen, writeDockOpen, type AssistantAnchor, type Incoming } from "./project/assistant";
 import { seenLong, useLongDot } from "./project/long-watch";
 import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
@@ -58,6 +58,9 @@ export function App() {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null);
   const [ready, setReady] = useState(() => bootstrappedUser !== undefined);
+  // The session could not be asked about (the service is not answering): not the same as having none, so the author is not sent to the login page.
+  const [unreachable, setUnreachable] = useState(false);
+  const [bootstrapTry, setBootstrapTry] = useState(0);
   const { theme } = usePrefs();
   const [narrow, setNarrow] = useState(false);
   const [notice, setNotice] = useState("");
@@ -78,7 +81,7 @@ export function App() {
   const [settingsLeave, setSettingsLeave] = useState<string | null>(null);
   // The assistant: where the author is (told by the open page), the drawer other pages open, and a nudge to re-read the allowance.
   const [assistantAnchor, setAssistantAnchor] = useState<AssistantAnchor | null>(null);
-  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null; focus?: { taskId: string; nonce: number } }>({ open: false, incoming: null });
+  const [drawer, setDrawer] = useState<{ open: boolean; incoming: Incoming | null; focus?: { taskId: string; nonce: number }; restored?: boolean }>(() => (typeof window !== "undefined" && readDockOpen() ? { open: true, incoming: null, restored: true } : { open: false, incoming: null }));
   const [usageBump, setUsageBump] = useState(0);
   const assistantNonce = useRef(0);
   const materialsChanged = useRef<() => void>(() => undefined);
@@ -127,9 +130,9 @@ export function App() {
 
   const assistantBridge = useMemo(() => ({
     setAnchor: setAssistantAnchor,
-    openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => setDrawer({
+    openDrawer: (incoming?: Omit<Incoming, "nonce">, focusTask?: string) => { writeDockOpen(true); setDrawer({
       open: true, incoming: incoming ? { ...incoming, nonce: ++assistantNonce.current } : null, ...(focusTask ? { focus: { taskId: focusTask, nonce: ++assistantNonce.current } } : {}),
-    }),
+    }); },
     usageChanged: () => setUsageBump((count) => count + 1),
     // The assistant wrote to (or took back a change of) the materials; the work reads them again.
     materialsChanged: () => materialsChanged.current(),
@@ -151,8 +154,9 @@ export function App() {
   if (shownProject !== projectId) setShownProject(projectId);
   if (shownPath !== pathname) {
     setShownPath(pathname);
-    // The assistant stays docked from page to page of the same work; leaving the work closes it.
+    // The assistant stays docked from page to page of the same work; leaving the work closes it (the device still remembers it was left open, so the next work opens it again).
     if (drawer.open && !(projectId && projectId === shownProject)) setDrawer({ open: false, incoming: null });
+    else if (!drawer.open && projectId && projectId !== shownProject && readDockOpen()) setDrawer({ open: true, incoming: null, restored: true });
     // The redirect to the login page keeps the "登录已过期" reason; any other new address starts without the last error.
     if (errorFollowsTo === pathname) setErrorFollowsTo(null);
     else { setError(null); setErrorFollowsTo(null); }
@@ -215,12 +219,14 @@ export function App() {
       .then((x) => { bootstrappedUser = x.user; return x.user; })
       .catch((cause) => { if ((cause as ApiFailure).code === "authentication_required") { bootstrappedUser = null; return null; } throw cause; })
       .finally(() => { sessionBootstrap = null; }));
-    bootstrap.then((next) => setUser(next)).catch(fail).finally(() => setReady(true));
-  }, [fail]);
+    bootstrap.then((next) => { setUnreachable(false); setUser(next); })
+      .catch((cause) => { if ((cause as ApiFailure).code === "authentication_required") fail(cause); else setUnreachable(true); })
+      .finally(() => setReady(true));
+  }, [fail, bootstrapTry]);
   useEffect(() => {
     if (!ready) return;
     const isPublic = publicAuthPaths.includes(pathname);
-    if (!user && !isPublic) { router.replace("/login"); return; }
+    if (!user && !isPublic && !unreachable) { router.replace("/login"); return; }
     if (user && signedOutOnlyPaths.includes(pathname)) { router.replace("/"); return; }
     // The addresses of the single 个人信息 and 账号安全 pages (before v1.8.0) still lead somewhere.
     if (user && pathname === "/account/profile") { router.replace("/account"); return; }
@@ -230,7 +236,7 @@ export function App() {
     const settingsAlias = Object.hasOwn(settingsAliases, oldItem) ? settingsAliases[oldItem] : undefined;
     if (user && settingsAlias) { router.replace(`/settings/${settingsAlias}`); return; }
     if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
-  }, [ready, user, pathname, router, applyOnboarding, fail]);
+  }, [ready, user, unreachable, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
     if (!menuOpen) return;
     const items = () => Array.from(document.querySelectorAll<HTMLElement>(".account-menu [role^='menuitem']"));
@@ -351,9 +357,10 @@ export function App() {
   const dockAvailable = Boolean(projectId && p.project && assistantAnchor && user?.assistant?.available);
   const toggleDock = () => {
     if (!drawer.open && p.project) seenLong(p.project.id);
+    writeDockOpen(!drawer.open);
     setDrawer((current) => (current.open ? { open: false, incoming: null } : { open: true, incoming: null }));
   };
-  const setDockOpen = useCallback((open: boolean) => setDrawer((current) => (current.open === open ? current : open ? { ...current, open: true } : { open: false, incoming: null })), []);
+  const setDockOpen = useCallback((open: boolean) => { writeDockOpen(open); setDrawer((current) => (current.open === open ? current : open ? { ...current, open: true, restored: false } : { open: false, incoming: null })); }, []);
   useEffect(() => {
     if (!dockAvailable) return;
     const keys = (event: KeyboardEvent) => {
@@ -361,19 +368,27 @@ export function App() {
       if (event.key !== "Escape" || !drawer.open || event.defaultPrevented) return;
       // Esc belongs to a dialog, a menu or a question that is open first.
       if (document.querySelector('[aria-modal="true"], .cx-menu, details.menu[open], .a-selpop, .account-menu')) return;
+      writeDockOpen(false);
       setDrawer({ open: false, incoming: null });
       window.setTimeout(() => { if (document.activeElement === document.body || document.activeElement?.closest("#assistant-dock")) document.getElementById("assistant-open")?.focus(); }, 30);
     };
     window.addEventListener("keydown", keys);
     return () => window.removeEventListener("keydown", keys);
   });
-  const dockValue = useMemo(() => ({ open: drawer.open, setOpen: setDockOpen, focus: drawer.focus ?? null }), [drawer.open, drawer.focus, setDockOpen]);
+  const dockValue = useMemo(() => ({ open: drawer.open, setOpen: setDockOpen, focus: drawer.focus ?? null, restored: Boolean(drawer.restored) }), [drawer.open, drawer.focus, drawer.restored, setDockOpen]);
 
   const usage = useUsage(user ? `${user.id}:${pathname}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}:${usageBump}` : "");
   const tutorialStep = (p.project?.is_tutorial && tutorialProgress?.tutorial_project_id === p.project.id ? tutorialProgress.current_step : 1) as 1 | 2 | 3 | 4 | 5;
 
   let body;
   if (!ready || (user && signedOutOnlyPaths.includes(pathname))) body = <div className="boot" role="status">正在载入…</div>;
+  else if (unreachable && !user && !publicAuthPaths.includes(pathname)) body = (
+    <div className="boot offline" role="alert" data-testid="service-unreachable">
+      <h1>暂时连不上服务</h1>
+      <p>你的内容没有丢，这不是登录过期。等服务恢复后点重试。</p>
+      <Button kind="primary" onClick={() => { bootstrappedUser = undefined; sessionBootstrap = null; setReady(false); setBootstrapTry((value) => value + 1); }}>重试</Button>
+    </div>
+  );
   else if (pathname === "/password-reset") body = <PasswordResetRequestPage go={(href) => router.push(href)} />;
   else if (pathname === "/password-reset/confirm") body = <PasswordResetConfirmPage go={(href) => router.push(href)} />;
   else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;
@@ -470,10 +485,10 @@ export function App() {
         </footer>
       )}
       {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && (
-        <AssistantDock open key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus}
+        <AssistantDock open quiet={Boolean(drawer.restored)} key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus}
           material={{ chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })), characters: p.characters.map((person) => ({ id: person.id, name: person.name })), draftBody: p.draft?.body ?? "", issues: [], issuesReason: "" }}
           beta={Boolean(user.assistant?.beta)}
-          close={() => { setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />
+          close={() => { writeDockOpen(false); setDrawer({ open: false, incoming: null }); window.setTimeout(() => { if (document.activeElement === document.body) document.getElementById("assistant-open")?.focus(); }, 30); }} />
       )}
       {switchTo && (
         <Dialog title={p.pendingDecisionConflict ? "待补记的决定已失效" : p.pendingControlledDecision ? "决定还没记下" : "草稿还没保存"} closeDisabled={switchSaving} close={() => { if (!switchPending.current) setSwitchTo(null); }}>

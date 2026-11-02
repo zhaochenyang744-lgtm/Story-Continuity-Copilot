@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { request } from "../../api";
+import { json, request } from "../../api";
 import type { ProjectSummary } from "../../model";
 import { workStatusLabel } from "../labels";
-import { Arrow, Button, Chips, fitVars, formatCount, Menu, Num, PageHead, pad2, Tag } from "../ui";
+import { Button, Chips, Dialog, fitVars, formatCount, Menu, Num, PageHead, pad2, Tag } from "../ui";
 import { CountUp } from "../motion";
 import { WorkCheckTag } from "./home";
 
@@ -20,6 +20,9 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [rows, setRows] = useState<ProjectSummary[] | null>(null);
   const [all, setAll] = useState<ProjectSummary[] | null>(null);
+  const [reload, setReload] = useState(0);
+  const [manage, setManage] = useState<{ kind: "rename" | "archive"; work: ProjectSummary } | null>(null);
+  const [saving, setSaving] = useState(false);
   useEffect(() => {
     const timer = window.setTimeout(() => setQuery(q.trim()), 250);
     return () => window.clearTimeout(timer);
@@ -30,14 +33,14 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
       .then(([current, archived]) => { if (live) setAll([...current.projects, ...archived.projects].filter((item) => !isSample(item))); })
       .catch((cause) => { if (live) fail(cause); });
     return () => { live = false; };
-  }, [fail]);
+  }, [fail, reload]);
   useEffect(() => {
     let live = true;
     request<{ projects: ProjectSummary[] }>(`/projects?q=${encodeURIComponent(query)}${status ? `&status=${status}` : ""}${onlyOpen ? "&has_open_issues=true" : ""}&sort=${sort}`)
       .then((data) => { if (live) setRows(data.projects.filter((item) => !isSample(item))); })
       .catch((cause) => { if (live) fail(cause); });
     return () => { live = false; };
-  }, [query, status, sort, onlyOpen, fail]);
+  }, [query, status, sort, onlyOpen, fail, reload]);
   const filtered = Boolean(query || status || onlyOpen);
   const totalWords = (all ?? []).filter((item) => item.status !== "archived").reduce((sum, item) => sum + (item.word_count ?? 0), 0);
   // Like the list's default view, the count leaves archived works out.
@@ -59,10 +62,12 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
                 <div><dt className="sr-only">字数</dt><dd><Num><CountUp id="works:words" value={totalWords} /></Num></dd><dd className="figure-label">字</dd></div>
               </dl>
             )}
-            <div className="actions">
-              <Button onClick={() => go("/projects/import")}>导入作品</Button>
-              <Button kind="primary" onClick={() => go("/projects/new")}>新建作品</Button>
-            </div>
+            {hasWorks && (
+              <div className="actions">
+                <Button kind="primary" onClick={() => go("/projects/import")}>导入作品</Button>
+                <Button onClick={() => go("/projects/new")}>新建作品</Button>
+              </div>
+            )}
           </div>
         }
       />
@@ -91,13 +96,13 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
       {rows === null || all === null ? (
         <p className="loading">正在读取…</p>
       ) : !hasWorks ? (
-        <div className="start-cards works-empty">
-          <button type="button" className="start-card" onClick={() => go("/projects/import")}>
-            <Num>导入</Num><strong>导入已有作品</strong><span>Word、TXT、Markdown。按标题自动分章，确认后才创建作品。</span><span className="start-card-go blue">选择文件<Arrow size={16} /></span>
-          </button>
-          <button type="button" className="start-card" onClick={() => go("/projects/new")}>
-            <Num>新建</Num><strong>从空白开始</strong><span>写下书名和一句话简介，就可以开始第一章。</span><span className="start-card-go">新建作品<Arrow size={16} /></span>
-          </button>
+        <div className="works-empty">
+          <section className="works-empty-card" aria-label="导入已有作品">
+            <h2>导入已有的稿子</h2>
+            <p>Word、TXT、Markdown 都行，按标题自动分章，确认后才创建作品。</p>
+            <Button kind="primary" onClick={() => go("/projects/import")}>选择文件</Button>
+          </section>
+          <Button kind="text" onClick={() => go("/projects/new")}>从空白开始</Button>
         </div>
       ) : rows.length ? (
         <ol className="works-list">
@@ -120,6 +125,8 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
                   <Menu label="…" buttonLabel={`更多：${work.title}`}>
                     <button type="button" role="menuitem" onClick={() => go(`/projects/${work.id}/sources#append`)}>追加章节</button>
                     <button type="button" role="menuitem" onClick={() => go(`/projects/${work.id}/overview`)}>打开概览</button>
+                    <button type="button" role="menuitem" onClick={() => setManage({ kind: "rename", work })}>重命名</button>
+                    <button type="button" role="menuitem" className="danger" onClick={() => setManage({ kind: "archive", work })}>归档作品</button>
                   </Menu>
                 )}
               </span>
@@ -129,6 +136,44 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
       ) : (
         <p className="empty">{filtered ? "没有符合条件的作品。换个条件试试。" : "没有未归档的作品。选「已归档」可以看到归档的作品。"}</p>
       )}
+      {manage && <ManageDialog key={manage.kind + manage.work.id} manage={manage} saving={saving} close={() => setManage(null)} save={async (payload) => {
+        setSaving(true);
+        try {
+          // The list does not always carry the revision the server wants for a change; the work itself does.
+          const revision = typeof manage.work.metadata_revision === "number" ? manage.work.metadata_revision : (await request<{ project: ProjectSummary } | ProjectSummary>(`/projects/${manage.work.id}`) as { metadata_revision?: number }).metadata_revision;
+          await json(`/projects/${manage.work.id}`, "PATCH", { base_metadata_revision: revision, ...payload });
+          setManage(null);
+          setReload((value) => value + 1);
+        } catch (cause) { fail(cause); } finally { setSaving(false); }
+      }} />}
     </section>
+  );
+}
+
+/** 重命名 and 归档 from the list itself: the same changes as the work's own page, without going there first. */
+function ManageDialog({ manage, saving, close, save }: { manage: { kind: "rename" | "archive"; work: ProjectSummary }; saving: boolean; close: () => void; save: (payload: Record<string, unknown>) => Promise<void> }) {
+  const { work } = manage;
+  const [title, setTitle] = useState(work.title);
+  if (manage.kind === "rename") {
+    return (
+      <Dialog title="重命名作品" close={close}>
+        <form className="form-inner" onSubmit={(event) => { event.preventDefault(); if (title.trim()) void save({ title: title.trim() }); }}>
+          <label className="field"><span className="field-label">书名</span><input value={title} onChange={(event) => setTitle(event.target.value)} required maxLength={120} autoFocus /></label>
+          <div className="dialog-actions">
+            <Button kind="primary" type="submit" disabled={saving || !title.trim() || title.trim() === work.title}>保存</Button>
+            <Button kind="text" onClick={close}>取消</Button>
+          </div>
+        </form>
+      </Dialog>
+    );
+  }
+  return (
+    <Dialog title="归档作品" close={close}>
+      <p>{`归档后《${work.title}》只能浏览，不能写入；不会删除。随时可以恢复。`}</p>
+      <div className="dialog-actions">
+        <Button kind="destroy" disabled={saving} onClick={() => void save({ status: "archived", confirm_archive: true })}>归档</Button>
+        <Button kind="text" onClick={close}>取消</Button>
+      </div>
+    </Dialog>
   );
 }

@@ -24,7 +24,10 @@
 .plan-empty p { max-width: 40em; font-size: 16px; }
 .plan-archived { margin-top: 32px; }
 .plan-archived ul { margin-top: 12px; }
-.plan-archived li { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; color: var(--c-muted); }
+.plan-archived li { padding: 4px 0; color: var(--c-muted); }
+.plan-archived-main { display: flex; gap: 8px; align-items: baseline; width: 100%; padding: 4px 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.plan-archived-main:hover { color: var(--c-ink); }
+.plan-archived li.open .plan-archived-main { color: var(--c-ink); }
 
 @media (max-width: 720px) {
   /* The category tabs are one row that slides sideways, never a 3 + 1 wrap (as the settings sub-navigation does). */

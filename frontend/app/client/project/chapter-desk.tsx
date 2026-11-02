@@ -218,9 +218,7 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
 
   const primary = !editing ? (
     <Button kind="primary" disabled={!canEdit} onClick={() => startEdit()}>修改这一章</Button>
-  ) : preview ? (
-    <Button kind="primary" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
-  ) : (
+  ) : preview ? null : (
     <Button kind="primary" disabled={!dirty || Boolean(busy) || conflict} busy={busy === "正在预览"} onClick={() => void makePreview()}>{busy === "正在预览" ? "正在预览" : "预览修改影响"}</Button>
   );
 
@@ -250,6 +248,20 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
         <ChapterRail chapters={p.chapters} current={number} draftNumber={p.draft?.chapter_number ?? project.current_draft.chapter_number} draftTitle={p.draft?.title ?? ""} open={open} />
 
         <article className="draft" aria-label={`第 ${number} 章正文`}>
+          {editing && preview && (
+            <section className="revision-impact" aria-label="这次修改的影响">
+              <div className="impact">
+                <p><Num>{preview.impact.affected_memory_count}</Num><span>条已确认的事实需要复核</span></p>
+                <p><Num>{preview.impact.affected_analysis_count}</Num><span>条分析可能过时</span></p>
+              </div>
+              <p className="panel-copy">提交后替换这一章的正文，旧版本保留。受影响的事实要你在章节页逐条确认后，才会用于新的检查。</p>
+              <div className="revision-actions">
+                <Button kind="text" onClick={() => setCompare(true)}>看前后对照</Button>
+                <Button kind="text" disabled={Boolean(busy)} onClick={() => setPreview(null)}>继续修改</Button>
+              </div>
+              <Button kind="primary" disabled={Boolean(busy)} busy={busy === "正在提交"} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交" : "确认提交修改"}</Button>
+            </section>
+          )}
           {editing && (
             <div className="draft-tools">
               <WritingTools targetId="chapter-body" disabled={Boolean(busy) || Boolean(preview)} />
@@ -301,19 +313,6 @@ export function ChapterDesk({ p, user, usage, go, notices, number, open }: Pick<
               {storageWarning && <p className="finding-hint warn">{storageWarning}</p>}
               <p className="small-note">{format === "markdown" ? "这一章用 Markdown 保存，格式会一起保存。" : "这一章按纯文本保存。"}</p>
               <div className="finding-actions"><Button kind="danger" className="btn-small" disabled={Boolean(busy)} onClick={discard}>放弃修改</Button></div>
-            </>
-          )}
-          {editing && preview && (
-            <>
-              <div className="impact">
-                <p><Num>{preview.impact.affected_memory_count}</Num><span>条已确认的事实需要复核</span></p>
-                <p><Num>{preview.impact.affected_analysis_count}</Num><span>条分析可能过时</span></p>
-              </div>
-              <p className="panel-copy">提交后替换这一章的正文，旧版本保留。受影响的事实要你在章节页逐条确认后，才会用于新的检查。</p>
-              <div className="finding-actions">
-                <Button kind="text" onClick={() => setCompare(true)}>看前后对照</Button>
-                <Button kind="text" disabled={Boolean(busy)} onClick={() => setPreview(null)}>继续修改</Button>
-              </div>
             </>
           )}
           {error && <p className="inline-error" role="alert">{error}</p>}

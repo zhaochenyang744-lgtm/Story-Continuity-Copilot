@@ -35,7 +35,8 @@ export function PlanPage({ p, go, notices }: PageProps) {
   });
   const [considering, setConsidering] = useState<Set<string>>(() => new Set());
   const [openId, setOpenId] = useState<string | null>(() => (typeof window !== "undefined" && window.location.hash.startsWith("#plan-") ? window.location.hash.slice(6) : null));
-  const [dialog, setDialog] = useState<{ kind: Kind; item: Plan["item"] | null } | null>(null);
+  const [dialog, setDialog] = useState<{ kind: Kind; item: Plan["item"] | null; prefill?: Plan["item"] } | null>(null);
+  const [archivedOpen, setArchivedOpen] = useState<string | null>(null);
   const [archiveTarget, setArchiveTarget] = useState<Plan | null>(null);
   const [showArchived, setShowArchived] = useState(false);
   const [error, setError] = useState("");
@@ -164,14 +165,35 @@ export function PlanPage({ p, go, notices }: PageProps) {
         </section>
       )) : (
         <div className="plan-empty">
-          <p>{filter === "all" ? "还没有计划。记下接下来要写的情节、人物的变化、要用到的设定；它们会出现在概览航线的「接下来」一段。" : `还没有${kindLabel[filter]}计划。`}</p>
+          <p>{p.readOnly ? "没有计划。" : filter === "all" ? "还没有计划。记下接下来要写的情节、人物的变化、要用到的设定；它们会出现在概览航线的「接下来」一段。" : `还没有${kindLabel[filter]}计划。`}</p>
           {!p.readOnly && <Button kind="primary" disabled={blocked} onClick={() => setDialog({ kind: filter === "all" ? "story" : filter, item: null })}>写下第一条计划</Button>}
         </div>
       )}
       {archived.length > 0 && (
         <div className="plan-archived">
           <button type="button" className="link" aria-expanded={showArchived} onClick={() => setShowArchived((value) => !value)}>{showArchived ? "收起" : `已归档 ${archived.length} 条`}</button>
-          {showArchived && <ul>{archived.map((plan) => <li key={plan.item.id}><span className="kind-tag">{kindLabel[plan.kind]}</span>{planTitle(plan)}</li>)}</ul>}
+          {showArchived && (
+            <ul>
+              {archived.map((plan) => {
+                const open = archivedOpen === plan.item.id;
+                return (
+                  <li key={plan.item.id} className={open ? "open" : undefined}>
+                    <button type="button" className="plan-archived-main" aria-expanded={open} onClick={() => setArchivedOpen(open ? null : plan.item.id)}>
+                      <span className="kind-tag">{kindLabel[plan.kind]}</span><span>{planTitle(plan)}</span>
+                    </button>
+                    {open && (
+                      <div className="plan-card-more">
+                        {planSummary(plan) && <p>{planSummary(plan)}</p>}
+                        {plan.kind === "story" && plan.item.goal && plan.item.summary && <p><span className="label">想达到 · </span>{plan.item.goal}</p>}
+                        {plan.kind !== "story" && plan.item.notes && <p><span className="label">备注 · </span>{plan.item.notes}</p>}
+                        {!p.readOnly && <div className="actions"><Button kind="text" disabled={blocked} onClick={() => setDialog({ kind: plan.kind, item: null, prefill: plan.item })}>用这条的内容新建计划</Button></div>}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       )}
       {dialog && <PlanDialog p={p} state={dialog} close={() => setDialog(null)} done={(message) => { setFeedback(message); setDialog(null); }} />}
@@ -186,11 +208,13 @@ export function PlanPage({ p, go, notices }: PageProps) {
   );
 }
 
-function PlanDialog({ p, state, close, done }: { p: ProjectState; state: { kind: Kind; item: Plan["item"] | null }; close: () => void; done: (message: string) => void }) {
+function PlanDialog({ p, state, close, done }: { p: ProjectState; state: { kind: Kind; item: Plan["item"] | null; prefill?: Plan["item"] }; close: () => void; done: (message: string) => void }) {
+  // A plan taken out of the archive starts a new one with the same words (the archive itself stays as it was).
+  const base = state.item ?? state.prefill ?? null;
   const [kind, setKind] = useState<Kind>(state.kind);
-  const story = state.kind === "story" ? (state.item as AuthorStoryPlan | null) : null;
-  const character = state.kind === "character" ? (state.item as AuthorCharacterPlan | null) : null;
-  const world = state.kind === "world" ? (state.item as AuthorWorldPlan | null) : null;
+  const story = state.kind === "story" ? (base as AuthorStoryPlan | null) : null;
+  const character = state.kind === "character" ? (base as AuthorCharacterPlan | null) : null;
+  const world = state.kind === "world" ? (base as AuthorWorldPlan | null) : null;
   const [error, setError] = useState("");
   const busy = Boolean(p.authorBusy);
   const editing = Boolean(state.item);

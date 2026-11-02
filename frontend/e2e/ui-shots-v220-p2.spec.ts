@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import type { Page } from "@playwright/test";
 import { api, createWorkByApi, expect, newPage, openTab, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
-import { box, send, stopButton, thread, topbarAssistant } from "./support/assistant";
+import { thread, topbarAssistant } from "./support/assistant";
 import { changeItem, changeView } from "./support/assistant-change";
 import { askView, serveTasks } from "./support/assistant-mock";
 
@@ -47,7 +47,7 @@ for (const size of [1440, 375] as const) {
     const id = await sampleWorkId(page);
     await api(page).post("/onboarding/skip", { confirm: true }).catch(() => undefined);
     let views: unknown[] = [];
-    const unserve = await serveTasks(page, () => views);
+    await serveTasks(page, () => views);
     const draft = size === 375 ? page.locator("#draft-body") : page.getByRole("textbox", { name: "草稿正文", exact: true });
 
     // 写作: the dock closed, then open and empty.
@@ -122,14 +122,10 @@ for (const size of [1440, 375] as const) {
     await take(guest, `${m}10-用完后-访客`, size);
     await guest.context().close();
 
-    // 停止: a question is asked and stopped while it runs (the test model waits seven seconds for this marker).
-    await unserve();
+    // 停止: a question that was stopped (a made-up task, so the picture carries a plain question and no test marker).
+    views = [askView({ id: "atask-mock-stopped", status: "cancelled", answer: null, sources: {}, coverage: null, steps: [], usage: { steps: 0, chars_charged: 0 }, completed_at: new Date().toISOString() })];
     await openTab(page, id, "overview");
     await openDock(page);
-    await box(page).fill("E2E_SLOWER 苏岑知道罗盘被调包了吗？");
-    await send(page).click();
-    await expect(stopButton(page)).toBeEnabled({ timeout: 10_000 });
-    await stopButton(page).click();
     await expect(thread(page).getByText(/已停止/).first()).toBeVisible();
     await take(page, `${m}09-停止后`, size);
 

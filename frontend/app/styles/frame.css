@@ -346,3 +346,6 @@
   .author .heat-scroll::-webkit-scrollbar,
   .topbar-tabs::-webkit-scrollbar { display: none; }
 }
+.boot.offline { align-content: center; gap: 12px; padding: 48px 16px; text-align: center; letter-spacing: 0; }
+.boot.offline h1 { color: var(--c-ink); font-size: var(--fs-22); }
+.boot.offline p { margin: 0; color: var(--c-muted); font-size: var(--fs-14); }

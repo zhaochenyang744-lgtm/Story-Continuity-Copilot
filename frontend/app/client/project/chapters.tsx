@@ -118,6 +118,8 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const checkedCount = written.filter((row) => row.status === "checked").length;
   const shown = picked.length ? estimate : null;
   const sample = isSampleWork(project);
+  // Two different numbers, said apart: the chapters' own length (what the table above shows) and what the server expects the check to read.
+  const pickedChars = picked.reduce((sum, id) => sum + (bodies.get(id)?.body.replace(/s+/g, "").length ?? 0), 0);
   const over = Boolean(shown && usage?.account_type === "registered" && !sample && shown.characters > usage.check_chars_remaining);
   const pendingReviews = snapshot?.source_revision_reviews.filter((item) => item.status === "pending") ?? [];
   const reviewsWaiting = pendingReviews.length || blockedByReview || 0;
@@ -130,7 +132,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       {notices}
       <PageHead
         title="章节"
-        lede={visitor ? "访客只能检查当前草稿；注册后可以一次勾选最多 8 章一起检查。" : "勾选最多 8 章一起检查。每一章只和它前面的章节对照。"}
+        lede={p.readOnly ? (project.status === "archived" ? "这部作品已归档，只能浏览，不能检查。" : "窗口较窄，现在只能浏览。把窗口放宽就能勾选章节检查。") : visitor ? "访客只能检查当前草稿；注册后可以一次勾选最多 8 章一起检查。" : "勾选最多 8 章一起检查。每一章只和它前面的章节对照。"}
         aside={
           <div className="head-figures-actions">
             <dl className="figures" style={fitVars(formatCount(written.length), formatCount(totalChars), formatCount(checkedCount))}>
@@ -202,7 +204,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                 <span className="chapter-meta" role="none">
                   <span role="cell" className="mono">{formatCount((p.draft?.body ?? "").replace(/\s+/g, "").length)}</span>
                   <span role="cell">在写作页检查</span>
-                  <span role="cell"><button type="button" className="link blue" onClick={() => go(`/projects/${project.id}/workspace`)}>去写作{draftIssues ? ` · ${draftIssues} 处` : ""}</button></span>
+                  <span role="cell"><button type="button" className="link blue" onClick={() => go(`/projects/${project.id}/workspace`)}>{p.readOnly ? "查看草稿" : "去写作"}{draftIssues ? ` · ${draftIssues} 处` : ""}</button></span>
                   <span role="cell" />
                 </span>
               </div>
@@ -218,7 +220,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
           <span className="select-count"><Num><Odometer value={picked.length} /></Num><span> / {MAX} 章</span></span>
           <span className="select-summary">
             {picked.length
-              ? <>约 {formatCount(shown?.characters ?? 0)} 字 · 预计{shown ? (shown.estimated_cny >= 0.01 ? `约 ¥${shown.estimated_cny.toFixed(2)}` : "不到 ¥0.01") : "…"}{usage?.account_type === "registered" && (sample ? " · 示例作品不计字数" : ` · 可检查 ${formatCount(usage.check_chars_remaining)} 字`)}{over && " · 额度不够"}</>
+              ? <>正文共 {formatCount(pickedChars)} 字 · 预计检查约 {formatCount(shown?.characters ?? 0)} 字 · 预计费用{shown ? (shown.estimated_cny >= 0.01 ? `约 ¥${shown.estimated_cny.toFixed(2)}` : "不到 ¥0.01") : "…"}{usage?.account_type === "registered" && (sample ? " · 示例作品不计字数" : ` · 可检查 ${formatCount(usage.check_chars_remaining)} 字`)}{over && " · 额度不够"}</>
               : "勾选要检查的章节，最多 8 章"}
           </span>
           <button type="button" className="select-go" disabled={busy || active || !picked.length || over} onClick={() => void start()}>{active ? "正在检查…" : "检查选中的章节"}</button>

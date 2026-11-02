@@ -17,7 +17,11 @@
 .works-draft { display: flex; align-items: baseline; gap: 4px; }
 .works-draft .num { color: var(--c-blue-text); font-size: 28px; }
 .works-actions { display: flex; align-items: center; gap: 8px; }
-.works-empty { max-width: 720px; }
+/* 作品管理 with no work yet: one card (import, the recommended way in) and one text button under it. */
+.works-empty { display: grid; justify-items: start; gap: 16px; max-width: 720px; margin-top: 32px; }
+.works-empty-card { display: grid; justify-items: start; gap: 12px; width: 100%; padding: 32px; border-radius: var(--r-md); background: var(--c-surface); }
+.works-empty-card h2 { font-size: var(--fs-22); line-height: 1.3; }
+.works-empty-card p { margin: 0; color: var(--c-muted); font-size: var(--fs-14); line-height: 1.7; }
 
 /* ── 新建 / 导入 ── */
 /* 新建 and 导入 are one level: the same column and the same distance from the title. */
