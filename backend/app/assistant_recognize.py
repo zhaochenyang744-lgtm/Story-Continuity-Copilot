@@ -36,7 +36,9 @@ style：作者对助手怎么写回答的偏好（"回答短一点""回顾里别
 - 转述别人的话（"编辑说这是故意的"）；
 - 只管这一次的（"这次先别管""这回不用改"）；
 - 讲剧情、描述故事里发生了什么；
-- 只是让你查、改资料、改正文，没有说以后怎么算；
+- 只是让你查、改资料、改正文，没有说以后怎么算；记一条资料、改一条资料时说的"第几章起""按第几章"，是这条资料的内容或出处，不是 prefer（"把携行方式记一条：第26章起背在外面""地点按第15章改"）；
+- 让你把一条伏笔标成已回收、说它已经交代清楚、别再当悬念挂着：这是改资料（收线），和 keep_open 正相反；
+- 交代这一次的梳理、报告怎么做（"有出入就并列留着""不用替我挑一说""日期异文不裁定""年份先照录"）：只管这一次任务，不是 no_reminder；
 - 放弃一条伏笔、不再写它（"这条线我不写了，标成放弃"）：这是改资料，不是 keep_open；keep_open 是还要接着写、先别标成收了。
 有决定时，字段是：
 kind：上面之一；
@@ -253,8 +255,10 @@ def ground(c: sqlite3.Connection, project_id: str, sentence: str, found: dict[st
             subjects.append(name)
     subjects = subjects[:decisions.SUBJECTS_MAX]
     thread = None
-    if found["kind"] == "keep_open" and (GIVEN_UP.search(said) or CLOSED.search(said)) and not STILL_OPEN.search(said):
-        return None  # giving a thread up, or saying it is cleared up and need not hang on, is a change to the materials
+    if found["kind"] == "keep_open" and _gives_up(said) and not STILL_OPEN.search(said):
+        return None  # giving a thread up is a change to the materials, not a thread kept open
+    if found["kind"] in ("keep_open", "no_reminder") and CLOSED.search(said) and not STILL_OPEN.search(said):
+        return None  # "悬着的线不用再挂着": the thread is cleared up, a change to the materials, not a standing decision
     if found["kind"] == "prefer" and BY_CHAPTER.search(said) and not FROM_NOW.search(said):
         return None  # "按第15章改事实": the chapter this one change is made by, not a chapter that holds from now on
     if found["kind"] == "keep_open":
@@ -319,6 +323,13 @@ def said_chapters(sentence: str) -> list[int] | None:
 SAME_MATTER = ("intentional", "prefer", "no_reminder")
 GIVEN_UP = re.compile(r"放弃|不再写|不写了|弃掉|不要这条")
 STILL_OPEN = re.compile(r"先别|别收|还要写|接着写|后面再")
+NOT_BEFORE = re.compile(r"(别|不要|不用|不必|不许)(再)?(建议|让我|叫我|替我|帮我)?[^，。；！？了就]{0,8}$")
+
+
+def _gives_up(said: str) -> bool:
+    """Whether the sentence gives a thread up: a giving-up word that is not itself negated ("别再建议我把它收掉或者放弃" keeps
+    the thread open; continuous use u2 round 5 lost that decision to the plain match)."""
+    return any(not NOT_BEFORE.search(said[max(0, m.start() - 12):m.start()]) for m in GIVEN_UP.finditer(said))
 # v2.2 pre-release A2 regression: a request to mark a thread resolved ("别继续当悬案挂着", "不用再挂着", "别再把它当未解悬念")
 # was read as a thread kept open, and "按第十四章标成已回收" / "按第15章改事实" as a chapter that holds from now on.
 CLOSED = re.compile(r"(别|不用|不必|不要|无须|无需)(再|继续)?.{0,6}?(挂|悬|问号)")

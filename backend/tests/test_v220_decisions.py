@@ -449,6 +449,10 @@ class ReviewFixTests(AssistantCase):
         self.assertIsNone(self.recognized("被缝住的旧誓一角这条谜已经说清，别继续当悬案挂着。", found))
         self.assertIsNone(self.recognized("被缝住的旧誓一角说明白了，别再把它当未解悬念。", {**found, "words": "别再把它当未解悬念"}))
         self.assertIsNotNone(self.recognized("被缝住的旧誓一角先别收，让它继续悬着。", {**found, "words": "先别收"}))
+        self.assertIsNone(self.recognized("十二章把缘故查清了，悬着的线不用再挂着。", {"kind": "no_reminder", "words": "不用再挂着"}))
+        kept_open = "被缝住的旧誓一角我打算留到很后面才收，以后清点伏笔时别再建议我把它收掉或者放弃，就让它一直挂着。"  # continuous use u2, round 5
+        self.assertIsNotNone(self.recognized(kept_open, {**found, "words": "就让它一直挂着"}))
+        self.assertIsNone(self.recognized("被缝住的旧誓一角我不写了，标成放弃。", {**found, "words": "我不写了"}))
         self.assertIsNone(self.recognized("下次协商的地点按第3章改事实。", {"kind": "prefer", "words": "按第3章", "prefer_chapter": 3}))
         kept, _ = self.recognized("地点按第3章改过来，以后都以第3章为准。", {"kind": "prefer", "words": "以后都以第3章为准", "prefer_chapter": 3})
         self.assertEqual(kept["prefer_chapter"], 3)
