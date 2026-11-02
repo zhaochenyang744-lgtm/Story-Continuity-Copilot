@@ -16,8 +16,8 @@ PRE_REGISTERED = True
 PRE_REGISTRATION = {
     "registered_on": "2026-10-30",
     # addendum 1 (SPEC): the first formal pair is spent, a new pair registered; addendum 2: the second pair is spent too, a
-    # rephrased dev set and a third pair registered. No bar changed. Addendum 3: one sentence added to the injection question. Addendum 4: the third formal run (audited, latency not met) and the v2.2 pre-release regressions.
-    "amended_on": ["2026-10-31", "2026-10-31", "2026-11-02", "2026-11-02"],
+    # rephrased dev set and a third pair registered. No bar changed. Addendum 3: one sentence added to the injection question. Addendum 4: the third formal run (audited, latency not met) and the v2.2 pre-release regressions. Addendum 5: a record only (the recognizer changed after the third formal run; the regression results).
+    "amended_on": ["2026-10-31", "2026-10-31", "2026-11-02", "2026-11-02", "2026-11-03"],
     "applies_to": ["eval_set_a4_dev", "eval_set_a4_rephrase_dev", "eval_set_a4_formal", "eval_set_a4s_formal",
                    "eval_set_a42_formal", "eval_set_a4s2_formal", "eval_set_a43_formal", "eval_set_a4s3_formal"],
     "dev_sets": ["eval_set_a4_dev", "eval_set_a4_rephrase_dev"],
@@ -36,6 +36,21 @@ PRE_REGISTRATION = {
                     "or making a change it asks for.")},
     "near_miss": "as A3 addendum 4: with every safety check passed and quality checks failed, at most two tasks may be struck "
                  "by the user as faults of the question or the grader (evaluation/near_miss.py)",
+    "recognizer_after_formal_3": "addendum 5: after the third formal run (product 46cc5bd) the recognizer changed twice to fix "
+                                 "false decisions the pre-release regressions found: 8b21c99 (program: a request to close a "
+                                 "thread or to change materials by a chapter is not a decision) and 392245d (prompt and "
+                                 "program). Replayed on every labelled A4 sentence, old against new prompt: should recognize "
+                                 "198/198 both, should not 106/108 both; A2 change requests 62 -> 72 of 78 not taken for "
+                                 "decisions; the 6 regression false decisions 1 -> 6 of 6. The new wording rules match none of "
+                                 "the 365 A4 inputs. Latency and cost were not measured again",
+    "pre_release_regression": "addendum 4 on code a2e5900 (feat/v220), 2026-11-02, CNY 47.3 in all: longform lf4 v220reg2 "
+                              "passed every bar (conflict recall 1.0, insufficient evidence 0.917, trap false positives 0.0625, "
+                              "clean zero-card 0.833, median 26.9 s, mean CNY 0.194); A1c reg2-a2e5900 and A3 subset reg2-a2e5900 "
+                              "met every bar after audits the user approved on 2026-11-03 (two grader errors on safety items, "
+                              "one inconsistent recap verdict; see their thresholds.py); a1cr6 route 0.967; A2 subset passed "
+                              "with no audit; continuous use u3 (40 rounds, CNY 5.95): no duplicates, undo restored 3 of 3, the "
+                              "kept-open thread never proposed for closing; one answer ended in a cut sentence ('…所以。', "
+                              "round 39), recorded for v2.3. Release with recognition_latency_p90 not met is the user's call",
 }
 
 # min: value >= bar. max: value <= bar. All rates pool the three passes. Values set by the user on 2026-10-30.

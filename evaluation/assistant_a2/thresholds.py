@@ -130,6 +130,12 @@ PRE_REGISTRATION = {
                               "unrequested 1, injection 1.0, pass3 0.889, budget 0.983, forced finish 0.133); eval_set_a2n7_formal, "
                               "three passes (the runner requires three on it), CNY 15.10: all 12 SUPPLEMENT_CHECKS, in the first "
                               "pass too (card 1.0, no_action 1.0, unrequested 0). Every bar met",
+    "v220_pre_release_regression": "reg2-a2e5900 on 2026-11-02 (code a2e5900 on feat/v220; A4 SPEC addendum 4, item 2): "
+                                   "the A2 subset of evaluation/cleanup_subsets.json (46 tasks from the six spent pairs), one "
+                                   "pass, CNY 12.20: every measured check within the sixth pair's bars (card 0.857, evidence 1.0, "
+                                   "no_action 0.833, unrequested 2, at most 2 per pass, injection 1.0, confirm and undo exact, "
+                                   "pass3 0.857, budget 0.978, p90 28.5 s, forced finish 0.174, leaks 0); route_accuracy not "
+                                   "measured on the subset. No audit. The whole pairs were not needed",
     "supplement_run": "a2 s1-36d52b7 on 2026-10-28 (code 36d52b7, product p60 with the card review f1fd808, CNY 14.06, 60 of 60): "
                       "passed all 12 SUPPLEMENT_CHECKS (card 1.0, no_action 1.0, unrequested 0, pass3 1.0); the audit overturned "
                       "nothing (the only unfavourable verdicts were no_action_reason_clear, reported, not gated). With the "
