@@ -40,7 +40,7 @@ class SayTests(AssistantCase):
         self.register()
 
     def test_the_prompt_asks_for_a_line_and_is_version_p5(self):
-        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p61")
+        self.assertEqual(ASSISTANT_PROMPT_VERSION, "assistant-p62")
         self.assertIn("content 里写一句话说明这一步具体要做什么", SYSTEM_PROMPT)
         self.assertIn("中文不超过 40 字，英文不超过 20 个词；只说打算，不下结论", SYSTEM_PROMPT)
         self.assertIn("不要只写文字", SYSTEM_PROMPT)
@@ -48,7 +48,7 @@ class SayTests(AssistantCase):
         self.assertIn("note 只列出查过哪些地方", SYSTEM_PROMPT)
         self.assertIn("不写 R 编号", SYSTEM_PROMPT)
         task = self.run_ask(read(9), cite(9))
-        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p61")
+        self.assertEqual(self.rows("SELECT prompt_version FROM assistant_tasks")[0]["prompt_version"], "assistant-p62")
         self.assertEqual(task["status"], "completed")
 
     def test_a_tool_round_keeps_its_line_before_its_steps_and_the_closing_round_keeps_none(self):
@@ -158,7 +158,8 @@ class StepDetailTests(AssistantCase):
             # v2.1: the second batch of actions
             "change_thread_exists": "资料里已经有这条伏笔", "change_not_this_kind": "作者要的不是这种改动",
             # v2.2
-            "change_other_property": "改后的内容说的是另一个属性", "change_thread_kept_open": "作者定过这条伏笔先别收"})
+            "change_other_property": "改后的内容说的是另一个属性", "change_thread_kept_open": "作者定过这条伏笔先别收",
+            "change_name_not_in_evidence": "改后内容里的名字在依据段落里没有", "change_needs_materials_page": "人物卡和设定条目要在资料页里改"})
         self.assertEqual(error_text("assistant_protocol_error"), "这一步没成功")
         self.assertIsNone(error_text(None))
 

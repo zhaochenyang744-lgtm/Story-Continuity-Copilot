@@ -147,6 +147,9 @@ def listing(c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
 
 ALIAS_PREDICATES = ("别名", "外号", "又名", "又称", "绰号", "小名", "代号", "称号")
 ALIAS_SPLIT = re.compile(r"[、，,/／;；\s]+")
+# What the materials write around another name ("行商别名蘅斛", "翙扣。"): the words before the predicate, the end mark.
+ALIAS_LEAD = re.compile(rf"^.*?(?:{'|'.join(ALIAS_PREDICATES)})(?:是|为|叫|作|：|:)?")
+ALIAS_END = "。.．！!？?”」』\"'）)"
 
 
 def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
@@ -160,7 +163,7 @@ def alias_map(c: sqlite3.Connection, project_id: str) -> dict[str, str]:
     marks = ",".join("?" for _ in ALIAS_PREDICATES)
     for row in c.execute(f"SELECT DISTINCT subject,value FROM v2_memory_records WHERE project_id=? AND predicate IN ({marks})", (project_id, *ALIAS_PREDICATES)):
         for alias in ALIAS_SPLIT.split(str(row[1]).strip("「」“”\"'")):
-            alias = alias.strip("「」“”\"'")
+            alias = ALIAS_LEAD.sub("", alias.strip("「」“”\"'")).strip("「」“”\"'" + ALIAS_END)
             if len(alias) >= 2 and alias != row[0]:
                 found.setdefault(alias, "".join(row[0].split()))
     return found
@@ -257,13 +260,26 @@ def kept_open(c: sqlite3.Connection, project_id: str) -> set[str]:
                                         "AND status IN (?,?) AND foreshadow_id IS NOT NULL", (project_id, ACTIVE, STALE))}
 
 
+# What following a decision means, by its kind, said with it to the answering call (A4 formal 2: a decision given as "照着办"
+# alone was passed over when the author asked whether to unify what they had said was meant, or to answer a thread kept open).
+OBEY = {
+    "intentional": "问到这件事时引用这条，说作者定过这是有意的；不要说它是错、不要建议统一成一处、不催作者选一边",
+    "prefer": "问到这件事时按定下的那一章回答，引用这条；另一处只说和定下的不同，不要建议统一成另一处",
+    "no_reminder": "这类不一致不要当成问题提出，也不建议改",
+    "keep_open": "这条伏笔先别收：不要替作者给出答案或猜答案，不催作者交代，也不指在哪里收",
+}
+STALE_LINE = "作者定过的决定「{statement}」依据的章节后来改过，这条决定可能过时，请重新确认。"
+
+
 def prompt_lines(items: list[dict[str, Any]], refs: list[str]) -> list[str]:
-    """The decisions a task is given, for its first message: each with the number it is cited by. Writing preferences are
-    not about the work: they come as how to write the answer, with no number, never cited as what the answer rests on."""
+    """The decisions a task is given, for its first message: each with the number it is cited by and what following it
+    means. Writing preferences are not about the work: they come as how to write the answer, with no number, never cited
+    as what the answer rests on."""
     cited = [(item, ref) for item, ref in zip(items, refs) if item["kind"] != "style"]
     styles = [item for item in items if item["kind"] == "style"]
-    lines = ["作者定过的决定（作者自己确认过，照着办；回答里用到时引用它的编号，说明这是作者定过的）："] + [
-        f"[{ref}] {item['kind_label']}：{item['statement']}（{item['scope']}）" + ("（这条依据的章节后来改过，可能过时：照办前先告诉作者）" if item["status"] == STALE else "")
+    lines = ["作者定过的决定（作者自己确认过，照着办，比第 11 条的出主意优先；回答里用到时引用它的编号，说明这是作者定过的）："] + [
+        f"[{ref}] {item['kind_label']}：{item['statement']}（{item['scope']}）" + (f"——{OBEY[item['kind']]}" if item["kind"] in OBEY else "")
+        + ("（这条依据的章节后来改过，可能过时：回答里要告诉作者，请作者重新确认）" if item["status"] == STALE else "")
         for item, ref in cited] if cited else []
     if styles:
         lines.append("作者对回答的写法偏好（照着写回答就好；这不是作品内容，不要引用，也不要在回答里复述）：" + "；".join(item["statement"] for item in styles))

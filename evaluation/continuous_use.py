@@ -11,6 +11,10 @@ always takes back the card confirmed the round before, so the materials can be h
 The work is a spent one (eval_set_a3_formal, w01, 30 chapters): it starts with the first 8 chapters and its starting
 materials, and three chapters are appended every four rounds.
 
+Memory (v2.2 plan 6.8): on round 5 the author makes a standing decision, that a thread still open is to stay open and is not to
+be suggested for closing; its record card is always confirmed. Every later card is then searched for an item that closes or
+drops that thread, and on round 37 the author asks which threads could be closed next.
+
     python -m evaluation.continuous_use --run-id u1 --max-cny 20 --assistant-rates 2,8 --judge-rates 9,27
 """
 from __future__ import annotations
@@ -32,11 +36,11 @@ from app.assistant_actions import ACTIONS
 SET, WORK = "eval_set_a3_formal", "w01"
 START_CHAPTERS, APPEND_EVERY, APPEND_CHAPTERS = 8, 4, 3
 # What the author does on each round. An undo follows a round that confirmed a card.
-SCHEDULE = ("ask", "change_new", "change_new", "undo", "ask", "change_thread", "change_wrong", "long_audit",
+SCHEDULE = ("ask", "change_new", "change_new", "undo", "decide", "change_thread", "change_wrong", "long_audit",
             "change_new", "ask", "no_change", "change_new", "undo", "ask", "change_thread", "long_trace",
             "change_new", "change_wrong", "ask", "change_new", "ask", "change_thread", "undo", "change_new",
             "ask", "long_audit", "change_new", "change_wrong", "ask", "change_thread", "no_change", "change_new",
-            "ask", "change_new", "undo", "long_trace", "ask", "change_new", "change_thread", "ask")
+            "ask", "change_new", "undo", "long_trace", "ask_open", "change_new", "change_thread", "ask")
 # The n-th change card (from 1): declined, or only its first item confirmed (the rest declined); the others confirmed whole.
 DECLINED, PARTLY = {5, 10}, {3, 8}
 GUIDE = {
@@ -47,7 +51,10 @@ GUIDE = {
     "no_change": "说一句和资料有关、但其实不需要改的话，比如只想看看某条资料，或者确认一件资料里已经记着的事。",
     "long_audit": "请助手把还没收的伏笔都清点一遍。",
     "long_trace": "请助手把某个人物或某件重要东西从头到现在的经过梳理一遍（挑一个前文出现多次的）。",
+    "decide": "对助手定下一条以后都要守的决定：伏笔「{thread}」你打算留到全书很后面才收，以后清点或梳理伏笔时都不要建议把它收掉或放弃。用自己的话说，点名这条伏笔。",
+    "ask_open": "问助手接下来几章可以收哪些伏笔、哪些线该有个了结。只问，不要求改资料。",
 }
+CLOSING = {"resolve_thread", "abandon_thread"}
 AUTHOR_SYSTEM = ("你在扮演一位正在连载长篇小说的作者，用写作软件里的 AI 助手管理自己的作品资料（事实和伏笔）。"
                  "每次只说一句或两句作者会在输入框里打的话：口语、具体，提到人物和章节时用作品里的名字。"
                  "只输出 JSON：{\"request\": \"作者这句话\"}。")
@@ -82,6 +89,9 @@ class Work(a3.Work):
                 body.update(resolved_chapter_id=resolved["id"], resolved_source_span_id=resolved["source_spans"][0]["span_id"])
             self.threads.append(self.request("POST", self.base + "/foreshadows", json=body)["item"]["id"])
             version += 1
+        # The thread the author will decide to keep open: the earliest planted one the whole book leaves open.
+        self.kept_open = min((t for t in work["threads"] if t["planted_chapter"] <= upto and not t.get("resolved_chapter")
+                              and t["status"] != "resolved"), key=lambda t: t["planted_chapter"])["title"]
         self.revision, self.written = 1, upto
         self.start = a2.snapshot(self.app.state.database, self.project)
         self.initialization = {"facts": len(self.facts), "threads": len(self.threads)}
@@ -146,7 +156,7 @@ def author_says(provider, ledger, kind, work, source_chapters, history, number):
         "最新写好的几章（节选）：", *[chapter[:NEW_CHAPTER_CHARS] for chapter in newest],
         "现在资料里记着的：", *lines,
         "你前几轮对助手说过的话和结果：", *(history[-5:] or ["（还没有）"]),
-        f"这一轮你要做的：{GUIDE[kind]}", "不要重复前几轮说过的事。"])
+        f"这一轮你要做的：{GUIDE[kind].format(thread=work.kept_open)}", "不要重复前几轮说过的事。"])
     ledger.phase, ledger.task_id = "author", f"r{number}"
     result = provider.route([{"role": "system", "content": AUTHOR_SYSTEM}, {"role": "user", "content": user}], 400, 60, role="requests")
     try:
@@ -161,9 +171,11 @@ def card_items(work, task_id):
     return [item for item in work.card(task_id) if item["status"] == "proposed"]
 
 
-def decide_card(work, task_id, items, card_number, long_task=False):
-    """Confirm the whole card, its first item only, or none, by the schedule. Returns what was confirmed."""
+def decide_card(work, task_id, items, card_number, long_task=False, always=()):
+    """Confirm the whole card, its first item only, or none, by the schedule; the items in `always` (decision records) are
+    confirmed whatever the schedule says. Returns what was confirmed."""
     accepted = [] if card_number in DECLINED else items[:1] if card_number in PARTLY and len(items) > 1 else items
+    accepted = list(always) + accepted
     path = f"/assistant/long-tasks/{task_id}" if long_task else f"/assistant/tasks/{task_id}"
     statuses = []
     if accepted:
@@ -224,7 +236,8 @@ def run_long(work, request, record):
 def play(work, provider, ledger, source_chapters, out, run_id):
     report = {"run_id": run_id, "set": SET, "work": WORK, "start": {"chapters": work.written, **tidiness(*work.materials()[1:])},
               "rounds": [], "git_commit": a2.git("rev-parse", "HEAD")}
-    history, cards, last_confirmed = [], 0, None
+    report["kept_open"] = work.kept_open
+    history, cards, last_confirmed, decided = [], 0, None, None
     for number, kind in enumerate(SCHEDULE, 1):
         record = {"round": number, "kind": kind, "chapters": work.written}
         if kind == "undo":
@@ -262,14 +275,24 @@ def play(work, provider, ledger, source_chapters, out, run_id):
                                   consensus_runs=(view.get("consensus") or {}).get("runs"))
                 else:
                     record["status"] = "not_run"
-                items = card_items(work, task_id) if task_id else []
+                every = card_items(work, task_id) if task_id else []
                 record["card"] = [{"kind": i["kind"], "title": i["display"].get("title"), "before": i["display"].get("before"),
-                                   "after": i["display"].get("after")} for i in items]
-                if items:
-                    cards += 1
+                                   "after": i["display"].get("after")} for i in every]
+                records = [i for i in every if i["kind"] == "add_decision"]
+                items = [i for i in every if i["kind"] != "add_decision"]
+                if decided and any(i["kind"] in CLOSING and work.kept_open in json.dumps(i["display"], ensure_ascii=False) for i in items):
+                    record["kept_open_reraised"] = True
+                if kind == "ask_open":
+                    record["kept_open_named"] = work.kept_open in json.dumps(record.get("answer"), ensure_ascii=False)
+                if every:
+                    if items:
+                        cards += 1
+                        record["card_number"] = cards
                     before = work.materials()[0]
-                    accepted, statuses = decide_card(work, task_id, items, cards, long_task=use == "long_task")
-                    record.update(card_number=cards, confirmed=len(accepted), decision_statuses=statuses)
+                    accepted, statuses = decide_card(work, task_id, items, cards if items else 0, long_task=use == "long_task", always=records)
+                    record.update(confirmed=len(accepted), decision_records=len(records), decision_statuses=statuses)
+                    if records and all(code == 200 for code in statuses):
+                        decided = decided or number
                     if accepted and all(code == 200 for code in statuses):
                         last_confirmed = (before, accepted)
                 outcome = (f"{len(items)} 条改动，确认 {record.get('confirmed', 0)} 条" if items else "没有改动")
@@ -301,6 +324,8 @@ def summary(report):
     for r in ran:
         by.setdefault(r.get("route"), []).append(r)
     end = rounds[-1]["materials"]
+    carded = "、".join(str(r["round"]) for r in rounds if r.get("decision_records"))
+    reraised = "、".join(f"第{r['round']}轮" for r in rounds if r.get("kept_open_reraised"))
     lines = [f"# 连续使用 {report['run_id']}（{report['git_commit'][:7]}）", "",
              f"从第 {report['start']['chapters']} 章写到第 {rounds[-1]['chapters']} 章，{len(rounds)} 轮。", "",
              "| 用法 | 次数 | 平均费用 | 最长等待（秒） |", "|---|---|---|---|"]
@@ -309,7 +334,9 @@ def summary(report):
         lines.append(f"| {route} | {len(items)} | ¥{sum(costs) / len(costs):.3f} | {max(r['seconds'] or 0 for r in items):.0f} |")
     lines += ["", f"资料：事实 {report['start']['facts']} → {end['facts']}，伏笔 {report['start']['threads']} → {end['threads']}（还开着 {end['open_threads']}）。",
               f"同一人物同一属性记了两条：{len(end['twice_in_one_slot'])} 组；同一人物两条说得差不多：{len(end['much_the_same'])} 对；同名伏笔：{len(end['same_thread_title'])} 组。",
-              "撤销：" + "、".join(f"第{r['round']}轮 {'复原' if r.get('undo_exact') else '没有复原'}" for r in rounds if "undo_exact" in r), "",
+              "撤销：" + "、".join(f"第{r['round']}轮 {'复原' if r.get('undo_exact') else '没有复原'}" for r in rounds if "undo_exact" in r),
+              f"决定：「{report['kept_open']}」先别收，记录卡片在第 {carded or '—'} 轮出现；之后又被建议收掉或放弃：{reraised or '没有'}；"
+              f"问该收哪些伏笔时{'提到了它' if any(r.get('kept_open_named') for r in rounds) else '没有提到它'}。", "",
               f"总花费 ¥{report['spent_cny']:.2f}（作者模型 ¥{sum(r.get('author_cost_cny', 0) for r in rounds):.2f}）。"]
     return "\n".join(lines)
 

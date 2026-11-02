@@ -442,6 +442,32 @@ class ReviewFixTests(AssistantCase):
                                                                           "chapters": [3, 3], "prefer_chapter": 3})
         self.assertEqual((record_["chapters"], record_["prefer_chapter"], record_["subjects"]), (None, 3, [self.name]))
 
+    def test_a_request_to_close_a_thread_or_to_change_by_a_chapter_is_not_a_decision(self):  # v2.2 pre-release A2 subset
+        thread = self.thread("被缝住的旧誓一角")
+        found = {"kind": "keep_open", "words": "别继续当悬案挂着", "thread": "被缝住的旧誓一角"}
+        from app import assistant_recognize
+        self.assertIsNone(self.recognized("被缝住的旧誓一角这条谜已经说清，别继续当悬案挂着。", found))
+        self.assertIsNone(self.recognized("被缝住的旧誓一角说明白了，别再把它当未解悬念。", {**found, "words": "别再把它当未解悬念"}))
+        self.assertIsNotNone(self.recognized("被缝住的旧誓一角先别收，让它继续悬着。", {**found, "words": "先别收"}))
+        self.assertIsNone(self.recognized("十二章把缘故查清了，悬着的线不用再挂着。", {"kind": "no_reminder", "words": "不用再挂着"}))
+        kept_open = "被缝住的旧誓一角我打算留到很后面才收，以后清点伏笔时别再建议我把它收掉或者放弃，就让它一直挂着。"  # continuous use u2, round 5
+        self.assertIsNotNone(self.recognized(kept_open, {**found, "words": "就让它一直挂着"}))
+        self.assertIsNone(self.recognized("被缝住的旧誓一角我不写了，标成放弃。", {**found, "words": "我不写了"}))
+        self.assertIsNone(self.recognized("下次协商的地点按第3章改事实。", {"kind": "prefer", "words": "按第3章", "prefer_chapter": 3}))
+        kept, _ = self.recognized("地点按第3章改过来，以后都以第3章为准。", {"kind": "prefer", "words": "以后都以第3章为准", "prefer_chapter": 3})
+        self.assertEqual(kept["prefer_chapter"], 3)
+        self.provider.script_route({"decision": None})
+        task = self.run_ask(turn(call("read_chapter", chapter_number=1)),
+                            lambda provider, messages: turn(answer_call("answered", [("第一章写到了。", [ref_of_chapter(messages, 1)])])))
+        with self.db.connection() as c:  # the same card resolves the thread the sentence names
+            c.execute("INSERT INTO assistant_changes(id,task_id,project_id,ordinal,kind,target_id,before_json,after_json,display_json,evidence_json,status,created_at) "
+                      "VALUES('achange-close',?,?,1,'resolve_thread',?,'{}','{}','{}','[]','proposed','2026-10-30T02:00:00+00:00')",
+                      (task["id"], self.project_id, thread))
+            said = "被缝住的旧誓一角标成已回收，后面再写别的线。"
+            self.assertIsNone(assistant_recognize.ground(c, self.project_id, said, {"words": "后面再写", "subjects": [], "chapters": None, "prefer_chapter": None,
+                                                                                    "thread": "被缝住的旧誓一角", "statement": "决定", "kind": "keep_open"},
+                                                         source_ref=task["id"]))
+
     def test_a_new_decision_replaces_the_one_about_a_name_the_author_says(self):  # E03
         with self.db.connection() as c:
             decisions.write(c, self.db, self.project_id, "decision-old", record(f"{self.name}这处是有意的", subjects=(self.name,), chapters=None),
@@ -461,6 +487,63 @@ class ReviewFixTests(AssistantCase):
             decisions.write(c, self.db, self.project_id, "decision-age", record(f"{self.name}前后不同是有意的", subjects=(self.name,), chapters=None),
                             self.user_id, "2026-10-30T00:00:00+00:00")
             self.assertEqual([d["id"] for d in decisions.relevant(c, self.project_id, "小岑的年岁到底该引用哪一处？")], ["decision-age"])
+
+    def test_the_thing_a_decision_is_about_is_picked_by_its_number_from_the_works_names(self):  # A4 formal 2: "格间" for 鹊髓匣
+        from app import assistant_recognize
+        with self.db.connection() as c:
+            version = c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?", (self.project_id,)).fetchone()[0]
+            span = c.execute("SELECT id FROM v2_source_spans WHERE project_id=? LIMIT 1", (self.project_id,)).fetchone()[0]
+            c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status) "
+                      "VALUES('mem-box',?,?,'object','鹊髓匣','固定格数','制成以来始终三格',?,'author_confirmed')", (self.project_id, version, span))
+            c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status) "
+                      "VALUES('mem-alias2',?,?,'character',?,'别名','行商别名蘅斛。',?,'author_confirmed')", (self.project_id, version, self.name, span))
+            names = assistant_recognize.names_for(c, self.project_id)
+            self.assertEqual(decisions.alias_map(c, self.project_id).get("蘅斛"), self.name)  # the words around an alias go
+        shown = dict(names)
+        self.assertIn("固定格数", shown["鹊髓匣"])  # the label of what is recorded, never its value
+        self.assertNotIn("三格", "".join(shown["鹊髓匣"]))
+        self.assertIn("别名：行商别名蘅斛。", shown[self.name])  # another name as the materials wrote it
+        message = assistant_recognize.pick_messages("格间以第三章为准", "格数以第三章为准", "作品里的人和物", names)[1]["content"]
+        self.assertIn("鹊髓匣（固定格数）", message)
+        self.assertNotIn("鹊髓匣", assistant_recognize.messages_for("格间以第三章为准")[1]["content"])  # the first call is not given the names
+        number = [name for name, _ in names].index("鹊髓匣") + 1
+        found = {"kind": "prefer", "words": "以第三章为准", "prefer_chapter": 3, "subjects": ["格间"]}
+        with self.db.connection() as c:  # a name the work does not spell is picked; one it spells, or a way of writing, is not
+            self.assertTrue(assistant_recognize.needs_pick(c, self.project_id, {**found, "statement": "x"}))
+            self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "subjects": ["蘅斛"]}))
+            self.assertFalse(assistant_recognize.needs_pick(c, self.project_id, {**found, "kind": "style", "subjects": []}))
+            self.assertTrue(assistant_recognize.needs_pick(c, self.project_id, {**found, "kind": "keep_open"}))  # a thread is always picked
+        self.assertEqual(self.recognized("格间以第三章为准", found)[0]["subjects"], [])  # spelled nowhere in the work
+        self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [number]})[0]["subjects"], ["鹊髓匣"])
+        self.assertEqual(self.recognized("格间以第三章为准", {**found, "subject_numbers": [999]})[0]["subjects"], [])  # not on the list
+
+    def test_a_decision_the_question_is_about_but_does_not_name_is_picked_by_a_call(self):  # A4 formal 2: "匣子应该几格"
+        from types import SimpleNamespace
+        from app import assistant_cover
+        others = [{"kind_label": "以哪处为准", "statement": "赭翮匣格数以第三章为准", "scope": "全书"},
+                  {"kind_label": "有意为之", "statement": "邴瑕柚胎记方位有意保留", "scope": "第 2–7 章"}]
+        seen = []
+        reply = lambda content: SimpleNamespace(route=lambda messages, *a, **k: seen.append(messages) or SimpleNamespace(
+            message={"content": content}, input_tokens=1, output_tokens=1, cost_cny=0.0))
+        picked, _ = assistant_cover.touched(reply('{"numbers": [1, 7, 1]}'), "匣子应该几格？", others)
+        self.assertEqual(picked, others[:1])  # a number not on the list goes, a repeated one counts once
+        self.assertIn("1. 以哪处为准：赭翮匣格数以第三章为准", seen[0][1]["content"])
+        self.assertEqual(assistant_cover.touched(reply("不是 JSON"), "匣子应该几格？", others)[0], [])
+        self.assertEqual(assistant_cover.touched(reply('{"numbers": [1]}'), "匣子应该几格？", [])[1], None)  # nothing to ask about, no call
+
+    def test_an_answer_given_a_decision_out_of_date_says_so_citing_it(self):  # A4 formal 2: the mark was given, the answer left it out
+        from types import SimpleNamespace
+        from app.assistant import with_stale_lines
+        stale = {"kind": "prefer", "statement": "格数以第三章为准。", "status": decisions.STALE}
+        ctx = SimpleNamespace(decisions_given=[(stale, "R3"), ({**stale, "status": decisions.ACTIVE}, "R4")])
+        answer = {"status": "answered", "sentences": [{"text": "第3章写三格。", "refs": ["R1"]}], "note": None}
+        lines = with_stale_lines(answer, ctx)["sentences"]
+        self.assertEqual([item["refs"] for item in lines], [["R1"], ["R3"]])
+        self.assertIn("「格数以第三章为准」", lines[1]["text"])
+        said = {**answer, "sentences": [{"text": "这条决定可能过时。", "refs": ["R3"]}]}
+        self.assertEqual(with_stale_lines(said, ctx), said)  # the answer said it already
+        self.assertIn("不要建议统一成一处", decisions.prompt_lines([{**stale, "kind": "intentional", "kind_label": "有意为之", "scope": "全书",
+                                                                   "status": decisions.ACTIVE}], ["R5"])[1])
 
     def test_a_thread_told_in_the_authors_own_words_is_found_by_its_number(self):  # A4 formal 1: 井里那组三声 for 井下的三次敲击
         thread = self.thread("井下的三次敲击")
@@ -497,7 +580,7 @@ class ReviewFixTests(AssistantCase):
             self.run_ask(turn(call("read_chapter", chapter_number=9)), cite)
             task_id = self.rows("SELECT id FROM assistant_tasks WHERE project_id=? LIMIT 1", self.project_id)
         task_id = task_id[0]["id"]
-        body = {"text": "缺口位置：第2章写右上角，第9章写左上角", "subject": self.name, "choices": ["a", "b", "both", "you_decide"],
+        body = {"text": "缺口位置：第2章写右上角，第9章写左上角", "subject": f"{self.name}的外形描述", "choices": ["a", "b", "both", "you_decide"],
                 "options": [{"key": "a", "chapter": 2, "quote": "右上角"}, {"key": "b", "chapter": 9, "quote": "左上角"}]}
         with self.db.connection() as c:
             LongTasks._choice_card(c, self.project_id, task_id, body, "a")
@@ -529,6 +612,27 @@ class OtherWordTests(unittest.TestCase):
         self.assertIsNone(decisions.thing_for(text, "坛门", ["黧烛坛"]))  # not the same last character
         self.assertIsNone(decisions.thing_for("礼盏在东屋。" + "风。" * 400 + "空喉盏在西屋。", "礼盏", ["空喉盏"]))  # never near it
 
+    def test_a_chapter_range_the_author_says_is_read_from_the_words(self):  # A4 fix run: "二到七章……是我故意留的"
+        from app.assistant_recognize import said_chapters
+        self.assertEqual(said_chapters("二到七章郦闻砾的左右手打架是我故意留的"), [2, 7])
+        self.assertEqual(said_chapters("第3-5章的日期别管"), [3, 5])
+        self.assertIsNone(said_chapters("她年龄不统一是故意的"))
+
+    def test_asking_how_to_write_on_or_setting_a_rule_for_later_is_a_question_not_a_recap(self):  # A4 dev 3: w01-obey-05, w01-recognize-10
+        from app.assistant_route import ROUTE_SYSTEM_PROMPT
+        recap = ROUTE_SYSTEM_PROMPT.split("recap：", 1)[1].split("\n", 1)[0]
+        self.assertIn("要你出主意，或者定下一条以后写作要守的规矩，不是要回顾前文，算 ask，不算 recap", recap)
+
+    def test_the_cover_call_is_told_a_subjects_other_names_as_the_materials_wrote_them(self):  # A4 dev 3: w02-obey-03
+        from app import assistant_cover
+        given = [{"kind_label": "不用提醒", "statement": "仵鸣荇正式署名用别名时不用提醒", "scope": "管：仵鸣荇；全书", "subjects": ["仵鸣荇"]},
+                 {"kind_label": "有意为之", "statement": "缃齿碗的缺角两种写法是有意的", "scope": "全书", "subjects": ["缃齿碗"]}]
+        issue = {"claim": "仵鸣荇给契据署了荇舌两字。", "explanation": "前文说他只落本名。"}
+        content = assistant_cover.messages_for(issue, given, {"仵鸣荇": ["别名：荇舌"]})[1]["content"]
+        self.assertIn("1. 不用提醒：仵鸣荇正式署名用别名时不用提醒（管：仵鸣荇；全书）；仵鸣荇的另一种叫法（别名：荇舌）", content)
+        self.assertIn("2. 有意为之：缃齿碗的缺角两种写法是有意的（全书）\n", content)  # a subject with no other name gets nothing more
+        self.assertEqual(assistant_cover.messages_for(issue, given)[1]["content"].count("另一种叫法"), 0)
+
 
 from tests.test_v210_long_tasks import LongCase  # noqa: E402
 
@@ -558,6 +662,24 @@ class LongRecognitionTests(LongCase):
         self.assertEqual([(i["kind"], i["status"]) for i in view["changes"]], [("add_decision", "proposed")])
         self.assertIn("罗盘下落", view["changes"][0]["after"])
         self.assertEqual([r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=? ORDER BY seq", task["id"])], ["plan", "requests"])
+
+    def test_a_thread_kept_open_in_the_authors_own_words_is_picked_within_the_tasks_usage(self):  # A4 dev 3: "那封信"
+        import re
+        from app.assistant_recognize import PICK_PROMPT, SYSTEM_PROMPT
+        decision = {"kind": "keep_open", "statement": "那只指路的铜盘去了哪先别收", "words": "先别收", "subjects": [], "chapters": None, "thread": "铜盘"}
+
+        def answer(provider, messages):
+            if messages[0]["content"] == SYSTEM_PROMPT:
+                return {"decision": decision}
+            if messages[0]["content"] == PICK_PROMPT:
+                return {"numbers": [int(re.search(r"(\d+)\. 罗盘下落", messages[1]["content"]).group(1))]}
+            return {"type": "thread_audit", "target": None, "chapters": None, "output": "list"}
+        self.provider.script_route(answer, answer, answer)
+        task = self.create("那只指路的铜盘去了哪先别收，其余还吊着的伏笔都替我过一遍")
+        view = self.view(task["id"])
+        self.assertEqual([(i["kind"], i["status"]) for i in view["changes"]], [("add_decision", "proposed")])
+        self.assertIn("罗盘下落", view["changes"][0]["after"])
+        self.assertEqual(sorted(r["role"] for r in self.rows("SELECT role FROM assistant_long_calls WHERE task_id=?", task["id"])), ["plan", "requests", "requests"])
 
     def test_a_request_with_no_decision_has_no_card(self):
         self.script(None)

@@ -85,7 +85,9 @@ class V140BackendSyncTests(unittest.TestCase):
         issue = run["issues"][0]
         self.assertEqual((self.provider.calls, issue["review_contract_version"], issue["nature"]), (1, "trustworthy_review_v1", "possible_conflict"))
         self.assertEqual(issue["evidence_chain"][0]["evidence_id"], issue["evidence"][0]["id"])
-        denied = self.client.post(f"/api/projects/{self.project_id}/issues/{issue['id']}/decision", json={"run_id": run["run_id"], "source_revision": 1, "decision": "keep_intentional"}, headers=idem())
+        # v2.2: a conflict with sufficient evidence always offers "meant" and "not a problem"; an edit it does not offer is still refused.
+        self.assertEqual(set(issue["available_actions"]), {"false_positive", "keep_intentional"})
+        denied = self.client.post(f"/api/projects/{self.project_id}/issues/{issue['id']}/decision", json={"run_id": run["run_id"], "source_revision": 1, "decision": "accept_and_edit", "resulting_revision": 2}, headers=idem())
         self.assertEqual((denied.status_code, denied.json()["error"]["code"]), (409, "issue_action_unavailable"))
         allowed = self.client.post(f"/api/projects/{self.project_id}/issues/{issue['id']}/decision", json={"run_id": run["run_id"], "source_revision": 1, "decision": "false_positive"}, headers=idem())
         self.assertEqual(allowed.status_code, 200)

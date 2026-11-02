@@ -792,6 +792,16 @@ class GroundedTests(SecondLookTests):
         stated = self.passage(ctx, "鹦鹉螺号的生日是8月12日，那天下了雨。")  # figures and Chinese numerals are the same numbers
         self.assertEqual(self.adding(ctx, stated, value="生日是八月十二号")["change"], "C1")
 
+    def test_a_quoted_name_the_evidence_does_not_hold_is_refused(self):  # v2.2, review 16 V16-12: an alias the text never gives
+        task, ctx, _, _ = self.setup_task("鹦鹉螺号加一个别名“铁鲸”")
+        self.assertEqual(self.refused(ctx, self.passage(ctx, "她总把拓纸带在身上。"), value="别名“铁鲸”"), "change_name_not_in_evidence")
+        stated = self.passage(ctx, "船员私下叫鹦鹉螺号“铁鲸”。")
+        self.assertEqual(self.adding(ctx, stated, value="别名“铁鲸”")["change"], "C1")
+
+    def test_a_character_card_or_setting_entry_is_left_to_the_materials_page(self):  # v2.2, review 16 V16-11
+        task, ctx, _, _ = self.setup_task("把鹦鹉螺号的设定简介改成一艘旧潜艇")
+        self.assertEqual(self.refused(ctx, self.passage(ctx, "鹦鹉螺号是一艘旧潜艇。"), value="一艘旧潜艇"), "change_needs_materials_page")
+
     def test_a_chapter_mentioned_in_the_value_is_not_a_number_it_states(self):
         task, ctx, _, _ = self.setup_task("鹦鹉螺号现在停在北港")
         self.assertEqual(self.adding(ctx, self.passage(ctx, "鹦鹉螺号已经停进北港。"), value="自第18章起停在北港")["change"], "C1")
