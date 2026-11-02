@@ -32,7 +32,7 @@ function PrivacyNotice({ go }: { go: (href: string) => void }) {
   };
   return (
     <p className="home-privacy" role="status">
-      <span>隐私说明在 {PRIVACY_UPDATED} 有更新：写明了长任务会保存什么，以及不含作品内容的使用统计。</span>
+      <span>隐私说明在 {PRIVACY_UPDATED} 有更新：写明了你确认记下的决定会保存什么。</span>
       <span className="home-privacy-actions">
         <button type="button" className="link" onClick={() => go("/privacy")}>查看</button>
         <button type="button" className="link" onClick={dismiss}>知道了</button>

@@ -596,8 +596,20 @@
       "target": "backend/app/assistant_consensus.py"
     },
     {
+      "source": "backend/app/assistant_cover.py",
+      "target": "backend/app/assistant_cover.py"
+    },
+    {
       "source": "backend/app/assistant_crutches.py",
       "target": "backend/app/assistant_crutches.py"
+    },
+    {
+      "source": "backend/app/assistant_decisions.py",
+      "target": "backend/app/assistant_decisions.py"
+    },
+    {
+      "source": "backend/app/assistant_recognize.py",
+      "target": "backend/app/assistant_recognize.py"
     },
     {
       "source": "backend/app/assistant_requests.py",
@@ -630,6 +642,10 @@
     {
       "source": "frontend/app/client/project/assistant-text.ts",
       "target": "frontend-source/app/client/project/assistant-text.ts"
+    },
+    {
+      "source": "frontend/app/client/project/decisions.tsx",
+      "target": "frontend-source/app/client/project/decisions.tsx"
     },
     {
       "source": "frontend/app/client/project/long-watch.ts",
