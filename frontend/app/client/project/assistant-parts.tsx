@@ -206,7 +206,9 @@ export const sourcesShown = (task: AssistantTask, skip?: Set<string>) =>
 /** v2.2: 出处 as a small pill at the right end of an answer's row of actions, with the chapters it comes from stacked in it (a fact or a plan shows
     as 资); the list opens under the row (SourcesPanel). */
 export function SourcesPill({ task, shown, open, toggle, panel }: { task: AssistantTask; shown: { ref: string; n: number }[]; open: boolean; toggle: () => void; panel: string }) {
-  const marks = [...new Set(shown.map(({ ref }) => task.sources[ref]?.chapter_number ?? null).map((chapter) => (chapter == null ? "资" : String(chapter))))].slice(0, 3);
+  // The chapters in order (a fact or a plan last), the first three.
+  const chapters = [...new Set(shown.map(({ ref }) => task.sources[ref]?.chapter_number ?? null))].sort((a, b) => (a ?? Infinity) - (b ?? Infinity));
+  const marks = chapters.map((chapter) => (chapter == null ? "资" : String(chapter))).slice(0, 3);
   return (
     <button type="button" className="a-src-pill" aria-expanded={open} aria-controls={panel} onClick={toggle}>
       <span className="stack" aria-hidden="true">{marks.map((mark) => <i key={mark}>{mark}</i>)}</span>出处 {shown.length} 处

@@ -695,3 +695,6 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 .a-task > .a-rest > .a-sources { padding-top: var(--s-1); }
 /* The chip that only says which draft the assistant is looking at: no ×, plain. */
 .cx-chip:not(:has(button)) { padding-right: 8px; background: var(--c-fill); color: var(--c-ink-2); }
+/* A follow-up sits flush with the other turns (it used to be set in, which read as a misalignment); its bubble carries a small 接着上一问 instead. */
+.a-follow { margin-left: 0; padding-left: 0; }
+.a-ask-tag { display: block; margin-bottom: 2px; color: var(--c-muted); font-size: var(--fs-12); }

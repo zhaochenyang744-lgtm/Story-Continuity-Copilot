@@ -92,6 +92,8 @@ export function Question({ task, handlers, children }: { task: AssistantTask; ha
   return (
     <div className={`a-ask${handlers.asked.includes(task.id) ? " rise" : ""}`}>
       {canEdit && <button type="button" className="a-ask-edit" aria-label="修改这个问题" onClick={() => { setText(task.question ?? ""); setEditing(true); }}>改</button>}
+      {/* A follow-up says so in its own bubble (v2.2), instead of the whole turn being set in from the left. */}
+      {task.follow_up_of && <span className="a-ask-tag">接着上一问</span>}
       {task.context.selection && <span className="a-quote">{clip(task.context.selection, 120)}</span>}
       {task.question}
       {children}
