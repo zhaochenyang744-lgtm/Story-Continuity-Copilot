@@ -261,9 +261,11 @@
 /* v2.2: the right column holds the findings and the assistant as two tabs, with a key to fold it to a strip. Only the open tab's own body
    scrolls; the tabs stay at the top of the column and the assistant's box at its foot. */
 .writing-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 420px); column-gap: 40px; }
-.writing .side { margin: 0; padding: 0; }
+.writing .side { --side-head: 44px; margin: 0; padding: 0; }
 @media (min-width: 1024px) { .writing .side { display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid var(--c-line); } }
-.writing .side-tabs { position: static; flex: none; flex-wrap: nowrap; align-items: center; gap: 0 var(--s-6); padding: 0 var(--s-2) 0 var(--s-4); }
+.writing .side-tabs { position: static; flex: none; flex-wrap: nowrap; align-items: stretch; gap: 0 var(--s-6); height: var(--side-head); padding: 0 var(--s-2) 0 var(--s-4); }
+.writing .side-tab { align-items: center; min-height: 0; padding-top: 0; }
+.writing .side-fold { align-self: center; }
 .side-tab .a-beta { vertical-align: 1px; }
 .side-dot { display: inline-block; width: 6px; height: 6px; margin-left: 4px; border-radius: var(--r-pill); background: var(--c-blue); vertical-align: 6px; }
 .side-fold { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; margin-left: auto; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }

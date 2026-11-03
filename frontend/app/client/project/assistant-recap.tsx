@@ -5,9 +5,9 @@
 // The server picks the candidates and quotes the passages; the model only chooses, orders and summarises.
 import type { AssistantSource, AssistantTask, RecapAnswer, RecapSection } from "../../model";
 import { formatCount } from "../ui";
-import { Feedback, SentenceText } from "./assistant-answer";
+import { Feedback, RedoIcon, SentenceText } from "./assistant-answer";
 import { active, cardLabel, failureText, isRecap, LimitLine, notChecked, StoppedNote } from "./assistant-parts";
-import { Steps } from "./assistant-process";
+import { AnswerPlaceholder, Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu } from "./assistant-route";
 
 const SECTIONS: { id: RecapSection; label: string }[] = [
@@ -61,6 +61,7 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, loc
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={retry}>重试</button></>}</p>
       )}
       <LimitLine task={task} />
+      {running && !answer && <AnswerPlaceholder />}
       {answer && SECTIONS.map(({ id, label }) => answer.sections[id].length > 0 && (
         <section key={id} className="a-recap-sec" aria-label={label} data-section={id}>
           <p className="a-label">{label}</p>
@@ -72,9 +73,9 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, loc
       {missed.length > 0 && <p className="a-cover" data-testid="recap-missed">没查：{missed.join("、")}。</p>}
       {task.status === "completed" && (
         <div className="a-foot">
-          {rerun && <button type="button" className="a-link" onClick={rerun}>重新回顾</button>}
+          {rerun && <button type="button" className="a-icon" aria-label="重新回顾" title="重新回顾" onClick={rerun}><RedoIcon /></button>}
           <Feedback task={task} projectId={projectId} replace={replace} />
-          {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
+          <span className="a-foot-end">{charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}</span>
         </div>
       )}
     </article>

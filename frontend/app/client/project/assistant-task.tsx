@@ -9,7 +9,7 @@ import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { ChangeCard } from "./assistant-change";
 import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, sourceKey, StoppedNote } from "./assistant-parts";
-import { Steps } from "./assistant-process";
+import { AnswerPlaceholder, Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu, routedLead } from "./assistant-route";
 
 /** One entry of the conversation: the answer shown now, the older answers to the same question, and whether the whole question was reworded since. */
@@ -127,6 +127,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={() => handlers.retry(task)}>重试</button></>}</p>
       )}
       <LimitLine task={task} />
+      {running && !answer && <AnswerPlaceholder />}
       <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>

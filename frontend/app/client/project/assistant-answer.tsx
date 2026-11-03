@@ -319,21 +319,24 @@ export function TaskFoot({ task, projectId, visitor, blocked, off = "", answer, 
   };
   return (
     <div className="a-foot">
-      {answer && <button type="button" className="a-link a-copy" title="按住 Shift 点，只复制正文" onClick={(event) => void copy(event)}>{copied || "复制"}</button>}
+      {answer && <button type="button" className="a-icon" aria-label="复制" title="复制（按住 Shift 点，只复制正文）" onClick={(event) => void copy(event)}><CopyIcon /></button>}
       {regenerate && (
-        <span className="a-regen">
-          <button type="button" className="a-link" disabled={Boolean(blocked)} title={blocked || undefined} onClick={regenerate}>重新回答</button>
-          <span className="a-hint">{visitor ? "用 1 次" : estimateOf(task)}</span>
-        </span>
+        <button type="button" className="a-icon" aria-label="重新回答" title={blocked || `重新回答 · ${visitor ? "用 1 次" : estimateOf(task)}`} disabled={Boolean(blocked)} onClick={regenerate}><RedoIcon /></button>
       )}
-      {followUp && (followUpLimit
-        ? <button type="button" className="a-link" disabled title={FOLLOW_UP_LIMIT_TEXT}>接着问</button>
-        : <button type="button" className="a-link" disabled={Boolean(off)} title={off || undefined} onClick={followUp}>接着问</button>)}
       <Feedback task={task} projectId={projectId} replace={replace} />
-      {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
+      {copied && <span className="a-noted inline" role="status">{copied}</span>}
+      <span className="a-foot-end">
+        {followUp && (followUpLimit
+          ? <button type="button" className="a-link" disabled title={FOLLOW_UP_LIMIT_TEXT}>接着问</button>
+          : <button type="button" className="a-link" disabled={Boolean(off)} title={off || undefined} onClick={followUp}>接着问</button>)}
+        {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
+      </span>
     </div>
   );
 }
+
+const CopyIcon = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" /><path d="M10.5 5.5V3.8c0-.7-.6-1.3-1.3-1.3H3.8c-.7 0-1.3.6-1.3 1.3v5.4c0 .7.6 1.3 1.3 1.3h1.7" /></svg>;
+export const RedoIcon = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v3h-3" /></svg>;
 
 /** What asking the same thing again costs, as the first time was worked out: a check of a picked passage also pays for the passage. */
 export const estimateOf = (task: AssistantTask) =>

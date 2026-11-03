@@ -804,6 +804,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     draftBody: material.draftBody,
   }) : null;
   const groups = arrange(tasks ?? []);
+  const empty = tasks !== null && tasks.length === 0 && !pending && !stoppedNote;
   const handlers: AskHandlers = {
     projectId, visitor, stopping, stop: (task) => void stop(task), retry, openChapter, locate, replace, blocked, off, readOnly: archived, asked, timedOut,
     merge: (items) => mergeChanges(setTasks, items),
@@ -817,10 +818,10 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   return (
     <RerouteContext.Provider value={rerouting}>
     <LocateContext.Provider value={locate}>
-    <div ref={root} className={`assistant${tasks !== null && tasks.length === 0 && !pending && !stoppedNote ? " assistant-empty" : ""}`} data-testid="assistant-thread" data-variant={variant}>
+    <div ref={root} className={`assistant${empty ? " assistant-empty" : ""}`} data-testid="assistant-thread" data-variant={variant}>
+      {/* ⋯ sits in the panel's own head (the writing page's tab row, the panel's title row elsewhere): the bar takes no line of its own. */}
       <div className="a-bar">
-        <span className="a-bar-note">只提建议，不改你的正文</span>
-        <Menu label="更多" buttonLabel="助手：更多操作">
+        <Menu label="⋯" dots buttonLabel="助手：更多操作">
           <button type="button" role="menuitem" disabled={!tasks?.length} onClick={() => setConfirmClear(true)}>清空对话</button>
         </Menu>
       </div>
@@ -835,14 +836,14 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         }}>
         <button type="button" className="a-skip" onClick={() => field.current?.focus({ preventScroll: true })}>跳到输入框</button>
         {top}
-        {privacy && <p className="a-privacy">使用助手会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</p>}
+        {privacy && !empty && <p className="a-privacy">使用助手会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</p>}
         {legacy.length > 0 && <LegacyQuestions runs={legacy} go={(href) => { onNavigate?.(); go(href); }} />}
         {tasks === null && !loadError && <p className="a-quiet" role="status">正在读取对话…</p>}
         {focus && clearedNonce === focus.nonce && <p className="a-quiet" role="status" data-testid="assistant-cleared">这次对话已经清除。</p>}
         {loadError && <p className="a-note" role="alert">{loadError}</p>}
         {starters && (
-          <Starters intro="问这部作品里的人、事、物。助手会自己去查正文和已确认的事实，每句回答都带着出处。"
-            items={starters} ask={askStarter} recap={onWriting ? { run: rerunRecap, reason: blocked || recapReason } : null} disabled={Boolean(off)} />
+          <Starters intro="助手会自己去查正文和你确认过的事实，每句回答都带着出处。只提建议，不改你的正文。"
+            items={starters} ask={askStarter} recap={onWriting ? { run: rerunRecap, reason: blocked || recapReason, chapter: chapterNumber ?? null } : null} disabled={Boolean(off)} />
         )}
         {groups.map((group, index) => {
           const task = group.latest;
@@ -891,7 +892,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
         stop={stopFromBox}
         canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable}
-        usedUp={!archived && off ? { text: off, ...(visitor ? { action: { label: "注册", run: bridge.register } } : {}) } : null} />
+        usedUp={!archived && off ? { text: off, ...(visitor ? { action: { label: "注册", run: bridge.register } } : {}) } : null}
+        note={empty ? <>提问时会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</> : undefined} />
       {confirmClear && <ClearConfirm visitor={visitor} confirm={() => void clear()} cancel={() => { setConfirmClear(false); window.setTimeout(() => document.querySelector<HTMLElement>(".assistant .menu > summary")?.focus({ preventScroll: true }), 0); }} />}
     </div>
     </LocateContext.Provider>

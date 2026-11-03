@@ -139,6 +139,11 @@ export function ThreeSquares() {
   return <span className="a-three" aria-hidden="true"><i /><i /><i /></span>;
 }
 
+/** Where the answer will be, while the task still runs: three grey lines of different lengths, so the answer takes their place instead of appearing out of nothing. */
+export function AnswerPlaceholder() {
+  return <div className="a-skel" aria-hidden="true"><i /><i /><i /></div>;
+}
+
 /** What an action turned up. A passage is a line or two around the word searched for, then its chapter (which opens the original);
     a fact is its one line. */
 function Found({ refs, sources, words, locate }: { refs: string[]; sources: Record<string, AssistantSource>; words: Record<string, string>; locate?: (source: AssistantSource) => void }) {

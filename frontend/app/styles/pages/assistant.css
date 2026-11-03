@@ -590,23 +590,90 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 /* The conversation never scrolls sideways (V16-16: at 375 wide something 7px too wide made a bar). */
 .a-thread { overflow-x: hidden; }
 
-/* v2.2 look of the conversation: each answer on a white card of its own (the question stays a grey bubble outside it), the line above the answer
-   says what it was in the ink, group titles in the ink and bold, the body at 14, the marks as small grey keys that read as something to press,
-   and a thin rule above the row of actions. Earlier answers folded under a newer one stay plain. */
-.assistant .a-task { gap: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); }
-.a-fold-body .a-task { padding: 0; background: none; box-shadow: none; }
-.a-task .a-card, .a-task .a-chg-card { background: var(--c-raised); }
+/* v2.2 look (the sample agreed on 2026-11-03): no cards; layers come from space, a small blue square marks each answer, the question is a
+   bubble, and the marks and actions read as things to press. */
+/* The bar with the dots lies in the panel's head row (the writing page's tabs, the panel's title elsewhere), not on a line of its own. */
+.writing .a-pane { position: relative; }
+.writing .a-pane .a-bar { position: absolute; top: calc(-1 * var(--side-head)); right: 44px; z-index: 3; height: var(--side-head); padding: 0; }
+.a-dock-head { height: 44px; padding: 0 var(--s-4); }
+.a-dock > .assistant { position: relative; overflow: visible; }
+.a-dock .a-bar { position: absolute; top: -44px; right: 92px; z-index: 3; height: 44px; padding: 0; }
+.assistant .menu-dots > summary { display: inline-grid; place-items: center; width: 28px; height: 28px; min-height: 28px; padding: 0; border-radius: var(--r-sm); font-size: var(--fs-15); letter-spacing: 0; }
+.a-thread { gap: var(--s-6); }
+
+/* Empty: a small hello, 写前回顾 as a row of its own, the questions as a list with a rule between them. */
+.a-start { display: grid; gap: var(--s-4); }
+.a-hello { display: grid; gap: var(--s-1); }
+.a-hello-title { display: flex; align-items: center; gap: var(--s-2); color: var(--c-ink); font-size: var(--fs-15); font-weight: 700; }
+.a-mark { flex: none; width: 8px; height: 8px; background: var(--c-blue); }
+.a-intro { color: var(--c-ink-2); font-size: var(--fs-13); line-height: 1.7; }
+.a-glyph { flex: none; width: 16px; height: 16px; }
+.a-recap-row { display: flex; align-items: center; gap: var(--s-3); width: 100%; padding: 10px 12px; border: 0; border-radius: var(--r-md); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); color: var(--c-ink); text-align: left; cursor: pointer; transition: box-shadow var(--dur-fast) var(--ease); }
+.a-recap-row:hover:not(:disabled) { box-shadow: 0 0 0 1px var(--c-blue); }
+.a-recap-row .a-glyph { width: 20px; height: 20px; color: var(--c-blue-text); }
+.a-recap-row .what { display: grid; gap: 2px; min-width: 0; }
+.a-recap-row strong { font-size: var(--fs-14); }
+.a-recap-row small { color: var(--c-muted); font-size: var(--fs-12); line-height: 1.5; }
+.a-recap-row:disabled { cursor: not-allowed; }
+.a-recap-row:disabled strong, .a-recap-row:disabled .a-glyph { color: var(--c-muted); }
+.a-start-label { margin-bottom: var(--s-1); color: var(--c-muted); font-size: var(--fs-12); }
+.a-starters { gap: 0; margin: 0; border-top: 1px solid var(--c-line); }
+.a-starters li { border-bottom: 1px solid var(--c-line); }
+.a-starters button { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-radius: 0; }
+.a-starters .a-glyph { color: var(--c-muted); transition: color var(--dur-fast) var(--ease); }
+.a-starters button:hover:not(:disabled) .a-glyph { color: var(--c-blue-text); }
+.a-starters .q { flex: 1 1 auto; min-width: 0; }
+.a-starters .why { flex: none; }
+.a-ai-note a { color: var(--c-blue-text); text-decoration: underline; text-underline-offset: 3px; }
+
+/* The question: a bubble at the right. */
+.a-ask { padding: 8px 12px; border-radius: 12px 12px 4px 12px; background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); }
+
+/* The line above an answer: the blue square (breathing while the task runs), what it was in the ink, the rest quiet; the steps hang from a thin rule. */
+.a-process::before { content: ""; flex: none; width: 8px; height: 8px; margin-right: 4px; background: var(--c-blue); }
+.a-steps[role="status"] .a-process::before, .a-pending .a-process::before { animation: a-mark-breathe 1.2s ease-in-out infinite; }
+@keyframes a-mark-breathe { 50% { opacity: .3; } }
 .a-process .lead { color: var(--c-ink); font-weight: 700; }
+.a-steps .a-proc { margin: var(--s-1) 0 0 3px; padding: 2px 0 2px var(--s-3); border-left: 1px solid var(--c-line); }
+/* Where the answer will be, while the task runs. */
+.a-skel { display: grid; gap: 10px; padding: var(--s-1) 0; }
+.a-skel i { display: block; height: 8px; border-radius: 4px; background: linear-gradient(90deg, color-mix(in srgb, var(--c-ink) 10%, transparent) 0%, color-mix(in srgb, var(--c-ink) 4%, transparent) 50%, color-mix(in srgb, var(--c-ink) 10%, transparent) 100%); background-size: 200% 100%; animation: a-shimmer 1.4s ease-in-out infinite; }
+.a-skel i:nth-child(1) { width: 92%; }
+.a-skel i:nth-child(2) { width: 76%; }
+.a-skel i:nth-child(3) { width: 52%; }
+@keyframes a-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* The answer: 14 in the ink, group titles small and quiet, the marks as small blue keys. */
+.a-task { gap: 10px; }
 .a-answer, .a-ri { font-size: var(--fs-14); line-height: 1.8; }
-.a-recap-sec + .a-recap-sec { margin-top: var(--s-1); }
-.a-label { color: var(--c-ink); font-size: var(--fs-13); font-weight: 700; }
-.a-ri-list { gap: var(--s-1); }
+.a-recap-sec + .a-recap-sec { margin-top: 6px; }
+.a-label { color: var(--c-muted); font-size: var(--fs-12); font-weight: 700; }
+.a-ri-list { gap: 2px; }
 .a-cite { vertical-align: 1px; font-size: 11px; line-height: 1; }
-.a-cite button { min-width: 16px; padding: 1px 4px; border-radius: var(--r-sm); background: var(--c-fill); color: var(--c-ink-2); font-size: 11px; font-weight: 700; line-height: 1.4; }
-.a-foot { margin-top: var(--s-1); padding-top: var(--s-2); border-top: 1px solid var(--c-line); }
+.a-cite button { min-width: 16px; padding: 1px 4px; border-radius: 4px; background: var(--c-blue-tint); color: var(--c-blue-text); font-size: 11px; font-weight: 700; line-height: 1.4; }
+.a-cite button:hover, .a-cite button:focus-visible, .a-cite button[aria-expanded="true"] { background: var(--c-blue); color: var(--c-on-blue); }
+
+/* Under an answer: copy, answer again, 有用 / 没用 as icons; 接着问 and the cost at the right. */
+.a-foot { gap: 2px; }
+.a-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.a-icon:hover:not(:disabled) { background: var(--c-fill); color: var(--c-ink); }
+.a-icon:disabled { opacity: .5; cursor: not-allowed; }
+.a-icon svg { width: 15px; height: 15px; }
+.a-thumbs { gap: 2px; margin-left: 0; }
+.a-thumbs button { width: 28px; height: 28px; }
+.a-thumbs button:hover { background: var(--c-fill); }
+.a-foot-end { display: inline-flex; align-items: center; gap: var(--s-3); margin-left: auto; }
+.a-foot-end .a-cost-line { order: 0; margin-left: 0; }
+.a-foot-end:empty { display: none; }
+
+/* The box: round, a hairline and the faintest shadow at rest. */
+.a-compose { padding: var(--s-2) var(--s-3) var(--s-3); }
+.cx { padding: 10px 10px 8px 14px; border-radius: 14px; box-shadow: 0 0 0 1px var(--c-line), 0 1px 3px rgba(0, 0, 0, .05); }
+.a-quota-row { padding: 0 var(--s-1); }
+
 /* While a task runs: the three squares breathe one after another instead of jumping. */
 .a-three i { animation: a-breathe 1.2s ease-in-out infinite; }
 .a-three i:nth-child(2) { animation-delay: .2s; }
 .a-three i:nth-child(3) { animation-delay: .4s; }
 @keyframes a-breathe { 0%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: scaleY(1.6); } }
-@media (prefers-reduced-motion: reduce) { .a-three i { animation: none; opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { .a-three i, .a-skel i, .a-process::before { animation: none; } .a-three i { opacity: .6; } }

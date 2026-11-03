@@ -3,7 +3,7 @@
 // The box the author writes in: one frame with the context tags inside at the top, the text, and a bar below it.
 // The bar has 「＋」 (add a chapter, a person or a finding to this question) and the mode (自动 / 问作品 / 写前回顾 / 查前文矛盾 / 改资料;
 // 自动 lets the assistant judge which one the sentence asks for) on the left, the cost and one send square on the right; while the assistant works the square is a stop button.
-import { type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type KeyboardEvent as ReactKeyboardEvent, type ReactNode, type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { chapterHeading } from "../ui";
 
 export type ComposeChip = {
@@ -209,6 +209,8 @@ export type ComposerProps = {
   recall: () => void;
   /** The day's allowance is used up: the box is not there; one line says so, with the way out (注册 for a visitor). */
   usedUp?: { text: string; action?: { label: string; run: () => void } } | null;
+  /** The small line under the box at its left: what wrote the answers, unless something else belongs there (where words are sent, before the first question). */
+  note?: ReactNode;
 };
 
 const STOP_GRACE_MS = 700;
@@ -216,7 +218,7 @@ const STOP_GRACE_MS = 700;
 const IME_GRACE_MS = 500;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {}, usedUp = null } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {}, usedUp = null, note } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -300,7 +302,7 @@ export function Composer(props: ComposerProps) {
       </form>
       {/* Under the frame, at its right: one place for the counter, the key hint and the cost. The key hint takes the cost's place while the box has focus, so the line never reflows. */}
       <div className="a-quota-row">
-        <p className="a-ai-note">回答由 AI 生成，可能出错，请点出处核对。</p>
+        <p className="a-ai-note">{note ?? "回答由 AI 生成，可能出错，请点出处核对。"}</p>
         {!off && (
           <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
             {counting ? `${length} / ${maxLength}`
