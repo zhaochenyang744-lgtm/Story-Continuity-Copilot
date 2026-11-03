@@ -2,7 +2,7 @@
 
 // An answer and what sits under it: the sentences (fading in once the answer has passed its checks), a card for each
 // citation, the row of actions (copy, answer again, follow up, useful / not useful) and the cost line.
-import { type CSSProperties, Fragment, type KeyboardEvent as ReactKeyboardEvent, type RefObject, useEffect, useRef, useState } from "react";
+import { type CSSProperties, Fragment, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, type RefObject, useEffect, useRef, useState } from "react";
 import { json, labelError, request } from "../../api";
 import type { AssistantFeedbackReason, AssistantSentence, AssistantSource, AssistantTask } from "../../model";
 import { clip, formatCount, writtenChars } from "../ui";
@@ -295,8 +295,10 @@ export function Feedback({ task, projectId, replace }: { task: AssistantTask; pr
 }
 
 /** The row under a finished answer, and the cost line: 复制 · 重新回答 · 接着问 · 有用 / 没用, then 「计 500 字」 at the right (not for a visitor). */
-export function TaskFoot({ task, projectId, visitor, blocked, off = "", answer, followUp, followUpLimit = false, regenerate, replace }: {
+export function TaskFoot({ task, projectId, visitor, blocked, off = "", answer, followUp, followUpLimit = false, regenerate, replace, sources = null }: {
   task: AssistantTask;
+  /** 出处 N 处, at the right end of the row (v2.2). */
+  sources?: ReactNode;
   projectId: string;
   visitor: boolean;
   /** Why a new task cannot start now, or empty. */
@@ -341,6 +343,7 @@ export function TaskFoot({ task, projectId, visitor, blocked, off = "", answer, 
           ? <button type="button" className="a-link" disabled title={FOLLOW_UP_LIMIT_TEXT}>接着问</button>
           : <button type="button" className="a-link" disabled={Boolean(off)} title={off || undefined} onClick={followUp}>接着问</button>)}
         {charged && <span className="a-cost-line">计 {formatCount(task.usage.chars_charged)} 字</span>}
+        {sources}
       </span>
     </div>
   );

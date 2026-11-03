@@ -14,7 +14,8 @@ export type ComposeChip = {
   /** Shown but not sent with this question: greyed and struck through, with `note` beside it. */
   muted?: boolean;
   note?: string;
-  drop: () => void;
+  /** Can be taken away (×); a chip that only says what the assistant is looking at (the chapter being written) has no drop. */
+  drop?: () => void;
 };
 export type Mode = "auto" | "ask" | "recap" | "check" | "change" | "long";
 export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料", long: "长任务" };
@@ -270,7 +271,7 @@ export function Composer(props: ComposerProps) {
                   <span key={chip.key} className={`cx-chip a-chip${chip.quote ? " quote" : ""}${chip.muted ? " muted" : ""}`}>
                     <span className="label">{chip.label}</span>
                     {chip.muted && chip.note && <span className="apart">{chip.note}</span>}
-                    <button type="button" aria-label={`去掉：${chip.label}`} onClick={chip.drop}><Cross /></button>
+                    {chip.drop && <button type="button" aria-label={`去掉：${chip.label}`} onClick={chip.drop}><Cross /></button>}
                   </span>
                 ))}
               </div>

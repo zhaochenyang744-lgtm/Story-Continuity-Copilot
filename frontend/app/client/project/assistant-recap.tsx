@@ -7,7 +7,7 @@ import type { AssistantSource, AssistantTask, RecapAnswer, RecapSection } from "
 import { formatCount } from "../ui";
 import { Feedback, RedoIcon, SentenceText } from "./assistant-answer";
 import { active, cardLabel, failureText, isRecap, LimitLine, notChecked, StoppedNote } from "./assistant-parts";
-import { AnswerPlaceholder, Steps } from "./assistant-process";
+import { Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu } from "./assistant-route";
 
 const SECTIONS: { id: RecapSection; label: string }[] = [
@@ -61,7 +61,6 @@ export function RecapView({ task, projectId, visitor, stopping, stop, retry, loc
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={retry}>重试</button></>}</p>
       )}
       <LimitLine task={task} />
-      {running && !answer && <AnswerPlaceholder />}
       {answer && SECTIONS.map(({ id, label }) => answer.sections[id].length > 0 && (
         <section key={id} className="a-recap-sec" aria-label={label} data-section={id}>
           <p className="a-label">{label}</p>

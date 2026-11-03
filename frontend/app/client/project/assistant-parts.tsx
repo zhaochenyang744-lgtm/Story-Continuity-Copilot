@@ -199,6 +199,28 @@ export function SourceList({ task, locate, skip }: { task: AssistantTask; locate
   );
 }
 
+/** The sources listed under an answer, numbered as its marks are, less those a card already stands on. */
+export const sourcesShown = (task: AssistantTask, skip?: Set<string>) =>
+  citedRefs(task).map((ref, index) => ({ ref, n: index + 1 })).filter(({ ref }) => !skip?.has(sourceKey(task.sources[ref])));
+
+/** v2.2: 出处 as a small pill at the right end of an answer's row of actions, with the chapters it comes from stacked in it (a fact or a plan shows
+    as 资); the list opens under the row (SourcesPanel). */
+export function SourcesPill({ task, shown, open, toggle, panel }: { task: AssistantTask; shown: { ref: string; n: number }[]; open: boolean; toggle: () => void; panel: string }) {
+  const marks = [...new Set(shown.map(({ ref }) => task.sources[ref]?.chapter_number ?? null).map((chapter) => (chapter == null ? "资" : String(chapter))))].slice(0, 3);
+  return (
+    <button type="button" className="a-src-pill" aria-expanded={open} aria-controls={panel} onClick={toggle}>
+      <span className="stack" aria-hidden="true">{marks.map((mark) => <i key={mark}>{mark}</i>)}</span>出处 {shown.length} 处
+    </button>
+  );
+}
+export function SourcesPanel({ task, shown, locate, id }: { task: AssistantTask; shown: { ref: string; n: number }[]; locate: (source: AssistantSource) => void; id: string }) {
+  return (
+    <ol id={id} className="a-sources" aria-label="出处">
+      {shown.map(({ ref, n }) => <SourceItem key={ref} id={`a-src-${task.id}-${n}`} n={n} source={task.sources[ref]} locate={locate} />)}
+    </ol>
+  );
+}
+
 /** 怎么查的 ›: under an answer, folded; opened it holds the steps taken and 查过……；没查：……. Lives with the steps (assistant-process.tsx). */
 export { CoverLine } from "./assistant-process";
 /** What the task did not look at, for the line that says so: the program's note, without 「步数或预算已到」 (said once, above the answer, as 「查到上限了」). */

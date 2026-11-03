@@ -139,11 +139,6 @@ export function ThreeSquares() {
   return <span className="a-three" aria-hidden="true"><i /><i /><i /></span>;
 }
 
-/** Where the answer will be, while the task still runs: three grey lines of different lengths, so the answer takes their place instead of appearing out of nothing. */
-export function AnswerPlaceholder() {
-  return <div className="a-skel" aria-hidden="true"><i /><i /><i /></div>;
-}
-
 /** What an action turned up. A passage is a line or two around the word searched for, then its chapter (which opens the original);
     a fact is its one line. */
 function Found({ refs, sources, words, locate }: { refs: string[]; sources: Record<string, AssistantSource>; words: Record<string, string>; locate?: (source: AssistantSource) => void }) {
@@ -226,7 +221,10 @@ function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<s
 /** The line above an answer: what the task is (问作品, 改资料 …), what it looked at and how long it took, in one small grey line that opens to
     the steps; `end` is what stands at its right end (改成 …, 停止). The steps are listed as they happen, then folded into the line. An author
     who opens the fold keeps it open. */
-export function Steps({ task, locate, lead, end, named = false }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
+export function Steps({ task, locate, lead, end, named = false, how }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
+  /** v2.2: what the finished line opens to instead of the bare steps (an answer's 「怎么查的」: the steps and 查过……；没查：……). The line then says how many
+      passages were found and how long it took, 「问作品 · 查到 6 处 · 16 秒 ›」, and there is no separate 「怎么查的 ›」 under the answer. */
+  how?: ReactNode;
   /** The finished line opens to the steps and names what it opens: 「过程 · 8 秒 ›」 (a 写前回顾). Without it the finished line is a plain label,
       「问作品 · 4 秒」: the steps of an answer are under it, in 「怎么查的 ›」 (CoverLine); while the task runs they are listed here either way. */
   named?: boolean }) {
@@ -253,6 +251,23 @@ export function Steps({ task, locate, lead, end, named = false }: { task: Assist
   const took = Number.isFinite(began) && Number.isFinite(ended) ? Math.max(1, Math.round((ended - began) / 1000)) : null;
   const figure = (value: number, order: number) => <span className={justFolded ? "a-drop" : undefined} style={justFolded ? { animationDelay: `${order * 80}ms` } : undefined}>{value}</span>;
   const tally = named || took !== null;
+  const found = Object.keys(task.sources ?? {}).length;
+  const [howOpen, setHowOpen] = useState(false);
+  if (!running && how) {
+    return (
+      <div className="a-steps">
+        <div className="a-process" data-testid="process-line">
+          <button type="button" className="a-fold" aria-expanded={howOpen} onClick={() => setHowOpen((value) => !value)}>
+            <span className="lead">{lead}</span>
+            <span className="tally">{found > 0 && <> · 查到 {figure(found, 0)} 处</>}{took !== null && <> · {figure(took, 1)} 秒</>}</span>
+            <Fold open={howOpen} />
+          </button>
+          {end && <span className="a-process-end">{end}</span>}
+        </div>
+        {howOpen && <div className="a-how" data-testid="how-checked">{how}</div>}
+      </div>
+    );
+  }
   return (
     <div className="a-steps" role={running ? "status" : undefined}>
       <div className="a-process" data-testid="process-line">
@@ -278,6 +293,32 @@ export function Steps({ task, locate, lead, end, named = false }: { task: Assist
       )}
     </div>
   );
+}
+
+/** What 「怎么查的」 holds (v2.2: opened from the line above the answer): the steps the task took and 查过……；没查：……, or the sentences of the model's
+    note that tell where it looked. Null when there is nothing to show. */
+export function howChecked(task: AssistantTask, locate: ((source: AssistantSource) => void) | undefined, onlyMissed = false): ReactNode {
+  const left = notChecked(task);
+  const lifted = (onlyMissed || hitLimit(task)) && left.length > 0;
+  const done = task.coverage?.checked ?? [];
+  const rows = processRows(task.steps);
+  const noted = splitNote(sentencesOf(task)?.note).looked;
+  const line = [done.length > 0 ? `查过${done.join("、")}` : "", !lifted && left.length > 0 ? `没查：${left.join("、")}` : ""].filter(Boolean).join("；");
+  if (!(rows.length > 0 || line || noted.length > 0)) return null;
+  return (
+    <>
+      {rows.length > 0 && <div className="a-proc"><ProcessRows rows={rows} sources={task.sources} locate={locate} /></div>}
+      {line && <p className="a-cover">{line}。</p>}
+      {noted.length > 0 && !line && <p className="a-cover">{noted.join("")}</p>}
+    </>
+  );
+}
+
+/** The program's own 没查 line, said under the answer when the answer found nothing (`onlyMissed`) or the task ran into its limit. */
+export function MissedLine({ task, onlyMissed = false }: { task: AssistantTask; onlyMissed?: boolean }) {
+  const left = notChecked(task);
+  if (active(task) || !((onlyMissed || hitLimit(task)) && left.length > 0)) return null;
+  return <p className="a-cover" data-testid="not-checked">没查：{left.join("、")}。</p>;
 }
 
 /** 怎么查的 ›: under an answer, folded. Opened it holds the steps the task took and, in plain grey, 查过……；没查：……, then the sentences of the model's

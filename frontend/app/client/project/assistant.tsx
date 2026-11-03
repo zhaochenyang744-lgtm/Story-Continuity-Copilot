@@ -771,6 +771,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   // A fix for one finding reads that finding only: the chapter and the person in the box stay in view, greyed, and are not sent.
   const apart = refine ? { muted: true, note: "改法只看这一处" } : {};
   const chips: ComposeChip[] = [
+    // On the writing page the box says which draft the assistant is looking at (not for 写前回顾, which reads only the chapters before it).
+    ...(onWriting && chapterNumber != null && activeMode !== "recap" && !selection ? [{ key: "draft", label: `第 ${chapterNumber} 章草稿`, ...apart }] : []),
     ...(refine ? [{ key: "refine", label: `检查结果 · 第 ${refine.number} 处`, drop: () => setRefine(null) }] : []),
     ...(selection ? [{ key: "selection", label: `选中：「${clip(selection.replace(/\s+/g, " "), 18)}」`, quote: true, drop: () => setSelection("") }] : []),
     ...(showCharacter ? [{ key: "character", label: `人物 · ${chosen.character?.name ?? anchor.character_name ?? "这张人物卡"}`, ...apart, drop: () => { setChosen((all) => ({ ...all, character: null })); setDropped((all) => ({ ...all, character: true })); } }] : []),

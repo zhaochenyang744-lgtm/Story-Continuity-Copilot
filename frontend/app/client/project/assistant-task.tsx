@@ -3,13 +3,13 @@
 // A question to the assistant, as the conversation shows it: the author's question (which can be reworded and sent again), the
 // steps, the answer with its sources and the row of actions under it. Answers asked for again fold the older ones into
 // 「之前的回答」; a question that was reworded folds the old question and its answers into 「已改问」.
-import { type CSSProperties, type ReactNode, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useId, useRef, useState } from "react";
 import type { AssistantChange, AssistantSource, AssistantTask } from "../../model";
 import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { ChangeCard } from "./assistant-change";
-import { active, CoverLine, failureText, LimitLine, sentencesOf, SourceList, sourceKey, StoppedNote } from "./assistant-parts";
-import { AnswerPlaceholder, Steps } from "./assistant-process";
+import { active, failureText, LimitLine, sentencesOf, sourceKey, SourcesPanel, SourcesPill, sourcesShown, StoppedNote } from "./assistant-parts";
+import { howChecked, MissedLine, Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu, routedLead } from "./assistant-route";
 
 /** One entry of the conversation: the answer shown now, the older answers to the same question, and whether the whole question was reworded since. */
@@ -115,10 +115,13 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   const lead = routedLead(task, handlers.timedOut.includes(task.id)) + state;
   // The passages a change card already stands on are not listed again under the answer.
   const cardHas = new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)));
+  const shownSources = offTopic ? [] : sourcesShown(task, cardHas);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
+  const sourcesPanel = useId();
   return (
     <article className="a-task" aria-live="off" data-answer={task.id}>
       {showQuestion && <Question task={task} handlers={handlers} />}
-      <Steps task={task} locate={handlers.locate} lead={lead}
+      <Steps task={task} locate={handlers.locate} lead={lead} how={!offTopic && !saysDecision && task.status === "completed" ? howChecked(task, handlers.locate, notFound) : null}
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}</>} />
       <ChosenLine task={task} />
       <StoppedNote task={task} visitor={handlers.visitor} />
@@ -127,19 +130,19 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={() => handlers.retry(task)}>重试</button></>}</p>
       )}
       <LimitLine task={task} />
-      {running && !answer && <AnswerPlaceholder />}
       <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
-        {!offTopic && !saysDecision && <CoverLine task={task} onlyMissed={notFound} />}
-        {!offTopic && <SourceList task={task} locate={handlers.locate} skip={cardHas} />}
+        {!offTopic && !saysDecision && <MissedLine task={task} onlyMissed={notFound} />}
         {/* A question can carry a card too (v2.2): the author asked and decided in one sentence, and the card holds only the record to be made. */}
         {(task.kind === "change" || task.kind === "ask") && task.status === "completed" && (
           <ChangeCard task={task} projectId={handlers.projectId} readOnly={handlers.readOnly} replace={handlers.replace} merge={handlers.merge} locate={handlers.locate}
             written={handlers.written} goMaterials={handlers.goMaterials} />
         )}
         <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} off={handlers.off} answer={offTopic ? null : answerBox}
-          followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace} />
+          followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace}
+          sources={shownSources.length > 0 ? <SourcesPill task={task} shown={shownSources} open={sourcesOpen} toggle={() => setSourcesOpen((value) => !value)} panel={sourcesPanel} /> : null} />
+        {sourcesOpen && shownSources.length > 0 && <SourcesPanel task={task} shown={shownSources} locate={handlers.locate} id={sourcesPanel} />}
       </div>
     </article>
   );

@@ -635,13 +635,19 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 @keyframes a-mark-breathe { 50% { opacity: .3; } }
 .a-process .lead { color: var(--c-ink); font-weight: 700; }
 .a-steps .a-proc { margin: var(--s-1) 0 0 3px; padding: 2px 0 2px var(--s-3); border-left: 1px solid var(--c-line); }
-/* Where the answer will be, while the task runs. */
-.a-skel { display: grid; gap: 10px; padding: var(--s-1) 0; }
-.a-skel i { display: block; height: 8px; border-radius: 4px; background: linear-gradient(90deg, color-mix(in srgb, var(--c-ink) 10%, transparent) 0%, color-mix(in srgb, var(--c-ink) 4%, transparent) 50%, color-mix(in srgb, var(--c-ink) 10%, transparent) 100%); background-size: 200% 100%; animation: a-shimmer 1.4s ease-in-out infinite; }
-.a-skel i:nth-child(1) { width: 92%; }
-.a-skel i:nth-child(2) { width: 76%; }
-.a-skel i:nth-child(3) { width: 52%; }
-@keyframes a-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+/* While a task runs (v2.2, after Cursor and the chat apps): the steps done are one quiet line of ticks, and what it is doing now is one line of text with
+   light passing through it, instead of a list growing and grey bars. */
+.a-steps[role="status"] .a-proc { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.a-steps[role="status"] .a-act.ok, .a-steps[role="status"] .a-act.bad { display: inline-flex; gap: 4px; padding-left: 0; }
+.a-steps[role="status"] .a-act .secs, .a-steps[role="status"] .a-act.ok .more { display: none; }
+.a-steps[role="status"] .a-say { flex-basis: 100%; }
+/* Only the model's latest sentence on what it does next; the earlier ones are in 「怎么查的」 once it is done. */
+.a-steps[role="status"] .a-proc > .a-say:not(:last-of-type) { display: none; }
+.a-steps[role="status"] .a-act.now { display: flex; flex-basis: 100%; gap: 8px; padding: 2px 0 0; font-size: var(--fs-13); }
+.a-steps[role="status"] .a-act.now .mk { display: none; }
+.a-act.now > span:nth-child(2) { background: linear-gradient(90deg, var(--c-muted) 0%, var(--c-muted) 35%, var(--c-ink) 50%, var(--c-muted) 65%, var(--c-muted) 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: a-shine 1.8s linear infinite; }
+@keyframes a-shine { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.a-how { display: grid; gap: var(--s-1); margin-top: var(--s-1); }
 
 /* The answer: 14 in the ink, group titles small and quiet, the marks as small blue keys. */
 .a-task { gap: 10px; }
@@ -676,6 +682,16 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 .a-three i:nth-child(2) { animation-delay: .2s; }
 .a-three i:nth-child(3) { animation-delay: .4s; }
 @keyframes a-breathe { 0%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: scaleY(1.6); } }
-@media (prefers-reduced-motion: reduce) { .a-three i, .a-skel i, .a-process::before { animation: none; } .a-three i { opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { .a-three i, .a-process::before { animation: none; } .a-three i { opacity: .6; } .a-act.now > span:nth-child(2) { animation: none; background: none; color: var(--c-ink-2); } }
 /* An answer of several sentences: the opening sentence, then one sentence to a line, a little air between them. */
 .a-answer[data-layout="list"] .a-points { gap: 6px; }
+
+/* 出处 N 处 at the right end of the row of actions: a pill with the chapters it comes from stacked in it (after Perplexity's sources). */
+.a-src-pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 3px; border: 0; border-radius: var(--r-pill); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); color: var(--c-ink-2); font-size: var(--fs-12); cursor: pointer; transition: box-shadow var(--dur-fast) var(--ease); }
+.a-src-pill:hover, .a-src-pill[aria-expanded="true"] { box-shadow: 0 0 0 1px var(--c-blue); color: var(--c-ink); }
+.a-src-pill .stack { display: inline-flex; }
+.a-src-pill .stack i { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin-left: -3px; padding: 0 3px; border-radius: var(--r-pill); background: var(--c-blue-tint); box-shadow: 0 0 0 2px var(--c-surface); color: var(--c-blue-text); font-size: 10px; font-style: normal; font-weight: 700; }
+.a-src-pill .stack i:first-child { margin-left: 0; }
+.a-task > .a-rest > .a-sources { padding-top: var(--s-1); }
+/* The chip that only says which draft the assistant is looking at: no ×, plain. */
+.cx-chip:not(:has(button)) { padding-right: 8px; background: var(--c-fill); color: var(--c-ink-2); }
