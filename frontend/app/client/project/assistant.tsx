@@ -352,9 +352,17 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       const pinnedTask = tasks?.find((task) => task.id === id) ?? { status: "completed" } as AssistantTask;
       if (!active(pinnedTask) && !longLive(pinnedTask)) pinned.current = null;
     } else if (stick.current) {
-      quiet.current = performance.now() + 150;
-      box.scrollTop = box.scrollHeight;
-    } else if (changed && !id && tasks && tasks.length > 0) {
+      // A few new lines glide into view; a long jump (or reduced motion) is taken at once.
+      const gap = box.scrollHeight - box.clientHeight - box.scrollTop;
+      if (gap > 0 && gap < 480 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        quiet.current = performance.now() + 500;
+        box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
+      } else {
+        quiet.current = performance.now() + 150;
+        box.scrollTop = box.scrollHeight;
+      }
+    } else if (changed && !id && tasks && tasks.length > 0 && box.scrollHeight - box.scrollTop - box.clientHeight > 80) {
+      // Only when the new words are below what is in view: an answer already on screen needs no 「新回答 ↓」.
       void Promise.resolve().then(() => setUnseen(true));
     }
   });
@@ -975,7 +983,8 @@ export function AssistantDock({ open, close, beta = false, quiet = false, ...thr
     const fit = () => root.style.setProperty("--dock-top", `${document.querySelector<HTMLElement>(".topbar")?.offsetHeight ?? 64}px`);
     fit();
     window.addEventListener("resize", fit);
-    return () => { delete root.dataset.dock; root.style.removeProperty("--dock-top"); window.removeEventListener("resize", fit); };
+    // Only what this panel set is taken back: another page's panel may already have said otherwise.
+    return () => { if (root.dataset.dock === mode) delete root.dataset.dock; root.style.removeProperty("--dock-top"); window.removeEventListener("resize", fit); };
   }, [open, mode]);
   // Opened, the cursor is in the box (V: the author does not walk past the whole conversation).
   useEffect(() => {
@@ -991,6 +1000,23 @@ export function AssistantDock({ open, close, beta = false, quiet = false, ...thr
       </header>
       <AssistantThread {...thread} variant="dock" onNavigate={() => { thread.onNavigate?.(); if (mode === "overlay") close(); }} />
     </aside>
+  );
+}
+
+/** The assistant on the writing page: the 助手 tab of the right column, in the column's place instead of a panel over the page. Built always
+    (hidden while the column shows the findings or is folded away), so a running task goes on. */
+export function AssistantPane({ open, quiet = false, ...thread }: Omit<ThreadProps, "variant"> & { open: boolean; quiet?: boolean }) {
+  const frame = useRef<HTMLElement>(null);
+  // Opened, the cursor is in the box, as in the panel.
+  useEffect(() => {
+    if (!open || quiet) return;
+    const timer = window.setTimeout(() => frame.current?.querySelector<HTMLTextAreaElement>('textarea[aria-label="向助手提问"]')?.focus({ preventScroll: true }), 40);
+    return () => window.clearTimeout(timer);
+  }, [open, quiet]);
+  return (
+    <section ref={frame} id="assistant-dock" className="a-pane" role="tabpanel" aria-labelledby="side-tab-assistant" aria-label="助手" hidden={!open} data-testid="assistant-dock">
+      <AssistantThread {...thread} variant="dock" />
+    </section>
   );
 }
 

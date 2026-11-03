@@ -26,7 +26,7 @@ import {
   timeLabel,
 } from "../labels";
 import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, isSampleWork, SAMPLE_FREE, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
-import { AssistantBridge, AssistantDock, type Command, DockContext, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
+import { AssistantBridge, AssistantPane, type Command, DockContext, type Incoming, type IssueInfo, SelectionToolbar, type ThreadMaterial, useAssistantAnchor, type WritingLink } from "./assistant";
 import { quotaReason } from "./assistant-parts";
 import { recapTaken, recapWanted } from "./assistant-route";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
@@ -59,6 +59,11 @@ export function WritingPage(props: PageProps) {
   return <DraftDesk {...props} openChapter={open} />;
 }
 
+/** The right column folded away to a strip is remembered on this device. */
+const SIDE_FOLDED = "scc.writing.side-folded";
+const readSideFolded = () => { try { return window.localStorage.getItem(SIDE_FOLDED) === "1"; } catch { return false; } };
+const writeSideFolded = (folded: boolean) => { try { window.localStorage.setItem(SIDE_FOLDED, folded ? "1" : "0"); } catch { /* it is only a memory */ } };
+
 function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
   // "去写作页做写前回顾" in another page's assistant brings the author here: the dock opens and starts it, or
@@ -81,6 +86,15 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const [revealSide, setRevealSide] = useState(0);
   const { setOpen: setDockOpen } = dock;
   useEffect(() => { if (forRecap) setDockOpen(true); }, [forRecap, setDockOpen]);
+  // The right column holds the findings and the assistant as two tabs: the assistant's tab is "the dock is open" (the top bar's 助手, Ctrl + / and
+  // Esc work as on the other pages). The column folds to a strip; folding closes the assistant too, so opening it again in any way unfolds it.
+  const [folded, setFolded] = useState(readSideFolded);
+  const fold = (next: boolean) => { setFolded(next); writeSideFolded(next); };
+  const wasOpen = useRef(dock.open);
+  useEffect(() => {
+    if (dock.open && !wasOpen.current) { setFolded(false); writeSideFolded(false); }
+    wasOpen.current = dock.open;
+  }, [dock.open]);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -100,6 +114,17 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const hasAlignment = hasPlans && (Boolean(p.planAlignment) || p.analysisBusy === "plan_alignment");
   // The assistant is offered only to accounts the roll-out has reached; for the others its tab, its entrances and its column are not there.
   const assistantOn = Boolean(user.assistant?.available);
+  const assistantTab = assistantOn && dock.open;
+  // An answer that finished while the assistant was out of sight leaves a dot on its tab (and on the folded strip) until it is looked at.
+  const [unread, setUnread] = useState(false);
+  const wasBusy = useRef(false);
+  const assistantSeen = assistantTab && !folded;
+  useEffect(() => {
+    if (wasBusy.current && !assistantBusy && !assistantSeen) setUnread(true);
+    wasBusy.current = assistantBusy;
+  }, [assistantBusy, assistantSeen]);
+  if (assistantSeen && unread) setUnread(false);
+  const showSide = (tab: "findings" | "assistant") => { fold(false); setDockOpen(tab === "assistant"); };
   const empty = !(p.saved?.body ?? p.draft?.body ?? "").trim();
   const chars = writtenChars(p.draft?.body ?? "");
   const chapterNumber = p.draft?.chapter_number ?? project.current_draft.chapter_number;
@@ -133,12 +158,12 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   useAssistantAnchor("writing", { chapter_number: chapterNumber });
   // A passage picked in the draft goes to the assistant: into the question, or asked about at once.
   const bring = (text: string, quick: boolean) => {
-    setDockOpen(true);
+    showSide("assistant");
     setIncoming({ text, quick, nonce: ++incomingNonce.current });
   };
   // A task the page starts for the assistant: the dock opens, the thread starts it (or takes the finding as the question's context) or says why it cannot.
   const bringTask = (next: { kind: "recap" } | { kind: "fix"; issueId: string } | { kind: "context"; issueId: string } | { kind: "check"; text: string }) => {
-    setDockOpen(true);
+    showSide("assistant");
     setCommand({ ...next, nonce: ++incomingNonce.current });
   };
   // Read once: a later visit does not start it again.
@@ -261,7 +286,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   };
 
   return (
-    <section className="page writing" data-mobile-pane={mobilePane} data-dock={dock.open ? "open" : "closed"}>
+    <section className="page writing" data-mobile-pane={mobilePane} data-dock={assistantTab ? "open" : "closed"} data-side={folded ? "folded" : "open"}>
       <div className="writing-layout">
       <div className="writing-main">
       {notices}
@@ -347,9 +372,33 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
         </div>
       </div>
 
-        <aside id="writing-side" className="findings" aria-label="检查与回顾">
-          <h2 className="side-title" id="side-tab-findings">检查结果 <span className="num side-tab-count">{issues.length}</span></h2>
-          <div id="side-panel-findings">
+        <aside id="writing-side" className="findings side" aria-label="检查与助手">
+          {folded && (
+            <div className="side-strip">
+              <button type="button" className="side-strip-item" aria-label={`展开检查结果（${issues.length} 处）`} title="展开检查结果" onClick={() => showSide("findings")}>
+                <span className="num">{issues.length}</span><span>检查</span>
+              </button>
+              {assistantOn && (
+                <button type="button" className="side-strip-item" aria-label={unread ? "展开助手（有新回答）" : "展开助手"} title="展开助手" onClick={() => showSide("assistant")}>
+                  <span>助手</span>{unread && <i className="side-dot" aria-hidden="true" />}
+                </button>
+              )}
+            </div>
+          )}
+          <div className="side-tabs" role="tablist" aria-label="右栏">
+            <button type="button" role="tab" id="side-tab-findings" className="side-tab" aria-selected={!assistantTab} aria-controls="side-panel-findings" onClick={() => setDockOpen(false)}>
+              检查结果 <span className="num side-tab-count">{issues.length}</span>
+            </button>
+            {assistantOn && (
+              <button type="button" role="tab" id="side-tab-assistant" className="side-tab" aria-selected={assistantTab} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={() => setDockOpen(true)}>
+                助手{user.assistant?.beta && <span className="a-beta">测试版</span>}{unread && <i className="side-dot" aria-hidden="true" />}
+              </button>
+            )}
+            <button type="button" className="side-fold" aria-label="收起右栏" title="收起右栏" onClick={() => { fold(true); setDockOpen(false); }}>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5M9 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+          <div id="side-panel-findings" role="tabpanel" aria-labelledby="side-tab-findings" hidden={assistantTab}>
           {hasAlignment && <PlanBlock p={p} folded={planFolded} setFolded={setPlanFolded} />}
           {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
             <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
@@ -361,8 +410,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
           )}
           {p.run ? (
             <>
-              {outdated && p.run.status === "completed" && <p className="findings-note">草稿在检查之后改过，下面的结果针对的是先前的正文。</p>}
-              {p.run.result_origin === "demo_preset" && <p className="findings-note"><strong>示例结果</strong> · 示例作品预先放好的结果，用来展示怎么处理；这次没有调用模型。</p>}
+              {outdated && p.run.status === "completed" && <p className="findings-note">草稿在检查之后改过，下面的结果针对的是先前的正文{assistantOn ? "；再检查一次后，才能把它们交给助手" : ""}。</p>}
+              {p.run.result_origin === "demo_preset" && <p className="findings-note"><strong>示例结果</strong> · 示例作品预先放好的结果，用来展示怎么处理；这次没有调用模型{assistantOn ? "。点「再检查一次」得到真实结果后，每一处都能交给助手" : ""}。</p>}
               {p.run.status === "completed" && (p.run.metrics?.undecided_claim_count ?? 0) > 0 && (
                 <p className="findings-note">{(p.run.metrics?.undecided_claims ?? []).some((row) => row.error_code === "provider_attempt_quota_exceeded") ? `额度用完，有 ${p.run.metrics?.undecided_claim_count} 句没检查，结果里不包括它们。` : `有 ${p.run.metrics?.undecided_claim_count} 句没能判断，结果里不包括它们。`}</p>
               )}
@@ -403,7 +452,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                           <strong>{findingHeadline(issue)}</strong>
                         </span>
                       </button>
-                      {assistantOn && !isOpen && <button type="button" className="link finding-ask" disabled={Boolean(assistReason)} title={assistReason || undefined} onClick={() => bringTask({ kind: "context", issueId: issue.id })}>问助手</button>}
+                      {/* When no finding can go to the assistant, the column says why once, above the list, instead of a greyed link under each. */}
+                      {assistantOn && !isOpen && !assistReason && <button type="button" className="link finding-ask" onClick={() => bringTask({ kind: "context", issueId: issue.id })}>问助手</button>}
                       {isOpen && p.selected && (
                         <div className={folding === issue.id ? "collapse closing" : "collapse"}>
                           <div><FindingDetail key={issue.id} p={p} go={go} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} assist={assistantOn ? { reason: assistReason, run: () => bringTask({ kind: "fix", issueId: issue.id }) } : null} /></div>
@@ -423,13 +473,12 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
           ) : <p className="findings-empty">{p.readOnly ? "这一章没有检查结果。" : empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
           {p.run && p.run.result_origin !== "demo_preset" && <p className="ai-note" data-testid="ai-note">检查结果由 AI 生成，可能有错漏，请对照原文判断。</p>}
           </div>
+          {assistantOn && (
+            <AssistantPane key={project.id} open={assistantTab && !folded} quiet={dock.restored} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
+              usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={incoming} command={command} picked={picked} focus={dock.focus} writing={writingLink} material={material} />
+          )}
         </aside>
       </div>
-
-      {assistantOn && (
-        <AssistantDock key={project.id} open={dock.open} quiet={dock.restored} close={() => setDockOpen(false)} beta={Boolean(user.assistant?.beta)} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
-          usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={incoming} command={command} picked={picked} focus={dock.focus} writing={writingLink} material={material} />
-      )}
 
       {p.changeSet && <FactReview p={p} />}
 

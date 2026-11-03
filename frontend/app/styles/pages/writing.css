@@ -257,3 +257,40 @@
 .revision-impact .impact p { display: flex; align-items: baseline; gap: 8px; margin: 0; }
 .revision-impact .impact .num { min-width: 0; font-size: var(--fs-figure-md); }
 .revision-impact .impact span:not(.num) { font-size: var(--fs-14); line-height: 1; }
+
+/* v2.2: the right column holds the findings and the assistant as two tabs, with a key to fold it to a strip. Only the open tab's own body
+   scrolls; the tabs stay at the top of the column and the assistant's box at its foot. */
+.writing-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 420px); column-gap: 40px; }
+.writing .side { margin: 0; padding: 0; }
+@media (min-width: 1024px) { .writing .side { display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid var(--c-line); } }
+.writing .side-tabs { position: static; flex: none; flex-wrap: nowrap; align-items: center; gap: 0 var(--s-6); padding: 0 var(--s-2) 0 var(--s-4); }
+.side-tab .a-beta { vertical-align: 1px; }
+.side-dot { display: inline-block; width: 6px; height: 6px; margin-left: 4px; border-radius: var(--r-pill); background: var(--c-blue); vertical-align: 6px; }
+.side-fold { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; margin-left: auto; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.side-fold:hover { background: var(--c-fill); color: var(--c-ink); }
+.side-fold svg { width: 14px; height: 14px; }
+#side-panel-findings { flex: 1 1 auto; min-height: 0; padding: 0 var(--s-4) var(--s-3); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+#side-panel-findings[hidden] { display: none; }
+.writing .a-pane { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.writing .a-pane[hidden] { display: none; }
+.writing .a-pane > .assistant { flex: 1 1 auto; height: auto; }
+.side-strip { display: none; }
+@media (min-width: 1024px) {
+  .writing[data-side="folded"] .writing-layout { grid-template-columns: minmax(0, 1fr) 56px; column-gap: 32px; }
+  .writing[data-side="folded"] .side-tabs,
+  .writing[data-side="folded"] #side-panel-findings,
+  .writing[data-side="folded"] .a-pane { display: none; }
+  .writing[data-side="folded"] .side-strip { display: grid; justify-items: center; align-content: start; gap: var(--s-1); padding-top: var(--s-3); }
+}
+.side-strip-item { position: relative; display: grid; justify-items: center; gap: 2px; width: 48px; padding: var(--s-2) 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); font-size: var(--fs-12); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.side-strip-item:hover { background: var(--c-fill); color: var(--c-ink); }
+.side-strip-item .num { color: var(--c-ink); font-size: 22px; line-height: 1; }
+.side-strip-item .side-dot { position: absolute; top: 6px; right: 8px; margin: 0; }
+/* Narrow windows: the page shows the draft or the findings (the switch above the draft); the assistant, opened, covers the page under the top bar,
+   with the tabs to go back. */
+@media (max-width: 1023px) {
+  .writing .side-tabs, .side-fold { display: none; }
+  #side-panel-findings { padding: 0; overflow: visible; }
+  .writing[data-dock="open"] .side { position: fixed; inset: var(--topbar-h) 0 0 0; z-index: 45; display: flex; flex-direction: column; height: auto; overflow: hidden; background: var(--c-ground); }
+  .writing[data-dock="open"] .side-tabs { display: flex; }
+}

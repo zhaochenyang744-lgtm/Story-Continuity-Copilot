@@ -484,7 +484,9 @@ export function App() {
           </nav>
         </footer>
       )}
-      {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && (
+      {/* The writing page has the assistant in its own right column (a written chapter opened there, page "chapters", keeps this panel). The address is
+          checked too: the page names itself only after its first render, and for that moment this panel would push the page aside. */}
+      {drawer.open && user && user.assistant?.available && projectId && p.project && assistantAnchor && assistantAnchor.page !== "writing" && (assistantAnchor.page === "chapters" || !pathname.endsWith("/workspace")) && (
         <AssistantDock open quiet={Boolean(drawer.restored)} key={p.project.id} project={p.project} anchor={assistantAnchor} usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={drawer.incoming} focus={drawer.focus}
           material={{ chapters: p.chapters.map((chapter) => ({ number: chapter.number, title: chapter.title })), characters: p.characters.map((person) => ({ id: person.id, name: person.name })), draftBody: p.draft?.body ?? "", issues: [], issuesReason: "" }}
           beta={Boolean(user.assistant?.beta)}

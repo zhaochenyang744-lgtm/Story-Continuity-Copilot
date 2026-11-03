@@ -486,7 +486,7 @@ p.cx-text { color: var(--c-muted); overflow-wrap: anywhere; }
 
 /* ── The dock: the assistant, one panel for every page ──
    Docked at the right under the top bar, 400px wide. Open, it pushes the page aside (the root element says data-dock="push": the page keeps
-   400px free at its right); in a window too narrow for both (under 1440 on the writing page, under 1200 elsewhere) it lies over the page's
+   400px free at its right); in a window too narrow for both (under 1200; the writing page keeps the assistant in its own right column instead) it lies over the page's
    right edge (data-dock="overlay"), and on a phone it takes the whole width. The panel is a step lighter than the page and has no line:
    it is told apart by its ground. Its conversation is the only thing in it that scrolls. */
 .a-dock { position: fixed; top: var(--dock-top, var(--topbar-h)); right: 0; bottom: 0; z-index: 35; display: flex; flex-direction: column; width: 400px; max-width: 100%; background: var(--c-raised); }
@@ -502,21 +502,12 @@ html[data-dock="push"] .app { padding-right: 400px; }
 html[data-dock="push"] .topbar { margin-right: -400px; }
 html[data-dock="push"] .feedback { left: var(--s-6); width: min(calc(100% - 432px), 560px); transform: none; }
 html[data-dock="push"] .feedback { animation-name: toast-in-left; }
-/* The writing page with the dock open beside it: the chapters fold to a strip of their numbers, so the draft, the findings and the assistant
-   are side by side. */
-html[data-dock="push"] .writing-layout { grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); column-gap: var(--s-8); }
-html[data-dock="push"] .writing .draft-grid { grid-template-columns: 48px minmax(0, 1fr); gap: 0 var(--s-6); }
-html[data-dock="push"] .writing .draft-chapters .label,
-html[data-dock="push"] .writing .draft-chapters .rail-title,
-html[data-dock="push"] .writing .draft-chapters .badge { display: none; }
-html[data-dock="push"] .writing .draft-chapters button { justify-content: center; padding: 8px 0; }
 .rail-title { min-width: 0; }
 .a-dock .a-thread { padding-inline: var(--s-4); }
 
-/* An empty conversation: the sentence, the questions and the box together at the top of the panel, no space between them. */
-.assistant.assistant-empty { flex: 0 0 auto; height: auto; }
-.assistant-empty .a-thread { flex: 0 0 auto; overflow: visible; padding-bottom: 0; }
-.assistant-empty .a-bar { padding-bottom: 0; }
+/* An empty conversation: the box at the foot as always, and the sentence and the questions just above it, so the panel reads like a chat that has
+   not begun (the space is above them, not under the box). */
+.assistant-empty .a-thread { display: flex; flex-direction: column; justify-content: flex-end; }
 
 /* The allowance is used up: one line and the way out, where the box was. */
 .a-used { display: grid; justify-items: start; gap: var(--s-3); padding: var(--s-4); border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--ring-rest); font-size: var(--fs-14); line-height: 1.7; }
@@ -598,3 +589,24 @@ html[data-dock="push"] .writing .draft-chapters button { justify-content: center
 
 /* The conversation never scrolls sideways (V16-16: at 375 wide something 7px too wide made a bar). */
 .a-thread { overflow-x: hidden; }
+
+/* v2.2 look of the conversation: each answer on a white card of its own (the question stays a grey bubble outside it), the line above the answer
+   says what it was in the ink, group titles in the ink and bold, the body at 14, the marks as small grey keys that read as something to press,
+   and a thin rule above the row of actions. Earlier answers folded under a newer one stay plain. */
+.assistant .a-task { gap: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); }
+.a-fold-body .a-task { padding: 0; background: none; box-shadow: none; }
+.a-task .a-card, .a-task .a-chg-card { background: var(--c-raised); }
+.a-process .lead { color: var(--c-ink); font-weight: 700; }
+.a-answer, .a-ri { font-size: var(--fs-14); line-height: 1.8; }
+.a-recap-sec + .a-recap-sec { margin-top: var(--s-1); }
+.a-label { color: var(--c-ink); font-size: var(--fs-13); font-weight: 700; }
+.a-ri-list { gap: var(--s-1); }
+.a-cite { vertical-align: 1px; font-size: 11px; line-height: 1; }
+.a-cite button { min-width: 16px; padding: 1px 4px; border-radius: var(--r-sm); background: var(--c-fill); color: var(--c-ink-2); font-size: 11px; font-weight: 700; line-height: 1.4; }
+.a-foot { margin-top: var(--s-1); padding-top: var(--s-2); border-top: 1px solid var(--c-line); }
+/* While a task runs: the three squares breathe one after another instead of jumping. */
+.a-three i { animation: a-breathe 1.2s ease-in-out infinite; }
+.a-three i:nth-child(2) { animation-delay: .2s; }
+.a-three i:nth-child(3) { animation-delay: .4s; }
+@keyframes a-breathe { 0%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: scaleY(1.6); } }
+@media (prefers-reduced-motion: reduce) { .a-three i { animation: none; opacity: .6; } }
