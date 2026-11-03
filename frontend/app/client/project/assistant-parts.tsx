@@ -88,7 +88,10 @@ export function spokenResult(task: AssistantTask): string {
   if (isRecap(task.answer)) return `写前回顾完成了：第 ${task.answer.chapter_number} 章`;
   const answer = sentencesOf(task);
   const first = answer?.sentences[0]?.text ?? answer?.note ?? "";
-  return task.kind === "fix_issue" ? `助手给出了改法：${first}` : task.kind === "change" ? `助手给出了资料改动，等你确认：${first}` : `助手回答了：${first}`;
+  // 等你确认 only when there is a card to confirm (a change asked for may end without one).
+  const waiting = (task.changes ?? []).some((item) => item.status === "proposed");
+  const decision = waiting && (task.changes ?? []).every((item) => item.kind === "add_decision");
+  return task.kind === "fix_issue" ? `助手给出了改法：${first}` : waiting ? `${decision ? "助手准备了一条决定" : "助手给出了资料改动"}，等你确认：${first}` : `助手回答了：${first}`;
 }
 
 /** Why a new task was refused, in the author's words (never the code). */
@@ -206,15 +209,25 @@ export const sourcesShown = (task: AssistantTask, skip?: Set<string>) =>
 /** v2.2: 出处 as a small pill at the right end of an answer's row of actions, with the chapters it comes from stacked in it (a fact or a plan shows
     as 资); the list opens under the row (SourcesPanel). */
 export function SourcesPill({ task, shown, open, toggle, panel }: { task: AssistantTask; shown: { ref: string; n: number }[]; open: boolean; toggle: () => void; panel: string }) {
-  // The chapters in order (a fact or a plan last), the first three.
-  const chapters = [...new Set(shown.map(({ ref }) => task.sources[ref]?.chapter_number ?? null))].sort((a, b) => (a ?? Infinity) - (b ?? Infinity));
-  const marks = chapters.map((chapter) => (chapter == null ? "资" : String(chapter))).slice(0, 3);
+  // The number is the answer's own count (its marks run 1 to N); then the chapters they come from, in words, so they are not read as marks.
+  const chapters = [...new Set(shown.map(({ ref }) => task.sources[ref]?.chapter_number).filter((chapter): chapter is number => chapter != null))].sort((a, b) => a - b);
   return (
     <button type="button" className="a-src-pill" aria-expanded={open} aria-controls={panel} onClick={toggle}>
-      <span className="stack" aria-hidden="true">{marks.map((mark) => <i key={mark}>{mark}</i>)}</span>出处 {shown.length} 处
+      出处 {shown.length} 处{chapters.length > 0 && <span className="where"> · 第 {chapterRuns(chapters)} 章</span>}
     </button>
   );
 }
+/** 3、5–7 for chapters 3, 5, 6, 7. */
+const chapterRuns = (numbers: number[]) => {
+  const runs: string[] = [];
+  for (let at = 0; at < numbers.length;) {
+    let end = at;
+    while (end + 1 < numbers.length && numbers[end + 1] === numbers[end] + 1) end += 1;
+    runs.push(end > at ? `${numbers[at]}–${numbers[end]}` : String(numbers[at]));
+    at = end + 1;
+  }
+  return runs.join("、");
+};
 export function SourcesPanel({ task, shown, locate, id }: { task: AssistantTask; shown: { ref: string; n: number }[]; locate: (source: AssistantSource) => void; id: string }) {
   return (
     <ol id={id} className="a-sources" aria-label="出处">
@@ -231,10 +244,12 @@ export const notChecked = (task: AssistantTask) => (task.coverage?.not_checked ?
 export const hitLimit = (task: AssistantTask) => (task.coverage?.not_checked ?? []).some((item) => item.includes(LIMIT_MARK));
 
 /** A task that was stopped: it says what the stop cost (the words spent up to then are not given back). */
-export function StoppedNote({ task, visitor }: { task: AssistantTask; visitor: boolean }) {
+export function StoppedNote({ task, visitor, retry, blocked = "" }: { task: AssistantTask; visitor: boolean; /** 重新问: the same request again (a new task, counted like one). */ retry?: () => void; blocked?: string }) {
   if (task.status !== "cancelled") return null;
   const spent = !visitor && task.usage.chars_charged > 0;
-  return <p className="a-note">{spent ? `已停止，计 ${formatCount(task.usage.chars_charged)} 字` : "已停止，没有计字数"}</p>;
+  // A visitor counts questions, not characters: the line says whether this one counted (it did, once the task had started).
+  const said = visitor ? "已停止，这次计 1 次提问" : spent ? `已停止，计 ${formatCount(task.usage.chars_charged)} 字` : "已停止，没有计字数";
+  return <p className="a-note">{said}{retry && <> <button type="button" className="a-link" disabled={Boolean(blocked)} title={blocked || undefined} onClick={retry}>重新问</button></>}</p>;
 }
 
 /** Said above the answer when the task ended because the steps or the budget ran out, not because it was finished. */

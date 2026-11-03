@@ -44,7 +44,7 @@ export function WholeQuote({ text, summary }: { text: string; summary: string })
     the chapter, the quoted words and a way to the original for each source; the card stays for 300 ms after the pointer leaves, so the
     pointer can get into it. */
 function Cite({ marks, locate, summary, labelOf = cardLabel }: { marks: Mark[]; locate: (source: AssistantSource) => void; /** The words on top of a source in the card (the default names the kind and the chapter). */ labelOf?: (source: AssistantSource) => string; /** The sentence the mark stands after: when given, the card shows each source whole and sets the sentence that says the same apart (写前回顾). */ summary?: string }) {
-  const [at, setAt] = useState<{ left: number; top?: number; bottom?: number } | null>(null);
+  const [at, setAt] = useState<{ left: number; top?: number; bottom?: number; max: number } | null>(null);
   const button = useRef<HTMLButtonElement>(null);
   const pop = useRef<HTMLSpanElement>(null);
   const mark = useRef<HTMLElement>(null);
@@ -79,9 +79,12 @@ function Cite({ marks, locate, summary, labelOf = cardLabel }: { marks: Mark[]; 
     const box = button.current?.getBoundingClientRect();
     if (!box) return;
     const left = Math.min(Math.max(box.left + box.width / 2 - CARD_WIDTH / 2, 8), window.innerWidth - CARD_WIDTH - 8);
-    // A card that shows its sources whole is tall: it goes to the side of the mark with more room.
-    const below = summary !== undefined ? window.innerHeight - box.bottom > box.top : box.top < 210;
-    setAt(below ? { left, top: box.bottom + 8 } : { left, bottom: window.innerHeight - box.top + 8 });
+    // Above the mark unless there is little room there and more below (a card that shows its sources whole goes to the side with more room);
+    // the card is never taller than its side of the window and scrolls inside when its sources are long.
+    const roomAbove = box.top - 16;
+    const roomBelow = window.innerHeight - box.bottom - 16;
+    const below = summary !== undefined ? roomBelow > roomAbove : roomAbove < 240 && roomBelow > roomAbove;
+    setAt(below ? { left, top: box.bottom + 8, max: roomBelow } : { left, bottom: window.innerHeight - box.top + 8, max: roomAbove });
   };
   const closeSoon = () => {
     window.clearTimeout(timer.current);
@@ -117,7 +120,7 @@ function Cite({ marks, locate, summary, labelOf = cardLabel }: { marks: Mark[]; 
         onFocus={() => { if (!quiet.current) open(); }} onBlur={closeSoon}
         onClick={() => { if (touch.current && wasOpen.current) setAt(null); else open(); }}>{text}</button>
       {at && (
-        <span ref={pop} className="a-pop" role="group" aria-label={`出处 ${text}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH } as CSSProperties}
+        <span ref={pop} className="a-pop" role="group" aria-label={`出处 ${text}`} style={{ left: at.left, top: at.top, bottom: at.bottom, width: CARD_WIDTH, maxHeight: at.max } as CSSProperties}
           onPointerEnter={pointer} onMouseEnter={keep} onMouseLeave={() => { if (!touch.current) closeSoon(); }} onFocus={keep} onBlur={closeSoon}>
           {marks.map((item) => (
             <span key={item.n} className="a-pop-one">
@@ -134,6 +137,8 @@ function Cite({ marks, locate, summary, labelOf = cardLabel }: { marks: Mark[]; 
 
 /** What the program writes as the first line of an answer that found nothing; the model's own note goes under it. */
 export const NOT_FOUND_TEXT = "没有找到问题问到的内容。";
+/** The first line of an answer to a sentence that only states a decision to keep (v2.2). */
+export const DECISION_TEXT = "这是一条要记下的决定：确认下面的卡片后，以后的检查和回答都会按它来。";
 /** Points (one layer) when this many of the sentences after the lead name what they are about; otherwise a paragraph. */
 export const POINTS_FROM = 3;
 
@@ -173,7 +178,9 @@ export function SentenceText({ task, sentence, bold, order, refs, locate, whole 
 /** The answer: an opening line if the model gave one, then the sentences as points (each with its label in bold) when enough of them have a label,
     otherwise as one paragraph; a mark after each sentence names the sources, and the model's note comes last. An answer that found nothing starts with
     a line the program writes. An off-topic question gets its fixed reply instead. */
-export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantTask; fade: boolean; locate: (source: AssistantSource) => void; innerRef?: RefObject<HTMLDivElement | null> }) {
+export function AnswerBlock({ task, fade, locate, innerRef, decision = false }: { task: AssistantTask; fade: boolean; locate: (source: AssistantSource) => void; innerRef?: RefObject<HTMLDivElement | null>;
+  /** The sentence only states a decision to keep: nothing was looked up, so the answer says what the card below is instead of 「没有找到……」. */
+  decision?: boolean }) {
   const answer = sentencesOf(task);
   if (!answer) return null;
   if (answer.status === "out_of_scope") return <p className="a-fixed" data-testid="out-of-scope">{task.out_of_scope_text || OUT_OF_SCOPE_TEXT}</p>;
@@ -187,7 +194,9 @@ export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantT
   const looseNote = splitNote(answer.note).rest;
   return (
     <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={layout}>
-      {answer.status === "not_found" && <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>}
+      {answer.status === "not_found" && (decision
+        ? <p className="a-lead" data-testid="decision-line">{DECISION_TEXT}</p>
+        : <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>)}
       {lead && <p className="a-lead">{sentenceOf(lead, false)}</p>}
       {rest.length > 0 && (points
         ? <ul className="a-points">{rest.map((sentence, index) => <li key={index}>{sentenceOf(sentence, layout === "points")}</li>)}</ul>

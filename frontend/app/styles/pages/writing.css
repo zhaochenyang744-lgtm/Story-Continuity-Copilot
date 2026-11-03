@@ -293,6 +293,13 @@
 @media (max-width: 1023px) {
   .writing .side-tabs, .side-fold { display: none; }
   #side-panel-findings { padding: 0; overflow: visible; }
-  .writing[data-dock="open"] .side { position: fixed; inset: var(--topbar-h) 0 0 0; z-index: 45; display: flex; flex-direction: column; height: auto; overflow: hidden; background: var(--c-ground); }
+  /* The whole window, over the top bar too, whatever the column's own alignment: the conversation scrolls inside, the box stays at the foot,
+     and 收起 at the top right is always the way out. */
+  .writing[data-dock="open"] .side { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; align-self: stretch; height: 100vh; height: 100dvh; max-height: none; overflow: hidden; background: var(--c-ground); }
+  .writing[data-dock="open"] .side-close { display: inline-flex; }
   .writing[data-dock="open"] .side-tabs { display: flex; }
 }
+
+/* 收起 for the assistant over a narrow window (the fold key is for the column beside the draft). */
+.side-close { display: none; align-items: center; align-self: center; height: 32px; margin-left: auto; padding: 0 var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--c-blue-text); font-size: var(--fs-14); cursor: pointer; }
+.side-close:hover { background: var(--c-fill); }

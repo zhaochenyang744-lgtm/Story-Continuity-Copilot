@@ -687,7 +687,7 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 .a-answer[data-layout="list"] .a-points { gap: 6px; }
 
 /* 出处 N 处 at the right end of the row of actions: a pill with the chapters it comes from stacked in it (after Perplexity's sources). */
-.a-src-pill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 3px; border: 0; border-radius: var(--r-pill); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); color: var(--c-ink-2); font-size: var(--fs-12); cursor: pointer; transition: box-shadow var(--dur-fast) var(--ease); }
+.a-src-pill { display: inline-flex; align-items: center; gap: 0; height: 26px; padding: 0 10px; border: 0; border-radius: var(--r-pill); background: var(--c-surface); box-shadow: 0 0 0 1px var(--c-line); color: var(--c-ink-2); font-size: var(--fs-12); cursor: pointer; transition: box-shadow var(--dur-fast) var(--ease); }
 .a-src-pill:hover, .a-src-pill[aria-expanded="true"] { box-shadow: 0 0 0 1px var(--c-blue); color: var(--c-ink); }
 .a-src-pill .stack { display: inline-flex; }
 .a-src-pill .stack i { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin-left: -3px; padding: 0 3px; border-radius: var(--r-pill); background: var(--c-blue-tint); box-shadow: 0 0 0 2px var(--c-surface); color: var(--c-blue-text); font-size: 10px; font-style: normal; font-weight: 700; }
@@ -698,3 +698,12 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 /* A follow-up sits flush with the other turns (it used to be set in, which read as a misalignment); its bubble carries a small 接着上一问 instead. */
 .a-follow { margin-left: 0; padding-left: 0; }
 .a-ask-tag { display: block; margin-bottom: 2px; color: var(--c-muted); font-size: var(--fs-12); }
+.a-src-pill .where { color: var(--c-muted); }
+/* A citation card is never taller than its side of the window (set when it opens); long sources scroll inside it. */
+.a-pop { overflow-y: auto; overscroll-behavior: contain; }
+/* A finger needs a bigger target than the icons look: 40px each, with room between, on a touch screen or a narrow window. */
+@media (hover: none), (max-width: 720px) {
+  .a-foot { gap: 4px; }
+  .a-icon, .a-thumbs button { width: 40px; height: 40px; }
+  .a-src-pill { height: 36px; }
+}

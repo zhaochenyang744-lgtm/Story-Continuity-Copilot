@@ -367,6 +367,19 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     }
   });
 
+  // Shown again (the panel opened, the column unfolded) while it was following the end: an answer that finished out of sight is shown from its
+  // start, not its end, and 「新回答 ↓」 is not needed for it.
+  useEffect(() => {
+    const box = thread.current;
+    if (!shown || !box || !stick.current || pinned.current) return;
+    const groups = box.querySelectorAll<HTMLElement>("[data-task]");
+    const last = groups[groups.length - 1];
+    if (!last) return;
+    quiet.current = performance.now() + 300;
+    box.scrollTop += last.getBoundingClientRect().top - box.getBoundingClientRect().top - 8;
+    stick.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+  }, [shown]);
+
   // The block at the top has just been (re)started: show it, not the end of the conversation.
   useEffect(() => {
     if (!topKey) return;

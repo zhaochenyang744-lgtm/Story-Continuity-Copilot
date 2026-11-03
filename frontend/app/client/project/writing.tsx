@@ -90,7 +90,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   // Esc work as on the other pages). The column folds to a strip; folding closes the assistant too, so opening it again in any way unfolds it.
   const [folded, setFolded] = useState(readSideFolded);
   const fold = (next: boolean) => { setFolded(next); writeSideFolded(next); };
-  const wasOpen = useRef(dock.open);
+  // Starts closed so that arriving with the assistant already open (opened on another page) unfolds the column too.
+  const wasOpen = useRef(false);
   useEffect(() => {
     if (dock.open && !wasOpen.current) { setFolded(false); writeSideFolded(false); }
     wasOpen.current = dock.open;
@@ -394,6 +395,8 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                 助手{user.assistant?.beta && <span className="a-beta">测试版</span>}{unread && <i className="side-dot" aria-hidden="true" />}
               </button>
             )}
+            {/* A narrow window shows the assistant over the whole page: this is its way out. */}
+            <button type="button" className="side-close" aria-label="收起助手" title="收起助手" onClick={() => setDockOpen(false)}>收起</button>
             <button type="button" className="side-fold" aria-label="收起右栏" title="收起右栏" onClick={() => { fold(true); setDockOpen(false); }}>
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5M9 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
@@ -475,6 +478,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
           </div>
           {assistantOn && (
             <AssistantPane key={project.id} open={assistantTab && !folded} quiet={dock.restored} project={project} anchor={{ page: "writing", chapter_number: chapterNumber }}
+              onNavigate={() => { if (window.innerWidth < 1024) setDockOpen(false); }}
               usage={usage} visitor={user.account_type === "visitor"} go={go} incoming={incoming} command={command} picked={picked} focus={dock.focus} writing={writingLink} material={material} />
           )}
         </aside>

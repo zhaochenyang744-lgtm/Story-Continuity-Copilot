@@ -8,7 +8,7 @@ import type { AssistantChange, AssistantSource, AssistantTask } from "../../mode
 import { clip } from "../ui";
 import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { ChangeCard } from "./assistant-change";
-import { active, failureText, LimitLine, sentencesOf, sourceKey, SourcesPanel, SourcesPill, sourcesShown, StoppedNote } from "./assistant-parts";
+import { active, failureText, LimitLine, sentencesOf, SourcesPanel, SourcesPill, sourcesShown, StoppedNote } from "./assistant-parts";
 import { howChecked, MissedLine, Steps } from "./assistant-process";
 import { ChosenLine, RerouteMenu, routedLead } from "./assistant-route";
 
@@ -115,24 +115,22 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   // What the line above says besides the use: only what the answer's own words do not (a card waiting to be decided, an answer that disagrees with itself).
   const state = !running && (task.kind === "change" || task.kind === "ask") && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
   const lead = routedLead(task, handlers.timedOut.includes(task.id)) + state;
-  // The passages a change card already stands on are not listed again under the answer.
-  const cardHas = new Set((task.changes ?? []).flatMap((item) => item.evidence.map(sourceKey)));
-  const shownSources = offTopic ? [] : sourcesShown(task, cardHas);
+  const shownSources = offTopic ? [] : sourcesShown(task);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const sourcesPanel = useId();
   return (
     <article className="a-task" aria-live="off" data-answer={task.id}>
       {showQuestion && <Question task={task} handlers={handlers} />}
-      <Steps task={task} locate={handlers.locate} lead={lead} how={!offTopic && !saysDecision && task.status === "completed" ? howChecked(task, handlers.locate, notFound) : null}
+      <Steps task={task} locate={handlers.locate} lead={lead} how={!offTopic && !saysDecision && !running ? howChecked(task, handlers.locate, notFound) : null}
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}</>} />
       <ChosenLine task={task} />
-      <StoppedNote task={task} visitor={handlers.visitor} />
+      <StoppedNote task={task} visitor={handlers.visitor} retry={() => handlers.retry(task)} blocked={handlers.blocked} />
       {task.status === "cancelled" && answer && <p className="a-note" data-testid="after-stop">停止前已经生成</p>}
       {failure && (
         <p className="a-note" role="status">{failure.text}{failure.retry && <> <button type="button" className="a-link" onClick={() => handlers.retry(task)}>重试</button></>}</p>
       )}
       <LimitLine task={task} />
-      <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} />
+      <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} decision={saysDecision} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
         {!offTopic && !saysDecision && <MissedLine task={task} onlyMissed={notFound} />}

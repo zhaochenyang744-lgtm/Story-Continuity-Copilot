@@ -215,7 +215,7 @@ export function useProposalActions(projectId: string, link: WritingLink | undefi
 }
 
 const KIND_TITLE = { edit_this: "改法 · 改本章这句", intentional: "改法 · 这是有意的" } as const;
-const KIND_NOTE = { edit_this: "只动这一句", add_setup: "会新增设定", intentional: "不改正文" } as const;
+const KIND_NOTE = { edit_this: "只动这一句", add_setup: "会新增设定", intentional: "按钮只记下判断" } as const;
 
 function RecheckResult({ recheck }: { recheck: Extract<ProposalRecheck, { status: "clean" | "issues" }> }) {
   if (recheck.status === "clean") return <p className="a-recheck-clean" role="status">复查没有发现问题</p>;
