@@ -707,3 +707,4 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
   .a-icon, .a-thumbs button { width: 40px; height: 40px; }
   .a-src-pill { height: 36px; }
 }
+.a-src-pill .where { margin-left: 4px; }

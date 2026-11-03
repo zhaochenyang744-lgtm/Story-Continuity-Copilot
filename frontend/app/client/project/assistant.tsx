@@ -235,6 +235,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   const lastCreated = useRef("");
   const announced = useRef(new Set<string>());
   const signature = useRef("");
+  const cameHidden = useRef(false);
 
   // The conversation so far, oldest first. Anything that reads the work's old 问一问 history is a separate, read-only list.
   useEffect(() => {
@@ -344,6 +345,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     const now = (tasks ?? []).map((task) => `${task.id}:${task.status}:${task.steps.length}:${task.answer ? 1 : 0}:${task.progress?.done ?? ""}:${task.questions?.length ?? ""}:${task.changes?.length ?? ""}`).join("|") + (pending ? "|pending" : "");
     const changed = now !== signature.current;
     signature.current = now;
+    // Out of sight (the panel or the column is hidden) nothing can be measured or scrolled: remember that something came, and show it when shown.
+    if (!shown) { if (changed) cameHidden.current = true; return; }
     const id = pinned.current;
     const target = id ? box.querySelector<HTMLElement>(`[data-task="${id}"]`) : null;
     if (target) {
@@ -367,17 +370,20 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     }
   });
 
-  // Shown again (the panel opened, the column unfolded) while it was following the end: an answer that finished out of sight is shown from its
-  // start, not its end, and 「新回答 ↓」 is not needed for it.
+  // Shown again (the panel opened, the column unfolded) after something came while it was out of sight: the latest turn is shown from its start
+  // (an answer that finished unseen is read from the top, not the end), and 「新回答 ↓」 is not needed for it.
   useEffect(() => {
     const box = thread.current;
-    if (!shown || !box || !stick.current || pinned.current) return;
+    if (!shown || !box || !cameHidden.current) return;
+    cameHidden.current = false;
     const groups = box.querySelectorAll<HTMLElement>("[data-task]");
     const last = groups[groups.length - 1];
     if (!last) return;
+    pinned.current = null;
     quiet.current = performance.now() + 300;
     box.scrollTop += last.getBoundingClientRect().top - box.getBoundingClientRect().top - 8;
     stick.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+    setUnseen(false);
   }, [shown]);
 
   // The block at the top has just been (re)started: show it, not the end of the conversation.

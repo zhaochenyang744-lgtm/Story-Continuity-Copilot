@@ -297,6 +297,8 @@
      and 收起 at the top right is always the way out. */
   .writing[data-dock="open"] .side { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; align-self: stretch; height: 100vh; height: 100dvh; max-height: none; overflow: hidden; background: var(--c-ground); }
   .writing[data-dock="open"] .side-close { display: inline-flex; }
+  /* The page's rise on arrival moves the layout, and a moved parent would carry the overlay with it: no rise while the assistant covers the page. */
+  .writing[data-dock="open"] .writing-layout { animation: none; transform: none; }
   .writing[data-dock="open"] .side-tabs { display: flex; }
 }
 
