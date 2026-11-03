@@ -261,10 +261,21 @@
 /* v2.2: the right column holds the findings and the assistant as two tabs, with a key to fold it to a strip. Only the open tab's own body
    scrolls; the tabs stay at the top of the column and the assistant's box at its foot. */
 .writing-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 420px); column-gap: 40px; }
-.writing .side { --side-head: 44px; margin: 0; padding: 0; }
-@media (min-width: 1024px) { .writing .side { display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid var(--c-line); } }
-.writing .side-tabs { position: static; flex: none; flex-wrap: nowrap; align-items: stretch; gap: 0 var(--s-6); height: var(--side-head); padding: 0 var(--s-2) 0 var(--s-4); }
-.writing .side-tab { align-items: center; min-height: 0; padding-top: 0; }
+.writing .side { --side-head: 56px; margin: 0; padding: 0; }
+/* A wide window: the column is a sheet a little above the page (its own white, a hairline and a soft shadow), held below the top bar with a
+   margin above and below; the draft and the chapters stay on the page itself. */
+@media (min-width: 1024px) {
+  .writing .side { top: calc(var(--topbar-h) + var(--s-4)); display: flex; flex-direction: column; height: calc(100vh - var(--topbar-h) - 2 * var(--s-4)); height: calc(100dvh - var(--topbar-h) - 2 * var(--s-4));
+    margin: var(--s-4) 0; overflow: hidden; border: 1px solid var(--c-line); border-radius: var(--r-md); background: var(--c-surface); box-shadow: var(--elev-panel); }
+}
+/* The head: the two tabs as one switch on a grey track (the open one white and bold), the count of findings still to decide in red, the fold key at the right. */
+.writing .side-tabs { position: static; flex: none; flex-wrap: nowrap; align-items: center; gap: var(--s-2); height: var(--side-head); padding: 0 var(--s-3); background: none; }
+.side-seg { display: flex; gap: 2px; padding: 3px; border-radius: var(--r-md); background: var(--c-fill); }
+.writing .side-tab { align-items: center; gap: 6px; height: 30px; min-height: 0; margin: 0; padding: 0 var(--s-3); border: 0; border-radius: 7px; color: var(--c-muted); font-size: var(--fs-14); font-weight: 500;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.writing .side-tab[aria-selected="true"] { background: var(--c-surface); color: var(--c-ink); font-weight: 700; box-shadow: 0 1px 2px rgba(17, 17, 17, .12); }
+:root[data-theme="night"] .writing .side-tab[aria-selected="true"] { background: var(--c-fill-hover); box-shadow: none; }
+.writing .side-tab-count { color: var(--c-red-text); font-size: var(--fs-14); font-weight: 700; line-height: 1; }
 .writing .side-fold { align-self: center; }
 .side-tab .a-beta { vertical-align: 1px; }
 .side-dot { display: inline-block; width: 6px; height: 6px; margin-left: 4px; border-radius: var(--r-pill); background: var(--c-blue); vertical-align: 6px; }
@@ -273,20 +284,47 @@
 .side-fold svg { width: 14px; height: 14px; }
 #side-panel-findings { flex: 1 1 auto; min-height: 0; padding: 0 var(--s-4) var(--s-3); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 #side-panel-findings[hidden] { display: none; }
+/* The findings on the sheet: the head with a band of their kinds; the notes in a box of their own; each finding a row that is washed when pointed
+   at, the open one with a blue bar at its left; the handled ones under a line of their own. */
+.writing .side .findings-head { align-items: center; padding-top: var(--s-4); }
+.findings-mix { display: flex; flex: 0 1 120px; gap: 2px; height: 4px; overflow: hidden; border-radius: 2px; }
+.findings-mix i { flex-basis: 0; }
+.mix-high { background: var(--c-red); }
+.mix-mid { background: var(--c-yellow); }
+.mix-gap { background: var(--c-faint); }
+.mix-state { background: var(--c-blue-mid); }
+.writing .side .findings-note { margin: var(--s-3) 0 0; padding: 10px var(--s-3); border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-raised); line-height: 1.7; }
+.writing .side .finding-list { margin-top: var(--s-2); }
+.writing .side .finding { position: relative; margin: 2px calc(-1 * var(--s-2)) 0; padding: 0 var(--s-2); border-bottom: 0; border-radius: var(--r-md); transition: background-color var(--dur-fast) var(--ease); }
+.writing .side .finding:hover:not(.open) { background: var(--c-wash); }
+.writing .side .finding.open { margin: 2px calc(-1 * var(--s-2)) 0; padding: 0 var(--s-2); background: var(--c-raised); }
+.writing .side .finding.open::before { content: ""; position: absolute; top: var(--s-3); bottom: var(--s-3); left: 0; width: 3px; border-radius: 2px; background: var(--c-blue); }
+.writing .side .issue-row { padding: var(--s-3) 0; }
+.writing .side .finding-num { font-size: 22px; }
+.writing .side .finding-head strong { font-size: var(--fs-15); }
+.writing .side .finding.done { opacity: .72; }
+.finding-group { padding: var(--s-4) 0 var(--s-1); color: var(--c-muted); font-size: var(--fs-12); font-weight: 700; letter-spacing: .04em; list-style: none; }
+.writing .side .ai-note { margin-top: var(--s-4); }
 .writing .a-pane { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .writing .a-pane[hidden] { display: none; }
 .writing .a-pane > .assistant { flex: 1 1 auto; height: auto; }
+/* Folded: a small sheet at the top right with the count and 助手; the draft takes the room and stands in the middle of it. */
 .side-strip { display: none; }
 @media (min-width: 1024px) {
   .writing[data-side="folded"] .writing-layout { grid-template-columns: minmax(0, 1fr) 56px; column-gap: 32px; }
+  .writing[data-side="folded"] .side { height: auto; }
   .writing[data-side="folded"] .side-tabs,
   .writing[data-side="folded"] #side-panel-findings,
   .writing[data-side="folded"] .a-pane { display: none; }
-  .writing[data-side="folded"] .side-strip { display: grid; justify-items: center; align-content: start; gap: var(--s-1); padding-top: var(--s-3); }
+  .writing[data-side="folded"] .side-strip { display: grid; justify-items: center; align-content: start; gap: var(--s-1); padding: var(--s-2) 0; }
+  .writing[data-side="folded"] .draft-grid { grid-template-columns: minmax(150px, 200px) minmax(0, 1fr); }
+  .writing[data-side="folded"] .draft { width: 100%; max-width: 680px; justify-self: center; }
 }
-.side-strip-item { position: relative; display: grid; justify-items: center; gap: 2px; width: 48px; padding: var(--s-2) 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); font-size: var(--fs-12); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.side-strip-item { position: relative; display: grid; justify-items: center; gap: 2px; width: 44px; padding: var(--s-2) 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--c-muted); font-size: var(--fs-12); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
 .side-strip-item:hover { background: var(--c-fill); color: var(--c-ink); }
-.side-strip-item .num { color: var(--c-ink); font-size: 22px; line-height: 1; }
+.side-strip-item .num { color: var(--c-ink); font-size: 20px; line-height: 1; }
+.side-strip-item .num.side-pending { color: var(--c-red-text); }
+.side-strip-rule { width: 24px; height: 1px; background: var(--c-line); }
 .side-strip-item .side-dot { position: absolute; top: 6px; right: 8px; margin: 0; }
 /* Narrow windows: the page shows the draft or the findings (the switch above the draft); the assistant, opened, covers the page under the top bar,
    with the tabs to go back. */
@@ -305,3 +343,7 @@
 /* 收起 for the assistant over a narrow window (the fold key is for the column beside the draft). */
 .side-close { display: none; align-items: center; align-self: center; height: 32px; margin-left: auto; padding: 0 var(--s-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--c-blue-text); font-size: var(--fs-14); cursor: pointer; }
 .side-close:hover { background: var(--c-fill); }
+
+/* v2.2: the formatting strip has no line under it; the draft fades out under its foot as it scrolls up, instead of being cut across a line. */
+.draft-tools { border-bottom: 0; }
+.draft-tools::after { content: ""; position: absolute; top: 100%; right: 0; left: 0; height: 24px; background: linear-gradient(var(--c-ground), transparent); pointer-events: none; }

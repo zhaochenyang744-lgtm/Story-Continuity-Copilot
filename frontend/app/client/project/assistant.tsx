@@ -202,6 +202,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   // the 「＋」 menu is only context, and in 自动 the judgement decides what the sentence asks of it.
   const [refine, setRefine] = useState<{ issueId: string; number: number; manual: boolean } | null>(null);
   const [dropped, setDropped] = useState({ chapter: false, character: false });
+  // 「第 N 章草稿」 taken out of the box: this question is not about the draft (v2.2). It comes back after the question is sent.
+  const [draftOff, setDraftOff] = useState(false);
   // What the 「＋」 menu added: it replaces the chapter or person the page would have brought.
   const [chosen, setChosen] = useState<{ chapter: number | null; character: { id: string; name: string } | null }>({ chapter: null, character: null });
   const [sending, setSending] = useState(false);
@@ -449,11 +451,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   }, [activeMode, picked]);
 
   const showChapter = chosen.chapter != null || (anchor.page !== "writing" && anchor.chapter_number != null && !dropped.chapter);
+  const draftChip = onWriting && chapterNumber != null && (activeMode === "auto" || activeMode === "ask") && !selection;
   const showCharacter = chosen.character != null || (Boolean(anchor.character_id) && !dropped.character);
   const contextFor = (picked: string): AssistantContextInput => {
     const chapter = chosen.chapter ?? (anchor.chapter_number != null && !(anchor.page !== "writing" && dropped.chapter) ? anchor.chapter_number : undefined);
     const character = chosen.character?.id ?? (anchor.character_id && !dropped.character ? anchor.character_id : undefined);
-    return { page: anchor.page, ...(chapter != null ? { chapter_number: chapter } : {}), ...(picked ? { selection: picked } : {}), ...(character ? { character_id: character } : {}) };
+    return { page: anchor.page, ...(chapter != null ? { chapter_number: chapter } : {}), ...(picked ? { selection: picked } : {}), ...(character ? { character_id: character } : {}),
+      ...(draftChip && draftOff && !picked ? { without_draft: true as const } : {}) };
   };
 
   const post = async (task: NewTask) => {
@@ -491,7 +495,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     } finally { setSending(false); }
   };
   const afterSend = () => {
-    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setMode("auto");
+    setText(""); setSelection(""); setFollowUp(null); setRefine(null); setTip(""); setMode("auto"); setDraftOff(false);
     setChosen({ chapter: null, character: null });
     // The send button has just gone grey; keep the keyboard where the author is writing.
     field.current?.focus({ preventScroll: true });
@@ -504,8 +508,8 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     const input = text.trim();
     if (!input && !(selection && onWriting && !visitor)) return;
     const base: AssistantContextInput = { ...contextFor(selection), ...(refine ? { page: "writing" as const, issue_id: refine.issueId } : {}) };
-    const kept = { text, selection, followUp, refine, chosen };
-    const putBack = () => { setText(kept.text); setSelection(kept.selection); setFollowUp(kept.followUp); setRefine(kept.refine); setChosen(kept.chosen); };
+    const kept = { text, selection, followUp, refine, chosen, draftOff };
+    const putBack = () => { setText(kept.text); setSelection(kept.selection); setFollowUp(kept.followUp); setRefine(kept.refine); setChosen(kept.chosen); setDraftOff(kept.draftOff); };
     const abandon = (reason?: string) => { setPending(null); putBack(); if (reason) setRefusal(reason); };
     stick.current = true; pinned.current = null; setUnseen(false);
     setRouting(true); setRefusal(""); setAgain(null); setStoppedNote(null);
@@ -790,8 +794,13 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
   // A fix for one finding reads that finding only: the chapter and the person in the box stay in view, greyed, and are not sent.
   const apart = refine ? { muted: true, note: "改法只看这一处" } : {};
   const chips: ComposeChip[] = [
-    // On the writing page the box says which draft the assistant is looking at (not for 写前回顾, which reads only the chapters before it).
-    ...(onWriting && chapterNumber != null && activeMode !== "recap" && !selection ? [{ key: "draft", label: `第 ${chapterNumber} 章草稿`, ...apart }] : []),
+    // On the writing page a question may read the draft, and the box says so; the author can take it out for a question that is not about it.
+    // A fix reads its finding only (the tag stays, greyed); the other uses never read the draft, so the box does not show it for them.
+    ...(draftChip ? [refine
+      ? { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, ...apart }
+      : draftOff
+        ? { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, muted: true, note: "这次不看草稿", restore: () => setDraftOff(false) }
+        : { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, aside: "助手会读到这一章", drop: () => setDraftOff(true) }] : []),
     ...(refine ? [{ key: "refine", label: `检查结果 · 第 ${refine.number} 处`, drop: () => setRefine(null) }] : []),
     ...(selection ? [{ key: "selection", label: `选中：「${clip(selection.replace(/\s+/g, " "), 18)}」`, quote: true, drop: () => setSelection("") }] : []),
     ...(showCharacter ? [{ key: "character", label: `人物 · ${chosen.character?.name ?? anchor.character_name ?? "这张人物卡"}`, ...apart, drop: () => { setChosen((all) => ({ ...all, character: null })); setDropped((all) => ({ ...all, character: true })); } }] : []),

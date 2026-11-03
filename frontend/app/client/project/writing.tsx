@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { type CSSProperties, Fragment, type KeyboardEvent as ReactKeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { json, labelError, labelRunFailure } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
 import { countVisibleText, DraftWordCount, flashText, proofreadDraftText, replaceVisibleDraftText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
@@ -105,6 +105,10 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
   const issues = groupIssues(p.run?.issues ?? []);
   const isDone = (issue: Issue) => Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
   const pending = issues.filter((issue) => issueNeedsDecision(issue, p.locallyResolvedIssueIds)).length;
+  // The list puts handled findings after the rest; the one open (or folding away) stays where it is until it is closed.
+  const numbered = issues.map((issue, index) => ({ issue, index }));
+  const settled = (issue: Issue) => isDone(issue) && p.selected?.id !== issue.id && folding !== issue.id;
+  const settledCount = issues.filter(settled).length;
   // Findings whose evidence is not enough to decide on are still open until the author has looked at them (标为待修改); the page does not say everything is done while one is.
   const unsure = issues.filter((issue) => !isDone(issue) && !issueNeedsDecision(issue, p.locallyResolvedIssueIds) && !issue.to_revise).length;
   // The backend only offers a fact review for findings the author kept on purpose and that came with a proposed fact change.
@@ -376,9 +380,10 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
         <aside id="writing-side" className="findings side" aria-label="检查与助手">
           {folded && (
             <div className="side-strip">
-              <button type="button" className="side-strip-item" aria-label={`展开检查结果（${issues.length} 处）`} title="展开检查结果" onClick={() => showSide("findings")}>
-                <span className="num">{issues.length}</span><span>检查</span>
+              <button type="button" className="side-strip-item" aria-label={`展开检查结果（${pending} 处待定）`} title="展开检查结果" onClick={() => showSide("findings")}>
+                <span className={`num${pending ? " side-pending" : ""}`}>{pending}</span><span>检查</span>
               </button>
+              {assistantOn && <i className="side-strip-rule" aria-hidden="true" />}
               {assistantOn && (
                 <button type="button" className="side-strip-item" aria-label={unread ? "展开助手（有新回答）" : "展开助手"} title="展开助手" onClick={() => showSide("assistant")}>
                   <span>助手</span>{unread && <i className="side-dot" aria-hidden="true" />}
@@ -386,15 +391,18 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
               )}
             </div>
           )}
-          <div className="side-tabs" role="tablist" aria-label="右栏">
-            <button type="button" role="tab" id="side-tab-findings" className="side-tab" aria-selected={!assistantTab} aria-controls="side-panel-findings" onClick={() => setDockOpen(false)}>
-              检查结果 <span className="num side-tab-count">{issues.length}</span>
-            </button>
-            {assistantOn && (
-              <button type="button" role="tab" id="side-tab-assistant" className="side-tab" aria-selected={assistantTab} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={() => setDockOpen(true)}>
-                助手{user.assistant?.beta && <span className="a-beta">测试版</span>}{unread && <i className="side-dot" aria-hidden="true" />}
+          {/* The head of the panel: the two tabs as one switch, then 收起 (narrow windows) and the fold key. The count is the findings still to decide. */}
+          <div className="side-tabs">
+            <div className="side-seg" role="tablist" aria-label="右栏">
+              <button type="button" role="tab" id="side-tab-findings" className="side-tab" aria-selected={!assistantTab} aria-controls="side-panel-findings" onClick={() => setDockOpen(false)}>
+                检查结果{pending > 0 && <span className="num side-tab-count" title={`${pending} 处待定`}>{pending}</span>}
               </button>
-            )}
+              {assistantOn && (
+                <button type="button" role="tab" id="side-tab-assistant" className="side-tab" aria-selected={assistantTab} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={() => setDockOpen(true)}>
+                  助手{user.assistant?.beta && <span className="a-beta">测试版</span>}{unread && <i className="side-dot" aria-hidden="true" />}
+                </button>
+              )}
+            </div>
             {/* A narrow window shows the assistant over the whole page: this is its way out. */}
             <button type="button" className="side-close" aria-label="收起助手" title="收起助手" onClick={() => setDockOpen(false)}>收起</button>
             <button type="button" className="side-fold" aria-label="收起右栏" title="收起右栏" onClick={() => { fold(true); setDockOpen(false); }}>
@@ -409,6 +417,15 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
           {p.run && (
             <div className="findings-head">
               <span className="label">{issues.length} 处{pending ? ` · ${pending} 处待定` : ""}{p.run.completed_at || p.run.created_at ? ` · ${clockLabel(p.run.completed_at ?? p.run.created_at)}` : ""}</span>
+              {/* What kinds the findings are, at a glance: one band, a part for each kind, in the tags' own colours. */}
+              {issues.length > 0 && (
+                <span className="findings-mix" aria-hidden="true">
+                  {(["high", "mid", "gap", "state"] as const).map((tone) => {
+                    const count = issues.filter((issue) => findingTone(issue) === tone).length;
+                    return count ? <i key={tone} className={`mix-${tone}`} style={{ flexGrow: count }} /> : null;
+                  })}
+                </span>
+              )}
             </div>
           )}
           {p.run ? (
@@ -435,12 +452,17 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
               <RunStatus run={p.run} p={p} actions={!p.readOnly} visitor={usage?.account_type === "visitor"} />
               {p.pairedRun && <RunStatus run={p.pairedRun} p={p} actions={false} visitor={usage?.account_type === "visitor"} />}
               {checking && <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>}
+              {/* The findings still to decide come first, then the handled ones under a line of their own; each keeps its number, the one marked in the draft.
+                  The list is not split while nothing is handled, nor when everything is. */}
               <ol className={`finding-list${reveal ? " reveal" : ""}`}>
-                {issues.map((issue, index) => {
+                {[...numbered.filter(({ issue }) => !settled(issue)), ...numbered.filter(({ issue }) => settled(issue))].map(({ issue, index }, place, all) => {
                   const isOpen = p.selected?.id === issue.id;
                   const done = isDone(issue);
-                  return (
-                    <li key={issue.id} style={reveal ? { "--i": index } as CSSProperties : undefined} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}${hovered === issue.id && !isOpen ? " linked" : ""}`}
+                  const firstDone = settled(issue) && (place === 0 || !settled(all[place - 1].issue)) && settledCount < issues.length;
+                  return (<Fragment key={issue.id}>
+                    {place === 0 && !settled(issue) && settledCount > 0 && <li className="finding-group" aria-hidden="true">待定 · {issues.length - settledCount}</li>}
+                    {firstDone && <li className="finding-group" aria-hidden="true">已处理 · {settledCount}</li>}
+                    <li style={reveal ? { "--i": index } as CSSProperties : undefined} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}${hovered === issue.id && !isOpen ? " linked" : ""}`}
                       onMouseEnter={() => setHovered(issue.id)} onMouseLeave={() => setHovered(null)}>
                       <button id={`issue-${issue.id}`} data-testid={`finding-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen}
                         onFocus={() => setHovered(issue.id)} onBlur={() => setHovered(null)}
@@ -467,7 +489,7 @@ function DraftDesk({ p, user, usage, tutorialStep, open: openDialog, go, notices
                         <p className="finding-decided finding-memory" role="status" data-testid="memory-card-made">已生成一张记录卡片，确认后才会记下这条决定。<button type="button" className="link" onClick={() => bridge.openDrawer(undefined, p.memoryCard!.taskId)}>打开卡片</button></p>
                       )}
                     </li>
-                  );
+                  </Fragment>);
                 })}
               </ol>
             </>

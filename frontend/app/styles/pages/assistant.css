@@ -594,7 +594,7 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
    bubble, and the marks and actions read as things to press. */
 /* The bar with the dots lies in the panel's head row (the writing page's tabs, the panel's title elsewhere), not on a line of its own. */
 .writing .a-pane { position: relative; }
-.writing .a-pane .a-bar { position: absolute; top: calc(-1 * var(--side-head)); right: 44px; z-index: 3; height: var(--side-head); padding: 0; }
+.writing .a-pane .a-bar { position: absolute; top: calc(-1 * var(--side-head)); right: 52px; z-index: 3; height: var(--side-head); padding: 0; }
 .a-dock-head { height: 44px; padding: 0 var(--s-4); }
 .a-dock > .assistant { position: relative; overflow: visible; }
 .a-dock .a-bar { position: absolute; top: -44px; right: 92px; z-index: 3; height: 44px; padding: 0; }
@@ -708,3 +708,19 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
   .a-src-pill { height: 36px; }
 }
 .a-src-pill .where { margin-left: 4px; }
+
+/* v2.2 box: 「第 N 章草稿」 is a quiet tag with a page icon and a line after it saying what it does; taken out, it is dashed and struck, and
+   clicking it puts it back. The counter, the key hint and the cost sit in the bar before the send square; under the box, one centred line. */
+.cx-chip-row { display: inline-flex; align-items: center; gap: var(--s-2); min-width: 0; max-width: 100%; }
+.cx-chip-row > .apart { overflow: hidden; color: var(--c-faint-text); font-size: var(--fs-12); text-overflow: ellipsis; white-space: nowrap; }
+.cx-chip[data-chip="draft"] { gap: 6px; padding: 2px 4px 2px 6px; border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-raised); color: var(--c-ink); }
+.cx-chip[data-chip="draft"]:not(:has(button)) { padding-right: 8px; }
+.cx-chip[data-chip="draft"].muted { border-style: dashed; background: none; color: var(--c-faint-text); }
+.cx-chip-icon { flex: none; width: 13px; height: 13px; color: var(--c-muted); }
+.cx-chip .cx-restore { display: inline; width: auto; height: auto; padding: 0; border-radius: 0; color: inherit; font: inherit; text-decoration: line-through; opacity: 1; }
+.cx-chip .cx-restore:hover { color: var(--c-ink); text-decoration: none; }
+.cx-bar { container-type: inline-size; }
+.cx-bar .cx-note { order: 0; justify-self: auto; min-height: 0; margin-right: var(--s-2); color: var(--c-faint-text); }
+@container (max-width: 260px) { .cx-bar .cx-note .more { display: none; } }
+.a-quota-row { justify-items: center; }
+.a-quota-row .a-ai-note { justify-self: center; color: var(--c-faint-text); text-align: center; }

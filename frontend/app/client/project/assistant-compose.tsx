@@ -14,8 +14,13 @@ export type ComposeChip = {
   /** Shown but not sent with this question: greyed and struck through, with `note` beside it. */
   muted?: boolean;
   note?: string;
-  /** Can be taken away (×); a chip that only says what the assistant is looking at (the chapter being written) has no drop. */
+  /** Can be taken away (×). */
   drop?: () => void;
+  /** A tag taken away that can be put back by clicking it (the draft, v2.2). */
+  restore?: () => void;
+  /** A short line after the tag saying what it does ("助手会读到这一章"). */
+  aside?: string;
+  icon?: "draft";
 };
 export type Mode = "auto" | "ask" | "recap" | "check" | "change" | "long";
 export const MODE_LABEL: Record<Mode, string> = { auto: "自动", ask: "问作品", recap: "写前回顾", check: "查前文矛盾", change: "改资料", long: "长任务" };
@@ -44,6 +49,7 @@ export type PlusPick = {
 };
 
 const Cross = () => <svg viewBox="0 0 10 10" width="8" height="8" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 2l6 6M8 2 2 8" /></svg>;
+const DraftIcon = () => <svg className="cx-chip-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden="true"><path d="M4 2h5.5L12 4.5V14H4z" /><path d="M6 8h4M6 10.5h3" /></svg>;
 const Plus = () => <svg viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10" /></svg>;
 const Caret = () => <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 4l4 4 4-4" /></svg>;
 const Up = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" /></svg>;
@@ -268,10 +274,16 @@ export function Composer(props: ComposerProps) {
             {chips.length > 0 && (
               <div className="cx-chips">
                 {chips.map((chip) => (
-                  <span key={chip.key} className={`cx-chip a-chip${chip.quote ? " quote" : ""}${chip.muted ? " muted" : ""}`}>
-                    <span className="label">{chip.label}</span>
+                  <span key={chip.key} className="cx-chip-row">
+                    <span className={`cx-chip a-chip${chip.quote ? " quote" : ""}${chip.muted ? " muted" : ""}`} data-chip={chip.key}>
+                      {chip.icon === "draft" && <DraftIcon />}
+                      {chip.restore
+                        ? <button type="button" className="label cx-restore" title="点一下放回去" aria-label={`放回：${chip.label}`} onClick={chip.restore}>{chip.label}</button>
+                        : <span className="label">{chip.label}</span>}
+                      {chip.drop && <button type="button" aria-label={`去掉：${chip.label}`} title="这次不带上它" onClick={chip.drop}><Cross /></button>}
+                    </span>
                     {chip.muted && chip.note && <span className="apart">{chip.note}</span>}
-                    {chip.drop && <button type="button" aria-label={`去掉：${chip.label}`} onClick={chip.drop}><Cross /></button>}
+                    {!chip.muted && chip.aside && <span className="apart">{chip.aside}</span>}
                   </span>
                 ))}
               </div>
@@ -292,6 +304,15 @@ export function Composer(props: ComposerProps) {
             </>
           )}
           <span className="cx-fill" />
+          {/* At the right of the bar, before the send square: the counter, the key hint or the cost. The key hint takes the cost's place while
+              the box has focus, so the bar never reflows. */}
+          {!off && (
+            <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
+              {counting ? `${length} / ${maxLength}`
+                : focused && !running ? <span className="cx-keys">Enter 发送</span>
+                  : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
+            </span>
+          )}
           {running ? (
             <button key="stop" type="button" className="cx-send stop" aria-label="停止" disabled={stopping || !armed} onClick={(event) => { event.preventDefault(); stop(); }}><Stop /></button>
           ) : (
@@ -301,16 +322,9 @@ export function Composer(props: ComposerProps) {
         {open === "plus" && <PlusMenu pick={pick} writing={writing} close={closePlus} anchor={frame} />}
         {open === "mode" && <ModeMenu modes={modes} mode={mode} setMode={setMode} close={closeMode} anchor={frame} unavailable={unavailable} />}
       </form>
-      {/* Under the frame, at its right: one place for the counter, the key hint and the cost. The key hint takes the cost's place while the box has focus, so the line never reflows. */}
+      {/* Under the frame, one quiet line: the AI note, or where the words go before the first question. */}
       <div className="a-quota-row">
         <p className="a-ai-note">{note ?? "回答由 AI 生成，可能出错，请点出处核对。"}</p>
-        {!off && (
-          <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
-            {counting ? `${length} / ${maxLength}`
-              : focused && !running ? <span className="cx-keys">Enter 发送</span>
-                : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
-          </span>
-        )}
       </div>
     </div>
   );

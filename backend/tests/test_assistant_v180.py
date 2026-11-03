@@ -675,3 +675,27 @@ class CheckSelectionIntentTests(Task04Case):
         plain = self.post_raw("ask", {"page": "writing", "selection": self.PICKED})
         self.task(plain.json()["data"]["id"])
         self.assertNotIn(self.LINE, self.provider.calls[0]["messages"][-1]["content"])
+
+
+class WithoutDraftTests(Task04Case):
+    """v2.2: 「第 N 章草稿」 taken out of the box keeps the draft from that ask."""
+
+    post_raw = CheckSelectionIntentTests.post_raw
+
+    def setUp(self):
+        super().setUp()
+        self.own_work()
+
+    def test_an_ask_without_the_draft_cannot_read_it(self):
+        self.provider.script(FINAL)
+        task = self.task(self.post_raw("ask", {"page": "writing", "without_draft": True}, question="雾钟为什么会响？").json()["data"]["id"])
+        self.assertEqual(task["status"], "completed", task)
+        self.assertFalse(json.loads(self.engine.store.row(task["id"])["scope_json"])["draft_readable"])
+        self.assertNotIn("read_draft", self.provider.calls[0]["tools"])
+        self.provider.script(FINAL)
+        plain = self.task(self.post_raw("ask", {"page": "writing"}, question="雾钟为什么会响？").json()["data"]["id"])
+        self.assertTrue(json.loads(self.engine.store.row(plain["id"])["scope_json"])["draft_readable"])
+        self.assertIn("read_draft", self.provider.calls[0]["tools"])
+
+    def test_only_true_is_accepted(self):
+        self.assertEqual(self.post_raw("ask", {"page": "writing", "without_draft": False}).status_code, 400)

@@ -498,7 +498,7 @@ export type AssistantPage = "writing" | "chapters" | "materials" | "plan" | "ove
 /** The uses the input box can tell apart (`POST /assistant/route`), and what it answers. */
 export type AssistantRoute = "ask" | "fix_issue" | "recap" | "check_passage" | "change" | "long_task" | "out_of_scope";
 export type AssistantRouting = { route: AssistantRoute; source: "rule" | "model"; unsure: boolean };
-export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection" };
+export type AssistantContextInput = { page: AssistantPage; chapter_number?: number; selection?: string; character_id?: string; issue_id?: string; intent?: "check_selection"; without_draft?: true };
 /** `say` is the model's one line before it works; `tool` an action (grouped with the others of its round in `group`); `repair` a re-written
     answer; `protocol_error` a reminder nobody needs to read. `refs` are the passages a step turned up, cited or not; a failed step has `error_*`. */
 export type AssistantStep = {

@@ -7,7 +7,7 @@
    Colour: four steps of background (ground, raised, surface, fill); two greys for text (muted, faint-text). Blue is for the one main
    action of a screen and for links and the current choice, never for "done". Red and yellow are for findings and for danger.
    Lines: two, and only where they mark a structure (--c-rule) or the rows of an aligned data list (--c-line).
-   Corners: three (6 buttons/fields/tags, 10 cards/menus/dialogs, 999 avatars and dots). Shadows: two (a floating layer; a card
+   Corners: three (6 buttons/fields/tags, 10 cards/menus/dialogs, 999 avatars and dots). Shadows: three (a floating layer; the sheet beside the draft; a card
    that can be clicked, pointed at). Space: 4 8 12 16 24 32 48 64.
    Day is the default; <html data-theme="night"> switches palettes. */
 :root {
@@ -131,9 +131,12 @@
   --page-gutter: 32px;
   --form-max: 800px;
   --prose-max: 680px;
-  /* Two shadows. A floating layer (menu, dialog, drawer, message); and a card that can be clicked when it is pointed at. Cards at rest have none. */
+  /* Three shadows. A floating layer (menu, dialog, drawer, message); a card that can be clicked when it is pointed at; and the sheet beside the draft on 写作. Other cards at rest have none. */
   --elev-pop: 0 14px 36px rgba(17, 17, 17, .12), 0 2px 6px rgba(17, 17, 17, .08);
   --elev-hover: 0 8px 24px rgba(17, 17, 17, .10);
+  /* The right column on 写作 (v2.2): a sheet a little above the page. */
+  --elev-panel: 0 1px 2px rgba(17, 17, 17, .04), 0 8px 28px rgba(17, 17, 17, .06);
+  --c-wash: rgba(17, 17, 17, .035);   /* a row pointed at, on a sheet */
 
   /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
      slow for drawing charts and the after-glow of a change. */
@@ -193,6 +196,8 @@
   --c-veil: rgba(0, 0, 0, .62);
   --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
   --elev-hover: 0 8px 24px rgba(0, 0, 0, .5);
+  --elev-panel: 0 0 0 1px rgba(255, 255, 255, .02);
+  --c-wash: rgba(255, 255, 255, .045);
 }
 
 @media (max-width: 720px) {

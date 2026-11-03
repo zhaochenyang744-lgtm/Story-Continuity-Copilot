@@ -595,6 +595,8 @@ class AssistantEngine:
         scope = {"max_chapter": int(max_chapter), "draft_readable": bool(draft) and context.get("page") == "writing"}
         scope.update(visitor=visitor, chapter_number=draft["chapter_number"] if draft else None)
         kind = payload["kind"]
+        if kind == "ask" and context.get("without_draft"):
+            scope.update(draft_readable=False)
         if kind in ("recap", "fix_issue"):
             if context.get("page") != "writing" or not draft:
                 raise DomainError("assistant_context_invalid", 422)
@@ -1455,6 +1457,8 @@ class AssistantContext(Strict):
     character_id: str | None = None
     issue_id: str | None = None
     intent: Literal["check_selection"] | None = None
+    # The author took 「第 N 章草稿」 out of the box (v2.2): the question is not about the draft, and the assistant may not read it.
+    without_draft: Literal[True] | None = None
 
 
 class AssistantTaskCreate(Strict):
