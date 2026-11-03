@@ -102,7 +102,11 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
             <p>Word、TXT、Markdown 都行，按标题自动分章，确认后才创建作品。</p>
             <Button kind="primary" onClick={() => go("/projects/import")}>选择文件</Button>
           </section>
-          <Button kind="text" onClick={() => go("/projects/new")}>从空白开始</Button>
+          <section className="works-empty-card" aria-label="新建作品">
+            <h2>从空白开始</h2>
+            <p>写下书名和一句话简介，就可以开始第一章。</p>
+            <Button onClick={() => go("/projects/new")}>新建作品</Button>
+          </section>
         </div>
       ) : rows.length ? (
         <ol className="works-list">

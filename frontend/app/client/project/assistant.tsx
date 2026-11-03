@@ -1027,8 +1027,11 @@ export function AssistantDock({ open, close, beta = false, quiet = false, ...thr
   return (
     <aside ref={frame} id="assistant-dock" className={`a-dock ${mode}`} aria-label="助手" hidden={!open} data-testid="assistant-dock">
       <header className="a-dock-head">
-        <h2>助手{beta && <span className="a-beta">测试版</span>}</h2>
-        <button type="button" className="a-link" aria-label="关闭助手" onClick={close}>收起<kbd> Esc</kbd></button>
+        <h2><i className="a-mark" aria-hidden="true" />助手{beta && <span className="a-beta">测试版</span>}</h2>
+        {/* The same fold key as the column on 写作, so the two read as one panel. */}
+        <button type="button" className="side-fold" aria-label="关闭助手" title="收起（Esc）" onClick={close}>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l5 5-5 5M9 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </button>
       </header>
       <AssistantThread {...thread} variant="dock" onNavigate={() => { thread.onNavigate?.(); if (mode === "overlay") close(); }} />
     </aside>

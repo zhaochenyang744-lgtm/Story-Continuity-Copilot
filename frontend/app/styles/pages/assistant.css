@@ -724,3 +724,17 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 @container (max-width: 260px) { .cx-bar .cx-note .more { display: none; } }
 .a-quota-row { justify-items: center; }
 .a-quota-row .a-ai-note { justify-self: center; color: var(--c-faint-text); text-align: center; }
+
+/* v2.2: on the other pages the panel is the same sheet as the column on 写作: white, a hairline and a soft shadow, held off the window's edges,
+   with the same head (a blue mark and 助手 at the left, ⋯ and the fold key at the right, a line under it). A phone keeps the whole window. */
+.a-dock-head { flex: none; height: 56px; padding: 0 var(--s-3) 0 var(--s-4); border-bottom: 1px solid var(--c-line); }
+.a-dock-head h2 { display: flex; align-items: center; gap: var(--s-2); font-size: var(--fs-14); font-weight: 700; }
+.a-dock .a-bar { top: -56px; right: 52px; height: 56px; }
+.a-dock { background: var(--c-surface); }
+@media (min-width: 721px) {
+  .a-dock { top: calc(var(--dock-top, var(--topbar-h)) + var(--s-4)); right: var(--s-4); bottom: var(--s-4); overflow: hidden; border: 1px solid var(--c-line); border-radius: var(--r-md); box-shadow: var(--elev-panel); }
+  .a-dock.overlay { box-shadow: var(--elev-pop); }
+  html[data-dock="push"] .app { padding-right: calc(400px + 2 * var(--s-4)); }
+  html[data-dock="push"] .topbar { margin-right: calc(-400px - 2 * var(--s-4)); }
+  html[data-dock="push"] .feedback { width: min(calc(100% - 464px), 560px); }
+}
