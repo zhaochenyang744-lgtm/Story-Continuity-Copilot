@@ -677,3 +677,5 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 .a-three i:nth-child(3) { animation-delay: .4s; }
 @keyframes a-breathe { 0%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: scaleY(1.6); } }
 @media (prefers-reduced-motion: reduce) { .a-three i, .a-skel i, .a-process::before { animation: none; } .a-three i { opacity: .6; } }
+/* An answer of several sentences: the opening sentence, then one sentence to a line, a little air between them. */
+.a-answer[data-layout="list"] .a-points { gap: 6px; }

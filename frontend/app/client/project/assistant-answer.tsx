@@ -178,21 +178,20 @@ export function AnswerBlock({ task, fade, locate, innerRef }: { task: AssistantT
   if (!answer) return null;
   if (answer.status === "out_of_scope") return <p className="a-fixed" data-testid="out-of-scope">{task.out_of_scope_text || OUT_OF_SCOPE_TEXT}</p>;
   const refs = citedRefs(task);
-  const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
-  const rest = lead ? answer.sentences.slice(1) : answer.sentences;
-  const byChapter = layoutOf(rest) === "chapters";
-  const points = byChapter || layoutOf(rest) === "points";
+  const { lead, rest, layout } = arrangeAnswer(answer.sentences);
+  const byChapter = layout === "chapters";
+  const points = layout !== "paragraph";
   let order = 0;
   // Points set their label in bold; an answer laid out by chapter has no labels, so nothing in it is bold.
   const sentenceOf = (sentence: AssistantSentence, bold: boolean) => <SentenceText task={task} sentence={sentence} bold={bold && !byChapter} order={order++} refs={refs} locate={locate} />;
   const looseNote = splitNote(answer.note).rest;
   return (
-    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={byChapter ? "chapters" : points ? "points" : "paragraph"}>
+    <div ref={innerRef} className={`a-answer${fade ? " a-fade" : ""}`} data-layout={layout}>
       {answer.status === "not_found" && <p className="a-lead" data-testid="not-found-line">{NOT_FOUND_TEXT}</p>}
       {lead && <p className="a-lead">{sentenceOf(lead, false)}</p>}
       {rest.length > 0 && (points
-        ? <ul className="a-points">{rest.map((sentence, index) => <li key={index}>{sentenceOf(sentence, true)}</li>)}</ul>
-        : <p className="a-body">{rest.map((sentence, index) => <Fragment key={index}>{sentenceOf(sentence, false)}</Fragment>)}</p>)}
+        ? <ul className="a-points">{rest.map((sentence, index) => <li key={index}>{sentenceOf(sentence, layout === "points")}</li>)}</ul>
+        : rest.map((sentence, index) => <p key={index} className="a-body">{sentenceOf(sentence, false)}</p>))}
       {looseNote && <p className="a-answer-note">{looseNote}</p>}
     </div>
   );
@@ -205,17 +204,29 @@ export function layoutOf(rest: AssistantSentence[]): "points" | "chapters" | "pa
   return walksChapters(rest) ? "chapters" : "paragraph";
 }
 
+/** How an answer is set (v2.2): never one block of several sentences. Labelled points and a walk through the chapters stay as they were; otherwise
+    the first sentence opens the answer on its own (the model's lead, or else the first sentence) and the others follow one to a line as points
+    without labels ("list"); an answer of one or two sentences stays plain, a sentence to a paragraph. */
+export function arrangeAnswer(sentences: AssistantSentence[]): { lead: AssistantSentence | null; rest: AssistantSentence[]; layout: "points" | "chapters" | "list" | "paragraph" } {
+  const marked = sentences[0]?.lead ? sentences[0] : null;
+  const after = marked ? sentences.slice(1) : sentences;
+  const layout = layoutOf(after);
+  if (layout !== "paragraph") return { lead: marked, rest: after, layout };
+  if (marked && after.length >= 2) return { lead: marked, rest: after, layout: "list" };
+  if (!marked && after.length >= 3) return { lead: after[0], rest: after.slice(1), layout: "list" };
+  return { lead: marked, rest: after, layout: "paragraph" };
+}
+
 /** The answer as text to paste: its sentences with [n] after each source and the sources listed at the end; only the words with Shift. */
 export function answerText(task: AssistantTask, withSources: boolean): string {
   const answer = sentencesOf(task);
   if (!answer) return "";
   const refs = citedRefs(task);
   const line = (sentence: AssistantSentence) => `${sentence.text}${withSources ? sentence.refs.filter((ref) => refs.includes(ref)).map((ref) => `[${refs.indexOf(ref) + 1}]`).join("") : ""}`;
-  const lead = answer.sentences[0]?.lead ? answer.sentences[0] : null;
-  const rest = lead ? answer.sentences.slice(1) : answer.sentences;
-  // Points are copied one to a line, the way they are read.
+  const { lead, rest } = arrangeAnswer(answer.sentences);
+  // Copied one sentence to a line, the way they are read.
   // Where it looked and what it did not look at is not part of the answer to paste.
-  const body = [answer.status === "not_found" ? NOT_FOUND_TEXT : "", lead ? line(lead) : "", layoutOf(rest) !== "paragraph" ? rest.map(line).join("\n") : rest.map(line).join("")].filter(Boolean).join("\n");
+  const body = [answer.status === "not_found" ? NOT_FOUND_TEXT : "", lead ? line(lead) : "", rest.map(line).join("\n")].filter(Boolean).join("\n");
   const parts = [body, splitNote(answer.note).rest].filter(Boolean);
   if (withSources && refs.length) parts.push(refs.map((ref, index) => `[${index + 1}] ${whereLabel(task.sources[ref])}`).join("\n"));
   return parts.join("\n\n");
