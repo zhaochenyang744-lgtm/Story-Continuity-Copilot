@@ -6,7 +6,7 @@ import type { DailyUsage, User } from "../../model";
 import { momentDayLabel, monthDayLabel, shortDay, untilLabel } from "../day";
 import { Avatar } from "../identity";
 import { type FontSize, setFontSize, setThemeMode, type ThemeMode, usePrefs } from "../prefs";
-import { Button, type CheckUsage, formatCount, Tag } from "../ui";
+import { Button, type CheckUsage, formatCount, PageHead, Tag } from "../ui";
 
 export const settingsItems = [
   ["general", "通用"],
@@ -414,8 +414,10 @@ export function SettingsPage({ user, updateUser, usage, item, go, setDirty, leav
   useEffect(() => () => setDirty(false), [setDirty, item]);
   return (
     <section className="page settings">
+      {/* The same head as every other page (v2.2); the list of panes stays at the left under it. */}
+      <PageHead title="设置" lede="外观只影响这台设备；账号、用量和数据在左边切换。" />
+      <div className="settings-body">
       <nav className="settings-nav" aria-label="设置">
-        <h1>设置</h1>
         <div className="settings-links">
           {settingsItems.map(([id, label]) => (
             <button key={id} type="button" aria-current={id === item ? "page" : undefined} onClick={() => go(`/settings/${id}`)}>{label}</button>
@@ -428,6 +430,7 @@ export function SettingsPage({ user, updateUser, usage, item, go, setDirty, leav
         {item === "account" && <AccountPane user={user} updateUser={updateUser} leaveTo={leaveTo} />}
         {item === "usage" && <UsagePane user={user} usage={usage} />}
         {item === "data" && <DataPane user={user} />}
+      </div>
       </div>
     </section>
   );

@@ -258,8 +258,9 @@ export function Steps({ task, locate, lead, end, named = false, how }: { task: A
       <div className="a-steps">
         <div className="a-process" data-testid="process-line">
           <button type="button" className="a-fold" aria-expanded={howOpen} onClick={() => setHowOpen((value) => !value)}>
-            <span className="lead">{lead}</span>
-            <span className="tally">{found > 0 && <> · 查到 {figure(found, 0)} 处</>}{took !== null && <> · {figure(took, 1)} 秒</>}</span>
+            {/* v2.2: 「查了 N 处 ›」, after the use's name when it has one; the seconds are gone. */}
+            {lead && <span className="lead">{lead}</span>}
+            <span className="tally">{found > 0 ? <>{lead && " · "}查了 {figure(found, 0)} 处</> : !lead && "怎么查的"}</span>
             <Fold open={howOpen} />
           </button>
           {end && <span className="a-process-end">{end}</span>}

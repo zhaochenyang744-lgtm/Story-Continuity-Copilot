@@ -349,3 +349,33 @@
 .boot.offline { align-content: center; gap: 12px; padding: 48px 16px; text-align: center; letter-spacing: 0; }
 .boot.offline h1 { color: var(--c-ink); font-size: var(--fs-22); }
 .boot.offline p { margin: 0; color: var(--c-muted); font-size: var(--fs-14); }
+
+/* v2.2 one top bar: the same inside a work and outside it. The tabs sit at the left after the logo (and the work's name), as pills: the
+   current one white and bold. At the right: the quota in a pill, 助手 as a switch (black while the panel is open) or 新建作品, theme,
+   avatar. The sliding underline of the tabs is gone with the underline. */
+.tab-mark { display: none; }
+.topbar-tab { align-items: center; gap: 6px; min-height: 36px; padding: 0 var(--s-3); border: 0; border-radius: 7px; font-size: var(--fs-14); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.topbar-tab:hover { background: var(--c-fill); }
+.topbar-tab[aria-current="page"] { background: var(--c-surface); box-shadow: 0 1px 2px rgba(17, 17, 17, .10); }
+:root[data-theme="night"] .topbar-tab[aria-current="page"] { background: var(--c-fill-hover); box-shadow: none; }
+.topbar-tab-num { color: var(--c-faint); font-family: var(--font-display); font-size: 11px; }
+.topbar-tabs.global .topbar-tab { padding-top: 0; }
+.topbar-quota { display: inline-flex; align-items: center; height: 30px; padding: 0 var(--s-3); border: 1px solid var(--c-line); border-radius: var(--r-pill); }
+.topbar-assistant { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; border-radius: 7px; }
+.topbar-assistant svg { width: 16px; height: 16px; }
+.topbar .topbar-assistant[aria-expanded="true"] { background: var(--c-ink); color: var(--c-ground); box-shadow: none; }
+.topbar .topbar-assistant[aria-expanded="true"]:hover { background: var(--c-ink); }
+@media (min-width: 721px) {
+  .topbar-inner { column-gap: var(--s-4); }
+  .topbar-work { flex: 0 1 auto; max-width: 260px; padding-left: var(--s-4); }
+  .topbar-tabs, .topbar-tabs:not(.global), .topbar-tabs.global { flex: 0 1 auto; gap: 2px; margin-right: auto; }
+  .topbar-tabs.global { padding-left: var(--s-4); }
+}
+
+/* v2.2 one page head: title and its line at the left; the figures above the actions at the right, both at the right edge and on the head's
+   foot line, on every page that has them. */
+@media (min-width: 901px) {
+  .page-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .page-head-aside { flex-direction: column; align-items: flex-end; gap: var(--s-3); }
+  .page-head-aside .head-figures-actions { flex-direction: column; align-items: flex-end; gap: var(--s-3); }
+}

@@ -738,3 +738,11 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
   html[data-dock="push"] .topbar { margin-right: calc(-400px - 2 * var(--s-4)); }
   html[data-dock="push"] .feedback { width: min(calc(100% - 464px), 560px); }
 }
+
+/* v2.2 subtraction: 有用 / 没用 show when the answer is pointed at (always on a touch screen); the note that the text and the materials
+   disagree is a quiet box under the answer. */
+@media (hover: hover) and (pointer: fine) {
+  .a-task .a-thumbs { opacity: 0; transition: opacity var(--dur-fast) var(--ease); }
+  .a-task:hover .a-thumbs, .a-task:focus-within .a-thumbs, .a-task .a-thumbs:has([aria-pressed="true"]) { opacity: 1; }
+}
+.a-mismatch { margin: var(--s-2) 0 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-raised); color: var(--c-muted); font-size: var(--fs-13); }

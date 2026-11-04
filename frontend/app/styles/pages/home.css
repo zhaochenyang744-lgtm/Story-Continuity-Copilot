@@ -1,7 +1,7 @@
 /* 首页: one rule for every block, whatever can be clicked or read as a unit is a white card on the grey page (a ring and a faint shadow);
    the heading of each region stays outside its card. */
 .home-hero { padding: 64px 0 32px; }
-.home-hero h1 { margin-top: 8px; font-weight: 900; font-size: clamp(56px, 8vw, 112px); line-height: 1; letter-spacing: -.04em; }
+.home-hero h1 { margin-top: 8px; font-weight: 900; font-size: clamp(56px, 7vw, 96px); line-height: 1; letter-spacing: -.04em; }
 .home-columns { display: flex; flex-wrap: wrap; gap: 48px 48px; margin-top: 64px; }
 .home-works { flex: 999 1 560px; min-width: 0; }
 .home-sample { display: flex; flex: 1 1 340px; flex-direction: column; min-width: 0; }

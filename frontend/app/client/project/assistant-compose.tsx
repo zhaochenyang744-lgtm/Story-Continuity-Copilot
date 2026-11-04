@@ -206,6 +206,8 @@ export type ComposerProps = {
   hint: string;
   /** What follows the cost when there is room for it (how much is left today); it goes into the hint's title when there is not. */
   hintMore?: string;
+  /** The allowance is nearly gone: the cost is shown (in red). Otherwise the bar shows no cost at all (v2.2). */
+  low?: boolean;
   /** Set when the mode is not the author's choice (a fix for one finding): its name, shown in place of the mode, without a menu. */
   modeName?: string;
   /** The text box cannot be typed in (查前文矛盾 asks about the picked words only). */
@@ -225,7 +227,7 @@ const STOP_GRACE_MS = 700;
 const IME_GRACE_MS = 500;
 
 export function Composer(props: ComposerProps) {
-  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, modeName, fixed, recall, unavailable = {}, usedUp = null, note } = props;
+  const { chips, text, setText, placeholder, fieldRef, maxLength, autoFocus, mode, modes, setMode, pick, writing, off, running, stopping, stop, canSend, send, hint, hintMore, low = false, modeName, fixed, recall, unavailable = {}, usedUp = null, note } = props;
   const [open, setOpen] = useState<null | "plus" | "mode">(null);
   const [focused, setFocused] = useState(false);
   // The send square turns into the stop button under the author's pointer; a second click of a double click meant for 发送 must
@@ -298,19 +300,18 @@ export function Composer(props: ComposerProps) {
           {!off && (
             <>
               <button ref={plusButton} type="button" className="cx-ghost cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
-              <button ref={modeButton} type="button" className="cx-ghost cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
+              {/* v2.2: the box judges the use by itself; the mode shows only when something else chose one (the selection bar, 写前回顾,
+                  a fix), and its menu then leads back to 自动. Any answer can still be sent again as another use from its own menu. */}
+              {(modeName || mode !== "auto") && <button ref={modeButton} type="button" className="cx-ghost cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
                 {modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret"><Caret /></span>}
-              </button>
+              </button>}
             </>
           )}
           <span className="cx-fill" />
-          {/* At the right of the bar, before the send square: the counter, the key hint or the cost. The key hint takes the cost's place while
-              the box has focus, so the bar never reflows. */}
-          {!off && (
-            <span className={`cx-note${length >= maxLength ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
-              {counting ? `${length} / ${maxLength}`
-                : focused && !running ? <span className="cx-keys">Enter 发送</span>
-                  : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
+          {/* At the right of the bar, before the send square: the counter near the length limit, or the cost when the allowance is nearly gone. */}
+          {!off && (counting || low) && (
+            <span className={`cx-note${length >= maxLength || (low && !counting) ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
+              {counting ? `${length} / ${maxLength}` : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
             </span>
           )}
           {running ? (

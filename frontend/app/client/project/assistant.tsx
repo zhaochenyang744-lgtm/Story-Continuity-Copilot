@@ -163,12 +163,8 @@ const withTasks = (current: AssistantTask[] | null, extra: AssistantTask[]): Ass
   return [...(current ?? []), ...extra.filter((task) => !have.has(task.id))].sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
 };
 
-/** The tag 接着上一问 says which follow-up the next question would be, and how many are left. */
-const followLabel = (task: AssistantTask) => {
-  const number = (task.follow_up_depth ?? 0) + 1;
-  return `接着上一问 · 第 ${number} 次追问，${number >= 2 ? "这是最后一次" : "还能再问 1 次"}`;
-};
-/** A finished question that a further question can follow (a recap, a fix, a check and an off-topic reply cannot be followed). */
+/** A finished question that a further question can follow (v2.2: silently, as in any conversation; past the second follow-up the next
+    question simply starts afresh) (a recap, a fix, a check and an off-topic reply cannot be followed). */
 const followable = (task: AssistantTask) =>
   task.kind === "ask" && task.status === "completed" && task.context.intent !== "check_selection" && Boolean(task.answer) && !isRecap(task.answer)
   && (task.answer as { status?: string }).status !== "out_of_scope" && (task.follow_up_depth ?? 0) < 2;
@@ -410,6 +406,9 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
     : usage?.account_type === "visitor" && usage.assistant_tasks_remaining !== undefined ? `24 小时内还可以问 ${usage.assistant_tasks_remaining} 次` : "";
   // What is left today goes after the cost when the line has room for it, and into its title when it has not.
   const costMore = usage?.account_type === "registered" && !sample ? `24 小时内还剩 ${formatCount(usage.check_chars_remaining)} 字` : "";
+  // v2.2: the box says what a question costs only when the allowance is nearly gone (one question left, or characters for fewer than two).
+  const low = usage?.account_type === "visitor" ? (usage.assistant_tasks_remaining ?? 9) <= 1
+    : usage?.account_type === "registered" && !sample ? usage.check_chars_remaining < needed * 2 : false;
 
   // The page hears whether a task is running (its 写前回顾 button waits for it) and which findings have an adopted change.
   const report = useRef(writing);
@@ -800,12 +799,11 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       ? { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, ...apart }
       : draftOff
         ? { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, muted: true, note: "这次不看草稿", restore: () => setDraftOff(false) }
-        : { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, aside: "助手会读到这一章", drop: () => setDraftOff(true) }] : []),
+        : { key: "draft", label: `第 ${chapterNumber} 章草稿`, icon: "draft" as const, drop: () => setDraftOff(true) }] : []),
     ...(refine ? [{ key: "refine", label: `检查结果 · 第 ${refine.number} 处`, drop: () => setRefine(null) }] : []),
     ...(selection ? [{ key: "selection", label: `选中：「${clip(selection.replace(/\s+/g, " "), 18)}」`, quote: true, drop: () => setSelection("") }] : []),
     ...(showCharacter ? [{ key: "character", label: `人物 · ${chosen.character?.name ?? anchor.character_name ?? "这张人物卡"}`, ...apart, drop: () => { setChosen((all) => ({ ...all, character: null })); setDropped((all) => ({ ...all, character: true })); } }] : []),
     ...(showChapter ? [{ key: "chapter", label: `第 ${chosen.chapter ?? anchor.chapter_number} 章`, ...apart, drop: () => { setChosen((all) => ({ ...all, chapter: null })); setDropped((all) => ({ ...all, chapter: true })); } }] : []),
-    ...(following ? [{ key: "follow", label: followLabel(following), drop: () => { setFollowUp(null); setFollowDropped(latestTask?.id ?? null); } }] : []),
   ];
   const pick: PlusPick = {
     chapters: material.chapters,
@@ -920,7 +918,7 @@ export function AssistantThread({ project, anchor, usage, visitor, go, incoming,
       <Composer chips={chips} text={text} setText={edited} placeholder={placeholder} fieldRef={field} maxLength={QUESTION_MAX} autoFocus={false}
         mode={activeMode} modes={modes} setMode={changeMode} pick={pick} writing={onWriting} off={off} running={Boolean(runningId) || routing || sending} stopping={stopping}
         stop={stopFromBox}
-        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
+        canSend={canSend} send={() => void submit()} hint={hint} hintMore={hintMore} low={low} modeName={refine && (refine.manual || activeMode !== "auto") ? "帮我改这一处" : undefined}
         fixed={activeMode === "recap" || activeMode === "check"} recall={recall} unavailable={unavailable}
         usedUp={!archived && off ? { text: off, ...(visitor ? { action: { label: "注册", run: bridge.register } } : {}) } : null}
         note={empty ? <>提问时会把相关片段发给 DeepSeek 处理，详见<a href="/privacy" target="_blank" rel="noopener noreferrer">隐私说明</a>。</> : undefined} />

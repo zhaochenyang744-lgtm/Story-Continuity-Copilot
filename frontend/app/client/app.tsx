@@ -49,6 +49,7 @@ export const projectTabs = [
 const legacyTabs: Record<string, string> = { outline: "plan", characters: "memory", world: "memory" };
 
 /** The dot on the 助手 button: the long task has stopped to ask, or is over, and the author has not looked yet. */
+const ChatIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>;
 const LongDot = () => <><span className="topbar-dot" data-testid="assistant-dot" aria-hidden="true" /><span className="sr-only">，长任务有新进展</span></>;
 
 export function App() {
@@ -437,7 +438,7 @@ export function App() {
                   </>}
             </nav>
             {projectId && p.project && assistantAnchor && user.assistant?.available && (
-              <button id="assistant-open" type="button" className="topbar-assistant" aria-expanded={drawer.open} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={toggleDock}>助手{longDot && <LongDot />}</button>
+              <button id="assistant-open" type="button" className="topbar-assistant" aria-expanded={drawer.open} aria-controls="assistant-dock" title="助手（Ctrl + /）" onClick={toggleDock}><ChatIcon />助手{longDot && <LongDot />}</button>
             )}
             {usageShort(usage) && (
               <span className="topbar-quota">

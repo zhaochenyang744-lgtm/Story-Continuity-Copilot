@@ -5,7 +5,7 @@
 .overview-hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "kicker menu" "main figures"; column-gap: 64px; row-gap: 12px; padding: 32px 0 48px; border-bottom: 1px solid var(--c-rule); }
 .overview-hero-main { grid-area: main; min-width: 0; }
 .overview-kicker { grid-area: kicker; display: flex; flex-wrap: wrap; align-items: center; align-self: center; gap: 12px; color: var(--c-ink); }
-.overview-title { font-size: clamp(64px, 9vw, 132px); line-height: 1; letter-spacing: -.04em; overflow-wrap: anywhere; }
+.overview-title { font-size: clamp(64px, 7vw, 96px); line-height: 1; letter-spacing: -.04em; overflow-wrap: anywhere; }
 .overview-summary { max-width: 34em; margin-top: 24px; font-size: 18px; line-height: 1.85; }
 .overview-menu { grid-area: menu; display: flex; justify-content: flex-end; }
 .overview-figures { grid-area: figures; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; align-self: stretch; margin-top: 4px; }

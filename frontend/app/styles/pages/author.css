@@ -99,8 +99,8 @@ button.work:hover .t { color: var(--c-blue-text); }
 /* ── 设置 ── */
 /* The nav's rule is the grid row's own edge, so it runs as far down as the pane does. The pane takes all the room right of the nav
    (its right end is the top bar's); rows, their words and their fields keep a line length of their own. */
-.settings { display: grid; grid-template-columns: 220px minmax(0, 1fr); }
-.settings-nav { display: grid; align-content: start; gap: 4px; padding: 32px 0 24px; border-right: 1px solid var(--c-line); }
+.settings-body { display: grid; grid-template-columns: 220px minmax(0, 1fr); }
+.settings-nav { display: grid; align-content: start; gap: 4px; padding: 24px 0 24px; border-right: 1px solid var(--c-line); }
 .settings-nav h1 { margin: 0 0 16px; font-size: 28px; letter-spacing: 0; line-height: 1.25; }
 .settings-links { display: grid; gap: 4px; }
 .settings-links button { margin-left: -12px; padding: 8px 12px; border: 0; border-left: 3px solid transparent; background: none; color: var(--c-ink-2); font-size: 14px; text-align: left; cursor: pointer; }
@@ -108,7 +108,7 @@ button.work:hover .t { color: var(--c-blue-text); }
 .settings-links button[aria-current="page"] { border-left-color: var(--c-blue); border-radius: 0 var(--r-sm) var(--r-sm) 0; background: var(--c-surface); color: var(--c-ink); font-weight: 700; }
 .settings-nav .back { justify-self: start; margin-top: 16px; color: var(--c-blue-text); font-size: 12px; border-bottom: 0; }
 .settings-nav .back:hover { text-decoration: underline; }
-.settings-pane { display: grid; align-content: start; gap: 32px; min-width: 0; padding: 32px 0 32px 32px; }
+.settings-pane { display: grid; align-content: start; gap: 32px; min-width: 0; padding: 24px 0 32px 32px; }
 .settings .pane-head h2 { font-size: 22px; font-weight: 700; }
 .settings .pane-head .lede { max-width: var(--prose-max); margin-top: 4px; color: var(--c-muted); font-size: 13px; line-height: 1.7; }
 /* A group: its title over a heavy rule, then rows. A row: what it is on the left, the control on the right. */
@@ -197,7 +197,7 @@ button.work:hover .t { color: var(--c-blue-text); }
   .author .current .chap { font-size: 72px; }
   .author .current .btn { justify-self: start; }
   .author ul.works { grid-template-columns: minmax(0, 1fr); }
-  .settings { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .settings-body { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .settings-nav { grid-template-columns: minmax(0, 1fr); padding: 24px 0 0; border-right: 0; border-bottom: 1px solid var(--c-line); }
   .settings-nav h1 { margin-bottom: 8px; font-size: 22px; }
   .settings-links { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }

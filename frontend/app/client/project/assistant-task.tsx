@@ -10,7 +10,7 @@ import { AnswerBlock, TaskFoot, useJustFinished } from "./assistant-answer";
 import { ChangeCard } from "./assistant-change";
 import { active, failureText, LimitLine, sentencesOf, SourcesPanel, SourcesPill, sourcesShown, StoppedNote } from "./assistant-parts";
 import { howChecked, MissedLine, Steps } from "./assistant-process";
-import { ChosenLine, RerouteMenu, routedLead } from "./assistant-route";
+import { RerouteMenu, routedLead, usageOf } from "./assistant-route";
 
 /** One entry of the conversation: the answer shown now, the older answers to the same question, and whether the whole question was reworded since. */
 export type Group = { id: string; latest: AssistantTask; older: AssistantTask[]; reworded: boolean };
@@ -113,8 +113,12 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
   const saysDecision = notFound && Boolean(task.changes?.some((item) => item.kind === "add_decision"));
   const failure = task.status === "failed" ? failureText(task, handlers.visitor) : null;
   // What the line above says besides the use: only what the answer's own words do not (a card waiting to be decided, an answer that disagrees with itself).
-  const state = !running && (task.kind === "change" || task.kind === "ask") && task.changes?.some((item) => item.status === "proposed") ? " · 等你确认" : !running && answer?.status === "inconsistent" ? " · 前后不一致" : "";
-  const lead = routedLead(task, handlers.timedOut.includes(task.id)) + state;
+  // v2.2: a plain question needs no name on its line (「查了 N 处 ›」 is enough); the other uses keep theirs, and 等你确认 stays because it asks
+  // something of the author. 前后不一致 is said under the answer instead, in words.
+  const state = !running && (task.kind === "change" || task.kind === "ask") && task.changes?.some((item) => item.status === "proposed") ? "等你确认" : "";
+  const timedOut = handlers.timedOut.includes(task.id);
+  const named = running || timedOut || usageOf(task) !== "ask" ? routedLead(task, timedOut) : "";
+  const lead = [named, state].filter(Boolean).join(" · ");
   const shownSources = offTopic ? [] : sourcesShown(task);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const sourcesPanel = useId();
@@ -123,7 +127,6 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       {showQuestion && <Question task={task} handlers={handlers} />}
       <Steps task={task} locate={handlers.locate} lead={lead} how={!offTopic && !saysDecision && !running ? howChecked(task, handlers.locate, notFound) : null}
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={handlers.stopping} onClick={() => handlers.stop(task)}>停止</button>}</>} />
-      <ChosenLine task={task} />
       <StoppedNote task={task} visitor={handlers.visitor} retry={() => handlers.retry(task)} blocked={handlers.blocked} />
       {task.status === "cancelled" && answer && <p className="a-note" data-testid="after-stop">停止前已经生成</p>}
       {failure && (
@@ -133,6 +136,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
       <AnswerBlock task={task} fade={fade} locate={handlers.locate} innerRef={answerBox} decision={saysDecision} />
       {/* What the answer rests on and the row of actions come in after its last sentence has begun to appear. */}
       <div className={`a-rest${fade ? " a-fade" : ""}`} style={{ "--n": sentencesOf(task)?.sentences.length ?? 0 } as CSSProperties}>
+        {answer?.status === "inconsistent" && <p className="a-mismatch" data-testid="inconsistent-note">正文和资料在这件事上前后对不上，可以点出处对照。</p>}
         {!offTopic && !saysDecision && <MissedLine task={task} onlyMissed={notFound} />}
         {/* A question can carry a card too (v2.2): the author asked and decided in one sentence, and the card holds only the record to be made. */}
         {(task.kind === "change" || task.kind === "ask") && task.status === "completed" && (
@@ -140,7 +144,7 @@ function AskBody({ task, handlers, latest, showQuestion }: { task: AssistantTask
             written={handlers.written} goMaterials={handlers.goMaterials} />
         )}
         <TaskFoot task={task} projectId={handlers.projectId} visitor={handlers.visitor} blocked={handlers.blocked} off={handlers.off} answer={offTopic ? null : answerBox}
-          followUp={latest && !offTopic ? () => handlers.followUp(task) : null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace}
+          followUp={null} followUpLimit={(task.follow_up_depth ?? 0) >= 2} regenerate={latest && !offTopic ? () => handlers.regenerate(task) : null} replace={handlers.replace}
           sources={shownSources.length > 0 ? <SourcesPill task={task} shown={shownSources} open={sourcesOpen} toggle={() => setSourcesOpen((value) => !value)} panel={sourcesPanel} /> : null} />
         {sourcesOpen && shownSources.length > 0 && <SourcesPanel task={task} shown={shownSources} locate={handlers.locate} id={sourcesPanel} />}
       </div>
