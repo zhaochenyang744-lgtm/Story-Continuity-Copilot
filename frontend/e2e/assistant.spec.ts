@@ -26,7 +26,7 @@ test.describe("助手", () => {
     const task = tasks(page).first();
     await expect(task).toContainText("苏岑知道罗盘被调包了吗？");
     // v2.2: one line above the answer says how many places it looked at (no name of the use, no seconds); nothing else stands between.
-    await expect(task.getByTestId("process-line")).toHaveText(/^查了 \d+ 处$/);
+    await expect(task.getByTestId("process-line").locator(".a-fold")).toHaveText(/^查了 \d+ 处$/);
     // The steps are folded into that line; opening it lists what was looked up.
     const fold = task.getByTestId("process-line").locator(".a-fold");
     await expect(fold).toHaveAttribute("aria-expanded", "false");
