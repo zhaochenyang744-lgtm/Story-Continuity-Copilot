@@ -358,7 +358,7 @@
 .topbar-tab:hover { background: var(--c-fill); }
 .topbar-tab[aria-current="page"] { background: var(--c-surface); box-shadow: 0 1px 2px rgba(17, 17, 17, .10); }
 :root[data-theme="night"] .topbar-tab[aria-current="page"] { background: var(--c-fill-hover); box-shadow: none; }
-.topbar-tab-num { color: var(--c-faint); font-family: var(--font-display); font-size: 11px; }
+.topbar-tab-num { color: var(--c-muted); font-family: var(--font-display); font-size: 11px; }
 .topbar-tabs.global .topbar-tab { padding-top: 0; }
 .topbar-quota { display: inline-flex; align-items: center; height: 30px; padding: 0 var(--s-3); border: 1px solid var(--c-line); border-radius: var(--r-pill); }
 .topbar-assistant { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; border-radius: 7px; }
@@ -369,7 +369,15 @@
   .topbar-inner { column-gap: var(--s-4); }
   .topbar-work { flex: 0 1 auto; max-width: 260px; padding-left: var(--s-4); }
   .topbar-tabs, .topbar-tabs:not(.global), .topbar-tabs.global { flex: 0 1 auto; gap: 2px; margin-right: auto; }
+  /* The tabs keep their size; a long work title is what gives way. */
+  .topbar-tabs:not(.global) { flex-shrink: 0; }
+  .topbar-tab { flex: none; white-space: nowrap; }
   .topbar-tabs.global { padding-left: var(--s-4); }
+}
+/* On a phone the first line keeps the logo, the work, 助手, the theme switch and the avatar: no quota pill, and 助手 without its mark. */
+@media (max-width: 720px) {
+  .topbar-quota { display: none; }
+  .topbar-assistant svg { display: none; }
 }
 
 /* v2.2 one page head: title and its line at the left; the figures above the actions at the right, both at the right edge and on the head's

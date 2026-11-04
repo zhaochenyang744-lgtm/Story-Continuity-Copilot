@@ -250,9 +250,10 @@ test.describe("示例作品不计字数", () => {
     expect((await usageOf(page)).check_chars_remaining).toBe(300);
     await page.reload();
     await openAssistantTab(page);
-    // The box is open, says the work costs nothing, and a question goes through without a character spent.
+    // The box is open (v2.2: it shows no cost line on a sample work; the page's own line below says it costs nothing), and a question goes
+    // through without a character spent.
     await expect(thread(page).locator("form.cx")).not.toHaveClass(/\boff\b/);
-    await expect(thread(page)).toContainText("示例作品不计字数");
+    await expect(thread(page).locator(".cx-note")).toHaveCount(0);
     await box(page).fill("苏岑知道罗盘被调包了吗？");
     await send(page).click();
     await finished(page);

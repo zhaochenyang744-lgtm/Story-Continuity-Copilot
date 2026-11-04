@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { api, expect, newPage, openTab, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
 import {
   adoptRequest, allowance, ask, askForFix, box, checkedWork, chip, chooseMode, finished, menuNames, openAssistantTab, openPlus, proposal, REWRITTEN, select, selectedWords,
@@ -15,18 +15,20 @@ const bodyOf = (request: { postDataJSON: () => any }) => request.postDataJSON();
 const putFeedback = (page: Page) => page.waitForRequest((request) => request.method() === "PUT" && /\/feedback$/.test(request.url()));
 const deleteFeedback = (page: Page) => page.waitForRequest((request) => request.method() === "DELETE" && /\/feedback$/.test(request.url()));
 const setRollout = (page: Page, mode: string) => api(page).post(`/test/v180/assistant-rollout/${mode}`);
+/** v2.2: the line above a finished answer is the one button that opens 「怎么查的」 (there is no separate button under the answer). */
+const howLine = (task: Locator) => task.getByTestId("process-line").getByRole("button");
 const column = (page: Page) => thread(page).locator(".a-thread");
 
 test.describe("助手：过程", () => {
-  test("说明句和动作合成一行；没有「第几轮」；跑完折成「问作品 · M 秒」，点开看到每一步和找到的片段", async ({ page }) => {
+  test("说明句和动作合成一行；没有「第几轮」；跑完折成「查了 N 处」，点开看到每一步和找到的片段", async ({ page }) => {
     await setup(page);
     await serveTasks(page, () => [askView()]);
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    // The line: how long (completed_at − started_at). 38a: no count of places on it, and it is a plain label; the steps are under 「怎么查的」.
-    await expect(task.getByTestId("process-line")).toHaveText(/^问作品 · 14 秒$/);
-    const fold = task.getByRole("button", { name: "怎么查的" });
+    // v2.2: the line says how many sources the task turned up (no use name, no seconds) and opens to the steps.
+    await expect(task.getByTestId("process-line")).toHaveText(/^查了 4 处$/);
+    const fold = howLine(task);
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(task.locator(".a-say")).toHaveCount(0);
     await fold.click();
@@ -64,7 +66,7 @@ test.describe("助手：过程", () => {
     await openAssistantTab(page);
     const task = tasks(page).first();
     await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    await howLine(task).click();
     await expect(task.locator(".a-act.bad")).toHaveText("提出改法没通过：原句在草稿里出现了不止一次");
     expect(await task.locator(".a-act.bad .mk").evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"✕"');
     await expect(task.locator(".a-act.ok")).toHaveText(["提出了 2 个改法", "引用没对上，重新整理回答"]);
@@ -80,7 +82,7 @@ test.describe("助手：过程", () => {
     await finished(page);
     let task = tasks(page).first();
     await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    await howLine(task).click();
     await expect(task.locator(".a-act.bad")).toHaveText("读第 999 章没通过：这一章不在可查范围内");
     await expect(task.locator(".a-act.ok").first()).toContainText("查了 1 条事实：苏岑");
     // An answer whose citation did not match is written again: one line says so, and the answer that follows is fine.
@@ -88,7 +90,7 @@ test.describe("助手：过程", () => {
     await finished(page, 2);
     task = tasks(page).last();
     await expect(task.locator(".a-proc-wrap")).toHaveCount(0);  // the steps fold away first (the task has only just ended)
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    await howLine(task).click();
     await expect(task.locator(".a-act.ok").filter({ hasText: "引用没对上，重新整理回答" })).toHaveCount(1);
     await expect(task.getByText("（示意回答）前文写过这件事。")).toBeVisible();
     // Cut short by the limit: a line above the answer says so, and 查过 / 没查 does not repeat it.
@@ -101,26 +103,24 @@ test.describe("助手：过程", () => {
     await expect(task).not.toContainText("步数或预算已到");
   });
 
-  test("进行中：照 phase 写正在做的事，满 3 秒才显示秒数，前面是三格动画；已完成的行是 ✓", async ({ page }) => {
+  test("进行中：照 phase 写正在做的事（不显示秒数），前面是三格动画；已完成的行是 ✓", async ({ page }) => {
     await setup(page);
-    // The step began a moment from now, so the seconds count from zero and show once they reach three.
-    const began = Date.now() + 1500;
-    await serveTasks(page, () => [runningView("tool", { phase_started_at: new Date(began).toISOString() })]);
+    await serveTasks(page, () => [runningView("tool")]);
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
     const now = task.locator(".a-act.now");
     await expect(now).toContainText("正在读第 10 章");
-    await expect(now.locator(".secs")).toHaveText("");
-    await expect(now.locator(".secs")).toHaveText(/^[3-9] 秒$/, { timeout: 12_000 });
+    // v2.2: while a task runs, the seconds are not shown.
+    await expect(now.locator(".secs")).toBeHidden();
     // The done line is a ✓ line; the line in progress carries three squares that step along (still when motion is reduced).
     await expect(task.locator(".a-say")).toHaveText("先查苏岑和罗盘的已确认事实。");
     expect(await task.locator(".a-act.ok .mk").first().evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"✓"');
     await expect(now.locator(".a-three i")).toHaveCount(3);
     expect(await now.locator(".a-three i").first().evaluate((node) => getComputedStyle(node).animationName)).toBe("none");
     await page.emulateMedia({ reducedMotion: "no-preference" });
-    expect(await now.locator(".a-three i").first().evaluate((node) => getComputedStyle(node).animationName)).toBe("a-step");
-    expect(await now.locator(".a-three i").nth(2).evaluate((node) => getComputedStyle(node).animationDelay)).toBe("0.7s");
+    expect(await now.locator(".a-three i").first().evaluate((node) => getComputedStyle(node).animationName)).toBe("a-breathe");
+    expect(await now.locator(".a-three i").nth(2).evaluate((node) => getComputedStyle(node).animationDelay)).toBe("0.4s");
   });
 
   test("等模型回复时写「正在想下一步」；作者打开过的折叠保持打开", async ({ page }) => {
@@ -136,7 +136,7 @@ test.describe("助手：过程", () => {
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const first = tasks(page).first();
-    const fold = first.getByRole("button", { name: "怎么查的" });
+    const fold = howLine(first);
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await fold.click();
     await ask(page, "E2E_SLOW 温岚是谁？");
@@ -258,19 +258,22 @@ test.describe("助手：回答", () => {
     const sentence = "（示意回答）前文写过这件事。";
     await task.getByRole("button", { name: /^出处 \d+ 处/ }).click();
     const where = (await task.locator(".a-source .a-where").first().innerText()).trim();
-    const copy = task.locator(".a-foot > .a-link").first();
+    // v2.2: 复制 is an icon button; its 「已复制」 stands beside the icons for a moment.
+    const copy = task.getByRole("button", { name: "复制", exact: true });
+    const said = task.locator(".a-foot .a-noted");
     await copy.click();
-    await expect(copy).toHaveText("已复制");
+    await expect(said).toHaveText("已复制");
     expect((await page.evaluate(() => navigator.clipboard.readText())).replace(/\r\n/g, "\n")).toBe(`${sentence}[1]\n\n[1] ${where}`);
-    await expect(copy).toHaveText("复制", { timeout: 4_000 });
+    await expect(said).toHaveCount(0, { timeout: 4_000 });
     await copy.click({ modifiers: ["Shift"] });
+    await expect(said).toHaveText("已复制");
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(sentence);
     // No clipboard: the answer is left selected, and the button says so.
     await page.evaluate(() => { Object.defineProperty(navigator.clipboard, "writeText", { configurable: true, value: () => Promise.reject(new Error("blocked")) }); });
     await page.evaluate(() => window.getSelection()?.removeAllRanges());
-    await expect(copy).toHaveText("复制", { timeout: 4_000 });
+    await expect(said).toHaveCount(0, { timeout: 4_000 });
     await copy.click();
-    await expect(copy).toHaveText("已选中，按 Ctrl+C 复制");
+    await expect(said).toHaveText("已选中，按 Ctrl+C 复制");
     expect(await selectedWords(page)).toContain(sentence);
   });
 
@@ -287,7 +290,8 @@ test.describe("助手：回答", () => {
     const task = tasks(page).last();
     const again = task.getByRole("button", { name: "重新回答", exact: true });
     await expect(again).toBeVisible();
-    await expect(task.locator(".a-regen .a-hint")).toHaveText("约 500 字");
+    // v2.2: an icon button; what it costs is in its title.
+    await expect(again).toHaveAttribute("title", "重新回答 · 约 500 字");
     const response = page.waitForRequest((request) => request.method() === "POST" && new RegExp(`/assistant/tasks/${first.id}/regenerate$`).test(request.url()));
     await again.click();
     await response;
@@ -502,7 +506,8 @@ test.describe("助手：输入框", () => {
     expect(tall.scrolls).toBe(true);
     await picked.getByRole("button", { name: /^去掉：选中：/ }).click();
     await expect(picked).toHaveCount(0);
-    await expect(thread(page).getByText("回答由 AI 生成，可能出错，请点出处核对。", { exact: true })).toBeVisible();
+    // One line under the box (before the first question it says where the words go).
+    await expect(thread(page).locator(".a-quota-row .a-ai-note")).toBeVisible();
   });
 
   test("「＋」菜单：某一章、某个人物、某条检查结果、在正文里选一段；选中后变成标签，进请求", async ({ page }) => {
@@ -646,14 +651,14 @@ test.describe("助手：输入框", () => {
     await expect(send(page)).toBeEnabled();
   });
 
-  test("输入框和全站的输入框是同一套：白底、没有边框，平时一圈淡环加淡影，悬停和聚焦各深一档，聚焦不再变蓝", async ({ page }) => {
+  test("输入框和全站的输入框是同一套：白底、没有边框，平时一圈细线加一层很淡的影，悬停和聚焦换成全站输入框的两档环，聚焦不再变蓝", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     const frame = thread(page).locator("form.cx");
     // The fields ease between their states; what is read here is the state they arrive at.
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
     const read = (node: Element) => { const style = getComputedStyle(node); return { background: style.backgroundColor, border: style.borderTopWidth, shadow: style.boxShadow, radius: style.borderTopLeftRadius }; };
-    const shadows = () => page.evaluate(() => { const read = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }; return { rest: read("--ring-rest"), hover: read("--ring-hover"), focus: read("--ring-focus") }; });
+    const shadows = () => page.evaluate(() => { const read = (name: string) => { const probe = document.createElement("i"); probe.style.cssText = `box-shadow: var(${name}); transition: none`; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; }; return { rest: read("--ring-rest"), box: (() => { const probe = document.createElement("i"); probe.style.cssText = "box-shadow: 0 0 0 1px var(--c-line), 0 1px 3px rgba(0, 0, 0, .05); transition: none"; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; })(), hover: read("--ring-hover"), focus: read("--ring-focus") }; });
     const quiet = await frame.evaluate(read);
     await page.mouse.move(2, 2);
     await frame.hover();
@@ -666,13 +671,14 @@ test.describe("助手：输入框", () => {
     const ring = await shadows();
     expect(quiet.background).toBe(tokens.surface);
     expect(quiet.border).toBe("0px");
-    expect(quiet.shadow).toBe(ring.rest);
+    // v2.2: the round box rests on a hairline and the faintest shadow of its own; pointed at and focused it takes the same rings as every field.
+    expect(quiet.shadow).toBe(ring.box);
     expect(hovered.shadow).toBe(ring.hover);
     expect(focused.background).toBe(tokens.surface);
     expect(focused.border).toBe("0px");
     expect(focused.shadow).toBe(ring.focus);
     expect(focused.shadow).not.toContain(tokens.blue);
-    expect(focused.radius).toBe(tokens.md);
+    // (The round box has its own 14px corner, deliberate in the approved panel sample; see 圆角 below.)
     // An ordinary form field of another page (the account settings' password form) since v2.1: white, no border, the same rings, 6px corners. (The sign-in pages are the exception: their fields are underlines, checked in auth.spec.ts.)
     await page.goto("/settings/account");
     await page.addStyleTag({ content: "*, *::before, *::after { transition: none !important; }" });
@@ -750,15 +756,16 @@ test.describe("助手：提问和空对话", () => {
     const list = thread(page).getByRole("list", { name: "可以先问这些" });
     await expect(list.getByRole("listitem")).toHaveCount(4);
     await expect(list.getByRole("listitem").nth(0)).toContainText("第 10 章结尾写到哪了？");
-    await expect(list.getByRole("listitem").nth(0)).toContainText("接着写之前");
+    // v2.2: the reason is the row's title; a person's row shows its count at the right.
+    await expect(list.getByRole("listitem").nth(0).getByRole("button")).toHaveAttribute("title", "接着写之前");
     await expect(list.getByRole("listitem").nth(1)).toContainText(/现在知道些什么？/);
-    await expect(list.getByRole("listitem").nth(1)).toContainText(/草稿里出现 \d+ 次/);
+    await expect(list.getByRole("listitem").nth(1)).toContainText(/出现 \d+ 次/);
     await expect(list.getByRole("listitem").nth(2)).toContainText(/上一次出场在做什么？/);
     await expect(list.getByRole("listitem").nth(3)).toContainText("有哪些伏笔还没收？");
     // Most often first: the counts go down.
     const counts = (await list.getByRole("listitem").allInnerTexts()).slice(1, 3).map((text) => Number(text.match(/出现 (\d+) 次/)![1]));
     expect(counts[0]).toBeGreaterThanOrEqual(counts[1]);
-    await expect(thread(page).getByRole("button", { name: "写前回顾", exact: true })).toBeVisible();
+    await expect(thread(page).getByRole("button", { name: /^写前回顾/ })).toBeVisible();
     const request = taskPost(page);
     await list.getByRole("button", { name: /^第 10 章结尾写到哪了/ }).click();
     expect(bodyOf(await request)).toMatchObject({ kind: "ask", question: "第 10 章结尾写到哪了？", context: { page: "writing" } });
@@ -774,7 +781,7 @@ test.describe("助手：提问和空对话", () => {
     await setup(page);
     await openAssistantTab(page);
     const request = taskPost(page);
-    await thread(page).getByRole("button", { name: "写前回顾", exact: true }).click();
+    await thread(page).getByRole("button", { name: /^写前回顾/ }).click();
     expect(bodyOf(await request)).toEqual({ kind: "recap", context: { page: "writing" } });
     await finished(page);
     const visitor = await newPage(browser);
@@ -784,7 +791,7 @@ test.describe("助手：提问和空对话", () => {
     await openAssistantTab(visitor);
     const list = thread(visitor).getByRole("list", { name: "可以先问这些" });
     // The same three as an author's own, counted in the sample's draft.
-    await expect(list.getByRole("listitem")).toHaveText([/^第 10 章结尾写到哪了？/, /现在知道些什么？.*草稿里出现 \d+ 次/, /上一次出场在做什么？.*草稿里出现 \d+ 次/, /^有哪些伏笔还没收？/]);
+    await expect(list.getByRole("listitem")).toHaveText([/^第 10 章结尾写到哪了？/, /现在知道些什么？.*出现 \d+ 次/, /上一次出场在做什么？.*出现 \d+ 次/, /^有哪些伏笔还没收？/]);
     await visitor.close();
   });
 
@@ -827,9 +834,10 @@ test.describe("助手：开关、测试版、隐私", () => {
       expect((await api(page).get("/auth/session")).user.assistant).toEqual({ available: false, beta: false });
       await page.reload();
       await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
-      // The column's own tabs: only the findings. No tab, no thread, no 写前回顾 in the page's head, nothing after picking words.
-      await expect(findings(page).getByRole("tab")).toHaveCount(0);
-      await expect(findings(page).getByRole("heading", { name: /^检查结果/ })).toBeVisible();
+      // The column's own tabs: only the findings. No assistant tab, no thread, no 写前回顾 in the page's head, nothing after picking words.
+      await expect(findings(page).getByRole("tab")).toHaveCount(1);
+      await expect(page.locator("#side-tab-assistant")).toHaveCount(0);
+      await expect(page.locator("#side-tab-findings")).toBeVisible();
       await expect(thread(page)).toHaveCount(0);
       await expect(page.locator(".draft-head-actions").getByRole("button", { name: "写前回顾", exact: true })).toHaveCount(0);
       await select(page, "#draft-body", 14);
@@ -867,7 +875,8 @@ test.describe("助手：开关、测试版、隐私", () => {
       expect((await api(page).get("/auth/session")).user.assistant).toEqual({ available: true, beta: true });
       await page.reload();
       await topbarAssistant(page).click();
-      const mark = page.locator("#assistant-dock").locator(".a-beta");
+      // On 写作 the tag sits in the column's 助手 tab; on the other pages, in the panel's head.
+      const mark = page.locator("#side-tab-assistant .a-beta");
       await expect(mark).toHaveText("测试版");
       expect(await mark.evaluate((node) => getComputedStyle(node).borderTopLeftRadius)).toBe("6px");
       await openTab(page, id, "sources");
@@ -917,7 +926,8 @@ test.describe("助手：开关、测试版、隐私", () => {
   test("第一次打开助手：说明文字下有一句「会把相关片段发给 DeepSeek」和隐私说明的链接；本机记住以后不再显示", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
-    const line = thread(page).getByText(/^使用助手会把相关片段发给 DeepSeek 处理，详见隐私说明。/);
+    // v2.2: before the first question the line under the box says it (afterwards the note under the box is the AI note).
+    const line = thread(page).getByText(/^提问时会把相关片段发给 DeepSeek 处理，详见隐私说明。/);
     await expect(line).toBeVisible();
     const link = line.getByRole("link", { name: "隐私说明", exact: true });
     await expect(link).toHaveAttribute("href", "/privacy");
@@ -929,7 +939,7 @@ test.describe("助手：开关、测试版、隐私", () => {
     await expect.poll(() => page.evaluate(() => window.localStorage.getItem("story-continuity:assistant-privacy-seen"))).toBe("1");
     await page.reload();
     await openAssistantTab(page);
-    await expect(thread(page).getByText(/使用助手会把相关片段发给 DeepSeek/)).toHaveCount(0);
+    await expect(thread(page).getByText(/会把相关片段发给 DeepSeek/)).toHaveCount(0);
   });
 
   test("检查结果也标明 AI 生成：写作页右栏列表底部、章节页的检查结果区域，各一行浅色小字", async ({ page }) => {
@@ -951,7 +961,7 @@ test.describe("助手：开关、测试版、隐私", () => {
 });
 
 test.describe("全站：圆角和输入框", () => {
-  test("圆角只有三种：标签、按钮和输入框 6，菜单、助手的框、卡片、对话框和抽屉 10，头像和圆点 999；分隔线、表格、页头保持直线", async ({ page }) => {
+  test("圆角只有三种：标签、按钮和输入框 6，菜单、卡片、对话框和面板 10，助手的输入框是圆角更大的 14（定稿样图），头像和圆点 999；分隔线、表格、页头保持直线", async ({ page }) => {
     const id = await setup(page);
     const radius = (selector: string) => page.locator(selector).first().evaluate((node) => getComputedStyle(node).borderTopLeftRadius);
     expect(await page.evaluate(() => ["--r-sm", "--r-md", "--r-pill"].map((name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()))).toEqual(["6px", "10px", "999px"]);
@@ -962,7 +972,7 @@ test.describe("全站：圆角和输入框", () => {
     expect(await radius(".tour")).toBe("10px");
     expect(await radius(".topbar")).toBe("0px");
     expect(await radius(".draft-head")).toBe("0px");
-    expect(await radius(".finding")).toBe("0px");
+    expect(await radius(".finding")).toBe("10px");  // v2.2: a finding on the sheet is a row that is washed when pointed at
     // A menu 10 (and the button that opens it 6); the dialog it leads to 14.
     await page.locator(".draft-head-actions details.menu > summary").click();
     expect(await radius(".draft-head-actions .menu > summary")).toBe("6px");
@@ -973,7 +983,7 @@ test.describe("全站：圆角和输入框", () => {
     await page.keyboard.press("Escape");
     // The assistant's box 10, its tag 3, its send square 6, the question bubble 10; the drawer 14 on the side that faces the page.
     await openAssistantTab(page);
-    expect(await radius(".assistant .cx")).toBe("10px");
+    expect(await radius(".assistant .cx")).toBe("14px");  // deliberate: the approved sample rounds the box more
     expect(await radius(".assistant .cx-send")).toBe("999px");  // the send key is round
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
@@ -983,7 +993,7 @@ test.describe("全站：圆角和输入框", () => {
     expect(await radius(".chapter-row")).toBe("0px");
     expect(await radius(".chapter-item")).toBe("0px");
     if (!(await page.locator("#assistant-dock").isVisible())) await topbarAssistant(page).click();
-    expect(await radius("#assistant-dock")).toBe("0px");
+    expect(await radius("#assistant-dock")).toBe("10px");  // v2.2: the panel is a sheet held off the window's edges
     await page.keyboard.press("Escape");
     // Fields everywhere are 6.
     await openTab(page, id, "memory");

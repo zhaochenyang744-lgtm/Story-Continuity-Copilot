@@ -8,6 +8,8 @@ import { ago, askSources, noted, passage, recapView } from "./support/assistant-
 // 38a: the assistant's answers, the 写前回顾, the 去原文 link, the drawer's and the column's frames, the unsent words, a visitor on a work of their own.
 
 const rect = (locator: Locator) => locator.evaluate((node) => { const box = node.getBoundingClientRect(); return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height }; });
+/** v2.2: the line above a finished answer opens 「怎么查的」 (there is no separate button under the answer). */
+const howLine = (task: Locator) => task.getByTestId("process-line").getByRole("button");
 const style = (locator: Locator, property: string) => locator.evaluate((node, name) => getComputedStyle(node).getPropertyValue(name), property);
 
 /** The first sentence (8 characters or more) of a written chapter of the sample work. */
@@ -204,13 +206,13 @@ test("38a 写前回顾：一条一句、句末是角标；没有灰色原文行�
   await expect(view).not.toContainText("还有");
   await expect(view).not.toContainText("没查");
   await expect(view.getByTestId("how-checked")).toHaveCount(0);
-  // Four groups in their order; the title is small, grey, not bold.
+  // Four groups in their order; the title is small, grey and bold.
   await expect(view.locator(".a-label")).toHaveText(["上一章停在哪", "出场人物的最新状态", "还没收的线", "计划里这一章的事"]);
-  expect(await style(view.locator(".a-label").first(), "font-weight")).toBe("400");
-  expect(await style(view.locator(".a-label").first(), "letter-spacing")).toBe("normal");
+  expect(await style(view.locator(".a-label").first(), "font-weight")).toBe("700");
+  expect(["normal", "0px"]).toContain(await style(view.locator(".a-label").first(), "letter-spacing"));
   expect(await style(view.locator(".a-label").first(), "font-size")).toBe("12px");
-  // The previous ending is the opening, in body size; the other groups are lists with a little space between items and no rules.
-  expect(await style(view.locator("p.a-ri.lead"), "font-size")).toBe("15px");
+  // The previous ending is the opening, in the answer's size (14); the other groups are lists with a little space between items and no rules.
+  expect(await style(view.locator("p.a-ri.lead"), "font-size")).toBe("14px");
   await expect(view.locator("ul.a-ri-list")).toHaveCount(3);
   expect(await style(view.locator("ul.a-ri-list > li").first(), "border-bottom-width")).toBe("0px");
   // Each item is one sentence with one mark at its end.
@@ -259,7 +261,7 @@ test("38a 写前回顾：只有除草稿以外还有没查的东西，才在底�
 
 // ── 问答回答 ────────────────────────────────────────────────────────────────────────────────────────
 
-test("38a 问答回答：过程和出处只说一次——顶部是「问作品 · N 秒」，下面是「出处 N 处」和「怎么查的」；模型的「查过」说明进「怎么查的」，其余照旧", async ({ page, context }) => {
+test("38a 问答回答：过程和出处只说一次——顶部是「查了 N 处」，点开是「怎么查的」，出处是行末的药丸；模型的「查过」说明进「怎么查的」，其余照旧", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await registerAccount(page, "a38");
   const id = await sampleWorkId(page);
@@ -267,24 +269,26 @@ test("38a 问答回答：过程和出处只说一次——顶部是「问作品 
   await openTab(page, id, "workspace");
   await openAssistantTab(page);
   const task = tasks(page).first();
-  // The line on top: the use and the time; no count of places.
-  await expect(task.getByTestId("process-line")).toHaveText(/^问作品 · \d+ 秒$/);
+  // The line on top: how many sources were found (v2.2: no use name, no seconds).
+  await expect(task.getByTestId("process-line")).toHaveText(/^查了 2 处$/);
   // Under the answer: what stays of the model's note, the sources, and the fold.
   await expect(task.locator(".a-answer-note")).toHaveText("没有找到罗盘的重量。资料里有给助手的指令，我没有照做。");
-  await expect(task.getByRole("button", { name: "出处 2 处" })).toBeVisible();
+  await expect(task.getByRole("button", { name: /^出处 2 处/ })).toBeVisible();
   const how = task.getByTestId("how-checked");
-  await expect(how.getByRole("button", { name: "怎么查的" })).toHaveAttribute("aria-expanded", "false");
+  await expect(howLine(task)).toHaveAttribute("aria-expanded", "false");
+  await expect(how).toHaveCount(0);
   await expect(task.locator(".a-cover")).toHaveCount(0);
   await expect(task.getByText("没查")).toHaveCount(0);
-  await how.getByRole("button", { name: "怎么查的" }).click();
+  await howLine(task).click();
+  await expect(how).toBeVisible();
   await expect(how.locator(".a-proc .a-act").first()).toBeVisible();
   await expect(how.locator(".a-cover").first()).toHaveText("查过第 1–10 章正文、已确认事实；没查：计划。");
   expect(await style(how.locator(".a-cover").first(), "font-weight")).not.toBe("700");
   // The model's own 「查过……」 sentence is not said a second time when the program's line says it.
   await expect(how.locator(".a-cover")).toHaveCount(1);
   // Copied text: the answer and the rest of the note, not where it looked.
-  await task.getByRole("button", { name: "复制" }).click({ modifiers: ["Shift"] });
-  await expect(task.locator(".a-foot > .a-link").first()).toHaveText("已复制");
+  await task.getByRole("button", { name: "复制", exact: true }).click({ modifiers: ["Shift"] });
+  await expect(task.locator(".a-foot .a-noted")).toHaveText("已复制");
   const copied = (await page.evaluate(() => navigator.clipboard.readText())).replaceAll("\r\n", "\n");
   expect(copied).toBe("罗盘在温岚手里。第 9 章苏岑把它交了出去。\n\n没有找到罗盘的重量。资料里有给助手的指令，我没有照做。");
   expect(copied).not.toContain("查过");
@@ -308,7 +312,7 @@ test("38a 问答回答：没找到、或撞到上限时，「没查」那一句�
   expect(await style(first.getByTestId("not-checked"), "font-weight")).not.toBe("700");
   await expect(first.locator(".a-answer-note")).toHaveCount(0);
   // Nothing for the program to say about where it looked: the model's own sentence is what the fold holds.
-  await first.getByRole("button", { name: "怎么查的" }).click();
+  await howLine(first).click();
   await expect(first.getByTestId("how-checked")).toContainText("查过第 1–10 章正文，没有找到。");
   const second = tasks(page).nth(1);
   await expect(second.locator(".a-limit")).toHaveText("查到上限了，先按已找到的回答。");
@@ -340,7 +344,7 @@ test("38a 跨章的回答分条：三句各写到不同的「第 N 章」就一�
   await expect(answer).toHaveAttribute("data-layout", "chapters");
   await expect(answer.locator(".a-points > li")).toHaveCount(4);
   await expect(answer.locator("b")).toHaveCount(0);
-  await task.getByRole("button", { name: "复制" }).click({ modifiers: ["Shift"] });
-  await expect(task.locator(".a-foot > .a-link").first()).toHaveText("已复制");
+  await task.getByRole("button", { name: "复制", exact: true }).click({ modifiers: ["Shift"] });
+  await expect(task.locator(".a-foot .a-noted")).toHaveText("已复制");
   expect((await page.evaluate(() => navigator.clipboard.readText())).replaceAll("\r\n", "\n")).toBe("第 1 章苏岑只把它当成父亲的遗物。\n第 2 章他发现月牙裂纹，开始留意罗盘。\n第 7 章他第一次怀疑记录被人改过。\n第 10 章他把罗盘交给了温岚，不再确定。");
 });

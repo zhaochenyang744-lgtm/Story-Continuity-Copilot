@@ -1,6 +1,6 @@
 import type { Locator, Page } from "@playwright/test";
 import { api, expect, openTab, registerAccount, sampleWorkId, test } from "./support/app";
-import { box, checkedWork, chip, dock, send, stopButton, tasks, thread, topbarAssistant } from "./support/assistant";
+import { box, checkedWork, chip, dock, findingsTab, send, stopButton, tasks, thread, topbarAssistant } from "./support/assistant";
 import { findings } from "./support/writing";
 
 // v2.2 phase two: the assistant is one panel docked at the right of every page. The top bar's button, Ctrl + / and Esc open and close it; a wide window
@@ -53,25 +53,43 @@ test("停靠面板：顶栏按钮、Ctrl + / 和 Esc 开关；宽窗口挤开页
   await expect(dock(page)).toHaveCount(0);
 });
 
-test("写作页：右栏只放检查结果，没有标签；助手开着时章节收成一条号码，正文、检查结果、助手并排", async ({ page }) => {
+test("写作页：右栏是一张固定的卡，检查结果和助手是其中两个标签；切换时正文不动，右栏不变宽；窄窗口里助手盖住整个窗口，用「收起助手」退出", async ({ page }) => {
   await registerAccount(page, "dock2");
   const id = await sampleWorkId(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await openTab(page, id, "workspace");
-  await expect(findings(page).getByRole("tab")).toHaveCount(0);
-  await expect(findings(page).getByRole("heading", { name: /^检查结果/ })).toBeVisible();
+  await expect(findings(page).getByRole("tab")).toHaveCount(2);
+  await expect(findingsTab(page)).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#side-tab-assistant")).toHaveAttribute("aria-selected", "false");
+  await expect(page.locator("#side-panel-findings")).toBeVisible();
+  await expect(thread(page)).toBeHidden();
   await expect(page.locator(".draft-chapters .rail-title").first()).toBeVisible();
+  const [draftBefore, columnBefore] = [await bounds(page.locator(".draft")), await bounds(findings(page))];
+  // The column is the same sheet as the panel on the other pages: 400 wide, 16px off the window's right edge.
+  expect(columnBefore.width).toBeGreaterThanOrEqual(399);
+  expect(columnBefore.width).toBeLessThanOrEqual(401);
+  expect(Math.abs(columnBefore.x + columnBefore.width - (1440 - 16))).toBeLessThanOrEqual(1);
   await topbarAssistant(page).click();
   await expect(thread(page)).toBeVisible();
-  await expect(page.locator(".draft-chapters .rail-title").first()).toBeHidden();
-  await expect(page.locator(".draft-chapters .mono").first()).toBeVisible();
-  const [draft, results, panel] = [await bounds(page.locator(".draft")), await bounds(findings(page)), await bounds(dock(page))];
-  expect(draft.x + draft.width).toBeLessThanOrEqual(results.x + 1);
-  expect(results.x + results.width).toBeLessThanOrEqual(panel.x + 1);
-  // Under 1440 the panel lies over the page instead.
-  await page.setViewportSize({ width: 1300, height: 900 });
-  await expect(page.locator("html")).toHaveAttribute("data-dock", "overlay");
-  await expect(page.locator(".draft-chapters .rail-title").first()).toBeHidden().catch(() => undefined);
+  await expect(page.locator("#side-tab-assistant")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#side-panel-findings")).toBeHidden();
+  const [draft, column, panel] = [await bounds(page.locator(".draft")), await bounds(findings(page)), await bounds(dock(page))];
+  expect(Math.abs(draft.x - draftBefore.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(column.x - columnBefore.x)).toBeLessThanOrEqual(1);
+  expect(draft.x + draft.width).toBeLessThanOrEqual(column.x + 1);
+  expect(panel.x).toBeGreaterThanOrEqual(column.x - 1);
+  expect(panel.x + panel.width).toBeLessThanOrEqual(column.x + column.width + 1);
+  await page.locator("#side-tab-findings").click();
+  await expect(page.locator("#side-panel-findings")).toBeVisible();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
+  // Under 1024 the assistant covers the window (the top bar too); 收起助手 is the way out.
+  await page.setViewportSize({ width: 900, height: 800 });
+  await topbarAssistant(page).click();
+  await expect(thread(page)).toBeVisible();
+  const cover = await bounds(findings(page));
+  expect(cover.width).toBeGreaterThanOrEqual(899);
+  await page.getByRole("button", { name: "收起助手", exact: true }).click();
+  await expect(thread(page)).toBeHidden();
 });
 
 test("每条检查结果有「问助手」：打开助手，把这条结果放进提问的上下文，不发送", async ({ page }) => {

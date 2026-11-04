@@ -154,7 +154,7 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   await expect(rows(page)).toHaveText([/潮声之后/, /北堤旧事/]);
 });
 
-test("作品管理为空：页头不放按钮，正文一张导入卡（一个主按钮）加一个文字按钮「从空白开始」", async ({ page }) => {
+test("作品管理为空：页头不放按钮，正文两张卡：导入（主按钮）和从空白开始（「新建作品」，次按钮）", async ({ page }) => {
   await registerAccount(page, "workempty");
   await worksPage(page);
   await expect(page.getByText("导入写好的稿子，或者从空白开始。", { exact: true })).toBeVisible();
@@ -164,10 +164,14 @@ test("作品管理为空：页头不放按钮，正文一张导入卡（一个�
   await expect(card.getByRole("heading")).toHaveCount(1);
   await expect(card.getByRole("button")).toHaveCount(1);
   await expect(card.getByRole("button", { name: "选择文件", exact: true })).toHaveClass(/btn-primary/);
-  await expect(page.getByRole("button", { name: "从空白开始", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "从空白开始", exact: true })).not.toHaveClass(/btn-primary/);
+  const blank = page.getByRole("region", { name: "新建作品" });
+  await expect(blank.getByRole("heading", { name: "从空白开始" })).toBeVisible();
+  await expect(blank.getByRole("button")).toHaveCount(1);
+  await expect(blank.getByRole("button", { name: "新建作品", exact: true })).not.toHaveClass(/btn-primary/);
   await expect(page.getByRole("textbox", { name: "搜索作品" })).toHaveCount(0);
   await shot(page, "works-empty");
+  await blank.getByRole("button", { name: "新建作品", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects\/new$/);
 });
 
 test("作品卡片上的入口：继续写、打开概览、追加章节", async ({ page }) => {

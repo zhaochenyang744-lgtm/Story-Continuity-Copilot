@@ -41,15 +41,17 @@ async function pagePair(page: Page, name: string) {
   }
   await theme(page, "day");
 }
-async function viewport(page: Page, name: string) {
+/** `byAttribute`: on a phone the assistant covers the top bar, so its theme switch cannot be clicked; the theme is set on the page directly. */
+async function viewport(page: Page, name: string, byAttribute = false) {
   const directory = process.env.E2E_SCREENSHOTS_DIR!;
   await mkdir(directory, { recursive: true });
+  const set = async (value: "day" | "night") => { if (byAttribute) await page.evaluate((v) => { document.documentElement.dataset.theme = v; }, value); else await theme(page, value); };
   for (const value of ["day", "night"] as const) {
-    await theme(page, value);
+    await set(value);
     await page.evaluate(async () => { await document.fonts.ready; });
     await page.screenshot({ path: path.join(directory, `${name}-${value === "day" ? "浅色" : "深色"}.png`), animations: "disabled" });
   }
-  await theme(page, "day");
+  await set("day");
 }
 
 test.describe("07c 截图", () => {
@@ -61,18 +63,20 @@ test.describe("07c 截图", () => {
     await openAssistantTab(page);
     await expect(thread(page).getByText("正在读第 10 章")).toBeVisible();
     await page.evaluate(() => window.scrollTo(0, 340));
-    await pair(page, "01-运行中的过程", () => column(page), async () => { await expect(thread(page).getByText(/\d+ 秒/)).toBeVisible({ timeout: 10_000 }); });
+    await pair(page, "01-运行中的过程", () => column(page), async () => { await expect(thread(page).locator(".a-act.now")).toBeVisible(); });
     // Finished and opened: the narration, the grouped actions, and what a search found (the unused one fainter).
     list = [askView()];
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    // v2.2: the line above the answer, 「查了 N 处 ›」, opens how it was checked.
+    const line = task.getByTestId("process-line").getByRole("button", { name: /^查了 \d+ 处/ });
+    await line.click();
     await task.getByRole("button", { name: /^搜了 2 处正文/ }).click();
     await page.evaluate(() => window.scrollTo(0, 340));
     await pair(page, "02-跑完后点开的过程", () => column(page));
     // The card over a citation.
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    await line.click();
     await task.locator(".a-cite button").first().hover();
     await expect(thread(page).locator(".a-pop")).toBeVisible();
     await pair(page, "03-引用悬停", () => column(page), async () => { await task.locator(".a-cite button").first().hover(); await expect(thread(page).locator(".a-pop")).toBeVisible(); });
@@ -159,7 +163,7 @@ test.describe("07c 截图", () => {
     await page.setViewportSize({ width: 375, height: 812 });
     await expect(thread(page)).toBeVisible();
     await thread(page).scrollIntoViewIfNeeded();
-    await viewport(page, "10-手机宽度的助手面板");
+    await viewport(page, "10-手机宽度的助手面板", true);
   });
 
   test("全站：写作页、章节页、资料页、登录页", async ({ page, browser }) => {

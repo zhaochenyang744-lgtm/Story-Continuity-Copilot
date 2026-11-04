@@ -223,7 +223,7 @@ function ProcessRows({ rows, sources, locate }: { rows: Row[]; sources: Record<s
     who opens the fold keeps it open. */
 export function Steps({ task, locate, lead, end, named = false, how }: { task: AssistantTask; locate?: (source: AssistantSource) => void; lead: string; end?: ReactNode;
   /** v2.2: what the finished line opens to instead of the bare steps (an answer's 「怎么查的」: the steps and 查过……；没查：……). The line then says how many
-      passages were found and how long it took, 「问作品 · 查到 6 处 · 16 秒 ›」, and there is no separate 「怎么查的 ›」 under the answer. */
+      passages were found, 「查了 6 处 ›」, and there is no separate 「怎么查的 ›」 under the answer. */
   how?: ReactNode;
   /** The finished line opens to the steps and names what it opens: 「过程 · 8 秒 ›」 (a 写前回顾). Without it the finished line is a plain label,
       「问作品 · 4 秒」: the steps of an answer are under it, in 「怎么查的 ›」 (CoverLine); while the task runs they are listed here either way. */

@@ -96,6 +96,8 @@ test.describe("改资料：用法和菜单", () => {
     await expect(task.getByTestId("process-line")).toContainText("改资料");
     // 38a: the model's 「查过……」 sentence is under 「怎么查的」; what stays under the answer is the rest of its note.
     await expect(task.locator(".a-answer-note")).toHaveText("没有出卡片：正文里没找到能作依据的段落。");
+    // v2.2: the line above the answer opens to how it was checked.
+    await task.getByTestId("process-line").locator("button.a-fold").click();
     await expect(task.getByTestId("how-checked")).toBeVisible();
     await expect(cardOf(page)).toHaveCount(0);
     await expect(modeButton(page, "自动")).toBeVisible();
@@ -569,7 +571,8 @@ test.describe("改资料：版面", () => {
     await expect(itemOf(cardOf(phone), "C2").getByRole("textbox", { name: /^改后的内容/ })).toBeVisible();
     await insideColumn(phone);
     // The panel fills the phone's screen and this device remembers it open: it is shut before the other page is looked at.
-    await phone.locator("#assistant-open").click();
+    // (On the writing page the panel covers the top bar too; 收起助手 is the way out.)
+    await phone.getByRole("button", { name: "收起助手", exact: true }).click();
     await phone.unrouteAll({ behavior: "ignoreErrors" });
     await confirmByApi(phone, id, await proposeByApi(phone, id, THREAD_ASK));
     await openTab(phone, id, "memory");

@@ -62,26 +62,32 @@ test("记忆读不出来时面板就是关着的，也不报错", async ({ page 
   expect(errors).toEqual([]);
 });
 
-test("助手面板的收起提示：手机宽度不写快捷键", async ({ page }) => {
+test("助手面板的收起键：标题行右端一个图标按钮，快捷键只写在悬停提示里；手机宽度也在，点了关上", async ({ page }) => {
   await registerAccount(page, "dockkbd");
   const id = await sampleWorkId(page);
   await openTab(page, id, "overview");
   await topbarAssistant(page).click();
-  await expect(dock(page).locator("kbd")).toBeVisible();
+  const close = dock(page).getByRole("button", { name: "关闭助手", exact: true });
+  await expect(close).toBeVisible();
+  await expect(close).toHaveAttribute("title", "收起（Esc）");
+  await expect(dock(page).locator("kbd")).toHaveCount(0);
   await page.setViewportSize({ width: 375, height: 812 });
-  await expect(dock(page).locator("kbd")).toBeHidden();
-  await expect(dock(page).getByRole("button", { name: "关闭助手", exact: true })).toContainText("收起");
+  await expect(close).toBeVisible();
+  await close.click();
+  await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "false");
 });
 
-test("顶栏「助手」打开时不是实心蓝：浅底加细框", async ({ page }) => {
+test("顶栏「助手」打开时是黑底的开关，不是实心蓝", async ({ page }) => {
   await registerAccount(page, "dockblue");
   const id = await sampleWorkId(page);
   await openTab(page, id, "workspace");
   const blue = await page.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-blue)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
   await topbarAssistant(page).click();
   await expect(topbarAssistant(page)).toHaveAttribute("aria-expanded", "true");
-  expect(await topbarAssistant(page).evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe(blue);
-  expect(await topbarAssistant(page).evaluate((node) => getComputedStyle(node).boxShadow)).not.toBe("none");
+  const ink = await page.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-ink)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
+  const background = await topbarAssistant(page).evaluate((node) => getComputedStyle(node).backgroundColor);
+  expect(background).not.toBe(blue);
+  expect(background).toBe(ink);
 });
 
 test("访客次数用完：输入框换成一行说明和「注册」，点它去注册页", async ({ page }) => {

@@ -336,7 +336,7 @@
 /* Narrow windows: the page shows the draft or the findings (the switch above the draft); the assistant, opened, covers the page under the top bar,
    with the tabs to go back. */
 @media (max-width: 1023px) {
-  .writing .side-tabs, .side-fold { display: none; }
+  .writing .side-tabs, .writing .side-fold { display: none; }
   #side-panel-findings { padding: 0; overflow: visible; }
   /* The whole window, over the top bar too, whatever the column's own alignment: the conversation scrolls inside, the box stays at the foot,
      and 收起 at the top right is always the way out. */

@@ -109,7 +109,7 @@ async function withThread(page: Page, views: unknown[], tab: "workspace" | "over
   return id;
 }
 
-test("18 回答：带 lead 和三个以上 label 的排成分点，标签加粗，多个出处合并成一个标记；不带的仍是段落", async ({ page }) => {
+test("18 回答：带 lead 和三个以上 label 的排成分点，标签加粗，多个出处合并成一个标记；不带的第一句开头、其余一句一行", async ({ page }) => {
   await withThread(page, [listView, paragraphView]);
   const list = tasks(page).first();
   const answer = list.locator(".a-answer");
@@ -127,30 +127,28 @@ test("18 回答：带 lead 和三个以上 label 的排成分点，标签加粗�
   expect(await answer.locator(".a-points > li").nth(3).locator(".a-cite button").textContent()).toBe("1、5");
   // The lead is body text, not a bullet.
   expect(await answer.locator(".a-lead").evaluate((node) => getComputedStyle(node).display)).toBe("block");
-  expect(await style(answer.locator(".a-lead"), "font-size")).toBe("15px");
-  expect(await style(answer.locator(".a-points li").first(), "line-height")).toBe("26.25px");
-  // Without a lead and with two labels, it stays one paragraph and nothing is bold.
+  expect(await style(answer.locator(".a-lead"), "font-size")).toBe("14px");
+  expect(await style(answer.locator(".a-points li").first(), "line-height")).toBe("25.2px");
+  // Without a lead and with two labels (v2.2): never one block. The first sentence opens the answer, the others follow one to a line, and nothing is bold.
   const other = tasks(page).nth(1).locator(".a-answer");
-  await expect(other).toHaveAttribute("data-layout", "paragraph");
-  await expect(other.locator(".a-points")).toHaveCount(0);
+  await expect(other).toHaveAttribute("data-layout", "list");
+  await expect(other.locator(".a-lead")).toContainText("窄纸夹在第 3 章的移交单里。");
+  await expect(other.locator(".a-points > li")).toHaveCount(2);
   await expect(other.locator("b")).toHaveCount(0);
-  await expect(other.locator(".a-body .a-s")).toHaveCount(3);
-  await expect(other.locator(".a-body .a-s").first()).toContainText("窄纸夹在第 3 章的移交单里。");
   await photograph(page, "01-列举回答", async () => {
     await thread(page).locator(".a-thread").evaluate((node) => { node.scrollTop = 0; });
   });
 });
 
-test("18 回答：出处标记默认淡灰，悬停变蓝；一个标记的卡片里列出它的每个出处", async ({ page }) => {
+test("18 回答：出处标记是浅蓝底的小键，悬停变实心蓝；一个标记的卡片里列出它的每个出处", async ({ page }) => {
   await withThread(page, [listView]);
   const mark = tasks(page).first().locator(".a-points > li").nth(1).locator(".a-cite > button");
-  const faint = await mark.evaluate((node) => { const probe = document.createElement("i"); probe.style.color = "var(--c-muted)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
-  expect(await style(mark, "color")).toBe(faint);
-  expect(await style(mark, "background-color")).toBe("rgba(0, 0, 0, 0)");
+  const token = (name: string) => mark.evaluate((_node, variable) => { const probe = document.createElement("i"); probe.style.color = `var(${variable})`; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; }, name);
+  expect(await style(mark, "color")).toBe(await token("--c-blue-text"));
+  expect(await style(mark, "background-color")).toBe(await token("--c-blue-tint"));
   await mark.hover();
-  const blue = await mark.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-blue-text)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
-  await expect.poll(() => style(mark, "color")).toBe(blue);
-  expect(await style(mark, "background-color")).not.toBe("rgba(0, 0, 0, 0)");
+  await expect.poll(async () => style(mark, "background-color")).toBe(await token("--c-blue"));
+  expect(await style(mark, "color")).toBe(await token("--c-on-blue"));
   const card = page.getByRole("group", { name: "出处 3–4" });
   await expect(card).toBeVisible();
   await expect(card.locator(".a-pop-one")).toHaveCount(2);
@@ -158,12 +156,12 @@ test("18 回答：出处标记默认淡灰，悬停变蓝；一个标记的卡�
   await expect(card).toContainText("第 6 章");
 });
 
-test("18 过程行：一行 12px 灰字，回答紧跟在问题下面；额度提示不在回答上面", async ({ page }) => {
+test("18 过程行：一行 12px 灰字「查了 N 处 ›」，点开看怎么查的；回答紧跟在问题下面；额度提示不在回答上面", async ({ page }) => {
   await withThread(page, [listView]);
   const task = tasks(page).first();
   const line = task.getByTestId("process-line");
-  // 38a: no count of places on the line (it would sit next to 「出处 N 处」 and the two numbers would fight).
-  await expect(line).toHaveText(/^问作品 · \d+ 秒$/);
+  // v2.2: 「查了 N 处 ›」: no name of the use and no seconds on the line of a plain question.
+  await expect(line).toHaveText(/^查了 \d+ 处$/);
   expect(await style(line.locator(".a-fold"), "font-size")).toBe("12px");
   expect((await rect(line)).height).toBeLessThanOrEqual(24);
   // Only one line stands between the question and the answer (the kind of use is in it; nothing else is).
@@ -172,9 +170,11 @@ test("18 过程行：一行 12px 灰字，回答紧跟在问题下面；额度�
   expect(first.top - question.bottom).toBeLessThanOrEqual(40);
   await expect(task.getByTestId("routed-line")).toHaveCount(0);
   await expect(task.locator(".a-kind, .a-head")).toHaveCount(0);
-  // 38a: the line is a plain label; the steps open under 「怎么查的」.
-  await expect(line.locator(".a-fold")).not.toHaveJSProperty("tagName", "BUTTON");
-  await task.getByRole("button", { name: "怎么查的" }).click();
+  // v2.2: the line itself opens the steps; there is no separate 「怎么查的」 under the answer.
+  await expect(line.locator(".a-fold")).toHaveJSProperty("tagName", "BUTTON");
+  await expect(task.getByRole("button", { name: "怎么查的", exact: true })).toHaveCount(0);
+  await line.locator(".a-fold").click();
+  await expect(task.getByTestId("how-checked")).toBeVisible();
   await expect(task.locator(".a-proc")).toBeVisible();
   await expect(task.locator(".a-proc .a-act").first()).toBeVisible();
 });
@@ -183,7 +183,7 @@ test("18 回答末尾：找不到时第一行由前端写，下面只有 note �
   await withThread(page, [listView, notFoundView]);
   const missing = tasks(page).nth(1);
   await expect(missing.getByTestId("not-found-line")).toHaveText("没有找到问题问到的内容。");
-  expect(await style(missing.getByTestId("not-found-line"), "font-size")).toBe("15px");
+  expect(await style(missing.getByTestId("not-found-line"), "font-size")).toBe("14px");
   // 38a: the model's 「查过……」 sentence goes under 「怎么查的」; an answer that found nothing says what was not looked at in plain grey, under the answer.
   await expect(missing.locator(".a-answer-note")).toHaveCount(0);
   await expect(missing.getByTestId("not-checked")).toHaveText("没查：本章草稿。");
@@ -194,11 +194,11 @@ test("18 回答末尾：找不到时第一行由前端写，下面只有 note �
   // A found answer: 查过……；没查：…… is inside the fold, which is shut until it is asked for.
   const found = tasks(page).first();
   await expect(found.locator(".a-cover")).toHaveCount(0);
-  await found.getByRole("button", { name: "怎么查的" }).click();
+  await found.getByTestId("process-line").locator(".a-fold").click();
   await expect(found.locator(".a-cover")).toHaveText("查过第 1–10 章正文、伏笔记录；没查：本章草稿。");
   // Sources: folded to one line.
   const fold = found.getByRole("button", { name: /^出处 \d+ 处/ });
-  await expect(fold).toHaveText("出处 5 处");
+  await expect(fold).toHaveText("出处 5 处 · 第 3、5–7 章");
   await expect(found.locator(".a-sources")).toHaveCount(0);
   await fold.click();
   const rows = found.locator(".a-source .a-where");
@@ -214,7 +214,7 @@ test("18 回答末尾：找不到时第一行由前端写，下面只有 note �
   });
 });
 
-test("18 轮次：轮与轮之间只写时间，没有线；追问接在上一轮下面，缩进，没有自己的线", async ({ page }) => {
+test("18 轮次：轮与轮之间只写时间，没有线；追问接在上一轮下面，和别的轮对齐不缩进，没有自己的线，气泡里写「接着上一问」", async ({ page }) => {
   const second = askView({ id: "atask-second", question: "旧尺是谁改的？", created_at: ago(100), completed_at: ago(90), started_at: ago(98), follow_up_of: "atask-list", follow_up_depth: 1, sources: {}, answer: { status: "not_found", sentences: [], note: null }, coverage: null });
   const days = (count: number) => new Date(Date.now() - count * 86_400_000).toISOString();
   const old = askView({ id: "atask-old", question: "很早以前的问题", created_at: days(4), completed_at: days(4), started_at: days(4), sources: {}, answer: { status: "not_found", sentences: [], note: null }, coverage: null });
@@ -226,7 +226,8 @@ test("18 轮次：轮与轮之间只写时间，没有线；追问接在上一�
   await expect(rules.last()).toHaveText(/^今天 \d{2}:\d{2}$/);
   const follow = thread(page).locator('[data-task="atask-second"]');
   await expect(follow).toHaveClass(/a-follow/);
-  expect(await style(follow, "margin-left")).toBe("12px");
+  expect(await style(follow, "margin-left")).toBe("0px");
+  await expect(follow.locator(".a-ask-tag")).toHaveText("接着上一问");
   expect(await style(follow, "border-left-width")).toBe("0px");
 });
 
@@ -251,7 +252,7 @@ test("18 写前回顾：字号和普通回答一套，出处是句末的角标�
   await openAssistantTab(page);
   const view = tasks(page).first();
   await expect(view.getByTestId("process-line")).toHaveText(/^写前回顾 · 第 11 章/);
-  expect(await style(view.locator(".a-ri").first(), "font-size")).toBe("15px");
+  expect(await style(view.locator(".a-ri").first(), "font-size")).toBe("14px");
   // 38a: no grey quote line under an item; the passage is behind the mark at the end of the sentence, shown whole.
   await expect(view.locator(".a-ri-src, .a-quote-line")).toHaveCount(0);
   const mark = view.locator(".a-ri .a-cite > button").first();
@@ -266,7 +267,7 @@ test("18 写前回顾：字号和普通回答一套，出处是句末的角标�
   }, [[1440, 900], [390, 1500]]);
 });
 
-test("18 字号：助手里的字只有 15（回答、卡片）、14（提问、按钮、引用）、12（说明）三档", async ({ page }) => {
+test("18 字号：助手里的字只有 14（回答、提问、卡片、按钮、引用）、12（说明）、11（出处小键）三档", async ({ page }) => {
   const waiting = changeView(cardItems(), { id: "atask-fs" });
   await withThread(page, [listView, notFoundView, waiting]);
   const sizes = await thread(page).evaluate((root) => {
@@ -275,13 +276,13 @@ test("18 字号：助手里的字只有 15（回答、卡片）、14（提问、
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       const text = (node.textContent ?? "").trim();
       const element = node.parentElement;
-      if (!text || !element || element.closest(".sr-only, .a-skip, svg, option")) continue;
+      if (!text || !element || element.closest(".sr-only, .a-skip, svg, option, .menu-dots")) continue;
       const size = getComputedStyle(element).fontSize;
       if (!found.has(size)) found.set(size, text.slice(0, 20));
     }
     return Object.fromEntries(found);
   });
-  expect(Object.keys(sizes).sort(), JSON.stringify(sizes)).toEqual(["12px", "14px", "15px"]);
+  expect(Object.keys(sizes).sort(), JSON.stringify(sizes)).toEqual(["11px", "12px", "14px"]);
 });
 
 test("18 操作行：点赞点踩是单色线条图标，和操作行文字同一种灰；没有 emoji", async ({ page }) => {
@@ -319,7 +320,7 @@ test("18 额度用完：重新回答置灰，悬停写原因；写作页选中�
   }
 });
 
-test("18 变更卡片：白底、一圈细环的容器（没有边框），标题行、细线、底部按钮；长文本在一段里标出差异；依据收成一行；高风险有红边", async ({ page }) => {
+test("18 变更卡片：白底、一圈细环的容器（没有边框），标题行、细线、底部按钮；长文本在一段里标出差异；依据收成一行；出处照常计数；高风险有红边", async ({ page }) => {
   const abandon = changeItem({ id: "achange-3", label: "C3", kind: "abandon_thread", title: "廊桥钥匙", before: "已埋设", after: "已放弃", risk: "high", evidence: [], request_words: "廊桥钥匙我不追了", editable: false, value: null });
   await withThread(page, [changeView([...cardItems(), abandon])]);
   const card = cardOf(page);
@@ -349,8 +350,8 @@ test("18 变更卡片：白底、一圈细环的容器（没有边框），标�
   await expect(card.locator(".a-sources")).toHaveCount(0);
   await itemOf(card, "C1").getByTestId("change-basis").locator("button").click();
   await expect(itemOf(card, "C1").locator(".a-source")).toHaveCount(1);
-  // The thread's own list of sources leaves out what the card already stands on.
-  await expect(tasks(page).first().getByRole("button", { name: /^出处 \d+ 处/ })).toHaveCount(0);
+  // 出处 in the row of actions counts every source of the answer, the card's ones too (v2.2: one count, said once).
+  await expect(tasks(page).first().getByRole("button", { name: /^出处 \d+ 处/ })).toHaveCount(1);
   // A high-risk item has a red edge 3px wide.
   expect(await style(itemOf(card, "C3"), "box-shadow")).toMatch(/inset/);
   expect(await style(itemOf(card, "C3"), "box-shadow")).toMatch(/3px/);
@@ -443,8 +444,11 @@ test("18 输入框：白底、没有边框、一圈细环加淡影，聚焦时�
   // (The page puts the cursor in the box when the drawer opens; take it out to see the box at rest.)
   await box(page).evaluate((node) => (node as HTMLElement).blur());
   expect(await style(frame, "border-top-width")).toBe("0px");
-  expect(await style(frame, "box-shadow")).toBe(await ringOf("--ring-rest"));
-  expect(await style(frame, "border-top-left-radius")).toBe("10px");
+  // v2.2: a hairline of the line colour and the faintest shadow at rest; hover and focus keep the ring tokens.
+  const restShadow = await page.evaluate(() => { const probe = document.createElement("i"); probe.style.cssText = "box-shadow: 0 0 0 1px var(--c-line), 0 1px 3px rgba(0, 0, 0, .05); transition: none"; document.body.append(probe); const value = getComputedStyle(probe).boxShadow; probe.remove(); return value; });
+  expect(await style(frame, "box-shadow")).toBe(restShadow);
+  // The box is rounder than the other boxes (v2.2, the approved panel sample): 14px.
+  expect(await style(frame, "border-top-left-radius")).toBe("14px");
   expect(await style(thread(page).locator(".a-compose"), "border-top-width")).toBe("0px");
   const field = box(page);
   const empty = await rect(field);
@@ -490,15 +494,16 @@ test("18 输入框：白底、没有边框、一圈细环加淡影，聚焦时�
   await expect.poll(() => style(send, "background-color")).toBe("rgba(0, 0, 0, 0)");
   const line = await frame.evaluate(() => { const probe = document.createElement("i"); probe.style.color = "var(--c-line)"; document.body.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; });
   expect(await style(send, "border-top-color")).toBe(line);
-  // The allowance is in the body face, 12px, under the frame at its right.
-  const note = thread(page).locator(".cx-note");
+  // v2.2: under the frame stands only the note on what wrote the answer, 12px in the body face, centred; no cost line and no key hint while the allowance is plentiful.
+  const note = thread(page).locator(".a-ai-note");
   await field.evaluate((node) => (node as HTMLElement).blur());
+  await expect(thread(page).locator(".cx-note")).toHaveCount(0);
   expect(await style(note, "font-size")).toBe("12px");
   expect(await style(note, "font-family")).not.toContain("Mono");
   const under = await rect(note);
   const framed = await rect(frame);
   expect(under.top).toBeGreaterThanOrEqual(framed.bottom - 1);
-  expect(Math.abs(under.right - framed.right)).toBeLessThanOrEqual(2);
+  expect(Math.abs((under.left + under.right) / 2 - (framed.left + framed.right) / 2)).toBeLessThanOrEqual(2);
   await photograph(page, "04a-输入框-空", async () => { await box(page).evaluate((node) => (node as HTMLElement).blur()); });
   await photograph(page, "04b-输入框-输入中", async () => { await box(page).fill("现在还有哪些伏笔没收？是不是都已经交代了"); await box(page).focus(); });
 });
@@ -597,7 +602,7 @@ test("18 请求失败：红色系的提示条带“重试”，输入内容照�
 });
 
 for (const [width, height] of [[1440, 900], [1024, 768]] as const) {
-  test(`18 写作页 ${width}×${height}：右栏从顶栏下面开始，高度等于视口减去顶栏；不滚动就能看到助手输入框`, async ({ page }) => {
+  test(`18 写作页 ${width}×${height}：右栏是离顶栏、窗口右边和下边各 16px 的一张卡；不滚动就能看到助手输入框`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await registerAccount(page, "a18");
     const id = await sampleWorkId(page);
@@ -606,8 +611,10 @@ for (const [width, height] of [[1440, 900], [1024, 768]] as const) {
     expect(await page.evaluate(() => window.scrollY)).toBe(0);
     const topbar = await rect(page.locator(".topbar"));
     const column = await rect(findings(page));
-    expect(Math.abs(column.top - topbar.bottom)).toBeLessThanOrEqual(2);
-    expect(Math.abs(column.height - (height - topbar.bottom))).toBeLessThanOrEqual(2);
+    // v2.2: the column is a sheet held 16px off the top bar, the window's right edge and its foot.
+    expect(Math.abs(column.top - (topbar.bottom + 16))).toBeLessThanOrEqual(2);
+    expect(Math.abs(column.bottom - (height - 16))).toBeLessThanOrEqual(2);
+    expect(Math.abs(column.right - (width - 16))).toBeLessThanOrEqual(2);
     const form = await rect(thread(page).locator("form.cx"));
     expect(form.bottom, "the box is on the first screen").toBeLessThanOrEqual(height);
     expect(form.top).toBeGreaterThan(topbar.bottom);
@@ -741,8 +748,8 @@ test("18 手机：出处标记、复制、重新回答、点赞点踩、撤销�
   await edit.scrollIntoViewIfNeeded();
   expect((await rect(edit)).height).toBeGreaterThanOrEqual(40);
   // The words do not grow: the mark and the line of actions keep their sizes.
-  expect(await style(list.locator(".a-points li").first(), "font-size")).toBe("15px");
-  expect(await style(list.locator(".a-foot .a-link").first(), "font-size")).toBe("12px");
+  expect(await style(list.locator(".a-points li").first(), "font-size")).toBe("14px");
+  expect(await style(list.locator(".a-foot .a-src-pill"), "font-size")).toBe("12px");
   await photograph(page, "07-多轮对话和变更卡片-手机", async () => { await page.goto(`/projects/${id}/overview`); await topbarAssistant(page).click(); }, [[390, 1500]]);
 });
 

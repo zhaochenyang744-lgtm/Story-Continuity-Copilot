@@ -145,21 +145,22 @@ test.describe("07f 空对话和全站", () => {
     const counted = people.map((person) => ({ name: person.name, count: current.body.split(person.name).length - 1 })).filter((person) => person.count > 0).sort((a, b) => b.count - a.count).slice(0, 2);
     expect(counted.length).toBe(2);
     for (const person of counted) expect(texts.join("\n")).toContain(`${person.name}`);
-    for (const person of counted) expect(texts.some((text) => text.includes(`草稿里出现 ${person.count} 次`))).toBe(true);
-    expect(texts.join("\n")).not.toMatch(/草稿里出现 (9|7) 次/);
+    for (const person of counted) expect(texts.some((text) => text.includes(`出现 ${person.count} 次`))).toBe(true);
+    expect(texts.join("\n")).not.toMatch(/出现 (9|7) 次/);
     await expect(thread(page).locator(".a-intro")).not.toContainText("不会改你的正文");
     await expect(thread(page).locator(".a-intro")).toContainText("每句回答都带着出处");
   });
 
-  test("29 助手关闭时右栏只有「检查结果」：普通小标题，不是标签页", async ({ page }) => {
+  test("29 助手没有对账号开放时右栏只有「检查结果」一个标签，没有「助手」标签和助手窗格", async ({ page }) => {
     await setup(page);
     try {
       await setRollout(page, "off");
       await page.reload();
-      await expect(findings(page).getByRole("heading", { name: /^检查结果/ })).toBeVisible();
-      await expect(findings(page).getByRole("tab")).toHaveCount(0);
-      await expect(findings(page).getByRole("tablist")).toHaveCount(0);
-      await expect(findings(page).locator('[role="tabpanel"]')).toHaveCount(0);
+      await expect(findings(page).getByRole("tab", { name: /^检查结果/ })).toBeVisible();
+      await expect(findings(page).getByRole("tab")).toHaveCount(1);
+      await expect(findings(page).locator("#side-tab-assistant")).toHaveCount(0);
+      await expect(findings(page).locator("#assistant-dock")).toHaveCount(0);
+      await expect(topbarAssistant(page)).toHaveCount(0);
     } finally { await setRollout(page, "all"); }
   });
 
@@ -298,13 +299,16 @@ test.describe("07f 手机", () => {
     expect(now.log[0]).toBeGreaterThan(now.log[1]);
     expect(now.pane[1]).toBeLessThanOrEqual(now.height);
     expect(now.field).toBeLessThanOrEqual(now.height);
-    // The panel fills the screen just under the top bar (whose real height on a phone is taller than --topbar-h), not under it, and is as wide as the window.
-    const cover = await phone.evaluate(() => ({ bar: document.querySelector(".topbar")!.getBoundingClientRect().bottom, dock: document.getElementById("assistant-dock")!.getBoundingClientRect() }));
-    expect(Math.abs(cover.dock.top - cover.bar)).toBeLessThanOrEqual(1);
+    // v2.2: on a phone the column covers the whole window (the top bar too; its 收起 is the way out), with the tabs on top and the pane under them, as wide as the window.
+    const cover = await phone.evaluate(() => ({ side: document.getElementById("writing-side")!.getBoundingClientRect(), dock: document.getElementById("assistant-dock")!.getBoundingClientRect(), head: document.querySelector(".side-tabs")!.getBoundingClientRect() }));
+    expect(Math.round(cover.side.top)).toBe(0);
+    expect(Math.round(cover.side.width)).toBe(375);
+    expect(Math.round(cover.side.height)).toBe(now.height);
+    expect(Math.abs(cover.dock.top - cover.head.bottom)).toBeLessThanOrEqual(1);
     expect(Math.round(cover.dock.width)).toBe(375);
     // The page itself is held still: a pull outside the conversation does not move it, so the box stays on the screen.
     const before = await phone.evaluate(() => window.scrollY);
-    await phone.locator(".a-dock-head").hover();
+    await phone.locator(".side-tabs").hover();
     await phone.mouse.wheel(0, -3000);
     await phone.waitForTimeout(300);
     expect(await phone.evaluate(() => window.scrollY)).toBe(before);

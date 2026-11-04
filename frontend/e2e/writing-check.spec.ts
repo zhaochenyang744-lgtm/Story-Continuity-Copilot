@@ -144,14 +144,14 @@ test("检查后又改了草稿：旧结果不能作决定", async ({ page }) => 
   await saveBody(page, id, "温岚握着黄铜罗盘。");
   const result = await finishCheck(page, id, await beginCheck(page, id));
   await setDraftBody(page, "温岚握着黄铜罗盘。雨停了。");
-  await expect(findings(page)).toContainText("草稿在检查之后改过，下面的结果针对的是先前的正文。");
+  await expect(findings(page)).toContainText("草稿在检查之后改过，下面的结果针对的是先前的正文；再检查一次后，才能把它们交给助手。");
   await selectIssue(page, result.issues[0]);
   await expect(findings(page).getByRole("button", { name: "是有意的", exact: true })).toBeDisabled();
   await expect(findings(page).getByRole("button", { name: "不是问题", exact: true })).toBeDisabled();
   await button(page, "保存").click();
   await expect(button(page, "保存")).toHaveCount(0);
   await finishCheck(page, id, await beginCheck(page, id));
-  await expect(findings(page).getByText("草稿在检查之后改过，下面的结果针对的是先前的正文。", { exact: true })).toHaveCount(0);
+  await expect(findings(page).getByText("草稿在检查之后改过，下面的结果针对的是先前的正文；再检查一次后，才能把它们交给助手。", { exact: true })).toHaveCount(0);
 });
 
 test("空草稿：禁用检查并提示先写正文", async ({ page }) => {

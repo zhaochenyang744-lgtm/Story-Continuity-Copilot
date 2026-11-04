@@ -188,7 +188,8 @@ test("助手 axe 扫描：写作页和其他页的助手面板打开时，日间
     await page.locator("#assistant-open").click();
     await expect(page.locator("#assistant-dock")).toBeVisible();
     await expect(completed()).toHaveCount(1);
-    await page.getByTestId("assistant-thread").getByRole("button", { name: "怎么查的" }).click();
+    await page.getByTestId("assistant-thread").getByTestId("process-line").getByRole("button").first().click();
+    await expect(page.getByTestId("assistant-thread").getByTestId("how-checked")).toBeVisible();
     await scan("写作页助手标签", value);
     await openTab(page, id, "sources");
     await page.locator("#assistant-open").click();

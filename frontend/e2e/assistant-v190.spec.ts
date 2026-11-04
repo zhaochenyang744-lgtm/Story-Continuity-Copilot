@@ -67,7 +67,9 @@ test.describe("助手输入框：自动判断用法", () => {
     await expect(box(page)).toHaveValue("");
     await expect(modeButton(page, "自动")).toBeVisible();
     await expect(thread(page).getByTestId("route-pending")).toHaveCount(0);
-    await expect(tasks(page).first().getByTestId("process-line")).toContainText("问作品");
+    // v2.2: a plain question's line carries no use name, only what was looked at.
+    await expect(tasks(page).first().getByTestId("process-line")).toContainText(/查了 \d+ 处|怎么查的/);
+    await expect(tasks(page).first().getByTestId("process-line")).not.toContainText("问作品");
     await box(page).fill("再问一句");
     await expect(modeButton(page, "自动")).toBeVisible();
   });
@@ -265,7 +267,7 @@ test.describe("助手输入框：自动判断用法", () => {
     await finished(page);
     const before = await used(page);
     const line = tasks(page).first().getByTestId("process-line");
-    await expect(line).toContainText("问作品");
+    await expect(line).toContainText(/查了 \d+ 处|怎么查的/);
     await expect(line).toContainText("约 500 字");
     await line.locator("summary").click();
     const created = taskPost(page);
@@ -386,13 +388,20 @@ test.describe("顶栏在 768 到 1280 像素的每个宽度都是一行", () => 
     expect(ordered[ordered.length - 1].right, place).toBeLessThanOrEqual(width);
     expect(measured.scrollWidth, `${place}: no sideways scroll`).toBeLessThanOrEqual(measured.clientWidth);
     expect(measured.smallest, "no text smaller than 13px").toBeGreaterThanOrEqual(13);
-    // The sliding underline stays under the current tab after the width changed (it used to keep the wider bar's place).
-    await expect.poll(() => page.evaluate(() => {
-      const current = document.querySelector(".topbar-tab[aria-current='page']"), mark = document.querySelector(".tab-mark");
-      if (!current || !mark) return 0;
-      const a = current.getBoundingClientRect(), b = mark.getBoundingClientRect();
-      return Math.max(Math.abs(a.left - b.left), Math.abs(a.width - b.width), Math.abs(a.bottom - b.bottom));
-    }), `${place}: underline under the current tab`).toBeLessThanOrEqual(1);
+    // v2.2: the current tab is a filled pill inside the tabs' box (the sliding underline is gone), and the tabs are not squeezed:
+    // no label wraps onto a second line and none sticks out of the box.
+    const pill = await page.evaluate(() => {
+      const nav = document.querySelector(".topbar-tabs")!, current = nav.querySelector(".topbar-tab[aria-current='page']");
+      if (!current) return null;
+      const a = current.getBoundingClientRect(), n = nav.getBoundingClientRect();
+      const tallest = Math.max(...Array.from(nav.querySelectorAll(".topbar-tab")).map((tab) => tab.getBoundingClientRect().height));
+      return { inside: a.left >= n.left - 0.5 && a.right <= n.right + 0.5, background: getComputedStyle(current).backgroundColor, tallest, spill: nav.scrollWidth - nav.clientWidth };
+    });
+    expect(pill, `${place}: a current tab`).not.toBeNull();
+    expect(pill!.inside, `${place}: current tab inside the tabs`).toBe(true);
+    expect(pill!.background, `${place}: current tab is a filled pill`).not.toBe("rgba(0, 0, 0, 0)");
+    expect(pill!.tallest, `${place}: tab labels stay on one line`).toBeLessThanOrEqual(40);
+    expect(pill!.spill, `${place}: tabs do not spill out of their box`).toBeLessThanOrEqual(1);
     await page.getByRole("banner").screenshot({ path: `${process.env.E2E_SCREENSHOTS_DIR}/topbar-${label}-${width}.png` });
   }
 

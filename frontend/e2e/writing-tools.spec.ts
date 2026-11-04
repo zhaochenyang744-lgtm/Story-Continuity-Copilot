@@ -16,8 +16,8 @@ async function analysis(page: Page, id: string, label: string, type: string, exp
 }
 test("对照计划：结果是检查结果顶部的一块，逐条结果与后端一致，「×」只收起", async ({ page }) => {
   const id = await setup(page), result = await analysis(page, id, "对照计划", "plan_alignment");
-  // The result is not a tab of its own: it is the top block of the findings column (the assistant has its own panel).
-  await expect(findings(page).getByRole("tab")).toHaveCount(0);
+  // The result is not a tab of its own: it is the top block of the findings tab (the column's tabs are only 检查结果 and 助手).
+  await expect(findings(page).getByRole("tab")).toHaveCount(2);
   const block = findings(page).getByTestId("plan-block");
   await expect(block).toBeVisible();
   await expect(block.getByText(/^对照计划 · \d{1,2}:\d{2}$/)).toBeVisible();
@@ -43,17 +43,22 @@ test("没有计划时：不显示对照计划入口", async ({ page }) => {
   expect(plans.story_plans).toHaveLength(0);
   await expect(button(page, "对照计划")).toHaveCount(0);
   // Without a plan there is no comparison block either.
-  await expect(findings(page).getByRole("tab")).toHaveCount(0);
+  await expect(findings(page).getByRole("tab")).toHaveCount(2);
   await expect(findings(page).getByTestId("plan-block")).toHaveCount(0);
 });
 
-test("右栏只有检查结果：一个标题，没有标签；对照计划的结果在它上面", async ({ page }) => {
+test("右栏两个标签：检查结果（带待定数）和助手；对照计划的结果在检查结果顶部，不是第三个标签", async ({ page }) => {
   const id = await setup(page);
-  await expect(findings(page).getByRole("tablist")).toHaveCount(0);
-  await expect(findings(page).getByRole("heading", { name: /^检查结果/ })).toBeVisible();
+  await expect(findings(page).getByRole("tablist", { name: "右栏" })).toBeVisible();
+  await expect(tab(page, /^检查结果/)).toHaveAttribute("aria-selected", "true");
+  await expect(tab(page, "助手")).toHaveAttribute("aria-selected", "false");
   await analysis(page, id, "对照计划", "plan_alignment");
   await expect(findings(page).getByTestId("plan-block")).toBeVisible();
-  await expect(findings(page).getByRole("tab")).toHaveCount(0);
+  await expect(findings(page).getByRole("tab")).toHaveCount(2);
+  await tab(page, "助手").click();
+  await expect(findings(page).getByTestId("plan-block")).toBeHidden();
+  await tab(page, /^检查结果/).click();
+  await expect(findings(page).getByTestId("plan-block")).toBeVisible();
 });
 
 test("右栏的切换：右栏不在视口里时（窄窗口里它在正文下面），点页头按钮会滚到它", async ({ page }) => {

@@ -65,7 +65,8 @@ test.describe("07f 回答", () => {
       const after = getComputedStyle(node, "::after");
       return [node.getBoundingClientRect().height, [parseFloat(after.width), parseFloat(after.height)]] as const;
     });
-    expect(visible).toBeLessThan(16);
+    // v2.2: the mark is a small blue key (11px type, 1px padding: about 17px tall); the target is still the 24px square around it.
+    expect(visible).toBeLessThan(20);
     expect(target[0]).toBeGreaterThanOrEqual(24);
     expect(target[1]).toBeGreaterThanOrEqual(24);
   });
@@ -79,7 +80,8 @@ test.describe("07f 回答", () => {
     await page.reload();
     await openAssistantTab(page);
     const task = tasks(page).first();
-    await task.getByRole("button", { name: "怎么查的" }).click();
+    // v2.2: the line above the answer, 「查了 N 处 ›」, opens how it was checked.
+    await task.getByTestId("process-line").getByRole("button", { name: /^查了 \d+ 处/ }).click();
     await task.getByRole("button", { name: /^搜了 2 处正文/ }).click();
     const found = task.locator(".a-found p");
     const around = found.nth(0).locator(".snip");
@@ -102,7 +104,7 @@ test.describe("07f 回答", () => {
     await expect(page).toHaveURL(/\/workspace\?chapter=9$/);
   });
 
-  test("08 回答新出现时，出处列表、「查过 / 没查」和操作行在最后一句开始淡入后再一起淡入；减少动态效果时直接显示", async ({ page }) => {
+  test("08 回答新出现时，出处按钮和操作行在最后一句开始淡入后再一起淡入；减少动态效果时直接显示", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     await hours(page);
@@ -112,7 +114,7 @@ test.describe("07f 回答", () => {
     await expect(rest).toHaveCount(1);
     expect(await rest.evaluate((node) => getComputedStyle(node).animationName)).toBe("a-appear");
     expect(await rest.evaluate((node) => getComputedStyle(node).animationDelay)).toBe("0.24s");
-    await expect(rest.locator(".a-sources-wrap")).toBeAttached();
+    await expect(rest.locator(".a-src-pill")).toBeAttached();
     await expect(rest.locator(".a-foot")).toBeAttached();
     await page.emulateMedia({ reducedMotion: "reduce" });
     expect(await rest.evaluate((node) => getComputedStyle(node).animationName)).toBe("none");
@@ -129,12 +131,13 @@ test.describe("07f 回答", () => {
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const foot = tasks(page).first().locator(".a-foot");
-    const places = () => foot.evaluate((node) => Array.from(node.querySelectorAll<HTMLElement>(":scope > .a-link, :scope > .a-regen, :scope > .a-thumbs, :scope > .a-cost-line")).map((item) => { const box = item.getBoundingClientRect(); return [Math.round(box.x), Math.round(box.y)]; }));
+    const places = () => foot.evaluate((node) => Array.from(node.querySelectorAll<HTMLElement>(":scope > .a-icon, :scope > .a-thumbs, :scope > .a-foot-end .a-cost-line, :scope > .a-foot-end .a-src-pill")).map((item) => { const box = item.getBoundingClientRect(); return [Math.round(box.x), Math.round(box.y)]; }));
     const before = await places();
     await foot.getByRole("button", { name: "复制", exact: true }).click();
-    await expect(foot.getByRole("button", { name: "已复制", exact: true })).toBeVisible();
+    // v2.2: 复制 is an icon that stays; 「已复制」 is a short status beside the thumbs.
+    await expect(foot.getByText("已复制", { exact: true })).toBeVisible();
     expect(await places()).toEqual(before);
-    await expect(foot.getByRole("button", { name: "复制", exact: true })).toBeVisible({ timeout: 4_000 });
+    await expect(foot.getByText("已复制", { exact: true })).toHaveCount(0, { timeout: 4_000 });
     await foot.getByRole("button", { name: "没用", exact: true }).click();
     const reasons = foot.getByRole("group", { name: "哪里不好" });
     await expect(reasons).toBeVisible();
@@ -207,11 +210,12 @@ test.describe("07f 回答", () => {
     ]);
     await page.reload();
     await openAssistantTab(page);
-    await expect(tasks(page).nth(0).locator(".a-regen .a-hint")).toHaveText("约 510 字");
+    // v2.2: 重新回答 is an icon; its title carries the estimate.
+    await expect(tasks(page).nth(0).getByRole("button", { name: "重新回答", exact: true })).toHaveAttribute("title", "重新回答 · 约 510 字");
     // 24: one line, once.
     const [stopped, free] = [tasks(page).nth(1), tasks(page).nth(2)];
-    await expect(stopped.getByText("已停止，计 515 字", { exact: true })).toBeVisible();
-    await expect(free.getByText("已停止，没有计字数", { exact: true })).toBeVisible();
+    await expect(stopped.getByText("已停止，计 515 字")).toBeVisible();
+    await expect(free.getByText("已停止，没有计字数")).toBeVisible();
     await expect(stopped.getByText("已停止。", { exact: true })).toHaveCount(0);
     // 21.
     await expect(tasks(page).nth(3).getByRole("button", { name: "重新回答", exact: true })).toHaveCount(0);
@@ -297,18 +301,26 @@ test.describe("07f 隐私说明", () => {
     await setup(page);
     await openAssistantTab(page);
     const key = "story-continuity:assistant-privacy-seen";
-    await expect(thread(page).locator(".a-privacy")).toBeVisible();
+    // v2.2: in an empty conversation the note is the line under the box (with the link); with answers already there it is a line in the conversation.
+    const note = thread(page).locator(".a-ai-note");
+    await expect(note).toContainText("发给 DeepSeek");
+    await expect(note.getByRole("link", { name: "隐私说明" })).toHaveAttribute("href", "/privacy");
     // Looking at the panel is not enough: it is still unseen after a reload.
     expect(await page.evaluate((name) => localStorage.getItem(name), key)).toBeNull();
     await page.reload();
     await openAssistantTab(page);
-    await expect(thread(page).locator(".a-privacy")).toBeVisible();
+    await expect(thread(page).locator(".a-ai-note")).toContainText("发给 DeepSeek");
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     expect(await page.evaluate((name) => localStorage.getItem(name), key)).toBe("1");
     await page.reload();
     await openAssistantTab(page);
     await expect(thread(page).locator(".a-privacy")).toHaveCount(0);
+    // A device that has not seen it, with answers already there: the line shows in the conversation.
+    await page.evaluate((name) => localStorage.removeItem(name), key);
+    await page.reload();
+    await openAssistantTab(page);
+    await expect(thread(page).locator(".a-privacy")).toBeVisible();
     // The login page: the visitor's way in names the privacy page.
     const guest = await browser.newContext({ baseURL: process.env.E2E_BASE_URL });
     const login = await guest.newPage();

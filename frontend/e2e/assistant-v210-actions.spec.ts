@@ -271,7 +271,11 @@ test.describe("改资料：新动作的版面", () => {
     await itemOf(cardOf(phone), "C2").getByRole("button", { name: "改内容", exact: true }).tap();
     await expect(itemOf(cardOf(phone), "C2").getByRole("textbox", { name: /^改后的内容/ })).toBeVisible();
     await insideColumn(phone);
+    // On the writing page the panel covers the top bar at this width: it is shut for the theme switch and opened again.
+    await phone.getByRole("button", { name: "收起助手", exact: true }).click();
     await theme(phone, "night");
+    await phone.locator("#assistant-open").click();
+    await expect(cardOf(phone)).toBeVisible();
     await insideColumn(phone);
     await context.close();
   });
@@ -312,7 +316,10 @@ test.describe("v2.1 第二批动作 截图", () => {
     await phone.locator("#assistant-open").click();
     await expect(cardOf(phone)).toBeVisible();
     await snap(cardOf(phone), "03-375宽-卡片-日间");
+    await phone.getByRole("button", { name: "收起助手", exact: true }).click();
     await theme(phone, "night");
+    await phone.locator("#assistant-open").click();
+    await expect(cardOf(phone)).toBeVisible();
     await snap(cardOf(phone), "04-375宽-卡片-夜间");
     await context.close();
   });

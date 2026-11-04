@@ -49,8 +49,8 @@ test.describe("07f 输入框", () => {
     await shot(page, "07f-01-box-column", false);
     // The drawer on another page (400 wide).
     await openTab(page, id, "overview");
-    await topbarAssistant(page).click();
-    await expect(thread(page)).toBeVisible();
+    // (The open assistant is remembered, so the other page may already show it.)
+    await openAssistantTab(page);
     await page.setViewportSize({ width: 1440, height: 900 });
     expect((await thread(page).boundingBox())!.width).toBeLessThanOrEqual(400);
     await expectBarSteady(page);
@@ -100,11 +100,13 @@ test.describe("07f 输入框", () => {
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某个人物/ }).click();
     await thread(page).locator(".cx-menu .scroll [role=menuitem]").nth(1).click();
-    const chapter = thread(page).locator(".a-chip.muted").filter({ hasText: /^第 \d+ 章/ });
-    const person = thread(page).locator(".a-chip.muted").filter({ hasText: /^人物 · / });
+    const chapter = thread(page).locator('.a-chip.muted[data-chip="chapter"]');
+    const person = thread(page).locator('.a-chip.muted[data-chip="character"]');
     await expect(chapter).toBeVisible();
     await expect(person).toBeVisible();
     await expect(chapter).toContainText("改法只看这一处");
+    // v2.2: the draft tag is greyed beside a fix too.
+    await expect(thread(page).locator('.a-chip.muted[data-chip="draft"]')).toBeVisible();
     expect(await chapter.locator(".label").evaluate((node) => getComputedStyle(node).textDecorationLine)).toBe("line-through");
     expect(await chip(page, "检查结果 · 第 1 处").evaluate((node) => node.classList.contains("muted"))).toBe(false);
     await box(page).fill("保留苏岑的视角");
@@ -113,14 +115,16 @@ test.describe("07f 输入框", () => {
     expect((await request).postDataJSON()).toEqual({ kind: "fix_issue", question: "保留苏岑的视角", context: { page: "writing", issue_id: issue.id } });
     await finished(page, 2);
     // Sent, the box is empty and the mode is 自动 again.
-    await expect(mode).toContainText("自动");
+    // (In 自动 the mode is a bare icon; its label says which.)
+    await expect(mode).toHaveAttribute("aria-label", "这次做什么：自动");
     await tasks(page).last().getByRole("button", { name: "按要求重新给改法", exact: true }).click();
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某一章/ }).click();
     await thread(page).locator(".cx-menu .scroll [role=menuitem]").first().click();
-    await expect(thread(page).locator(".a-chip.muted")).toHaveCount(1);
+    // The chapter and the draft tag are both greyed.
+    await expect(thread(page).locator(".a-chip.muted")).toHaveCount(2);
     await thread(page).getByRole("button", { name: "去掉：检查结果 · 第 1 处" }).click();
-    await expect(mode).toContainText("自动");
+    await expect(mode).toHaveAttribute("aria-label", "这次做什么：自动");
     await expect(mode).toBeEnabled();
     await expect(thread(page).locator(".a-chip.muted")).toHaveCount(0);
     await expect(thread(page).locator(".a-chip").first()).toContainText("第");
