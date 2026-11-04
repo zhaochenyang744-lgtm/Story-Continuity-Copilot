@@ -15,12 +15,14 @@ test.describe("助手", () => {
     await setup(page, true, true);
     await openAssistantTab(page);
     await expect(thread(page).getByRole("textbox", { name: "向助手提问" })).toHaveAttribute("placeholder", "问这部作品里的人、事、物……");
-    // v2.2: while the allowance is plentiful the box says nothing about cost or keys; under it stands the note on what wrote the answer.
+    // v2.2: while the allowance is plentiful the box says nothing about cost or keys. Under it: before the first question, where the passages go;
+    // once there are answers, what wrote them.
     await expect(thread(page).locator(".cx-note")).toHaveCount(0);
-    await expect(thread(page).locator(".a-ai-note")).toHaveText("回答由 AI 生成，可能出错，请点出处核对。");
+    await expect(thread(page).locator(".a-ai-note")).toHaveText("提问时会把相关片段发给 DeepSeek 处理，详见隐私说明。");
     const before = await allowance(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
+    await expect(thread(page).locator(".a-ai-note")).toHaveText("回答由 AI 生成，可能出错，请点出处核对。");
     const task = tasks(page).first();
     await expect(task).toContainText("苏岑知道罗盘被调包了吗？");
     // v2.2: one line above the answer says how many places it looked at (no name of the use, no seconds); nothing else stands between.
@@ -108,7 +110,8 @@ test.describe("助手", () => {
     await expect(thread(page).getByText("上一个问题还在查", { exact: true })).toBeVisible();
     await task.getByRole("button", { name: "停止", exact: true }).click();
     await expect(task).toHaveAttribute("data-status", "cancelled");
-    await expect(task.getByText(/^已停止，计 \d+ 字$/)).toBeVisible();
+    // (重新问 follows the note in the same line.)
+    await expect(task.getByText(/^已停止，计 [\d,]+ 字/)).toBeVisible();
     await expect(task.getByText(/没有计字数/)).toHaveCount(0);
     await box(page).fill("再问一个");
     await expect(send(page)).toBeEnabled();

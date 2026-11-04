@@ -14,7 +14,7 @@ import { requestLocate } from "./assistant-locate";
 import { AnswerBlock, Feedback, useJustFinished } from "./assistant-answer";
 import { active, CoverLine, failureText, LimitLine, SourceList, StoppedNote } from "./assistant-parts";
 import { Steps } from "./assistant-process";
-import { ChosenLine, RerouteMenu } from "./assistant-route";
+import { RerouteMenu } from "./assistant-route";
 import { FindingTag, findingHeadline } from "./findings";
 
 /** What the thread needs from the writing page's draft to apply, undo and wait for a save. */
@@ -444,7 +444,6 @@ export function FixView({ task, projectId, visitor, stopping, stop, retry, openC
       {task.question && <div className={`a-ask${rise ? " rise" : ""}`}>{task.question}</div>}
       <Steps task={task} locate={locate} lead={explaining ? "解释这一处" : "帮我改这一处"}
         end={<><RerouteMenu task={task} />{running && <button type="button" className="a-link a-stop" disabled={stopping} onClick={stop}>停止</button>}</>} />
-      <ChosenLine task={task} />
       {info ? (
         <div className="a-issue">
           <Num className="a-issue-num">{info.number}</Num>

@@ -75,7 +75,6 @@ button.a-fold:hover { color: var(--c-ink); }
 .a-process .menu-list { min-width: 160px; }
 .a-process .menu-list button { min-height: 32px; padding: 0 12px; font-size: var(--fs-12); }
 .menu-head { padding: 4px 12px 4px; color: var(--c-muted); font-size: var(--fs-12); }
-.a-routed { color: var(--c-muted); font-size: var(--fs-12); }
 /* The list of steps folds away by height (and fades) when a task ends, and unfolds the same way when the author opens it. */
 .a-proc-wrap { display: grid; grid-template-rows: 1fr; }
 .a-proc-wrap.folding { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .36s var(--ease), opacity .36s var(--ease); }
@@ -280,12 +279,12 @@ button.a-from:hover { color: var(--c-blue-text); text-decoration: underline; }
 .a-chg-kind { display: inline-flex; align-items: center; height: 24px; padding: 0 var(--s-2); border: 0; border-radius: var(--r-sm); background: var(--c-fill); color: var(--c-muted); font-size: var(--fs-12); font-weight: 500; line-height: 1; }
 .a-chg-state { font-size: var(--fs-12); font-weight: 700; color: var(--c-ink); }
 .a-chg-state.applied { color: var(--c-ink); }
-.a-chg-flow, .ledger-flow { font-size: var(--fs-15); line-height: 1.75; overflow-wrap: anywhere; }
+.a-chg-flow, .ledger-flow { font-size: var(--fs-14); line-height: 1.75; overflow-wrap: anywhere; }
 .a-chg-flow { margin: 0; }
 .chg-before { color: var(--c-muted); }
 .chg-arrow { margin: 0 4px; color: var(--c-muted); font-family: var(--font-ui); }
 .chg-after { color: var(--c-ink); font-weight: 700; }
-.a-chg-diff { margin: 0; color: var(--c-ink-2); font-size: var(--fs-15); line-height: 1.75; overflow-wrap: anywhere; }
+.a-chg-diff { margin: 0; color: var(--c-ink-2); font-size: var(--fs-14); line-height: 1.75; overflow-wrap: anywhere; }
 .a-chg-diff ins { padding: 0 4px; border-radius: 0; background: var(--c-ins); color: var(--c-ins-text); text-decoration: none; }
 .a-chg-diff del { color: var(--c-muted); text-decoration: line-through; }
 .a-chg-diff[data-diff="whole"] ins { margin-left: 4px; }
@@ -542,6 +541,7 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 /* A finger needs 40 x 40 px; the words stay the size they are. Marks inside a line get their room from a layer around them (the line does not
    grow); buttons on their own line are made as tall and as wide as the finger needs. */
 @media (max-width: 720px) {
+  .a-cite button { z-index: 1; }  /* the layer around a mark lies over the next point of a list too */
   .a-cite button::after { width: max(100%, 40px); height: 40px; }
   .a-foot .a-link, .a-opt-a .a-link, .a-btn-quiet, .a-process .a-link, .a-go, .a-chg-done .btn, .a-opt-a .btn, .a-resend-row .a-link { min-width: 40px; min-height: 40px; }
   .a-foot .a-link { display: inline-flex; align-items: center; justify-content: center; }
@@ -722,7 +722,7 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
 .cx-bar .cx-note { order: 0; justify-self: auto; min-height: 0; margin-right: var(--s-2); color: var(--c-faint-text); }
 @container (max-width: 260px) { .cx-bar .cx-note .more { display: none; } }
 .a-quota-row { justify-items: center; }
-.a-quota-row .a-ai-note { justify-self: center; color: var(--c-faint-text); text-align: center; }
+.a-quota-row .a-ai-note { justify-self: center; color: var(--c-muted); text-align: center; }
 
 /* v2.2: on the other pages the panel is the same sheet as the column on 写作: white, a hairline and a soft shadow, held off the window's edges,
    with the same head (a blue mark and 助手 at the left, ⋯ and the fold key at the right, a line under it). A phone keeps the whole window. */

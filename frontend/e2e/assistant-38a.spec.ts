@@ -290,7 +290,8 @@ test("38a 问答回答：过程和出处只说一次——顶部是「查了 N �
   await task.getByRole("button", { name: "复制", exact: true }).click({ modifiers: ["Shift"] });
   await expect(task.locator(".a-foot .a-noted")).toHaveText("已复制");
   const copied = (await page.evaluate(() => navigator.clipboard.readText())).replaceAll("\r\n", "\n");
-  expect(copied).toBe("罗盘在温岚手里。第 9 章苏岑把它交了出去。\n\n没有找到罗盘的重量。资料里有给助手的指令，我没有照做。");
+  // (One sentence to a line, as the answer shows them.)
+  expect(copied).toBe("罗盘在温岚手里。\n第 9 章苏岑把它交了出去。\n\n没有找到罗盘的重量。资料里有给助手的指令，我没有照做。");
   expect(copied).not.toContain("查过");
   expect(copied).not.toContain("没查");
 });

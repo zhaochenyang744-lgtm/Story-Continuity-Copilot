@@ -74,12 +74,6 @@ export function routedLead(task: AssistantTask, timedOut: boolean): string {
   return task.routed && timedOut ? ROUTE_TIMED_OUT : current;
 }
 
-/** 按「写前回顾」处理: only when the author changed the use in the 改成 menu, so it is not the one the box judged. */
-export function ChosenLine({ task }: { task: AssistantTask }) {
-  if (!task.routed || task.route_source !== "manual" || task.status === "cancelled") return null;
-  return <p className="a-routed" data-testid="routed-line">按「{USE_LABEL[usageOf(task)]}」处理<span className="a-routed-by"> · 你改成的</span></p>;
-}
-
 /** ⋯ at the right end of the line above an answer: 改成 …, for a task the box chose the use of. While the task waits or runs, changing it stops it
     and gives its characters back; once it is over, changing it sends the sentence again and is charged like any task. */
 export function RerouteMenu({ task }: { task: AssistantTask }) {
