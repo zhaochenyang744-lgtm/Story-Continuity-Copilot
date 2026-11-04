@@ -76,8 +76,8 @@ export const proposal = (task: Locator, kind: string) => task.locator(`[data-pro
 export const SENTENCE = "苏岑拿着黄铜罗盘，温岚的手中已经空了，E2E_SUGGEST。";
 export const REWRITTEN = `（示意改法）${SENTENCE.slice(1)}`;
 export const chars = (text: string) => text.replace(/\s+/g, "").length;
-/** The findings column has no tabs any more: this is its heading (clicking it does nothing, which is what the old code needs after "switching" to the findings). */
-export const findingsTab = (page: Page) => findings(page).getByRole("heading", { name: /^检查结果/ });
+/** The column on 写作 holds the findings and the assistant as two tabs (v2.2): this is the findings tab. */
+export const findingsTab = (page: Page) => page.locator("#side-tab-findings");
 export const adoptRequest = (page: Page, action: string) => page.waitForRequest((request) => request.method() === "POST" && new RegExp(`/proposals/[^/]+/${action}$`).test(request.url()));
 
 /** A work whose latest check is a real one, with one finding on `body` (a sentence with E2E_SUGGEST in it). */

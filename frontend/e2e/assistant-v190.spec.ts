@@ -19,7 +19,6 @@ const countRouteRequests = (page: Page) => {
   page.on("request", (request) => { if (request.method() === "POST" && routeUrl.test(request.url())) seen.push(request.url()); });
   return seen;
 };
-const followTag = /^接着上一问/;
 
 test.describe("助手输入框：自动判断用法", () => {
   test("模式按钮默认是「自动」；菜单依次是自动、问作品、写前回顾、查前文矛盾；其他页只有自动和问作品；访客没有查前文矛盾", async ({ page, browser }) => {
@@ -250,7 +249,8 @@ test.describe("助手输入框：自动判断用法", () => {
     await expect(tasks(page).first()).toContainText("已停止，没有计字数");
     await expect(tasks(page).last()).toHaveAttribute("data-kind", "recap");
     await finished(page);
-    await expect(tasks(page).last().getByTestId("routed-line")).toContainText("按「写前回顾」处理");
+    // v2.2: no line says how the task was handled; the answer itself is a recap.
+    await expect(tasks(page).last().getByTestId("routed-line")).toHaveCount(0);
     // Only the new task is charged: the stopped one gave its 500 characters back.
     expect(await used(page)).toBe(before + 500);
     // And the stopped one has no line any more (it is over).
@@ -306,92 +306,53 @@ test.describe("助手输入框：自动判断用法", () => {
   });
 });
 
-test.describe("助手输入框：默认接着上一问，并说清楚追问次数", () => {
-  test("刚答完自动挂上「接着上一问」，写明第几次追问；第二次追问是最后一次；之后不再自动挂，「接着问」变灰", async ({ page }) => {
+test.describe("助手输入框：追问不挂标签，默认接着上一问（v2.2）", () => {
+  test("刚答完的下一问自动接着上一问；连追两次后，下一问是新问题；全程框里没有「接着上一问」标签", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
     await box(page).fill("罗盘现在在谁手里？");
     await send(page).click();
     await finished(page);
     const firstId = (await tasks(page).first().getAttribute("data-task"))!;
-    await expect(chip(page, "接着上一问")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    await expect(chip(page, "接着上一问")).toHaveCount(0);
     await box(page).fill("那她后来怎么处理的？");
     let created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ kind: "ask", question: "那她后来怎么处理的？", follow_up_of: firstId });
     await finished(page, 2);
     const secondId = (await tasks(page).nth(1).getAttribute("data-task"))!;
-    await expect(chip(page, "接着上一问")).toHaveText("接着上一问 · 第 2 次追问，这是最后一次");
     await box(page).fill("再往后呢？");
     created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).toMatchObject({ follow_up_of: secondId });
     await finished(page, 3);
-    // Two follow-ups are used: no tag, and the answer's 接着问 is grey with the reason.
+    // Two follow-ups are used: the next question starts afresh, and still no tag says so.
     await expect(chip(page, "接着上一问")).toHaveCount(0);
-    const follow = tasks(page).last().getByRole("button", { name: "接着问", exact: true });
-    await expect(follow).toBeDisabled();
-    await expect(follow).toHaveAttribute("title", "这一串已经追问两次了，可以问一个新问题");
-    // Only the last answer of a chain is out of follow-ups; the answers before it can still be followed.
-    await expect(tasks(page).nth(1).getByRole("button", { name: "接着问", exact: true })).toBeEnabled();
     await box(page).fill("换个问题：苏岑是谁？");
     created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).not.toHaveProperty("follow_up_of");
     await finished(page, 4);
-    await expect(chip(page, "接着上一问")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    await expect(tasks(page).last().getByRole("button", { name: "接着问", exact: true })).toHaveCount(0);
   });
 
-  test("点标签上的 × 去掉它：这一问就是新问题；到下一个回答完成才会再挂", async ({ page }) => {
+  test("判断出的用法不是问作品时不接着上一问；最新一条不是问答时也不接", async ({ page }) => {
     await setup(page);
     await openAssistantTab(page);
     await box(page).fill("罗盘现在在谁手里？");
     await send(page).click();
     await finished(page);
-    await thread(page).getByRole("button", { name: /^去掉：接着上一问/ }).click();
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
-    await box(page).fill("苏岑是谁？");
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
-    const created = taskPost(page);
-    await send(page).click();
-    expect((await created).postDataJSON()).not.toHaveProperty("follow_up_of");
-    await finished(page, 2);
-    await expect(chip(page, "接着上一问")).toBeVisible();
-  });
-
-  test("不自动挂的几种情况：选了写前回顾或查前文矛盾、最新一条不是问答、判断出的用法不是问作品时不发送", async ({ page }) => {
-    await setup(page);
-    await openAssistantTab(page);
-    await box(page).fill("罗盘现在在谁手里？");
-    await send(page).click();
-    await finished(page);
-    await expect(chip(page, "接着上一问")).toBeVisible();
-    await chooseMode(page, "写前回顾");
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
-    await chooseMode(page, "查前文矛盾");
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
-    await chooseMode(page, "自动");
-    await expect(chip(page, "接着上一问")).toBeVisible();
-    // The tag is on the box but the sentence is judged to be a recap: it is sent as one, without the tag's question.
+    // The sentence is judged to be a recap: it is sent as one, without the question it would have followed.
     await box(page).fill("E2E_ROUTE_RECAP 先理一下前文");
-    const created = taskPost(page);
+    let created = taskPost(page);
     await send(page).click();
     expect((await created).postDataJSON()).not.toHaveProperty("follow_up_of");
     await finished(page, 2);
-    // The latest entry is a recap, not a question: nothing to follow.
-    await expect(chip(page, "接着上一问")).toHaveCount(0);
-  });
-
-  test("回答卡片上的「接着问」仍在，点了挂上它的标签；刚答完的一问也一样", async ({ page }) => {
-    await setup(page);
-    await openAssistantTab(page);
-    await box(page).fill("罗盘现在在谁手里？");
+    // The latest entry is a recap, not a question: the next question follows nothing.
+    await box(page).fill("苏岑是谁？");
+    created = taskPost(page);
     await send(page).click();
-    await finished(page);
-    await thread(page).getByRole("button", { name: /^去掉：接着上一问/ }).click();
-    await tasks(page).first().getByRole("button", { name: "接着问", exact: true }).click();
-    await expect(chip(page, "接着上一问")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    expect((await created).postDataJSON()).not.toHaveProperty("follow_up_of");
   });
 });
 

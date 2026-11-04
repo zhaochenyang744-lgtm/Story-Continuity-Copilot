@@ -50,6 +50,7 @@ export type PlusPick = {
 
 const Cross = () => <svg viewBox="0 0 10 10" width="8" height="8" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 2l6 6M8 2 2 8" /></svg>;
 const DraftIcon = () => <svg className="cx-chip-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden="true"><path d="M4 2h5.5L12 4.5V14H4z" /><path d="M6 8h4M6 10.5h3" /></svg>;
+const Uses = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M3 5h10M3 11h10" /><circle cx="6" cy="5" r="1.6" fill="var(--c-surface)" /><circle cx="10" cy="11" r="1.6" fill="var(--c-surface)" /></svg>;
 const Plus = () => <svg viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10" /></svg>;
 const Caret = () => <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M2 4l4 4 4-4" /></svg>;
 const Up = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" /></svg>;
@@ -282,9 +283,9 @@ export function Composer(props: ComposerProps) {
                       {chip.restore
                         ? <button type="button" className="label cx-restore" title="点一下放回去" aria-label={`放回：${chip.label}`} onClick={chip.restore}>{chip.label}</button>
                         : <span className="label">{chip.label}</span>}
+                      {chip.muted && chip.note && <span className="apart">{chip.note}</span>}
                       {chip.drop && <button type="button" aria-label={`去掉：${chip.label}`} title="这次不带上它" onClick={chip.drop}><Cross /></button>}
                     </span>
-                    {chip.muted && chip.note && <span className="apart">{chip.note}</span>}
                     {!chip.muted && chip.aside && <span className="apart">{chip.aside}</span>}
                   </span>
                 ))}
@@ -300,17 +301,19 @@ export function Composer(props: ComposerProps) {
           {!off && (
             <>
               <button ref={plusButton} type="button" className="cx-ghost cx-plus" aria-label="添加上下文" aria-haspopup="menu" aria-expanded={open === "plus"} onClick={() => setOpen(open === "plus" ? null : "plus")}><Plus /></button>
-              {/* v2.2: the box judges the use by itself; the mode shows only when something else chose one (the selection bar, 写前回顾,
-                  a fix), and its menu then leads back to 自动. Any answer can still be sent again as another use from its own menu. */}
-              {(modeName || mode !== "auto") && <button ref={modeButton} type="button" className="cx-ghost cx-mode" aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
-                {modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret"><Caret /></span>}
-              </button>}
+              {/* v2.2: the box judges the use by itself, so in 自动 the choice is only a small icon (the menu is there for the author who
+                  wants a use by hand); the name shows while another use is chosen, by the author or by the selection bar, 写前回顾 or a fix. */}
+              <button ref={modeButton} type="button" className={`cx-ghost cx-mode${!modeName && mode === "auto" ? " quiet" : ""}`} aria-label={`这次做什么：${modeName ?? MODE_LABEL[mode]}`} title={!modeName && mode === "auto" ? "这次做什么（默认由助手判断）" : undefined}
+                aria-haspopup={modeName ? undefined : "menu"} aria-expanded={modeName ? undefined : open === "mode"} disabled={Boolean(modeName) || modes.length < 2} onClick={() => setOpen(open === "mode" ? null : "mode")}>
+                {!modeName && mode === "auto" ? <Uses /> : <>{modeName ?? MODE_LABEL[mode]}{!modeName && modes.length > 1 && <span className="caret"><Caret /></span>}</>}
+              </button>
             </>
           )}
           <span className="cx-fill" />
-          {/* At the right of the bar, before the send square: the counter near the length limit, or the cost when the allowance is nearly gone. */}
-          {!off && (counting || low) && (
-            <span className={`cx-note${length >= maxLength || (low && !counting) ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
+          {/* At the right of the bar, before the send square: the counter near the length limit, why nothing can be sent while a question runs,
+              or the cost when the allowance is nearly gone. */}
+          {!off && (counting || low || running) && (
+            <span className={`cx-note${length >= maxLength || (low && !counting && !running) ? " warn" : ""}`} title={hintMore ? `${hint} · ${hintMore}` : undefined}>
               {counting ? `${length} / ${maxLength}` : <>{hint}{hintMore && <span className="more"> · {hintMore}</span>}</>}
             </span>
           )}

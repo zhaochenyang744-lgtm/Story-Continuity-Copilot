@@ -3,7 +3,7 @@ import { advanceTour, api, createWorkByApi, expect, openTab, registerAccount, sa
 export { api, expect, readDraftBody, setDraftBody, shot, test } from "./app";
 
 export const button = (page: Page, name: string) => page.getByRole("button", { name, exact: true });
-export const findings = (page: Page) => page.getByRole("complementary", { name: "检查与回顾", exact: true });
+export const findings = (page: Page) => page.getByRole("complementary", { name: "检查与助手", exact: true });
 export const finding = (page: Page, id: string) => page.getByTestId(`finding-${id}`);
 /** `charged`: the sample work made an ordinary work of the author's own (see `ownWork`), for a test of what a check or a question costs. */
 export async function setup(page: Page, sample = true, charged = false) {

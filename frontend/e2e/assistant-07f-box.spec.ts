@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
-import { allowance, ask, askForFix, box, checkedWork, chip, chooseMode, finished, menuNames, openAssistantTab, openPlus, select, selectedWords, send, stopButton, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
+import { ask, askForFix, box, checkedWork, chip, chooseMode, finished, menuNames, openAssistantTab, openPlus, select, selectedWords, send, stopButton, tasks, thread, toolbar, topbarAssistant } from "./support/assistant";
 import { runningView, serveTasks } from "./support/assistant-mock";
 import { setup } from "./support/writing";
 
@@ -30,21 +30,19 @@ async function expectBarSteady(page: Page) {
   const focused = await bar(page);
   await box(page).blur();
   const resting = await bar(page);
-  // 「＋」 and the send key keep their size, the mode keeps its arrow, and the slot that holds the key hint / the cost does not move at all.
+  // 「＋」 and the send key keep their size, the mode keeps its place; v2.2: no key hint and no cost at the right while the allowance is far from used up.
   expect(focused.plus).toEqual({ ...focused.plus!, width: 32, height: 32 });
   expect(focused.send).toEqual({ ...focused.send!, width: 32, height: 32 });
   expect(focused.plus).toEqual(resting.plus);
   expect(focused.mode).toEqual(resting.mode);
   expect(focused.send).toEqual(resting.send);
-  // The line under the box (the cost, or the key hint in its place) is right-aligned: its height, its place and its right end do not move.
-  expect({ y: focused.note!.y, height: focused.note!.height, right: focused.note!.x + focused.note!.width }).toEqual({ y: resting.note!.y, height: resting.note!.height, right: resting.note!.x + resting.note!.width });
-  expect(focused.noteText).toContain("Enter 发送");
-  expect(resting.noteText).not.toContain("Enter 发送");
+  expect(focused.note).toBeNull();
+  expect(resting.note).toBeNull();
   if (focused.caret) expect(focused.caret.width).toBeGreaterThan(4);
 }
 
 test.describe("07f 输入框", () => {
-  test("01 聚焦时「＋」不被挤窄、模式的箭头还在：右栏、抽屉、手机；「Enter 发送」换掉花费提示，这一行不动", async ({ page, browser }) => {
+  test("01 聚焦时「＋」不被挤窄、用法按钮不动：右栏、抽屉、手机；没有「Enter 发送」和花费提示（v2.2）", async ({ page, browser }) => {
     const id = await setup(page);
     await openAssistantTab(page);
     await expectBarSteady(page);
@@ -68,35 +66,22 @@ test.describe("07f 输入框", () => {
     await phone.close();
   });
 
-  test("11 花费提示放不下时整段去掉「24 小时内还剩…」，只留「约 500 字」，不截断数字；余量在 title 里", async ({ page }) => {
+  test("11 v2.2：余量充足时不写花费；快不够两次时才在发送键左边写出来，红字", async ({ page }) => {
     await setup(page, true, true);
+    await openAssistantTab(page);
+    await expect(thread(page).locator(".cx-note")).toHaveCount(0);
+    await page.route("**/api/account/usage", async (route) => {
+      const response = await route.fetch();
+      const body = await response.json();
+      if (body.data?.account_type === "registered") body.data.check_chars_remaining = 700;
+      await route.fulfill({ response, json: body });
+    });
+    await page.reload();
     await openAssistantTab(page);
     const note = thread(page).locator(".cx-note");
     await expect(note).toContainText("约 500 字");
-    // The row under the box decides: where it is narrower than 240px only the cost stays.
-    const row = thread(page).locator(".a-quota-row");
-    const width = (await row.boundingBox())!.width;
-    const more = note.locator(".more");
-    const left = await allowance(page);
-    await expect(note).toHaveAttribute("title", new RegExp(`24 小时内还剩 ${left.toLocaleString("en-US")} 字`));
-    // Never half a figure: either all of it shows, or none of it.
-    const fits = await note.evaluate((node) => node.scrollWidth <= node.clientWidth);
-    expect(fits).toBe(true);
-    if (width <= 240) {
-      await expect(more).toBeHidden();
-      expect((await note.innerText()).trim()).toBe("约 500 字");
-    } else {
-      await expect(more).toBeVisible();
-      await expect(more).toContainText(`24 小时内还剩 ${left.toLocaleString("en-US")} 字`);
-    }
-    // A narrower box (a drawer on a phone is full width, the column on a tablet is wide): the rule holds at every width.
-    for (const size of [{ width: 1100, height: 900 }, { width: 1440, height: 900 }]) {
-      await page.setViewportSize(size);
-      const now = note.locator(".more");
-      const room = (await row.boundingBox())!.width;
-      if (room <= 240) await expect(now).toBeHidden(); else await expect(now).toBeVisible();
-      expect(await note.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
-    }
+    await expect(note).toHaveClass(/warn/);
+    expect(await note.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
   });
 
   test("05 选了「某条检查结果」：模式变成「帮我改这一处」，标签写「检查结果 · 第 1 处」，章节和人物标签变灰、加删除线、不随提问发出", async ({ page }) => {
@@ -152,15 +137,14 @@ test.describe("07f 输入框", () => {
     await openAssistantTab(page);
     await chooseMode(page, "查前文矛盾");
     await expect(box(page)).toHaveAttribute("placeholder", "在正文里选中要查的一段");
-    // The bottom right says only what it costs.
-    await expect(thread(page).locator(".cx-note")).toContainText("约 500 字");
-    await expect(thread(page).locator(".cx-note")).not.toContainText("选中");
+    // v2.2: the bottom right says nothing while the allowance is far from used up.
+    await expect(thread(page).locator(".cx-note")).toHaveCount(0);
     await expect(send(page)).toBeDisabled();
     await select(page, "#draft-body", 14);
     const picked = (await selectedWords(page)).trim();
     await expect(chip(page, "选中：「")).toBeVisible();
     await expect(send(page)).toBeEnabled();
-    await expect(thread(page).locator(".cx-note")).toContainText(`约 ${500 + picked.replace(/\s+/g, "").length} 字`);
+    expect(picked.length).toBeGreaterThan(0);
     // The bar over the words is clear of the editor's own tool row.
     await expect(toolbar(page)).toBeVisible();
     const [bar_, tools] = [await toolbar(page).boundingBox(), await page.locator(".draft-tools").boundingBox()];

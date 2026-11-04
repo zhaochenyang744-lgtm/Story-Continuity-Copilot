@@ -75,23 +75,21 @@ test.describe("助手", () => {
     await expect(page.getByRole("heading", { level: 1, name: new RegExp(`^第 ${number} 章`) })).toBeAttached();
   });
 
-  test("接着问：带上「接着问」标签，请求体含 follow_up_of", async ({ page }) => {
+  test("接着问（v2.2 不挂标签）：刚答完的下一问请求体含 follow_up_of", async ({ page }) => {
     const id = await setup(page);
     await openAssistantTab(page);
     await ask(page, "苏岑知道罗盘被调包了吗？");
     await finished(page);
     const first = (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks[0];
-    await tasks(page).first().getByRole("button", { name: "接着问", exact: true }).click();
-    await expect(chip(page, "接着上一问 · 第 1 次追问，还能再问 1 次")).toBeVisible();
-    await expect(box(page)).toBeFocused();
+    await expect(tasks(page).first().getByRole("button", { name: "接着问", exact: true })).toHaveCount(0);
+    await expect(chip(page, "接着上一问")).toHaveCount(0);
     const request = taskPost(page);
     await ask(page, "她是什么时候知道的？");
     const body = (await request).postDataJSON();
     expect(body.follow_up_of).toBe(first.id);
     expect(body.kind).toBe("ask");
     await finished(page, 2);
-    // The tag goes with the question that used it; the new answer is followed in turn (the last follow-up there is).
-    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 2 次追问，这是最后一次");
+    await expect(chip(page, "接着上一问")).toHaveCount(0);
     const saved = (await api(page).get(`/projects/${id}/assistant/tasks`)).tasks;
     expect(saved[1].follow_up_of).toBe(first.id);
   });
@@ -174,8 +172,8 @@ test.describe("助手", () => {
     expect(typedBody.context).toMatchObject({ page: "writing", selection: picked });
     await finished(page);
     await expect(tasks(page).first().locator(".a-quote")).toContainText(picked.slice(0, 8));
-    // The passage's tag went with the question; the answer just given is what the next question follows.
-    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    // The passage's tag went with the question; only the draft's tag is left on the box (follow-ups carry no tag in v2.2).
+    await expect(thread(page).locator(".a-chip")).toHaveText([/^第 \d+ 章草稿$/]);
     // 前面怎么写的 asks at once.
     await select(page, "#draft-body", 12);
     const quick = taskPost(page);

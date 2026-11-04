@@ -525,13 +525,14 @@ test.describe("助手：输入框", () => {
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^在正文里选一段/ }).click();
     await expect(thread(page).getByText(/在正文里选中一段文字，再点浮出来的「问助手」/)).toBeVisible();
-    await expect(thread(page).locator(".a-chip")).toHaveCount(2);
+    // The draft's own tag is there too (v2.2), beside the chapter and the person.
+    await expect(thread(page).locator(".a-chip")).toHaveCount(3);
     const request = taskPost(page);
     await ask(page, "她手里还有别的东西吗？");
     expect(bodyOf(await request).context).toMatchObject({ page: "writing", chapter_number: 3, character_id: character.id });
     await finished(page);
-    // The tags went with the question; what stands in the box now is the answer just given, which the next question follows.
-    await expect(thread(page).locator(".a-chip")).toHaveText("接着上一问 · 第 1 次追问，还能再问 1 次");
+    // The tags went with the question; only the draft's tag stays (the next question follows the answer without a tag, v2.2).
+    await expect(thread(page).locator(".a-chip")).toHaveText([/^第 \d+ 章草稿$/]);
     // 某条检查结果 → a tag 「第 1 处」, and the question goes as a request for a change to that finding (the box's 自动 judges it).
     await openPlus(page);
     await thread(page).getByRole("menuitem", { name: /^某条检查结果/ }).click();
@@ -573,12 +574,12 @@ test.describe("助手：输入框", () => {
     await page.evaluate(() => window.scrollTo(0, 0));
     await expect(box(page)).toHaveAttribute("placeholder", "在正文里选中要查的一段");
     await expect(send(page)).toBeDisabled();
-    await expect(thread(page).locator(".cx-note")).toHaveText("约 500 字");
+    // v2.2: the cost is not shown while the allowance is far from used up.
+    await expect(thread(page).locator(".cx-note")).toHaveCount(0);
     await select(page, "#draft-body", 14);
     const picked = (await selectedWords(page)).trim();
     // The picked words become the tag on their own in this mode; the bar's own button is another way to the same thing.
     await expect(send(page)).toBeEnabled();
-    await expect(thread(page).locator(".cx-note")).toHaveText(/^约 \d+ 字$/);
     request = taskPost(page);
     await send(page).click();
     expect(bodyOf(await request)).toMatchObject({ kind: "ask", question: "这段和前文有没有矛盾？", context: { page: "writing", selection: picked, intent: "check_selection" } });
@@ -604,7 +605,7 @@ test.describe("助手：输入框", () => {
     await visitor.close();
   });
 
-  test("发送键：没写字时灰、能发时蓝、助手在查时是黑底停止键；聚焦时先写「Enter 发送」，超过 250 字换成字数", async ({ page }) => {
+  test("发送键：没写字时灰、能发时蓝、助手在查时是黑底停止键；超过 250 字写出字数（v2.2 不再写「Enter 发送」）", async ({ page }) => {
     await setup(page, true, true);
     await openAssistantTab(page);
     const square = thread(page).locator(".cx-send");
@@ -617,10 +618,10 @@ test.describe("助手：输入框", () => {
     await expect.poll(() => square.evaluate((node) => getComputedStyle(node).backgroundColor)).toBe("rgb(31, 43, 255)");
     const blue = await square.evaluate((node) => getComputedStyle(node).backgroundColor);
     expect(blue).not.toBe(grey);
-    // The hint: Enter first when the box has focus; the count from 250; red at 300.
+    // The hint: nothing at first (no key hint, no cost); the count from 250; red at 300.
     await box(page).focus();
     await box(page).fill("");
-    await expect(thread(page).locator(".cx-keys")).toHaveText("Enter 发送");
+    await expect(thread(page).locator(".cx-note")).toHaveCount(0);
     await box(page).fill("字".repeat(268));
     await expect(thread(page).locator(".cx-note")).toHaveText("268 / 300");
     await box(page).fill("字".repeat(300));

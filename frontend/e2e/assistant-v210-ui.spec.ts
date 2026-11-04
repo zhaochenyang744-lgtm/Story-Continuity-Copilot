@@ -295,7 +295,7 @@ test("18 操作行：点赞点踩是单色线条图标，和操作行文字同�
   expect(await style(task.getByRole("button", { name: "复制" }), "color")).toBe(muted);
 });
 
-test("18 额度用完：重新回答、接着问置灰，悬停写原因；写作页选中文字的工具条也置灰", async ({ page }) => {
+test("18 额度用完：重新回答置灰，悬停写原因；写作页选中文字的工具条也置灰", async ({ page }) => {
   await startVisitor(page);
   const id = await sampleWorkId(page);
   await page.route("**/api/account/usage", async (route) => {
@@ -306,7 +306,7 @@ test("18 额度用完：重新回答、接着问置灰，悬停写原因；写�
   await openAssistantTab(page);
   const task = tasks(page).first();
   const reason = "访客可以在示例作品上问 3 次，24 小时内已经用完";
-  for (const name of ["重新回答", "接着问"]) {
+  for (const name of ["重新回答"]) {
     const control = task.getByRole("button", { name, exact: true });
     await expect(control).toBeDisabled();
     expect(await control.getAttribute("title")).toContain(reason);
@@ -691,7 +691,7 @@ test("18 章号：窄屏下缩到章名的 0.6 倍放在章名上面，章名 te
   expect(parseFloat(await style(number, "font-size"))).toBeGreaterThan(90);
 });
 
-test("18 手机：出处标记、复制、重新回答、接着问、点赞点踩、撤销、改动勾选框的点按区域至少 40×40", async ({ page }) => {
+test("18 手机：出处标记、复制、重新回答、点赞点踩、撤销、改动勾选框的点按区域至少 40×40", async ({ page }) => {
   const when = ago(30);
   await registerAccount(page, "a18");
   const id = await sampleWorkId(page);
@@ -718,7 +718,7 @@ test("18 手机：出处标记、复制、重新回答、接着问、点赞点�
   await list.scrollIntoViewIfNeeded();
   await list.locator(".a-points li").nth(1).scrollIntoViewIfNeeded();
   expect(await reaches(list.locator(".a-points li").nth(1).locator(".a-cite button"))).toBe(true);
-  for (const name of ["复制", "重新回答", "接着问", "有用", "没用"]) {
+  for (const name of ["复制", "重新回答", "有用", "没用"]) {
     const control = list.getByRole("button", { name, exact: true });
     await control.scrollIntoViewIfNeeded();
     const size = await rect(control);

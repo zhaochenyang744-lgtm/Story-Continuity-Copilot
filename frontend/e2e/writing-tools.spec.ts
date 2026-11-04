@@ -60,7 +60,7 @@ test("右栏的切换：右栏不在视口里时（窄窗口里它在正文下�
   const id = await setup(page);
   // (A wide window keeps the column on screen from the top bar down; in a narrower one it is a pane under the draft.)
   await page.setViewportSize({ width: 900, height: 600 });
-  const side = page.getByRole("complementary", { name: "检查与回顾", exact: true });
+  const side = page.getByRole("complementary", { name: "检查与助手", exact: true });
   await expect(side).not.toBeInViewport({ ratio: 0.2 });
   await analysis(page, id, "对照计划", "plan_alignment");
   await expect(side).toBeInViewport({ ratio: 0.2 });

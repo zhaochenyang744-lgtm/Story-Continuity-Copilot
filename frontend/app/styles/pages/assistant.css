@@ -746,3 +746,6 @@ html[data-dock="push"] .feedback { animation-name: toast-in-left; }
   .a-task:hover .a-thumbs, .a-task:focus-within .a-thumbs, .a-task .a-thumbs:has([aria-pressed="true"]) { opacity: 1; }
 }
 .a-mismatch { margin: var(--s-2) 0 0; padding: var(--s-2) var(--s-3); border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-raised); color: var(--c-muted); font-size: var(--fs-13); }
+.cx-mode.quiet { width: 28px; padding: 0; justify-content: center; color: var(--c-faint); }
+.cx-mode.quiet svg { width: 16px; height: 16px; }
+.cx-mode.quiet:hover { color: var(--c-ink); }

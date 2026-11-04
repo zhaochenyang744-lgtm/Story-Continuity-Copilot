@@ -132,7 +132,7 @@ test("08 新作品对照正文：跳转和分析结果", async ({ page }) => {
   expect(result.analysis_type).toBe("plan_alignment");
   await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace$`));
   // The writing page's right column holds the result as the block at its top.
-  const region = page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("region", { name: "对照计划", exact: true });
+  const region = page.getByRole("complementary", { name: "检查与助手", exact: true }).getByRole("region", { name: "对照计划", exact: true });
   await expect(region).toBeVisible();
   await expect(region).toContainText(result.analysis.summary);
   expect(result.analysis.items).toHaveLength(1);

@@ -261,7 +261,7 @@ test("08 对话框焦点：初始焦点循环和 Esc 返回", async ({ page }, i
 test("08 抽屉焦点：原文出处关闭后回到打开它的那一条依据", async ({ page }) => {
   const id = await setup(page), issue = (await run(page, id)).issues[0];
   await finding(page, issue.id).click();
-  const evidence = page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("button", { name: /^第 \d+ 章/ }).first();
+  const evidence = page.getByRole("complementary", { name: "检查与助手", exact: true }).getByRole("button", { name: /^第 \d+ 章/ }).first();
   await evidence.click();
   const drawer = page.getByRole("dialog", { name: /^第 \d+ 章/ });
   await expect(drawer).toBeVisible();
