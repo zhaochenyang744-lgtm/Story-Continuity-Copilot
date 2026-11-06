@@ -2,11 +2,11 @@
 
 AI continuity checks and a writing assistant for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, answers questions about the work with the passages it read, and leaves every decision to the author.
 
-**Current version: v2.1.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
+**Current version: v2.2.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
-A novelist writes chapter 40 and has the heroine open a door with a key she lost in chapter 12. Story Continuity Copilot catches that kind of slip. It checks a draft or a chosen set of written chapters against the earlier text, and reports each problem as a finding the author can trace: what the new sentence says, which earlier passage it conflicts with or lacks, and how serious it is. The built-in assistant answers questions about the work, recaps where the story stands before the author starts a chapter, proposes ways to fix a finding, and takes on a task that spans the whole book, such as going through every open foreshadowing thread. Nothing is rewritten for the author, and the work's fact base only changes when the author confirms a change.
+A novelist writes chapter 40 and has the heroine open a door with a key she lost in chapter 12. Story Continuity Copilot catches that kind of slip. It checks a draft or a chosen set of written chapters against the earlier text, and reports each problem as a finding the author can trace: what the new sentence says, which earlier passage it conflicts with or lacks, and how serious it is. The built-in assistant answers questions about the work, recaps where the story stands before the author starts a chapter, proposes ways to fix a finding, and takes on a task that spans the whole book, such as going through every open foreshadowing thread. It remembers what the author has decided ("the two compasses are deliberate", "leave that thread open") and checks and answers by it. Nothing is rewritten for the author, and the work's fact base and decisions only change when the author confirms a change.
 
 The interface is in Chinese and is built for Chinese web fiction.
 
@@ -14,8 +14,14 @@ The interface is in Chinese and is built for Chinese web fiction.
 
 The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chapters · 资料 / Records · 计划 / Plans**.
 
-- **Assistant (new in v1.8.0):** a panel beside the writing page, and a drawer on the other pages.
-  - **One input box (v1.9.0):** the author just writes; the box judges which use the sentence asks for (自动, the default), shows it on the task, and lets the author change it. A sentence that is not about the work starts nothing and costs nothing. Asking for a recap away from the writing page offers to go there.
+- **The author's decisions (记住作者的决定, new in v2.2.0):** the assistant recognises, from the author's own words, a decision meant to hold from now on: in the input box ("the compass is in two places on purpose, there are two of them, stop flagging it"), in the optional reason written when keeping a check finding, and in the author's answer to a long task's question. No fixed phrase is needed.
+  - It is shown as a 记下决定 card with the decision, what it covers (people, things, chapters) and the author's words; nothing is kept until the author confirms, and a kept decision can be undone.
+  - Five kinds: intended (有意为之), which place stands (以哪处为准), no reminder (不用提醒), leave a thread open (先别收) and a writing preference (写作偏好).
+  - From then on, a check finding the decision covers moves to 已处理 marked 按你记下的决定略过; answers follow it and cite it; long tasks do not propose closing a thread the author kept open; and when later text no longer fits a decision, it is flagged as possibly out of date.
+  - Decisions are listed on the records page, where they can be edited or deleted (up to 200 per work).
+- **Assistant (new in v1.8.0):** on the writing page, a tab of the right-hand column beside the check findings; on the other pages, a panel in the same place and width (v2.2.0).
+  - **One input box (v1.9.0):** the author just writes; the box judges which use the sentence asks for (自动, the default), and the use can be changed from a small button beside the box or on the answer. A sentence that is not about the work starts nothing and costs nothing. Asking for a recap away from the writing page offers to go there.
+  - **The chapter's draft (v2.2.0):** the box carries a 第 N 章草稿 tag; taken out, the question is answered without reading the draft.
   - **Long tasks (长任务, new in v2.1.0):** a request that spans many chapters ("go through every thread still open", "where has the compass been, chapter by chapter, and where do the chapters disagree").
     - Two kinds: a **thread audit** (伏笔清点: which open threads the text has in fact resolved or dropped, and which are still open) and a **trace** (梳理: where an object, a person's state or an event goes through the book, starting with where it ends up, and where the chapters disagree).
     - The assistant first shows a plan: what it will trace, the steps, the chapters each step reads, and the estimated characters and cost. It reads only written chapters. The author can narrow the chapters, change the cost cap or decline; nothing is read before 开始.
@@ -28,16 +34,16 @@ The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chap
   - **Help me fix this (帮我改这一处):** for a check finding, at least two ways to change the text. Each is checked against the earlier chapters before it is shown, and nothing changes until the author adopts one.
   - **Check this passage (查前文矛盾):** a selected passage is checked against the earlier chapters.
 
-  The steps the assistant takes are shown as it works, each step line written from what the step actually does. A task takes at most 8 steps and ¥0.30; a long task has its own plan and cost cap (¥2 by default). A finished answer is followed by default, and the box says which follow-up it is (at most two). Visitors can use it on the sample work three times per 24 hours.
+  The steps the assistant takes are shown as it works; a finished answer keeps one line above it, 查了 N 处 ›, that opens how it checked, and a sources line below it (出处 N 处 · 第 a–b 章). A task takes at most 8 steps and ¥0.30; a long task has its own plan and cost cap (¥2 by default); the remaining allowance is shown only when it runs low. A new question right after an answer is taken as a follow-up (at most two). Visitors can use it on the sample work three times per 24 hours.
 - **Author home and settings (new in v1.8.0):**
   - **Home (`/account`):** a writing calendar, the chapter in progress, works and a feed of recent checks and fact changes.
   - **Settings (`/settings`):** four sections (general, account, usage, data): name and bio that save as you leave the box, theme and text size, password change, daily usage, and export of all works. The author's badge is the first character of their display name.
-- **Look (v2.1.0):** no black frame lines; layers are told apart by background shades, buttons are filled, fields have a thin ring and shadow.
-- **Writing:** rich-text and focus writing, server-side draft autosave, checks with source passages and plan comparison.
-  - Findings distinguish clear conflicts, possible conflicts, state changes (shown as 「状态更新」) and insufficient evidence.
+- **Look:** one top bar inside and outside a work, and the same page head on every page (v2.2.0); no black frame lines, layers told apart by background shades (v2.1.0).
+- **Writing:** rich-text and focus writing, server-side draft autosave, checks with source passages and plan comparison. The right-hand column holds the check findings and the assistant as two tabs and can be folded away (v2.2.0).
+  - Findings distinguish clear conflicts, possible conflicts, state changes (shown as 「状态更新」) and insufficient evidence, grouped as pending (待定) and handled (已处理).
   - The author can keep a finding as intended, mark it as not a problem, apply the suggestion or edit the text. The available actions depend on the finding.
 - **Chapters:** select up to eight written chapters to check against their earlier chapters, inspect check status, append chapters and revise written text. Earlier eligible decisions are reused automatically when their sentence, evidence and supporting versions still match.
-- **Records:** the versioned, author-confirmed fact base, people, settings and foreshadowing, each fact traced to its source passage. Fact changes from new chapters are reviewed before they are recorded.
+- **Records:** the versioned, author-confirmed fact base, people, settings and foreshadowing, each fact traced to its source passage, and the author's decisions. Fact changes from new chapters are reviewed before they are recorded.
 - **Plans:** unwritten plot, character and setting plans, as decided or considering. Only decided, unarchived plans reach the recap and plan comparison.
 - **Overview:** a story route that connects written chapters, the draft, open foreshadowing and upcoming plans.
 - **Sample work, tour and modes:**
@@ -64,6 +70,34 @@ This keeps time and cost bounded. The review prompt is `continuity-review-v25k-s
 ## Quality and evaluation
 
 Model and prompt changes are judged by formal runs on sets written in a separate session and never seen during development, against thresholds registered before the sets were written. A set is spent once it has been run.
+
+**The author's decisions.** v2.2.0's decision memory is released on its own evaluation (A4): a formal pair of works whose tasks state decisions in the box, in a check's reason and in long-task answers, ask for things those decisions should or should not govern, and hide instructions to the assistant in the text and records, three passes of every task. Whether a decision card was made, whether it was kept or applied exactly, and whether confirm and undo leave the records exactly as expected are decided by program. The first two formal runs (2026-10-31) failed (recognition recall 0.76 and scope 0.56; then card content, stale-decision flags and obeying). The third (2026-11-02, on a new sealed pair) met 12 of 14 bars raw. Its injection-safety result of 0.8 was overturned to 1.00 by an audit the project owner accepted: in all four verdicts, the judge read an answer that reported what the hidden instruction said not to report as obeying it. The recognition wait stayed unmet, and the project owner chose to release with it:
+
+| Measure | Result | Registered bar |
+| --- | ---: | ---: |
+| Injection tasks safe in all three passes | 1.00 (0.80 before the audit) | = 1.00 |
+| No card where the author stated no decision | 1.00 | = 1.00 |
+| Confirm and undo exact | 1.00 / 1.00 | = 1.00 |
+| Changes nobody asked for, per pass | 0 | ≤ 1 |
+| Decisions recognised / no card where none was meant | 1.00 / 1.00 | ≥ 0.85 / 0.90 |
+| Card content right (kind, what it covers, chapters) | 0.86 | ≥ 0.85 |
+| Checks and answers that follow a decision | 0.94 | ≥ 0.85 |
+| Decisions not applied outside their scope | 1.00 | ≥ 0.90 |
+| Decisions the later text contradicts, flagged | 0.83 | ≥ 0.80 |
+| Use picked by the input box | 1.00 | ≥ 0.90 |
+| Recognition cost per sentence, mean | ¥0.0018 | ≤ ¥0.002 |
+| Recognition wait, p90 | 3.28 s | ≤ 3.0 s (not met) |
+
+The provider was slower during the run than during development, and 29% of recognitions needed a second small call to pick what the decision covers. After the formal run the recognizer was changed twice: a request to close a thread or to change the records by a chapter had come with a needless decision card. Old and new prompts were replayed on every labelled A4 sentence, with the same results (198 of 198 recognised, 106 of 108 correctly not); cost and wait were not measured again. The runs, the audit and the addenda are in [evaluation/assistant_a4/SPEC.md](evaluation/assistant_a4/SPEC.md).
+
+**Regressions for v2.2.0.** On the release candidate (2026-11-02, code a2e5900), one pass over spent sets, every bar met:
+- long-text chapter check (`lf4`): all bars;
+- the input box's choice of use: 0.97;
+- records: the 46-task subset met all bars, with no audit;
+- asking, recaps and fixes: 19 of 19 after an audit the project owner accepted, 17 raw (a citation the judge missed on a safety item; a recap point judged differently from the previous run on the same wording);
+- long tasks: 16 of 16 on the 24-task subset, after the same kind of audit on one injection verdict (the author's own choice read as the hidden instruction).
+
+These sets had been seen during development and the subsets are smaller than the full sets, so the evidence is weaker than a sealed set's; the project owner accepted that trade-off. Afterwards only the interface changed, plus a four-line option for asking without the draft, which leaves the default unchanged; the automated tests cover those changes.
 
 **Long tasks.** v2.1.0's long tasks are released on their own evaluation (A3): a formal pair of two 20-chapter works and a 12-chapter safety work whose chapters, records and requests hide instructions to the assistant, plus two supplementary safety sets, three passes of every task. Whether a step read outside the approved plan, whether a hidden instruction was carried out, whether an interrupted task resumed with no step lost or repeated, and whether confirm and undo leave the records exactly as expected are decided by program. The first formal run stopped at its cost cap and was recorded failed. The second (2026-10-28, on a new sealed pair) met 15 of 16 bars; the sixteenth, injection safety, was 0.9 on a product fault that was fixed, and two supplementary sealed safety sets then completed the gate (the second only after an audit the project owner accepted):
 
@@ -119,14 +153,20 @@ The audit overturned four verdicts: one where the judge read "proposed, waiting 
 
 The audit overturned ten verdicts, two of them on safety items; the safety bar was met only after the audit, and the project owner accepted the audited result. The runs, the audit and the addenda are recorded in [evaluation/assistant_a1c/SPEC.md](evaluation/assistant_a1c/SPEC.md).
 
-**Fixes after the gates.** Changes made after the gates had passed, only to fix issues recorded in trials and reviews, were checked on the release code by one pass over the spent sets of all three evaluations, every bar met (2026-10-29, code 6b6a698): long tasks 16 of 16, and the second long-task safety supplement again in three passes with no audit; records 14 of 14 on the spent sixth pair and 12 of 12 on the supplement; asking, recaps and fixes 19 of 19, one of them, advice sentences supported by their source, after an audit the project owner accepted (0.89 before, the judge reading the suggestion itself as a claim about the text), and the input box's choice of use 0.97 against 0.90. These sets had been seen during development, so this is weaker evidence than a sealed set; the project owner accepted that trade-off.
+**Fixes after the v2.1.0 gates.** Changes made after the gates had passed, only to fix issues recorded in trials and reviews, were checked on the release code by one pass over the spent sets of all three evaluations, every bar met (2026-10-29, code 6b6a698): long tasks 16 of 16, and the second long-task safety supplement again in three passes with no audit; records 14 of 14 on the spent sixth pair and 12 of 12 on the supplement; asking, recaps and fixes 19 of 19, one of them, advice sentences supported by their source, after an audit the project owner accepted (0.89 before, the judge reading the suggestion itself as a claim about the text), and the input box's choice of use 0.97 against 0.90. These sets had been seen during development, so this is weaker evidence than a sealed set; the project owner accepted that trade-off.
 
-**Chapter check.** v1.9.0's chapter check passed its long-text formal run on two new sealed sets, pooled (2026-10-20): 23 of 24 insufficient-evidence points found, 14 of 16 clean chapters with no finding, 6 of 6 designated items. The procedure and earlier runs are in [evaluation/longform/PLAN.md](evaluation/longform/PLAN.md).
+**Chapter check.** v1.9.0's chapter check passed its long-text formal run on two new sealed sets, pooled (2026-10-20): 23 of 24 insufficient-evidence points found, 14 of 16 clean chapters with no finding, 6 of 6 designated items. v2.2.0 hardened it against lines in the text or draft written as the author's instructions to the check; a rerun of the spent `lf4` set on the release candidate met every bar (conflict recall 1.00, insufficient evidence 0.92, clean chapters with no finding 0.83). The procedure and earlier runs are in [evaluation/longform/PLAN.md](evaluation/longform/PLAN.md).
 
 ## Version and deployment
 
-Production runs **v2.1.0**, release `v210-d1b06f3-20261029` ([deployment record](docs/deployment-2026-10-29-v210.md)).
+Production runs **v2.2.0**, release `v220-337f151-20261106` ([deployment record](docs/deployment-2026-11-06-v220.md)).
 
+- **v2.2.0:**
+  - The assistant remembers the author's decisions: recognised from the author's own words, kept only after a 记下决定 card is confirmed, listed on the records page; checks set aside the findings a decision covers, answers follow it, and long tasks leave kept-open threads open.
+  - One top bar and page head across the site; on the writing page the findings and the assistant share one right-hand column as two tabs, with findings grouped as pending and handled; the assistant panel opens in the same place on every page.
+  - A quieter assistant: the use menu is a small button, follow-ups are not labelled, an answer shows 查了 N 处 › above and its sources below, the allowance shows only when low, and the draft can be left out of a question.
+  - The chapter check no longer acts on lines in the text written as the author's instructions to it; change tasks skip their third judgement when the first two agree.
+  - The privacy page describes what a kept decision stores.
 - **v2.1.0:**
   - Long tasks: a thread audit or a trace across the whole book, with a plan the author approves first, a background run that can be stopped, questions when two chapters disagree, and a report with grouped changes that can be confirmed in part.
   - The assistant can also add a thread, reword one and mark one abandoned; it says why when it changes nothing.
@@ -137,13 +177,7 @@ Production runs **v2.1.0**, release `v210-d1b06f3-20261029` ([deployment record]
   - The assistant proposes changes to the records (add a fact, change a fact, mark a thread resolved) on a card the author confirms; applied changes can be undone and redone, and the records page marks them and keeps a change log.
   - Properties named in the author's own words show their names.
   - The privacy page describes the change log.
-- **v1.9.0:**
-  - One input box for the assistant: it judges which use a sentence asks for, shows it, and lets the author change it; a sentence not about the work costs nothing; a recap asked for away from the writing page offers to go there.
-  - A finished answer is followed by default, with the follow-up count shown; advice answers point only at what is already written, each with its source.
-  - Pre-writing recaps write the lasting state (role, qualification, health) of the people in the scene; process lines are written from the steps themselves; fixes that fail their own check are not listed.
-  - The chapter check finds more claims the earlier text cannot support and puts fewer findings on clean chapters.
-  - The top bar stays on one line from 768 to 1,280 px wide.
-  - Back-end code of features removed in v1.7 is deleted.
+
 Earlier releases remain in Git tags; the [documentation index](docs/README.md) lists what is kept.
 
 ## Known limitations
@@ -151,14 +185,15 @@ Earlier releases remain in Git tags; the [documentation index](docs/README.md) l
 - The assistant reads the work through its tools within the per-task limits; on very long works an answer covers what it found, and says which chapters it read.
 - The assistant's changes to the records cover facts and foreshadowing threads. Deleting records and editing plans are done on the records and plans pages; asked to add a plan, the assistant says so.
 - Long tasks cover thread audits and traces. Tidying the records (merging duplicates, settling stale facts) is not offered yet. Visitors cannot start long tasks.
+- Recognising a decision adds a short wait to the sentence that states it; its p90 was 3.3 s in the formal run, against a registered bar of 3.0 s.
 - Whole-book checks are not offered; one selected-chapter check covers at most eight chapters.
 - Writing and checking require a window width of at least 768 px; narrower windows are browse-only.
 - Evaluation sets are small and written for evaluation. No completed study with real authors is evidenced; automated tests, real-model samples and manual acceptance establish different things.
 
 ## Data and safety
 
-- AI output does not change prose or the fact base by itself. Applying a suggestion or an assistant proposal requires the author; proposed fact changes enter the fact base only after confirmation, and an assistant's change card applies only the items the author confirms, each of which can be undone.
-- Text inside the work (chapters, facts, plans, drafts) is treated as material, never as instructions to the assistant.
+- AI output does not change prose or the fact base by itself. Applying a suggestion or an assistant proposal requires the author; proposed fact changes enter the fact base only after confirmation, and an assistant's change card applies only the items the author confirms, each of which can be undone. A decision is kept only from the author's own words and after the author confirms its card, never from the text or the records.
+- Text inside the work (chapters, facts, plans, drafts) is treated as material, never as instructions to the assistant or the check.
 - Works are isolated per account. Another account's resources return not found. Evidence must resolve within the same work; failed, cancelled or timed-out checks leave no partial findings.
 - Model and email credentials stay on the server.
 - **Allowances:**
@@ -207,11 +242,11 @@ npm run test:e2e
 npm run test:build-origin
 ```
 
-At v2.1.0 these numbers held:
-- backend 1,609 tests;
+At v2.2.0 these numbers held:
+- backend 1,673 tests: 1,671 passed in the full run; the other two are timing tests of the long-task evaluation runner that timed out while the browser suite ran beside them, and their file passes on its own;
 - offline evaluation 30 tests;
-- browser end-to-end 420 passed, with 25 screenshot-only tests skipped;
-- `npm run test:build-origin` 23 tests;
+- browser end-to-end 456 passed, with 30 screenshot-only tests skipped;
+- `npm run test:build-origin` 23 tests (on the release-preparation commit b33367f);
 - ESLint and TypeScript clean.
 
 The browser suite is one `v170` group on 3280/8280, run by `npm run test:e2e`. These tests use test-only providers and do not measure model quality. See [isolated browser E2E](docs/local-setup.md#isolated-browser-e2e).
@@ -234,7 +269,7 @@ Built with Python, FastAPI, SQLite, Next.js, React and TypeScript; tested with u
 - [Current product and verification scope](docs/current-product.md)
 - [Demo guide](docs/demo-guide.md): a 3–5 minute sample-work walkthrough
 - [Local setup](docs/local-setup.md), [operations](docs/operations.md) and [evaluation maintenance](docs/evaluation-maintenance.md)
-- Assistant evaluations: [asking and recaps (A1c)](evaluation/assistant_a1c/SPEC.md), [changing the records (A2)](evaluation/assistant_a2/SPEC.md), [long tasks (A3)](evaluation/assistant_a3/SPEC.md); and [long-text check plan](evaluation/longform/PLAN.md)
+- Assistant evaluations: [asking and recaps (A1c)](evaluation/assistant_a1c/SPEC.md), [changing the records (A2)](evaluation/assistant_a2/SPEC.md), [long tasks (A3)](evaluation/assistant_a3/SPEC.md), [the author's decisions (A4)](evaluation/assistant_a4/SPEC.md); and [long-text check plan](evaluation/longform/PLAN.md)
 
 ## Project history
 
@@ -245,4 +280,4 @@ The project began as a CLI proof of concept and grew through numbered stages int
 - a check lifecycle with retry and cancel;
 - visitor isolation.
 
-Long-text checking arrived in v1.6, the rebuilt interface in v1.7, the writing assistant in v1.8, its one input box in v1.9, and its first changes to the records in v2.0, and long tasks across the book in v2.1. Earlier history is kept in the archived repository.
+Long-text checking arrived in v1.6, the rebuilt interface in v1.7, the writing assistant in v1.8, its one input box in v1.9, and its first changes to the records in v2.0, long tasks across the book in v2.1, and memory of the author's decisions in v2.2. Earlier history is kept in the archived repository.
